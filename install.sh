@@ -40,30 +40,21 @@ show_menu() {
     echo -n "Select installation scope (1-3): "
 }
 
-# Function to select mode (only for user scope)
-select_mode() {
-    echo "Select Claude Mode:"
-    echo "1) Minimal (token-optimized, ~600 tokens)"
-    echo "2) Standard (balanced features, ~2000 tokens)"
-    echo "3) Enhanced (full automation, ~5000 tokens)"
-    echo "4) Meta (meta-persona orchestration, ~6200 tokens)"
+# Function to confirm virtual team mode
+confirm_mode() {
+    echo "Virtual Team Mode will be installed:"
+    echo "• 12 specialized development roles"
+    echo "• Git workflow integration"
+    echo "• @-notation for role addressing"
+    echo "• Autonomous technical decision-making"
     echo ""
-    echo -n "Select mode (1-4, default=2): "
-    read -r mode_choice
-    
-    case $mode_choice in
-        1) echo "minimal" ;;
-        3) echo "enhanced" ;;
-        4) echo "meta" ;;
-        *) echo "standard" ;;
-    esac
 }
 
 # Function for graceful integration into project CLAUDE.md
 graceful_project_integration() {
     local target_dir=$1
     local claude_file="$target_dir/CLAUDE.md"
-    local import_line="@~/.claude/intelligent-claude-code.md"
+    local import_line="@~/.claude/config.md"
     
     echo "Implementing graceful integration in: $target_dir"
     
@@ -129,7 +120,6 @@ install_user_scope() {
     
     # Copy main files
     cp "$SCRIPT_DIR/src/CLAUDE.md" "$target_dir/"
-    cp "$SCRIPT_DIR/src/intelligent-claude-code.md" "$target_dir/"
     echo -e "${GREEN}✓ Installed core system files${NC}"
     
     # Copy mode files
@@ -141,38 +131,24 @@ install_user_scope() {
     cp "$SCRIPT_DIR/src/behaviors/"*.md "$target_dir/behaviors/"
     echo -e "${GREEN}✓ Installed personas and behaviors${NC}"
     
-    # Get mode selection
+    # Confirm virtual team mode
     echo ""
-    local mode=$(select_mode)
+    confirm_mode
     
-    # Create config.md with selected mode
-    cat > "$target_dir/config.md" << EOF
-# Intelligent Claude Code Configuration
-
-## Active Mode
-$mode
-
-## Mode Configuration
-@~/.claude/modes/$mode.md
-
-## Project-Specific Configuration
-<!-- Add project-specific instructions here -->
-
----
-*Native markdown configuration - no .env files needed*
-EOF
+    # Create config.md with virtual team mode
+    cp "$SCRIPT_DIR/src/config.md" "$target_dir/config.md"
     
-    echo -e "${GREEN}✓ Created config.md with mode: $mode${NC}"
+    echo -e "${GREEN}✓ Created config.md with virtual team mode${NC}"
     echo ""
     echo -e "${GREEN}User scope installation complete!${NC}"
     echo "• Configuration: ~/.claude/config.md"
-    echo "• To change modes: edit ~/.claude/config.md"
+    echo "• Virtual Team Mode activated with 12 roles"
     echo "• To use in projects: add import line to project CLAUDE.md"
 }
 
 # Check if user scope is already installed
 check_user_installation() {
-    if [ -f "$HOME/.claude/intelligent-claude-code.md" ]; then
+    if [ -f "$HOME/.claude/CLAUDE.md" ]; then
         return 0  # Already installed
     else
         return 1  # Not installed
