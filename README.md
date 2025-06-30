@@ -1,208 +1,247 @@
-# Intelligent Claude Code
+# Intelligent Claude Code - Virtual Team Mode
 
-Enhance Claude Code with specialized personas and smart behaviors while respecting your existing setup.
+Transform Claude Code into an intelligent virtual development team with 12 specialized roles, Git workflow integration, and autonomous technical decision-making.
 
 ## What This Does
 
-Most AI tools overwrite your configurations. This one doesn't. It adds capabilities by importing one line into your existing CLAUDE.md file, leaving everything else untouched.
+Enables Claude Code to operate as a complete virtual development team:
+- **12 specialized technical roles** from Requirements Engineer to Backend Tester
+- **Intelligent role selection** based on project complexity
+- **Complete Git workflow** with branching, MRs, and level-based approval
+- **Autonomous technical decisions** while respecting user authority
+- **Growing team autonomy** across 3 maturity levels
+
+## Virtual Team Roles
+
+**Core Team:**
+- **@PM** - Project coordination and role selection
+- **@Requirements-Engineer** - Technical requirements analysis
+- **@Architect** - System design and technical leadership
+- **@Developer** - Full-stack implementation
+
+**Infrastructure & Data:**
+- **@System-Engineer** - Server configuration and basic deployment
+- **@DevOps-Engineer** - CI/CD, automation, advanced deployment
+- **@Database-Engineer** - Database design and optimization
+- **@Security-Engineer** - Security implementation and compliance
+
+**Quality & Design:**
+- **@Web-Designer** - UI/UX design and responsive implementation
+- **@QA-Engineer** - Quality strategy and process improvement
+- **@Frontend-Tester** - UI testing and responsive validation
+- **@Backend-Tester** - API testing and end-to-end validation
 
 ## Key Features
 
-### Graceful Integration
-- Analyzes your existing CLAUDE.md structure
-- Adds only one import line, preserves everything else
-- Works with team standards and company imports
-- Remove by deleting one line - no vendor lock-in
+### Intelligent Role Selection
+Team scales based on project complexity:
+- **Static Website:** 6 roles (PM, Requirements, Architect, Developer, Designer, Frontend-Tester)
+- **Web Application:** 8 roles (adds Database-Engineer, Backend-Tester)
+- **Enterprise SaaS:** All 12 roles for complete coverage
 
-### Clear Configuration
-All settings are visible and documented in config.md:
-```markdown
-## Active Mode
-standard
+### Git Workflow Integration
+Complete Git process with level-based autonomy:
+```bash
+# Level 1: User approval required
+git checkout -b feature/auth-system
+git commit -m "auth: Implement JWT authentication"
+# Wait for user approval before push
 
-## Core Behaviors
-- **Research First**: Always research unfamiliar tools
-- **Git Safety**: Create checkpoints before risky operations
-- **Auto Documentation**: Update docs with code changes
+# Level 3: Full autonomy
+git checkout -b feature/performance-optimization
+git commit -m "api: Add Redis caching layer"
+git push origin feature/performance-optimization
+# Architect reviews and approves MR automatically
 ```
 
-### Smart Personas
-14 specialized personas handle different tasks:
-- **Strategic**: Architecture, Project Manager, Documentation, Reviewer
-- **Technical**: Backend, Frontend, Infrastructure, Security, Performance
-- **Quality**: Tester, UI Designer, Teaching
+### Team Maturity Levels
+**Level 1 - New Team:** User approves everything
+**Level 2 - Learning Team:** Team handles details, user approves architecture
+**Level 3 - Experienced Team:** Full technical autonomy, Architect approves MRs
 
-### Meta-Persona System
-For complex tasks, three meta-personas coordinate the specialists:
-- **Strategic Coordinator**: Handles planning and architecture
-- **Technical Executor**: Manages implementation across domains
-- **Quality Guardian**: Ensures testing and documentation
-
-Say "Design a payment system" and it automatically coordinates multiple personas.
-
-### Project Management
-Drop simple ideas in `tasks/pending/` and the PM persona:
-- Analyzes requirements and dependencies
-- Provides realistic effort estimates
-- Tracks progress across personas
-- Knows AI capabilities and limitations
-
-### Four Modes
-- **Minimal** (~600 tokens): Basic features, on-demand personas
-- **Standard** (~2000 tokens): Balanced features with smart behaviors
-- **Enhanced** (~5000 tokens): Full automation with research and git safety
-- **Meta** (~6200 tokens): Meta-persona orchestration system
+### Direct Role Communication
+```
+@PM Break down this e-commerce platform
+@Architect Design scalable microservices architecture
+@Database-Engineer Optimize user query performance
+@Security-Engineer Implement OAuth2 authentication
+@DevOps-Engineer Set up Kubernetes deployment
+```
 
 ## Installation
 
 ```bash
-git clone https://github.com/your-repo/intelligent-claude-code
+git clone https://github.com/ksamaschke/intelligent-claude-code
 cd intelligent-claude-code
 ./install.sh
 ```
 
 Choose installation scope:
-1. **Current Project**: Adds import to local CLAUDE.md
-2. **Specific Project**: Adds import to any project's CLAUDE.md
-3. **User Scope**: Installs to ~/.claude/ for all projects
+1. **Current Project:** Adds to local CLAUDE.md
+2. **Specific Project:** Adds to any project's CLAUDE.md  
+3. **User Scope:** Installs to ~/.claude/ for all projects
 
-## Usage
+## Configuration
 
-### Basic Usage
-Once installed, just use Claude Code normally. The personas activate automatically based on context.
+### Enable Virtual Team Mode
+The system automatically configures for Virtual Team Mode. To customize:
 
-### Direct Persona Access
-- `@security review this authentication code`
-- `@architecture design a scalable system`
-- `@frontend implement this UI component`
-
-### Mode Switching
-Edit ~/.claude/config.md:
+Edit `~/.claude/config.md`:
 ```markdown
 ## Active Mode
-enhanced
+virtual-team
 
 ## Mode Configuration
-@~/.claude/modes/enhanced.md
+@~/.claude/modes/virtual-team.md
+
+## Project-Specific Configuration
+<!-- Your project instructions here -->
 ```
 
-### Task Management
-Create simple files in tasks/pending/:
-```markdown
-# Fix Login Bug
-Users can't log in after password reset
-```
-
-The PM persona processes it and provides realistic estimates.
-
-## Architecture
-
-### How It Works
-1. Project CLAUDE.md imports: `@~/.claude/intelligent-claude-code.md`
-2. Main system imports: `@~/.claude/config.md`
-3. Config imports appropriate mode file
-4. Mode file imports required personas and behaviors
-
-### File Structure
-```
-~/.claude/
-├── config.md              # Mode selection and settings
-├── modes/                  # Separate mode configurations
-│   ├── minimal.md
-│   ├── standard.md
-│   ├── enhanced.md
-│   └── meta.md
-├── personas/               # Specialist definitions
-│   ├── personas.md
-│   └── meta-persona-system.md
-└── behaviors/              # Smart behaviors
-    ├── behaviors.md
-    ├── enhanced-behaviors.md
-    └── git-safety-behaviors.md
-```
-
-### Token Management
-Each mode has accurate token counts:
-- Minimal: ~600 tokens (basic features)
-- Standard: ~2000 tokens (balanced)
-- Enhanced: ~5000 tokens (full automation)
-- Meta: ~6200 tokens (includes everything)
-
-## Examples
-
-### Simple Integration
-**Before:**
-```markdown
-# My Project
-Use TypeScript and test everything.
-```
-
-**After:**
+### Project Integration
+Your project CLAUDE.md receives a single import line:
 ```markdown
 # Intelligent Claude Code Integration
-@~/.claude/intelligent-claude-code.md
+@~/.claude/config.md
 
-<!-- Existing project configuration preserved below -->
-
-# My Project  
-Use TypeScript and test everything.
+<!-- Your existing project configuration preserved -->
 ```
 
-### Complex Task Coordination
-**Input:** "Build a real-time chat system"
+## Usage Examples
 
-**Response:** Strategic Coordinator activates, analyzes requirements, coordinates with:
-- Architecture persona for system design
-- Backend persona for server implementation
-- Frontend persona for UI components
-- Security persona for authentication
-- Infrastructure persona for deployment
-
-## Why This Approach
-
-### Respectful
-Preserves your existing configurations and team standards.
-
-### Transparent
-All settings are visible in markdown files, not hidden in environment variables.
-
-### Flexible
-Use individual personas for simple tasks, meta-coordination for complex ones.
-
-### Removable
-Delete one import line to uninstall completely.
-
-### Team-Friendly
-Works with existing company imports and development workflows.
-
-## Configuration Options
-
-Edit ~/.claude/config.md to customize:
-
-```markdown
-## Active Mode
-enhanced
-
-## Core Behaviors
-- **Always Research**: true
-- **Auto Todos**: true
-- **Git Safety**: true
-
-## Active Personas
-- **security**: enabled
-- **performance**: enabled
-- **architecture**: enabled
+### Simple Website
+```
+User: "Build a portfolio website with Jekyll"
+@PM: Analyzing - assigning @Requirements-Engineer, @Architect, @Developer, @Web-Designer, @Frontend-Tester
+@Requirements-Engineer: Technical requirements - responsive design, fast loading, portfolio showcase
+@Architect: Recommending Hugo over Jekyll for performance - 3x faster builds
+@Developer: Implementing Hugo site with optimized images and responsive layout
+@Web-Designer: Creating modern design system with mobile-first approach
+@Frontend-Tester: Validating responsive breakpoints and accessibility compliance
 ```
 
-See src/config.md for all available options.
+### Complex Application
+```
+User: "Build real-time analytics dashboard"
+@PM: Enterprise complexity - activating full 12-role team
+@Requirements-Engineer: Real-time data requirements, user interaction patterns
+@Architect: Microservices with event streaming, time-series database
+@Database-Engineer: InfluxDB for time-series, PostgreSQL for user data
+@DevOps-Engineer: Kubernetes deployment with auto-scaling
+@Security-Engineer: Authentication, data encryption, audit logging
+[Autonomous implementation with Git workflow]
+```
 
-## Contributing
+## Technical Focus
 
-1. Fork the repository
-2. Create a feature branch
-3. Make changes to src/ files
-4. Test installation on different setups
-5. Submit a pull request
+**What the team handles autonomously:**
+- All implementation decisions
+- Technology choices (databases, frameworks, tools)
+- Security implementation approaches
+- Performance optimization strategies
+- Git workflow and code organization
+
+**What requires user decision:**
+- Major architecture choices (microservices vs monolith)
+- Feature scope and business priorities
+- Significant technology changes affecting timeline
+
+## File Structure
+
+```
+~/.claude/
+├── config.md                 # Virtual team configuration
+├── modes/
+│   └── virtual-team.md       # Complete virtual team mode
+├── personas/
+│   └── personas.md           # 14+ additional specialist personas
+└── behaviors/
+    ├── enhanced-behaviors.md
+    ├── git-safety-behaviors.md
+    └── documentation-behaviors.md
+```
+
+## Git Workflow Standards
+
+### Branch Naming
+```
+feature/component-description
+bugfix/issue-description
+hotfix/critical-fix
+```
+
+### Commit Standards
+```
+[component]: Brief description
+
+Examples:
+auth: Implement JWT token validation
+database: Add user schema migration
+frontend: Update responsive design layout
+```
+
+**Never mentions Claude Code or AI assistance in commits**
+
+### MR Approval Process
+- **Level 1:** User approves all MRs
+- **Level 2:** User approves significant, PM approves minor
+- **Level 3:** Architect approves all MRs
+
+## Why Virtual Team Mode
+
+### Professional Development Process
+- Proper Git workflow with branching and MRs
+- Code review process through role-based approval
+- Autonomous technical decision-making
+- Growing team capabilities over time
+
+### Comprehensive Coverage
+- Complete development lifecycle from requirements to deployment
+- Specialized expertise for each technical domain
+- Quality assurance through dedicated testing roles
+- Security and infrastructure handled professionally
+
+### Scalable Complexity
+- Right-sized team for project scope
+- Autonomous operation reduces user burden
+- Professional processes without bureaucracy
+- Focus on technical excellence
+
+## Configuration Recovery
+
+### If Virtual Team Mode Stops Working
+
+Claude Code has known configuration persistence issues. Use these fallback methods:
+
+#### Quick Recovery (30 seconds)
+```bash
+# Test if team is active
+@PM Status check
+
+# If no response, copy-paste from QUICK_ACTIVATE.md
+# or use this minimal activation:
+@PM coordinate, @Architect design, @Developer implement. Technical focus, Git workflow, autonomous decisions.
+```
+
+#### Full Recovery
+```bash
+# Reinstall configuration
+./install.sh  # Choose option 3 (User scope)
+
+# Verify installation
+ls ~/.claude/CLAUDE.md && echo "✅ Config restored"
+```
+
+#### Recovery Guide
+- `RECOVERY.md` - Complete recovery procedures and activation methods
+
+#### Session Recovery
+```bash
+# After Claude Code restart
+@PM Review progress file 999_progress/<date>.md and reactivate team context
+```
+
+**Why This Happens:** Claude Code's configuration system has documented persistence issues, especially after system events, auto-compacting, or session timeouts.
 
 ## License
 
