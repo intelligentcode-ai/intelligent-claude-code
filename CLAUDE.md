@@ -146,6 +146,6 @@ git log --oneline -n 5
 1. Add role definition to `src/modes/virtual-team.md`
 2. Define expertise, responsibilities, and activation
 3. Update role selection logic in PM section
-4. Test integration with existing workflow
+4. Run `make test` to verify integration
 
 This system represents a paradigm shift in AI tool integration, prioritizing developer experience and team compatibility over feature count.

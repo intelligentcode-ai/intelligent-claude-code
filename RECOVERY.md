@@ -9,7 +9,7 @@ Load configuration from ~/.claude/CLAUDE.md - Virtual Team Mode with 12 roles us
 
 ### Method 2: Configuration Reference (10 seconds)
 ```
-Apply my ~/.claude/config.md configuration which imports virtual-team mode
+Apply my ~/.claude/CLAUDE.md configuration which imports virtual-team mode
 ```
 
 ### Method 3: Force Load (Most Reliable)
@@ -54,7 +54,6 @@ Expected: PM responds with role activation and team status.
 ```bash
 # Check core files exist
 ls ~/.claude/CLAUDE.md && echo "✅ Global config exists"
-ls ~/.claude/config.md && echo "✅ Config file exists"
 ls ~/.claude/modes/virtual-team.md && echo "✅ Virtual team exists"
 ```
 
@@ -83,5 +82,5 @@ Claude Code has documented configuration persistence issues:
 
 Start each work session with:
 ```
-@PM Status check - ensure virtual team mode active per ~/.claude/config.md
+@PM Status check - ensure virtual team mode active
 ```

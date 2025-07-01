@@ -1,4 +1,4 @@
-# Intelligent Claude Code - Virtual Team Mode
+# Virtual Development Team for Claude Code
 
 Transform Claude Code into an intelligent virtual development team with 12 specialized roles, Git workflow integration, and autonomous technical decision-making.
 
@@ -70,39 +70,55 @@ git push origin feature/performance-optimization
 
 ## Installation
 
+### Prerequisites (Control Machine Only)
+- **Ansible** installed (auto-detected in common locations)
+- **SSH access** to remote machines (key or password)
+- **Make** command available
+
+### Supported Platforms
+- **macOS**: Homebrew, MacPorts, Python installations
+- **Linux**: Package manager or pip installations
+- **Windows**: Use WSL (Windows Subsystem for Linux) or Docker
+
+**Windows Users:**
+```powershell
+# Option 1: Use WSL
+wsl make install
+
+# Option 2: Use Docker
+docker run -it -v ${PWD}:/work ansible/ansible make install
+```
+
+### How It Works
+- Ansible runs ONLY on your control machine
+- Uses SSH to execute commands on targets
+- **NO Ansible or special software needed on target machines**
+- Target only needs: SSH server and write permissions
+
+### Target Requirements
+- **SSH server** (standard on all Unix systems)
+- **Write permissions** to installation directory
+- **That's it!** No Ansible, no special tools, nothing else!
+
+### Install
 ```bash
 git clone https://github.com/ksamaschke/intelligent-claude-code
 cd intelligent-claude-code
-./install.sh
+make install                      # Local user scope
+make install PATH=/project        # Local project
+make install HOST=server          # Remote with SSH key
+make install HOST=server PASS=pwd # Remote with password
 ```
 
-Choose installation scope:
-1. **Current Project:** Adds to local CLAUDE.md
-2. **Specific Project:** Adds to any project's CLAUDE.md  
-3. **User Scope:** Installs to ~/.claude/ for all projects
+**Note:** Ansible runs from your machine - no software needed on targets!
 
-## Configuration
+## How to Use
 
-### Enable Virtual Team Mode
-The system automatically configures for Virtual Team Mode. To customize:
-
-Edit `~/.claude/config.md`:
-```markdown
-## Active Mode
-virtual-team
-
-## Mode Configuration
-@~/.claude/modes/virtual-team.md
-
-## Project-Specific Configuration
-<!-- Your project instructions here -->
-```
-
-### Project Integration
+### Adding to Your Project
 Your project CLAUDE.md receives a single import line:
 ```markdown
-# Intelligent Claude Code Integration
-@~/.claude/config.md
+# Virtual Development Team for Claude Code
+@~/.claude/modes/virtual-team.md
 
 <!-- Your existing project configuration preserved -->
 ```
@@ -207,9 +223,9 @@ frontend: Update responsive design layout
 - Professional processes without bureaucracy
 - Focus on technical excellence
 
-## Configuration Recovery
+## When Things Go Wrong
 
-### If Virtual Team Mode Stops Working
+### Getting Your Team Back
 
 Claude Code has known configuration persistence issues. Use these fallback methods:
 
@@ -218,8 +234,7 @@ Claude Code has known configuration persistence issues. Use these fallback metho
 # Test if team is active
 @PM Status check
 
-# If no response, copy-paste from QUICK_ACTIVATE.md
-# or use this minimal activation:
+# If no response, use this minimal activation:
 @PM coordinate, @Architect design, @Developer implement. Technical focus, Git workflow, autonomous decisions.
 ```
 
