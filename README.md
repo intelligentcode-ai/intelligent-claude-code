@@ -117,7 +117,8 @@ User: "Build real-time analytics dashboard for enterprise clients"
 
 ### Get Started
 ```bash
-@PM init                     # Analyze project and configure team
+@PM new                      # Create new project with team activation
+@PM init                     # Analyze existing project and configure team
 @PM Build me a [project]     # Start any project with intelligent role selection
 ```
 
