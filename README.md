@@ -6,8 +6,8 @@ Turn Claude Code into an intelligent virtual development team that scales from s
 
 ## What You Get
 
-🚀 **12 Expert Roles** - From Requirements Engineer to DevOps, each with deep domain expertise  
-⚡ **Smart Team Scaling** - 6 roles for websites, 12 for enterprise SaaS  
+🚀 **13 Expert Roles** - From Requirements Engineer to AI Engineer, each with deep domain expertise  
+⚡ **Smart Team Scaling** - 6 roles for websites, 13 for enterprise SaaS  
 🔄 **Professional Git Workflow** - Branching, MRs, automated versioning  
 🎯 **Direct Communication** - `@Developer fix this bug` `@Architect design this system`  
 📈 **Growing Autonomy** - Team learns and handles more over time  
@@ -32,6 +32,7 @@ make install PATH=/project    # Add to specific project
 
 ### Start Building
 ```bash
+@PM new static my-portfolio    # Creates project with mandatory configuration
 @PM Build me a portfolio website with Jekyll
 @Architect Design a scalable e-commerce API
 @Developer Implement user authentication
@@ -45,7 +46,7 @@ make install PATH=/project    # Add to specific project
 ### Your Team Scales Automatically
 - **Portfolio Site:** 6 specialists handle design, implementation, testing
 - **Web App:** 8 specialists add database and backend testing
-- **Enterprise SaaS:** All 12 specialists for complete coverage
+- **Enterprise SaaS:** All 13 specialists for complete coverage
 
 ### Professional Git Workflow
 ```bash
@@ -58,8 +59,13 @@ git commit -m "auth: Add JWT authentication system"
 
 ### Growing Team Intelligence
 - **Level 1:** Team asks for everything
-- **Level 2:** Team handles implementation, asks for architecture
+- **Level 2:** Team handles implementation, asks for architecture  
 - **Level 3:** Team makes all technical decisions independently
+
+### Domain-Specific Expertise
+- **AI/ML work** automatically assigns **@AI-Engineer** for specialized knowledge
+- **Peer reviews** matched by domain expertise (AI-Engineer #2 reviews AI work)
+- **Conditional architect review** only for architectural changes, not all modifications
 
 ### Awesome Features
 ✨ **Smart Versioning** - Automatic version bumps and changelog generation  
@@ -81,6 +87,7 @@ git commit -m "auth: Add JWT authentication system"
 - **@DevOps-Engineer** - CI/CD, automation, orchestration
 - **@Database-Engineer** - Database design and optimization
 - **@Security-Engineer** - Security implementation and compliance
+- **@AI-Engineer** - AI/ML systems, LLM integration, prompt engineering
 
 **Quality & Design:**
 - **@Web-Designer** - UI/UX design and responsive implementation
@@ -104,7 +111,7 @@ User: "Create a portfolio website with modern design"
 ### Scaling to Enterprise SaaS
 ```bash
 User: "Build real-time analytics dashboard for enterprise clients"
-@PM: Enterprise complexity detected - activating full 12-role team
+@PM: Enterprise complexity detected - activating full 13-role team
 @Requirements-Engineer: Real-time data requirements, multi-tenant architecture
 @Architect: Microservices with event streaming, time-series database design
 @Database-Engineer: InfluxDB for metrics, PostgreSQL for user management
@@ -117,7 +124,7 @@ User: "Build real-time analytics dashboard for enterprise clients"
 
 ### Get Started
 ```bash
-@PM new                      # Create new project with team activation
+@PM new                      # Create new project (Quick setup or custom configuration)
 @PM init                     # Analyze existing project and configure team
 @PM Build me a [project]     # Start any project with intelligent role selection
 ```
@@ -142,7 +149,7 @@ User: "Build real-time analytics dashboard for enterprise clients"
 Your team handles technical decisions autonomously. You focus on features and business goals while specialists manage implementation details, security, testing, and deployment.
 
 ### 📈 **Grows With Your Project**
-Start with 6 specialists for a simple website. Scale to 12 for enterprise applications. The team composition adapts automatically based on project complexity.
+Start with 6 specialists for a simple website. Scale to 13 for enterprise applications. The team composition adapts automatically based on project complexity and includes AI/ML specialists when needed.
 
 ### 🔧 **Professional Git Workflow**
 No more messy commits or broken main branches. Your team follows proper branching, creates merge requests, and maintains clean commit history automatically.
@@ -260,10 +267,11 @@ Your project CLAUDE.md gets one line:
 
 ## What's New
 
+**v2.7.2** - AI-Engineer role + domain-specific peer review + virtual team optimization  
 **v2.5.0** - GitHub + GitLab unified support  
 **v2.4.0** - GitHub CLI integration with workflow enforcement  
 **v2.3.0** - Automated versioning and changelog generation  
-**v2.0.0** - Complete 12-role virtual team implementation  
+**v2.0.0** - Complete virtual team implementation  
 
 **📋 [Complete Version History](src/version-history.md)**
 
