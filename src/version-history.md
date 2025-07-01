@@ -1,5 +1,18 @@
 # Intelligent Claude Code - Version History
 
+## [2.4.0] - 2025-07-01
+### Added
+- GitHub CLI integration with graceful fallback for automated PR creation
+- Mandatory pre-action workflow validation to prevent PM boundary violations
+- Change size keyword detection for automatic branching requirements
+- GitHub CLI detection and authentication validation
+- Auto-MR creation with gh tool when available and configured
+
+### Enhanced
+- PM boundary enforcement with workflow compliance checking
+- Git workflow validation prevents direct main branch commits in strict mode
+- PM commands for GitHub CLI status and operations
+
 ## [2.3.0] - 2025-07-01
 ### Added
 - Automated version number generation with PM controls
