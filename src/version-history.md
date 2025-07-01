@@ -1,5 +1,36 @@
 # Intelligent Claude Code - Version History
 
+## [2.7.2] - 2025-07-01
+### Added
+- **AI-Engineer role** - 13th team member for AI/ML systems, LLM integration, prompt engineering
+- **Domain-specific peer review process** - AI work reviewed by AI-Engineer #2, not Developer #2
+- **Conditional architect review** - Only required for architectural changes, not all modifications
+- **Virtual team optimization** - 62% token reduction (8152→3115 words) while preserving functionality
+- **Mandatory @PM new configuration** - New projects require configuration with Quick Setup or Custom Setup options
+- Mandatory peer review workflow with second developer validation
+- Intelligent batching for reviews (5-10 changes maximum)
+- Automatic progress tracking in 999_progress/<session>.md files
+- Universal Definition of Done requirements for all work
+- Role switching troubleshooting documentation
+- Utterly exact documentation requirements for reviews
+
+### Fixed
+- **CRITICAL**: Automatic role switching now works correctly in virtual team mode
+- PM role now **immediately becomes** the delegated role in the same response
+- Fixed missing peer review process - now mandatory for all code changes
+- Fixed automatic documentation - progress files now created for every session
+- Added Definition of Done (DoD) enforcement for all team members
+- **Process violations** - Team now follows defined peer review and DoD processes
+- **Wrong peer reviewer assignment** - Domain experts now review domain-specific work
+
+### Enhanced
+- PM boundaries now strictly enforced with immediate role transitions
+- Workflow includes: Implement > Domain Expert Peer Review > Conditional Architect Review > PM
+- Progress tracking demonstrates actual work being performed
+- DoD ensures all work includes documentation and evidence
+- Virtual team file streamlined for better AI processing efficiency
+- Domain expertise matching for all peer reviews
+
 ## [2.7.1] - 2025-07-01
 ### Fixed
 - Removed remaining inappropriate time estimates from AI agent behavior
