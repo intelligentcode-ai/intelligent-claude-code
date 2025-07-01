@@ -1,0 +1,30 @@
+---
+# Intelligent Claude Code - Installation Playbook
+# Runs from control machine, installs to targets via SSH
+# NO Ansible required on target machines!
+
+- name: Install Intelligent Claude Code
+  hosts: all
+  gather_facts: yes
+  vars:
+    source_dir: "{{ playbook_dir }}/../src"
+    target_path: "{{ target_path | default('') }}"
+  
+  tasks:
+    - name: Determine installation scope and path
+      set_fact:
+        target_scope: "{{ 'project' if target_path else 'user' }}"
+        install_path: "{{ (target_path | realpath) + '/.claude' if target_path else ansible_env.HOME + '/.claude' }}"
+        project_path: "{{ target_path | realpath if target_path else '' }}"
+    
+    - name: Display installation target
+      debug:
+        msg: "Installing to: {{ install_path }}"
+    
+    - name: Include intelligent-claude-code role
+      include_role:
+        name: intelligent-claude-code
+      vars:
+        claude_install_path: "{{ install_path }}"
+        claude_project_path: "{{ project_path }}"
+        claude_scope: "{{ target_scope }}"
