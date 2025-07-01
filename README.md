@@ -1,27 +1,84 @@
-# Virtual Development Team for Claude Code
+# Transform Claude Code into Your Development Team
 
-Transform Claude Code into an intelligent virtual development team with 12 specialized roles, Git workflow integration, and autonomous technical decision-making.
+**One import line. Twelve specialists. Zero compromise.**
 
-## What This Does
+Turn Claude Code into an intelligent virtual development team that scales from simple websites to enterprise applications. Get professional Git workflows, autonomous technical decisions, and growing team expertise - all through a single, non-invasive configuration.
 
-Enables Claude Code to operate as a complete virtual development team:
-- **12 specialized technical roles** from Requirements Engineer to Backend Tester
-- **Intelligent role selection** based on project complexity
-- **Complete Git workflow** with branching, MRs, and level-based approval
-- **Autonomous technical decisions** while respecting user authority
-- **Growing team autonomy** across 3 maturity levels
+## What You Get
 
-## Virtual Team Roles
+🚀 **12 Expert Roles** - From Requirements Engineer to DevOps, each with deep domain expertise  
+⚡ **Smart Team Scaling** - 6 roles for websites, 12 for enterprise SaaS  
+🔄 **Professional Git Workflow** - Branching, MRs, automated versioning  
+🎯 **Direct Communication** - `@Developer fix this bug` `@Architect design this system`  
+📈 **Growing Autonomy** - Team learns and handles more over time  
+🔗 **GitHub + GitLab** - Unified commands work with both platforms
+
+## Quick Start
+
+### Install (30 seconds)
+```bash
+git clone https://github.com/ksamaschke/intelligent-claude-code
+cd intelligent-claude-code
+make install                  # Local user install
+# OR
+make install PATH=/project    # Add to specific project
+```
+
+**Your project gets one import line:**
+```markdown
+# Virtual Development Team
+@~/.claude/modes/virtual-team.md
+```
+
+### Start Building
+```bash
+@PM Build me a portfolio website with Jekyll
+@Architect Design a scalable e-commerce API
+@Developer Implement user authentication
+@DevOps-Engineer Set up automated deployment
+```
+
+**That's it.** Your team is active and ready to build.
+
+## How It Works
+
+### Your Team Scales Automatically
+- **Portfolio Site:** 6 specialists handle design, implementation, testing
+- **Web App:** 8 specialists add database and backend testing
+- **Enterprise SaaS:** All 12 specialists for complete coverage
+
+### Professional Git Workflow
+```bash
+# Your team follows proper development practices
+git checkout -b feature/user-auth
+git commit -m "auth: Add JWT authentication system"
+@PM mr create  # Creates PR/MR automatically
+@PM mr merge   # Merges after review
+```
+
+### Growing Team Intelligence
+- **Level 1:** Team asks for everything
+- **Level 2:** Team handles implementation, asks for architecture
+- **Level 3:** Team makes all technical decisions independently
+
+### Awesome Features
+✨ **Smart Versioning** - Automatic version bumps and changelog generation  
+🔍 **Change Detection** - Keyword analysis determines branching needs  
+🔀 **Unified Git Platform** - Same commands work for GitHub and GitLab  
+🛡️ **Workflow Enforcement** - Prevents messy commits to main branch  
+📊 **Progress Tracking** - Single progress file per day, zero document sprawl
+
+## Team Roles
 
 **Core Team:**
-- **@PM** - Project coordination and role selection
-- **@Requirements-Engineer** - Technical requirements analysis
+- **@PM** - Team coordination and role selection
+- **@Requirements-Engineer** - Business requirements analysis
 - **@Architect** - System design and technical leadership
 - **@Developer** - Full-stack implementation
 
 **Infrastructure & Data:**
-- **@System-Engineer** - Server configuration and basic deployment
-- **@DevOps-Engineer** - CI/CD, automation, advanced deployment
+- **@System-Engineer** - Server configuration and deployment
+- **@DevOps-Engineer** - CI/CD, automation, orchestration
 - **@Database-Engineer** - Database design and optimization
 - **@Security-Engineer** - Security implementation and compliance
 
@@ -31,301 +88,183 @@ Enables Claude Code to operate as a complete virtual development team:
 - **@Frontend-Tester** - UI testing and responsive validation
 - **@Backend-Tester** - API testing and end-to-end validation
 
-## Key Features
+## Real-World Examples
 
-### Intelligent Role Selection
-Team scales based on project complexity:
-- **Static Website:** 6 roles (PM, Requirements, Architect, Developer, Designer, Frontend-Tester)
-- **Web Application:** 8 roles (adds Database-Engineer, Backend-Tester)
-- **Enterprise SaaS:** All 12 roles for complete coverage
-
-### Git Workflow Integration
-Complete Git process with level-based autonomy:
+### Building a Portfolio Website
 ```bash
-# Level 1: User approval required
-git checkout -b feature/auth-system
-git commit -m "auth: Implement JWT authentication"
-# Wait for user approval before push
-
-# Level 3: Full autonomy
-git checkout -b feature/performance-optimization
-git commit -m "api: Add Redis caching layer"
-git push origin feature/performance-optimization
-# Architect reviews and approves MR automatically
+User: "Create a portfolio website with modern design"
+@PM: Assigning 6 specialists - Requirements, Architect, Developer, Designer, Frontend-Tester
+@Requirements-Engineer: Analyzing portfolio requirements - responsive, fast, showcase-focused
+@Architect: Recommending Hugo static site generator - 3x faster than Jekyll
+@Developer: Implementing optimized Hugo site with responsive images
+@Web-Designer: Creating modern design system with mobile-first approach
+@Frontend-Tester: Validating all breakpoints and accessibility compliance
 ```
 
-### Team Maturity Levels
-**Level 1 - New Team:** User approves everything
-**Level 2 - Learning Team:** Team handles details, user approves architecture
-**Level 3 - Experienced Team:** Full technical autonomy, Architect approves MRs
-
-### Direct Role Communication
-```
-@PM Break down this e-commerce platform
-@Architect Design scalable microservices architecture
-@Database-Engineer Optimize user query performance
-@Security-Engineer Implement OAuth2 authentication
-@DevOps-Engineer Set up Kubernetes deployment
+### Scaling to Enterprise SaaS
+```bash
+User: "Build real-time analytics dashboard for enterprise clients"
+@PM: Enterprise complexity detected - activating full 12-role team
+@Requirements-Engineer: Real-time data requirements, multi-tenant architecture
+@Architect: Microservices with event streaming, time-series database design
+@Database-Engineer: InfluxDB for metrics, PostgreSQL for user management
+@DevOps-Engineer: Kubernetes deployment with auto-scaling policies
+@Security-Engineer: Multi-tenant isolation, encryption, audit logging
+# Team continues with autonomous implementation and Git workflow
 ```
 
-### Automated Workflow Features
-- **GitHub CLI Integration**: Automatic PR creation with graceful fallback
-- **Automated Versioning**: Smart version bumping with changelog generation
-- **Workflow Enforcement**: Prevents direct main branch commits in strict mode
-- **Change Detection**: Keyword-based classification for branching requirements
+## Essential Commands
 
-## Installation
-
-### Prerequisites (Control Machine Only)
-- **Ansible** installed (auto-detected in common locations)
-- **SSH access** to remote machines (key or password)
-- **Make** command available
-- **GitHub CLI (gh)** - Optional for automated PR creation (graceful fallback to manual)
-
-### Supported Platforms
-- **macOS**: Homebrew, MacPorts, Python installations
-- **Linux**: Package manager or pip installations
-- **Windows**: Use WSL (Windows Subsystem for Linux) or Docker
-
-**Windows Users:**
-```powershell
-# Option 1: Use WSL
-wsl make install
-
-# Option 2: Use Docker
-docker run -it -v ${PWD}:/work ansible/ansible make install
+### Get Started
+```bash
+@PM init                     # Analyze project and configure team
+@PM Build me a [project]     # Start any project with intelligent role selection
 ```
 
-### How It Works
-- Ansible runs ONLY on your control machine
-- Uses SSH to execute commands on targets
-- **NO Ansible or special software needed on target machines**
-- Target only needs: SSH server and write permissions
+### Manage Versions
+```bash
+@PM version                  # Show current version
+@PM version bump minor       # Smart version increment with changelog
+```
 
-### Target Requirements
-- **SSH server** (standard on all Unix systems)
-- **Write permissions** to installation directory
-- **That's it!** No Ansible, no special tools, nothing else!
+### Git Operations
+```bash
+@PM mr create               # Create PR/MR (works with GitHub and GitLab)
+@PM mr merge                # Merge with proper workflow
+```
 
-### Install
+**📖 [Complete Command Reference](docs/commands.md)**
+
+## Why Choose Virtual Team Mode?
+
+### 🎯 **Focus on Building, Not Managing**
+Your team handles technical decisions autonomously. You focus on features and business goals while specialists manage implementation details, security, testing, and deployment.
+
+### 📈 **Grows With Your Project**
+Start with 6 specialists for a simple website. Scale to 12 for enterprise applications. The team composition adapts automatically based on project complexity.
+
+### 🔧 **Professional Git Workflow**
+No more messy commits or broken main branches. Your team follows proper branching, creates merge requests, and maintains clean commit history automatically.
+
+### ⚡ **Zero Learning Curve**
+Simple @-notation gets you started immediately. `@Developer fix this bug` or `@Architect design this system` - it's that intuitive.
+
+## Installation & Setup
+
+### Quick Install
 ```bash
 git clone https://github.com/ksamaschke/intelligent-claude-code
 cd intelligent-claude-code
-make install                      # Local user scope
-make install PATH=/project        # Local project
-make install HOST=server          # Remote with SSH key
-make install HOST=server PASS=pwd # Remote with password
+make install                  # Installs to ~/.claude/
 ```
 
-**Note:** Ansible runs from your machine - no software needed on targets!
+### Non-Invasive by Design
+- **Single import line** added to your project
+- **Preserves existing setup** completely
+- **Remove anytime** by deleting one line
+- **No environment variables** or hidden configs
 
-## How to Use
+### Platform Support
+- **macOS/Linux:** Native support
+- **Windows:** WSL or Docker
+- **Remote servers:** SSH-based installation
 
-### Adding to Your Project
-Your project CLAUDE.md receives a single import line:
-```markdown
-# Virtual Development Team for Claude Code
-@~/.claude/modes/virtual-team.md
+**🔧 [Complete Installation Guide](docs/installation.md)**
 
-<!-- Your existing project configuration preserved -->
-```
+## ⚠️ Critical: Context Compacting Recovery
 
-## PM Commands
+**Claude Code has known context persistence issues.** When Claude Code compacts context or restarts sessions, your virtual team may become unresponsive or fail to switch roles properly.
 
-### Version Management
-```
-@PM version                    # Show current version
-@PM version bump minor "reason"  # Increment version with changelog
-@PM version auto on|off        # Toggle automated version bumping
-```
-
-### Git Workflow
-```
-@PM workflow                   # Show workflow enforcement settings
-@PM workflow strict           # Enable strict branching enforcement
-@PM workflow validate         # Check if changes require branching
-```
-
-### GitHub CLI Integration
-```
-@PM gh status                 # Check GitHub CLI installation and auth
-@PM gh pr create             # Create pull request (auto or manual fallback)
-@PM gh pr merge              # Merge pull request using GitHub CLI
-```
-
-### Project Discovery
-```
-@PM init                     # Intelligent project analysis and configuration
-@PM restart                  # Reactivate virtual team after context issues
-```
-
-## Usage Examples
-
-### Simple Website
-```
-User: "Build a portfolio website with Jekyll"
-@PM: Analyzing - assigning @Requirements-Engineer, @Architect, @Developer, @Web-Designer, @Frontend-Tester
-@Requirements-Engineer: Technical requirements - responsive design, fast loading, portfolio showcase
-@Architect: Recommending Hugo over Jekyll for performance - 3x faster builds
-@Developer: Implementing Hugo site with optimized images and responsive layout
-@Web-Designer: Creating modern design system with mobile-first approach
-@Frontend-Tester: Validating responsive breakpoints and accessibility compliance
-```
-
-### Complex Application
-```
-User: "Build real-time analytics dashboard"
-@PM: Enterprise complexity - activating full 12-role team
-@Requirements-Engineer: Real-time data requirements, user interaction patterns
-@Architect: Microservices with event streaming, time-series database
-@Database-Engineer: InfluxDB for time-series, PostgreSQL for user data
-@DevOps-Engineer: Kubernetes deployment with auto-scaling
-@Security-Engineer: Authentication, data encryption, audit logging
-[Autonomous implementation with Git workflow]
-```
-
-## Technical Focus
-
-**What the team handles autonomously:**
-- All implementation decisions
-- Technology choices (databases, frameworks, tools)
-- Security implementation approaches
-- Performance optimization strategies
-- Git workflow and code organization
-
-**What requires user decision:**
-- Major architecture choices (microservices vs monolith)
-- Feature scope and business priorities
-- Significant technology changes affecting timeline
-
-## File Structure
-
-```
-~/.claude/
-├── config.md                 # Virtual team configuration
-├── modes/
-│   └── virtual-team.md       # Complete virtual team mode
-├── personas/
-│   └── personas.md           # 14+ additional specialist personas
-└── behaviors/
-    ├── enhanced-behaviors.md
-    ├── git-safety-behaviors.md
-    └── documentation-behaviors.md
-```
-
-## Git Workflow Standards
-
-### Branch Naming
-```
-feature/component-description
-bugfix/issue-description
-hotfix/critical-fix
-```
-
-### Commit Standards
-```
-[component]: Brief description
-
-Examples:
-auth: Implement JWT token validation
-database: Add user schema migration
-frontend: Update responsive design layout
-```
-
-**Never mentions Claude Code or AI assistance in commits**
-
-### MR Approval Process
-- **Level 1:** User approves all MRs
-- **Level 2:** User approves significant, PM approves minor
-- **Level 3:** Architect approves all MRs
-
-## Why Virtual Team Mode
-
-### Professional Development Process
-- Proper Git workflow with branching and MRs
-- Code review process through role-based approval
-- Autonomous technical decision-making
-- Growing team capabilities over time
-
-### Comprehensive Coverage
-- Complete development lifecycle from requirements to deployment
-- Specialized expertise for each technical domain
-- Quality assurance through dedicated testing roles
-- Security and infrastructure handled professionally
-
-### Scalable Complexity
-- Right-sized team for project scope
-- Autonomous operation reduces user burden
-- Professional processes without bureaucracy
-- Focus on technical excellence
-
-## When Things Go Wrong
-
-### Getting Your Team Back
-
-Claude Code has known configuration persistence issues. Use these fallback methods:
-
-#### Quick Recovery (30 seconds)
+### 🚨 **IMMEDIATE SOLUTION**
 ```bash
-# Test if team is active
-@PM Status check
+@PM restart
+```
 
-# If no response, use this minimal activation:
+**If `@PM restart` doesn't work:**
+```bash
+@PM **CHANGE** THE ROLES!
+```
+
+**If PM still won't delegate properly:**
+```bash
+# Emergency role activation sequence
 @PM coordinate, @Architect design, @Developer implement. Technical focus, Git workflow, autonomous decisions.
 ```
 
-#### Full Recovery
+**Ultimate fallback:**
 ```bash
-# Reinstall configuration
-./install.sh  # Choose option 3 (User scope)
-
-# Verify installation
-ls ~/.claude/CLAUDE.md && echo "✅ Config restored"
+# Exit Claude Code session and restart, then Resume
+# This forces complete context reload
 ```
 
-#### Recovery Guide
-- `RECOVERY.md` - Complete recovery procedures and activation methods
+### 📋 **When You Need This**
+- Team stops responding to @-notation commands
+- **Roles not switching properly** (PM keeps implementing instead of delegating)
+- After Claude Code session timeouts or interruptions
+- After aggressive context compacting
+- Virtual team seems "stuck" or unresponsive
 
-#### Session Recovery
+### ⚡ **Quick Recovery Checklist**
+1. `@PM restart` - Primary recovery method
+2. `@PM **CHANGE** THE ROLES!` - Force role switching if restart fails
+3. Emergency role activation sequence if still stuck
+4. **Ultimate**: Exit Claude Code → Restart → Resume session
+
+**💡 Save this command**: Always start troubleshooting with `@PM restart`
+
+## Troubleshooting
+
+### Team Not Responding?
 ```bash
-# After Claude Code restart
-@PM Review progress file 999_progress/<date>.md and reactivate team context
+# Quick recovery (30 seconds)
+@PM restart                     # Primary solution for context compacting
+@PM Status check                # Test if team is active after restart
 ```
 
-**Why This Happens:** Claude Code's configuration system has documented persistence issues, especially after system events, auto-compacting, or session timeouts.
+### GitHub/GitLab Issues?
+```bash
+@PM git status                  # Check platform and authentication
+gh auth login                   # Fix GitHub authentication
+glab auth login                 # Fix GitLab authentication
+```
 
-## Version History
+**🆘 [Complete Recovery Guide](RECOVERY.md)**
 
-### v2.4.0 (2025-07-01) - Current
-- **GitHub CLI Integration**: Automated PR creation with graceful fallback
-- **Workflow Validation**: Mandatory pre-action workflow validation for PM
-- **Change Detection**: Keyword-based branching requirements
-- **Enhanced PM Commands**: GitHub CLI operations and workflow enforcement
+## Getting Started
 
-### v2.3.0 (2025-07-01)
-- **Automated Versioning**: Smart version bumping with PM controls
-- **Changelog Generation**: Automated changelog with Git integration
-- **Git Workflow**: Professional branching and MR processes
-- **PM Restart**: Virtual team reactivation after context compacting
+### 1. Install
+```bash
+git clone https://github.com/ksamaschke/intelligent-claude-code
+cd intelligent-claude-code && make install
+```
 
-### v2.2.0
-- **Version Management**: Configurable changelog and version strategies
-- **Project Discovery**: Intelligent project analysis and verification
-- **PM Intelligence**: Context-aware version and changelog toggles
+### 2. Activate
+Your project CLAUDE.md gets one line:
+```markdown
+@~/.claude/modes/virtual-team.md
+```
 
-### v2.1.0
-- **Version Commands**: @PM version management system
-- **Auto-increment**: Smart version detection and bumping
+### 3. Build
+```bash
+@PM Build me a portfolio website
+@PM Create a REST API with authentication
+@PM Set up CI/CD pipeline
+```
 
-### v2.0.0
-- **Virtual Team**: Complete 12-role team implementation
-- **@-notation**: Direct role addressing system
-- **Git Integration**: Professional workflow enforcement
+**That's it.** Your virtual development team is ready to build anything from static sites to enterprise applications.
 
-### v1.0.0 - Initial Release
-- **Foundation**: Basic intelligent-claude-code system
-- **Installation**: Ansible-based deployment automation
-- **Team Structure**: Virtual team architecture foundation
+---
+
+**⭐ Transform your Claude Code experience today - professional development workflows with zero compromise.**
+
+## What's New
+
+**v2.5.0** - GitHub + GitLab unified support  
+**v2.4.0** - GitHub CLI integration with workflow enforcement  
+**v2.3.0** - Automated versioning and changelog generation  
+**v2.0.0** - Complete 12-role virtual team implementation  
+
+**📋 [Complete Version History](src/version-history.md)**
 
 ## License
 
