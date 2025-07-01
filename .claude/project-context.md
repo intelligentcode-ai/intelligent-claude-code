@@ -1,5 +1,5 @@
 # Project Context
-Version: 2.2.0
+Version: 2.4.0
 Generated: 2025-07-01
 Verified: Documentation matches code ✓
 
@@ -39,7 +39,7 @@ Verified: Documentation matches code ✓
 
 ## Version Management (discovered)
 - **Strategy:** VERSION file approach ✓
-- **Current:** 2.2.0 (from src/VERSION)
+- **Current:** 2.4.0 (from src/VERSION)
 - **Changelog:** src/version-history.md (detailed, comprehensive) ✓
 - **Git Integration:** No tags found (VERSION file primary)
 
@@ -50,6 +50,9 @@ Verified: Documentation matches code ✓
 - **push_auto_version:** true
 - **push_auto_changelog:** true
 - **git_tag_creation:** true
+- **git_commit_anonymity:** inherited_true (from global git-safety-behaviors.md)
+- **git_workflow_enforcement:** strict (ALL changes in main require branching)
+- **auto_mr_creation:** true
 - **project_version_integration:** false (no package.json detected)
 - **version_strategy:** VERSION_file
 
