@@ -8,11 +8,20 @@
 
 #### New Project Creation
 ```bash
-@PM new                      # Auto-detect project type from requirements
+@PM new                      # Auto-detect project type with mandatory configuration
 @PM new static my-site       # Create static website project (6 roles)
 @PM new webapp todo-app      # Create web application (8 roles)
-@PM new enterprise platform  # Create enterprise system (12 roles)
+@PM new enterprise platform  # Create enterprise system (13 roles)
 ```
+
+**Mandatory Configuration Process:**
+- **Quick Setup (recommended)** - Smart defaults, start building immediately
+- **Custom Setup** - Configure all options manually
+- Version management strategy selection
+- Git workflow enforcement settings  
+- Automation preferences (version bump, changelog, releases)
+- Team maturity level and collaboration settings
+- All settings documented in .claude/project-context.md
 
 #### Project Discovery
 ```bash
@@ -141,6 +150,12 @@
 - Vulnerability assessment and penetration testing
 - Security architecture and threat modeling
 
+#### @AI-Engineer
+- AI/ML systems design and implementation
+- LLM integration and prompt engineering
+- Model architecture and performance optimization
+- Ethical AI implementation and fallback strategies
+
 ### Quality & Design Roles
 
 #### @Web-Designer
@@ -181,6 +196,7 @@
 @Web-Designer Create responsive design for mobile users
 @Frontend-Tester Validate design across all breakpoints
 @Backend-Tester Test all API endpoints for data consistency
+@AI-Engineer Optimize LLM prompt performance and implement fallback strategies
 ```
 
 ## Emergency Commands
@@ -229,8 +245,8 @@ ls ~/.claude/CLAUDE.md && echo "✅ Config restored"
 #### Web Application (8 roles)
 - Adds: @Database-Engineer, @Backend-Tester
 
-#### Enterprise SaaS (12 roles)
-- Adds: @System-Engineer, @DevOps-Engineer, @Security-Engineer, @QA-Engineer
+#### Enterprise SaaS (13 roles)
+- Adds: @System-Engineer, @DevOps-Engineer, @Security-Engineer, @AI-Engineer, @QA-Engineer
 
 ## Configuration Commands
 
