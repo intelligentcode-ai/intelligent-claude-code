@@ -1,5 +1,5 @@
 # Project Context
-Version: 2.4.0
+Version: 2.5.0
 Generated: 2025-07-01
 Verified: Documentation matches code ✓
 
@@ -39,7 +39,7 @@ Verified: Documentation matches code ✓
 
 ## Version Management (discovered)
 - **Strategy:** VERSION file approach ✓
-- **Current:** 2.4.0 (from src/VERSION)
+- **Current:** 2.5.0 (from src/VERSION)
 - **Changelog:** src/version-history.md (detailed, comprehensive) ✓
 - **Git Integration:** No tags found (VERSION file primary)
 

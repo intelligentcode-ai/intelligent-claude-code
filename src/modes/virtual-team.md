@@ -134,11 +134,23 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - `@PM workflow check "description"` - Analyze change size keywords before implementation
 - `@PM workflow enforce` - Apply mandatory workflow validation to current action
 
-**GitHub CLI Commands:**
+**Git Platform CLI Commands:**
+- `@PM git status` - Check Git platform and CLI installation/configuration
+- `@PM mr create` - Create PR/MR (auto-detects GitHub vs GitLab with CLI or fallback)
+- `@PM mr merge` - Merge PR/MR using appropriate CLI (gh or glab)
+- `@PM git auth` - Validate authentication status for detected platform
+
+**Legacy GitHub-Specific Commands (maintained for compatibility):**
 - `@PM gh status` - Check GitHub CLI installation and configuration
 - `@PM gh pr create` - Create pull request (with gh CLI or fallback)
 - `@PM gh pr merge` - Merge pull request using GitHub CLI
 - `@PM gh auth` - Validate GitHub authentication status
+
+**GitLab-Specific Commands:**
+- `@PM glab status` - Check GitLab CLI installation and configuration
+- `@PM glab mr create` - Create merge request (with glab CLI or fallback)
+- `@PM glab mr merge` - Merge MR using GitLab CLI
+- `@PM glab auth` - Validate GitLab authentication status
 
 **Changelog Commands (PM Responsibility):**
 - `@PM changelog` - Show recent changes
@@ -219,23 +231,33 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - **Tag creation** - Automatic git tag creation for new versions (optional)
 - **GitHub CLI integration** - Automatic PR creation using gh tool (with fallback)
 
-**GitHub CLI Integration (when available):**
-- **Tool Detection** - Automatically detects if `gh` CLI is installed and configured
-- **Graceful Fallback** - Falls back to manual PR creation if gh not available
-- **Authentication Check** - Validates GitHub token before attempting operations
-- **Auto-MR Creation** - Creates pull requests automatically when auto_mr_creation enabled
+**Git Platform CLI Integration (when available):**
+- **GitHub CLI (gh)** - GitHub operations with pull requests
+- **GitLab CLI (glab)** - GitLab operations with merge requests  
+- **Auto-Detection** - Automatically detects GitHub vs GitLab from git remote
+- **Unified Commands** - Same PM commands work for both platforms
+- **Graceful Fallback** - Falls back to manual creation if CLI not available
+- **Authentication Check** - Validates tokens before attempting operations
+- **Auto-MR Creation** - Creates PRs/MRs automatically when auto_mr_creation enabled
 
-**GitHub CLI Detection Process:**
-1. **Installation Check**: `command -v gh` to verify gh CLI is installed
-2. **Authentication Check**: `gh auth status` to verify GitHub login
-3. **Repository Check**: `gh repo view` to confirm repository access
-4. **Fallback Strategy**: Provide manual PR URLs if any check fails
+**Git Platform Detection Process:**
+1. **Platform Detection**: `git remote get-url origin` to identify GitHub vs GitLab
+2. **CLI Installation Check**: 
+   - GitHub: `command -v gh` to verify GitHub CLI installed
+   - GitLab: `command -v glab` to verify GitLab CLI installed
+3. **Authentication Check**:
+   - GitHub: `gh auth status` to verify GitHub login
+   - GitLab: `glab auth status` to verify GitLab login
+4. **Repository Access Check**:
+   - GitHub: `gh repo view` to confirm repository access
+   - GitLab: `glab repo view` to confirm repository access
+5. **Fallback Strategy**: Provide manual URLs if any check fails
 
 **Graceful Fallback Behavior:**
-- **No gh CLI**: Provide manual PR creation URL with prepared description
-- **Authentication Failed**: Display login instructions and manual fallback
-- **Repository Access Issues**: Fall back to manual process with guidance
-- **Command Failures**: Always provide alternative manual instructions
+- **No CLI Tool**: Provide manual PR/MR creation URL with prepared description
+- **Authentication Failed**: Display platform-specific login instructions and manual fallback
+- **Repository Access Issues**: Fall back to manual process with platform-specific guidance
+- **Command Failures**: Always provide alternative manual instructions for detected platform
 
 **Git Commit Anonymity:**
 - **Inherits from git-safety-behaviors.md** - Respects existing `git_privacy: true` setting

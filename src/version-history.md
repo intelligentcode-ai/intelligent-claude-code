@@ -1,5 +1,37 @@
 # Intelligent Claude Code - Version History
 
+## [2.6.0] - 2025-07-01
+### Added
+- Compelling quickstart guide in README.md with human appeal focus
+- Comprehensive documentation files (docs/commands.md, docs/installation.md)
+- Prominent context compacting recovery section with @PM restart command
+- Role switching enforcement command (@PM **CHANGE** THE ROLES!)
+- Escalation sequence for context compacting issues
+- Non-invasive installation emphasis with single import line approach
+
+### Changed
+- README.md transformed from technical reference to quickstart guide
+- Recovery procedures now focus on session-level solutions, not file reinstallation
+- Documentation structure reorganized for better user experience
+
+### Removed
+- Inappropriate make install references from recovery procedures
+- Excessive technical details moved to dedicated documentation files
+
+## [2.5.0] - 2025-07-01
+### Added
+- GitLab CLI (glab) integration with unified platform support
+- Git platform auto-detection (GitHub vs GitLab from remote URLs)
+- Unified PM commands that work for both GitHub and GitLab
+- Platform-agnostic MR/PR creation and merging
+- GitLab-specific authentication and repository validation
+- Graceful fallbacks for both GitHub and GitLab platforms
+
+### Enhanced
+- PM commands now support both GitHub PRs and GitLab MRs
+- Auto-detection prevents need for manual platform specification
+- Maintains backward compatibility with existing GitHub CLI commands
+
 ## [2.4.0] - 2025-07-01
 ### Added
 - GitHub CLI integration with graceful fallback for automated PR creation
