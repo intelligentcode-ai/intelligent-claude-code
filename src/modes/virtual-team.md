@@ -104,6 +104,19 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 
 **Always active as team coordinator**
 
+### 🚀 @PM new - Project Scaffolding
+**Creates new projects with virtual team:**
+```
+@PM new [type] [name] → Scaffold project and activate team
+@PM new → Auto-detect project type from requirements
+```
+
+**Quick Start:**
+- `@PM new static landing-page` - Static site with 6 roles
+- `@PM new webapp todo-app` - Web app with 8 roles  
+- `@PM new enterprise saas` - Full 12-role team
+- `@PM new` - Let PM analyze your requirements
+
 ### 📊 @PM version - Intelligent Version Management
 **Reports and manages versions:**
 ```
@@ -387,6 +400,59 @@ Violations corrected:
 Current status: PM operating within proper boundaries
 Active configuration: [discovered scope and version]
 Team ready for operation
+```
+
+### 🚀 @PM new - New Project Scaffolding Command
+**Creates new project with virtual team activation:**
+```
+@PM new [project-type] [project-name] → Scaffold and activate team
+```
+
+**IMPORTANT**: If virtual team not active when starting a new project:
+1. First ensure intelligent-claude-code is installed: `make install`
+2. Add to your conversation: `@~/.claude/modes/virtual-team.md`
+3. Then use: `@PM new` to scaffold your project
+
+**Project Types:**
+- `static` - Static website (6 roles: PM, Requirements, Architect, Developer, Designer, Frontend-Tester)
+- `webapp` - Web application (8 roles: adds Database-Engineer, Backend-Tester)
+- `enterprise` - Enterprise system (12 roles: full team activation)
+- `auto` or omitted - PM analyzes requirements to determine team size
+
+**Scaffolding Process:**
+1. **Create Project Structure:**
+   - Create project directory (if project-name provided)
+   - Generate CLAUDE.md with virtual team import
+   - Initialize .claude/project-context.md
+   
+2. **Configure Project Settings:**
+   - Version management strategy (VERSION file, package.json, etc.)
+   - Git workflow enforcement (strict/relaxed/disabled)
+   - Automated behaviors (version bump, changelog, releases)
+   - Team maturity level (1-3)
+
+3. **Activate Virtual Team:**
+   - Import virtual team configuration
+   - Assign roles based on project type
+   - Begin requirements analysis
+
+4. **Handoff to Specialists:**
+   - @Requirements-Engineer: Analyze user requirements
+   - @Architect: Design technical approach
+   - @Developer: Begin implementation
+   - Other roles activate as needed
+
+**Example Usage:**
+```
+# Explicit project type
+@PM new static my-landing-page
+@PM new webapp todo-app
+@PM new enterprise saas-platform
+
+# Auto-detect from requirements
+@PM new
+"I need a static landing page for an AI tool with Docker Compose"
+→ PM detects: static site with containerization = 7 roles
 ```
 
 ### 📊 @PM init - Project Discovery Command
