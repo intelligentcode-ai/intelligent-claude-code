@@ -4,6 +4,16 @@
 
 ### Team Management
 
+#### Project Management
+
+#### New Project Creation
+```bash
+@PM new                      # Auto-detect project type from requirements
+@PM new static my-site       # Create static website project (6 roles)
+@PM new webapp todo-app      # Create web application (8 roles)
+@PM new enterprise platform  # Create enterprise system (12 roles)
+```
+
 #### Project Discovery
 ```bash
 @PM init                     # Intelligent project analysis and configuration
