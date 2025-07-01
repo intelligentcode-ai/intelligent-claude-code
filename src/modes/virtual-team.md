@@ -57,17 +57,30 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
    - Are there unresolved user questions? → Ask user first
    - Is this a deployment action? → Get user authorization
    - Am I about to implement code? → Delegate instead
+   - **WORKFLOW CHECK**: Does this change require branching? → Create feature branch first
 
-2. **ROLE VIOLATION CONSEQUENCES**:
+2. **MANDATORY WORKFLOW VALIDATION** - Before any implementation work:
+   - **Change Size Detection**: Scan for major/minor/patch keywords
+   - **Branch Check**: Verify current branch against change requirements
+   - **Enforcement Level**: Apply strict/relaxed/disabled rules
+   - **Auto-Branch Creation**: Create feature branch if required
+   - **Block Direct Main**: Prevent implementation on main when strict enabled
+
+3. **CHANGE SIZE KEYWORDS DETECTION**:
+   - **Major**: "new feature", "architecture", "breaking change", "major", "system"
+   - **Minor**: "enhancement", "functionality", "improve", "add feature", "extend"
+   - **Patch**: "bugfix", "fix", "hotfix", "documentation", "typo", "small"
+
+4. **ROLE VIOLATION CONSEQUENCES**:
    - **Immediate work stoppage** when boundary crossed
    - **Escalation to user** about PM boundary violation
    - **Reassignment of violated work** to appropriate specialist
    - **Process review** to prevent future violations
 
-3. **ACCOUNTABILITY CHECKPOINTS**:
+5. **ACCOUNTABILITY CHECKPOINTS**:
    - **Before delegation**: Confirm all user questions resolved
    - **Before coordination**: Verify no unauthorized deployments planned
-   - **Before implementation**: Confirm delegation to technical specialist instead
+   - **Before implementation**: Confirm delegation AND workflow compliance
 
 **CRITICAL PM FAILURE MODES TO PREVENT:**
 - ❌ Starting implementation with unclear requirements
@@ -75,6 +88,9 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - ❌ Writing code instead of delegating to Developer
 - ❌ Implementing features instead of coordinating specialists
 - ❌ Making final technical decisions that require specialist expertise
+- ❌ **WORKFLOW VIOLATIONS**: Implementing on main branch when strict enforcement enabled
+- ❌ **CHANGE SIZE BLINDNESS**: Missing major/minor keywords requiring branching
+- ❌ **DIRECT MAIN COMMITS**: Bypassing feature branch requirements
 
 **PRAGMATIC BEST PRACTICES:**
 - **BIG PICTURE FIRST** - Always understand full project scope before role assignment
@@ -109,6 +125,14 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - `@PM version auto on|off` - Toggle automated version bumping
 - `@PM version sync` - Sync with Git commits and tags
 - `@PM version push-auto on|off` - Toggle automatic version bump on git push
+
+**Git Workflow Commands:**
+- `@PM workflow` - Show current workflow enforcement settings
+- `@PM workflow strict|relaxed|disabled` - Set enforcement level
+- `@PM workflow branching major|minor|all|none` - Set branching requirements
+- `@PM workflow validate` - Check if current changes require branching
+- `@PM workflow check "description"` - Analyze change size keywords before implementation
+- `@PM workflow enforce` - Apply mandatory workflow validation to current action
 
 **Changelog Commands (PM Responsibility):**
 - `@PM changelog` - Show recent changes
@@ -148,6 +172,9 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
    - Auto-version on git push: on/off
    - Auto-changelog on git push: on/off
    - Git tag creation: on/off
+   - Git commit anonymity (no AI mentions): on/off/inherit_global
+   - Git workflow enforcement: strict(default)/relaxed/disabled
+   - Auto MR creation: on/off
    - Changelog location: CHANGELOG.md / docs/CHANGELOG.md / custom / none
    - Git commit tracking: on/off"
    ```
@@ -185,6 +212,30 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - **Commit integration** - Version and changelog changes included in push commit
 - **Tag creation** - Automatic git tag creation for new versions (optional)
 
+**Git Commit Anonymity:**
+- **Inherits from git-safety-behaviors.md** - Respects existing `git_privacy: true` setting
+- **PM toggle overrides** - PM can enable/disable per project if not globally set
+- **When enabled** - NO AI mentions (Claude Code, Virtual Team, AI assistance) in commits
+- **Professional commits** - Standard developer commit messages only  
+- **Clean history** - Commits appear as regular development work
+- **When disabled** - Allows Co-Authored-By credits (user choice)
+- **Global override** - If git-safety-behaviors.md sets git_privacy: true, always enforced
+
+**Git Workflow Enforcement:**
+- **Main Branch:** EVERY change requires new branch (when strict)
+- **Feature Branch:** Normal commits allowed
+- **Keyword Detection:** Scans commit messages for change type
+
+**Enforcement Levels:**
+- **Strict** - Main branch requires branching for ALL changes
+- **Relaxed** - Only keyword-detected major/minor changes require branches
+- **Disabled** - No enforcement
+
+**Simple Keyword Detection:**
+- **Major:** "new feature", "breaking change", "architecture"
+- **Minor:** "new functionality", "enhancement", "add feature" 
+- **Patch:** "bugfix", "fix", "hotfix", "documentation"
+
 **Project Version System Integration:**
 1. **Detection Process** (@Developer during init):
    - package.json version field (Node.js projects)
@@ -209,55 +260,74 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - push_auto_version: true|false
 - push_auto_changelog: true|false
 - git_tag_creation: true|false
+- git_commit_anonymity: true|false
 - project_version_integration: true|false|detected_system
 - version_strategy: VERSION_file|package_json|git_tags|project_native
+- git_workflow_enforcement: strict|relaxed|disabled
+- require_branching_for: major|minor|all|none
+- auto_mr_creation: true|false
 ```
 
-### 🔄 @PM restart - PM Boundary Recovery Command
-**Triggers PM behavior reset when boundary violations occur:**
+### 🔄 @PM restart - Multi-Scope Recovery Command
+**Triggers PM behavior reset and discovers virtual team configuration across all installation scopes:**
 ```
-@PM restart → Reinitialize PM behavior and boundaries
+@PM restart → Reinitialize PM behavior and discover configuration
 ```
 
-**Recovery Process:**
-1. **Boundary Violation Detection** - Identifies current PM boundary failures:
+**Multi-Scope Discovery Process:**
+1. **Installation Scope Detection** - Automatically discovers active virtual team configuration:
+   - **System-wide**: ~/.claude/modes/virtual-team.md (highest priority)
+   - **Project-scoped**: ./CLAUDE.md with @~/.claude/ imports  
+   - **Local**: ./.claude/ directory (project-specific overrides)
+   - **Source**: ./src/modes/virtual-team.md (development environment)
+
+2. **Configuration Loading Priority**:
+   - System-wide ~/.claude/ installation (if exists)
+   - Project CLAUDE.md imports (if system exists)
+   - Local .claude/ overrides (if exists)
+   - Fallback to development src/ files
+
+3. **Boundary Violation Detection** - Identifies current PM boundary failures:
    - User questions bypassed without clarification
    - Unauthorized deployment attempts detected
    - Technical tool usage by @PM identified
-2. **Role Definition Restoration** - Reloads proper PM boundaries:
+
+4. **Role Definition Restoration** - Reloads proper PM boundaries from discovered configuration:
    - Restores user-first consultation requirements
    - Resets deployment authorization protocols
    - Reinstates coordination-only tool restrictions
-3. **Behavioral Reset** - Corrects PM drift and violations:
-   - Stops any ongoing technical implementation by @PM
-   - Reassigns violated work to appropriate specialists
-   - Restores proper delegation protocols
-4. **Context Preservation** - Maintains project progress while resetting behavior:
+
+5. **Context Preservation** - Maintains project progress while resetting behavior:
    - Preserves existing project requirements and progress
    - Maintains team role assignments and active work
    - Retains user decisions and approved technical approaches
-5. **Validation Checkpoint** - Confirms proper PM boundary restoration:
-   - Verifies no unresolved user questions remain
+
+6. **Validation Checkpoint** - Confirms proper PM boundary restoration:
+   - Verifies configuration scope discovered correctly
+   - Validates no unresolved user questions remain
    - Confirms no unauthorized deployments are planned
-   - Validates @PM is using coordination tools only
 
 **Usage Scenarios:**
+- Context compacting broke virtual team behavior
 - @PM has started technical implementation instead of delegating
 - @PM bypassed user clarification for unclear requirements
 - @PM attempted unauthorized production deployment
-- @PM used Read/Edit/Bash tools instead of proper delegation
-- General PM boundary drift detected
+- Role switching stopped working
+- Configuration scope uncertain after system changes
 
 **Recovery Output:**
 ```
-@PM: Boundaries restored. Violations corrected:
+@PM: Virtual team configuration discovered and boundaries restored.
+
+Configuration scope: System-wide ~/.claude/modes/virtual-team.md ✓
+Team roles: 12 specialized roles active ✓  
+Violations corrected:
 - [Specific violation 1] → Delegated to [appropriate role]
 - [Specific violation 2] → User clarification required
-- [Specific violation 3] → Deployment authorization needed
 
 Current status: PM operating within proper boundaries
-Active delegations: [list of reassigned work]
-Pending user decisions: [list of required clarifications]
+Active configuration: [discovered scope and version]
+Team ready for operation
 ```
 
 ### 📊 @PM init - Project Discovery Command
