@@ -1,0 +1,126 @@
+# Intelligent Claude Code - Ansible Installation System
+# Single target with parameters for local/remote installation
+
+# Use bash for all commands
+SHELL := /bin/bash
+.SHELLFLAGS := -c
+
+.PHONY: install update test help clean
+
+# Default shows help
+help:
+	@echo "Intelligent Claude Code - Installation"
+	@echo ""
+	@echo "Usage:"
+	@echo "  make install [HOST=ip] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password]"
+	@echo "  make update  [HOST=ip] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password]"
+	@echo "  make test                        # Run installation tests"
+	@echo ""
+	@echo "Parameters:"
+	@echo "  HOST - Remote host IP (omit for local installation)"
+	@echo "  TARGET_PATH - Target path (omit for user scope ~/.claude/)"  
+	@echo "  KEY  - SSH key for remote (default: ~/.ssh/id_rsa)"
+	@echo "  PASS - SSH password for remote (alternative to KEY)"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make install                     # Local user scope"
+	@echo "  make install TARGET_PATH=/project       # Local project"
+	@echo "  make install HOST=192.168.1.110  # Remote user scope (SSH key)"
+	@echo "  make install HOST=ip PASS=pwd    # Remote with password"
+	@echo "  make install HOST=ip TARGET_PATH=/proj  # Remote project"
+	@echo "  make test                        # Test installation"
+
+# Auto-detect ansible-playbook in common locations
+ANSIBLE_PLAYBOOK := $(shell \
+	if command -v ansible-playbook >/dev/null 2>&1; then \
+		command -v ansible-playbook; \
+	elif [ -x "/opt/homebrew/bin/ansible-playbook" ]; then \
+		echo "/opt/homebrew/bin/ansible-playbook"; \
+	elif [ -x "/usr/local/bin/ansible-playbook" ]; then \
+		echo "/usr/local/bin/ansible-playbook"; \
+	elif [ -x "/usr/bin/ansible-playbook" ]; then \
+		echo "/usr/bin/ansible-playbook"; \
+	elif [ -x "$$HOME/.local/bin/ansible-playbook" ]; then \
+		echo "$$HOME/.local/bin/ansible-playbook"; \
+	elif [ -x "$$HOME/Library/Python/3.*/bin/ansible-playbook" ]; then \
+		ls -1 $$HOME/Library/Python/3.*/bin/ansible-playbook 2>/dev/null | head -1; \
+	else \
+		echo ""; \
+	fi)
+
+# Export for subprocesses
+export ANSIBLE_PLAYBOOK
+
+# Single install target handles both local and remote
+install:
+	@if [ -z "$(ANSIBLE_PLAYBOOK)" ]; then \
+		echo "ERROR: ansible-playbook not found!"; \
+		echo ""; \
+		echo "Searched in:"; \
+		echo "  - System PATH"; \
+		echo "  - /opt/homebrew/bin (macOS Homebrew)"; \
+		echo "  - /usr/local/bin (common location)"; \
+		echo "  - /usr/bin (system packages)"; \
+		echo "  - ~/.local/bin (Python user install)"; \
+		echo "  - ~/Library/Python/3.*/bin (macOS Python)"; \
+		echo ""; \
+		echo "Please install Ansible:"; \
+		echo "  macOS:  brew install ansible"; \
+		echo "  Ubuntu: sudo apt install ansible"; \
+		echo "  Fedora: sudo dnf install ansible"; \
+		echo "  Python: pip install --user ansible"; \
+		exit 1; \
+	fi
+	@if [ -z "$(HOST)" ]; then \
+		echo "Installing locally..."; \
+		$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
+			-i localhost, \
+			-c local \
+			-e "ansible_shell_type=sh" \
+			-e "target_path=$(TARGET_PATH)"; \
+	else \
+		echo "Installing on remote host $(HOST)..."; \
+		if [ -n "$(PASS)" ]; then \
+			echo "Using password authentication..."; \
+			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
+				-i "$(HOST)," \
+				-k -e "ansible_ssh_pass=$(PASS)" \
+				-e "target_path=$(TARGET_PATH)"; \
+		else \
+			echo "Using SSH key authentication..."; \
+			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
+				-i "$(HOST)," \
+				-e "ansible_ssh_private_key_file=$(KEY)" \
+				-e "target_path=$(TARGET_PATH)"; \
+		fi \
+	fi
+
+# Test installation locally
+test:
+	@echo "Testing installation..."
+	@rm -rf test-install
+	@mkdir -p test-install
+	@$(MAKE) install TARGET_PATH=test-install
+	@echo ""
+	@echo "Verifying installation..."
+	@test -f test-install/CLAUDE.md || (echo "FAIL: CLAUDE.md not created"; exit 1)
+	@test -f test-install/.claude/modes/virtual-team.md || (echo "FAIL: virtual-team.md not installed"; exit 1)
+	@grep -q "@~/.claude/modes/virtual-team.md" test-install/CLAUDE.md || (echo "FAIL: Import not added"; exit 1)
+	@echo "✅ All tests passed!"
+	@echo ""
+	@echo "Testing idempotency..."
+	@$(MAKE) install TARGET_PATH=test-install
+	@echo "✅ Idempotency test passed!"
+	@rm -rf test-install
+
+# Update existing installation (simple override)
+update: install
+	@echo "✅ Update complete - files overwritten with latest version"
+
+# Clean test installations and temporary files
+clean:
+	@rm -rf test-*
+	@rm -rf ~/.ansible/tmp/ansible-local-* 2>/dev/null || true
+	@rm -rf ~/.ansible/tmp/ansible-tmp-* 2>/dev/null || true
+	@echo "✓ Test directories removed"
+	@echo "✓ Ansible temp files cleaned"

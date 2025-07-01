@@ -19,6 +19,98 @@
 - Performance optimization
 - Security audits
 
+## Version & Changelog Intelligence
+
+### @PM version Commands
+**Automatic version management:**
+- Read current versions from files
+- Determine bump type from changes
+- Update VERSION and history files
+- Use real dates, not hardcoded
+- Handle both tool and project versions
+
+### @PM changelog Commands
+**Intelligent changelog maintenance:**
+- Auto-categorize changes (Added/Changed/Fixed/Removed)
+- Link entries to version numbers
+- Use proper timestamps
+- Maintain both tool and project changelogs
+- Format for readability
+
+### Changelog Behaviors
+- **Smart Classification**: Analyze changes to categorize properly
+- **Version Linking**: Connect changelog entries to version bumps
+- **Date Accuracy**: Always use actual current date
+- **Dual Tracking**: Tool changelog vs project changelog
+- **Readable Format**: Professional changelog formatting
+
+### PM Configuration Intelligence
+**Per-project strategy management:**
+- **First Time Detection**: On first version/changelog request, PM asks user strategy
+- **Strategy Storage**: Save choices in project-context.md PM Configuration
+- **Consistent Usage**: Use same approach throughout project
+- **Discovery Integration**: Use @PM init findings to suggest strategies
+- **User Override**: Always allow user to change strategy mid-project
+
+**Toggle Management:**
+- `version_management`: enabled/disabled per project
+- `changelog_management`: enabled/disabled/ask_location
+- `git_integration`: none/read-only/full
+- `auto_version_bump`: true/false/ask_first_time
+
+## Project Discovery Intelligence
+
+### @PM init Command
+**Automatic discovery triggers:**
+- Read existing context files first
+- Validate against current project state
+- Update only changed/new information
+- Keep context under 300 tokens
+- Archive old discoveries
+
+### Discovery Behaviors
+- **Smart Detection**: Look for actual files, not assumptions
+- **Version Specific**: Get exact versions from lock files
+- **Workflow Mapping**: Identify make targets, npm scripts
+- **Team Formation**: Activate only needed specialists
+- **Version Strategy Discovery**: Detect VERSION files, package.json versions, git tag patterns
+- **Changelog Discovery**: Find existing CHANGELOG.md, HISTORY.md, docs/changelog.md
+- **Version Tool Detection**: Identify standard-version, semantic-release, release-it usage
+
+### CLAUDE.md Update Protocol
+- **Never automatic** - Always ask user
+- **Only suggest when:**
+  - Major framework discovered
+  - Critical build commands found
+  - Would save repeated explanations
+- **Minimal format:**
+  ```markdown
+  <!-- Auto-discovered: Tailwind CSS 4, K3s validation -->
+  ```
+
+## Always-On Cleanup Intelligence
+
+### Automatic Resource Management
+**Every task completion triggers:**
+- Remove temporary test directories (test-*, tmp-*, temp-*)
+- Clean execution artifacts (~/.ansible/tmp/*)
+- Remove backup files (*.bak, *.backup)
+- Clear unused test files
+- Clean package manager caches
+
+### Work Session Hygiene
+- Track all created temporary resources
+- Clean up before task completion
+- Never leave artifacts unless explicitly needed
+- Maintain clean workspace always
+
+### Cleanup Triggers
+- After running tests → Remove test directories
+- After installations → Clear temp files
+- After debugging → Remove debug artifacts
+- After any task → Verify workspace is clean
+- Before reporting completion → Final cleanup check
+
 ## Always-On Research
 
 ### Before Any Code/Tool Usage
@@ -113,34 +205,54 @@ Configure these behaviors in your config.md:
 3. **Contextual Thinking**: Match depth to problem complexity
 4. **Sequential Analysis**: For problems requiring systematic breakdown
 
-## Automatic Parallelized Subagents
+## Intelligent Selective Subagents
 
-### Auto-Parallel Triggers
-Tasks automatically parallelized when involving:
-- Multiple independent file analyses
-- Separate component implementations
-- Multi-aspect research (security + performance + architecture)
-- Independent bug investigations
-- Parallel test writing
-- Multi-language documentation
+### Smart Subagent Activation
+Subagents are used ONLY when genuinely beneficial for:
+- **Complex Multi-Component Tasks**: 5+ independent components requiring parallel analysis
+- **Long-Running Analysis**: Deep codebase audits, comprehensive security reviews
+- **Truly Independent Work**: Tasks where parallel processing provides clear time savings
+- **Large-Scale Operations**: Bulk migrations, multi-file refactoring across 10+ files
 
-### Parallel Patterns
+### NOT Used For:
+- Simple, straightforward requests
+- Single-file modifications
+- Quick questions or explanations
+- Tasks better done sequentially
+- When coordination overhead exceeds benefits
+
+### Intelligent Criteria
+Before using subagents, evaluate:
+1. **Independence**: Can work streams operate without coordination?
+2. **Complexity**: Does each component require substantial analysis?
+3. **Time Benefit**: Will parallel processing actually save time?
+4. **Result Quality**: Will parallel work produce better outcomes?
+
+### Smart Parallel Patterns
 ```
-Example: "Analyze all controllers for security issues"
-→ Spawn subagent per controller file
-→ Aggregate findings
-→ Present unified report
+✓ GOOD: "Audit security across 15 microservices"
+→ Each service is independent, substantial analysis required
+
+✗ AVOID: "Fix this validation error"
+→ Single issue, sequential debugging more effective
+
+✓ GOOD: "Migrate 20 legacy controllers to new framework"
+→ Independent transformations, clear parallelization benefit
+
+✗ AVOID: "Explain how authentication works"
+→ Explanation task, no parallelization benefit
 ```
 
 ### Subagent Configuration
 Configure in config.md:
 
 ```markdown
-# Parallelization Settings
-- auto_parallel: true           # Enable automatic parallelization
-- parallel_threshold: 3         # Min items for parallel processing
+# Intelligent Subagent Settings
+- intelligent_subagents: true   # Enable selective subagent usage
+- parallel_threshold: 5         # Min components for parallel processing
 - subagent_model: sonnet        # Force model: sonnet|opus|auto
-- max_parallel_agents: 5        # Maximum concurrent subagents
+- max_parallel_agents: 3        # Maximum concurrent subagents (reduced)
+- parallel_complexity_min: high # Only use for high-complexity tasks
 ```
 
 ## Persona & Rule Toggles

@@ -1,0 +1,79 @@
+---
+# Main tasks for intelligent-claude-code installation
+
+- name: Validate installation parameters
+  assert:
+    that:
+      - claude_install_path is defined
+      - claude_scope in ['user', 'project']
+    fail_msg: "Invalid installation parameters"
+
+- name: Create .claude directory structure
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ claude_install_path }}"
+    - "{{ claude_install_path }}/modes"
+    - "{{ claude_install_path }}/personas"
+    - "{{ claude_install_path }}/behaviors"
+
+- name: Check if CLAUDE.md exists
+  stat:
+    path: "{{ claude_install_path }}/CLAUDE.md"
+  register: claude_md_exists
+
+- name: Backup existing CLAUDE.md if present
+  copy:
+    src: "{{ claude_install_path }}/CLAUDE.md"
+    dest: "{{ claude_install_path }}/CLAUDE.md.backup"
+    remote_src: yes
+  when: claude_md_exists.stat.exists
+
+- name: Handle graceful integration for existing CLAUDE.md
+  include_tasks: graceful_integration.yml
+  when: claude_md_exists.stat.exists
+
+- name: Create new CLAUDE.md for fresh installation
+  template:
+    src: CLAUDE.md.j2
+    dest: "{{ claude_install_path }}/CLAUDE.md"
+    mode: '0644'
+  when: not claude_md_exists.stat.exists
+
+- name: Copy virtual team mode file
+  copy:
+    src: "{{ playbook_dir }}/../src/modes/virtual-team.md"
+    dest: "{{ claude_install_path }}/modes/virtual-team.md"
+    mode: '0644'
+
+- name: Copy persona files
+  copy:
+    src: "{{ playbook_dir }}/../src/personas/"
+    dest: "{{ claude_install_path }}/personas/"
+    mode: '0644'
+
+- name: Copy behavior files
+  copy:
+    src: "{{ playbook_dir }}/../src/behaviors/"
+    dest: "{{ claude_install_path }}/behaviors/"
+    mode: '0644'
+
+- name: Copy VERSION file
+  copy:
+    src: "{{ playbook_dir }}/../src/VERSION"
+    dest: "{{ claude_install_path }}/VERSION"
+    mode: '0644'
+
+- name: Handle project-specific integration
+  include_tasks: project_integration.yml
+  when: claude_scope == "project"
+
+- name: Display installation summary
+  debug:
+    msg:
+      - "Installation complete!"
+      - "Location: {{ claude_install_path }}"
+      - "Mode: Virtual Team (12 roles)"
+      - "Activation: @-notation for 12 specialized roles"
