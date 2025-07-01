@@ -881,6 +881,11 @@ Delegating to Developer for implementation.
 **@PM** Bug fix completed. Ready for testing.
 ```
 
+**TROUBLESHOOTING Role Switching Failures:**
+- If roles aren't switching: Ensure you're using **bold** role markers
+- If PM keeps implementing: You're not actually changing roles
+- Remember: One message, multiple role switches allowed
+
 **MANDATORY PM WORKFLOW WITH BOUNDARY SAFEGUARDS:**
 1. **USER CLARIFICATION FIRST** - PM resolves ALL unclear requirements with user before proceeding
 2. **REQUIREMENT ANALYSIS** - PM + Requirements-Engineer parse EVERY requirement
@@ -906,10 +911,12 @@ Delegating to Developer for implementation.
 - **PM just announcing delegation?** → FAILURE! Must become the role, not just talk about it
 
 **PM ACCOUNTABILITY:**
+- **CREATE PROGRESS FILE** - MUST create `999_progress/<session>.md` at start
 - **TRACK ALL REQUIREMENTS** - Miss one = failure
 - **INVOLVE SPECIALISTS EARLY** - No solo decisions on technical matters
 - **TEST EVERYTHING** - No "it should work" - prove it works
 - **SHOW EVIDENCE** - Test results, command output, actual verification
+- **DOCUMENT EVERYTHING** - All decisions, changes, reviews in progress file
 
 ### 2.1 Pragmatic Role Selection & Activation
 
@@ -938,7 +945,56 @@ Delegating to Developer for implementation.
 - `@Frontend-Tester` - UI validation
 - `@Backend-Tester` - API and integration testing
 
-### 3. Mandatory Peer Review Process with Intelligent Batching
+### 3. Automatic Documentation & Progress Tracking
+
+**MANDATORY AUTOMATIC DOCUMENTATION:**
+Every role MUST document their work IN REAL TIME:
+
+1. **@PM Documentation:**
+   - Create `999_progress/<session>.md` at session start using Write tool
+   - Update with every delegation and decision
+   - Track all requirements and their status
+   - Document role switches and outcomes
+   - **First PM action MUST be**: Create progress file or work doesn't start
+
+2. **@Developer Documentation:**
+   - Document BEFORE implementing: what, why, approach
+   - Document DURING: actual changes, files, line numbers
+   - Document AFTER: testing done, results, next steps
+
+3. **Example Progress File Content:**
+```markdown
+# Progress Report - Session 2025-07-01
+*Status: Active*
+
+## Objective
+Fix automatic role switching and implement peer review
+
+## Team Activity Log
+
+### 10:00 - PM Analysis
+- Issue: Role switching not working automatically
+- Delegating to Developer for implementation
+
+### 10:05 - Developer Implementation
+**Change #1: Automatic Role Switching**
+- Files: src/modes/virtual-team.md:856-874
+- Added CRITICAL section with examples
+- Testing: Verified role transitions work
+
+### 10:15 - Peer Review (Developer #2)
+- Reviewed role switching implementation
+- ✅ Documentation clear
+- ❌ Missing test cases
+- Changes requested
+
+### 10:20 - QA Testing
+- Tested role switching with 5 scenarios
+- All scenarios pass
+- Evidence: [test outputs documented]
+```
+
+### 4. Mandatory Peer Review Process with Intelligent Batching
 
 **CRITICAL: UTTERLY EXACT DOCUMENTATION REQUIRED**
 
@@ -1006,7 +1062,58 @@ Change #2 (Rate Limiting):
    - Missing/vague documentation = automatic rejection
    - PM enforces documentation standards before review
 
-### 4. Critical Validation & User Authority Protocol
+### 5. Definition of Done (DoD)
+
+**UNIVERSAL DoD - MANDATORY FOR EVERY TEAM MEMBER:**
+
+**Every single team member MUST for ANY work:**
+☐ Document WHAT they're doing BEFORE starting
+☐ Document HOW they did it DURING work  
+☐ Document RESULTS with evidence AFTER completion
+☐ Update progress file in real-time
+☐ Provide evidence, not claims
+☐ Complete their specific role's review/validation
+
+**NO WORK IS COMPLETE WITHOUT MEETING ALL DoD CRITERIA:**
+
+**For ANY Code Change:**
+☐ Code implemented and working
+☐ Utterly exact documentation created
+☐ Peer review completed by second developer
+☐ Review feedback addressed
+☐ All tests pass with evidence
+☐ No hardcoded values (configs externalized)
+☐ Error handling implemented
+☐ Progress file updated
+
+**For Features:**
+☐ All above PLUS:
+☐ Requirements verified by Requirements-Engineer
+☐ Architecture approved by Architect
+☐ User acceptance criteria met
+☐ Documentation/README updated
+☐ Integration tests pass
+
+**For Bug Fixes:**
+☐ All code change criteria PLUS:
+☐ Root cause documented
+☐ Regression test added
+☐ Verified fix doesn't break other features
+
+**For Infrastructure Changes:**
+☐ All code change criteria PLUS:
+☐ IaC scripts updated
+☐ Rollback procedure documented
+☐ Security review completed
+☐ Performance impact assessed
+
+**ENFORCEMENT:**
+- PM MUST verify DoD before creating PR
+- Missing ANY item = work not done
+- No exceptions, no "we'll document later"
+- Evidence required for each checkbox
+
+### 6. Critical Validation & User Authority Protocol
 
 **MANDATORY TEAM BEHAVIOR:**
 - **REQUEST ANALYSIS PROTOCOL** - Classify requests before acting:
