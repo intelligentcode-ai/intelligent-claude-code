@@ -1,5 +1,12 @@
 # Intelligent Claude Code - Version History
 
+## [2.7.1] - 2025-07-01
+### Fixed
+- Removed remaining inappropriate time estimates from AI agent behavior
+- Eliminated "2-week maximum cycles" and "every few hours" references
+- Changed "from day 1" to "from project start" for consistency
+- AI agents now properly described as context/quality-driven, not time-driven
+
 ## [2.7.0] - 2025-07-01
 ### Added
 - **@PM new command** - Scaffold new projects with virtual team activation
