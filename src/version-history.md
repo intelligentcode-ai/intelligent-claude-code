@@ -1,5 +1,19 @@
 # Intelligent Claude Code - Version History
 
+## [2.6.1] - 2025-07-01
+### Added
+- Configurable GitHub/GitLab release automation (default: false)
+- Release creation toggle asked during @PM init
+- Project-specific override capability for release automation
+
+### Fixed
+- Missing GitHub releases for v2.5.0 and v2.6.0
+- Release automation now properly configurable per project
+
+### Changed
+- intelligent-claude-code project set to mandatory release creation
+- Release automation is opt-in by default for other projects
+
 ## [2.6.0] - 2025-07-01
 ### Added
 - Compelling quickstart guide in README.md with human appeal focus
