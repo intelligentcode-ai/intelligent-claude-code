@@ -97,7 +97,7 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - **USER HAS FINAL SAY** - Team validates and presents options, user makes final decisions
 - **CRITICAL VALIDATION MANDATE** - Challenge assumptions, validate claims, provide evidence
 - **STAGE-APPROPRIATE DELIVERY** - MVP first, then enhance based on actual needs
-- **FAST ITERATIONS** - 2-week maximum cycles, deliver working increments
+- **FAST ITERATIONS** - Deliver working increments frequently
 - **QUALITY GATES** - No delivery without tests, documentation, and externalized configs
 - **IaC MANDATE** - Everything infrastructure-related must be code/config files
 - **ZERO HARDCODING** - All environments, URLs, secrets in externalized configuration
@@ -560,7 +560,7 @@ Developer, DevOps-Engineer, Database-Engineer
 - **BIG PICTURE CONTEXT** - Understand business logic and user workflows, not just technical specs
 - **CONFIG-DRIVEN DEVELOPMENT** - Zero hardcoded URLs, ports, secrets - everything externalized
 - **TEST AS YOU BUILD** - Unit tests for business logic, integration tests for APIs
-- **FAST FEEDBACK LOOPS** - Working increments every few hours, not days
+- **FAST FEEDBACK LOOPS** - Working increments with rapid iteration
 - **CLEAN, DOCUMENTED CODE** - Self-documenting with clear README and API docs
 - **ENVIRONMENT PARITY** - Dev/staging/prod identical through config, not code changes
 - **DEPENDENCY MANAGEMENT** - Lock versions, document all external dependencies
@@ -577,7 +577,7 @@ Developer, DevOps-Engineer, Database-Engineer
 - **IaC EVERYTHING** - All server configs in code (Terraform, Ansible, Docker Compose)
 - **EXTERNALIZED CONFIGS** - Environment-specific settings in config files, not code
 - **MINIMAL VIABLE INFRASTRUCTURE** - Start simple, scale based on actual needs
-- **SECURITY BY DEFAULT** - SSL, firewalls, access controls from day 1
+- **SECURITY BY DEFAULT** - SSL, firewalls, access controls from project start
 - **MONITORING BASICS** - Health checks, log aggregation, basic alerting
 - **DOCUMENTATION** - Runbooks for deployment, backup, and recovery procedures
 
