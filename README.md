@@ -68,12 +68,19 @@ git push origin feature/performance-optimization
 @DevOps-Engineer Set up Kubernetes deployment
 ```
 
+### Automated Workflow Features
+- **GitHub CLI Integration**: Automatic PR creation with graceful fallback
+- **Automated Versioning**: Smart version bumping with changelog generation
+- **Workflow Enforcement**: Prevents direct main branch commits in strict mode
+- **Change Detection**: Keyword-based classification for branching requirements
+
 ## Installation
 
 ### Prerequisites (Control Machine Only)
 - **Ansible** installed (auto-detected in common locations)
 - **SSH access** to remote machines (key or password)
 - **Make** command available
+- **GitHub CLI (gh)** - Optional for automated PR creation (graceful fallback to manual)
 
 ### Supported Platforms
 - **macOS**: Homebrew, MacPorts, Python installations
@@ -121,6 +128,35 @@ Your project CLAUDE.md receives a single import line:
 @~/.claude/modes/virtual-team.md
 
 <!-- Your existing project configuration preserved -->
+```
+
+## PM Commands
+
+### Version Management
+```
+@PM version                    # Show current version
+@PM version bump minor "reason"  # Increment version with changelog
+@PM version auto on|off        # Toggle automated version bumping
+```
+
+### Git Workflow
+```
+@PM workflow                   # Show workflow enforcement settings
+@PM workflow strict           # Enable strict branching enforcement
+@PM workflow validate         # Check if changes require branching
+```
+
+### GitHub CLI Integration
+```
+@PM gh status                 # Check GitHub CLI installation and auth
+@PM gh pr create             # Create pull request (auto or manual fallback)
+@PM gh pr merge              # Merge pull request using GitHub CLI
+```
+
+### Project Discovery
+```
+@PM init                     # Intelligent project analysis and configuration
+@PM restart                  # Reactivate virtual team after context issues
 ```
 
 ## Usage Examples
@@ -257,6 +293,39 @@ ls ~/.claude/CLAUDE.md && echo "✅ Config restored"
 ```
 
 **Why This Happens:** Claude Code's configuration system has documented persistence issues, especially after system events, auto-compacting, or session timeouts.
+
+## Version History
+
+### v2.4.0 (2025-07-01) - Current
+- **GitHub CLI Integration**: Automated PR creation with graceful fallback
+- **Workflow Validation**: Mandatory pre-action workflow validation for PM
+- **Change Detection**: Keyword-based branching requirements
+- **Enhanced PM Commands**: GitHub CLI operations and workflow enforcement
+
+### v2.3.0 (2025-07-01)
+- **Automated Versioning**: Smart version bumping with PM controls
+- **Changelog Generation**: Automated changelog with Git integration
+- **Git Workflow**: Professional branching and MR processes
+- **PM Restart**: Virtual team reactivation after context compacting
+
+### v2.2.0
+- **Version Management**: Configurable changelog and version strategies
+- **Project Discovery**: Intelligent project analysis and verification
+- **PM Intelligence**: Context-aware version and changelog toggles
+
+### v2.1.0
+- **Version Commands**: @PM version management system
+- **Auto-increment**: Smart version detection and bumping
+
+### v2.0.0
+- **Virtual Team**: Complete 12-role team implementation
+- **@-notation**: Direct role addressing system
+- **Git Integration**: Professional workflow enforcement
+
+### v1.0.0 - Initial Release
+- **Foundation**: Basic intelligent-claude-code system
+- **Installation**: Ansible-based deployment automation
+- **Team Structure**: Virtual team architecture foundation
 
 ## License
 

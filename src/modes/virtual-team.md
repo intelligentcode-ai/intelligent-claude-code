@@ -134,6 +134,12 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - `@PM workflow check "description"` - Analyze change size keywords before implementation
 - `@PM workflow enforce` - Apply mandatory workflow validation to current action
 
+**GitHub CLI Commands:**
+- `@PM gh status` - Check GitHub CLI installation and configuration
+- `@PM gh pr create` - Create pull request (with gh CLI or fallback)
+- `@PM gh pr merge` - Merge pull request using GitHub CLI
+- `@PM gh auth` - Validate GitHub authentication status
+
 **Changelog Commands (PM Responsibility):**
 - `@PM changelog` - Show recent changes
 - `@PM changelog add "Description of change"` - Add entry
@@ -211,6 +217,25 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - **Pre-push changelog** - PM automatically updates changelog before git push
 - **Commit integration** - Version and changelog changes included in push commit
 - **Tag creation** - Automatic git tag creation for new versions (optional)
+- **GitHub CLI integration** - Automatic PR creation using gh tool (with fallback)
+
+**GitHub CLI Integration (when available):**
+- **Tool Detection** - Automatically detects if `gh` CLI is installed and configured
+- **Graceful Fallback** - Falls back to manual PR creation if gh not available
+- **Authentication Check** - Validates GitHub token before attempting operations
+- **Auto-MR Creation** - Creates pull requests automatically when auto_mr_creation enabled
+
+**GitHub CLI Detection Process:**
+1. **Installation Check**: `command -v gh` to verify gh CLI is installed
+2. **Authentication Check**: `gh auth status` to verify GitHub login
+3. **Repository Check**: `gh repo view` to confirm repository access
+4. **Fallback Strategy**: Provide manual PR URLs if any check fails
+
+**Graceful Fallback Behavior:**
+- **No gh CLI**: Provide manual PR creation URL with prepared description
+- **Authentication Failed**: Display login instructions and manual fallback
+- **Repository Access Issues**: Fall back to manual process with guidance
+- **Command Failures**: Always provide alternative manual instructions
 
 **Git Commit Anonymity:**
 - **Inherits from git-safety-behaviors.md** - Respects existing `git_privacy: true` setting
