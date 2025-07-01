@@ -1,5 +1,22 @@
 # Intelligent Claude Code - Version History
 
+## [2.7.0] - 2025-07-01
+### Added
+- **@PM new command** - Scaffold new projects with virtual team activation
+- **Project type detection** - Auto-detect or specify: static, webapp, enterprise
+- **Greenfield project support** - Create CLAUDE.md and project structure
+- **Immediate team activation** - Virtual team works from project start
+- **Configuration setup** - Run init-like questionnaire for new projects
+
+### Enhanced
+- Documentation updated with new project creation workflow
+- Command reference includes @PM new examples
+- README shows new project creation as primary workflow
+
+### Fixed
+- Virtual team not activating for new projects (no existing CLAUDE.md)
+- Gap between installing intelligent-claude-code and using it for new work
+
 ## [2.6.1] - 2025-07-01
 ### Added
 - Configurable GitHub/GitLab release automation (default: false)
