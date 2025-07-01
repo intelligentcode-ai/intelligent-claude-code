@@ -1,5 +1,27 @@
 # Intelligent Claude Code - Version History
 
+## [2.7.2] - 2025-07-01
+### Fixed
+- **CRITICAL**: Automatic role switching now works correctly in virtual team mode
+- PM role now **immediately becomes** the delegated role in the same response
+- Fixed missing peer review process - now mandatory for all code changes
+- Fixed automatic documentation - progress files now created for every session
+- Added Definition of Done (DoD) enforcement for all team members
+
+### Added
+- Mandatory peer review workflow with second developer validation
+- Intelligent batching for reviews (5-10 changes maximum)
+- Automatic progress tracking in 999_progress/<session>.md files
+- Universal Definition of Done requirements for all work
+- Role switching troubleshooting documentation
+- Utterly exact documentation requirements for reviews
+
+### Enhanced
+- PM boundaries now strictly enforced with immediate role transitions
+- Workflow includes: Implement > Peer Review > QA > Architectural Review > PM
+- Progress tracking demonstrates actual work being performed
+- DoD ensures all work includes documentation and evidence
+
 ## [2.7.1] - 2025-07-01
 ### Fixed
 - Removed remaining inappropriate time estimates from AI agent behavior
