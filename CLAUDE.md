@@ -100,13 +100,16 @@ git log --oneline -n 5
 ### Configuration Management
 - Edit `src/config.md` to add new options
 - Update `src/CLAUDE.md` mode sections for new behaviors
-- Modify `install.sh` to handle new configuration patterns
+- Modify installation process via `make install` to handle new configuration patterns
+- Test GitHub CLI integration and graceful fallbacks
 
 ### Quality Assurance
 1. **@-notation Working**: All role addressing must function correctly
 2. **Import Resolution**: All `@~/` imports must resolve to existing files
 3. **Git Workflow**: Proper branching and commit standards enforced
 4. **Installation Validation**: All three installation scopes must work
+5. **GitHub CLI Integration**: Test both automated and manual fallback modes
+6. **Automated Versioning**: Verify version bumping and changelog generation
 
 ## Architecture Insights
 
@@ -147,5 +150,11 @@ git log --oneline -n 5
 2. Define expertise, responsibilities, and activation
 3. Update role selection logic in PM section
 4. Run `make test` to verify integration
+
+### GitHub CLI Integration Development
+1. Test GitHub CLI detection: `command -v gh`
+2. Validate authentication: `gh auth status`
+3. Test PR creation with fallback mechanisms
+4. Verify graceful degradation when gh CLI unavailable
 
 This system represents a paradigm shift in AI tool integration, prioritizing developer experience and team compatibility over feature count.
