@@ -50,6 +50,7 @@ Verified: Documentation matches code ✓
 - **push_auto_version:** true
 - **push_auto_changelog:** true
 - **git_tag_creation:** true
+- **github_release_creation:** true (asked on init, project chose: mandatory)
 - **git_commit_anonymity:** inherited_true (from global git-safety-behaviors.md)
 - **git_workflow_enforcement:** strict (ALL changes in main require branching)
 - **auto_mr_creation:** true

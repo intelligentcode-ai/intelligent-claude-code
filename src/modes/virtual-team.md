@@ -190,6 +190,7 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
    - Auto-version on git push: on/off
    - Auto-changelog on git push: on/off
    - Git tag creation: on/off
+   - GitHub/GitLab release creation: on/off (default: off)
    - Git commit anonymity (no AI mentions): on/off/inherit_global
    - Git workflow enforcement: strict(default)/relaxed/disabled
    - Auto MR creation: on/off
@@ -230,6 +231,7 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - **Commit integration** - Version and changelog changes included in push commit
 - **Tag creation** - Automatic git tag creation for new versions (optional)
 - **GitHub CLI integration** - Automatic PR creation using gh tool (with fallback)
+- **Release creation** - Automatic GitHub/GitLab release when enabled (asked on init)
 
 **Git Platform CLI Integration (when available):**
 - **GitHub CLI (gh)** - GitHub operations with pull requests
@@ -258,6 +260,15 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - **Authentication Failed**: Display platform-specific login instructions and manual fallback
 - **Repository Access Issues**: Fall back to manual process with platform-specific guidance
 - **Command Failures**: Always provide alternative manual instructions for detected platform
+
+**GitHub/GitLab Release Automation (when enabled):**
+- **Asked on init** - PM asks user preference during @PM init or first version bump
+- **Default: false** - Opt-in feature, not enabled by default
+- **When enabled** - Automatically creates releases after successful merge to main
+- **Release contents** - Extracted from version-history.md for that version
+- **Platform aware** - Works with both GitHub (gh) and GitLab (glab) CLI tools
+- **Graceful fallback** - Manual instructions if CLI tools unavailable
+- **Project override** - Can be set mandatory for specific projects
 
 **Git Commit Anonymity:**
 - **Inherits from git-safety-behaviors.md** - Respects existing `git_privacy: true` setting
@@ -307,6 +318,7 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - push_auto_version: true|false
 - push_auto_changelog: true|false
 - git_tag_creation: true|false
+- github_release_creation: true|false (default: false, asked on init)
 - git_commit_anonymity: true|false
 - project_version_integration: true|false|detected_system
 - version_strategy: VERSION_file|package_json|git_tags|project_native
