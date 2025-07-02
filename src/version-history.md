@@ -1,5 +1,12 @@
 # Intelligent Claude Code - Version History
 
+## [2.8.2] - 2025-07-02
+### Fixed
+- **Requirements Engineer scope** - Now only mandatory for features, optional for bugs
+- **Architect role enhancement** - Technical oversight and guidance authority added
+- **PM passivity prevention** - Active control enforcement instead of just tracking
+- **Task type detection** - Conditional workflow based on feature vs bug classification
+
 ## [2.8.1] - 2025-07-02
 ### Fixed
 - **PM automatic role switching failure** - Enhanced behavioral triggers with mandatory execution templates
