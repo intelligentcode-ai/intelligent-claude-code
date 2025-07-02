@@ -1,13 +1,13 @@
 # Transform Claude Code into Your Development Team
 
-**One import line. Twelve specialists. Zero compromise.**
+**One import line. Thirteen specialists. Zero compromise.**
 
 Turn Claude Code into an intelligent virtual development team that scales from simple websites to enterprise applications. Get professional Git workflows, autonomous technical decisions, and growing team expertise - all through a single, non-invasive configuration.
 
 ## What You Get
 
 🚀 **13 Expert Roles** - From Requirements Engineer to AI Engineer, each with deep domain expertise  
-⚡ **Smart Team Scaling** - 6 roles for websites, 13 for enterprise SaaS  
+⚡ **Smart Team Scaling** - 6 roles for websites, 8 for webapps, 13 for enterprise  
 🔄 **Professional Git Workflow** - Branching, MRs, automated versioning  
 🎯 **Direct Communication** - `@Developer fix this bug` `@Architect design this system`  
 📈 **Growing Autonomy** - Team learns and handles more over time  
@@ -59,8 +59,8 @@ git commit -m "auth: Add JWT authentication system"
 
 ### Growing Team Intelligence
 - **Level 1:** Team asks for everything
-- **Level 2:** Team handles implementation, asks for architecture  
-- **Level 3:** Team makes all technical decisions independently
+- **Level 2:** Team handles implementation details, user approves major changes  
+- **Level 3:** Full technical autonomy, only major architecture needs approval
 
 ### Domain-Specific Expertise
 - **AI/ML work** automatically assigns **@AI-Engineer** for specialized knowledge
@@ -183,12 +183,12 @@ make install                  # Installs to ~/.claude/
 
 **Claude Code has known context persistence issues.** When Claude Code compacts context or restarts sessions, your virtual team may become unresponsive or fail to switch roles properly.
 
-### 🚨 **IMMEDIATE SOLUTION**
+### 🔧 **Recovery Solutions**
 ```bash
-@PM restart
+@PM refresh
 ```
 
-**If `@PM restart` doesn't work:**
+**If `@PM refresh` doesn't work:**
 ```bash
 @PM **CHANGE** THE ROLES!
 ```
@@ -213,20 +213,20 @@ make install                  # Installs to ~/.claude/
 - Virtual team seems "stuck" or unresponsive
 
 ### ⚡ **Quick Recovery Checklist**
-1. `@PM restart` - Primary recovery method
-2. `@PM **CHANGE** THE ROLES!` - Force role switching if restart fails
+1. `@PM refresh` - Primary recovery method
+2. `@PM **CHANGE** THE ROLES!` - Force role switching if refresh fails
 3. Emergency role activation sequence if still stuck
 4. **Ultimate**: Exit Claude Code → Restart → Resume session
 
-**💡 Save this command**: Always start troubleshooting with `@PM restart`
+**💡 Save this command**: Always start troubleshooting with `@PM refresh`
 
 ## Troubleshooting
 
 ### Team Not Responding?
 ```bash
 # Quick recovery (30 seconds)
-@PM restart                     # Primary solution for context compacting
-@PM Status check                # Test if team is active after restart
+@PM refresh                     # Primary solution for context compacting
+@PM Status check                # Test if team is active after refresh
 ```
 
 ### GitHub/GitLab Issues?
@@ -237,29 +237,6 @@ glab auth login                 # Fix GitLab authentication
 ```
 
 **🆘 [Complete Recovery Guide](RECOVERY.md)**
-
-## Getting Started
-
-### 1. Install
-```bash
-git clone https://github.com/ksamaschke/intelligent-claude-code
-cd intelligent-claude-code && make install
-```
-
-### 2. Activate
-Your project CLAUDE.md gets one line:
-```markdown
-@~/.claude/modes/virtual-team.md
-```
-
-### 3. Build
-```bash
-@PM Build me a portfolio website
-@PM Create a REST API with authentication
-@PM Set up CI/CD pipeline
-```
-
-**That's it.** Your virtual development team is ready to build anything from static sites to enterprise applications.
 
 ---
 
