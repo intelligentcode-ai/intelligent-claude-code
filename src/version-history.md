@@ -1,5 +1,14 @@
 # Intelligent Claude Code - Version History
 
+## [2.9.0] - 2025-07-02
+### Enhanced
+- **Virtual team optimization** - Reduced configuration file size from 43.9k to 33.8k characters (23% reduction)
+- **AI agent professional standards** - Clear behavioral expectations without human pretense or personality simulation
+- **Advanced AI capabilities integration** - ULTRATHINKING, Sequential Thinking, MCP tools, and parallelized subagents
+- **Model selection configuration** - Configurable subagent model choice (Sonnet/Opus/Auto) with Sonnet default
+- **Role clarity enforcement** - @AI-Engineer properly assigned to AI system configurations and capabilities
+- **Process-focused communication** - Direct handoffs with concrete evidence, no unnecessary embellishment
+
 ## [2.8.2] - 2025-07-02
 ### Fixed
 - **Requirements Engineer scope** - Now only mandatory for features, optional for bugs
