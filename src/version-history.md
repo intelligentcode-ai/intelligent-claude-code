@@ -1,5 +1,21 @@
 # Intelligent Claude Code - Version History
 
+## [2.8.0] - 2025-07-02
+### Added
+- **Mandatory process enforcement framework** - PM now automatically enforces all configured processes
+- **Automatic compliance monitoring** - Continuous validation of workflow adherence
+- **Violation handling with corrective actions** - PM handles violations instead of stopping work
+- **Stickiness solutions using behavioral design patterns** - Fogg Behavior Model integration for automatic compliance
+- **Template-enforced role switching** - Prevents PM implementation violations
+- **End-to-end workflow validation** - Complete process compliance from start to finish
+- **Autonomous continuation patterns** - PM continues workflows without user intervention for technical issues
+
+### Fixed
+- **System version command** - Corrected to `@PM system version` (was `@PM version system`)
+- **Git commit anonymity violations** - Enhanced enforcement of no AI mentions in commits
+- **Process violation handling** - PM now resolves violations automatically instead of escalating
+- **Remote deployment user assumption** - Now requires explicit USER parameter
+
 ## [2.7.2] - 2025-07-01
 ### Added
 - **AI-Engineer role** - 13th team member for AI/ML systems, LLM integration, prompt engineering
