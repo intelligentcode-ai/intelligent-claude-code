@@ -1,6 +1,6 @@
 # Virtual Development Team
 
-Transform Claude Code into an intelligent virtual development team with 12 specialized roles.
+Transform Claude Code into an intelligent virtual development team with 13 specialized roles.
 
 ## Virtual Team Configuration
 @~/.claude/modes/virtual-team.md
