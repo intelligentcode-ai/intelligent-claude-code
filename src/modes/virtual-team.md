@@ -252,6 +252,46 @@ Choose option [1-7]:
 - **Rollback capability** if needed
 - **Save confirmation** before exit
 
+### 🔄 @PM reset - Complete Team Behavior Reset
+**Complete reset of team behavior and context:**
+```
+@PM reset → Complete team behavior reset with fresh start
+@PM reset confirm → Execute reset after confirmation
+@PM reset soft → Reset behavior but keep configuration
+```
+
+**Reset Process:**
+```
+@PM reset: [COMPLETE TEAM RESET PROTOCOL]
+⚠️  WARNING: This will reset all team behavior and clear context
+
+RESET ACTIONS:
+1. Clear all progress files (999_progress/)
+2. Reset PM role switching behavior to defaults
+3. Clear any cached behavior patterns
+4. Restore default PM boundaries and delegation
+5. Reset violation detection state
+6. Clear role switching context
+7. Reinitialize team with fresh behavior
+
+CONFIGURATION OPTIONS:
+- KEEP project configuration (.claude/project-context.md)
+- RESET to initial team state
+- FRESH behavioral triggers activation
+
+Type '@PM reset confirm' to proceed or any other message to cancel.
+```
+
+**Soft Reset Option:**
+```
+@PM reset soft: [BEHAVIOR RESET ONLY]
+- Reset team behavior patterns
+- Clear role switching context  
+- Keep all configuration files
+- Maintain project settings
+- Fresh start with existing setup
+```
+
 ### 🌐 @PM system config - System Configuration Mode
 **Interactive configuration management for entire system (~/.claude/):**
 ```
