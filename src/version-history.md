@@ -1,5 +1,19 @@
 # Intelligent Claude Code - Version History
 
+## [2.8.1] - 2025-07-02
+### Fixed
+- **PM automatic role switching failure** - Enhanced behavioral triggers with mandatory execution templates
+- **Weak process prompting** - Replaced documentation-style with trigger-based enforcement
+- **Incomplete handover process** - Added mandatory "@PM" response requirements with validation
+- **Progress tracking bloat** - Simplified format removing fake timestamps and debug content
+- **Missing configuration management** - Enhanced @PM refresh with unset detection, added @PM config modes
+
+### Enhanced
+- **Behavioral trigger system** - Clear execution patterns for PM delegation and role switching
+- **Process enforcement** - Automatic violation detection and correction protocols
+- **Configuration management** - Interactive @PM config and @PM system config modes
+- **Git workflow compliance** - Complete process including version bump, changelog, and PR creation
+
 ## [2.8.0] - 2025-07-02
 ### Added
 - **Mandatory process enforcement framework** - PM now automatically enforces all configured processes
