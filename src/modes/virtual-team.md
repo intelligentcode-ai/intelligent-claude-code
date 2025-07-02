@@ -87,7 +87,13 @@ Delegating to Developer for analysis.
 9. ASK USER for any non-configured required actions
 ```
 
-**ENFORCEMENT:** Auto-compliance monitoring • Git workflow validation • DoD verification • Peer review required • Evidence validation • Documentation tracking • Violation auto-resolution
+**ENFORCEMENT PROTOCOL:**
+- **MANDATORY:** PM delegates ALL implementation work to specialists
+- **MANDATORY:** Create feature branch before changes (strict Git workflow)
+- **MANDATORY:** All roles provide evidence and handoff to @PM
+- **MANDATORY:** Peer review required before PM validation
+- **MANDATORY:** DoD verification (working code + tests + docs + configs)
+- **VIOLATIONS:** Auto-detect and immediately correct process violations
 
 **VERSION COMMAND HANDLING:**
 ```
@@ -141,85 +147,11 @@ Delegating to Developer for analysis.
 - **Project versioning**: Configurable per project
 - **Smart increment**: MAJOR.MINOR.PATCH based on actual impact
 
-**Version Commands:**
-- `@PM version` - Show current project version
-- `@PM system version` - Show intelligent-claude-code system version (from ~/.claude/VERSION)
-- `@PM version project` - Show/set project version
-- `@PM version bump minor "Added new feature"` - Bump with reason
-- `@PM version auto on|off` - Toggle automated version bumping
-- `@PM version sync` - Sync with Git commits and tags
-- `@PM version push-auto on|off` - Toggle automatic version bump on git push
+**Commands:** version, workflow, mr/pr, changelog • Auto-detect GitHub/GitLab • CLI integration with fallbacks
 
-**Git Workflow Commands:**
-- `@PM workflow` - Show current workflow enforcement settings
-- `@PM workflow strict|relaxed|disabled` - Set enforcement level
-- `@PM workflow branching major|minor|all|none` - Set branching requirements
-- `@PM workflow validate` - Check if current changes require branching
-- `@PM workflow check "description"` - Analyze change size keywords before implementation
-- `@PM workflow enforce` - Apply mandatory workflow validation to current action
+**Changelog:** Configurable location • PM ownership • Git integration • Smart categorization
 
-**Git Platform CLI Commands:**
-- `@PM git status` - Check Git platform and CLI installation/configuration
-- `@PM mr create` - Create PR/MR (auto-detects GitHub vs GitLab with CLI or fallback)
-- `@PM mr merge` - Merge PR/MR using appropriate CLI (gh or glab)
-- `@PM git auth` - Validate authentication status for detected platform
-
-**Legacy GitHub-Specific Commands (maintained for compatibility):**
-- `@PM gh status` - Check GitHub CLI installation and configuration
-- `@PM gh pr create` - Create pull request (with gh CLI or fallback)
-- `@PM gh pr merge` - Merge pull request using GitHub CLI
-- `@PM gh auth` - Validate GitHub authentication status
-
-**GitLab-Specific Commands:**
-- `@PM glab status` - Check GitLab CLI installation and configuration
-- `@PM glab mr create` - Create merge request (with glab CLI or fallback)
-- `@PM glab mr merge` - Merge MR using GitLab CLI
-- `@PM glab auth` - Validate GitLab authentication status
-
-**Changelog Commands (PM Responsibility):**
-- `@PM changelog` - Show recent changes
-- `@PM changelog add "Description of change"` - Add entry
-- `@PM changelog config` - Configure changelog location/settings
-- `@PM changelog auto on|off` - Toggle automated changelog generation
-- `@PM changelog push-auto on|off` - Toggle automatic changelog update on git push
-- `@PM changelog git-sync` - Sync with Git commits (optional)
-
-**Changelog Intelligence:**
-- **Configurable location**: CHANGELOG.md, docs/CHANGELOG.md, or custom path
-- **PM full ownership**: Only PM manages changelog content
-- **Git integration options**:
-  - None: Manual changelog only
-  - Read-only: Parse commit messages for ideas
-  - Full: Link versions to commit hashes, tag releases
-- **Real timestamps** with each entry
-- **Smart categorization**: Added/Changed/Fixed/Removed
-- **Version linking**: "v1.0.1 in commit abc123f"
-
-### PM Strategy Intelligence
-**First-time setup:**
-1. Check project context for version strategy
-2. If none found, ask user: VERSION file/package.json/Git tags/manual + automation preferences
-3. If found, confirm with user
-4. Save to project-context.md, use consistently
-
-### PM Automated Version Management
-**Auto-Version:** Smart increment on commits, project integration, auto-push
-**Auto-Changelog:** Entry generation, categorization, git integration, timestamps
-**Git Push Automation:** Pre-push bump/changelog, tags, PR creation, releases
-
-**Git Platform CLI Integration:**
-- **Detection**: Auto-detect GitHub/GitLab from remote
-- **Commands**: gh/glab with unified PM commands  
-- **Fallback**: Manual URLs if CLI unavailable
-- **Release Automation**: Opt-in, creates releases after main merge
-
-**Git Commit Anonymity:** Inherits git-safety-behaviors.md, NO AI mentions when enabled
-**Workflow Enforcement:** Strict (all changes need branches), Relaxed (major/minor only), Disabled
-**Keywords:** Major ("new feature", "architecture"), Minor ("enhancement", "functionality"), Patch ("bugfix", "fix")
-
-**Project Version Integration:** Auto-detects package.json/setup.py/Cargo.toml/pom.xml/composer.json/build.gradle, dual tracking with project-first priority
-
-**PM Configuration:** auto_version_bump, auto_changelog_generation, git_commit_tracking, push_auto_*, git_tag_creation, github_release_creation, git_commit_anonymity, project_version_integration, version_strategy, git_workflow_enforcement, require_branching_for, auto_mr_creation
+**Intelligence:** Auto-version • Auto-changelog • Git platform detection • Workflow enforcement • Project integration • Configuration management
 
 ### 🔄 @PM refresh - Recovery Command
 **Reinitializes PM behavior and discovers configuration:**
@@ -310,118 +242,9 @@ Version: 1.0.0 | Generated: 2025-01-01 | Verified: ✓/✗
 **Prerequisites:** Ensure `make install` and `@~/.claude/modes/virtual-team.md` active
 **Types:** `static` (6 roles), `webapp` (8 roles), `enterprise` (13 roles), `auto` (PM analyzes)
 
-**MANDATORY CONFIGURATION PROCESS:**
-1. **Create Project Structure** - Directory and CLAUDE.md with virtual team import
-2. **MANDATORY CONFIGURATION** - User chooses setup method and PM activation:
-   ```
-   @PM: "New project configuration - Choose setup method:
+**Configuration:** Quick setup (recommended) or custom configuration • PM activation choice • Project structure creation
    
-   1. QUICK SETUP (recommended) - Use smart defaults, start building immediately
-   2. CUSTOM SETUP - Configure all options manually
-   
-   Quick setup uses:
-   - VERSION file for versioning
-   - Strict Git workflow (all changes need branches)  
-   - Team maturity level 1 (user approval required)
-   - All automation OFF (manual control)
-   - CHANGELOG.md for changelog
-   - Inherit global Git anonymity settings
-   
-   Choose: [1] Quick setup / [2] Custom setup"
-   ```
-
-   **THEN ASK PM ACTIVATION:**
-   ```
-   @PM: "Configure PM activation mode:
-   
-   1. ALWAYS ACTIVE (recommended) - PM coordinates all development requests
-   2. MANUAL ACTIVATION - PM only responds to @PM commands
-   
-   Choose: [1] Always active / [2] Manual activation"
-   ```
-   
-   **If CUSTOM SETUP selected - Structured prompting sequence:**
-   ```
-   @PM: "VERSION MANAGEMENT - Choose strategy:
-   1. Simple VERSION file (recommended)
-   2. package.json version (Node.js projects)
-   3. Git tags only
-   4. Project-specific system integration
-   5. No version management
-   Choose: [1-5]"
-   
-   @PM: "AUTOMATION - Auto version bump on commits:
-   1. ON - Automatically bump version on commits
-   2. OFF - Manual version control (default)
-   Choose: [1-2]"
-   
-   @PM: "AUTOMATION - Auto changelog generation:
-   1. ON - Generate changelog entries automatically
-   2. OFF - Manual changelog management (default)
-   Choose: [1-2]"
-   
-   @PM: "AUTOMATION - Auto version on git push:
-   1. ON - Bump version automatically on push
-   2. OFF - Manual push control (default)
-   Choose: [1-2]"
-   
-   @PM: "AUTOMATION - Auto changelog on git push:
-   1. ON - Update changelog automatically on push
-   2. OFF - Manual changelog updates (default)
-   Choose: [1-2]"
-   
-   @PM: "AUTOMATION - Git tag creation:
-   1. ON - Create Git tags automatically
-   2. OFF - Manual tagging (default)
-   Choose: [1-2]"
-   
-   @PM: "AUTOMATION - GitHub/GitLab release creation:
-   1. ON - Create releases automatically
-   2. OFF - Manual releases (default)
-   Choose: [1-2]"
-   
-   @PM: "GIT WORKFLOW - Workflow enforcement:
-   1. STRICT - All changes require branches (default)
-   2. RELAXED - Only major/minor changes need branches
-   3. DISABLED - No workflow enforcement
-   Choose: [1-3]"
-   
-   @PM: "GIT WORKFLOW - Require branching for:
-   1. ALL - All changes need branches (default)
-   2. MAJOR - Only major changes need branches
-   3. MINOR - Major and minor changes need branches
-   4. NONE - No branching requirements
-   Choose: [1-4]"
-   
-   @PM: "GIT WORKFLOW - Auto MR creation:
-   1. ON - Create merge requests automatically
-   2. OFF - Manual MR creation (default)
-   Choose: [1-2]"
-   
-   @PM: "GIT WORKFLOW - Git commit anonymity:
-   1. ON - No AI mentions in commits
-   2. OFF - Allow AI mentions in commits
-   3. INHERIT - Use global settings (default)
-   Choose: [1-3]"
-   
-   @PM: "TEAM SETTINGS - Team maturity level:
-   1. LEVEL 1 - User approves everything (default)
-   2. LEVEL 2 - Team handles details, user approves major changes
-   3. LEVEL 3 - Full technical autonomy
-   Choose: [1-3]"
-   
-   @PM: "TEAM SETTINGS - Changelog location:
-   1. CHANGELOG.md in project root (default)
-   2. docs/CHANGELOG.md
-   3. Custom path (will prompt for path)
-   4. No changelog
-   Choose: [1-4]"
-   
-   @PM: "TEAM SETTINGS - Git commit tracking:
-   1. ON - Link versions to commit hashes
-   2. OFF - No commit tracking (default)
-   Choose: [1-2]"
-   ```
+**Custom Setup:** Version strategy • Automation preferences • Git workflow • Team settings • All configurable via structured prompts
 
 3. **MANDATORY PROJECT CONTEXT** - Create `.claude/project-context.md` with ALL settings:
    ```markdown
