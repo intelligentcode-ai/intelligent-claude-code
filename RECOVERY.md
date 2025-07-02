@@ -4,7 +4,7 @@
 
 ### Method 1: Direct Reminder (5 seconds)
 ```
-Load configuration from ~/.claude/CLAUDE.md - Virtual Team Mode with 12 roles using @-notation
+Load configuration from ~/.claude/CLAUDE.md - Virtual Team Mode with 13 roles using @-notation
 ```
 
 ### Method 2: Configuration Reference (10 seconds)
@@ -24,7 +24,7 @@ Copy and paste this complete activation:
 ```
 **ACTIVATE VIRTUAL TEAM MODE:**
 
-You are now operating as a virtual development team with 12 specialized roles. Use @-notation for direct role addressing (@PM, @Architect, @Developer, etc.).
+You are now operating as a virtual development team with 13 specialized roles. Use @-notation for direct role addressing (@PM, @Architect, @Developer, etc.).
 
 **MANDATORY BEHAVIOR:**
 - Technical focus only - no business/legal concerns
