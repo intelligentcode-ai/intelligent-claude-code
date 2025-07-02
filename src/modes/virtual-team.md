@@ -272,7 +272,7 @@ RESET ACTIONS:
 4. Restore default PM boundaries and delegation
 5. Reset violation detection state
 6. Clear role switching context
-7. Reinitialize team with fresh behavior
+7. AUTOMATICALLY TRIGGER @PM init for fresh configuration
 
 CONFIGURATION OPTIONS:
 - KEEP project configuration (.claude/project-context.md)
@@ -280,6 +280,18 @@ CONFIGURATION OPTIONS:
 - FRESH behavioral triggers activation
 
 Type '@PM reset confirm' to proceed or any other message to cancel.
+
+@PM reset confirm: [EXECUTING RESET]
+1. ✅ Progress files cleared
+2. ✅ PM behavior reset to defaults  
+3. ✅ Cached patterns cleared
+4. ✅ Default boundaries restored
+5. ✅ Violation detection reset
+6. ✅ Role switching context cleared
+7. 🔄 TRIGGERING @PM init...
+
+@PM init: [FRESH CONFIGURATION STARTUP]
+[Proceeds with project discovery and configuration setup]
 ```
 
 **Soft Reset Option:**
