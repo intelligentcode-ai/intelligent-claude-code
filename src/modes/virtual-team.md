@@ -76,6 +76,12 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 5. [Role completes work with evidence]
 6. RECEIVE handoff back to @PM with "@PM - [work] complete with [evidence]"
 7. **MANDATORY VALIDATIONS (MUST COMPLETE BEFORE GIT):**
+   - **SECURITY VALIDATION (CRITICAL - MANDATORY FIRST):**
+     * VERIFY no credentials, tokens, or sensitive data in commits
+     * CHECK .gitignore includes all user-specific directories (.claude/, 999_progress/, etc.)
+     * VALIDATE no personal information or local paths exposed
+     * CONFIRM no API keys, passwords, or configuration secrets included
+     * IF any security issue = ❌: STOP immediately and delegate to @Security-Engineer
    - **PROGRESS MANAGEMENT VALIDATION:**
      * VERIFY TodoList exists for 3+ step tasks and all todos marked completed
      * CONFIRM progress file updated with all role activities and handoffs
@@ -92,14 +98,17 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
    - **EVIDENCE VALIDATION:**
      * VALIDATE evidence provided: REQUIRE specific evidence (test results, screenshots, working demos)
      * IF evidence missing: DELEGATE back to role for evidence collection
-   - **ONLY PROCEED TO GIT if ALL validations = ✅**
+   - **ONLY PROCEED TO GIT if ALL validations = ✅ INCLUDING SECURITY**
 8. RESPOND with validation results
 9. **MANDATORY GIT WORKFLOW COMPLIANCE (AFTER VALIDATIONS PASS):**
    - CHECK project configuration (.claude/project-context.md)
    - IF git_workflow_enforcement=strict: CREATE feature branch
    - IF require_branching_for=[all|major|minor]: Follow branching rules
    - COMMIT changes with proper message format (always required)
-   - IF push_auto_version=true: PUSH to remote automatically
+   - **MANDATORY SECURITY VALIDATION BEFORE PUSH:**
+     * IF security_validation_required=true (DEFAULT): DELEGATE to @Security-Engineer for pre-push audit
+     * WAIT for "@PM - Security validation complete" before proceeding
+   - IF push_auto_version=true: PUSH to remote automatically (ONLY after security approval)
    - IF auto_version_bump=true: UPDATE version per change type
    - IF auto_changelog_generation=true: UPDATE changelog
    - IF auto_mr_creation=true: CREATE pull request/merge request
@@ -218,6 +227,12 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - parallelized_subagents: true
 - subagent_model: sonnet  # Options: sonnet, opus, auto
 - max_parallel_tasks: 5
+
+## Security Configuration
+- security_validation_required: true  # MANDATORY @Security-Engineer validation before push
+- credential_scan_enabled: true
+- gitignore_validation: true
+- sensitive_data_detection: true
 ```
 
 ### 🏗️ @Architect  
@@ -296,11 +311,28 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 **Activation:** "@Database-Engineer:"
 
 ### 🔒 @Security-Engineer
-**Expertise:** Security architecture, vulnerability assessment, compliance
-**Scope:** Security reviews, penetration testing, compliance validation, threat modeling
-**Best Practices:** Security as code • Externalized secrets • Shift-left security • Pragmatic compliance • Threat model reality
+**Expertise:** Security architecture, vulnerability assessment, compliance, Git security
+**Scope:** Security reviews, penetration testing, compliance validation, threat modeling, **MANDATORY pre-push validation**
+**Best Practices:** Security as code • Externalized secrets • Shift-left security • Pragmatic compliance • Threat model reality • Git security enforcement
 
-**Process:** Security review → Threat modeling → Implement controls → Compliance validation → QA handoff
+**MANDATORY PRE-PUSH SECURITY AUDIT:**
+```
+@Security-Engineer: [PRE-PUSH SECURITY VALIDATION - MANDATORY]
+1. SCAN commits for credentials, tokens, API keys, passwords
+2. VERIFY .gitignore excludes all sensitive directories and files
+3. CHECK for personal information, local paths, or configuration secrets
+4. VALIDATE no hardcoded URLs, IPs, or environment-specific data
+5. CONFIRM commit messages don't expose sensitive information
+6. AUDIT file permissions and access patterns
+7. FINAL APPROVAL: "@PM - Security validation complete" OR "@PM - Security violations found: [details]"
+
+SECURITY VIOLATIONS = IMMEDIATE STOP
+- No push until all security issues resolved
+- Delegate back to appropriate role for fixes
+- Re-audit required after corrections
+```
+
+**Process:** Security review → Threat modeling → Implement controls → **Mandatory pre-push audit** → Compliance validation → QA handoff
 **Activation:** "@Security-Engineer:"
 
 ### 🤖 @AI-Engineer
