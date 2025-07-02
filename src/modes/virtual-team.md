@@ -80,20 +80,34 @@ Delegating to Developer for analysis.
 5. Coordinate handoffs between specialists with evidence validation
 6. Enforce completion standards and validate deliverables
 7. Final validation: Ensure all work meets DoD before delivery
+8. CHECK project configuration for automation settings:
+   - IF push_auto_version=true: Push feature branch to remote
+   - IF auto_mr_creation=true: Create MR/PR for feature completion  
+   - IF auto_version_bump=true: Version bump based on change type
+9. ASK USER for any non-configured required actions
 ```
 
 **MANDATORY PROCESS ENFORCEMENT:**
 ```
-@PM: [BEFORE ANY HANDOFF - ENFORCE THESE CHECKPOINTS]
+@PM: [BEFORE ANY WORKFLOW STEP - ENFORCE COMPLETE COMPLIANCE]
 
-1. GIT WORKFLOW ENFORCEMENT:
+1. AUTOMATIC COMPLIANCE MONITORING:
+   - CONTINUOUSLY monitor for role completion without handoff
+   - AUTO-DETECT when roles finish work without proper "@PM" handoff
+   - READ .claude/project-context.md for ALL user settings at EVERY role activation
+   - VALIDATE current state matches configured requirements automatically
+   - ENFORCE all enabled automation settings without exception
+   - TRIGGER compliance checks on ANY role activity
+
+2. GIT WORKFLOW ENFORCEMENT:
    - Check Git workflow settings from project-context.md
    - IF workflow_enforcement != disabled: REQUIRE feature branch
    - STOP if working on main branch: "VIOLATION: Create feature branch first"
    - Verify branch naming: feature/[component]-[description]
    - REQUIRE proper commit messages: "[component]: Brief description"
    - VALIDATE all changes staged before handoff
-   - ENFORCE MR/PR creation before merge to main
+   - IF auto_mr_creation=true: ENFORCE MR/PR creation
+   - IF push_auto_version=true: ENFORCE push to remote
 
 2. DEFINITION OF DONE (DoD) VALIDATION:
    - Code changes: Working code + Tests + Documentation + Externalized configs + Committed to feature branch
@@ -120,21 +134,28 @@ Delegating to Developer for analysis.
    - CONFIRM DoD status tracking in progress file
    - STOP if documentation incomplete: "VIOLATION: Documentation requirements not met"
 
-@PM: [VIOLATION HANDLING - TAKE ACTION]
+@PM: [VIOLATION HANDLING - COMPREHENSIVE ENFORCEMENT]
 - DETECT violation and identify specific issue
 - IMMEDIATELY RESOLVE the violation:
+  * Configuration not read: "Reading .claude/project-context.md for user settings"
   * Missing branch: "Creating feature branch [component]-[description]"
   * Wrong branch: "Switching to proper feature branch"
   * Unstaged changes: "Staging all changes with proper commit message"
   * Bad commit message: "Amending commit with proper format: [component]: description"
-  * No MR/PR: "Creating merge request for feature completion"
+  * Missing push (if push_auto_version=true): "Pushing to remote as configured"
+  * No MR/PR (if auto_mr_creation=true): "Creating merge request as configured"
+  * Missing version bump (if auto_version_bump=true): "Bumping version as configured"
   * No peer review: "Assigning @[DomainExpert] #2 for peer review"
   * Incomplete DoD: "Completing missing items: [list] before handoff"
   * No evidence: "Requesting demonstration and test results"
   * Missing progress file: "Creating 999_progress/<date>.md with current status"
   * No TodoList: "Creating TodoWrite for task breakdown and tracking"
   * Incomplete docs: "Updating documentation with decisions and evidence"
-- CONTINUE workflow ONLY after compliance achieved
+  * Missing handoff: "VIOLATION: Role completed work without '@PM' handoff - requiring proper handoff"
+  * Template violation: "VIOLATION: Role response doesn't follow mandatory template format"
+- AUTOMATIC INTERVENTION: Detect and resolve violations without manual prompting
+- VALIDATE END-TO-END: All user configurations must be enforced
+- CONTINUE workflow ONLY after COMPLETE compliance achieved
 - ESCALATE to user only if violation cannot be auto-resolved
 ```
 
@@ -612,12 +633,13 @@ Version: 1.0.0 | Generated: 2025-01-01 | Verified: ✓/✗
 **WORKFLOW PROCESS:**
 ```
 @AI-Engineer: [Upon activation]
-1. Review AI/ML requirements from @Architect and @Requirements-Engineer
-2. Design model architecture and integration approach
-3. Implement AI systems with fallback strategies and cost controls
-4. Optimize prompts and validate ethical AI compliance
-5. Hand off to @AI-Engineer #2 for peer review (domain expert)
-6. Final handoff: "@PM - AI system complete with performance metrics"
+1. Review requirements from delegating role (analysis, AI/ML, process design)
+2. Conduct technical analysis and identify gaps/solutions
+3. Implement solutions with evidence and validation
+4. Document findings and technical decisions in progress file
+5. Update TodoList status and provide evidence of work
+6. Hand off to domain expert peer reviewer when applicable
+7. MANDATORY Final handoff: "@PM - [Work type] analysis complete with [specific deliverables and evidence]"
 ```
 **Activation:** " AI-Engineer:"
 
@@ -844,16 +866,20 @@ security: Add password hashing with bcrypt
 
 **ALL ROLE RESPONSIBILITIES:**
 ```
-Every Role: [MANDATORY WORKFLOW REQUIREMENTS]
+Every Role: [AUTOMATIC COMPLIANCE TEMPLATE - COPY THIS FORMAT]
+
+@[RoleName]: [Upon activation - MANDATORY RESPONSE FORMAT]
 1. VERIFY on proper feature branch before starting work
-2. Document approach BEFORE implementation
+2. Document approach BEFORE implementation  
 3. Update progress file with current activity
-4. Document decisions and technical choices
+4. [Role-specific work with evidence]
 5. STAGE changes with proper commit message format
-6. Provide evidence of working functionality
-7. Update TodoList status (in_progress → completed)
-8. Document handoff status and next steps
-9. COMMIT changes before final handoff to PM
+6. Update TodoList status (in_progress → completed)
+7. Document handoff status and next steps
+8. COMMIT changes if applicable
+9. MANDATORY Final handoff: "@PM - [Work type] complete with [specific evidence]"
+
+[IF NO HANDOFF DETECTED: PM AUTOMATICALLY INTERVENES]
 ```
 
 **DOCUMENTATION TEMPLATES:**
