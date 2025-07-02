@@ -20,8 +20,10 @@ Turn Claude Code into an intelligent virtual development team that scales from s
 git clone https://github.com/ksamaschke/intelligent-claude-code
 cd intelligent-claude-code
 make install                  # Local user install
+# OR  
+make install TARGET_PATH=/project    # Add to specific project
 # OR
-make install PATH=/project    # Add to specific project
+make install HOST=192.168.1.110 USER=ubuntu    # Remote install
 ```
 
 **Your project gets one import line:**

@@ -12,12 +12,13 @@ help:
 	@echo "Intelligent Claude Code - Installation"
 	@echo ""
 	@echo "Usage:"
-	@echo "  make install [HOST=ip] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password]"
-	@echo "  make update  [HOST=ip] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password]"
+	@echo "  make install [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password]"
+	@echo "  make update  [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password]"
 	@echo "  make test                        # Run installation tests"
 	@echo ""
 	@echo "Parameters:"
 	@echo "  HOST - Remote host IP (omit for local installation)"
+	@echo "  USER - Remote username (required for remote installation)"
 	@echo "  TARGET_PATH - Target path (omit for user scope ~/.claude/)"  
 	@echo "  KEY  - SSH key for remote (default: ~/.ssh/id_rsa)"
 	@echo "  PASS - SSH password for remote (alternative to KEY)"
@@ -25,9 +26,9 @@ help:
 	@echo "Examples:"
 	@echo "  make install                     # Local user scope"
 	@echo "  make install TARGET_PATH=/project       # Local project"
-	@echo "  make install HOST=192.168.1.110  # Remote user scope (SSH key)"
-	@echo "  make install HOST=ip PASS=pwd    # Remote with password"
-	@echo "  make install HOST=ip TARGET_PATH=/proj  # Remote project"
+	@echo "  make install HOST=192.168.1.110 USER=ubuntu  # Remote user scope (SSH key)"
+	@echo "  make install HOST=ip USER=user PASS=pwd    # Remote with password"
+	@echo "  make install HOST=ip USER=user TARGET_PATH=/proj  # Remote project"
 	@echo "  make test                        # Test installation"
 
 # Auto-detect ansible-playbook in common locations
@@ -79,17 +80,22 @@ install:
 			-e "ansible_shell_type=sh" \
 			-e "target_path=$(TARGET_PATH)"; \
 	else \
-		echo "Installing on remote host $(HOST)..."; \
+		if [ -z "$(USER)" ]; then \
+			echo "ERROR: USER parameter required for remote installation!"; \
+			echo "Usage: make install HOST=ip USER=username [PASS=pwd|KEY=keyfile]"; \
+			exit 1; \
+		fi; \
+		echo "Installing on remote host $(HOST) as user $(USER)..."; \
 		if [ -n "$(PASS)" ]; then \
 			echo "Using password authentication..."; \
 			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
-				-i "$(HOST)," \
+				-i "$(USER)@$(HOST)," \
 				-k -e "ansible_ssh_pass=$(PASS)" \
 				-e "target_path=$(TARGET_PATH)"; \
 		else \
 			echo "Using SSH key authentication..."; \
 			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
-				-i "$(HOST)," \
+				-i "$(USER)@$(HOST)," \
 				-e "ansible_ssh_private_key_file=$(KEY)" \
 				-e "target_path=$(TARGET_PATH)"; \
 		fi \

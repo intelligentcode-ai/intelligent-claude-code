@@ -46,13 +46,13 @@ Install on remote servers via SSH.
 
 ```bash
 # With SSH key authentication
-make install HOST=server.example.com
+make install HOST=server.example.com USER=ubuntu
 
 # With password authentication  
-make install HOST=server.example.com PASS=your_password
+make install HOST=server.example.com USER=ubuntu PASS=your_password
 
 # Custom user and path
-make install HOST=user@server.example.com PATH=/custom/path
+make install HOST=server.example.com USER=deploy TARGET_PATH=/custom/path
 ```
 
 ## Prerequisites
@@ -229,7 +229,7 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 ### Multiple Remote Hosts
 ```bash
 # Install to multiple servers
-make install HOST=server1.example.com,server2.example.com
+make install HOST=server1.example.com,server2.example.com USER=ubuntu
 ```
 
 ### Custom Installation Paths
@@ -261,20 +261,20 @@ python3 -m pip install ansible
 ssh user@hostname
 
 # Use password authentication
-make install HOST=hostname PASS=password
+make install HOST=hostname USER=username PASS=password
 
 # Use specific SSH key
 ssh-add ~/.ssh/your_key
-make install HOST=hostname
+make install HOST=hostname USER=username
 ```
 
 ### Permission Denied
 ```bash
 # Ensure write permissions to target directory
-make install HOST=hostname PATH=/home/user/.claude
+make install HOST=hostname USER=username TARGET_PATH=/home/user/.claude
 
-# Or use sudo for system-wide installation
-make install HOST=hostname PATH=/opt/claude-code BECOME=yes
+# Or use sudo for system-wide installation  
+make install HOST=hostname USER=username TARGET_PATH=/opt/claude-code BECOME=yes
 ```
 
 ### Windows SSH Issues
