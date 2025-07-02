@@ -1,29 +1,27 @@
 # Project Context
-Version: 2.5.0
-Generated: 2025-07-01
-Verified: Documentation matches code ✓
+Version: 2.7.2 | Generated: 2025-07-02 | Verified: ✓
 
 ## Project Overview
 **System Type:** Configuration-based system using native Markdown files (no build tools, package managers, or compiled artifacts)
 
-**Purpose:** Transform Claude Code into intelligent virtual development team with 12 specialized roles, Git workflow integration, and autonomous technical decision-making
+**Purpose:** Transform Claude Code into intelligent virtual development team with 13 specialized roles, Git workflow integration, and autonomous technical decision-making
 
 ## Tech Stack (verified)
 - **Configuration Language:** Native Markdown ✓
-- **Installation System:** Ansible + Bash installer ✓
-- **Version Control:** Git (no tags found, VERSION file approach) ✓
+- **Installation System:** Ansible + Makefile automation ✓
+- **Version Control:** Git (VERSION file approach) ✓
 - **Deployment:** File copying via Ansible to ~/.claude/ ✓
 
 ## Core Components (verified)
 - **src/CLAUDE.md** - Master configuration template ✓
-- **src/modes/virtual-team.md** - Virtual team mode (~4500 tokens) ✓
+- **src/modes/virtual-team.md** - Virtual team mode (~30KB) ✓
 - **src/personas/personas.md** - 14 additional specialist personas ✓
 - **src/behaviors/** - 3 behavioral modules ✓
-- **install.sh** - Interactive installer with 3 scopes ✓
-- **Makefile** - Ansible-based automation ✓
+- **Makefile** - Ansible-based automation (no install.sh) ✓
+- **ansible/** - Professional deployment system ✓
 
 ## Build Commands (tested)
-- **Installation:** `./install.sh` or `make install` ✓
+- **Installation:** `make install` ✓
 - **Testing:** `make test` ✓
 - **Remote Install:** `make install HOST=ip` ✓
 - **No compilation needed** - pure configuration files ✓
@@ -43,14 +41,15 @@ Verified: Documentation matches code ✓
 - **Changelog:** src/version-history.md (detailed, comprehensive) ✓
 - **Git Integration:** No tags found (VERSION file primary)
 
-## PM Configuration (Automated Behaviors Enabled)
+## PM Configuration
+- **pm_always_active:** false (manual activation only)
 - **auto_version_bump:** true
 - **auto_changelog_generation:** true
 - **git_commit_tracking:** true
 - **push_auto_version:** true
 - **push_auto_changelog:** true
 - **git_tag_creation:** true
-- **github_release_creation:** true (asked on init, project chose: mandatory)
+- **github_release_creation:** true
 - **git_commit_anonymity:** inherited_true (from global git-safety-behaviors.md)
 - **git_workflow_enforcement:** strict (ALL changes in main require branching)
 - **auto_mr_creation:** true
