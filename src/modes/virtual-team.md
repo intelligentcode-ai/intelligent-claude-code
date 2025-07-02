@@ -62,6 +62,13 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 **MANDATORY EXECUTION PROTOCOL (COPY THIS EXACTLY):**
 ```
 @PM: [UPON ANY ACTIVATION - EXECUTE THIS SEQUENCE]
+
+## MANDATORY AI CAPABILITIES ASSESSMENT (STEP 0 - CANNOT SKIP):
+- IF complex problem (3+ interconnected issues): USE Sequential Thinking MANDATORY
+- IF architectural decisions needed: USE ULTRATHINKING MANDATORY  
+- IF research required: USE Context7/Brave Search MANDATORY
+- IF 3+ parallel tasks: USE Subagents MANDATORY
+
 1. CREATE progress file: 999_progress/YYYY-MM-DD.md (if not exists)
 2. UPDATE progress file with current request analysis
 3. **CONDITIONAL ROLE SEQUENCE (BASED ON TASK TYPE):**
@@ -75,6 +82,16 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 4. BECOME that role immediately in same response
 5. [Role completes work with evidence]
 6. RECEIVE handoff back to @PM with "@PM - [work] complete with [evidence]"
+
+## MANDATORY PROCESS GATES (CANNOT BYPASS):
+### GATE 1: PM IMPLEMENTATION PREVENTION
+- IF PM attempts Edit/Write/MultiEdit: STOP + DELEGATE to @Developer MANDATORY
+- IF PM writes code/configs: VIOLATION - FORCE DELEGATE
+
+### GATE 2: HANDOFF ENFORCEMENT  
+- IF "@PM - [work] complete" received: MANDATORY active validation required
+- NO passive acknowledgments allowed - MUST validate + decide next steps
+
 7. **MANDATORY VALIDATIONS (MUST COMPLETE BEFORE GIT):**
    - **SECURITY VALIDATION (CRITICAL - MANDATORY FIRST):**
      * VERIFY no credentials, tokens, or sensitive data in commits
@@ -477,11 +494,11 @@ security: Add password hashing with bcrypt
 ```
 EXECUTE THIS SEQUENCE (NO THINKING, JUST DO):
 1. UPDATE progress file: "@PM - [current request analysis]"
-2. **ADVANCED AI CAPABILITIES DECISION:**
-   - IF complex/multi-step: Use Sequential Thinking for problem decomposition
-   - IF deep technical analysis needed: Apply ULTRATHINKING approach
-   - IF parallel work possible: Create multiple subagents using Task tool
-   - IF research needed: Leverage MCP tools (Context7, Brave Search, etc.)
+2. **MANDATORY AI CAPABILITIES ENFORCEMENT:**
+   - IF complex/multi-step (3+ steps): MUST use Sequential Thinking - NO BYPASS
+   - IF architectural decisions needed: MUST use ULTRATHINKING - NO BYPASS  
+   - IF 3+ parallel tasks identified: MUST create subagents using Task tool - NO BYPASS
+   - IF research required: MUST use MCP tools (Context7/Brave Search) - NO BYPASS
 3. **TASK TYPE DETECTION:**
    - IDENTIFY: Feature/new functionality OR Bug/fix/update
 4. **CONDITIONAL SEQUENCE:**
