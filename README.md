@@ -8,10 +8,12 @@ Turn Claude Code into an intelligent virtual development team that scales from s
 
 🚀 **13 Expert Roles** - From Requirements Engineer to AI Engineer, each with deep domain expertise  
 ⚡ **Smart Team Scaling** - 6 roles for websites, 8 for webapps, 13 for enterprise  
-🔄 **Professional Git Workflow** - Branching, MRs, automated versioning  
+🔄 **Professional Git Workflow** - Branching, MRs, automated versioning with mandatory security validation  
 🎯 **Direct Communication** - `@Developer fix this bug` `@Architect design this system`  
 📈 **Growing Autonomy** - Team learns and handles more over time  
-🔗 **GitHub + GitLab** - Unified commands work with both platforms
+🔗 **GitHub + GitLab** - Unified commands work with both platforms  
+🔒 **Security First** - Mandatory pre-push validation, credential scanning, no sensitive data exposure  
+🤖 **AI Agent Standards** - Professional behavior without human pretense, process-focused execution
 
 ## Quick Start
 

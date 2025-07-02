@@ -75,5 +75,5 @@
     msg:
       - "Installation complete!"
       - "Location: {{ claude_install_path }}"
-      - "Mode: Virtual Team (12 roles)"
-      - "Activation: @-notation for 12 specialized roles"
+      - "Mode: Virtual Team (13 roles)"
+      - "Activation: @-notation for 13 specialized roles"

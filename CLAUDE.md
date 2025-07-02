@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 12 specialized roles, Git workflow integration, and autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
+**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 13 specialized roles, Git workflow integration, and autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
 
 ## Development Architecture
 
@@ -21,7 +21,7 @@ This is a **configuration-based system** built with native Markdown files, not a
 - `behaviors/` - Behavioral intelligence modules (enhanced, git-safety, documentation)
 
 #### Configuration System
-- **Virtual Team Mode**: 12 specialized roles with Git workflow and autonomous operation
+- **Virtual Team Mode**: 13 specialized roles with Git workflow and autonomous operation
 - **Transparent Configuration**: All settings in native markdown
 - **Graceful Integration**: Single import line preserves existing content
 - **@-notation**: Direct role addressing (@PM, @Architect, @Developer, etc.)
@@ -72,7 +72,7 @@ When modifying the virtual team:
 - Single import activates entire system
 
 #### Virtual Team Architecture
-- 12 specialized roles with distinct expertise
+- 13 specialized roles with distinct expertise
 - @-notation for direct role addressing
 - Git workflow integration with branch/commit/MR process
 - Autonomous technical decision-making
@@ -115,7 +115,7 @@ git log --oneline -n 5
 
 ### Why This Design
 1. **Native Configuration**: Markdown over hidden environment files for discoverability
-2. **Virtual Team Focus**: 12 specialized roles for complete development coverage
+2. **Virtual Team Focus**: 13 specialized roles for complete development coverage
 3. **Graceful Integration**: Respects existing developer setups
 4. **Git Workflow**: Professional development practices built-in
 
