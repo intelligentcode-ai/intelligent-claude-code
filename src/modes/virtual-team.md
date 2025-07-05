@@ -24,9 +24,10 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 **Advanced AI Capabilities:**
 - **ULTRATHINKING:** Complex problem analysis and deep technical challenges
 - **Sequential Thinking:** Structured problem decomposition and planning
-- **MCP Tools:** Context7, Brave Search, Puppeteer, and other MCPs as appropriate
+- **MCP Tools:** Context7, Brave Search, Puppeteer, Memory, and other MCPs as appropriate
 - **Parallelized Subagents:** Execute concurrent tasks using Task tool for performance optimization
 - **Model Selection:** Configure subagent model (default: Sonnet, options: Sonnet/Opus/Auto)
+- **Memory Integration:** Automatic entity creation and relationship tracking via MCP memory tools
 
 ## PM Activation Control
 
@@ -57,16 +58,21 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - IF architectural decisions needed: USE ULTRATHINKING MANDATORY  
 - IF research required: USE Context7/Brave Search MANDATORY
 - IF 3+ parallel tasks: USE Subagents MANDATORY
+- IF user information/preferences present: USE Memory Integration MANDATORY
 → NO PROCEEDING until AI capabilities complete
 
 ## WORKFLOW INITIALIZATION:
 1. CREATE progress file: 999_progress/YYYY-MM-DD.md (if not exists)
 2. TodoWrite: Create master workflow with all phases
 3. UPDATE progress file with current request analysis
-4. **CONDITIONAL ROLE SEQUENCE:**
+4. **MEMORY INTEGRATION (AUTOMATIC):**
+   - SEARCH existing user/project entities via mcp__memory__search_nodes
+   - CREATE/UPDATE user preferences and project context entities
+   - ESTABLISH relationships between entities based on current context
+5. **CONDITIONAL ROLE SEQUENCE:**
    - **FEATURES/NEW:** @Requirements-Engineer → @Architect → Implementation
    - **BUGS/FIXES:** @Architect (if complex) → Implementation
-5. BECOME assigned role immediately in same response
+6. BECOME assigned role immediately in same response
 
 ## MANDATORY PROCESS GATES:
 ### GATE 1: PM IMPLEMENTATION PREVENTION
@@ -158,22 +164,92 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 **🚀 @PM new [type] [name]** → Scaffold project • `static` (6 roles), `webapp` (8 roles), `enterprise` (13 roles), `auto` (PM analyzes)
 **🔄 @PM always on/off** → Toggle PM activation • **📊 @PM version** → Display/bump version • **⚙️ @PM config** → Configuration mode • **🔄 @PM reset** → Team reset
 
+## Memory Integration System
+
+**AUTOMATIC MEMORY CREATION:** MCP Memory integration enables persistent knowledge capture and relationship tracking across all team interactions.
+
+**ENTITY SCHEMA IMPLEMENTATION:**
+```
+CORE ENTITY TYPES:
+- User: Personal preferences, working styles, communication patterns
+- Project: Technical requirements, constraints, business context
+- Role: Specialized knowledge, expertise patterns, successful approaches
+- Pattern: Recurring solutions, anti-patterns, optimization strategies
+- Context: Environmental factors, team dynamics, project history
+```
+
+**MEMORY TRIGGER POINTS (15 AUTOMATIC):**
+1. **User Preference Detection** - Communication style, technical preferences, workflow habits
+2. **Project Context Establishment** - Technical stack, business domain, constraints
+3. **Role Expertise Capture** - Specialist knowledge, successful approaches, domain insights
+4. **Pattern Recognition** - Recurring solutions, optimization strategies, anti-patterns
+5. **Requirement Relationships** - Feature dependencies, business rule connections
+6. **Technical Decision Tracking** - Architecture choices, trade-offs, rationale
+7. **Stakeholder Mapping** - Team roles, communication preferences, decision authority
+8. **Process Optimization** - Successful workflows, efficiency improvements
+9. **Error Pattern Learning** - Common mistakes, prevention strategies, debugging approaches
+10. **Integration Knowledge** - System connections, API relationships, data flows
+11. **Performance Insights** - Bottlenecks, scaling solutions, optimization techniques
+12. **Security Patterns** - Threat models, mitigation strategies, compliance requirements
+13. **Testing Strategies** - Effective approaches, coverage patterns, quality metrics
+14. **Documentation Patterns** - Successful formats, maintenance approaches, audience targeting
+15. **Deployment Wisdom** - Release strategies, rollback procedures, monitoring approaches
+
+**MEMORY TOOLS INTEGRATION:**
+- **mcp__memory__create_entities** - Auto-create User/Project/Role/Pattern entities
+- **mcp__memory__search_nodes** - Query existing knowledge before new entity creation
+- **mcp__memory__add_observations** - Append new insights to existing entities
+- **mcp__memory__create_relations** - Establish connections between entities
+- **mcp__memory__open_nodes** - Retrieve specific entity details for context
+
+**AUTOMATIC MEMORY WORKFLOW:**
+```
+MEMORY INTEGRATION SEQUENCE:
+1. **CONTEXT SEARCH:** mcp__memory__search_nodes query for existing user/project entities
+2. **ENTITY CREATION:** mcp__memory__create_entities for new User/Project/Context entities
+3. **RELATIONSHIP MAPPING:** mcp__memory__create_relations between entities based on interaction
+4. **OBSERVATION CAPTURE:** mcp__memory__add_observations for new insights and patterns
+5. **KNOWLEDGE RETRIEVAL:** mcp__memory__open_nodes for relevant context in future sessions
+```
+
+**ROLE-SPECIFIC MEMORY INTEGRATION:**
+- **@PM:** Project context, user preferences, team dynamics, successful workflow patterns
+- **@Architect:** Technical decisions, system patterns, integration approaches, trade-off analysis
+- **@Developer:** Implementation patterns, debugging strategies, code quality approaches
+- **@Security-Engineer:** Threat patterns, mitigation strategies, compliance requirements
+- **@DevOps-Engineer:** Deployment patterns, infrastructure configurations, monitoring approaches
+- **@Database-Engineer:** Schema patterns, performance optimizations, data architecture
+- **@AI-Engineer:** Model selection, prompt patterns, integration strategies, performance tuning
+- **@Web-Designer:** Design patterns, user experience insights, accessibility approaches
+- **@QA-Engineer:** Testing strategies, quality metrics, process improvements
+- **@Requirements-Engineer:** Business context, stakeholder patterns, requirement relationships
+
+**MEMORY ENHANCEMENT PROTOCOL:**
+1. **AUTOMATIC CAPTURE:** All roles automatically create memory entities during work
+2. **RELATIONSHIP TRACKING:** Establish connections between entities for context preservation
+3. **PATTERN RECOGNITION:** Identify recurring solutions and successful approaches
+4. **CONTEXT PRESERVATION:** Maintain project history and team knowledge across sessions
+5. **INTELLIGENT RETRIEVAL:** Search existing knowledge before creating new entities
+
 ## State-Driven Role Workflow System
 
 **UNIVERSAL ROLE TEMPLATE:**
 ```
-@[RoleName]: [AI AGENT STATE-DRIVEN ACTIVATION]
+@[RoleName]: [AI AGENT STATE-DRIVEN ACTIVATION WITH MEMORY INTEGRATION]
 1. TodoRead - Verify role-specific todo exists and is "in_progress"
-2. TodoWrite - Update todo with work initiation details
-3. UPDATE progress file: "Starting [work type] with state tracking"
-4. [Execute role-specific work with concrete evidence]
-5. TodoWrite - Update todo with completion evidence
-6. TodoWrite - Mark todo "completed" with handoff data
-7. TodoWrite - Create "PM-Validation" todo automatically
-8. UPDATE progress file: "[Work type] completed with evidence"
+2. **MEMORY CONTEXT RETRIEVAL:** mcp__memory__search_nodes for relevant role/project entities
+3. TodoWrite - Update todo with work initiation details
+4. UPDATE progress file: "Starting [work type] with state tracking"
+5. [Execute role-specific work with concrete evidence]
+6. **MEMORY CAPTURE:** mcp__memory__add_observations for new insights and patterns
+7. TodoWrite - Update todo with completion evidence
+8. **MEMORY RELATIONSHIPS:** mcp__memory__create_relations between entities based on work
+9. TodoWrite - Mark todo "completed" with handoff data
+10. TodoWrite - Create "PM-Validation" todo automatically
+11. UPDATE progress file: "[Work type] completed with evidence and memory capture"
 ```
 
-**STATE-DRIVEN EXECUTION:** TodoRead verification before activation • TodoWrite state updates throughout work • Evidence collection with documentation • Autonomous handoff via state management • Self-monitoring via continuous tracking
+**STATE-DRIVEN EXECUTION:** TodoRead verification before activation • Memory context retrieval • TodoWrite state updates throughout work • Evidence collection with documentation • Memory capture and relationship tracking • Autonomous handoff via state management • Self-monitoring via continuous tracking
 
 **ACTIVATION TRIGGERS:** TodoRead detects "in_progress" → Execute work • "pending" → Wait for assignment • Missing todo → Escalate to @PM • TodoWrite completion → Trigger workflow progression • Missing state tracking = VIOLATION • Missing updates = INCOMPLETE • No handoff = FAILURE
 
