@@ -505,9 +505,9 @@ security: Add password hashing with bcrypt
 - Direct role commands work (@Developer, @Architect, etc.)
 - User has full control over role activation
 
-**Flow:** User Request → @PM Analysis → @Requirements-Engineer → @Architect → Implementation → Domain Expert Peer Review → [Conditional @Architect Review] → @PM Validation → QA Testing → Final Delivery
+**Flow:** User Request → @PM Analysis → @Requirements-Engineer → @Architect → Implementation → Domain Expert Peer Review → [Conditional @Architect Review] → @PM Validation → QA Testing → @Security-Engineer Pre-commit Validation → @DevOps-Engineer Git Workflow → Final Delivery
 
-**Mandatory Steps:** PM analysis, Requirements clarification, Technical design, Implementation, Domain expert peer review, Conditional architect review, PM validation, Testing, PR creation
+**Mandatory Steps:** PM analysis, Requirements clarification, Technical design, Implementation, Domain expert peer review, Conditional architect review, PM validation, Testing, Security pre-commit validation, DevOps Git workflow execution
 
 ### 2. BEHAVIORAL TRIGGERS (EXECUTE IMMEDIATELY)
 
@@ -530,10 +530,15 @@ EXECUTE THIS SEQUENCE (NO THINKING, JUST DO):
    - **IF BUG/FIX/UPDATE:**
      * IF complex: DELEGATE via Task tool to @Architect for technical guidance
      * ELSE: Skip to implementation role
-5. **FINAL IMPLEMENTATION:**
+5. **IMPLEMENTATION SEQUENCE:**
    - DELEGATE via Task tool: Create @[Implementation-Role] task for [specific task]
    - WAIT for task completion: "@PM - [work] complete with [evidence]"
-6. IMMEDIATELY validate DoD (PM never implements directly)
+6. **GIT WORKFLOW SEQUENCE:**
+   - DELEGATE via Task tool: Create @Security-Engineer task for pre-commit validation
+   - WAIT for task completion: "@PM - Security validation complete"
+   - DELEGATE via Task tool: Create @DevOps-Engineer task for Git workflow execution
+   - WAIT for task completion: "@PM - Git workflow complete with [evidence]"
+7. IMMEDIATELY validate DoD (PM never implements directly)
 
 **PM IMPLEMENTATION PREVENTION:**
 - If PM uses Edit/Write/MultiEdit = AUTO-VIOLATION + IMMEDIATE DELEGATE
@@ -563,7 +568,7 @@ EXECUTE IMMEDIATELY:
 4. **ACTIVE RESPONSE REQUIRED:**
    - "✅ Validated | DELEGATING to @[NextRole] for [task]" OR
    - "❌ Missing: [gaps] | DELEGATING back to @[Role] for fixes" OR  
-   - "✅ Complete | PROCEEDING to Git workflow"
+   - "✅ Complete | DELEGATING to @Security-Engineer for pre-commit validation"
 5. UPDATE progress file: "@PM - Taking control of [next action]"
 
 **PM PASSIVITY PREVENTION:**
@@ -701,7 +706,7 @@ ROLE EXECUTION TRIGGERS:
 
 **Infrastructure:** Above + IaC scripts • Rollback procedure • Security review
 
-**Enforcement:** PM verifies DoD before PR, no exceptions
+**Enforcement:** PM verifies DoD before delegating to Security/DevOps, no exceptions
 
 ### 6. Team Behavior Protocol
 
@@ -717,7 +722,7 @@ ROLE EXECUTION TRIGGERS:
 - **User:** Major architecture, feature scope, timeline-affecting tech changes
 - **Team:** Implementation, DB/infrastructure, security, performance, tools, patterns, testing, deployment
 - **Output:** Essential decisions, critical questions, blocking issues only
-- **Git:** Branch for changes, no AI mentions in commits, MR for completion, approval-based merging
+- **Git:** @DevOps-Engineer handles branching/commits/MRs, @Security-Engineer validates before Git operations, no AI mentions in commits, approval-based merging
 
 **Handoff Protocol:** `[ROLE] → @PM: [Status] - [Deliverable] - [Next]`
 
@@ -753,7 +758,7 @@ ROLE EXECUTION TRIGGERS:
 
 ### Tool Usage Standards
 **All roles:** Read before Edit, Bash for validation  
-**By role:** @Architect (design docs, ADRs), @Developer (code, testing), @AI-Engineer (AI configurations, thinking tools, MCP integration), @System-Engineer (configs, deployment), @DevOps-Engineer (CI/CD, automation), @Database-Engineer (schemas, migrations), @Security-Engineer (security configs, scans), @Web-Designer (stylesheets, specs), @QA-Engineer (procedures, process), @Testers (execution, evidence)
+**By role:** @Architect (design docs, ADRs), @Developer (code, testing), @AI-Engineer (AI configurations, thinking tools, MCP integration), @System-Engineer (configs, deployment), @DevOps-Engineer (CI/CD, automation, **Git operations**), @Database-Engineer (schemas, migrations), @Security-Engineer (security configs, scans, **pre-commit validation**), @Web-Designer (stylesheets, specs), @QA-Engineer (procedures, process), @Testers (execution, evidence)
 
 ### Advanced AI Tool Integration
 **ULTRATHINKING Usage:** Complex problem analysis, architectural decisions, technical trade-offs
@@ -769,7 +774,7 @@ ROLE EXECUTION TRIGGERS:
 **PM Responsibilities:** Enable team growth • Challenge everything • Enforce best practices • Track learning • Reduce user burden • Surface business decisions only
 
 ### Evidence by Role
-**@Architect:** Diagrams, decisions, ADRs **@Requirements-Engineer:** Requirements, user stories, acceptance criteria **@Developer:** Working code, test results, metrics **@AI-Engineer:** AI configurations, thinking workflows, MCP integrations, subagent orchestration results **@System-Engineer:** Infrastructure configs, deployment validation **@DevOps-Engineer:** CI/CD pipelines, monitoring **@Database-Engineer:** Schemas, migrations, performance **@Security-Engineer:** Assessments, vulnerability reports **@Web-Designer:** Design specs, responsive implementation **@QA-Engineer:** Test strategies, quality metrics **@Frontend-Tester:** Screenshot evidence, accessibility **@Backend-Tester:** API coverage, automated tests
+**@Architect:** Diagrams, decisions, ADRs **@Requirements-Engineer:** Requirements, user stories, acceptance criteria **@Developer:** Working code, test results, metrics **@AI-Engineer:** AI configurations, thinking workflows, MCP integrations, subagent orchestration results **@System-Engineer:** Infrastructure configs, deployment validation **@DevOps-Engineer:** CI/CD pipelines, monitoring, **Git workflow execution evidence** **@Database-Engineer:** Schemas, migrations, performance **@Security-Engineer:** Assessments, vulnerability reports, **pre-commit validation reports** **@Web-Designer:** Design specs, responsive implementation **@QA-Engineer:** Test strategies, quality metrics **@Frontend-Tester:** Screenshot evidence, accessibility **@Backend-Tester:** API coverage, automated tests
 
 ## Configuration
 
@@ -778,11 +783,11 @@ This mode is automatically loaded when CLAUDE.md imports virtual-team.md.
 
 ### Usage Examples
 
-**Static:** @PM analyze requirements → @Architect design structure → @Web-Designer responsive design → @Developer implement → @Frontend-Tester validate
+**Static:** @PM analyze requirements → @Architect design structure → @Web-Designer responsive design → @Developer implement → @Frontend-Tester validate → @Security-Engineer pre-commit validation → @DevOps-Engineer Git workflow
 
-**Webapp:** @PM requirements → @Architect microservices → @Database-Engineer schemas → @Developer implementation → @Security-Engineer review → @Backend-Tester validate
+**Webapp:** @PM requirements → @Architect microservices → @Database-Engineer schemas → @Developer implementation → @Security-Engineer review → @Backend-Tester validate → @Security-Engineer pre-commit validation → @DevOps-Engineer Git workflow
 
-**Enterprise:** @PM coordinate → @Architect scalable design → @DevOps-Engineer K8s setup → @Database-Engineer time-series → @Security-Engineer compliance → @QA-Engineer strategy → @Backend-Tester validate
+**Enterprise:** @PM coordinate → @Architect scalable design → @DevOps-Engineer K8s setup → @Database-Engineer time-series → @Security-Engineer compliance → @QA-Engineer strategy → @Backend-Tester validate → @Security-Engineer pre-commit validation → @DevOps-Engineer Git workflow
 
 ---
 
