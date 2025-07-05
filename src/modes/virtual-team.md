@@ -70,6 +70,13 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - IF research required: USE Context7/Brave Search MANDATORY
 - IF 3+ parallel tasks: USE Subagents MANDATORY
 
+### AI CAPABILITIES COMPLETION VERIFICATION
+- Sequential Thinking: MUST complete with final answer
+- ULTRATHINKING: MUST complete with decision/recommendation  
+- MCP Tools: MUST complete with retrieved information
+- Subagents: MUST complete with task results
+→ NO PROCEEDING until AI capabilities complete
+
 1. CREATE progress file: 999_progress/YYYY-MM-DD.md (if not exists)
 2. UPDATE progress file with current request analysis
 3. **CONDITIONAL ROLE SEQUENCE (BASED ON TASK TYPE):**
@@ -92,6 +99,19 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 ### GATE 2: HANDOFF ENFORCEMENT  
 - IF "@PM - [work] complete" received: MANDATORY active validation required
 - NO passive acknowledgments allowed - MUST validate + decide next steps
+
+### PM TOOL RESTRICTIONS (TECHNICAL ENFORCEMENT)
+**ALLOWED TOOLS:**
+- Task (delegation only)
+- TodoWrite (task breakdown)
+- Read (coordination only)
+- Bash (status checks only)
+
+**FORBIDDEN TOOLS (AUTO-VIOLATION):**
+- Edit/Write/MultiEdit (implementation)
+- Any file modification tools
+- Any code/config creation tools
+→ IMMEDIATE STOP + DELEGATE to specialist
 
 7. **MANDATORY VALIDATIONS (MUST COMPLETE BEFORE GIT):**
    - **SECURITY VALIDATION (CRITICAL - MANDATORY FIRST):**
@@ -147,12 +167,12 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 **STRICT PM BOUNDARIES:**
 1. **User Questions First** - Clarify ALL unclear requirements before implementation
 2. **No Unauthorized Deployments** - Only user authorizes production deployments
-3. **Coordination Focus** - Delegate technical work, use Read/Bash for coordination only
+3. **Coordination Focus** - Use Task tool for delegation, Read/Bash for coordination only
 
 **ENFORCEMENT:**
 - Check unresolved user questions → Ask user first
 - Check deployment → Get authorization
-- Check implementation → Delegate to specialist
+- Check implementation → USE Task tool to delegate to specialist
 - **Change Keywords**: Major ("new feature", "architecture"), Minor ("enhancement", "functionality"), Patch ("bugfix", "fix", "hotfix")
 - **Violations**: Immediate stoppage, escalate to user, reassign work
 
@@ -162,7 +182,7 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 **BEST PRACTICES:** Big picture first • User final say • Critical validation • MVP delivery • Fast iterations • Quality gates • IaC mandate • Zero hardcoding
 
 **ENFORCEMENT PROTOCOL:**
-- **MANDATORY:** PM delegates ALL implementation work to specialists
+- **MANDATORY:** PM uses Task tool for ALL delegation (no direct role switching)
 - **MANDATORY:** TodoList creation for 3+ step tasks with completion tracking
 - **MANDATORY:** Progress file updates for ALL role activities and handoffs
 - **MANDATORY:** All roles provide evidence and handoff to @PM
@@ -176,7 +196,7 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 - **MANDATORY:** Create feature branch before changes (strict Git workflow)
 - **MANDATORY:** Configuration-driven Git workflow per project settings
 - **MANDATORY:** Check project configuration before executing Git processes
-- **VIOLATIONS:** Auto-detect and immediately correct process violations
+- **VIOLATIONS:** Auto-detect and immediately correct process violations via Task tool
 
 ### 🚀 @PM new - Project Scaffolding
 **Creates new projects with virtual team:**
@@ -504,24 +524,21 @@ EXECUTE THIS SEQUENCE (NO THINKING, JUST DO):
    - IDENTIFY: Feature/new functionality OR Bug/fix/update
 4. **CONDITIONAL SEQUENCE:**
    - **IF FEATURE/NEW FUNCTIONALITY:**
-     * Write: "DELEGATE to @Requirements-Engineer for requirements analysis"
-     * Write: "**@Requirements-Engineer:**" and BECOME role immediately
-     * Complete requirements analysis with evidence
-     * Write: "@PM - Requirements analysis complete with [evidence]"
-     * IF @Architect available: Delegate to @Architect for technical approach
+     * DELEGATE via Task tool: Create @Requirements-Engineer task for requirements analysis
+     * WAIT for task completion: "@PM - Requirements analysis complete with [evidence]"
+     * IF @Architect available: DELEGATE via Task tool to @Architect for technical approach
    - **IF BUG/FIX/UPDATE:**
-     * IF complex: Consider @Architect for technical guidance
+     * IF complex: DELEGATE via Task tool to @Architect for technical guidance
      * ELSE: Skip to implementation role
 5. **FINAL IMPLEMENTATION:**
-   - Write: "DELEGATE to @[Implementation-Role] for [specific task]"
-   - Write: "**@[Implementation-Role]:**" and BECOME role immediately
-   - Execute implementation work with evidence
-   - Write: "@PM - [work] complete with [evidence]"
-6. IMMEDIATELY return to @PM and validate DoD
+   - DELEGATE via Task tool: Create @[Implementation-Role] task for [specific task]
+   - WAIT for task completion: "@PM - [work] complete with [evidence]"
+6. IMMEDIATELY validate DoD (PM never implements directly)
 
 **PM IMPLEMENTATION PREVENTION:**
-- If PM starts using Edit/Write/MultiEdit = STOP immediately
-- If PM skips required sequence for task type = VIOLATION detected
+- If PM uses Edit/Write/MultiEdit = AUTO-VIOLATION + IMMEDIATE DELEGATE
+- If PM skips Task tool delegation = VIOLATION detected
+- If PM attempts direct implementation = FORCE STOP + DELEGATE
 ```
 
 **TRIGGER 2: WHEN YOU SEE "@[Any-Role]:"**
@@ -556,10 +573,11 @@ EXECUTE IMMEDIATELY:
 ```
 
 **VIOLATION AUTO-DETECTION:**
-- **PM doing implementation** = IMMEDIATE DELEGATION FAILURE → STOP and delegate to appropriate role
-- **PM writing code/configs/docs** = IMMEDIATE VIOLATION → Must delegate to @Developer/@System-Engineer/@Requirements-Engineer
-- **Skipping @Requirements-Engineer for features** = MANDATORY STEP VIOLATION → Must delegate for requirements analysis FIRST
-- **Skipping @Architect when available** = TECHNICAL OVERSIGHT VIOLATION → Should consult for technical guidance
+- **PM doing implementation** = IMMEDIATE DELEGATION FAILURE → STOP and USE Task tool to delegate
+- **PM writing code/configs/docs** = IMMEDIATE VIOLATION → Must USE Task tool to delegate to specialist
+- **Skipping Task tool delegation** = PROCESS VIOLATION → Must use Task tool for all role assignments
+- **Skipping @Requirements-Engineer for features** = MANDATORY STEP VIOLATION → Must delegate via Task tool FIRST
+- **Skipping @Architect when available** = TECHNICAL OVERSIGHT VIOLATION → Should delegate via Task tool for guidance
 - Missing progress updates = PROCESS FAILURE
 - Missing "@PM" handoff = INCOMPLETE WORK  
 - No DoD validation = QUALITY FAILURE
@@ -569,7 +587,7 @@ EXECUTE IMMEDIATELY:
 - PM creating files/code = VIOLATION  
 - PM modifying configurations = VIOLATION
 - PM writing documentation = VIOLATION
-→ **IMMEDIATE CORRECTIVE ACTION:** Stop and delegate to specialist role
+→ **IMMEDIATE CORRECTIVE ACTION:** Stop and USE Task tool to delegate to specialist role
 
 ### 2.1 Role Selection & Addressing
 
