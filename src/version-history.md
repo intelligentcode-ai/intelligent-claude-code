@@ -1,5 +1,27 @@
 # Intelligent Claude Code - Version History
 
+## [2.14.0] - 2025-07-05
+### Added
+- **MCP Memory Integration System** - Automatic entity creation and relationship tracking via mcp__memory tools
+- **15 Automatic Memory Trigger Points** - Comprehensive knowledge capture across all team interactions
+- **Entity Schema Implementation** - User, Project, Role, Pattern, and Context entity types with relationship mapping
+- **Memory-Enhanced Role Templates** - All roles now include memory context retrieval and capture in workflows
+- **Intelligent Knowledge Retrieval** - Search existing knowledge before creating new entities to prevent duplication
+- **Role-Specific Memory Integration** - Specialized memory patterns for each of the 13 team roles
+- **Automatic Memory Workflow** - 5-step process for context search, entity creation, relationship mapping, observation capture, and knowledge retrieval
+
+### Enhanced
+- **Advanced AI Capabilities** - Added Memory Integration to core AI capabilities alongside ULTRATHINKING and Sequential Thinking
+- **PM Workflow Initialization** - Memory integration now mandatory step in PM workflow assessment
+- **State-Driven Role Workflow** - Universal role template enhanced with memory context retrieval and relationship tracking
+- **File Size Optimization** - Expanded from 30.1KB to 35.3KB while adding comprehensive memory functionality
+
+### Technical
+- **Memory Tools Integration** - mcp__memory__create_entities, search_nodes, add_observations, create_relations, open_nodes
+- **Entity Relationship Mapping** - Automatic relationship creation between User, Project, Role, Pattern, and Context entities
+- **Knowledge Persistence** - Cross-session memory preservation for team knowledge and project context
+- **Pattern Recognition** - Automatic capture of recurring solutions, optimization strategies, and anti-patterns
+
 ## [2.13.0] - 2025-07-05
 ### Enhanced
 - **Comprehensive behavioral enforcement optimization** - Complete overhaul of PM delegation and workflow control
