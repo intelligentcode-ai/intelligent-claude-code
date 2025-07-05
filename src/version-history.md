@@ -1,5 +1,26 @@
 # Intelligent Claude Code - Version History
 
+## [2.13.0] - 2025-07-05
+### Enhanced
+- **Comprehensive behavioral enforcement optimization** - Complete overhaul of PM delegation and workflow control
+- **TodoWrite-based state management** - Replaced string triggers with structured todo-based state tracking
+- **6-checkpoint validation system** - Mandatory validation gates for Security, Progress, DoD, Peer Review, Requirements, and Evidence
+- **Autonomous Level 3 workflow** - Advanced team maturity with self-managing Git workflows
+- **Intelligent template consolidation** - Reduced file size from 40.0KB to 30.1KB (24% reduction)
+- **Enhanced error detection** - Advanced violation detection and correction mechanisms
+- **State-driven role activation** - TodoRead-based role workflow with autonomous handoff management
+- **Pre-execution validation gates** - Prevents PM implementation violations before they occur
+- **Optimized workflow efficiency** - Streamlined processes while preserving 100% functionality
+- **Advanced handoff recognition** - Improved PM delegation enforcement and role coordination
+
+### Fixed
+- **PM delegation failures** - TodoWrite-based state management prevents role switching violations
+- **Handoff recognition issues** - Enhanced "@PM - [work] complete" pattern recognition and response
+- **Process violation detection** - Comprehensive validation system with corrective actions
+- **Workflow state management** - Autonomous todo-based tracking prevents process drift
+- **Role activation triggers** - State-driven activation prevents missing role identification
+- **Validation checkpoint enforcement** - Mandatory completion of all validation phases before Git operations
+
 ## [2.9.0] - 2025-07-02
 ### Enhanced
 - **Virtual team optimization** - Reduced configuration file size from 43.9k to 33.8k characters (23% reduction)
