@@ -35,8 +35,23 @@
 
 ## PM Commands Reference
 
-**@PM new [type] [name]** → Scaffold project • `static` (6+ roles), `webapp` (8+ roles), `enterprise` (13+ roles), `auto` (PM analyzes) • **@PM I need [X] expert** → Generate specialist on-demand
-**@PM always on/off** → Toggle PM activation • **@PM version** → Display/bump version • **@PM config** → Config mode • **@PM reset** → Team reset • **@PM init** → Initialize team configuration
+**Project Setup:**
+- **@PM new [type] [name]** → Scaffold project • `static` (6+ roles), `webapp` (8+ roles), `enterprise` (13+ roles), `auto` (PM analyzes)
+- **@PM I need [X] expert** → Generate specialist on-demand
+- **@PM init** → Initialize team configuration with guided setup
+
+**Configuration Management:**
+- **@PM config** → Show current settings and guided adjustment interface
+- **@PM config show** → Display all current configuration settings
+- **@PM config reset** → Reset to defaults with guided setup
+- **@PM config backup** → Backup current configuration
+- **@PM config restore** → Restore from backup
+
+**Team Control:**
+- **@PM always on/off** → Toggle PM activation mode
+- **@PM reset** → Team reset with preference preservation
+- **@PM version** → Display/bump version information
+- **@PM status** → Show team status and configuration summary
 
 ## Team Maturity Levels
 
@@ -52,36 +67,66 @@
 ### PM Command Implementations
 
 **@PM init Implementation:**
-1. **ASK USER PREFERENCES:** Present configuration options with defaults
-2. **COLLECT SETTINGS:** Git privacy, auto-cleanup, icons, validation preferences
-3. **SAVE CONFIGURATION:** Store in project/.claude/config.md or ~/.claude/config.md
-4. **VALIDATE SETUP:** Confirm all settings are properly configured
-5. **INITIALIZE TEAM:** Set up initial team state and progress tracking
+1. **INTELLIGENT DETECTION:** Auto-detect existing settings, only ask for missing ones
+2. **GUIDED SETUP:** AI-guided conversation to understand user preferences
+3. **CONTEXTUAL QUESTIONS:** Ask relevant questions based on project type and user needs
+4. **SMART DEFAULTS:** Propose intelligent defaults based on project analysis
+5. **SAVE CONFIGURATION:** Store in project/.claude/config.md or ~/.claude/config.md
+6. **VALIDATE SETUP:** Confirm all settings work properly
+7. **INITIALIZE TEAM:** Set up initial team state and progress tracking
 
 **@PM reset Implementation:**
 1. **CONFIRM RESET:** Ask user to confirm team reset action
-2. **RE-RUN CONFIGURATION:** Run @PM init process again
-3. **CLEAR STATE:** Reset all team state and progress files
-4. **REINITIALIZE:** Set up fresh team configuration
+2. **PRESERVE PREFERENCES:** Keep user preferences, reset only team state
+3. **RE-RUN CONFIGURATION:** Run guided setup for new/missing settings
+4. **CLEAR STATE:** Reset team state and progress files
+5. **REINITIALIZE:** Set up fresh team configuration
 
 **@PM config Implementation:**
-1. **SHOW CURRENT CONFIG:** Display all current configuration settings
-2. **ALLOW MODIFICATIONS:** Let user change specific settings
-3. **VALIDATE CHANGES:** Ensure settings are valid
-4. **SAVE UPDATES:** Store updated configuration
+1. **SHOW CURRENT CONFIG:** Display all current configuration settings in organized format
+2. **GUIDED ADJUSTMENTS:** AI-guided conversation to modify settings
+3. **ADD NEW SETTINGS:** Detect and prompt for any new configuration options
+4. **VALIDATE CHANGES:** Ensure settings are compatible and valid
+5. **SAVE UPDATES:** Store updated configuration
+6. **IMMEDIATE EFFECT:** Apply changes immediately to current session
 
-**Configuration Options to Ask During Init:**
-- git_privacy: true/false (Remove AI mentions from commits)
-- auto_gitignore: true/false (Auto-generate .gitignore)
-- validate_commits: true/false (Check for sensitive data)
-- no_icons: false/true (Disable emojis/icons)
-- auto_cleanup: true/false (Clean temporary files)
-- human_commits: true/false (Human-like commit messages)
-- team_maturity: 1/2/3 (Team autonomy level)
-- pm_always_active: true/false (Auto PM activation)
-- archive_progress: true/false (Archive progress files)
-- organize_files: true/false (Semantic file organization)
+**GUIDED CONFIGURATION QUESTIONS:**
+
+**Project Context Questions:**
+- "What type of project are you working on?" (web app, mobile, AI/ML, enterprise, etc.)
+- "Are you working solo or with a team?" (affects collaboration settings)
+- "What's your experience level with this tech stack?" (affects guidance level)
+
+**Workflow Preferences:**
+- "How much automation do you want?" (Team maturity level 1-3)
+- "Should I activate automatically or wait for @PM commands?" (pm_always_active)
+- "Do you prefer clean, organized files or keep everything?" (auto_cleanup, organize_files)
+
+**Git & Privacy Preferences:**
+- "Do you want to keep AI mentions in commit messages?" (git_privacy)
+- "Should I help manage your .gitignore file?" (auto_gitignore)
+- "Want me to scan for sensitive data before commits?" (validate_commits)
+- "Prefer clean commit messages or include emojis?" (no_icons, human_commits)
+
+**Memory & Progress Preferences:**
+- "Should I remember your preferences across sessions?" (memory_integration)
+- "Want me to archive old progress files?" (archive_progress)
+- "Should I track your learning and patterns?" (pattern_tracking)
+
+**SMART DEFAULTS LOGIC:**
+- Enterprise projects → Higher security, team maturity level 3, validate_commits=true
+- Solo projects → Moderate automation, team maturity level 2, pm_always_active=true
+- Learning projects → Lower automation, team maturity level 1, more guidance
+- Open source → git_privacy=true, auto_gitignore=true, human_commits=true
+
+**SETTINGS ENFORCEMENT:**
+- ALL roles must check configuration before applying any restrictions
+- PM enforces configuration compliance across all team members
+- Settings override any hardcoded defaults
+- Configuration changes take effect immediately
 
 ### Usage Examples
 
-**Static:** @PM → @Architect → @Web-Designer → @Developer → @Frontend-Tester → @Security-Engineer → @DevOps-Engineer • **Webapp:** @PM → @Architect → @Database-Engineer → @Developer → @Backend-Tester → @Security-Engineer → @DevOps-Engineer • **Enterprise:** @PM → @Architect → @DevOps-Engineer → @Database-Engineer → @Security-Engineer → @QA-Engineer → @DevOps-Engineer
+**Static:** CAPABILITY_ANALYSIS → CAPABILITY_ARCHITECTURE → CAPABILITY_DESIGN → CAPABILITY_IMPLEMENTATION → CAPABILITY_TESTING → CAPABILITY_SECURITY → CAPABILITY_DEPLOYMENT • **Webapp:** CAPABILITY_ANALYSIS → CAPABILITY_ARCHITECTURE → Database Capabilities → CAPABILITY_IMPLEMENTATION → API Testing → CAPABILITY_SECURITY → CAPABILITY_DEPLOYMENT • **Enterprise:** CAPABILITY_ANALYSIS → CAPABILITY_ARCHITECTURE → CAPABILITY_DEPLOYMENT → Database Capabilities → CAPABILITY_SECURITY → CAPABILITY_TESTING → CAPABILITY_DEPLOYMENT
+
+**NOTE:** These workflows are now capability-based and will route to the best available role for each capability, including dynamic specialists
