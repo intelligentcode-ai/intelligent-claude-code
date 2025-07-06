@@ -4,7 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 13 specialized roles, Git workflow integration, and autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
+**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 13 specialized roles, TRUE dynamic specialist generation, mandatory enforcement architecture, Git workflow integration, and Level 3 autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
+
+### Core Architecture Features
+- **TRUE Dynamic Specialist Generation**: Unlimited domain experts created on-demand with Context7 knowledge injection
+- **Mandatory Enforcement Architecture**: Universal process compliance for ALL roles and workflows
+- **Level 3 Autonomous Operations**: Strategic analysis layer with continuous autonomy protocols
+- **Fallback Tool Logic**: Intelligent degradation from Context7 → Brave Search → Built-in tools
+- **Process Compliance Enforcement**: Fact-based validation with auto-correction workflows
 
 ## Development Architecture
 
@@ -16,9 +23,24 @@ This is a **configuration-based system** built with native Markdown files, not a
 #### Source Directory (`/src/`)
 - `CLAUDE.md` - Master configuration template (installed to `~/.claude/CLAUDE.md`)
 - `config.md` - Native markdown configuration template
-- `modes/virtual-team.md` - Virtual team mode implementation (~4500 tokens)
+- `modes/virtual-team.md` - Virtual team mode implementation with modular architecture
+- `modes/dynamic-roles.md` - TRUE dynamic specialist generation system (unlimited domains)
+- `modes/process-enforcement.md` - Strategic analysis layer, L3 autonomy, mandatory enforcement
+- `modes/virtual-team-core.md` - 13 core roles with @-notation addressing
+- `modes/advanced-features.md` - Memory integration, Git workflow, quality standards
 - `personas/personas.md` - 14 additional specialist persona definitions
 - `behaviors/` - Behavioral intelligence modules (enhanced, git-safety, documentation)
+
+#### Mandatory Enforcement Architecture
+- **Universal Process Compliance**: ALL roles must follow enforcement protocols for ALL activities
+- **Quality Gates**: Auto-correction workflows for requirements, architecture, peer review, implementation
+- **Security Validation**: Mandatory pre-commit validation for ALL code changes and configurations
+- **Fact-Based Validation**: No assumptions, evidence-based reporting, PRD compliance for ALL work
+- **Git Workflow Enforcement**: Proper branching, commit standards, MR requirements for ALL changes
+- **Documentation Compliance**: Real-time updates, no document sprawl, evidence provision for ALL tasks
+- **Review Enforcement**: Mandatory peer review for ALL implementations, not just code changes
+- **Validation Enforcement**: DoD validation required for ALL deliverables and handoffs
+- **Process Gate Enforcement**: Strategic analysis layer required for ALL role delegations
 
 #### Configuration System
 - **Virtual Team Mode**: 13 specialized roles with Git workflow and autonomous operation
@@ -65,17 +87,34 @@ When modifying the virtual team:
 
 ### Key Development Patterns
 
-#### File Import Architecture
-- Base configuration in `src/CLAUDE.md`
-- Virtual team mode in `src/modes/virtual-team.md`
-- Import statements use `@~/.claude/filename.md` syntax
-- Single import activates entire system
+#### Modular Architecture System
+- **Base Configuration**: `src/CLAUDE.md` with import chain management
+- **Virtual Team Core**: `src/modes/virtual-team.md` with modular dependency chain
+- **Dynamic Roles**: `src/modes/dynamic-roles.md` with unlimited specialist generation
+- **Process Enforcement**: `src/modes/process-enforcement.md` with mandatory compliance
+- **Advanced Features**: `src/modes/advanced-features.md` with memory/Git integration
+- **Import Chain**: Config → Core → Enforcement → Dynamic → Advanced
+- **Single Import Activation**: `@~/.claude/modes/virtual-team.md` activates entire system
+
+#### TRUE Dynamic Specialist Generation
+- **Technology Discovery Engine**: 3-tier auto-detection (file patterns, content analysis, context inference)
+- **Context7 Knowledge Injection**: Real-time expertise loading with fallback logic
+- **Unlimited Domain Support**: Generate specialists for ANY technology/domain
+- **Dynamic Role Evolution**: Specialists adapt capabilities based on project needs
+- **Parallel Instance Support**: Multiple same-role instances (@Developer-1, @Developer-2)
+- **Custom Role Creation**: User-triggered specialization with unlimited naming
 
 #### Virtual Team Architecture
-- 13 specialized roles with distinct expertise
-- @-notation for direct role addressing
-- Git workflow integration with branch/commit/MR process
-- Autonomous technical decision-making
+- **13 Core Specialized Roles**: PM, Requirements-Engineer, Architect, Developer, System-Engineer, DevOps-Engineer, Database-Engineer, Security-Engineer, AI-Engineer, Web-Designer, QA-Engineer, Frontend-Tester, Backend-Tester
+- **TRUE Dynamic Specialist Generation**: Unlimited domain experts (@React-Developer, @Kubernetes-Engineer, @GraphQL-Expert, @Blockchain-Specialist, etc.)
+- **@-notation Addressing**: Direct role communication (@PM, @Architect, custom specialists)
+- **Mandatory Enforcement**: ALL roles follow process compliance architecture
+- **Strategic Analysis Layer**: Pre-execution planning with thoughtful organized responses
+- **Level 3 Autonomous Operations**: Continuous technical decision-making with business-only escalation
+- **Git Workflow Integration**: Branch/commit/MR process with mandatory security validation
+- **Fallback Tool Logic**: Context7 → Brave Search → Built-in tools → Manual guidance
+- **Fact-Based Validation**: Evidence-based reporting, no assumptions, PRD compliance
+- **Auto-Correction Workflows**: Self-correcting quality loops until completion standards achieved
 
 #### Graceful Integration Philosophy
 - Never overwrite existing configurations
@@ -104,32 +143,81 @@ git log --oneline -n 5
 - Test GitHub CLI integration and graceful fallbacks
 
 ### Quality Assurance
-1. **@-notation Working**: All role addressing must function correctly
-2. **Import Resolution**: All `@~/` imports must resolve to existing files
-3. **Git Workflow**: Proper branching and commit standards enforced
-4. **Installation Validation**: All three installation scopes must work
-5. **GitHub CLI Integration**: Test both automated and manual fallback modes
-6. **Automated Versioning**: Verify version bumping and changelog generation
+
+#### Mandatory Enforcement Validation
+1. **Process Compliance**: ALL roles follow mandatory enforcement architecture
+2. **Quality Gates**: Auto-correction workflows prevent shortcuts and ensure completion
+3. **Security Validation**: Pre-commit validation for ALL code changes
+4. **Fact-Based Validation**: Evidence-based reporting, no assumptions permitted
+5. **Git Workflow Enforcement**: Proper branching, commit standards, MR requirements
+6. **Documentation Compliance**: Real-time updates, evidence provision required
+
+#### Technical Integration Validation
+7. **@-notation Working**: All role addressing must function correctly
+8. **Import Resolution**: All `@~/` imports must resolve to existing files
+9. **Dynamic Role Generation**: TRUE dynamic specialists creation and activation
+10. **Fallback Tool Logic**: Context7 → Brave Search → Built-in tools flow
+11. **Installation Validation**: All three installation scopes must work
+12. **GitHub CLI Integration**: Test both automated and manual fallback modes
+13. **Automated Versioning**: Verify version bumping and changelog generation
+14. **L3 Autonomy**: Strategic analysis layer and continuous autonomy protocols
 
 ## Architecture Insights
 
 ### Why This Design
+
+#### Core Design Philosophy
 1. **Native Configuration**: Markdown over hidden environment files for discoverability
-2. **Virtual Team Focus**: 13 specialized roles for complete development coverage
-3. **Graceful Integration**: Respects existing developer setups
-4. **Git Workflow**: Professional development practices built-in
+2. **Virtual Team Focus**: 13 specialized roles + unlimited dynamic specialists
+3. **Graceful Integration**: Respects existing developer setups with single import
+4. **Git Workflow**: Professional development practices with mandatory enforcement
+
+#### Advanced Architecture Benefits
+5. **TRUE Dynamic Adaptation**: Unlimited specialists for ANY technology domain
+6. **Mandatory Quality**: Universal process compliance prevents shortcuts
+7. **Strategic Intelligence**: Pre-execution analysis with thoughtful responses
+8. **Autonomous Operations**: Level 3 continuous technical decision-making
+9. **Fallback Resilience**: Multiple tool layers ensure availability
+10. **Fact-Based Validation**: Evidence-driven development with auto-correction
+11. **Memory Integration**: Persistent knowledge capture and relationship tracking
+12. **Security-First**: Mandatory pre-commit validation for all changes
 
 ### Extension Points
-- Add new roles to `src/modes/virtual-team.md`
-- Extend behaviors in `src/behaviors/`
-- Customize configuration in `src/config.md`
-- Modify installation process in `install.sh`
+
+#### Core System Extensions
+- **Core Roles**: Add new roles to `src/modes/virtual-team-core.md`
+- **Dynamic Specialists**: Extend `src/modes/dynamic-roles.md` for new domains
+- **Process Enforcement**: Enhance `src/modes/process-enforcement.md` for new quality gates
+- **Advanced Features**: Extend `src/modes/advanced-features.md` for new capabilities
+- **Behaviors**: Extend `src/behaviors/` for new behavioral intelligence
+- **Configuration**: Customize `src/config.md` for project-specific settings
+- **Installation**: Modify installation process in `install.sh`
+
+#### Dynamic Architecture Extensions
+- **Technology Discovery**: Add new file patterns and content recognition
+- **Context7 Integration**: Extend knowledge injection for new domains
+- **Fallback Logic**: Enhance tool availability detection and degradation
+- **Enforcement Rules**: Add new mandatory compliance requirements
+- **Memory Patterns**: Extend persistent knowledge capture points
+- **Security Validation**: Add new pre-commit validation rules
 
 ### Critical Constraints
+
+#### Configuration Constraints
 - **No environment variable dependencies** (pure markdown configuration)
 - **Graceful integration only** (never overwrite existing files)
 - **Single import control** (one line to activate/deactivate)
 - **Git standards enforced** (no AI mentions in commits)
+
+#### Enforcement Constraints
+- **Universal process compliance** (ALL roles must follow enforcement architecture)
+- **Mandatory quality gates** (auto-correction workflows required)
+- **Fact-based validation** (no assumptions, evidence-based reporting)
+- **Security validation** (pre-commit validation for ALL changes)
+- **Documentation compliance** (real-time updates, evidence provision)
+- **Strategic analysis required** (thoughtful responses, not reactive)
+- **L3 autonomy boundaries** (technical autonomy, business escalation only)
+- **Tool availability adaptation** (graceful degradation through fallback layers)
 
 ## Common Development Tasks
 
@@ -157,4 +245,38 @@ git log --oneline -n 5
 3. Test PR creation with fallback mechanisms
 4. Verify graceful degradation when gh CLI unavailable
 
-This system represents a paradigm shift in AI tool integration, prioritizing developer experience and team compatibility over feature count.
+### Dynamic Role System Development
+1. Validate technology discovery engine: File patterns, content analysis, context inference
+2. Test Context7 knowledge injection: Library resolution, documentation retrieval
+3. Verify fallback tool logic: Context7 → Brave Search → Built-in tools
+4. Test unlimited specialist generation: Custom roles, domain experts, parallel instances
+5. Validate enforcement integration: Process compliance, quality gates, auto-correction
+
+### Process Enforcement Development
+1. Test mandatory quality gates: Requirements, architecture, peer review, security
+2. Validate fact-based validation: Evidence requirements, assumption detection
+3. Test auto-correction workflows: Quality loops, specialist re-delegation
+4. Verify L3 autonomy: Strategic analysis, continuous operations, business escalation
+5. Test security validation: Pre-commit validation, credential scanning, compliance
+
+## System Architecture Summary
+
+This system represents a paradigm shift in AI tool integration, implementing TRUE dynamic role transformation with mandatory enforcement architecture. The system provides:
+
+### Core Capabilities
+- **Unlimited Dynamic Specialists**: Generate experts for ANY technology domain
+- **Mandatory Process Compliance**: Universal enforcement for ALL roles and workflows
+- **Level 3 Autonomous Operations**: Strategic analysis with continuous technical decision-making
+- **Intelligent Tool Fallback**: Context7 → Brave Search → Built-in tools → Manual guidance
+- **Fact-Based Validation**: Evidence-driven development with auto-correction workflows
+- **Memory Integration**: Persistent knowledge capture and relationship tracking
+- **Security-First Architecture**: Mandatory pre-commit validation for all changes
+
+### Quality Standards
+- **100% Completion Enforcement**: No partial implementations or "good enough" solutions
+- **Document Sprawl Prevention**: Single progress file per day, update existing docs only
+- **Professional Git Workflow**: Proper branching, commit standards, MR requirements
+- **Evidence-Based Reporting**: All claims backed by evidence, no assumptions permitted
+- **Auto-Correction Workflows**: Self-correcting quality loops until standards achieved
+
+This architecture prioritizes developer experience, team compatibility, and professional development practices while maintaining complete quality assurance through mandatory enforcement protocols.
