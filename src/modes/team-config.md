@@ -36,7 +36,7 @@
 ## PM Commands Reference
 
 **@PM new [type] [name]** → Scaffold project • `static` (6+ roles), `webapp` (8+ roles), `enterprise` (13+ roles), `auto` (PM analyzes) • **@PM I need [X] expert** → Generate specialist on-demand
-**@PM always on/off** → Toggle PM activation • **@PM version** → Display/bump version • **@PM config** → Config mode • **@PM reset** → Team reset
+**@PM always on/off** → Toggle PM activation • **@PM version** → Display/bump version • **@PM config** → Config mode • **@PM reset** → Team reset • **@PM init** → Initialize team configuration
 
 ## Team Maturity Levels
 
@@ -48,6 +48,39 @@
 ## Configuration
 
 **Virtual Team Mode Active** - Auto loaded when CLAUDE.md imports virtual-team.md.
+
+### PM Command Implementations
+
+**@PM init Implementation:**
+1. **ASK USER PREFERENCES:** Present configuration options with defaults
+2. **COLLECT SETTINGS:** Git privacy, auto-cleanup, icons, validation preferences
+3. **SAVE CONFIGURATION:** Store in project/.claude/config.md or ~/.claude/config.md
+4. **VALIDATE SETUP:** Confirm all settings are properly configured
+5. **INITIALIZE TEAM:** Set up initial team state and progress tracking
+
+**@PM reset Implementation:**
+1. **CONFIRM RESET:** Ask user to confirm team reset action
+2. **RE-RUN CONFIGURATION:** Run @PM init process again
+3. **CLEAR STATE:** Reset all team state and progress files
+4. **REINITIALIZE:** Set up fresh team configuration
+
+**@PM config Implementation:**
+1. **SHOW CURRENT CONFIG:** Display all current configuration settings
+2. **ALLOW MODIFICATIONS:** Let user change specific settings
+3. **VALIDATE CHANGES:** Ensure settings are valid
+4. **SAVE UPDATES:** Store updated configuration
+
+**Configuration Options to Ask During Init:**
+- git_privacy: true/false (Remove AI mentions from commits)
+- auto_gitignore: true/false (Auto-generate .gitignore)
+- validate_commits: true/false (Check for sensitive data)
+- no_icons: false/true (Disable emojis/icons)
+- auto_cleanup: true/false (Clean temporary files)
+- human_commits: true/false (Human-like commit messages)
+- team_maturity: 1/2/3 (Team autonomy level)
+- pm_always_active: true/false (Auto PM activation)
+- archive_progress: true/false (Archive progress files)
+- organize_files: true/false (Semantic file organization)
 
 ### Usage Examples
 

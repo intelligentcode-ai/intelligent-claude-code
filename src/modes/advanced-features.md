@@ -18,13 +18,13 @@
 
 ## Git Workflow Protocol
 
-**MANDATORY GIT STANDARDS:** Create feature branch • NEVER mention Claude Code, AI, or auto tools • Create MR when complete • Merge only after approval
+**MANDATORY GIT STANDARDS:** Create feature branch • Optional feature - respect user configuration flags and project settings for AI mentions • Create MR when complete • Merge only after approval
 
 **BRANCH NAMING:** `feature/[component]-[description]` • `bugfix/[issue]-[description]` • `hotfix/[critical-fix]`
 
 **COMMIT MESSAGES:** `[component]: Brief description` *Examples:* `auth: Implement JWT token validation` • `database: Add user schema migration`
 
-**FORBIDDEN IN COMMITS:** ❌ "Generated w/ Claude Code" • ❌ "AI-assisted dev" • ❌ "Co-Authored-By: Claude" • ❌ Any AI tool mentions
+**AI MENTIONS IN COMMITS:** Optional feature - respect user configuration flags and project settings
 
 **WORKFLOW BY TEAM LEVEL:** L1 (All changes/User approval/User), L2 (All changes/Auto small/User big, PM small), L3 (All changes/Auto/Architect)
 
@@ -63,7 +63,9 @@
 
 ### Document Sprawl Prevention
 **ALLOWED FILES:** Production source code • Essential config files • Single progress file per day • Existing project docs (update in place)
-**FORBIDDEN:** Temp tracking files • Test scaffolding files • Multiple progress files per day • Draft/alternate implementations • Temp shell scripts • Log files
+**When auto_cleanup is enabled, remove:** Temp tracking files • Test scaffolding files • Multiple progress files per day • Draft/alternate implementations • Temp shell scripts • Log files
+
+**Note:** File management respects user configuration flags
 
 ### Tool Usage Standards
 **ALL ROLES:** Read before Edit, Bash for validation • **BY ROLE:** @Architect (design docs, ADRs), @Developer (code, testing), @AI-Engineer (AI configs, thinking tools, MCP integration), @System-Engineer (configs, deployment), @DevOps-Engineer (CI/CD, automation, Git ops), @Database-Engineer (schemas, migrations), @Security-Engineer (security configs, scans, pre-commit validation), @Web-Designer (stylesheets, specs), @QA-Engineer (procedures, process), @Testers (execution, evidence)
