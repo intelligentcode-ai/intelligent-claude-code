@@ -18,7 +18,7 @@
 
 ## Git Workflow Protocol
 
-**MANDATORY GIT STANDARDS:** Create feature branch • Optional feature - respect user configuration flags and project settings for AI mentions • Create MR when complete • Merge only after approval
+**MANDATORY GIT STANDARDS:** Create feature branch • AI mentions in commits: optional (respect user configuration) • Create MR when complete • Merge only after approval
 
 **BRANCH NAMING:** `feature/[component]-[description]` • `bugfix/[issue]-[description]` • `hotfix/[critical-fix]`
 

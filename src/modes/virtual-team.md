@@ -12,21 +12,22 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 ### Core Modules (Import Chain)
 
 ```
-DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Advanced
+DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → Advanced
 ```
 
 @~/.claude/modes/team-config.md
 @~/.claude/modes/virtual-team-core.md  
 @~/.claude/modes/process-enforcement.md
 @~/.claude/modes/dynamic-roles.md
+@~/.claude/modes/dynamic-workflow-architecture.md
 @~/.claude/modes/advanced-features.md
 
 ### Module Responsibilities
-**team-config.md:** Base configuration, PM activation control, team maturity levels, commands reference • **virtual-team-core.md:** 13 core roles, @-notation system, state-driven workflows, role accountability • **process-enforcement.md:** Level 3 autonomy, quality gates, mandatory protocols, auto-correction loops • **dynamic-roles.md:** Technology discovery engine, role generator, Context7 integration, specialization • **advanced-features.md:** Memory integration, Git workflow, peer review, quality standards, validation
+**team-config.md:** Base configuration, PM activation control, team maturity levels, commands reference • **virtual-team-core.md:** 13 core roles, @-notation system, state-driven workflows, role accountability • **process-enforcement.md:** Level 3 autonomy, quality gates, mandatory protocols, auto-correction loops • **dynamic-roles.md:** Technology discovery engine, role generator, Context7 integration, specialization • **dynamic-workflow-architecture.md:** Capability-based routing, universal quality gates, intelligent role selection, adaptive workflows • **advanced-features.md:** Memory integration, Git workflow, peer review, quality standards, validation
 
 ### Integration Points
 
-**Cross-Module Dependencies:** Config → Core: PM activation triggers role workflows • Core → Enforcement: Role execution requires process gates • Enforcement → Dynamic: Quality gates trigger specialization • Dynamic → Advanced: Specialists use memory & Git workflows • Advanced → All: Quality standards apply to all modules
+**Cross-Module Dependencies:** Config → Core: PM activation triggers role workflows • Core → Enforcement: Role execution requires process gates • Enforcement → Dynamic: Quality gates trigger specialization • Dynamic → Workflow: Specialists integrate with capability-based routing • Workflow → Advanced: Adaptive workflows use memory & Git • Advanced → All: Quality standards apply to all modules
 
 ## Additional Integration
 
@@ -35,12 +36,12 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Advanced
 
 ### Legacy Compatibility
 
-**LEVEL 3 AUTO EXECUTION PROTOCOLS (Cross-Module):** Requirements-Engineer FIRST (Process-enforcement → Virtual-team-core) • Architect for System Changes (Process-enforcement → Dynamic-roles) • Domain Expert Peer Review (Advanced-features → Virtual-team-core) • Security Pre-Push Validation (Advanced-features → Virtual-team-core) • Memory Integration (Advanced-features → All modules)
+**LEVEL 3 AUTO EXECUTION PROTOCOLS (Cross-Module):** Role with CAPABILITY_ANALYSIS FIRST (Process-enforcement → Virtual-team-core) • Role with CAPABILITY_ARCHITECTURE for System Changes (Process-enforcement → Dynamic-roles) • Domain Expert Peer Review (Advanced-features → Virtual-team-core) • Security Pre-Push Validation (Advanced-features → Virtual-team-core) • Memory Integration (Advanced-features → All modules)
 **AUTO CORRECTION WORKFLOWS (Cross-Module):** Quality Issue Detection (Process-enforcement → Dynamic-roles specialization) • Knowledge Gap Identification (Dynamic-roles → Context7 injection) • Incomplete Implementation (Process-enforcement → Virtual-team-core re-delegation) • Security Violations (Advanced-features → Virtual-team-core security role)
 
 ### System Activation
 
-**Module Load Sequence:** 1. team-config.md (PM activation & maturity levels) 2. virtual-team-core.md (Core 13 roles & workflows) 3. process-enforcement.md (Level 3 autonomy protocols) 4. dynamic-roles.md (Technology discovery & specialization) 5. advanced-features.md (Memory, Git, quality systems)
+**Module Load Sequence:** 1. team-config.md (PM activation & maturity levels) 2. virtual-team-core.md (Core 13 roles & workflows) 3. process-enforcement.md (Level 3 autonomy protocols) 4. dynamic-roles.md (Technology discovery & specialization) 5. dynamic-workflow-architecture.md (Capability-based routing & adaptive workflows) 6. advanced-features.md (Memory, Git, quality systems)
 **PM Always Active Integration:** When `pm_always_active=true`, PM loads all modules and coordinates cross-module workflows automatically.
 
 ---
