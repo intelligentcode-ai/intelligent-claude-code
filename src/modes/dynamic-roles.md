@@ -53,6 +53,15 @@ CONTEXT7 INTEGRATION:
 1. LIBRARY RESOLUTION: mcp__Context7__resolve-library-id for technology • 2. DOCUMENTATION RETRIEVAL: mcp__Context7__get-library-docs for best practices • 3. EXPERTISE ENHANCEMENT: Inject real-time knowledge into specialist role • 4. PATTERN RECOGNITION: Identify technology-specific patterns • 5. BEST PRACTICE APPLICATION: Apply current best practices • 6. PERFORMANCE OPTIMIZATION: Use latest performance recommendations • 7. SECURITY INTEGRATION: Apply current security best practices • 8. TROUBLESHOOTING KNOWLEDGE: Access current debugging techniques
 ```
 
+### Context7 Fallback Optimization
+```
+INTELLIGENT FALLBACK SYSTEM:
+1. PRIMARY: Context7 MCP (mcp__Context7__resolve-library-id, mcp__Context7__get-library-docs) • 2. FALLBACK: Brave Search MCP (mcp__brave-search__brave_web_search) for documentation • 3. EMERGENCY: Built-in patterns from technology discovery engine • 4. MANUAL: User-provided documentation and guidance
+
+AVAILABILITY CHECK → PRIMARY SOURCE → FALLBACK CHAIN → EMERGENCY MODE:
+1. DETECT: Check Context7 availability before specialization • 2. ADAPT: Use best available knowledge source • 3. NOTIFY: Inform user of degraded mode if Context7 unavailable • 4. ENHANCE: Load specialist knowledge from available sources • 5. PATTERN: Apply technology patterns from discovery engine • 6. OPTIMIZE: Use available performance recommendations • 7. SECURE: Apply security best practices from available sources • 8. TROUBLESHOOT: Access debugging knowledge from available sources
+```
+
 ## User-Triggered Specialization
 
 **ON-DEMAND SPECIALIST CREATION:**
@@ -78,6 +87,25 @@ AUTO ACTIVATION TRIGGERS:
 1. TECHNOLOGY DETECTION: Discovery Engine identifies tech stack • 2. USER REQUEST: Explicit specialist request • 3. CONTEXT ANALYSIS: Specialized expertise needed • 4. KNOWLEDGE GAPS: Base role insufficient for task • 5. PERFORMANCE OPTIMIZATION: Specialist knowledge required • 6. SECURITY REQUIREMENTS: Domain-specific security needs • 7. INTEGRATION COMPLEXITY: Specialized integration knowledge needed • 8. DEBUGGING REQUIREMENTS: Technology-specific troubleshooting
 ```
 
+## True Parallel Execution System
+
+**ROLE INSTANCE MANAGEMENT:**
+```
+PARALLEL ROLE ARCHITECTURE:
+@[Role]-[Instance]: Support multiple same-role instances (@Developer-1, @Developer-2, @Security-Engineer-1, @Security-Engineer-2)
+TASK BATCH PROCESSING: Multiple Task tool invocations for simultaneous execution
+INSTANCE COORDINATION: State isolation w/ shared context for collaboration
+RESOURCE ALLOCATION: Dynamic instance spawning based on workload complexity
+WORKFLOW ORCHESTRATION: PM manages multiple instances w/ parallel delegation
+```
+
+**PARALLEL EXECUTION TRIGGERS:**
+- Complex tasks requiring multiple specialists of same type
+- Independent parallel workstreams (Frontend + Backend development)
+- Multi-component testing (Multiple @Frontend-Tester instances for different browsers)
+- Distributed security audits (Multiple @Security-Engineer instances for different threat vectors)
+- Parallel implementation paths (Multiple @Developer instances for different modules)
+
 ## Dynamic Specialization Enhancement
 
 **ROLE ENHANCEMENT PATTERNS:**
@@ -95,3 +123,18 @@ AUTO ACTIVATION TRIGGERS:
 **@Frontend-Tester:** Frontend framework intelligence, Testing tool expertise (@Cypress-Tester, @Playwright-Tester, @Selenium-Tester), Device testing, Accessibility standards
 **@Backend-Tester:** Backend framework intelligence, Testing tool expertise (@Postman-Tester, @JMeter-Tester, @K6-Tester), Database testing, Performance testing
 **@Requirements-Engineer:** Domain intelligence, Methodology expertise (@Agile-Requirements, @Regulatory-Requirements, @API-Requirements), Stakeholder analysis, Process optimization
+
+## Non-Dynamic Specialist Integration
+
+**STATIC SPECIALIST SUPPORT:** The dynamic role system works alongside the 14 additional specialist personas defined in `src/personas/personas.md`. These provide consistent behavioral patterns that complement the dynamic specialists.
+
+**HYBRID APPROACH:** 
+- **Dynamic Specialists:** Technology-specific experts generated on-demand (@React-Developer, @Kubernetes-Engineer)
+- **Static Specialists:** Behavioral and domain experts with consistent patterns (Security Mindset, Performance Focus, Architecture Mode)
+- **Core Team:** 13 foundational roles that can be enhanced with dynamic capabilities
+
+**INTEGRATION POINTS:**
+- Static specialists provide behavioral intelligence (Security Mindset, Performance Focus)
+- Dynamic specialists provide technology-specific expertise (React patterns, Kubernetes deployment)
+- Core team members can transform into dynamic specialists when needed
+- Context7 fallback ensures knowledge availability regardless of specialist type
