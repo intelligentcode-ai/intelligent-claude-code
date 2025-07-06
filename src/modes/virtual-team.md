@@ -32,7 +32,7 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 ## Additional Integration
 
 ### External Modules
-@~/.claude/personas/personas.md • @~/.claude/behaviors/enhanced-behaviors.md • @~/.claude/behaviors/git-safety-behaviors.md • @~/.claude/behaviors/documentation-behaviors.md
+@~/.claude/behaviors/enhanced-behaviors.md • @~/.claude/behaviors/git-safety-behaviors.md • @~/.claude/behaviors/documentation-behaviors.md
 
 ### Legacy Compatibility
 

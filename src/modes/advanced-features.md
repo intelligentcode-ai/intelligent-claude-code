@@ -1,104 +1,85 @@
 # Advanced Features Module
 
 ## Memory Integration System
+**AUTO MEMORY:** MCP integration • Persistent knowledge • Relationship tracking
+**ENTITIES:** User/Project/Role/Pattern/Context • **TRIGGERS:** 15 auto points (prefs, context, expertise, patterns, decisions, etc.)
+**TOOLS:** create_entities, search_nodes, add_observations, create_relations, open_nodes
+**WORKFLOW:** Search→Create→Map→Capture→Retrieve • **ROLE-SPECIFIC:** PM(context/prefs), Architect(decisions/patterns), etc.
 
-**AUTO MEMORY CREATION:** MCP Memory integration enables persistent knowledge capture & relationship tracking across all team interactions.
+## Git Workflow Protocol - ENFORCEMENT
 
-**ENTITY TYPES:** User (prefs, styles, comm), Project (reqs, constraints, context), Role (expertise, patterns, approaches), Pattern (solutions, anti-patterns, optimizations), Context (env, team, history)
+### Branch Protection
+**DETECTION:** git status → current branch → compare default_branch
+**MAIN PROTECTION:** current=main/master+branch_protection → BLOCK → force feature branch
+**AUTO-CREATION:** Generate using prefixes (feature/, bugfix/, hotfix/)
+**NAMING:** Validate patterns before operations
 
-**MEMORY TRIGGER POINTS (15 AUTO):** User Preferences, Project Context, Role Expertise, Pattern Recognition, Req Relationships, Tech Decisions, Stakeholder Mapping, Process Optimization, Error Patterns, Integration Knowledge, Perf Insights, Security Patterns, Testing Strategies, Docs Patterns, Deployment Wisdom
+### Pre-Commit Validation
+**CREDENTIAL SCAN:** API keys, tokens, passwords, secrets before Git ops
+**FILE VALIDATION:** Invalid chars, max length, forbidden paths, personal info
+**LARGE FILES:** Prevent commits exceeding size limits
+**GITIGNORE:** Ensure exists and covers patterns
 
-**MEMORY TOOLS:** mcp__memory__create_entities, mcp__memory__search_nodes, mcp__memory__add_observations, mcp__memory__create_relations, mcp__memory__open_nodes
+### Operation Interception
+**COMMIT:** Before → credential scan → file paths → branch protection
+**PUSH:** Before → verify not main (if protected) → security validation
+**MERGE:** Before → PR approval requirements → final validation
 
-**AUTO MEMORY WORKFLOW:** Context Search → Entity Creation → Relationship Mapping → Observation Capture → Knowledge Retrieval
+### Config-Driven Enforcement
+**READ:** config.md branch_protection, validate_commits, require_pr_for_main, scan_credentials
+**DYNAMIC:** Adjust enforcement per settings
+**DEGRADATION:** Warn if tools unavailable, manual guidance
 
-**ROLE-SPECIFIC MEMORY:** @PM (project context, user prefs, team dynamics), @Architect (tech decisions, system patterns, integration), @Developer (implementation patterns, debugging strategies), @Security-Engineer (threat patterns, mitigation strategies), @DevOps-Engineer (deployment patterns, infra configs), @Database-Engineer (schema patterns, perf optimizations), @AI-Engineer (model selection, prompt patterns), @Web-Designer (design patterns, UX insights), @QA-Engineer (testing strategies, quality metrics), @Requirements-Engineer (business context, stakeholder patterns)
+### Implementation Logic
 
-**MEMORY ENHANCEMENT PROTOCOL:** AUTO CAPTURE → RELATIONSHIP TRACKING → PATTERN RECOGNITION → CONTEXT PRESERVATION → INTELLIGENT RETRIEVAL
+**BRANCH PROTECTION:** git branch --show-current → Read config: default_branch → If current=default AND branch_protection=true: BLOCK → Create: git checkout -b feature/[auto-name] → Guide to new branch → Retry on feature branch
 
-## Git Workflow Protocol
+**PRE-COMMIT VALIDATION:** scan_credentials=true: Scan staged → BLOCK if found → remediation → validate_file_paths=true: Check chars/personal → BLOCK if violations → validate_commits=true: Check format → validate standards
 
-**MANDATORY GIT STANDARDS:** Create feature branch • AI mentions in commits: optional (respect user configuration) • Create MR when complete • Merge only after approval
+**AUTO BRANCH CREATION:** Generate: [prefix]/[component]-[description] → Use: feature/, bugfix/, hotfix/ → Extract component from changes → Create: git checkout -b [name] → Inform user → Proceed
 
-**BRANCH NAMING:** `feature/[component]-[description]` • `bugfix/[issue]-[description]` • `hotfix/[critical-fix]`
+### ENFORCEMENT MECHANISMS
 
-**COMMIT MESSAGES:** `[component]: Brief description` *Examples:* `auth: Implement JWT token validation` • `database: Add user schema migration`
+**REQUIREMENTS:** Git Status: Bash git branch --show-current → Config Reading: Parse config.md enforcement settings → Operation Blocking: Stop violating Git operations → Auto Remediation: Create branches, scan files, validate paths → User Guidance: Specific instructions when blocked
 
-**AI MENTIONS IN COMMITS:** Optional feature - respect user configuration flags and project settings
+**TRIGGERS:** Before git commit: Pre-commit validation → Before git push: Branch protection check → Before git merge: PR requirement validation → Before Git ops: Read enforcement config
 
-**WORKFLOW BY TEAM LEVEL:** L1 (All changes/User approval/User), L2 (All changes/Auto small/User big, PM small), L3 (All changes/Auto/Architect)
+**PATTERNS:** Credentials: API keys, tokens, passwords, private keys → File Paths: Invalid chars, max length, forbidden dirs → Branch Names: Configured prefixes, conventions → Commit Messages: Configured format requirements
 
-**MR STANDARDS:** Title: `[Component]: Brief description` • Template: Changes Made, Testing Completed, Tech Notes • Approval: L1 (User), L2 (User/PM), L3 (Architect) • Protection: MR only, no direct main commits, tests pass, branch cleanup
+**STANDARDS:** Feature branch • AI mentions optional (respect config) • MR when complete • Merge after approval
+**NAMING:** feature/[component]-[description] • bugfix/[issue] • hotfix/[critical]
+**COMMITS:** [component]: Brief description • **AI MENTIONS:** Optional feature - respect flags
+**WORKFLOW LEVELS:** L1(User approval), L2(Auto small/User big), L3(Auto/Architect)
+**MR:** Title format • Template • Approval hierarchy • Protection (MR only, tests pass, cleanup)
+**AUTO GIT:** TodoRead checkpoints→TodoWrite subtasks→Execute sequence→Document completion
 
-**AUTO GIT WORKFLOW:** TodoRead validation checkpoints → TodoWrite "Git-Workflow" todo w/ subtasks (Project-Config-Check, Branch-Creation, Commit-Preparation, Security-Pre-Push, Push-Execution, Version-Management, Changelog-Update, MR-Creation) → TodoRead execute sequence → TodoWrite document completion
-
-## Domain-Specific Peer Review
-
-**Docs Required:** Files, What/Why changed, Testing, Impact, Risk • **Batching Rules:** Max 5-10 related changes, full docs each, no shortcuts
-
-**Domain-Appropriate Reviewer Assignment:** Code → @Developer #2 • AI/ML → @AI-Engineer #2 • Security → @Security-Engineer #2 • DB → @Database-Engineer #2 • Infra → @System-Engineer #2 • UI/UX → @Web-Designer #2 • Arch → @Architect #2
-
-**Review Hierarchy:** 1. Domain Expert Peer (#2 role) - Tech accuracy & best practices • 2. @Architect - ONLY if changes affect arch, patterns, or larger system • 3. @PM - Reqs compliance & delivery standards
-
-**Architect Review Triggers:** System arch/design pattern changes • Cross-component impacts/integration changes • Perf/security implications affecting multiple areas • Major refactoring/structural mods
-
-**LEVEL 3 AUTO PEER REVIEW:** AUTO REQUIREMENT (Domain expert peer review executed auto for ALL implementations) • AUTO ASSIGNMENT (PM auto assigns appropriate domain expert) • AUTO VALIDATION (Implementation continues w/ auto peer review validation) • AUTO CORRECTION (PM enhances scope & reassigns experts auto) • AUTO EVIDENCE (Peer reviewer provides detailed feedback & approval docs)
+## Domain Peer Review
+**DOCS:** Files/Changes/Testing/Impact/Risk • **BATCHING:** Max 5-10 changes
+**REVIEWERS:** Code→@Developer #2, AI/ML→@AI-Engineer #2, Security→@Security-Engineer #2
+**HIERARCHY:** Domain Expert→@Architect(arch changes)→@PM(reqs compliance)
+**TRIGGERS:** System arch, cross-component, perf/security, major refactoring
+**L3 AUTO:** Auto requirement/assignment/validation/correction/evidence
 
 ## Definition of Done
-
-**UNIVERSAL DOD:** Doc before/during/after • Update progress • Provide evidence • Complete role validation
-
-**CODE CHANGES:** Working code • Docs • Peer review • Tests pass • Externalized configs • Error handling
-**FEATURES:** Above + Reqs verified • Arch approved • Acceptance criteria met • Integration tests
-**BUG FIXES:** Above + Root cause • Regression test • No breaks
-**INFRA:** Above + IaC scripts • Rollback procedure • Security review
-
-**ENFORCEMENT:** PM verifies DoD before delegating to Security/DevOps, no exceptions
+**UNIVERSAL:** Doc before/during/after • Update progress • Evidence • Role validation
+**CODE:** Working code • Docs • Peer review • Tests pass • Configs • Error handling
+**FEATURES:** + Reqs verified • Arch approved • Acceptance criteria • Integration tests
+**BUGS:** + Root cause • Regression test • No breaks
+**INFRA:** + IaC scripts • Rollback • Security review
+**ENFORCEMENT:** PM verifies DoD before Security/DevOps delegation
 
 ## Quality Standards
-
-### 100% Completion Enforcement
-**NEVER ACCEPT:** Partial implementations • Untested functionality • Missing docs • "Good enough" solutions
-**ALWAYS REQUIRE:** Working, tested implementation • Complete evidence of functionality • Proper docs in existing files • Zero known issues
-
-### Document Sprawl Prevention
-**ALLOWED FILES:** Production source code • Essential config files • Single progress file per day • Existing project docs (update in place)
-**When auto_cleanup is enabled, remove:** Temp tracking files • Test scaffolding files • Multiple progress files per day • Draft/alternate implementations • Temp shell scripts • Log files
-
-**Note:** File management respects user configuration flags
-
-### Tool Usage Standards
-**ALL ROLES:** Read before Edit, Bash for validation • **BY ROLE:** @Architect (design docs, ADRs), @Developer (code, testing), @AI-Engineer (AI configs, thinking tools, MCP integration), @System-Engineer (configs, deployment), @DevOps-Engineer (CI/CD, automation, Git ops), @Database-Engineer (schemas, migrations), @Security-Engineer (security configs, scans, pre-commit validation), @Web-Designer (stylesheets, specs), @QA-Engineer (procedures, process), @Testers (execution, evidence)
-
-### Advanced AI Tool Integration
-**ULTRATHINKING:** Complex problem analysis, arch decisions, tech trade-offs • **SEQUENTIAL THINKING:** Multi-step planning, req decomposition, workflow design • **MCP TOOLS:** Context7 for docs, Brave Search for research, Puppeteer for web automation • **SUBAGENT ORCHESTRATION:** Task tool for parallel execution, model config per project settings
+**100% COMPLETION:** No partial/untested/missing docs/"good enough"
+**ALWAYS:** Working tested implementation • Complete evidence • Proper docs • Zero issues
+**DOC SPRAWL:** Single progress file/day • Update existing • Remove temp (auto_cleanup)
+**TOOLS:** Read before Edit • Bash validation • Role-specific usage
+**AI:** ULTRATHINKING, SEQUENTIAL THINKING, MCP TOOLS, SUBAGENTS
 
 ## Validation Protocol
+**PM CHECKLIST:** Role activation • Evidence • Investigation • Research • Testing • Docs • No temp • Proper tools • User decisions
+**EVIDENCE:** Arch(diagrams/decisions), Reqs(stories/criteria), Implementation(code/tests), AI(configs/workflows), Infra(configs/validation)
 
-### PM Validation Checklist
-**Handoff Reqs:** Role activation • Evidence provided • Claims investigated • Alternatives researched • Functionality tested • Docs updated • No temp files • Proper tools • User decisions identified
-**PM Responsibilities:** Enable team growth • Challenge everything • Enforce best practices • Track learning • Reduce user burden • Surface business decisions only
-
-### Evidence Reqs by Domain
-**ARCH:** Diagrams, decisions, ADRs • **REQS:** Reqs, user stories, acceptance criteria • **IMPLEMENTATION:** Working code, test results, metrics • **AI/ML:** AI configs, thinking workflows, MCP integrations, subagent orchestration • **INFRA:** Infra configs, deployment validation • **CI/CD:** CI/CD pipelines, monitoring, Git workflow evidence • **DB:** Schemas, migrations, perf • **SECURITY:** Assessments, vulnerability reports, pre-commit validation • **DESIGN:** Design specs, responsive implementation • **QA:** Test strategies, quality metrics • **FRONTEND:** Screenshot evidence, accessibility • **BACKEND:** API coverage, auto tests
-
-## Docs & Progress Tracking
-
-**MANDATORY:** All roles document work in real-time w/ structured tracking
-
-**Progress File Format:**
-```markdown
-# Progress - YYYY-MM-DD
-## Objective: [clear goal statement]
-## Team: [active roles for this session]
-## Activity Log:
-- @[Role] - [action/outcome]
-- @PM - [validation/next steps]
-## DoD Status:
-✅/❌ [requirement] - [status/evidence]
-## Next Steps:
-- [immediate next actions]
-```
-
-**REQUEST ANALYSIS:** VERIFY (check state), ENSURE (validate), FIX (identify issue), BUILD (understand scope)
-**TEAM STANDARDS:** Tech focus • Concise output • Max autonomy • Proportional response • Git workflow mandatory
+## Docs & Progress
+**MANDATORY:** Real-time documentation • Structured tracking
+**FORMAT:** Objective • Team • Activity Log • DoD Status • Next Steps
+**EVIDENCE:** All documented • Progress tracked • Evidence provided • Professional standards
