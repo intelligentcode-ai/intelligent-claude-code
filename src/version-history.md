@@ -1,5 +1,21 @@
 # Intelligent Claude Code - Version History
 
+## [3.1.0] - 2025-07-06
+### Enhanced
+- **Dynamic Workflow Architecture** - Capability-based routing eliminates hardcoded role sequences
+- **Live Session Updates** - @PM config reload enables configuration updates without restart
+- **Intelligent Role Selection** - Automatic optimal role assignment based on capability matching
+- **File Size Optimization** - 54% reduction in dynamic-roles.md while preserving functionality
+- **Configuration Management** - Optional flags system with user preference respect
+- **Unlimited Specialist Integration** - Seamless capability-based dynamic specialist support
+
+### Technical
+- **Capability Registry System** - Role capability detection and scoring algorithm
+- **Universal Quality Gates** - Process enforcement works with any role combination
+- **Backward Compatibility** - All existing @-notation commands preserved
+- **Live Configuration Reload** - Session update protocol for running sessions
+- **Process Compliance** - Enhanced quality enforcement with flexible role assignment
+
 ## [3.0.0] - 2025-07-06
 ### Major Release
 - **TRUE Dynamic Specialist Generation** - Unlimited domain experts beyond hardcoded templates
