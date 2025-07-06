@@ -1,5 +1,8 @@
 # Version History
 
+## [3.2.0] - System Protocol Enforcement
+**Core:** PM delegation blocking • Role transparency enforcement • Pre-change validation blocking • Complete workflow enforcement • File organization optimization
+
 ## [3.1.0] - Dynamic Workflow Architecture
 **Core:** Capability-based routing • Live session updates • Intelligent role selection • 54% file optimization • Optional flags • Universal quality gates
 
