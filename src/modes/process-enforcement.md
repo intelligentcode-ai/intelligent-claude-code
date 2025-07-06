@@ -12,6 +12,8 @@
 
 **LIVE SESSION UPDATE PROTOCOL (STEP -0.25):** @PM config reload → Force configuration refresh in running session • @PM validate config → Check configuration consistency • Re-read all src/modes files for updates • Apply changes to current session immediately
 
+**CAPABILITY-BASED WORKFLOW:** Route tasks by capabilities not role names • CAPABILITY_ANALYSIS → CAPABILITY_ARCHITECTURE → CAPABILITY_IMPLEMENTATION → CAPABILITY_TESTING → CAPABILITY_SECURITY • Intelligent role selection with scoring algorithm • Universal quality gates work with any role combination
+
 **CAPABILITIES ASSESSMENT (STEP 0):** Complex problem (3+ issues): Sequential Thinking • Architectural decisions: ULTRATHINKING • Research required: Context7/Brave Search • 3+ parallel tasks: Subagents • User info/preferences: Memory Integration
 → Complete capabilities assessment before proceeding
 
