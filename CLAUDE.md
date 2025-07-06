@@ -26,14 +26,15 @@ This is a **configuration-based system** built with native Markdown files, not a
 - `modes/virtual-team.md` - Virtual team mode implementation with modular architecture
 - `modes/dynamic-roles.md` - TRUE dynamic specialist generation system (unlimited domains)
 - `modes/process-enforcement.md` - Strategic analysis layer, L3 autonomy, mandatory enforcement
+- `modes/quality-gate-automation.md` - Automatic quality gate triggers, configuration-based routing, blocking logic
 - `modes/virtual-team-core.md` - 13 core roles with @-notation addressing
 - `modes/advanced-features.md` - Memory integration, Git workflow, quality standards
-- `personas/personas.md` - 14 additional specialist persona definitions
 - `behaviors/` - Behavioral intelligence modules (enhanced, git-safety, documentation)
 
 #### Mandatory Enforcement Architecture
 - **Universal Process Compliance**: ALL roles must follow enforcement protocols for ALL activities
 - **Quality Gates**: Auto-correction workflows for requirements, architecture, peer review, implementation
+- **Automatic Quality Gate Triggers**: Configuration-driven routing, blocking logic, auto-delegation system
 - **Security Validation**: Mandatory pre-commit validation for ALL code changes and configurations
 - **Fact-Based Validation**: No assumptions, evidence-based reporting, PRD compliance for ALL work
 - **Git Workflow Enforcement**: Proper branching, commit standards, MR requirements for ALL changes
