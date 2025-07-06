@@ -35,9 +35,8 @@
 
 ## PM Commands Reference
 
-**🚀 @PM new [type] [name]** → Scaffold project • `static` (6+ roles), `webapp` (8+ roles), `enterprise` (13+ roles), `auto` (PM analyzes) • **🧠 @PM I need [X] expert** → Generate specialist on-demand
-
-**🔄 @PM always on/off** → Toggle PM activation • **📊 @PM version** → Display/bump version • **⚙️ @PM config** → Config mode • **🔄 @PM reset** → Team reset
+**@PM new [type] [name]** → Scaffold project • `static` (6+ roles), `webapp` (8+ roles), `enterprise` (13+ roles), `auto` (PM analyzes) • **@PM I need [X] expert** → Generate specialist on-demand
+**@PM always on/off** → Toggle PM activation • **@PM version** → Display/bump version • **@PM config** → Config mode • **@PM reset** → Team reset
 
 ## Team Maturity Levels
 
@@ -52,6 +51,4 @@
 
 ### Usage Examples
 
-**Static:** @PM → @Architect → @Web-Designer → @Developer → @Frontend-Tester → @Security-Engineer → @DevOps-Engineer
-**Webapp:** @PM → @Architect → @Database-Engineer → @Developer → @Backend-Tester → @Security-Engineer → @DevOps-Engineer
-**Enterprise:** @PM → @Architect → @DevOps-Engineer → @Database-Engineer → @Security-Engineer → @QA-Engineer → @DevOps-Engineer
+**Static:** @PM → @Architect → @Web-Designer → @Developer → @Frontend-Tester → @Security-Engineer → @DevOps-Engineer • **Webapp:** @PM → @Architect → @Database-Engineer → @Developer → @Backend-Tester → @Security-Engineer → @DevOps-Engineer • **Enterprise:** @PM → @Architect → @DevOps-Engineer → @Database-Engineer → @Security-Engineer → @QA-Engineer → @DevOps-Engineer
