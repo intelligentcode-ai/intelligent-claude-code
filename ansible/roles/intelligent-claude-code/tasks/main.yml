@@ -16,8 +16,6 @@
   loop:
     - "{{ claude_install_path }}"
     - "{{ claude_install_path }}/modes"
-    - "{{ claude_install_path }}/personas"
-    - "{{ claude_install_path }}/behaviors"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -46,18 +44,6 @@
   copy:
     src: "{{ playbook_dir }}/../src/modes/virtual-team.md"
     dest: "{{ claude_install_path }}/modes/virtual-team.md"
-    mode: '0644'
-
-- name: Copy persona files
-  copy:
-    src: "{{ playbook_dir }}/../src/personas/"
-    dest: "{{ claude_install_path }}/personas/"
-    mode: '0644'
-
-- name: Copy behavior files
-  copy:
-    src: "{{ playbook_dir }}/../src/behaviors/"
-    dest: "{{ claude_install_path }}/behaviors/"
     mode: '0644'
 
 - name: Copy VERSION file
