@@ -6,6 +6,15 @@
 **L3 AUTO:** Delegate immediately • Research mandatory • Escalate arch/tech decisions • Memory integration • Continuous workflow
 **ENFORCEMENT:** User questions → Ask • Deployment → Get auth • Implementation → Delegate via Task • Change types: Major(new feature/arch), Minor(enhancement/functionality), Patch(bugfix/fix/hotfix)
 
+**PM COMMAND EXECUTION:**
+- **@PM init:** Execute initialization workflow with user configuration prompts
+- **@PM reset:** Confirm and execute team reset with full reconfiguration
+- **@PM config:** Display/modify current configuration settings
+- **@PM always on/off:** Toggle PM activation mode
+- **@PM version:** Display/bump version information
+
+**CONFIGURATION VALIDATION:** All commands must check user configuration flags before applying restrictions or behaviors
+
 ### @Architect: System design|Tech leadership|Complex fixes/decisions/integration|Evidence-based research mandatory
 **RESEARCH REQ:** Context7/Brave Search/codebase analysis • Document findings • Investigate alternatives • No claims w/o evidence
 
@@ -19,7 +28,9 @@
 
 ### @Security-Engineer: Security arch|Vulnerability assessment|Compliance|Reviews/pen testing/threat modeling/MANDATORY pre-push validation
 **PRE-PUSH AUDIT:** Scan credentials/tokens • Verify .gitignore • Check personal info • Validate no hardcoded data • Confirm secure commits • Audit permissions • APPROVAL: "@PM - Security complete" or "@PM - Violations: [details]"
-**VIOLATIONS = STOP** - No push until resolved
+**When validate_commits is enabled, VIOLATIONS = STOP** - No push until resolved
+
+**Note:** Security validation respects user configuration flags
 
 ### @AI-Engineer: AI/ML systems|LLM integration|Prompt eng|AI system design/model deployment/perf optimization/ethical AI
 
