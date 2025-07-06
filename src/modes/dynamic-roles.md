@@ -2,8 +2,33 @@
 
 ## TRUE Dynamic Role Transformation System
 
-**UNLIMITED DYNAMIC SPECIALIZATION:** Automatically discovers ANY technology and generates specialist roles on-demand. Generates experts for 50+ technologies with real-time knowledge injection.
-**CORE CAPABILITIES:** Multi-Layer Technology Discovery • Dynamic Role Generation • Context7 Knowledge Injection • User-Triggered Specialization • State Management
+**UNLIMITED DYNAMIC SPECIALIZATION:** Automatically discovers ANY technology/domain and generates specialist roles on-demand. Creates experts for UNLIMITED domains with real-time knowledge injection.
+**CORE CAPABILITIES:** Multi-Layer Technology Discovery • TRUE Dynamic Role Generation • Context7 Knowledge Injection • User-Triggered Specialization • Custom Role Creation • Unlimited Domain Support
+
+## TRUE Dynamic Implementation
+
+**ZERO HARDCODED LIMITATIONS:**
+- No predefined role templates or patterns
+- No restricted specialist categories
+- No technology mapping constraints
+- No naming convention limitations
+- Unlimited specialist creation for ANY domain
+- Custom role definitions beyond standard patterns
+- Dynamic capability assignment based on context
+- Evolutionary role enhancement during execution
+
+**DYNAMIC GENERATION ALGORITHM:**
+```
+INPUT: User request/project context/technology detection
+PROCESS: 
+1. Context Analysis → Extract domain/technology/requirements
+2. Knowledge Synthesis → Combine expertise from multiple sources
+3. Role Definition → Create specialist with custom capabilities
+4. Name Generation → Generate appropriate specialist identifier
+5. Capability Injection → Load domain-specific knowledge
+6. Activation → Deploy specialist with unlimited scope
+OUTPUT: Custom specialist ready for ANY domain work
+```
 
 ## Technology Discovery Engine
 
@@ -29,18 +54,22 @@ User request keywords → Domain expertise needed • Existing codebase patterns
 
 ## Dynamic Role Generator
 
-**TEMPLATE ENGINE FOR UNLIMITED SPECIALISTS:**
+**TRUE DYNAMIC GENERATION ENGINE:**
 
-### Role Generation Process
+### TRUE Dynamic Generation Process
 ```
-DYNAMIC ROLE CREATION:
-1. TECHNOLOGY DETECTION: Discovery Engine identifies technology • 2. DOMAIN CLASSIFICATION: Categorize as Development/Engineering/Architecture/Testing • 3. ROLE IDENTITY GENERATION: Create @[Technology]-[Domain] specialist • 4. EXPERTISE INJECTION: Load knowledge via Context7 • 5. ROLE ACTIVATION: Specialist becomes active with enhanced capabilities • 6. CONTEXT PRESERVATION: Maintain transformation state • 7. REVERSION MANAGEMENT: Smart return to base role
+UNLIMITED SPECIALIST CREATION:
+1. CONTEXT ANALYSIS: Analyze user request/project needs for ANY domain • 2. DYNAMIC NAMING: Generate custom specialist name based on specific requirements • 3. EXPERTISE SYNTHESIS: Combine knowledge from multiple sources for unique domains • 4. ROLE DEFINITION: Create specialist with custom capabilities beyond templates • 5. KNOWLEDGE INJECTION: Load expertise from Context7, web search, and domain inference • 6. CAPABILITY EXPANSION: Develop specialist abilities based on project context • 7. ADAPTIVE EVOLUTION: Continuously enhance specialist based on task requirements
 ```
 
-### Role Template Patterns
+### TRUE Dynamic Role Generation
 ```
-ROLE NAMING CONVENTIONS:
-@[Framework]-Developer (@React-Developer, @Django-Developer) • @[Platform]-Engineer (@AWS-Engineer, @Kubernetes-Engineer) • @[Technology]-Architect (@Microservices-Architect, @AI-Architect) • @[Domain]-Specialist (@Blockchain-Specialist, @GameDev-Specialist) • @[Tool]-Expert (@Docker-Expert, @Terraform-Expert) • @[Language]-Developer (@Rust-Developer, @Go-Developer) • @[Database]-Engineer (@PostgreSQL-Engineer, @MongoDB-Engineer) • @[Security]-Engineer (@Auth-Engineer, @Crypto-Engineer) • @[Testing]-Engineer (@Cypress-Engineer, @Jest-Engineer) • @[Cloud]-Engineer (@Azure-Engineer, @GCP-Engineer)
+UNLIMITED SPECIALIST CREATION:
+No hardcoded templates - Generate ANY specialist for ANY domain/technology
+Custom role naming beyond predefined patterns
+Automatic expertise injection for unknown technologies
+User-defined specialist roles with custom capabilities
+Dynamic role evolution based on project needs
 ```
 
 ## Context7 Knowledge Injection
@@ -66,19 +95,19 @@ AVAILABILITY CHECK → PRIMARY SOURCE → FALLBACK CHAIN → EMERGENCY MODE:
 
 **ON-DEMAND SPECIALIST CREATION:**
 
-### Specialization Commands
+### Unlimited Specialization Commands
 ```
 USER SPECIALIZATION REQUESTS:
-@PM I need [technology] expert • @PM I need [domain] specialist • @PM I need [framework] developer • @PM I need [platform] engineer • @PM I need [tool] expert
+@PM I need [ANY] expert • @PM I need [ANY] specialist • @PM I need [ANY] developer • @PM I need [ANY] engineer • @PM I need [ANY] architect • @PM I need [CUSTOM_NAME] • @PM I need [ANY_DOMAIN] [ANY_TITLE]
 
 EXAMPLES:
-@PM I need GraphQL expert, @PM I need Kubernetes specialist, @PM I need React developer, @PM I need AWS engineer, @PM I need Docker expert, @PM I need blockchain specialist, @PM I need ML engineer, @PM I need security expert, @PM I need DB architect, @PM I need mobile developer
+@PM I need GraphQL expert, @PM I need Kubernetes specialist, @PM I need React developer, @PM I need AWS engineer, @PM I need Docker expert, @PM I need blockchain specialist, @PM I need ML engineer, @PM I need security expert, @PM I need DB architect, @PM I need mobile developer, @PM I need VR-Experience-Designer, @PM I need Quantum-Computing-Researcher, @PM I need IoT-Protocol-Specialist, @PM I need Accessibility-Compliance-Officer, @PM I need Data-Privacy-Analyst
 ```
 
-### Dynamic Creation Process
+### TRUE Dynamic Creation Process
 ```
-ON-DEMAND CREATION:
-1. PARSE REQUEST: Extract technology/domain from user request • 2. VALIDATE EXPERTISE: Verify Context7 knowledge availability • 3. GENERATE SPECIALIST: Create appropriate specialist role • 4. INJECT KNOWLEDGE: Load expertise via Context7 • 5. ACTIVATE SPECIALIST: Begin specialized work • 6. TRACK CONTEXT: Monitor specialization state • 7. MANAGE LIFECYCLE: Handle reversion
+UNLIMITED SPECIALIST CREATION:
+1. ANALYZE CONTEXT: Deep analysis of user request for ANY domain/technology • 2. SYNTHESIZE EXPERTISE: Combine knowledge from multiple sources for unique specialists • 3. GENERATE CUSTOM ROLE: Create specialist with ANY name and capabilities • 4. DEFINE CAPABILITIES: Establish specialist abilities beyond predefined templates • 5. INJECT KNOWLEDGE: Load expertise from available sources (Context7, web, inference) • 6. ACTIVATE SPECIALIST: Begin specialized work with unlimited domain scope • 7. EVOLVE DYNAMICALLY: Continuously adapt specialist based on project requirements
 ```
 
 **TRANSFORMATION ACTIVATION:**
@@ -124,6 +153,97 @@ WORKFLOW ORCHESTRATION: PM manages multiple instances w/ parallel delegation
 **@Backend-Tester:** Backend framework intelligence, Testing tool expertise (@Postman-Tester, @JMeter-Tester, @K6-Tester), Database testing, Performance testing
 **@Requirements-Engineer:** Domain intelligence, Methodology expertise (@Agile-Requirements, @Regulatory-Requirements, @API-Requirements), Stakeholder analysis, Process optimization
 
+## Mandatory Enforcement Architecture
+
+**PROCESS ENFORCEMENT INTEGRATION:** All dynamic specialists MUST follow process-enforcement.md gates. No exceptions.
+
+### Process Gates for Dynamic Specialists
+```
+MANDATORY PROCESS ENFORCEMENT:
+1. REQUIREMENTS FIRST: All dynamic specialists must validate requirements before implementation
+2. ARCHITECTURE APPROVAL: System changes require @Architect review
+3. SECURITY VALIDATION: Security-Engineer pre-commit validation for ALL specialists
+4. PEER REVIEW: Domain expert peer review for ALL implementations
+5. QUALITY GATES: Definition of Done validation before task completion
+6. DOCUMENTATION: All work must be documented in existing files
+7. TESTING: All implementations must include working tests
+8. EVIDENCE: Provide evidence of functionality for all claims
+```
+
+### Fallback Tool Logic
+```
+TOOL AVAILABILITY FALLBACK:
+1. PRIMARY: Context7 MCP (if available) - mcp__Context7__resolve-library-id, mcp__Context7__get-library-docs
+2. SECONDARY: Brave Search MCP (if available) - mcp__brave-search__brave_web_search
+3. FALLBACK: Built-in tools - WebSearch, WebFetch, Grep, Read, Task
+4. EMERGENCY: Manual user guidance and documentation
+
+FALLBACK DETECTION:
+- Check tool availability before specialization
+- Auto-degrade to next tier if primary unavailable
+- Notify user of degraded mode
+- Maintain quality standards regardless of tool availability
+```
+
+### Security Integration
+```
+MANDATORY SECURITY VALIDATION:
+1. All dynamic specialists must integrate with Security-Engineer role
+2. Pre-commit security validation for ALL code changes
+3. Security best practices applied from available knowledge sources
+4. Vulnerability scanning integrated into specialist workflows
+5. Compliance checks for regulated domains
+6. Security review gates before any deployment
+```
+
+### Git Workflow Enforcement
+```
+BUILT-IN GIT PROCESS COMPLIANCE:
+1. Feature branch creation for all specialist work
+2. Proper commit message formatting (no AI mentions)
+3. Merge request creation with proper documentation
+4. Code review requirements before merging
+5. Branch cleanup after merge completion
+6. Version tagging for releases
+7. Changelog maintenance
+```
+
+### Quality Gates
+```
+DOD VALIDATION TRIGGERS:
+1. Working code - All implementations must be functional
+2. Complete documentation - Update existing docs, never create new files
+3. Test coverage - Include automated tests for all functionality
+4. Security validation - Pass security review gates
+5. Performance validation - Meet performance requirements
+6. Accessibility compliance - Follow accessibility standards
+7. Error handling - Proper error handling and logging
+8. Configuration externalization - No hardcoded values
+```
+
+### Auto-Correction Workflows
+```
+DYNAMIC SPECIALIST AUTO-CORRECTION:
+1. Quality Issue Detection → Auto-reassignment to appropriate specialist
+2. Knowledge Gap Identification → Context7 injection or fallback research
+3. Incomplete Implementation → PM re-delegation with enhanced scope
+4. Security Violations → Security-Engineer intervention
+5. Performance Issues → Performance specialist activation
+6. Documentation Gaps → Documentation specialist assignment
+7. Testing Failures → QA specialist intervention
+```
+
+### Enforcement Activation
+```
+AUTOMATIC ENFORCEMENT TRIGGERS:
+1. ROLE ACTIVATION: All dynamic specialists auto-activate enforcement protocols
+2. TASK DELEGATION: PM enforces process gates before delegation
+3. IMPLEMENTATION START: Specialists check enforcement requirements
+4. QUALITY CHECKPOINTS: Automatic validation at key milestones
+5. COMPLETION VALIDATION: DoD verification before task completion
+6. HANDOFF PROTOCOLS: Proper documentation and evidence required
+```
+
 ## Non-Dynamic Specialist Integration
 
 **STATIC SPECIALIST SUPPORT:** The dynamic role system works alongside the 14 additional specialist personas defined in `src/personas/personas.md`. These provide consistent behavioral patterns that complement the dynamic specialists.
@@ -138,3 +258,4 @@ WORKFLOW ORCHESTRATION: PM manages multiple instances w/ parallel delegation
 - Dynamic specialists provide technology-specific expertise (React patterns, Kubernetes deployment)
 - Core team members can transform into dynamic specialists when needed
 - Context7 fallback ensures knowledge availability regardless of specialist type
+- ALL specialists must follow mandatory enforcement architecture
