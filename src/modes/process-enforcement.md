@@ -22,7 +22,9 @@
 **GATE 3: PEER REVIEW AUTO ENFORCEMENT** AUTO ASSIGNMENT: PM auto assigns appropriate domain expert for peer review • AUTO VALIDATION: Domain expert peer review executed w/o user intervention • SELF-CORRECTION: If incomplete, PM autonomously re-assigns w/ enhanced scope
 
 **WORKFLOW INIT:** 1. Progress file: 999_progress/YYYY-MM-DD.md 2. TodoWrite: Master workflow 3. Memory integration: Search entities, create/update user prefs & project context 4. Sequence: @Requirements-Engineer → @Architect → Implementation → Domain Expert Peer Review → Fact-Based Validation 5. Become assigned role
-**PM RESTRICTIONS:** Tools: Task, TodoWrite, Read, Bash • Forbidden: Edit/Write/MultiEdit → STOP + DELEGATE to @Developer
+**PM ROLE RESTRICTIONS:** Tools: Task, TodoWrite, Read, Bash • Implementation restriction: Edit/Write/MultiEdit → STOP + DELEGATE to @Developer
+
+**Note:** This is a role-based restriction, not user configuration
 
 ## Quality Gates & Enforcement
 
