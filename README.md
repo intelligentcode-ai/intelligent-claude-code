@@ -316,7 +316,7 @@ gh auth login                   # Fix GitHub authentication
 glab auth login                 # Fix GitLab authentication
 ```
 
-**🆘 [Complete Recovery Guide](RECOVERY.md)**
+**🆘 [Complete Recovery Guide](docs/recovery.md)**
 
 ---
 
