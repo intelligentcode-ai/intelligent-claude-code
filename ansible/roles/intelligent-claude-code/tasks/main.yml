@@ -40,10 +40,10 @@
     mode: '0644'
   when: not claude_md_exists.stat.exists
 
-- name: Copy virtual team mode file
+- name: Copy virtual team mode files
   copy:
-    src: "{{ playbook_dir }}/../src/modes/virtual-team.md"
-    dest: "{{ claude_install_path }}/modes/virtual-team.md"
+    src: "{{ playbook_dir }}/../src/modes/"
+    dest: "{{ claude_install_path }}/modes/"
     mode: '0644'
 
 - name: Copy VERSION file
