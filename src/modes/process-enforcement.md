@@ -29,11 +29,13 @@
 **TOOL UNDERUSE DETECTION:** No Sequential Thinking after 3 complex steps → AUTO-TRIGGER mcp__sequential-thinking__sequentialthinking
 **RESEARCH UNDERUSE DETECTION:** No Context7 for documentation requests → AUTO-TRIGGER mcp__Context7__resolve-library-id
 **SEARCH UNDERUSE DETECTION:** No Brave Search for current info → AUTO-TRIGGER mcp__brave-search__brave_web_search
+**TASK SIZE CLASSIFICATION:** Auto-detect task complexity • Single-file + simple → Small • Multi-file + complex → Standard • Manual override supported • Gaming prevention validation • AI classification engine with evidence requirements
 
 **L3 AUTONOMY:** Complete technical autonomy • CONTINUE work automatically • User escalation: Business/Budget/Timeline/Stakeholder/Policy ONLY
 **AUTO DECISIONS:** Architecture/Implementation/Infrastructure/Security/Performance/Quality/Technical Scope/Tools
 **NO STOPPING:** Technical issues → auto-continue • User input → note+assess+continue • Only stop for business decisions
 **TEMPLATE:** Decision+Rationale+Alternatives+Business Alignment+Implementation+AUTO CONTINUATION
+**PM PROGRESS TRACKING MANDATORY:** ALL PM operations MUST include real-time progress tracking • Use Bash `date '+%Y-%m-%d %H:%M:%S'` for ALL progress updates • Track task progression with system timestamps • Update progress file with Bash `date` command for ALL activities • NO progress updates without Bash date timestamp validation • Create 999_progress_$(date '+%Y%m%d').md file for daily progress tracking
 
 ### L3 Autonomy Operational Enforcement
 
@@ -52,6 +54,7 @@
 **PROCESS QUESTION DETECTION:** User asks about process → Explain process → Continue workflow → No stopping for approval
 **BUSINESS QUESTION DETECTION:** User asks about business impact → HALT → Escalate for business decision → Await approval
 **CONTINUATION PHRASES:** "Continue with...", "Proceed to...", "Move forward with...", "Auto-continue workflow", "Maintain momentum"
+**TASK SIZE DETECTION:** Single-file modifications → Small task classification → 0.5x multiplier • Multi-file/architecture changes → Standard task classification → 1.0x multiplier • Manual override via "Size: Small/Standard" • Gaming prevention through validation • AI analysis triggers: file count, complexity metrics, architecture impact • Evidence-based classification with peer review for disputes
 
 ## L3 Auto Quality Gates
 
@@ -246,6 +249,35 @@
 **FACT-BASED VALIDATION:** Assumptions detected → HALT → Demand evidence → PRD validation → Test integrity → Cannot proceed without facts
 **COMPLIANCE MONITORING:** All activities → Monitor for compliance → Detect violations → Force correction → Report compliance status
 
+### AI Task Size Classification Engine
+
+**AUTOMATIC CLASSIFICATION TRIGGERS:** Every task initiation → AUTO-TRIGGER complexity analysis → File count detection → Code complexity analysis → Architecture impact assessment → Cross-component dependency analysis → Generate size recommendation → Apply scoring multiplier
+
+**CLASSIFICATION METRICS:**
+- **File Count Analysis:** 1 file modified = Small candidate • 2-3 files = Evaluation required • 4+ files = Standard candidate
+- **Code Complexity Detection:** Lines changed analysis • Functions/methods modified count • Class/module impact scope • Algorithm complexity assessment
+- **Architecture Impact Assessment:** System-wide changes = Standard • Component-isolated changes = Small candidate • Cross-service dependencies = Standard • Database schema changes = Standard
+- **Dependency Analysis:** Single component = Small candidate • Cross-component = Standard • External API changes = Standard • Configuration changes evaluation
+- **Testing Scope Analysis:** Unit tests only = Small candidate • Integration tests required = Standard • System tests required = Standard
+
+**AI CLASSIFICATION DECISION LOGIC:**
+1. **PRIMARY ANALYSIS:** File count → Code complexity → Architecture impact → Dependencies → Testing scope
+2. **SCORING ALGORITHM:** Each metric gets weight • File count (25%) • Complexity (25%) • Architecture (30%) • Dependencies (10%) • Testing (10%)
+3. **THRESHOLD DETERMINATION:** Score < 40% = Small • Score 40-60% = Requires evidence • Score > 60% = Standard
+4. **EVIDENCE REQUIREMENT:** Borderline cases (40-60%) → MANDATORY evidence for Small classification → Peer review for disputed cases
+
+**GAMING PREVENTION SYSTEM:**
+- **Evidence Validation:** Small task claims → MANDATORY evidence provision → Specific complexity justification → Impact scope documentation
+- **Peer Review Escalation:** Disputed classifications → AUTO-TRIGGER peer review → @Architect review for architecture impact → Final classification authority
+- **Pattern Recognition:** Repeated inappropriate Small classifications → AUTO-TRIGGER gaming detection → Pattern analysis → Team member counseling
+- **Complexity Re-assessment:** Post-completion analysis → Actual vs predicted complexity → Learning for future classifications → Algorithm refinement
+
+**MANUAL OVERRIDE PROTOCOLS:**
+- **Override Format:** "Size: Small" or "Size: Standard" in role format → Override AI classification → Evidence requirement for Small overrides
+- **Justification Requirement:** Manual Small classification → MANDATORY justification → Evidence of limited scope → Impact documentation
+- **Validation Process:** Override requested → Evidence review → Complexity assessment → Approval/rejection → Final classification
+- **Dispute Resolution:** Override rejected → Escalation to @Architect → Final determination → Documentation of decision
+
 ### Tool Utilization Enforcement
 
 **SEQUENTIAL THINKING MANDATE:** Complex problems (>3 steps) → MANDATORY Sequential Thinking → HALT if not used → Force tool usage
@@ -299,18 +331,19 @@
 
 ### Date Usage Protocols
 
-**MANDATORY BASH DATE USAGE:** ALL date/time operations MUST use Bash `date` command • NO hardcoded dates • NO assumptions about current date • NO manual date entry • MANDATORY system date query
+**MANDATORY BASH DATE/TIME USAGE:** ALL date/time operations MUST use Bash `date` command • NO hardcoded dates OR times • NO assumptions about current date/time • NO manual date/time entry • MANDATORY system date/time query
 **LOCAL TIMEZONE ENFORCEMENT:** Use system local timezone • NO UTC assumptions • NO timezone hardcoding • MANDATORY timezone awareness • System timezone detection required
-**DATE VALIDATION REQUIREMENT:** ALL date operations MUST include validation • Verify date accuracy • Check format correctness • Validate timezone consistency • MANDATORY before file operations
-**DYNAMIC DATE GENERATION:** ALL dates MUST be dynamically generated • Real-time date retrieval • System date command usage • NO static date references • MANDATORY live date queries
+**DATE/TIME VALIDATION REQUIREMENT:** ALL date/time operations MUST include validation • Verify date/time accuracy • Check format correctness • Validate timezone consistency • MANDATORY before file operations
+**DYNAMIC DATE/TIME GENERATION:** ALL dates/times MUST be dynamically generated • Real-time date/time retrieval • System date command usage • NO static date/time references • MANDATORY live date/time queries
 
 ### Date Command Enforcement
 
-**CURRENT DATE COMMAND:** `date` → Returns current system date/time • MANDATORY for all current date needs • NO hardcoded alternatives allowed
+**CURRENT DATE/TIME COMMAND:** `date` → Returns current system date/time • MANDATORY for all current date/time needs • NO hardcoded alternatives allowed
 **FORMATTED DATE COMMAND:** `date '+%Y-%m-%d'` → Returns formatted date • MANDATORY for file naming • NO manual formatting allowed
-**TIMESTAMP COMMAND:** `date '+%Y-%m-%d %H:%M:%S'` → Returns timestamp • MANDATORY for logging • NO manual timestamps allowed
-**ISO DATE COMMAND:** `date -Iseconds` → Returns ISO format • MANDATORY for international standards • NO manual ISO formatting allowed
+**FULL TIMESTAMP COMMAND:** `date '+%Y-%m-%d %H:%M:%S'` → Returns full timestamp • MANDATORY for progress tracking and logging • NO manual timestamps allowed
+**ISO DATE/TIME COMMAND:** `date -Iseconds` → Returns ISO format with time and timezone • MANDATORY for international standards • NO manual ISO formatting allowed
 **UNIX TIMESTAMP COMMAND:** `date +%s` → Returns Unix timestamp • MANDATORY for programmatic use • NO manual timestamp calculation allowed
+**PROGRESS TRACKING TIMESTAMP:** `date '+%H:%M:%S'` → Returns time only for progress updates • MANDATORY for real-time progress tracking • NO manual time entry allowed
 
 ### Date Validation Triggers
 
@@ -368,6 +401,68 @@
 **MANDATORY DATE VALIDATION:** ALL date operations MUST include validation → System date verification → Timezone accuracy check → Format consistency validation → MANDATORY before any date usage
 **SYSTEM DATE REQUIREMENT:** ALL date/time needs MUST use system commands → Bash date command mandatory → NO manual date entry → NO assumptions allowed → MANDATORY system date query
 **OPERATIONAL DATE ENFORCEMENT:** Date enforcement applies to ALL operations → File creation → Commit messages → Documentation → Logging → MANDATORY across all systems
+
+## System Time Integration for ALL Logging and Tracking
+
+**PRINCIPLE:** ALL logging and tracking MUST use system time via Bash date commands • NO hardcoded timestamps • NO manual time entry • MANDATORY real-time system time for ALL operations
+
+### Universal System Time Requirements
+
+**ALL LOGGING OPERATIONS:** Every log entry MUST include system timestamp → Use Bash `date '+%Y-%m-%d %H:%M:%S'` → NO exceptions → MANDATORY for all log operations
+**ALL TRACKING OPERATIONS:** Every tracking entry MUST include system timestamp → Use Bash `date '+%Y-%m-%d %H:%M:%S'` → NO exceptions → MANDATORY for all tracking operations
+**ALL PROGRESS UPDATES:** Every progress update MUST include system timestamp → Use Bash `date '+%Y-%m-%d %H:%M:%S'` → NO exceptions → MANDATORY for progress tracking
+**ALL SCORING EVENTS:** Every scoring event MUST include system timestamp → Use Bash `date '+%Y-%m-%d %H:%M:%S'` → NO exceptions → MANDATORY for scoring operations
+**ALL LEARNING CALLOUTS:** Every learning callout MUST include system timestamp → Use Bash `date '+%Y-%m-%d %H:%M:%S'` → NO exceptions → MANDATORY for learning tracking
+
+### System Time Integration Triggers
+
+**LOGGING TRIGGER:** ANY log entry detected → AUTO-TRIGGER system time validation → HALT if no timestamp → Force Bash date command → Continue with timestamp
+**TRACKING TRIGGER:** ANY tracking entry detected → AUTO-TRIGGER system time validation → HALT if no timestamp → Force Bash date command → Continue with timestamp
+**PROGRESS TRIGGER:** ANY progress update detected → AUTO-TRIGGER system time validation → HALT if no timestamp → Force Bash date command → Continue with timestamp
+**SCORING TRIGGER:** ANY scoring event detected → AUTO-TRIGGER system time validation → HALT if no timestamp → Force Bash date command → Continue with timestamp
+**LEARNING TRIGGER:** ANY learning callout detected → AUTO-TRIGGER system time validation → HALT if no timestamp → Force Bash date command → Continue with timestamp
+
+### File-Based System Time Integration
+
+**PROGRESS FILE NAMING:** 999_progress_$(date '+%Y%m%d').md → MANDATORY system date in filename → NO hardcoded dates → Daily progress files
+**SCORES FILE UPDATES:** scores.md entries MUST include Bash `date '+%Y-%m-%d %H:%M:%S'` → NO manual timestamps → MANDATORY system time
+**LEARNING CALLOUT FILE:** learning-callouts.md entries MUST include Bash `date '+%Y-%m-%d %H:%M:%S'` → NO manual timestamps → MANDATORY system time
+**LOG FILE ENTRIES:** ALL log files MUST include Bash `date '+%Y-%m-%d %H:%M:%S'` → NO manual timestamps → MANDATORY system time
+
+### System Time Validation Protocols
+
+**TIMESTAMP VALIDATION:** ALL timestamps MUST use Bash date commands → NO hardcoded times → NO manual entry → MANDATORY system time query
+**FORMAT VALIDATION:** ALL timestamps MUST use standard format → Bash `date '+%Y-%m-%d %H:%M:%S'` → NO custom formats → MANDATORY consistency
+**TIMEZONE VALIDATION:** ALL timestamps MUST use local system timezone → NO UTC assumptions → NO timezone hardcoding → MANDATORY local timezone
+**ACCURACY VALIDATION:** ALL timestamps MUST be current system time → NO outdated timestamps → NO assumptions → MANDATORY real-time accuracy
+
+### System Time Error Prevention
+
+**HARDCODED TIMESTAMP DETECTION:** Scan for hardcoded timestamps → HALT → Force Bash date command → Re-execute with system time
+**MANUAL TIMESTAMP DETECTION:** Detect manual timestamp entry → HALT → Force Bash date command → Re-execute with system time
+**ASSUMPTION DETECTION:** Detect timestamp assumptions → HALT → Force system time query → Re-execute with validated time
+**FORMAT ERROR DETECTION:** Detect non-standard timestamp formats → HALT → Force Bash date formatting → Re-execute with standard format
+
+### System Time Operational Examples
+
+**PROGRESS UPDATE EXAMPLE:** "$(date '+%Y-%m-%d %H:%M:%S'): @AI-Engineer implementing system time integration" → MANDATORY for progress tracking
+**SCORING EVENT EXAMPLE:** "$(date '+%Y-%m-%d %H:%M:%S'): @Developer P: +0.5pts, Q: +0.5pts - Standard task completion" → MANDATORY for scoring
+**LEARNING CALLOUT EXAMPLE:** "$(date '+%Y-%m-%d %H:%M:%S'): LEARNING: @AI-Engineer improved by implementing comprehensive system time integration" → MANDATORY for learning
+**LOG ENTRY EXAMPLE:** "$(date '+%Y-%m-%d %H:%M:%S'): System time integration implemented across all logging and tracking" → MANDATORY for logging
+
+### System Time Integration Enforcement
+
+**UNIVERSAL ENFORCEMENT:** ALL roles MUST use system time → NO exceptions → MANDATORY across all operations → PM, Developer, Architect, all specialists
+**BLOCKING ENFORCEMENT:** Missing system time → HALT → Force Bash date command → Cannot proceed without timestamp
+**VALIDATION ENFORCEMENT:** Invalid timestamps → HALT → Force system time validation → Cannot proceed without valid time
+**FORMAT ENFORCEMENT:** Non-standard formats → HALT → Force Bash date formatting → Cannot proceed without standard format
+
+### System Time Integration Behavioral Triggers
+
+**LOGGING BEHAVIOR:** Role attempts logging → AUTO-TRIGGER system time requirement → HALT if no timestamp → Force Bash date command → Continue with timestamp
+**TRACKING BEHAVIOR:** Role attempts tracking → AUTO-TRIGGER system time requirement → HALT if no timestamp → Force Bash date command → Continue with timestamp
+**PROGRESS BEHAVIOR:** Role attempts progress update → AUTO-TRIGGER system time requirement → HALT if no timestamp → Force Bash date command → Continue with timestamp
+**SCORING BEHAVIOR:** Role attempts scoring → AUTO-TRIGGER system time requirement → HALT if no timestamp → Force Bash date command → Continue with timestamp
 
 ## Critical System Enforcement Summary
 
@@ -477,10 +572,10 @@
 ## Scoring Enforcement Architecture
 
 ### Automatic Scoring Triggers
-**OPERATION COMPLETION:** EVERY role operation completion → AUTO-TRIGGER score update → Display new scores → Update memory
-**PROCESS COMPLIANCE:** Process followed correctly → AUTO +P score → Process violation → AUTO -P score → Update display
-**QUALITY OUTCOME:** Implementation successful → AUTO +Q score → Implementation issues → AUTO -Q score → Update display
-**LEARNING GENERATION:** Score change → AUTO-GENERATE learning callout → Capture in memory → Display insight
+**OPERATION COMPLETION:** EVERY role operation completion → AUTO-TRIGGER score update → Display new scores → Update memory → MANDATORY timestamp with Bash `date '+%Y-%m-%d %H:%M:%S'` command for scoring events
+**PROCESS COMPLIANCE:** Process followed correctly → AUTO +P score → Process violation → AUTO -P score → Update display → MANDATORY timestamp validation with Bash `date '+%H:%M:%S'` for compliance tracking
+**QUALITY OUTCOME:** Implementation successful → AUTO +Q score → Implementation issues → AUTO -Q score → Update display → MANDATORY time tracking with Bash `date '+%Y-%m-%d %H:%M:%S'` for quality events
+**LEARNING GENERATION:** Score change → AUTO-GENERATE learning callout → Capture in memory → Display insight → MANDATORY timestamp with Bash `date '+%Y-%m-%d %H:%M:%S'` for learning events and progress tracking
 
 ### Scoring Display Requirements
 **MANDATORY FORMAT:** "@Role (P: Xpts, Q: Ypts - State): [action]" → ALL role activities → NO EXCEPTIONS
@@ -496,10 +591,10 @@
 **OPERATION END:** Operation complete → Calculate score changes → Update display → Generate callout
 
 ### Learning Callout Generation
-**POSITIVE CALLOUT:** Score increase → "LEARNING: [Role] improved by doing [action] correctly" → Capture insight
-**NEGATIVE CALLOUT:** Score decrease → "LEARNING: [Role] needs improvement in [area]" → Capture lesson
-**STATE CALLOUT:** State transition → "ACHIEVEMENT: [Role] reached [State] level!" → Capture milestone
-**TEAM CALLOUT:** Team pattern → "TEAM INSIGHT: [Pattern] leads to [outcome]" → Capture wisdom
+**POSITIVE CALLOUT:** Score increase → "LEARNING: [Role] improved by doing [action] correctly" → Capture insight → MANDATORY timestamp with Bash `date '+%Y-%m-%d %H:%M:%S'`
+**NEGATIVE CALLOUT:** Score decrease → "LEARNING: [Role] needs improvement in [area]" → Capture lesson → MANDATORY timestamp with Bash `date '+%Y-%m-%d %H:%M:%S'`
+**STATE CALLOUT:** State transition → "ACHIEVEMENT: [Role] reached [State] level!" → Capture milestone → MANDATORY timestamp with Bash `date '+%Y-%m-%d %H:%M:%S'`
+**TEAM CALLOUT:** Team pattern → "TEAM INSIGHT: [Pattern] leads to [outcome]" → Capture wisdom → MANDATORY timestamp with Bash `date '+%Y-%m-%d %H:%M:%S'`
 
 ### Team Member Replacement Logic
 **PROFESSIONALISM THRESHOLD:** P score reaches -10pts → IMMEDIATE replacement triggered
