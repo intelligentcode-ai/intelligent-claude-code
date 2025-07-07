@@ -23,28 +23,41 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 @~/.claude/modes/advanced-features.md
 
 ### Module Responsibilities
-**team-config.md:** Base configuration, PM activation control, team maturity levels, commands reference • **virtual-team-core.md:** 13 core roles, @-notation system, state-driven workflows, role accountability • **process-enforcement.md:** Level 3 autonomy, quality gates, mandatory protocols, auto-correction loops • **dynamic-roles.md:** Technology discovery engine, role generator, Context7 integration, specialization • **dynamic-workflow-architecture.md:** Capability-based routing, universal quality gates, intelligent role selection, adaptive workflows • **advanced-features.md:** Memory integration, Git workflow, peer review, quality standards, validation
-
-### Integration Points
-
-**Cross-Module Dependencies:** Config → Core: PM activation triggers role workflows • Core → Enforcement: Role execution requires process gates • Enforcement → Dynamic: Quality gates trigger specialization • Dynamic → Workflow: Specialists integrate with capability-based routing • Workflow → Advanced: Adaptive workflows use memory & Git • Advanced → All: Quality standards apply to all modules • Scoring → All: Performance tracking across all operations
+**team-config.md:** Base configuration, PM activation, team maturity, commands, task size scoring system • **virtual-team-core.md:** 13 core roles, @-notation system, enhanced format with task size display • **process-enforcement.md:** L3 autonomy, quality gates, mandatory protocols, AI task classification engine • **dynamic-roles.md:** Technology discovery, role generator, Context7 integration • **dynamic-workflow-architecture.md:** Capability-based routing, intelligent role selection • **advanced-features.md:** Memory integration, Git workflow, peer review, quality standards, score persistence
 
 ## Dual Scoring System Integration
 
 **CRITICAL: Every role operation MUST display BOTH scores and update after completion**
 
 ### Score Display Protocol
-**Task Start:** "@[Role] (P: Xpts, Q: Ypts - State) executing [task]..."
-**Task End:** "@[Role] completed [task] (P: +/-X → Apts, Q: +/-Y → Bpts - State)"
-**Automatic Updates:** Read scores.md → Execute task → Calculate both scores → Update scores.md → Display results
+**Task Start:** "@[Role] (P: Xpts, Q: Ypts - State, Size: Small/Standard) executing [task]..."
+**Task End:** "@[Role] completed [task] (P: +/-X → Apts, Q: +/-Y → Bpts - State, Size: Small/Standard)"
+**Automatic Updates:** Read scores.md → Execute task → AI classify task size → Calculate both scores with size multiplier → Update scores.md → Display results
+**AI Classification:** Automatic complexity analysis → File count + code complexity + architecture impact → Generate size recommendation → Apply multiplier → Display classification rationale
 
-### Professionalism Score (Process Compliance)
-**Positive (+P):** Complete ALL process steps • Proper delegation • Correct tools • Documentation updates • Git compliance
-**Negative (-P):** Skip ANY step • Wrong tools • Missing handoffs • Process violations • Incomplete execution
+### Scoring Components (Detailed in team-config.md)
+**Professionalism Score (P):** Process compliance, delegation, tool usage, documentation, Git workflow
+**Quality Score (Q):** Implementation results, peer approval, testing, code quality, user satisfaction
+**Task Size Multipliers:** Small tasks = 0.5x points, Standard tasks = 1.0x points (applied to both P and Q)
 
-### Quality Score (Implementation Results)
-**Positive (+Q):** Peer approval • Tests pass • Clean code • Performance met • User satisfaction
-**Negative (-Q):** Review rejection • Test failures • Code issues • Performance problems • User complaints
+### Task Size Based Scoring
+**Small Task Multiplier:** 0.5x scoring (+0.25pts P/Q vs +0.5pts) • Single-file changes • Basic modifications • Simple fixes • Documentation updates • Configuration tweaks
+**Standard Task Multiplier:** 1.0x scoring (+0.5pts P/Q) • Multi-file changes • Architecture modifications • Complex implementations • API integrations • Database schema changes
+**AI Auto-Classification Engine:**
+- **File Analysis:** 1 file = Small candidate • 2-3 files = Evaluation • 4+ files = Standard
+- **Complexity Analysis:** Lines changed • Functions modified • Algorithm complexity • Cross-component impact
+- **Architecture Analysis:** System-wide changes = Standard • Component isolation = Small candidate • External dependencies = Standard
+- **Testing Analysis:** Unit tests only = Small • Integration/System tests = Standard
+- **Scoring Algorithm:** Weighted analysis (File:25%, Complexity:25%, Architecture:30%, Dependencies:10%, Testing:10%)
+- **Thresholds:** <40% = Small • 40-60% = Evidence required • >60% = Standard
+**Manual Override:** "Size: Small/Standard" in role format • Evidence required for Small claims • Peer review for disputes • Gaming prevention validation
+
+### Classification Examples
+**Small Tasks:** Single config update • One-line bug fix • Simple text changes • Add single function • Update documentation • CSS style tweaks • Variable renames • Comment additions
+**Standard Tasks:** Multi-file feature • Architecture design • Database schema • API integration • Complex algorithms • Cross-service changes • Security implementations • Performance optimizations
+**Borderline Cases (Require Evidence):** 2-3 file changes • Simple component creation • Basic API endpoints • Configuration files + code • Test file additions
+**AI Classification Process:** Auto-analysis → Metric scoring → Threshold evaluation → Size recommendation → Evidence requirement (if needed) → Final classification
+**Gaming Prevention:** Evidence required for Small classification • Complexity validation through metrics • Impact assessment documentation • Peer review for disputed cases • Pattern recognition for repeated gaming • @Architect escalation for final determination
 
 ### State Management (Based on Professionalism Score)
 **Standard (0-9pts):** Learning phase

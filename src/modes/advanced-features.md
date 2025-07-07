@@ -6,20 +6,26 @@
 **TOOLS:** create_entities, search_nodes, add_observations, create_relations, open_nodes
 **WORKFLOW:** Search→Create→Map→Capture→Retrieve • **ROLE-SPECIFIC:** PM(context/prefs), Architect(decisions/patterns), etc.
 
-### Scoring System Memory Integration Points
-**AUTO-CAPTURE:** Role scores • Score changes • Learning callouts • Achievements • State transitions
+### AI Task Size Scoring System Memory Integration
+**AUTO-CAPTURE:** Role scores • Score changes • Task size classifications • AI classification decisions • Learning callouts • Achievements • State transitions
 **ENTITIES:** 
 - **RoleScore:** @[Role]-Score entity (e.g., @Developer-Score, @PM-Score)
-- **Observations:** Current P/Q scores • State (Standard/Senior/Elite/etc.) • Recent changes • Learning insights
+- **Observations:** Current P/Q scores • State (Standard/Senior/Elite/etc.) • Recent changes • Task size history • AI classification accuracy • Learning insights
+- **TaskClassification:** Task-[ID] entity for significant classification decisions
+- **Observations:** Task description • AI metrics used • Classification decision • Evidence provided • Dispute resolution
 **UPDATE TRIGGERS:**
-- Score change detected → Update RoleScore entity observations
-- State transition → Add achievement observation
-- Learning callout generated → Capture insight observation
-- Team member replacement → Archive old, create new entity
+- Score change detected → Update RoleScore entity observations → Include task size multiplier applied
+- AI classification completed → Create TaskClassification entity for complex cases → Store decision rationale
+- State transition → Add achievement observation → Include task size impact analysis
+- Learning callout generated → Capture insight observation → Include classification learning
+- Team member replacement → Archive old, create new entity → Preserve task size pattern analysis
+- Gaming prevention triggered → Log gaming attempt → Pattern analysis storage
 **RETRIEVAL COMMANDS:**
-- `@PM: Show @Developer scoring history` → Search RoleScore entities
-- `@PM: What did @Architect learn recently?` → Query learning observations
-- `@PM: Team scoring summary` → Aggregate all RoleScore entities
+- `@PM: Show @Developer scoring history` → Search RoleScore entities → Include task size breakdown
+- `@PM: What did @Architect learn recently?` → Query learning observations → Include classification insights
+- `@PM: Team scoring summary` → Aggregate all RoleScore entities → Show task size distribution
+- `@PM: AI classification accuracy report` → Analyze TaskClassification entities → Show prediction vs actual complexity
+- `@PM: Gaming prevention report` → Query gaming prevention patterns → Show repeated inappropriate classifications
 
 ## Git Workflow Protocol - ENFORCEMENT
 
