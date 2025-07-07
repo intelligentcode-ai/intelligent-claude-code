@@ -1,19 +1,21 @@
 # Transform Claude Code into Your Development Team
 
-**One import line. Thirteen specialists. Zero compromise.**
+**One import line. Unlimited specialists. Mandatory enforcement. Zero compromise.**
 
-Turn Claude Code into an intelligent virtual development team that scales from simple websites to enterprise applications. Get professional Git workflows, autonomous technical decisions, and growing team expertise - all through a single, non-invasive configuration.
+Turn Claude Code into an intelligent virtual development team with TRUE dynamic role transformation and mandatory enforcement architecture. Scale from simple websites to enterprise applications with unlimited domain experts, Level 3 autonomous operations, and professional Git workflows - all through a single, non-invasive configuration.
 
 ## What You Get
 
-🚀 **13 Expert Roles** - From Requirements Engineer to AI Engineer, each with deep domain expertise  
-⚡ **Smart Team Scaling** - 6 roles for websites, 8 for webapps, 13 for enterprise  
-🔄 **Professional Git Workflow** - Branching, MRs, automated versioning with mandatory security validation  
-🎯 **Direct Communication** - `@Developer fix this bug` `@Architect design this system`  
-📈 **Growing Autonomy** - Team learns and handles more over time  
-🔗 **GitHub + GitLab** - Unified commands work with both platforms  
-🔒 **Security First** - Mandatory pre-push validation, credential scanning, no sensitive data exposure  
-🤖 **AI Agent Standards** - Professional behavior without human pretense, process-focused execution
+🚀 **13 Core Roles + Unlimited Dynamic Specialists** - From Requirements Engineer to AI Engineer, plus unlimited domain experts  
+⚡ **TRUE Dynamic Role Transformation** - Generate specialists for ANY technology domain on-demand  
+🔄 **Mandatory Enforcement Architecture** - Universal process compliance for ALL roles and workflows  
+🎯 **Strategic Analysis Layer** - Pre-execution planning with thoughtful organized responses  
+📈 **Level 3 Autonomous Operations** - Continuous technical decision-making with business-only escalation  
+🔗 **Intelligent Tool Fallback** - Context7 → Brave Search → Built-in tools → Manual guidance  
+🔒 **Security-First Architecture** - Mandatory pre-commit validation for ALL changes and configurations  
+🤖 **Fact-Based Validation** - Evidence-driven development with auto-correction workflows  
+📊 **Memory Integration** - Persistent knowledge capture and relationship tracking  
+🛡️ **100% Completion Enforcement** - No partial implementations or "good enough" solutions
 
 ## Quick Start
 
@@ -48,9 +50,10 @@ make install HOST=192.168.1.110 USER=ubuntu    # Remote install
 ## How It Works
 
 ### Your Team Scales Automatically
-- **Portfolio Site:** 6 specialists handle design, implementation, testing
-- **Web App:** 8 specialists add database and backend testing
-- **Enterprise SaaS:** All 13 specialists for complete coverage
+- **Portfolio Site:** 6 core specialists + dynamic specialists for specific technologies
+- **Web App:** 8 core specialists + framework-specific experts (@React-Developer, @Node-Engineer)
+- **Enterprise SaaS:** All 13 core specialists + unlimited domain experts (@Kubernetes-Engineer, @GraphQL-Specialist)
+- **Specialized Domains:** Dynamic generation of experts for ANY technology (@Blockchain-Developer, @ML-Engineer, @IoT-Specialist)
 
 ### Professional Git Workflow
 ```bash
@@ -61,36 +64,45 @@ git commit -m "auth: Add JWT authentication system"
 @PM mr merge   # Merges after review
 ```
 
-### Growing Team Intelligence
-- **Level 1:** Team asks for everything
-- **Level 2:** Team handles implementation details, user approves major changes  
-- **Level 3:** Full technical autonomy, only major architecture needs approval
+### Level 3 Autonomous Operations
+- **Strategic Analysis Layer:** Pre-execution planning with thoughtful organized responses
+- **Technical Autonomy:** Architecture, implementation, infrastructure, security, performance decisions
+- **Business Escalation Only:** User involvement only for business impact, budget, timeline, policy
+- **Continuous Operations:** Self-correcting quality loops with automatic advancement
+- **Mandatory Enforcement:** Universal process compliance for ALL roles and workflows
 
-### Domain-Specific Expertise
-- **AI/ML work** automatically assigns **@AI-Engineer** for specialized knowledge
-- **Peer reviews** matched by domain expertise (AI-Engineer #2 reviews AI work)
-- **Conditional architect review** only for architectural changes, not all modifications
+### TRUE Dynamic Domain Expertise
+- **Technology Discovery Engine:** 3-tier auto-detection (file patterns, content analysis, context inference)
+- **Context7 Knowledge Injection:** Real-time expertise loading with fallback logic
+- **Unlimited Specialist Generation:** @React-Developer, @Kubernetes-Engineer, @GraphQL-Expert, @Blockchain-Specialist
+- **Parallel Instance Support:** Multiple same-role instances (@Developer-1, @Developer-2)
+- **Mandatory Peer Review:** Domain expert assignment for ALL implementations with enforcement
+- **Dynamic Role Evolution:** Specialists adapt capabilities based on project needs
 
-### Awesome Features
-✨ **Smart Versioning** - Automatic version bumps and changelog generation  
-🔍 **Change Detection** - Keyword analysis determines branching needs  
-🔀 **Unified Git Platform** - Same commands work for GitHub and GitLab  
-🛡️ **Workflow Enforcement** - Prevents messy commits to main branch  
-📊 **Progress Tracking** - Single progress file per day, zero document sprawl
+### Advanced Architecture Features
+✨ **TRUE Dynamic Transformation** - Generate specialists for ANY technology domain  
+🔍 **Mandatory Enforcement** - Universal process compliance for ALL roles and workflows  
+🔀 **Intelligent Tool Fallback** - Context7 → Brave Search → Built-in tools → Manual guidance  
+🛡️ **Security-First Architecture** - Mandatory pre-commit validation for ALL changes  
+📊 **Fact-Based Validation** - Evidence-driven development with auto-correction workflows  
+🧠 **Memory Integration** - Persistent knowledge capture and relationship tracking  
+⚡ **Strategic Analysis Layer** - Pre-execution planning with thoughtful responses  
+🔄 **Auto-Correction Workflows** - Self-correcting quality loops until completion standards
 
-## Team Roles
+## Team Architecture
 
-**Core Team:**
-- **@PM** - Team coordination and role selection
-- **@Requirements-Engineer** - Business requirements analysis
-- **@Architect** - System design and technical leadership
-- **@Developer** - Full-stack implementation
+### 13 Core Specialists
+**Foundation Team:**
+- **@PM** - Strategic analysis, team coordination, mandatory enforcement
+- **@Requirements-Engineer** - Business requirements analysis (mandatory first role)
+- **@Architect** - System design and technical leadership (mandatory for system changes)
+- **@Developer** - Full-stack implementation with domain expertise
 
 **Infrastructure & Data:**
 - **@System-Engineer** - Server configuration and deployment
 - **@DevOps-Engineer** - CI/CD, automation, orchestration
 - **@Database-Engineer** - Database design and optimization
-- **@Security-Engineer** - Security implementation and compliance
+- **@Security-Engineer** - Security implementation and mandatory pre-commit validation
 - **@AI-Engineer** - AI/ML systems, LLM integration, prompt engineering
 
 **Quality & Design:**
@@ -99,29 +111,55 @@ git commit -m "auth: Add JWT authentication system"
 - **@Frontend-Tester** - UI testing and responsive validation
 - **@Backend-Tester** - API testing and end-to-end validation
 
+### Unlimited Dynamic Specialists
+**Technology Experts (Generated On-Demand):**
+- **@React-Developer** - React/Next.js specialist with latest best practices
+- **@Kubernetes-Engineer** - Container orchestration and deployment expert
+- **@GraphQL-Expert** - GraphQL API design and optimization specialist
+- **@Blockchain-Developer** - Smart contract and DeFi application expert
+- **@ML-Engineer** - Machine learning model development and deployment
+- **@IoT-Specialist** - Internet of Things protocol and device expert
+- **@VR-Experience-Designer** - Virtual reality application architect
+- **@Quantum-Computing-Researcher** - Quantum algorithm development expert
+- **@Accessibility-Compliance-Officer** - WCAG compliance and inclusive design
+- **@Data-Privacy-Analyst** - GDPR/CCPA compliance and data protection
+- **And unlimited more based on project needs...**
+
+### Mandatory Enforcement for ALL Roles
+- **Process Compliance:** ALL roles follow enforcement protocols for ALL activities
+- **Quality Gates:** Auto-correction workflows for requirements, architecture, peer review, implementation
+- **Security Validation:** Mandatory pre-commit validation for ALL changes and configurations
+- **Fact-Based Validation:** Evidence-based reporting, no assumptions permitted for ALL work
+- **Documentation Compliance:** Real-time updates and evidence provision for ALL tasks
+
 ## Real-World Examples
 
 ### Building a Portfolio Website
 ```bash
 User: "Create a portfolio website with modern design"
-@PM: Assigning 6 specialists - Requirements, Architect, Developer, Designer, Frontend-Tester
-@Requirements-Engineer: Analyzing portfolio requirements - responsive, fast, showcase-focused
-@Architect: Recommending Hugo static site generator - 3x faster than Jekyll
-@Developer: Implementing optimized Hugo site with responsive images
+@PM: Strategic analysis - portfolio complexity, tech requirements, enforcement protocols
+@Requirements-Engineer: (MANDATORY) Analyzing portfolio requirements - responsive, fast, showcase-focused
+@Architect: (MANDATORY) Recommending Hugo static site generator - 3x faster than Jekyll
+@Hugo-Developer: (DYNAMIC) Generated specialist with Hugo expertise and latest best practices
 @Web-Designer: Creating modern design system with mobile-first approach
 @Frontend-Tester: Validating all breakpoints and accessibility compliance
+@Security-Engineer: (MANDATORY) Pre-commit validation for all configurations
+@DevOps-Engineer: Git workflow enforcement with proper branching and MR creation
 ```
 
 ### Scaling to Enterprise SaaS
 ```bash
 User: "Build real-time analytics dashboard for enterprise clients"
-@PM: Enterprise complexity detected - activating full 13-role team
-@Requirements-Engineer: Real-time data requirements, multi-tenant architecture
-@Architect: Microservices with event streaming, time-series database design
-@Database-Engineer: InfluxDB for metrics, PostgreSQL for user management
-@DevOps-Engineer: Kubernetes deployment with auto-scaling policies
-@Security-Engineer: Multi-tenant isolation, encryption, audit logging
-# Team continues with autonomous implementation and Git workflow
+@PM: Strategic analysis - enterprise complexity, L3 autonomy, full enforcement protocols
+@Requirements-Engineer: (MANDATORY) Real-time data requirements, multi-tenant architecture
+@Architect: (MANDATORY) Microservices with event streaming, time-series database design
+@InfluxDB-Engineer: (DYNAMIC) Generated specialist with InfluxDB expertise and optimization
+@PostgreSQL-Engineer: (DYNAMIC) Generated specialist with PostgreSQL multi-tenant patterns
+@Kubernetes-Engineer: (DYNAMIC) Generated specialist with K8s deployment and auto-scaling
+@React-Dashboard-Specialist: (DYNAMIC) Generated specialist with real-time dashboard expertise
+@Security-Engineer: (MANDATORY) Multi-tenant isolation, encryption, audit logging
+@DevOps-Engineer: (MANDATORY) Git workflow enforcement with feature branches and MRs
+# All specialists follow mandatory enforcement with auto-correction workflows
 ```
 
 ## Essential Commands
@@ -147,19 +185,57 @@ User: "Build real-time analytics dashboard for enterprise clients"
 
 **📖 [Complete Command Reference](docs/commands.md)**
 
+## Mandatory Enforcement Architecture
+
+**UNIVERSAL PROCESS COMPLIANCE:** ALL roles follow mandatory enforcement protocols for ALL activities. This is not optional.
+
+### What Gets Enforced (Everything)
+- **Code Implementation**: Requirements validation, architecture review, peer review, testing, security validation
+- **Documentation Updates**: Evidence provision, real-time updates, no document sprawl
+- **Git Workflows**: Proper branching, commit standards, MR requirements, security pre-commit validation
+- **Quality Reviews**: DoD validation, fact-based reporting, auto-correction workflows
+- **Role Delegations**: Strategic analysis layer, complete scope provision, mandatory gates
+- **System Changes**: Architecture review, security assessment, performance validation
+- **Configuration Changes**: Security validation, compliance checks, proper externalization
+- **Testing Activities**: Evidence provision, coverage requirements, validation standards
+
+### Auto-Correction Workflows
+- **Quality Issue Detection**: Automatic specialist re-delegation with enhanced scope
+- **Knowledge Gap Identification**: Context7 injection or fallback research activation
+- **Incomplete Implementation**: PM re-delegation with comprehensive requirements
+- **Security Violations**: Security-Engineer intervention with mandatory validation
+- **Process Shortcuts**: Immediate correction with proper gate enforcement
+- **Assumption-Based Work**: Fact-based validation with evidence requirements
+
+### No Exceptions Policy
+- **ALL roles** must follow enforcement protocols
+- **ALL activities** require compliance validation
+- **ALL deliverables** need evidence provision
+- **ALL changes** require security validation
+- **ALL implementations** need peer review
+- **ALL documentation** must be updated in real-time
+
+This ensures 100% completion standards and professional development practices across the entire virtual team.
+
 ## Why Choose Virtual Team Mode?
 
-### 🎯 **Focus on Building, Not Managing**
-Your team handles technical decisions autonomously. You focus on features and business goals while specialists manage implementation details, security, testing, and deployment.
+### 🎯 **TRUE Dynamic Adaptation**
+Your team generates unlimited specialists for ANY technology domain. Need a GraphQL expert? Blockchain developer? IoT specialist? The system creates domain experts on-demand with real-time knowledge injection.
 
-### 📈 **Grows With Your Project**
-Start with 6 specialists for a simple website. Scale to 13 for enterprise applications. The team composition adapts automatically based on project complexity and includes AI/ML specialists when needed.
+### 📈 **Mandatory Quality Assurance**
+Every role follows universal enforcement protocols. Auto-correction workflows ensure 100% completion standards. No partial implementations, no shortcuts, no "good enough" solutions.
 
-### 🔧 **Professional Git Workflow**
-No more messy commits or broken main branches. Your team follows proper branching, creates merge requests, and maintains clean commit history automatically.
+### 🔧 **Level 3 Autonomous Operations**
+Strategic analysis layer with continuous technical decision-making. Your team handles architecture, implementation, security, and performance autonomously. You focus on business goals.
 
-### ⚡ **Zero Learning Curve**
-Simple @-notation gets you started immediately. `@Developer fix this bug` or `@Architect design this system` - it's that intuitive.
+### ⚡ **Intelligent Tool Integration**
+Fallback logic ensures availability: Context7 → Brave Search → Built-in tools → Manual guidance. Memory integration provides persistent knowledge capture and relationship tracking.
+
+### 🛡️ **Security-First Architecture**
+Mandatory pre-commit validation for ALL changes. Credential scanning, configuration validation, and compliance enforcement built into every workflow.
+
+### 📊 **Fact-Based Development**
+Evidence-driven development with no assumptions permitted. All claims backed by evidence, all implementations validated against requirements, all work documented with proof.
 
 ## Installation & Setup
 
@@ -240,7 +316,7 @@ gh auth login                   # Fix GitHub authentication
 glab auth login                 # Fix GitLab authentication
 ```
 
-**🆘 [Complete Recovery Guide](RECOVERY.md)**
+**🆘 [Complete Recovery Guide](docs/recovery.md)**
 
 ---
 
@@ -248,6 +324,9 @@ glab auth login                 # Fix GitLab authentication
 
 ## What's New
 
+**v2.16.1** - TRUE Dynamic Role Transformation + Mandatory Enforcement Architecture  
+**v2.16.0** - Level 3 Autonomous Operations + Strategic Analysis Layer  
+**v2.15.0** - Process Enforcement + Auto-Correction Workflows  
 **v2.7.2** - AI-Engineer role + domain-specific peer review + virtual team optimization  
 **v2.5.0** - GitHub + GitLab unified support  
 **v2.4.0** - GitHub CLI integration with workflow enforcement  
@@ -255,6 +334,50 @@ glab auth login                 # Fix GitLab authentication
 **v2.0.0** - Complete virtual team implementation  
 
 **📋 [Complete Version History](src/version-history.md)**
+
+## Technical Architecture Overview
+
+### TRUE Dynamic Role Transformation System
+- **Technology Discovery Engine**: 3-tier auto-detection (file patterns, content analysis, context inference)
+- **Context7 Knowledge Injection**: Real-time expertise loading with library resolution and documentation retrieval
+- **Unlimited Specialist Generation**: Create experts for ANY technology domain (@React-Developer, @Kubernetes-Engineer, @GraphQL-Expert)
+- **Dynamic Role Evolution**: Specialists adapt capabilities based on project needs and complexity
+- **Parallel Instance Support**: Multiple same-role instances for complex parallel workstreams
+
+### Mandatory Enforcement Architecture
+- **Universal Process Compliance**: ALL roles follow enforcement protocols for ALL activities
+- **Quality Gates**: Auto-correction workflows for requirements, architecture, peer review, implementation
+- **Security-First**: Mandatory pre-commit validation for ALL changes and configurations
+- **Fact-Based Validation**: Evidence-driven development with no assumptions permitted
+- **Auto-Correction Workflows**: Self-correcting quality loops until completion standards achieved
+
+### Level 3 Autonomous Operations
+- **Strategic Analysis Layer**: Pre-execution planning with thoughtful organized responses
+- **Technical Autonomy**: Architecture, implementation, infrastructure, security, performance decisions
+- **Business Escalation Only**: User involvement limited to business impact, budget, timeline, policy
+- **Continuous Operations**: Self-correcting quality loops with automatic workflow advancement
+- **Mandatory Date Validation**: Factual date verification for all progress tracking
+
+### Intelligent Tool Fallback System
+- **Primary**: Context7 MCP (library resolution, documentation retrieval)
+- **Secondary**: Brave Search MCP (web search for documentation and best practices)
+- **Fallback**: Built-in tools (WebSearch, WebFetch, Grep, Read, Task)
+- **Emergency**: Manual user guidance and documentation
+- **Availability Detection**: Automatic tool availability checking with graceful degradation
+
+### Memory Integration System
+- **Persistent Knowledge Capture**: Entity creation for users, projects, roles, patterns, context
+- **Relationship Tracking**: Cross-entity relationship mapping and pattern recognition
+- **Auto Memory Workflow**: Context search → Entity creation → Relationship mapping → Knowledge retrieval
+- **Role-Specific Memory**: Specialized knowledge capture for each domain expert
+- **15 Auto Trigger Points**: User preferences, project context, role expertise, pattern recognition, etc.
+
+### Process Compliance Enforcement
+- **Fact-Based Validation Protocol**: No assumptions, evidence-based reporting, PRD compliance
+- **Progressive Correction System**: Self-correction → Peer correction → PM intervention → Architectural escalation
+- **Assumption Detection System**: Auto-detection of assumption-based decisions with immediate correction
+- **Systematic Quality Gates**: Requirements, architecture, peer review, security validation
+- **100% Completion Standards**: No partial implementations, no "good enough" solutions
 
 ## License
 
