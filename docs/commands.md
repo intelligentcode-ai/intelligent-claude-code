@@ -33,6 +33,52 @@
 ```bash
 @PM Status check            # Verify team is active and responsive
 @PM coordinate              # Basic team coordination activation
+@PM: Show team scoring summary    # Display all team member scores
+@PM: Team achievements             # Show all team achievements
+```
+
+### Dual Scoring System
+
+#### Score Display
+Every role MUST display scores in this format:
+```bash
+@Role (P: Xpts, Q: Ypts - State): [action description]
+```
+
+#### Score Tracking Commands
+```bash
+@PM: Show @[Role] scoring history    # Individual role score history
+@PM: What did @[Role] learn recently? # Recent learning insights for role
+@PM: Team scoring summary           # All team member current scores
+@PM: Show team achievements         # Team-wide achievements and milestones
+@PM: Team learning insights         # Recent team-wide learning patterns
+```
+
+#### Score Examples
+```bash
+@Developer (P: 5.5pts, Q: 4.0pts - Standard): Implementing user authentication
+@Architect (P: 12.0pts, Q: 8.5pts - Senior): System design review complete
+@PM (P: 25.0pts, Q: 15.0pts - Elite): Project milestone achieved
+```
+
+#### Scoring States
+- **Standard (0-9pts):** Initial level for all new team members
+- **Senior (10-24pts):** Experienced level with enhanced capabilities
+- **Elite (25-99pts):** Advanced level with maximum autonomy
+- **Ultra Mega (100pts):** Hall of Fame achievement (resets to 25pts)
+- **Replacement (-10 P pts):** Team member automatically replaced
+
+#### Learning System Commands
+```bash
+# Automatic learning callouts (system generated)
+LEARNING: @Developer improved by following complete testing workflow
+ACHIEVEMENT: @Architect reached Senior level!
+TEAM INSIGHT: Proper delegation chains lead to 50% faster delivery
+
+# Manual learning queries
+@PM: What improvements has @Developer made?
+@PM: Show recent team learning patterns
+@PM: What achievements has the team unlocked?
 ```
 
 ### Version Management
@@ -276,6 +322,21 @@ export GITLAB_TOKEN=your_token
 @PM restart                 # Reactivate after context issues
 ```
 
+### Scoring System Issues
+```bash
+# Missing score displays
+@PM: Enforce scoring display for all roles
+@Role (P: 0.0pts, Q: 0.0pts - Standard): Resume operation with proper scoring
+
+# Score persistence problems
+@PM: Restore team scores from memory
+@PM: Reinitialize scoring system
+
+# Learning system not working
+@PM: Generate team learning summary
+@PM: What recent improvements have been made?
+```
+
 ### Git Platform Issues
 ```bash
 @PM git status              # Check platform detection and auth
@@ -293,3 +354,10 @@ glab auth status            # Check GitLab authentication
 ---
 
 **💡 Tip**: Always start with `@PM restart` if your team seems unresponsive after Claude Code session interruptions or context compacting.
+
+---
+
+**📖 Additional Documentation:**
+- **[Dual Scoring System Features](features/dual-scoring-system.md)** - Complete scoring system documentation
+- **[Integration Guide](dual-scoring-integration-guide.md)** - How to integrate scoring with existing teams
+- **[Installation Guide](installation.md)** - Complete installation instructions

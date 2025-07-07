@@ -13,7 +13,7 @@ Your project CLAUDE.md gets one import line:
 @~/.claude/modes/virtual-team.md
 ```
 
-**That's it.** Your virtual development team is ready.
+**That's it.** Your virtual development team is ready with dual scoring system enabled.
 
 ## Installation Options
 
@@ -141,6 +141,7 @@ Source: intelligent-claude-code/src/
 - **Adds single import line** if not present
 - **Never overwrites** your existing configuration
 - **Complete removal** by deleting one import line
+- **Dual scoring enabled** automatically for all team members
 
 ## Optional CLI Tools
 
@@ -198,6 +199,18 @@ ls ~/.claude/modes/virtual-team.md
 
 # Test team activation
 @PM Status check
+```
+
+### Test Dual Scoring System
+```bash
+# Verify scoring display
+@PM (P: 0.0pts, Q: 0.0pts - Standard): Team initialization complete
+
+# Test score tracking
+@Developer (P: 0.0pts, Q: 0.0pts - Standard): Ready for development tasks
+
+# Verify memory integration
+@PM: Show team scoring summary
 ```
 
 ### Test CLI Integration (Optional)
