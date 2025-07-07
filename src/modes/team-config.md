@@ -20,6 +20,13 @@
 **L2:** Team details • User approves arch • Auto implementation 
 **L3:** Tech autonomy • TodoWrite workflow • Self-correcting • Continuous
 
+## Task Size Scoring
+**Small Tasks:** 0.5x multiplier (+0.25pts P/Q vs +0.5pts) • Simple modifications • Single-file changes • Basic fixes • Single function updates • Documentation updates
+**Standard Tasks:** 1.0x multiplier (+0.5pts P/Q) • Multi-file changes • Architecture modifications • Complex implementations • API integrations • Database schema changes
+**Classification:** Auto-detection via complexity analysis • Manual override with "Size: Small/Standard" • Gaming prevention through validation
+**AI Classification Logic:** File count analysis (1 file = Small candidate) • Code complexity detection (lines changed, functions modified) • Architecture impact assessment (system-wide changes = Standard) • Cross-component dependency analysis • Testing scope analysis
+**Gaming Prevention:** Evidence required for Small classification • Complexity validation through metrics • Impact assessment documentation • Peer review for disputed cases • Automatic re-classification if evidence insufficient
+
 ## Configuration
 Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 
@@ -52,7 +59,7 @@ Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 **TOOLS:** Context7 • Thinking tools • MCP preferences
 **SUBAGENTS:** Model(sonnet/opus/auto) • Threshold(3+/5+) • Max concurrent • Coordination • Optimization • Auto-delegation
 **PROJECT:** Repository • Release automation • Deployment • Tech stack
-**SCORING:** Enable(true/false) • Standard(+0.5/-1.0) • Senior(+1.0/-1.5) • Elite(+1.5/-2.5) • Thresholds(10/25/100/-10)
+**SCORING:** Enable(true/false) • Standard(+0.5/-1.0) • Senior(+1.0/-1.5) • Elite(+1.5/-2.5) • Thresholds(10/25/100/-10) • Task Size Multipliers(Small: 0.5x, Standard: 1.0x) • AI Classification(enabled/disabled) • Gaming Prevention(validation/evidence)
 
 **@PM reset PROTOCOL:**
 1. **BACKUP:** Create config.md backup
@@ -78,11 +85,12 @@ Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 
 ### Professionalism Score (Process & Compliance)
 **POINT VALUES:**
-- **Standard State (0-9pts):** Compliant: +0.5 • Non-compliant: -1.0
-- **Senior State (10-24pts):** Compliant: +1.0 • Non-compliant: -1.5
-- **Elite State (25-99pts):** Compliant: +1.5 • Non-compliant: -2.5
+- **Standard State (0-9pts):** Compliant: +0.5 (Standard) / +0.25 (Small) • Non-compliant: -1.0 (Standard) / -0.5 (Small)
+- **Senior State (10-24pts):** Compliant: +1.0 (Standard) / +0.5 (Small) • Non-compliant: -1.5 (Standard) / -0.75 (Small)
+- **Elite State (25-99pts):** Compliant: +1.5 (Standard) / +0.75 (Small) • Non-compliant: -2.5 (Standard) / -1.25 (Small)
 - **Ultra Mega State (100pts):** Hall of Fame → Reset to 25pts
 - **Removal Threshold:** -10pts → Team member replacement
+- **Task Size Multipliers Applied:** Small tasks = 0.5x all point values • Standard tasks = 1.0x all point values
 
 **PROFESSIONALISM TRIGGERS:**
 - **Positive:** Process compliance • Complete execution • Proper delegation • Correct tool usage • Documentation updates • Git workflow adherence
@@ -90,11 +98,12 @@ Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 
 ### Quality Score (Implementation & Results)
 **POINT VALUES:**
-- **Standard State (0-9pts):** Success: +0.5 • Failure: -0.5
-- **Senior State (10-24pts):** Success: +1.0 • Failure: -0.75
-- **Elite State (25-99pts):** Success: +1.5 • Failure: -1.0
+- **Standard State (0-9pts):** Success: +0.5 (Standard) / +0.25 (Small) • Failure: -0.5 (Standard) / -0.25 (Small)
+- **Senior State (10-24pts):** Success: +1.0 (Standard) / +0.5 (Small) • Failure: -0.75 (Standard) / -0.375 (Small)
+- **Elite State (25-99pts):** Success: +1.5 (Standard) / +0.75 (Small) • Failure: -1.0 (Standard) / -0.5 (Small)
 - **Master State (100pts):** Excellence Award → Maintain score
 - **Warning Threshold:** -5pts → Quality improvement required
+- **Task Size Multipliers Applied:** Small tasks = 0.5x all point values • Standard tasks = 1.0x all point values
 
 **QUALITY TRIGGERS:**
 - **Positive:** Peer approval • Test pass • Performance met • User satisfaction • Clean code • Best practices
