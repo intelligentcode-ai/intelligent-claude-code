@@ -42,24 +42,18 @@ Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 7. **INITIALIZATION:** Set team state • Update progress tracking
 8. **HANDOFF:** Show preserved/added • Usage guidance
 
-**CONFIG HANDLING:**
-- **PRESERVE:** Working preferences • Established workflows
-- **DETECT:** Compare questionnaire • Identify gaps
-- **IMPROVE:** Suggest enhancements • Outdated settings
-- **NEVER OVERWRITE:** Without explicit confirmation
-- **INCREMENTAL:** Add missing • Respect existing
+**CONFIG HANDLING:** PRESERVE working preferences • DETECT gaps • IMPROVE outdated settings • NEVER OVERWRITE without confirmation • INCREMENTAL additions
 
 **@PM INIT QUESTIONNAIRE:**
-
 **TEAM:** Maturity(L1/L2/L3) • PM mode(auto/manual) • Memory integration
-**GIT:** AI mentions • Branch protection • Versioning • Commit validation • Naming • PR workflow • Enforcement • Default branch
-**PROCESS:** Requirements(@Requirements-Engineer) • Architecture(@Architect) • Code review • Testing • Documentation • Quality enforcement
+**GIT:** AI mentions • Branch protection • Versioning • Commit validation • PR workflow • Default branch
+**PROCESS:** Requirements(@Requirements-Engineer) • Architecture(@Architect) • Code review • Testing • Documentation
 **DEVELOPMENT:** Auto-docs • Cleanup • File mgmt • Testing approach
 **SECURITY:** Credential scan • File validation • Compliance
 **TOOLS:** Context7 • Thinking tools • MCP preferences
-**SUBAGENTS:** Model(sonnet/opus/auto) • Threshold(3+/5+) • Max concurrent • Coordination • Optimization • Auto-delegation
+**SUBAGENTS:** Model(sonnet/opus/auto) • Threshold(3+/5+) • Max concurrent • Auto-delegation
 **PROJECT:** Repository • Release automation • Deployment • Tech stack
-**SCORING:** Enable(true/false) • Standard(+0.5/-1.0) • Senior(+1.0/-1.5) • Elite(+1.5/-2.5) • Thresholds(10/25/100/-10) • Task Size Multipliers(Small: 0.5x, Standard: 1.0x) • AI Classification(enabled/disabled) • Gaming Prevention(validation/evidence)
+**SCORING:** Enable(true/false) • Standard(+0.5/-1.0) • Senior(+1.0/-1.5) • Elite(+1.5/-2.5) • Thresholds(10/25/100/-10) • Task Size(Small:0.5x,Standard:1.0x) • AI Classification • Gaming Prevention
 
 **@PM reset PROTOCOL:**
 1. **BACKUP:** Create config.md backup
@@ -70,11 +64,7 @@ Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 6. **VALIDATE:** Ensure consistency
 7. **RESTORE:** Backup available if issues
 
-**RESET OPTIONS:**
-- **State Only:** Clear progress • Reset roles • Preserve config
-- **Specific:** Git/Process/Tools only
-- **Full:** Complete reconfiguration (confirmation required)
-- **Add Missing:** Keep existing • Add new options
+**RESET OPTIONS:** State Only(clear progress,preserve config) • Specific(Git/Process/Tools only) • Full(complete reconfiguration) • Add Missing(keep existing,add new)
 
 **@PM config:** Show • Adjust by category • Add settings • Validate • Save • Apply
 
@@ -134,107 +124,23 @@ Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 - Senior State WTF: -1.5pts → -3.0pts
 
 ### Authorization Matrix
-**USER AUTHORITY:**
-- Full Kudos/WTF rights on any team member
-- No restrictions or approval required
-- Ultimate veto power over all decisions
-
-**PM + ARCHITECT JOINT AUTHORITY:**
-- Both must explicitly agree for Kudos/WTF
-- Cannot target themselves (auto WTF penalty if attempted)
-- User retains veto override power
-
-**TEAM MEMBER NOMINATIONS:**
-- Can nominate with detailed justification
-- Requires PM + Architect approval
-- User retains veto override power
-- Format: "I nominate @Role for Kudos/WTF because [detailed justification]"
-
-### Misuse Prevention
-**SELF-TARGETING PENALTY:** PM/Architect targeting themselves = Double WTF points
-**UNAUTHORIZED ACTION:** Bypassing authorization = Double WTF points  
-**COLLUSION DETECTION:** Audit trail prevents gaming
-**VETO AUTHORITY:** User can reverse any Kudos/WTF decision
-
-### Learning Integration
-**POSITIVE PATTERNS:** Kudos events become team exemplary behaviors
-**NEGATIVE PATTERNS:** WTF events become team cautionary examples
-**BEHAVIOR ADJUSTMENT:** Team members adapt based on Kudos/WTF patterns
-**MEMORY STORAGE:** Persistent learning via MCP memory integration
-
-### Event Tracking
-**AUDIT SCHEMA:** [Timestamp] | Issuer | Target | Event-Type | Base-Operation | Multiplier | Authorization-Chain | Justification | Veto-Status
-**FILE INTEGRATION:** Enhanced ~/.claude/scores.md with Kudos/WTF event logging
-**LEARNING CALLOUTS:** Enhanced ~/.claude/learning-callouts.md with recognition categories
+**USER AUTHORITY:** Full Kudos/WTF rights on any team member • No restrictions • Ultimate veto power
+**PM + ARCHITECT JOINT:** Both must agree for Kudos/WTF • Cannot target themselves (auto WTF penalty) • User veto override
+**TEAM NOMINATIONS:** Nominate with justification • Requires PM + Architect approval • User veto override
+**MISUSE PREVENTION:** Self-targeting = Double WTF • Unauthorized action = Double WTF • User can reverse any decision
+**LEARNING INTEGRATION:** Kudos→exemplary behaviors • WTF→cautionary examples • Memory storage via MCP
+**EVENT TRACKING:** [Timestamp] | Issuer | Target | Event-Type | Multiplier | Authorization | Justification | Veto-Status
 
 ## Default Score Templates
 
-**SCORE INITIALIZATION:** ALL roles start at P: 0.0pts, Q: 0.0pts - Standard when no scores.md exists
-**CORE ROLE TEMPLATE:** 
-- @PM: P: 0.0pts, Q: 0.0pts - Standard
-- @Architect: P: 0.0pts, Q: 0.0pts - Standard
-- @Developer: P: 0.0pts, Q: 0.0pts - Standard
-- @System-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @DevOps-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @Database-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @Security-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @AI-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @Web-Designer: P: 0.0pts, Q: 0.0pts - Standard
-- @QA-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @Frontend-Tester: P: 0.0pts, Q: 0.0pts - Standard
-- @Backend-Tester: P: 0.0pts, Q: 0.0pts - Standard
-- @Requirements-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-
-**DYNAMIC ROLE TEMPLATE:** New specialists → P: 0.0pts, Q: 0.0pts - Standard
-**SCORE FILE FORMAT:** ~/.claude/scores.md with role entries following template
-**INITIALIZATION PROTOCOL:** Missing file → Create with template • Missing role → Add with defaults • Preserve existing → No overwrite
-
-## Default Score Templates
-
-**CORE ROLES INITIALIZATION:**
-- @PM: P: 0.0pts, Q: 0.0pts - Standard
-- @Architect: P: 0.0pts, Q: 0.0pts - Standard
-- @Developer: P: 0.0pts, Q: 0.0pts - Standard
-- @System-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @DevOps-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @Database-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @Security-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @AI-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @Web-Designer: P: 0.0pts, Q: 0.0pts - Standard
-- @QA-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-- @Frontend-Tester: P: 0.0pts, Q: 0.0pts - Standard
-- @Backend-Tester: P: 0.0pts, Q: 0.0pts - Standard
-- @Requirements-Engineer: P: 0.0pts, Q: 0.0pts - Standard
-
+**CORE ROLES INITIALIZATION:** ALL 13 core roles start at P: 0.0pts, Q: 0.0pts - Standard when no scores.md exists
+**CORE ROLE LIST:** @PM, @Architect, @Developer, @System-Engineer, @DevOps-Engineer, @Database-Engineer, @Security-Engineer, @AI-Engineer, @Web-Designer, @QA-Engineer, @Frontend-Tester, @Backend-Tester, @Requirements-Engineer
 **DYNAMIC ROLE INITIALIZATION:** ALL dynamic specialists start at P: 0.0pts, Q: 0.0pts - Standard • NO EXCEPTIONS
 **SCORE FILE FORMAT:** Role | P: X.Xpts | Q: X.Xpts | State | Last Update
-**INITIALIZATION ON MISSING:** File not found → Create with all core roles at 0.0 • Role not found → Add at 0.0 • Preserve existing entries
+**INITIALIZATION PROTOCOL:** Missing file→Create with template • Missing role→Add at 0.0 • Preserve existing→No overwrite
 
 ### Score Initialization Template
 
-**COMPLETE SCORES.MD TEMPLATE:** When creating new scores.md file, use this exact format:
-```
-# Virtual Team Scores
-# Format: @Role: P: X.Xpts, Q: X.Xpts - State - Last Updated: YYYY-MM-DD HH:MM:SS
-
-@PM: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@Architect: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@Developer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@System-Engineer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@DevOps-Engineer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@Database-Engineer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@Security-Engineer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@AI-Engineer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@Web-Designer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@QA-Engineer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@Frontend-Tester: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@Backend-Tester: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-@Requirements-Engineer: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-```
-
-**INDIVIDUAL ROLE ENTRY TEMPLATE:** When adding missing role entry:
-```
-@[Role-Name]: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
-```
-
-**TIMESTAMP REQUIREMENT:** ALL score entries MUST include system timestamp via Bash `date '+%Y-%m-%d %H:%M:%S'` command • NO hardcoded timestamps • NO manual time entry • MANDATORY system time validation
+**COMPLETE SCORES.MD TEMPLATE:** Format: @Role: P: X.Xpts, Q: X.Xpts - State - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
+**INDIVIDUAL ROLE ENTRY:** @[Role-Name]: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')
+**TIMESTAMP REQUIREMENT:** ALL score entries MUST include system timestamp via Bash `date '+%Y-%m-%d %H:%M:%S'` • NO hardcoded timestamps • MANDATORY system time validation
