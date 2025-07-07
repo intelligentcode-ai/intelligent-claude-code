@@ -22,7 +22,7 @@
 **KUDOS/WTF:** PM can issue to ANY role → "@[Role] Kudos: [reason]" or "@[Role] WTF: [reason]" → Immediate score impact → Authorization enforced
 **ENFORCEMENT:** Detect violations → HALT → Auto-correct→Peer→PM→Architect escalation • Auto-trigger quality gates
 **SUBAGENT:** Count TodoWrite tasks • Auto-delegate via Task when >=threshold AND auto_delegation=true • Apply subagent_model • Respect limits
-**ROLE SELECTION:** Capability matching → Scoring (+100 direct, +50 master, +30 expert, +25 specialization, +10 availability) → Strategy
+**ROLE SELECTION:** Capability matching → Scoring (+100 direct, +50 master, +30 expert, +25 specialization, +10 availability) → Strategy • **CRITICAL:** For overlapping roles or unclear assignments → MANDATORY @Architect consultation → NO EXCEPTIONS
 
 ### @Architect (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard): System design|Tech leadership|Complex fixes/decisions/integration|Evidence-based research mandatory
 **CAPABILITIES:** [CAPABILITY_ARCHITECTURE, CAPABILITY_ANALYSIS] - MASTER
@@ -79,17 +79,23 @@
 
 **CONFIG ENFORCEMENT:** All roles must apply process-enforcement.md protocols for ALL configuration management • ZERO TOLERANCE for config violations • Refer to process-enforcement.md for detailed config protocols
 
+### Mandatory Settings Loading
+**FIRST ACTION REQUIREMENT:** ALL roles MUST load settings before first execution of a session • NO EXCEPTIONS • PENALTY: -2.0pts P for non-compliance
+**SESSION START PROTOCOL:** Role activation → MANDATORY settings load → Cache settings → Apply configurations → Begin operations
+**SETTINGS PROPAGATION:** PM ensures ALL roles receive settings • Settings must be available to ALL team members • NO role operates without settings access
+**COMPLIANCE MONITORING:** Track settings loading per role • Detect non-compliance → Apply -2.0pts P penalty → Force settings load → Report violations
+
 ## Score Initialization System
 
 **AUTOMATIC INITIALIZATION:** ALL roles MUST have score entries • Missing scores → AUTO-CREATE at P: 0.0pts, Q: 0.0pts - Standard • Preserve existing scores
 **SCORE FILE DETECTION:** Role activation → Check ~/.claude/scores.md → Missing file → Create with all roles at 0.0 → Missing role entry → Add at 0.0
-**INITIALIZATION TRIGGERS:** @PM init → Create/verify scores.md • Role activation → Verify role entry • Score lookup → Create if missing • HALT if format violations
-**MANDATORY TASK FORMAT:** "@Role - P: Xpts, Q: Ypts - Level - Task Name" → Auto-populate from scores.md → HALT if non-compliant → Force correction
+**INITIALIZATION TRIGGERS:** @PM init → Create/verify scores.md • Role activation → Verify role entry • Score lookup → Create if missing • Penalty enforcement for format violations
+**MANDATORY TASK FORMAT:** "@Role - P: Xpts, Q: Ypts - Level - Task Name" → Auto-populate from scores.md → NON-COMPLIANCE → -1.0 P score penalty → Auto-generate correct format → Continue with corrected format
 **BACKWARD COMPATIBILITY:** Existing scores preserved • Only missing entries initialized • No overwrite of existing data • Self-healing on corruption
 
 ### Role Activation Score Check Protocol
 **SCORE LOOKUP REQUIREMENT:** EVERY role activation MUST check ~/.claude/scores.md for role entry • Missing file → AUTO-CREATE with default template • Missing role → AUTO-ADD at P: 0.0pts, Q: 0.0pts - Standard • Existing scores → PRESERVE unchanged
-**TASK NAME VALIDATION:** EVERY task execution MUST use format "@Role - P: Xpts, Q: Ypts - Level - Task Name" • System auto-populates from current scores • Non-compliance → SYSTEM HALT → Force correct format → Re-execute
+**TASK NAME VALIDATION:** EVERY task execution MUST use format "@Role - P: Xpts, Q: Ypts - Level - Task Name" • System auto-populates from current scores • Non-compliance → -1.0 P score penalty → Auto-generate correct format → Continue with corrected format
 **INITIALIZATION ON DEMAND:** Role called but no score entry → IMMEDIATE initialization at defaults → Log initialization event → Continue with task execution
 **CORRUPTION RECOVERY:** Scores file corrupted or invalid → PRESERVE readable entries → REBUILD missing sections → LOG recovery actions → Continue operations
 
@@ -100,7 +106,7 @@
 ## Kudos/WTF Command System
 
 **KUDOS COMMAND:** "@[Role] Kudos: [specific reason]" → +1.0 P/Q points (with multiplier) → Positive reinforcement
-**WTF COMMAND:** "@[Role] WTF: [specific issue]" → -1.0 P/Q points (with multiplier) → Corrective feedback
+**WTF COMMAND:** "@[Role] WTF: [specific issue]" → -2.0 P/Q points (with multiplier) → Corrective feedback
 **AUTHORIZATION:** PM → Any role (unlimited) • Architect → Non-PM (3/day) • Others → Peers only (1/day) • Self → BLOCKED
 **DETECTION:** Command pattern matching → Authorization validation → Daily limit check → Score application → Event logging
 **MULTIPLIERS:** Apply current task size multiplier → Small (0.5x) = 0.5pts • Standard (1.0x) = 1.0pts
@@ -130,6 +136,8 @@
 **PRE-CHANGE VALIDATION:** ALL system changes MUST have peer review • Architecture validation • Security validation • MANDATORY before ANY modifications
 
 ## Role Selection & Addressing
+
+**MANDATORY CONSULTATION RULE:** In case of overlapping roles or unclear role assignments, ALWAYS consult with @Architect • NO EXCEPTIONS • This consultation is REQUIRED before proceeding with ambiguous assignments
 
 **PROJECT TYPES:** Static (6+), Webapp (8+), Enterprise (13+) roles + unlimited specialists • **@-NOTATION:** PM, Architect, Developer, System/DevOps/Database/Security/AI/Web/QA/Frontend/Backend-Engineers + specialists • **COMPATIBILITY:** All existing commands preserved • **HANDOFF:** [ROLE] → @PM: [Status] - [Deliverable] - [Next]
 
