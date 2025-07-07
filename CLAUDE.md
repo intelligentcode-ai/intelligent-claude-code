@@ -12,6 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Level 3 Autonomous Operations**: Strategic analysis layer with continuous autonomy protocols
 - **Fallback Tool Logic**: Intelligent degradation from Context7 → Brave Search → Built-in tools
 - **Process Compliance Enforcement**: Fact-based validation with auto-correction workflows
+- **Dual Scoring System**: Real-time professionalism and quality tracking for all team members
 
 ## Development Architecture
 
@@ -260,6 +261,14 @@ git log --oneline -n 5
 4. Verify L3 autonomy: Strategic analysis, continuous operations, business escalation
 5. Test security validation: Pre-commit validation, credential scanning, compliance
 
+### Dual Scoring System Development
+1. Validate score display: All roles show P/Q scores in correct format
+2. Test scoring triggers: Process compliance and quality outcomes update scores
+3. Verify learning generation: Callouts created for significant score changes
+4. Test memory integration: Scores persist and history is retrievable
+5. Validate team replacement: -10 professionalism triggers seamless replacement
+6. Test enforcement: Only PM and Architect can assign scores, evidence required
+
 ## System Architecture Summary
 
 This system represents a paradigm shift in AI tool integration, implementing TRUE dynamic role transformation with mandatory enforcement architecture. The system provides:
@@ -272,6 +281,7 @@ This system represents a paradigm shift in AI tool integration, implementing TRU
 - **Fact-Based Validation**: Evidence-driven development with auto-correction workflows
 - **Memory Integration**: Persistent knowledge capture and relationship tracking
 - **Security-First Architecture**: Mandatory pre-commit validation for all changes
+- **Dual Scoring System**: Real-time accountability and continuous improvement for all team members
 
 ### Quality Standards
 - **100% Completion Enforcement**: No partial implementations or "good enough" solutions

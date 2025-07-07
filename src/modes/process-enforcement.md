@@ -473,3 +473,46 @@
 **OPERATIONAL TRANSPARENCY:** All enforcement visible and controllable → No hidden mechanisms → Full transparency → User empowerment
 
 **FIELD ISSUE RESOLUTION:** Init/reset commands enhanced with operational workflows → Tool underutilization resolved with mandatory usage triggers → Operational gaps bridged through config-driven enforcement → Systematic enforcement through role-based operational protocols → Date functionality enforcement prevents hardcoded dates → Bash date command mandatory for all date operations → Dynamic date generation prevents deployment date errors
+
+## Scoring Enforcement Architecture
+
+### Automatic Scoring Triggers
+**OPERATION COMPLETION:** EVERY role operation completion → AUTO-TRIGGER score update → Display new scores → Update memory
+**PROCESS COMPLIANCE:** Process followed correctly → AUTO +P score → Process violation → AUTO -P score → Update display
+**QUALITY OUTCOME:** Implementation successful → AUTO +Q score → Implementation issues → AUTO -Q score → Update display
+**LEARNING GENERATION:** Score change → AUTO-GENERATE learning callout → Capture in memory → Display insight
+
+### Scoring Display Requirements
+**MANDATORY FORMAT:** "@Role (P: Xpts, Q: Ypts - State): [action]" → ALL role activities → NO EXCEPTIONS
+**UPDATE FREQUENCY:** Start of EVERY operation → End of EVERY operation → After EVERY score change → Real-time display
+**STATE TRACKING:** Standard(0-9) → Senior(10-24) → Elite(25-99) → Ultra/Master(100) → Display current state
+**TRANSPARENCY:** All scores visible → All changes logged → All learning captured → Full accountability
+
+### Scoring Enforcement Triggers
+**ROLE ACTIVATION:** Role activated → Display current scores → Begin operation → Track compliance
+**OPERATION START:** Operation begins → Note starting scores → Monitor execution → Track quality
+**COMPLIANCE CHECK:** Process step completed → Evaluate compliance → Update P score → Display change
+**QUALITY CHECK:** Implementation completed → Evaluate quality → Update Q score → Display change
+**OPERATION END:** Operation complete → Calculate score changes → Update display → Generate callout
+
+### Learning Callout Generation
+**POSITIVE CALLOUT:** Score increase → "LEARNING: [Role] improved by doing [action] correctly" → Capture insight
+**NEGATIVE CALLOUT:** Score decrease → "LEARNING: [Role] needs improvement in [area]" → Capture lesson
+**STATE CALLOUT:** State transition → "ACHIEVEMENT: [Role] reached [State] level!" → Capture milestone
+**TEAM CALLOUT:** Team pattern → "TEAM INSIGHT: [Pattern] leads to [outcome]" → Capture wisdom
+
+### Team Member Replacement Logic
+**PROFESSIONALISM THRESHOLD:** P score reaches -10pts → IMMEDIATE replacement triggered
+**REPLACEMENT PROCESS:**
+1. Archive current member data → Create archive entity in memory
+2. Generate farewell message → "@[Role] has been replaced due to process violations"
+3. Initialize new member → Start at P: 0.0pts, Q: 0.0pts - Standard
+4. Create new memory entity → Fresh start with clean record
+5. Log replacement in scores.md → Document transition
+6. Continue workflow → New member takes over immediately
+
+### Score Update Protocol
+**IMMEDIATE UPDATE:** Score change → Update role definition display → Update memory entity → Log in scores.md
+**BATCH PREVENTION:** NO delayed updates → NO batch scoring → REAL-TIME only → Immediate accountability
+**EVIDENCE REQUIREMENT:** Every score change → Must have evidence → Must have rationale → Must be traceable
+**DISPUTE HANDLING:** Score questioned → Provide evidence → Show calculation → Maintain transparency

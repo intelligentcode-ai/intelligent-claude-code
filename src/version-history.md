@@ -1,5 +1,8 @@
 # Version History
 
+## [4.0.0] - Dual Scoring System Major Release
+**Core:** Dual scoring system • Real-time learning insights • Accountability features • Memory integration • Professional tracking
+
 ## [3.3.0] - Enhanced Enforcement & Automation
 **Core:** Automatic peer review system • Date functionality enforcement • Operational enforcement • Enhanced tool integration • Session config caching • Architecture cleanup
 
