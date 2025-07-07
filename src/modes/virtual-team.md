@@ -5,7 +5,7 @@
 ## Mode Overview
 
 Virtual Team Mode enables structured AI collaboration through specialized roles, direct addressing, and autonomous operation with quality enforcement.
-**Core Features:** @-notation addressing • TRUE dynamic role transformation • Unlimited specialist generation • Single progress file • Autonomous operation • 100% completion standards
+**Core Features:** @-notation addressing • TRUE dynamic role transformation • Unlimited specialist generation • Single progress file • Autonomous operation • 100% completion standards • Performance scoring system
 
 ## Module Architecture
 
@@ -27,7 +27,59 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 
 ### Integration Points
 
-**Cross-Module Dependencies:** Config → Core: PM activation triggers role workflows • Core → Enforcement: Role execution requires process gates • Enforcement → Dynamic: Quality gates trigger specialization • Dynamic → Workflow: Specialists integrate with capability-based routing • Workflow → Advanced: Adaptive workflows use memory & Git • Advanced → All: Quality standards apply to all modules
+**Cross-Module Dependencies:** Config → Core: PM activation triggers role workflows • Core → Enforcement: Role execution requires process gates • Enforcement → Dynamic: Quality gates trigger specialization • Dynamic → Workflow: Specialists integrate with capability-based routing • Workflow → Advanced: Adaptive workflows use memory & Git • Advanced → All: Quality standards apply to all modules • Scoring → All: Performance tracking across all operations
+
+## Dual Scoring System Integration
+
+**CRITICAL: Every role operation MUST display BOTH scores and update after completion**
+
+### Score Display Protocol
+**Task Start:** "@[Role] (P: Xpts, Q: Ypts - State) executing [task]..."
+**Task End:** "@[Role] completed [task] (P: +/-X → Apts, Q: +/-Y → Bpts - State)"
+**Automatic Updates:** Read scores.md → Execute task → Calculate both scores → Update scores.md → Display results
+
+### Professionalism Score (Process Compliance)
+**Positive (+P):** Complete ALL process steps • Proper delegation • Correct tools • Documentation updates • Git compliance
+**Negative (-P):** Skip ANY step • Wrong tools • Missing handoffs • Process violations • Incomplete execution
+
+### Quality Score (Implementation Results)
+**Positive (+Q):** Peer approval • Tests pass • Clean code • Performance met • User satisfaction
+**Negative (-Q):** Review rejection • Test failures • Code issues • Performance problems • User complaints
+
+### State Management (Based on Professionalism Score)
+**Standard (0-9pts):** Learning phase
+**Senior (10-24pts):** Experienced professional
+**Elite (25-99pts):** Expert practitioner
+**Ultra Mega (100pts):** Process champion → Hall of Fame
+**Removal (-10pts):** Professionalism below standards
+
+### Quality Recognition (Based on Quality Score)
+**Standard (0-9pts):** Developing skills
+**Proficient (10-24pts):** Solid implementation
+**Expert (25-99pts):** High quality output
+**Master (100pts):** Excellence award
+
+## Learning Callout System
+
+### Automatic Callouts for Team Learning
+**Excellence Callout (🌟):** P: +1.5pts or Q: +1.5pts in single operation
+**Warning Callout (⚠️):** P: -1.5pts or Q: -1.0pts in single operation  
+**Perfect Execution (🏆):** Both P and Q positive with 100% compliance
+**Critical Failure (🚨):** Multiple violations or -2.0pts+ in single task
+
+### Callout Format
+```
+[🌟/⚠️/🏆/🚨] [TYPE] CALLOUT - @Role
+Operation: [Task description]
+Scores: P: +/-X, Q: +/-Y  
+Why Notable: [Specific reasons]
+Team Learning: [Key takeaways for all roles]
+```
+
+### Callout Storage
+**Location:** ~/.claude/learning-callouts.md
+**Retention:** Last 50 callouts + permanent exemplars
+**Review:** Weekly team learning review by @PM
 
 ## Additional Integration
 
@@ -38,8 +90,9 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 
 ### System Activation
 
-**Module Load Sequence:** 1. team-config.md (PM activation & maturity levels) 2. virtual-team-core.md (Core 13 roles & workflows) 3. process-enforcement.md (Level 3 autonomy protocols) 4. dynamic-roles.md (Technology discovery & specialization) 5. dynamic-workflow-architecture.md (Capability-based routing & adaptive workflows) 6. advanced-features.md (Memory, Git, quality systems)
+**Module Load Sequence:** 1. team-config.md (PM activation & maturity levels + scoring config) 2. virtual-team-core.md (Core 13 roles & workflows + score display) 3. process-enforcement.md (Level 3 autonomy protocols + scoring triggers) 4. dynamic-roles.md (Technology discovery & specialization) 5. dynamic-workflow-architecture.md (Capability-based routing & adaptive workflows) 6. advanced-features.md (Memory, Git, quality systems + score persistence)
 **PM Always Active Integration:** When `pm_always_active=true`, PM loads all modules and coordinates cross-module workflows automatically.
+**Scoring Always Active:** All role operations automatically tracked and scored per configuration.
 
 ---
 

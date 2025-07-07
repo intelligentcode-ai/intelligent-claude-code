@@ -15,7 +15,8 @@ Turn Claude Code into an intelligent virtual development team with TRUE dynamic 
 🔒 **Security-First Architecture** - Mandatory pre-commit validation for ALL changes and configurations  
 🤖 **Fact-Based Validation** - Evidence-driven development with auto-correction workflows  
 📊 **Memory Integration** - Persistent knowledge capture and relationship tracking  
-🛡️ **100% Completion Enforcement** - No partial implementations or "good enough" solutions
+🛡️ **100% Completion Enforcement** - No partial implementations or "good enough" solutions  
+🎖️ **Dual Scoring System** - Real-time professionalism and quality tracking for all team members
 
 ## Quick Start
 
@@ -87,7 +88,43 @@ git commit -m "auth: Add JWT authentication system"
 📊 **Fact-Based Validation** - Evidence-driven development with auto-correction workflows  
 🧠 **Memory Integration** - Persistent knowledge capture and relationship tracking  
 ⚡ **Strategic Analysis Layer** - Pre-execution planning with thoughtful responses  
-🔄 **Auto-Correction Workflows** - Self-correcting quality loops until completion standards
+🔄 **Auto-Correction Workflows** - Self-correcting quality loops until completion standards  
+🎖️ **Dual Scoring System** - Real-time professionalism and quality tracking with learning insights
+
+## Dual Scoring System
+
+### How It Works
+Every team member displays their current scores in real-time:
+```bash
+@Developer (P: 5.5pts, Q: 4.0pts - Standard): Implementing user authentication
+@Architect (P: 12.0pts, Q: 8.5pts - Senior): System design review complete
+@PM (P: 25.0pts, Q: 15.0pts - Elite): Project milestone achieved
+```
+
+### Scoring Mechanics
+- **Professionalism (P):** Process compliance, workflow adherence, delegation protocols
+- **Quality (Q):** Implementation success, peer review results, technical excellence
+- **States:** Standard (0-9pts), Senior (10-24pts), Elite (25-99pts), Ultra Mega (100pts)
+- **Automatic Tracking:** Every operation updates scores based on evidence
+
+### Real-Time Learning
+```bash
+LEARNING: @Developer improved by following complete testing workflow
+ACHIEVEMENT: @Architect reached Senior level!
+TEAM INSIGHT: Proper delegation chains lead to 50% faster delivery
+```
+
+### Accountability Features
+- **Automatic Replacement:** Team members with -10 professionalism points are replaced
+- **Memory Integration:** All scores, achievements, and learning insights are permanently stored
+- **Continuous Improvement:** Score changes generate learning callouts and team insights
+- **Evidence-Based:** All scoring decisions backed by actual performance data
+
+### Why It Matters
+- **Transparency:** Everyone knows exactly where they stand
+- **Growth:** Continuous learning insights drive improvement
+- **Quality:** High standards maintained through accountability
+- **Team Excellence:** Collective improvement through shared achievements
 
 ## Team Architecture
 
@@ -183,7 +220,16 @@ User: "Build real-time analytics dashboard for enterprise clients"
 @PM mr merge                # Merge with proper workflow
 ```
 
-**📖 [Complete Command Reference](docs/commands.md)**
+### Scoring System
+```bash
+@PM: Show team scoring summary      # Display all team member scores
+@PM: Team achievements              # Show team achievements and milestones
+@PM: Show @[Role] scoring history   # Individual role performance history
+```
+
+**📖 [Complete Command Reference](docs/commands.md)**  
+**🎖️ [Dual Scoring System Guide](docs/features/dual-scoring-system.md)**  
+**🔧 [Integration Guide for Existing Teams](docs/dual-scoring-integration-guide.md)**
 
 ## Mandatory Enforcement Architecture
 
@@ -257,7 +303,8 @@ make install                  # Installs to ~/.claude/
 - **Windows:** WSL or Docker
 - **Remote servers:** SSH-based installation
 
-**🔧 [Complete Installation Guide](docs/installation.md)**
+**🔧 [Complete Installation Guide](docs/installation.md)**  
+**🎖️ [Dual Scoring System Integration](docs/dual-scoring-integration-guide.md)**
 
 ## ⚠️ Critical: Context Compacting Recovery
 
@@ -316,6 +363,13 @@ gh auth login                   # Fix GitHub authentication
 glab auth login                 # Fix GitLab authentication
 ```
 
+### Scoring System Issues?
+```bash
+@PM: Enforce scoring display for all roles   # Fix missing score displays
+@PM: Restore team scores from memory        # Recover lost scores
+@PM: Generate team learning summary         # Restart learning system
+```
+
 **🆘 [Complete Recovery Guide](docs/recovery.md)**
 
 ---
@@ -324,6 +378,7 @@ glab auth login                 # Fix GitLab authentication
 
 ## What's New
 
+**v4.0.0** - Dual Scoring System + Real-time Learning Insights + Accountability Features  
 **v2.16.1** - TRUE Dynamic Role Transformation + Mandatory Enforcement Architecture  
 **v2.16.0** - Level 3 Autonomous Operations + Strategic Analysis Layer  
 **v2.15.0** - Process Enforcement + Auto-Correction Workflows  

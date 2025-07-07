@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2025-07-07
+
+### Added
+- **DUAL SCORING SYSTEM**: Comprehensive performance tracking with Professionalism + Quality scores
+- **PROFESSIONALISM SCORING**: Tracks communication quality, protocol adherence, and team collaboration
+- **QUALITY SCORING**: Measures technical excellence, thoroughness, and deliverable completeness
+- **REAL-TIME LEARNING CALLOUTS**: Automatic score adjustment feedback for continuous improvement
+- **MEMORY INTEGRATION**: Persistent score tracking and performance history across sessions
+- **AUTOMATIC TEAM REPLACEMENT**: Performance-based role replacement when scores drop below thresholds
+- **PERFORMANCE TRACKING**: Individual role performance monitoring with trend analysis
+- **SCORE-BASED ROLE EVOLUTION**: Dynamic role advancement based on sustained high performance
+- **TRANSPARENT SCORING**: All roles display current scores in every interaction
+- **LEARNING FEEDBACK LOOPS**: Automatic callouts for score improvements and corrections
+- **PERFORMANCE ANALYTICS**: Comprehensive tracking of team member effectiveness
+- **QUALITY GATE INTEGRATION**: Scoring system integrated with existing quality enforcement
+- **ROLE ACCOUNTABILITY**: Clear performance metrics tied to specific role responsibilities
+- **CONTINUOUS IMPROVEMENT**: Self-correcting score adjustments based on performance evidence
+
+### Changed
+- **ALL ROLE INTERACTIONS**: Now include mandatory score display format `@Role (P: Xpts, Q: Ypts - State)`
+- **TEAM COORDINATION**: Enhanced with performance-based role selection and replacement
+- **QUALITY ENFORCEMENT**: Integrated with dual scoring for comprehensive performance management
+- **MEMORY SYSTEM**: Extended to capture and track performance metrics across sessions
+- **ROLE DELEGATION**: PM now considers performance scores when assigning tasks
+- **WORKFLOW PROGRESSION**: Score-based advancement with automatic quality checks
+- **FEEDBACK MECHANISMS**: Real-time learning callouts integrated into all role interactions
+- **PERFORMANCE STANDARDS**: Clear thresholds established for role effectiveness
+- **TEAM DYNAMICS**: Performance-driven collaboration with transparency requirements
+- **AUTONOMOUS OPERATIONS**: Enhanced with score-based decision making and role optimization
+
+### Enhanced
+- **VIRTUAL TEAM EFFECTIVENESS**: Dual scoring ensures consistent high-quality performance
+- **PROFESSIONAL COMMUNICATION**: Standardized score-based interaction protocols
+- **QUALITY ASSURANCE**: Comprehensive tracking of technical excellence and completeness
+- **TEAM ACCOUNTABILITY**: Clear performance metrics for all team members
+- **CONTINUOUS LEARNING**: Automatic feedback and improvement mechanisms
+- **PERFORMANCE TRANSPARENCY**: All stakeholders can see real-time team performance
+- **ROLE OPTIMIZATION**: Data-driven team composition and role assignment
+- **WORKFLOW EFFICIENCY**: Score-based process optimization and improvement
+
+### Technical Implementation
+- **SCORE CALCULATION**: Automated scoring algorithms for professionalism and quality metrics
+- **MEMORY PERSISTENCE**: Long-term storage of performance data and trends
+- **REPLACEMENT LOGIC**: Automatic role replacement based on performance thresholds
+- **LEARNING ALGORITHMS**: Adaptive scoring based on performance patterns and feedback
+- **INTEGRATION POINTS**: Seamless integration with existing enforcement and quality systems
+- **ANALYTICS ENGINE**: Comprehensive performance tracking and trend analysis
+- **FEEDBACK SYSTEMS**: Real-time callouts and improvement suggestions
+- **THRESHOLD MANAGEMENT**: Dynamic adjustment of performance standards and expectations
+
 ## [2.16.0] - 2025-07-05
 
 ### Added
