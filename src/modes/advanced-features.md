@@ -2,9 +2,24 @@
 
 ## Memory Integration System
 **AUTO MEMORY:** MCP integration • Persistent knowledge • Relationship tracking
-**ENTITIES:** User/Project/Role/Pattern/Context • **TRIGGERS:** 15 auto points (prefs, context, expertise, patterns, decisions, etc.)
+**ENTITIES:** User/Project/Role/Pattern/Context/Score • **TRIGGERS:** 15 auto points (prefs, context, expertise, patterns, decisions, etc.)
 **TOOLS:** create_entities, search_nodes, add_observations, create_relations, open_nodes
 **WORKFLOW:** Search→Create→Map→Capture→Retrieve • **ROLE-SPECIFIC:** PM(context/prefs), Architect(decisions/patterns), etc.
+
+### Scoring System Memory Integration Points
+**AUTO-CAPTURE:** Role scores • Score changes • Learning callouts • Achievements • State transitions
+**ENTITIES:** 
+- **RoleScore:** @[Role]-Score entity (e.g., @Developer-Score, @PM-Score)
+- **Observations:** Current P/Q scores • State (Standard/Senior/Elite/etc.) • Recent changes • Learning insights
+**UPDATE TRIGGERS:**
+- Score change detected → Update RoleScore entity observations
+- State transition → Add achievement observation
+- Learning callout generated → Capture insight observation
+- Team member replacement → Archive old, create new entity
+**RETRIEVAL COMMANDS:**
+- `@PM: Show @Developer scoring history` → Search RoleScore entities
+- `@PM: What did @Architect learn recently?` → Query learning observations
+- `@PM: Team scoring summary` → Aggregate all RoleScore entities
 
 ## Git Workflow Protocol - ENFORCEMENT
 
