@@ -31,9 +31,6 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 
 ## Additional Integration
 
-### External Modules
-@~/.claude/behaviors/enhanced-behaviors.md • @~/.claude/behaviors/git-safety-behaviors.md • @~/.claude/behaviors/documentation-behaviors.md
-
 ### Legacy Compatibility
 
 **LEVEL 3 AUTO EXECUTION PROTOCOLS (Cross-Module):** Role with CAPABILITY_ANALYSIS FIRST (Process-enforcement → Virtual-team-core) • Role with CAPABILITY_ARCHITECTURE for System Changes (Process-enforcement → Dynamic-roles) • Domain Expert Peer Review (Advanced-features → Virtual-team-core) • Security Pre-Push Validation (Advanced-features → Virtual-team-core) • Memory Integration (Advanced-features → All modules)

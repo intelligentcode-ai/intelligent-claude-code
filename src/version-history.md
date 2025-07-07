@@ -1,5 +1,8 @@
 # Version History
 
+## [3.3.0] - Enhanced Enforcement & Automation
+**Core:** Automatic peer review system • Date functionality enforcement • Operational enforcement • Enhanced tool integration • Session config caching • Architecture cleanup
+
 ## [3.2.0] - System Protocol Enforcement
 **Core:** PM delegation blocking • Role transparency enforcement • Pre-change validation blocking • Complete workflow enforcement • File organization optimization
 
