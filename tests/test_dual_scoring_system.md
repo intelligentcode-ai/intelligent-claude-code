@@ -119,9 +119,51 @@ This document contains test scenarios for validating the dual scoring system imp
 - @Developer: Scores based on implementation outcome
 - All displays show current scores throughout chain
 
-## Test Scenario 6: Edge Cases
+## Test Scenario 6: Task Size Classification
 
-### Test Case 6.1: Simultaneous Score Changes
+### Test Case 6.1: Small Task Auto-Classification
+**Action:** @Developer updates single config file with simple change
+**Expected Results:**
+- Auto-classification detects: Single file, simple change → Small task
+- Display format: "@Developer (P: 0pts, Q: 0pts - Standard, Size: Small): Beginning config update"
+- Success: P score +0.25pts (0.5x multiplier)
+- Ending display: "@Developer (P: 0.25pts, Q: 0.25pts - Standard, Size: Small): Config update complete"
+
+### Test Case 6.2: Standard Task Auto-Classification  
+**Action:** @Architect designs multi-file architecture change
+**Expected Results:**
+- Auto-classification detects: Multi-file, architecture change → Standard task
+- Display format: "@Architect (P: 5pts, Q: 3pts - Standard, Size: Standard): Beginning architecture design"
+- Success: P score +0.5pts (1.0x multiplier)
+- Ending display: "@Architect (P: 5.5pts, Q: 3.5pts - Standard, Size: Standard): Architecture design complete"
+
+### Test Case 6.3: Manual Override Small Classification
+**Action:** @Developer manually specifies "Size: Small" for multi-file change
+**Expected Results:**
+- Manual override detected
+- Gaming prevention triggered → Evidence required
+- If justified: 0.5x multiplier applied
+- If unjustified: HALT → Force Standard classification → 1.0x multiplier
+- Display includes override evidence requirement
+
+### Test Case 6.4: Gaming Prevention Validation
+**Action:** @QA-Engineer attempts to mark complex integration as Small
+**Expected Results:**
+- System detects complexity mismatch: Multi-file + API integration ≠ Small
+- HALT: "Evidence required for Small task classification"
+- Peer review triggered for classification dispute
+- Force Standard classification if evidence insufficient
+
+### Test Case 6.5: Classification Edge Cases
+**Action:** Borderline task complexity (2 files, moderate complexity)
+**Expected Results:**
+- Auto-classification logic applied: File count + complexity analysis
+- If uncertain: Default to Standard classification
+- Display shows reasoning: "Auto-classified as Standard (file count: 2, complexity: moderate)"
+
+## Test Scenario 7: Edge Cases
+
+### Test Case 7.1: Simultaneous Score Changes
 **Action:** Multiple roles complete operations at same time
 **Expected Results:**
 - Each role's scores updated independently
@@ -129,7 +171,7 @@ This document contains test scenarios for validating the dual scoring system imp
 - All displays accurate
 - Memory updates sequential but complete
 
-### Test Case 6.2: System Restart Score Persistence
+### Test Case 7.2: System Restart Score Persistence
 **Action:** System restarts with existing scores
 **Expected Results:**
 - Scores loaded from memory/scores.md
@@ -137,16 +179,16 @@ This document contains test scenarios for validating the dual scoring system imp
 - State levels maintained
 - History preserved
 
-## Test Scenario 7: Scoring Enforcement
+## Test Scenario 8: Scoring Enforcement
 
-### Test Case 7.1: Missing Score Display
+### Test Case 8.1: Missing Score Display
 **Action:** Role attempts operation without score display
 **Expected Results:**
 - HALT: "Score display required"
 - Force display format: "@Role (P: X, Q: Y - State):"
 - Cannot proceed without proper display
 
-### Test Case 7.2: Score Update Validation
+### Test Case 8.2: Score Update Validation
 **Action:** Manual score update attempted
 **Expected Results:**
 - Only system can update scores
@@ -166,6 +208,13 @@ This document contains test scenarios for validating the dual scoring system imp
 - [ ] Multi-role scoring interactions work
 - [ ] Edge cases handled gracefully
 - [ ] Enforcement prevents scoring violations
+- [ ] Task size auto-classification works correctly
+- [ ] Small task 0.5x multiplier applied properly
+- [ ] Standard task 1.0x multiplier applied properly
+- [ ] Manual override with evidence validation works
+- [ ] Gaming prevention blocks unjustified Small classifications
+- [ ] Enhanced display format includes task size
+- [ ] Classification reasoning displayed when uncertain
 
 ## Test Execution Notes
 
