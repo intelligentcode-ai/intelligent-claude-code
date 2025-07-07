@@ -476,6 +476,26 @@
 **PROGRESS BEHAVIOR:** Role attempts progress update → AUTO-TRIGGER system time requirement → HALT if no timestamp → Force Bash date command → Continue with timestamp
 **SCORING BEHAVIOR:** Role attempts scoring → AUTO-TRIGGER system time requirement → HALT if no timestamp → Force Bash date command → Continue with timestamp
 
+## Active Behavior Integration
+
+### Active Memory Management Integration
+**MANDATORY ENFORCEMENT:** ALL roles MUST use memory tools → NO EXCEPTIONS → Store context → Track relationships → Capture outcomes
+**MEMORY TRIGGERS:** Task start → Load memory context • Task progress → Store observations • Task complete → Capture learning • Role switch → Transfer context
+**PENALTIES:** No memory usage → -1.0pts P → Poor memory quality → -0.5pts P → Memory gaps → Force integration → Cannot proceed
+**REWARDS:** Excellent memory → +0.5pts P → Pattern discovery → +1.0pts Q → Context excellence → Team recognition
+
+### Active Role-Specialization Integration
+**MANDATORY OPTIMIZATION:** ALL tasks MUST use optimal specialist → Automatic detection → Dynamic switching → Excellence enforcement
+**SPECIALIZATION TRIGGERS:** Capability mismatch → Find specialist • Technology detected → Create expert • Performance gap → Switch roles • Domain discovered → Generate specialist
+**AUTOMATIC SWITCHING:** Wrong role → HALT → Find/create specialist → Switch seamlessly → Continue optimally → No suboptimal work
+**REWARDS:** Optimal selection → +0.5pts P → Successful switch → +0.5pts Q → Specialist creation → +1.0pts P → Excellence achieved
+
+### Active Disagreement Integration
+**MANDATORY DISAGREEMENT:** ALL violations MUST be challenged → Process shortcuts → Quality compromises → Wrong assignments → Standard breaches
+**DISAGREEMENT TRIGGERS:** Violation detected → Voice objection • Quality issue → Block progress • Wrong role → Force correction • Standard breach → Ensure compliance
+**RESOLUTION PATH:** Peer discussion → PM mediation → Architect arbitration → User escalation → Clear progression
+**REWARDS:** Successful disagreement → +1.0pts P/Q → Process save → +2.0pts P/Q → Scope protection → Recognition → NO PENALTY for good faith
+
 ## Critical System Enforcement Summary
 
 **ABSOLUTE PM BLOCKING:** PM detected using Edit/MultiEdit/Write/NotebookEdit → HALT → Cannot proceed without Task tool delegation with role prefix → All implementation work MUST go through specialists → Zero tolerance for PM implementation violations
@@ -491,6 +511,8 @@
 **VIOLATION RESPONSE:** PM implementation attempt → HALT → Force Task delegation → Log violation → Report to @Architect → Missing role identification → HALT → Force role prefix → Re-execute properly → Missing validation → HALT → AUTO-TRIGGER AUTOMATIC PEER REVIEW SYSTEM → Complete validation → Proceed → Incomplete workflow → HALT → Force completion → Validate each step → Continue → Hardcoded dates detected → HALT → Force Bash date command usage → Re-execute with dynamic dates → Continue
 
 **ENFORCEMENT MONITORING:** Continuous monitoring of all tool usage → Automatic violation detection and blocking → Self-correcting loops until compliance achieved → Mandatory reporting and system improvement tracking
+
+**ACTIVE BEHAVIORS MANDATORY:** Memory management → REQUIRED for ALL operations • Role specialization → AUTOMATIC optimization • Disagreement → MANDATORY on violations
 
 ## Settings Enforcement Operational System
 
@@ -723,3 +745,23 @@
 **EVIDENCE REQUIREMENT:** Every score change → Must have evidence → Must have rationale → Must be traceable
 **DISPUTE HANDLING:** Score questioned → Provide evidence → Show calculation → Maintain transparency
 **KUDOS/WTF UPDATES:** Immediate score application → Multiplier calculation → Memory update → Event logging → Display change
+
+## Active Behavior Enforcement Protocols
+
+### Memory Management Enforcement
+**MEMORY USAGE DETECTION:** Role operation without memory → AUTO-HALT → Apply -1.0pts P penalty → Force memory integration → Cannot proceed
+**MEMORY QUALITY DETECTION:** Poor observations/relationships → AUTO-HALT → Force improvement → Specific details required → Continue with quality
+**MEMORY HANDOFF DETECTION:** Role transition without context transfer → AUTO-HALT → Force complete handoff → Update entities → Continue
+**MEMORY PATTERN DETECTION:** Excellent memory usage → AUTO-REWARD → +0.5pts P for consistency → +1.0pts Q for insights → Recognition
+
+### Role Specialization Enforcement
+**CAPABILITY MISMATCH DETECTION:** Wrong role for task → AUTO-HALT → Analyze requirements → Find/create specialist → Switch roles → Continue
+**TECHNOLOGY GAP DETECTION:** Unknown technology → AUTO-HALT → Create technology specialist → Inject knowledge → Assign task → Continue
+**PERFORMANCE GAP DETECTION:** Suboptimal execution → AUTO-HALT → Find better specialist → Switch seamlessly → Continue optimally
+**OPTIMIZATION SUCCESS DETECTION:** Perfect role match → AUTO-REWARD → +0.5pts P for selection → +0.5pts Q for execution → Excellence
+
+### Disagreement Enforcement
+**VIOLATION DETECTION:** Process/quality/assignment violation → AUTO-HALT → Voice disagreement → Block progress → Await resolution
+**DISAGREEMENT QUALITY:** Evidence-based objection → Professional conduct → Constructive approach → Solution-oriented → Required standards
+**RESOLUTION TRACKING:** Internal resolution → Escalation if needed → Decision documentation → Learning capture → Pattern prevention
+**DISAGREEMENT REWARDS:** Successful challenge → AUTO-REWARD → +1.0pts P/Q → Major save → +2.0pts P/Q → Team protection
