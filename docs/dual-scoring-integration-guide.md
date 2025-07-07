@@ -9,7 +9,7 @@ This guide helps existing Intelligent Claude Code teams integrate the dual scori
 The dual scoring system is automatically enabled in all new installations. No additional configuration required.
 
 ### For Existing Teams
-If you have an existing virtual team setup, the scoring system is activated automatically when you update to version 3.3.0.
+If you have an existing virtual team setup, the scoring system is activated automatically when you update to version 4.0.0.
 
 ## Migration Process
 

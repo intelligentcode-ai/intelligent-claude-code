@@ -378,7 +378,7 @@ glab auth login                 # Fix GitLab authentication
 
 ## What's New
 
-**v3.3.0** - Dual Scoring System + Real-time Learning Insights + Accountability Features  
+**v4.0.0** - Dual Scoring System + Real-time Learning Insights + Accountability Features  
 **v2.16.1** - TRUE Dynamic Role Transformation + Mandatory Enforcement Architecture  
 **v2.16.0** - Level 3 Autonomous Operations + Strategic Analysis Layer  
 **v2.15.0** - Process Enforcement + Auto-Correction Workflows  
