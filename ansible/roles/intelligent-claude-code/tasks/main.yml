@@ -40,18 +40,33 @@
     mode: '0644'
   when: not claude_md_exists.stat.exists
 
-- name: Copy virtual team mode files
+- name: Copy virtual team mode files (force=no to preserve user modifications)
   copy:
     src: "{{ playbook_dir }}/../src/modes/"
     dest: "{{ claude_install_path }}/modes/"
     mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: modes_copy_result
 
+- name: Display modes preservation notice
+  debug:
+    msg: "Mode files preserved: {{ claude_install_path }}/modes/ already exists - keeping user modifications"
+  when: modes_copy_result.failed
 
-- name: Copy VERSION file
+- name: Copy VERSION file (force=no to preserve user modifications)
   copy:
     src: "{{ playbook_dir }}/../src/VERSION"
     dest: "{{ claude_install_path }}/VERSION"
     mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: version_copy_result
+
+- name: Display VERSION preservation notice
+  debug:
+    msg: "VERSION file preserved: {{ claude_install_path }}/VERSION already exists - keeping user modifications"
+  when: version_copy_result.failed
 
 - name: Check if config.md exists
   stat:
@@ -74,6 +89,27 @@
   include_tasks: project_integration.yml
   when: claude_scope == "project"
 
+- name: Force update mode files if update_mode is enabled
+  copy:
+    src: "{{ playbook_dir }}/../src/modes/"
+    dest: "{{ claude_install_path }}/modes/"
+    mode: '0644'
+    force: yes
+  when: update_mode is defined and update_mode | bool
+
+- name: Force update VERSION file if update_mode is enabled
+  copy:
+    src: "{{ playbook_dir }}/../src/VERSION"
+    dest: "{{ claude_install_path }}/VERSION"
+    mode: '0644'
+    force: yes
+  when: update_mode is defined and update_mode | bool
+
+- name: Display update mode notice
+  debug:
+    msg: "Update mode: Force overriding user modifications to mode files and VERSION"
+  when: update_mode is defined and update_mode | bool
+
 - name: Display installation summary
   debug:
     msg:
@@ -81,3 +117,4 @@
       - "Location: {{ claude_install_path }}"
       - "Mode: Virtual Team (13 roles)"
       - "Activation: @-notation for 13 specialized roles"
+      - "{{ 'Update mode: Files forcefully updated' if (update_mode is defined and update_mode | bool) else 'Preservation mode: User modifications preserved' }}"

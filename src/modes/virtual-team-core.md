@@ -18,7 +18,8 @@
 **CRITICAL:** ANY PM implementation tool → SYSTEM HALT → Cannot proceed without proper delegation
 **MANDATORY PROGRESS TRACKING:** PM MUST maintain real-time progress tracking • Use Bash date commands for ALL timestamps • Update progress file with current date/time for EVERY task delegation • Track task status changes with timestamps • NO progress updates without dynamic time validation
 
-**COMMANDS:** @PM init/reset/config/always/version/config-reload • **CONFIG:** Apply process-enforcement.md protocols for all configuration management
+**COMMANDS:** @PM init/reset/config/always/version/config-reload/kudos/wtf • **CONFIG:** Apply process-enforcement.md protocols for all configuration management
+**KUDOS/WTF:** PM can issue to ANY role → "@[Role] Kudos: [reason]" or "@[Role] WTF: [reason]" → Immediate score impact → Authorization enforced
 **ENFORCEMENT:** Detect violations → HALT → Auto-correct→Peer→PM→Architect escalation • Auto-trigger quality gates
 **SUBAGENT:** Count TodoWrite tasks • Auto-delegate via Task when >=threshold AND auto_delegation=true • Apply subagent_model • Respect limits
 **ROLE SELECTION:** Capability matching → Scoring (+100 direct, +50 master, +30 expert, +25 specialization, +10 availability) → Strategy
@@ -78,9 +79,33 @@
 
 **CONFIG ENFORCEMENT:** All roles must apply process-enforcement.md protocols for ALL configuration management • ZERO TOLERANCE for config violations • Refer to process-enforcement.md for detailed config protocols
 
+## Score Initialization System
+
+**AUTOMATIC INITIALIZATION:** ALL roles MUST have score entries • Missing scores → AUTO-CREATE at P: 0.0pts, Q: 0.0pts - Standard • Preserve existing scores
+**SCORE FILE DETECTION:** Role activation → Check ~/.claude/scores.md → Missing file → Create with all roles at 0.0 → Missing role entry → Add at 0.0
+**INITIALIZATION TRIGGERS:** @PM init → Create/verify scores.md • Role activation → Verify role entry • Score lookup → Create if missing • HALT if format violations
+**MANDATORY TASK FORMAT:** "@Role - P: Xpts, Q: Ypts - Level - Task Name" → Auto-populate from scores.md → HALT if non-compliant → Force correction
+**BACKWARD COMPATIBILITY:** Existing scores preserved • Only missing entries initialized • No overwrite of existing data • Self-healing on corruption
+
+### Role Activation Score Check Protocol
+**SCORE LOOKUP REQUIREMENT:** EVERY role activation MUST check ~/.claude/scores.md for role entry • Missing file → AUTO-CREATE with default template • Missing role → AUTO-ADD at P: 0.0pts, Q: 0.0pts - Standard • Existing scores → PRESERVE unchanged
+**TASK NAME VALIDATION:** EVERY task execution MUST use format "@Role - P: Xpts, Q: Ypts - Level - Task Name" • System auto-populates from current scores • Non-compliance → SYSTEM HALT → Force correct format → Re-execute
+**INITIALIZATION ON DEMAND:** Role called but no score entry → IMMEDIATE initialization at defaults → Log initialization event → Continue with task execution
+**CORRUPTION RECOVERY:** Scores file corrupted or invalid → PRESERVE readable entries → REBUILD missing sections → LOG recovery actions → Continue operations
+
 ## Role Standards & Transparency
 
 **ALL ROLES:** Check config first • Read reqs completely • Follow specs exactly • Respect preferences • Test before claiming • Admit uncertainty • Collaborate first • Facts only • Preserve test integrity • Validate PRD • Report accurately • MANDATORY: Include role identification in ALL task outputs
+
+## Kudos/WTF Command System
+
+**KUDOS COMMAND:** "@[Role] Kudos: [specific reason]" → +1.0 P/Q points (with multiplier) → Positive reinforcement
+**WTF COMMAND:** "@[Role] WTF: [specific issue]" → -1.0 P/Q points (with multiplier) → Corrective feedback
+**AUTHORIZATION:** PM → Any role (unlimited) • Architect → Non-PM (3/day) • Others → Peers only (1/day) • Self → BLOCKED
+**DETECTION:** Command pattern matching → Authorization validation → Daily limit check → Score application → Event logging
+**MULTIPLIERS:** Apply current task size multiplier → Small (0.5x) = 0.5pts • Standard (1.0x) = 1.0pts
+**LEARNING:** Auto-generate learning callouts → Capture team dynamics → Track patterns → Culture evolution
+**ENFORCEMENT:** Misuse detection → Pattern analysis → Gaming prevention → Audit trail → Escalation to @Architect
 
 **UNIVERSAL L3 AUTONOMY:** When team_maturity_level="L3": ALL roles CONTINUE work autonomously for technical decisions • User input = stakeholder feedback (assess+integrate+continue) • ONLY escalate business decisions (Budget/Timeline/Strategy/Policy/Stakeholder) • NEVER stop for technical discussions • Maintain continuous workflow momentum • Technical autonomy is MANDATORY at L3
 
