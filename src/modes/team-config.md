@@ -52,6 +52,7 @@ Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 **TOOLS:** Context7 • Thinking tools • MCP preferences
 **SUBAGENTS:** Model(sonnet/opus/auto) • Threshold(3+/5+) • Max concurrent • Coordination • Optimization • Auto-delegation
 **PROJECT:** Repository • Release automation • Deployment • Tech stack
+**SCORING:** Enable(true/false) • Standard(+0.5/-1.0) • Senior(+1.0/-1.5) • Elite(+1.5/-2.5) • Thresholds(10/25/100/-10)
 
 **@PM reset PROTOCOL:**
 1. **BACKUP:** Create config.md backup
@@ -69,3 +70,35 @@ Virtual Team Mode auto-loaded when CLAUDE.md imports virtual-team.md
 - **Add Missing:** Keep existing • Add new options
 
 **@PM config:** Show • Adjust by category • Add settings • Validate • Save • Apply
+
+## Dual Scoring System Configuration
+
+**SCORING ENABLED:** true
+**DUAL SCORES:** Professionalism (Process) • Quality (Implementation)
+
+### Professionalism Score (Process & Compliance)
+**POINT VALUES:**
+- **Standard State (0-9pts):** Compliant: +0.5 • Non-compliant: -1.0
+- **Senior State (10-24pts):** Compliant: +1.0 • Non-compliant: -1.5
+- **Elite State (25-99pts):** Compliant: +1.5 • Non-compliant: -2.5
+- **Ultra Mega State (100pts):** Hall of Fame → Reset to 25pts
+- **Removal Threshold:** -10pts → Team member replacement
+
+**PROFESSIONALISM TRIGGERS:**
+- **Positive:** Process compliance • Complete execution • Proper delegation • Correct tool usage • Documentation updates • Git workflow adherence
+- **Negative:** Process violation • Incomplete steps • Wrong tools • Missing handoffs • Skipped gates • Protocol breach
+
+### Quality Score (Implementation & Results)
+**POINT VALUES:**
+- **Standard State (0-9pts):** Success: +0.5 • Failure: -0.5
+- **Senior State (10-24pts):** Success: +1.0 • Failure: -0.75
+- **Elite State (25-99pts):** Success: +1.5 • Failure: -1.0
+- **Master State (100pts):** Excellence Award → Maintain score
+- **Warning Threshold:** -5pts → Quality improvement required
+
+**QUALITY TRIGGERS:**
+- **Positive:** Peer approval • Test pass • Performance met • User satisfaction • Clean code • Best practices
+- **Negative:** Review rejection • Test failure • Performance issues • User complaints • Code smells • Tech debt
+
+**SCORERS:** @PM (all roles) • @Architect (scoring @PM) • Other roles can request scoring
+**TRACKING:** ~/.claude/scores.md • Real-time updates • Dual history logs • Dual achievements
