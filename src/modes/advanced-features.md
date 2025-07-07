@@ -1,10 +1,11 @@
 # Advanced Features Module
 
 ## Memory Integration System
-**AUTO MEMORY:** MCP integration • Persistent knowledge • Relationship tracking
-**ENTITIES:** User/Project/Role/Pattern/Context/Score • **TRIGGERS:** 15 auto points (prefs, context, expertise, patterns, decisions, etc.)
+**AUTO MEMORY:** MCP integration • Persistent knowledge • Relationship tracking • **MANDATORY FOR ALL ROLES:** Active memory management required • -1.0pts P penalty for non-compliance • See active-memory-management.md for full protocols
+**ENTITIES:** User/Project/Role/Pattern/Context/Score/Behavior • **TRIGGERS:** 15 auto points (prefs, context, expertise, patterns, decisions, etc.) + Active behavior tracking
 **TOOLS:** create_entities, search_nodes, add_observations, create_relations, open_nodes
 **WORKFLOW:** Search→Create→Map→Capture→Retrieve • **ROLE-SPECIFIC:** PM(context/prefs), Architect(decisions/patterns), etc.
+**ACTIVE BEHAVIORS:** Memory compliance tracking • Specialization events • Disagreement patterns
 
 ### AI Task Size Scoring System Memory Integration
 **AUTO-CAPTURE:** Role scores • Score changes • Task size classifications • AI classification decisions • Learning callouts • Achievements • State transitions • Kudos/WTF events • Team dynamics
@@ -29,6 +30,9 @@
 - Kudos issued → Create KudosEvent entity → Store issuer, recipient, reason, impact → Track positive patterns
 - WTF issued → Create WTFEvent entity → Store issuer, recipient, issue, impact → Track improvement needs
 - Team pattern detected → Create TeamDynamic entity → Store pattern type, frequency, impact → Cultural evolution tracking
+- Memory usage → Create MemoryCompliance entity → Store role, quality, frequency → Track compliance patterns
+- Role specialization → Create SpecializationEvent entity → Store switch reason, performance improvement → Track optimization
+- Disagreement voiced → Create DisagreementEvent entity → Store violation type, resolution, outcome → Track team protection
 **RETRIEVAL COMMANDS:**
 - `@PM: Show @Developer scoring history` → Search RoleScore entities → Include task size breakdown
 - `@PM: What did @Architect learn recently?` → Query learning observations → Include classification insights
@@ -37,6 +41,9 @@
 - `@PM: Gaming prevention report` → Query gaming prevention patterns → Show repeated inappropriate classifications
 - `@PM: Kudos/WTF report` → Query Kudos/WTF events → Show feedback patterns → Team dynamics analysis
 - `@PM: Team culture report` → Analyze behavior patterns → Show cultural evolution → Improvement trends
+- `@PM: Memory compliance report` → Query MemoryCompliance entities → Show usage patterns → Identify gaps
+- `@PM: Specialization report` → Query SpecializationEvent entities → Show optimization rate → Excellence metrics
+- `@PM: Disagreement report` → Query DisagreementEvent entities → Show violation prevention → Team protection
 
 ## Git Workflow Protocol - ENFORCEMENT
 
@@ -106,9 +113,10 @@
 **DOC SPRAWL:** Single progress file/day • Update existing • Remove temp (auto_cleanup)
 **TOOLS:** Read before Edit • Bash validation • Role-specific usage
 **AI:** ULTRATHINKING, SEQUENTIAL THINKING, MCP TOOLS, SUBAGENTS
+**ACTIVE BEHAVIORS:** Memory integration mandatory • Role optimization continuous • Disagreement on violations required
 
 ## Validation Protocol
-**PM CHECKLIST:** Role activation • Evidence • Investigation • Research • Testing • Docs • No temp • Proper tools • User decisions
+**PM CHECKLIST:** Role activation • Evidence • Investigation • Research • Testing • Docs • No temp • Proper tools • User decisions • Memory usage • Role optimization • Disagreement tracking
 **EVIDENCE:** Arch(diagrams/decisions), Reqs(stories/criteria), Implementation(code/tests), AI(configs/workflows), Infra(configs/validation)
 
 ## Docs & Progress
