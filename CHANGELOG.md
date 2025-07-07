@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2025-07-07
+
+### Added
+- **PENALTY-BASED ENFORCEMENT**: Implemented professionalism score penalties for task format violations
+- **MANDATORY ARCHITECT CONSULTATION**: Added requirement for architect involvement in penalty system design
+- **SETTINGS ENFORCEMENT PROTOCOL**: Documented the protocol for handling misconfigured PM settings
+
+### Changed
+- **ENFORCEMENT MECHANISM**: Replaced HALT mechanism with -1.0 P score penalty for protocol violations
+- **PENALTY AMOUNTS**: Updated penalty values to standardized amounts (-1.0 P score per violation)
+- **VIOLATION HANDLING**: Shifted from blocking behavior to penalty-based continuous operation
+
+### Enhanced
+- **TASK FORMAT COMPLIANCE**: Strengthened enforcement through penalty system
+- **PROTOCOL ADHERENCE**: Improved compliance through score-based consequences
+- **TEAM ACCOUNTABILITY**: Enhanced accountability with tangible performance impacts
+
 ## [4.0.0] - 2025-07-07
 
 ### Added
