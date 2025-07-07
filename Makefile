@@ -119,9 +119,41 @@ test:
 	@echo "✅ Idempotency test passed!"
 	@rm -rf test-install
 
-# Update existing installation (simple override)
-update: install
-	@echo "✅ Update complete - files overwritten with latest version"
+# Update existing installation (force overwrite mode files)
+update:
+	@if [ -z "$(ANSIBLE_PLAYBOOK)" ]; then \
+		echo "ERROR: ansible-playbook not found!"; \
+		exit 1; \
+	fi
+	@if [ -z "$(HOST)" ]; then \
+		echo "Updating locally with force overwrite..."; \
+		$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
+			-i localhost, \
+			-c local \
+			-e "ansible_shell_type=sh" \
+			-e "target_path=$(TARGET_PATH)" \
+			-e "update_mode=true"; \
+	else \
+		if [ -z "$(USER)" ]; then \
+			echo "ERROR: USER parameter required for remote update!"; \
+			exit 1; \
+		fi; \
+		echo "Updating remote host $(HOST) as user $(USER) with force overwrite..."; \
+		if [ -n "$(PASS)" ]; then \
+			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
+				-i "$(USER)@$(HOST)," \
+				-k -e "ansible_ssh_pass=$(PASS)" \
+				-e "target_path=$(TARGET_PATH)" \
+				-e "update_mode=true"; \
+		else \
+			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
+				-i "$(USER)@$(HOST)," \
+				-e "ansible_ssh_private_key_file=$(KEY)" \
+				-e "target_path=$(TARGET_PATH)" \
+				-e "update_mode=true"; \
+		fi \
+	fi
+	@echo "✅ Update complete - mode files and VERSION forcefully updated"
 
 # Clean test installations and temporary files
 clean:
