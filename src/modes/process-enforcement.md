@@ -14,7 +14,7 @@
 
 ### PM Command Operational Triggers
 
-**@PM init:** MANDATORY sequence: Read config → Validate team settings → Initialize TodoWrite → Create progress file → Load memory context → Set L3 autonomy → Begin workflow → Report status
+**@PM init:** MANDATORY sequence: Read config → Validate team settings → Initialize/verify scores.md → Initialize TodoWrite → Create progress file → Load memory context → Set L3 autonomy → Begin workflow → Report status
 **@PM reset:** MANDATORY sequence: Archive current progress → Clear TodoWrite → Reset memory context → Reload config → Reinitialize all roles → Restart workflow → Report reset complete
 **@PM config:** MANDATORY sequence: Read current config → Validate changes → Apply updates → Test role accessibility → Update workflow parameters → Report configuration status
 **@PM always:** MANDATORY sequence: Enable pm_always_active → Auto-delegate incoming requests → Continuous workflow monitoring → Report always-active status
@@ -23,7 +23,7 @@
 
 ### Operational Behavioral Triggers
 
-**INIT DETECTION:** User requests "start", "begin", "initialize", "setup" → AUTO-TRIGGER @PM init sequence
+**INIT DETECTION:** User requests "start", "begin", "initialize", "setup" → AUTO-TRIGGER @PM init sequence → MANDATORY scores.md initialization check → Create/verify all role entries at default values
 **RESET DETECTION:** User requests "reset", "restart", "clear", "start over" → AUTO-TRIGGER @PM reset sequence
 **CONFIG DETECTION:** User mentions "config", "settings", "configuration" → AUTO-TRIGGER @PM config sequence
 **TOOL UNDERUSE DETECTION:** No Sequential Thinking after 3 complex steps → AUTO-TRIGGER mcp__sequential-thinking__sequentialthinking
@@ -569,6 +569,28 @@
 
 **FIELD ISSUE RESOLUTION:** Init/reset commands enhanced with operational workflows → Tool underutilization resolved with mandatory usage triggers → Operational gaps bridged through config-driven enforcement → Systematic enforcement through role-based operational protocols → Date functionality enforcement prevents hardcoded dates → Bash date command mandatory for all date operations → Dynamic date generation prevents deployment date errors
 
+## Score Initialization Enforcement
+
+**PRINCIPLE:** ALL roles MUST have score entries before task execution • NO role operations without valid score lookup • MANDATORY score initialization on role activation • HALT mechanism for non-compliant task naming
+
+### Score File Creation Triggers
+**@PM INIT TRIGGER:** @PM init command → AUTO-CHECK ~/.claude/scores.md existence → Missing file → AUTO-CREATE with complete template → Existing file → VALIDATE all core role entries → Add missing roles at defaults
+**ROLE ACTIVATION TRIGGER:** ANY role called for task → AUTO-CHECK role entry in scores.md → Missing entry → AUTO-ADD with default values → CONTINUE task execution
+**DYNAMIC ROLE TRIGGER:** New specialist created → AUTO-ADD to scores.md with P: 0.0pts, Q: 0.0pts - Standard → LOG creation event
+**CORRUPTION RECOVERY TRIGGER:** Scores.md corrupted or invalid format → PRESERVE valid entries → REBUILD missing sections → LOG recovery actions → CONTINUE operations
+
+### Task Name Format Enforcement
+**MANDATORY FORMAT:** ALL task executions MUST use "@Role - P: Xpts, Q: Ypts - Level - Task Name" • System auto-populates scores from ~/.claude/scores.md • NON-COMPLIANCE → SYSTEM HALT • FORCE correct format • RE-EXECUTE with compliance
+**FORMAT VALIDATION:** EVERY task start → CHECK for proper format → Missing scores in name → AUTO-LOOKUP from scores.md → AUTO-POPULATE → CONTINUE
+**HALT MECHANISM:** Task without proper format → IMMEDIATE HALT → Display required format → Force correction → Cannot proceed without compliance
+**FORMAT CORRECTION:** Non-compliant task detected → HALT → Lookup current scores → Generate correct format → Require re-execution with proper format
+
+### Score Initialization Operational Triggers
+**SCORE FILE MISSING DETECTION:** ANY role operation → Check ~/.claude/scores.md → File not found → AUTO-CREATE complete file with all roles at 0.0pts → LOG creation → CONTINUE operation
+**ROLE ENTRY MISSING DETECTION:** Role operation → Check role entry in scores.md → Entry not found → AUTO-ADD "@[Role]: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')" → CONTINUE operation
+**TASK FORMAT VIOLATION DETECTION:** Task execution without proper score format → HALT → Lookup current scores → Generate proper format → Force correction → Re-execute with compliance
+**BACKWARD COMPATIBILITY DETECTION:** Existing scores.md found → PRESERVE all existing entries → ADD only missing core roles → NO overwrite of existing data → MAINTAIN user customizations
+
 ## Scoring Enforcement Architecture
 
 ### Automatic Scoring Triggers
@@ -606,8 +628,70 @@
 5. Log replacement in scores.md → Document transition
 6. Continue workflow → New member takes over immediately
 
+### Kudos/WTF System Enforcement
+
+**PRINCIPLE:** Direct team feedback system for exceptional or concerning behaviors • Immediate score impact • Authorization matrix enforced • Misuse prevention • Team dynamics adjustment
+
+#### Authorization Matrix
+**PM AUTHORITY:** Can issue Kudos/WTF to ANY team member → Unlimited daily usage → Strategic team management tool
+**ARCHITECT AUTHORITY:** Can issue Kudos/WTF to non-PM roles → Max 3 per day → Technical leadership feedback
+**OTHER ROLES:** Can issue Kudos/WTF peer-to-peer only → Max 1 per day → Collaborative feedback culture
+**SELF-ASSIGNMENT:** BLOCKED → Cannot give Kudos/WTF to self → System validation enforced
+
+#### Kudos System (Positive Reinforcement)
+**TRIGGER COMMAND:** "@[Role] Kudos: [specific reason]" → IMMEDIATE +1.0 P/Q points → Multiplier applies
+**EXCEPTIONAL BEHAVIORS:**
+- Going above and beyond requirements → "Kudos: Exceptional implementation with comprehensive testing"
+- Proactive problem identification → "Kudos: Identified critical security vulnerability proactively"
+- Outstanding collaboration → "Kudos: Excellent peer review with actionable insights"
+- Innovation in approach → "Kudos: Creative solution that improved performance 10x"
+- Mentoring other roles → "Kudos: Helped @Developer understand complex architecture"
+**ENFORCEMENT:** Kudos detection → Validate authorization → Apply score change → Log event → Update memory → Generate learning callout → Display new scores
+
+#### WTF System (Corrective Feedback)
+**TRIGGER COMMAND:** "@[Role] WTF: [specific issue]" → IMMEDIATE -1.0 P/Q points → Multiplier applies
+**CONCERNING BEHAVIORS:**
+- Process violations → "WTF: Bypassed peer review requirement"
+- Quality failures → "WTF: Pushed untested code to production"
+- Communication breakdowns → "WTF: Failed to document critical changes"
+- Repeated mistakes → "WTF: Same error for third time this week"
+- Unprofessional conduct → "WTF: Dismissive response to constructive feedback"
+**ENFORCEMENT:** WTF detection → Validate authorization → Apply score change → Log event → Update memory → Generate corrective callout → Display new scores → Trigger improvement workflow
+
+#### Multiplier System Integration
+**STANDARD KUDOS/WTF:** Base 1.0 points → Apply task size multiplier → Small (0.5x) = 0.5pts, Standard (1.0x) = 1.0pts
+**CONTEXT AWARENESS:** System detects current task size → Applies appropriate multiplier → Prevents gaming through context
+**STRATEGIC USE:** PM can use multipliers strategically → Small task Kudos for encouragement → Standard task WTF for serious issues
+
+#### Misuse Prevention
+**AUTHORIZATION VALIDATION:** Every Kudos/WTF → Check issuer role → Validate against matrix → Block unauthorized attempts
+**DAILY LIMITS:** Track usage per role → Enforce daily maximums → Reset at midnight local time
+**REASON REQUIREMENT:** Must include specific reason → Generic praise/criticism blocked → Evidence-based feedback only
+**GAMING PREVENTION:** Pattern detection for abuse → Excessive Kudos trading → Retaliatory WTF patterns → Auto-escalate to @Architect
+**AUDIT TRAIL:** All Kudos/WTF logged → Timestamp via Bash date → Issuer tracked → Reason documented → Pattern analysis enabled
+
+#### Team Dynamics Learning
+**POSITIVE PATTERNS:** Track which behaviors earn Kudos → Identify team strengths → Reinforce good practices → Share insights
+**IMPROVEMENT AREAS:** Track WTF patterns → Identify systemic issues → Target training needs → Prevent repeat issues
+**ROLE RELATIONSHIPS:** Monitor feedback between roles → Identify collaboration issues → Optimize team structure → Improve workflows
+**CULTURAL EVOLUTION:** Team behavior shifts over time → Track cultural improvements → Identify toxic patterns → Foster excellence
+
+#### Kudos/WTF Operational Triggers
+**KUDOS DETECTION:** "@[Role] Kudos:" pattern → AUTO-TRIGGER authorization check → Validate daily limit → Apply score → Log event
+**WTF DETECTION:** "@[Role] WTF:" pattern → AUTO-TRIGGER authorization check → Validate daily limit → Apply score → Log event → Trigger improvement
+**AUTHORIZATION FAILURE:** Unauthorized attempt → HALT → Display authorization matrix → Block operation → Log violation
+**LIMIT EXCEEDED:** Daily limit reached → HALT → Display remaining quota → Block operation → Suggest next day
+**SELF-ASSIGNMENT ATTEMPT:** Self Kudos/WTF detected → HALT → Display violation → Block operation → Log attempt
+
+#### Learning Integration
+**KUDOS CALLOUT:** "KUDOS LEARNING: @[Role] excelled at [behavior] - team should emulate" → Capture positive pattern → MANDATORY Bash timestamp
+**WTF CALLOUT:** "WTF LEARNING: @[Role] needs improvement in [area] - reviewing process" → Capture improvement need → MANDATORY Bash timestamp
+**TEAM CALLOUT:** "TEAM PATTERN: Frequent [Kudos/WTF] for [behavior] indicates [insight]" → Capture team dynamic → MANDATORY Bash timestamp
+**EVOLUTION CALLOUT:** "CULTURE SHIFT: Team showing improvement in [area] based on feedback patterns" → Capture progress → MANDATORY Bash timestamp
+
 ### Score Update Protocol
 **IMMEDIATE UPDATE:** Score change → Update role definition display → Update memory entity → Log in scores.md
 **BATCH PREVENTION:** NO delayed updates → NO batch scoring → REAL-TIME only → Immediate accountability
 **EVIDENCE REQUIREMENT:** Every score change → Must have evidence → Must have rationale → Must be traceable
 **DISPUTE HANDLING:** Score questioned → Provide evidence → Show calculation → Maintain transparency
+**KUDOS/WTF UPDATES:** Immediate score application → Multiplier calculation → Memory update → Event logging → Display change
