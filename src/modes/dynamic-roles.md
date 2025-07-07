@@ -36,3 +36,13 @@
 
 ## Mandatory Enforcement
 **PROCESS INTEGRATION:** All dynamic specialists MUST follow process-enforcement.md gates. No exceptions.
+
+## Score Initialization for Dynamic Specialists
+
+**AUTOMATIC SCORE CREATION:** ALL dynamic specialists MUST have score entries upon creation • Auto-generate entry in ~/.claude/scores.md with P: 0.0pts, Q: 0.0pts - Standard • Include system timestamp via Bash `date '+%Y-%m-%d %H:%M:%S'` • LOG creation event for transparency
+
+### Dynamic Role Score Integration
+**CREATION TRIGGER:** New specialist generated → AUTO-CHECK ~/.claude/scores.md → ADD new role entry with defaults → Format: "@[Specialist-Name]: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: $(date '+%Y-%m-%d %H:%M:%S')" → CONTINUE specialist activation
+**NAMING COMPLIANCE:** Dynamic specialist task execution MUST use format "@Specialist-Name - P: Xpts, Q: Ypts - Level - Task Name" • System auto-populates from scores.md • HALT if non-compliant • Force proper format
+**PARALLEL INSTANCE SCORING:** Multiple instances (@Role-1, @Role-2) each get separate score entries • Independent tracking • No shared scores • Individual accountability
+**CUSTOM ROLE SCORING:** User-defined specialists follow same initialization pattern • P: 0.0pts, Q: 0.0pts - Standard starting point • Equal opportunity progression • No privilege bias
