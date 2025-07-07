@@ -16,8 +16,6 @@
   loop:
     - "{{ claude_install_path }}"
     - "{{ claude_install_path }}/modes"
-    - "{{ claude_install_path }}/personas"
-    - "{{ claude_install_path }}/behaviors"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -42,29 +40,35 @@
     mode: '0644'
   when: not claude_md_exists.stat.exists
 
-- name: Copy virtual team mode file
+- name: Copy virtual team mode files
   copy:
-    src: "{{ playbook_dir }}/../src/modes/virtual-team.md"
-    dest: "{{ claude_install_path }}/modes/virtual-team.md"
+    src: "{{ playbook_dir }}/../src/modes/"
+    dest: "{{ claude_install_path }}/modes/"
     mode: '0644'
 
-- name: Copy persona files
-  copy:
-    src: "{{ playbook_dir }}/../src/personas/"
-    dest: "{{ claude_install_path }}/personas/"
-    mode: '0644'
-
-- name: Copy behavior files
-  copy:
-    src: "{{ playbook_dir }}/../src/behaviors/"
-    dest: "{{ claude_install_path }}/behaviors/"
-    mode: '0644'
 
 - name: Copy VERSION file
   copy:
     src: "{{ playbook_dir }}/../src/VERSION"
     dest: "{{ claude_install_path }}/VERSION"
     mode: '0644'
+
+- name: Check if config.md exists
+  stat:
+    path: "{{ claude_install_path }}/config.md"
+  register: config_md_exists
+
+- name: Create config.md from template (ONLY if not exists)
+  copy:
+    src: "{{ playbook_dir }}/../src/config.md"
+    dest: "{{ claude_install_path }}/config.md"
+    mode: '0644'
+  when: not config_md_exists.stat.exists
+
+- name: Display config preservation notice
+  debug:
+    msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
+  when: config_md_exists.stat.exists
 
 - name: Handle project-specific integration
   include_tasks: project_integration.yml
