@@ -28,12 +28,12 @@ This is a **configuration-based system** built with native Markdown files, not a
 - `CLAUDE.md` - Master configuration template (installed to `~/.claude/CLAUDE.md`)
 - `config.md` - Native markdown configuration template
 - `modes/virtual-team.md` - Virtual team mode implementation with modular architecture
-- `modes/dynamic-roles.md` - TRUE dynamic specialist generation system (unlimited domains)
-- `modes/process-enforcement.md` - Strategic analysis layer, L3 autonomy, mandatory enforcement
-- `modes/quality-gate-automation.md` - Automatic quality gate triggers, configuration-based routing, blocking logic
-- `modes/virtual-team-core.md` - 14 core roles with @-notation addressing
-- `modes/advanced-features.md` - Memory integration, Git workflow, quality standards
-- `behaviors/` - Behavioral intelligence modules (enhanced, git-safety, documentation)
+- `modes/core-systems.md` - PM activation, scoring system, team configuration
+- `modes/execution-engine.md` - Universal enforcement, L3 autonomy, quality gates
+- `modes/role-framework.md` - 14 core roles with ultra-experienced standards
+- `modes/integration-layer.md` - Memory Bank with aging, MCP integration, tool fallback
+- `modes/operational-protocols.md` - Git workflow enforcement, quality standards
+- `behaviors/` - Behavioral intelligence modules (memory, specialization, disagreement)
 
 #### Mandatory Enforcement Architecture
 - **Universal Process Compliance**: ALL roles must follow enforcement protocols for ALL activities
@@ -95,10 +95,12 @@ When modifying the virtual team:
 #### Modular Architecture System
 - **Base Configuration**: `src/CLAUDE.md` with import chain management
 - **Virtual Team Core**: `src/modes/virtual-team.md` with modular dependency chain
-- **Dynamic Roles**: `src/modes/dynamic-roles.md` with unlimited specialist generation
-- **Process Enforcement**: `src/modes/process-enforcement.md` with mandatory compliance
-- **Advanced Features**: `src/modes/advanced-features.md` with memory/Git integration
-- **Import Chain**: Config → Core → Enforcement → Dynamic → Advanced
+- **Core Systems**: `src/modes/core-systems.md` with PM activation and scoring
+- **Execution Engine**: `src/modes/execution-engine.md` with enforcement and L3 autonomy
+- **Role Framework**: `src/modes/role-framework.md` with 14 roles and standards
+- **Integration Layer**: `src/modes/integration-layer.md` with memory and tools
+- **Operational Protocols**: `src/modes/operational-protocols.md` with Git workflow
+- **Import Chain**: Core → Execution → Role → Integration → Operational
 - **Single Import Activation**: `@~/.claude/modes/virtual-team.md` activates entire system
 
 #### TRUE Dynamic Specialist Generation
@@ -190,10 +192,10 @@ git log --oneline -n 5
 ### Extension Points
 
 #### Core System Extensions
-- **Core Roles**: Add new roles to `src/modes/virtual-team-core.md`
-- **Dynamic Specialists**: Extend `src/modes/dynamic-roles.md` for new domains
-- **Process Enforcement**: Enhance `src/modes/process-enforcement.md` for new quality gates
-- **Advanced Features**: Extend `src/modes/advanced-features.md` for new capabilities
+- **Core Roles**: Add new roles to `src/modes/role-framework.md`
+- **Dynamic Specialists**: Extend role framework for new domains
+- **Process Enforcement**: Enhance `src/modes/execution-engine.md` for new quality gates
+- **Advanced Features**: Extend `src/modes/integration-layer.md` for new capabilities
 - **Behaviors**: Extend `src/behaviors/` for new behavioral intelligence
 - **Configuration**: Customize `src/config.md` for project-specific settings
 - **Installation**: Modify installation process in `install.sh`
@@ -233,15 +235,15 @@ git log --oneline -n 5
 4. Update `install.sh` if needed for new patterns
 
 ### Modifying Virtual Team
-1. Edit `src/modes/virtual-team.md` for role changes
+1. Edit `src/modes/role-framework.md` for role changes
 2. Update role definitions and responsibilities
 3. Test @-notation addressing
 4. Update documentation
 
 ### Adding New Role
-1. Add role definition to `src/modes/virtual-team.md`
+1. Add role definition to `src/modes/role-framework.md`
 2. Define expertise, responsibilities, and activation
-3. Update role selection logic in PM section
+3. Update role selection logic in core-systems.md
 4. Run `make test` to verify integration
 
 ### GitHub CLI Integration Development

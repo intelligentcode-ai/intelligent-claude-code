@@ -6,7 +6,7 @@ Turn Claude Code into an intelligent virtual development team with TRUE dynamic 
 
 ## What You Get
 
-🚀 **13 Core Roles + Unlimited Dynamic Specialists** - From Requirements Engineer to AI Engineer, plus unlimited domain experts  
+🚀 **14 Core Roles + Unlimited Dynamic Specialists** - From Requirements Engineer to User-Role, plus unlimited domain experts  
 ⚡ **TRUE Dynamic Role Transformation** - Generate specialists for ANY technology domain on-demand  
 🔄 **Mandatory Enforcement Architecture** - Universal process compliance for ALL roles and workflows  
 🎯 **Strategic Analysis Layer** - Pre-execution planning with thoughtful organized responses  
