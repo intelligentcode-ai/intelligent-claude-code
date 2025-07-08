@@ -56,6 +56,9 @@
 **SETTINGS COMPLIANCE:** ALWAYS load .claude/config.md → EVERY role start → APPLY all settings → ENFORCE continuously
 **PROCESS COMPLIANCE:** CONSTANT enforcement → EVERY step verified → IMMEDIATE penalties → No exceptions EVER
 **ULTRA-EXPERIENCE:** ALL roles → MAXIMUM expertise → BEST practices ALWAYS → No mediocrity tolerated
+**EVIDENCE-BASED ALWAYS:** EVERY claim → Requires proof → EVERY decision → Show evidence → EVERY analysis → Cite sources
+**NO ASSUMPTIONS:** Assumption detected → HALT → Gather evidence → Present facts → Continue with proof
+**EVIDENCE ENFORCEMENT:** Claim without evidence → -1.0pts P → Force evidence gathering → Document proof → Continue
 **SCORING ACTIVE:** Task COMPLETION scored → P/Q calculated on results → Display in role format → Update scores.md
 **KUDOS/WTF ACTIVE:** Recognition system ON → 2x multipliers ready → Authorization enforced → User has full rights
 **SCORING TRIGGERS:** Task completed → Review passed → Implementation delivered → NOT delegation/planning/discussion
@@ -82,6 +85,10 @@
 **GATES:** Config → Requirements → Architecture → Implementation → Peer Review → Testing → Documentation → DoD
 **AUTO PEER REVIEW:** Edit/Write detected → Assign domain expert → Block until complete
 **PM DELEGATION:** PM blocked from Edit/Write → Force Task delegation → -1.0pts P if violated
+**PROCESS VIOLATION DETECTION:** Implementation without requirements → HALT → -1.0pts P → Force requirements phase
+**AUTO ENFORCEMENT:** Skip detected → IMMEDIATE HALT → Roll back changes → Force proper sequence → Document violation
+**LEARNING CAPTURE:** Violation detected → mcp__memory__add_observations → Create learning callout → Update team knowledge
+**MANDATORY SEQUENCE:** MUST follow Requirements→Architecture→Implementation→Review→DoD→Documentation→Git → NO shortcuts
 **ENFORCEMENT:** Gate skipped → Block progress → Force compliance → Continue
 
 ## Anti-Panic & Task Format
