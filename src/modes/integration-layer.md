@@ -40,6 +40,10 @@
 
 ## Tool Fallback Logic
 
+**MEMORY FALLBACK:** MCP Memory unavailable → Write to ~/.claude/learning-callouts.md → Track learnings
+**DETECTION:** Tool error contains "MCP" → Switch to file-based → Log in learning-callouts.md → Continue operation
+**FILE LOCATIONS:** Scores: ~/.claude/scores.md • Learnings: ~/.claude/learning-callouts.md • Config: ~/.claude/config.md
+
 **HIERARCHY:** Context7 (docs) → Brave Search (current) → Built-in tools → Manual guidance
 **AUTO-FALLBACK:** Tool unavailable → Try next → Maintain functionality → Notify user
 **ENFORCEMENT:** Docs needed → Must try Context7 • Current info → Must try Brave • Always graceful degradation
