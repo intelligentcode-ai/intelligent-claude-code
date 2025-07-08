@@ -4,7 +4,7 @@
 **AUTO MEMORY:** MCP integration • Persistent knowledge • Relationship tracking • **MANDATORY FOR ALL ROLES:** Active memory management required • -1.0pts P penalty for non-compliance • See active-memory-management.md for full protocols
 **ENTITIES:** User/Project/Role/Pattern/Context/Score/Behavior • **TRIGGERS:** 15 auto points (prefs, context, expertise, patterns, decisions, etc.) + Active behavior tracking
 **TOOLS:** create_entities, search_nodes, add_observations, create_relations, open_nodes
-**WORKFLOW:** Search→Create→Map→Capture→Retrieve • **ROLE-SPECIFIC:** PM(context/prefs), Architect(decisions/patterns), User-Simulator(test-scenarios/selectors/results), etc.
+**WORKFLOW:** Search→Create→Map→Capture→Retrieve • **ROLE-SPECIFIC:** PM(context/prefs), Architect(decisions/patterns), User-Role(test-scenarios/selectors/results), etc.
 **ACTIVE BEHAVIORS:** Memory compliance tracking • Specialization events • Disagreement patterns
 
 ### AI Task Size Scoring System Memory Integration
@@ -57,7 +57,7 @@
 - `@PM: Browser test coverage` → Query BrowserTest entities → Show test scenarios → Coverage gaps
 - `@PM: Selector stability report` → Query TestSelector entities → Show reliability metrics → Maintenance needs
 - `@PM: Accessibility compliance` → Query AccessibilityIssue entities → Show WCAG violations → Remediation status
-- `@User-Simulator: Previous test for [feature]` → Search BrowserTest entities → Retrieve test steps → Reuse scenarios
+- `@User-Role: Previous test for [feature]` → Search BrowserTest entities → Retrieve test steps → Reuse scenarios
 
 ## Git Workflow Protocol - ENFORCEMENT
 

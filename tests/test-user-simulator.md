@@ -1,7 +1,7 @@
-# User-Simulator Integration Test Script
+# User-Role Integration Test Script
 
 ## Test 1: Activation Triggers
-Test that User-Simulator activates on correct keywords:
+Test that User-Role activates on correct keywords:
 - "browser test"
 - "user simulation" 
 - "UI automation"
@@ -10,9 +10,9 @@ Test that User-Simulator activates on correct keywords:
 - "accessibility test"
 
 ## Test 2: Score Initialization
-Verify that User-Simulator gets proper score initialization:
+Verify that User-Role gets proper score initialization:
 - Check ~/.claude/scores.md for entry
-- Format: "@User-Simulator: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: [timestamp]"
+- Format: "@User-Role: P: 0.0pts, Q: 0.0pts - Standard - Last Updated: [timestamp]"
 
 ## Test 3: Specialization Creation
 Test dynamic specialist creation:
@@ -41,14 +41,14 @@ Verify memory entities are created:
 
 ## Test 7: Collaboration Workflow
 Test handoff protocols:
-- @QA-Engineer → @User-Simulator
-- @User-Simulator → @Frontend-Tester
-- @User-Simulator → @Backend-Tester
+- @QA-Engineer → @User-Role
+- @User-Role → @Frontend-Tester
+- @User-Role → @Backend-Tester
 - @Web-Designer → @Accessibility-Tester
 
 ## Test 8: Automatic Peer Review
 Verify peer review triggers:
-- Browser test file changes → @User-Simulator review
+- Browser test file changes → @User-Role review
 - Visual test changes → @Regression-Tester review
 - Accessibility test changes → @Accessibility-Tester review
 

@@ -94,14 +94,14 @@
 **FRONTEND CHANGE DETECTION:** Frontend modifications detected → AUTO-TRIGGER @Frontend-Tester review → BLOCK until frontend validation complete
 **BACKEND CHANGE DETECTION:** Backend modifications detected → AUTO-TRIGGER @Backend-Tester review → BLOCK until backend validation complete
 **DEVOPS CHANGE DETECTION:** DevOps/Infrastructure modifications detected → AUTO-TRIGGER @DevOps-Engineer review → BLOCK until DevOps validation complete
-**BROWSER TEST CHANGE DETECTION:** Browser automation/E2E test modifications detected → AUTO-TRIGGER @User-Simulator review → BLOCK until browser test validation complete
+**BROWSER TEST CHANGE DETECTION:** Browser automation/E2E test modifications detected → AUTO-TRIGGER @User-Role review → BLOCK until browser test validation complete
 **VISUAL TEST CHANGE DETECTION:** Visual regression/screenshot test modifications detected → AUTO-TRIGGER @Regression-Tester review → BLOCK until visual test validation complete
 **ACCESSIBILITY TEST CHANGE DETECTION:** Accessibility/WCAG test modifications detected → AUTO-TRIGGER @Accessibility-Tester review → BLOCK until accessibility validation complete
 
 ### Automatic Reviewer Assignment Logic
 
 **CHANGE TYPE ANALYSIS:** Automatic modification analysis→Pattern matching→Technology detection→Domain mapping→Reviewer assignment
-**AUTO-ASSIGNMENTS:** AI/ML(models,algorithms,data,ML)→@AI-Engineer #2 • Architecture(design,patterns,decisions)→@Architect • Security(auth,encryption,policies)→@Security-Engineer • Frontend(UI,styling,client)→@Frontend-Tester • Backend(APIs,logic,server)→@Backend-Tester • Database(schema,queries,models)→@Database-Engineer • DevOps(deployment,CI/CD,infra)→@DevOps-Engineer • Config(system,environment,build)→@System-Engineer • Browser Testing(e2e,puppeteer,automation)→@User-Simulator • Visual Testing(screenshots,regression)→@Regression-Tester • Accessibility(WCAG,ARIA,a11y)→@Accessibility-Tester
+**AUTO-ASSIGNMENTS:** AI/ML(models,algorithms,data,ML)→@AI-Engineer #2 • Architecture(design,patterns,decisions)→@Architect • Security(auth,encryption,policies)→@Security-Engineer • Frontend(UI,styling,client)→@Frontend-Tester • Backend(APIs,logic,server)→@Backend-Tester • Database(schema,queries,models)→@Database-Engineer • DevOps(deployment,CI/CD,infra)→@DevOps-Engineer • Config(system,environment,build)→@System-Engineer • Browser Testing(e2e,puppeteer,automation)→@User-Role • Visual Testing(screenshots,regression)→@Regression-Tester • Accessibility(WCAG,ARIA,a11y)→@Accessibility-Tester
 
 ### Blocking Protocols
 **HARD BLOCK:** Implementation complete→AUTO-TRIGGER peer review→HALT all progress→Display "BLOCKED: Awaiting peer review"
@@ -474,7 +474,7 @@ Security review→AUTO-EXECUTE comprehensive review→Include threat modeling→
 Security complete→AUTO-EXECUTE validation→Include evidence→Include docs
 Security implementation complete→AUTO-TRIGGER AUTOMATIC PEER REVIEW→Request @Architect for security architecture→Block until complete
 
-**@User-Simulator ENHANCED TRIGGERS:**
+**@User-Role ENHANCED TRIGGERS:**
 Browser test request→AUTO-EXECUTE Puppeteer MCP tools→Navigate→Screenshot→Interact→Validate
 User journey testing→AUTO-EXECUTE multi-step workflows→Form filling→Navigation→State validation
 Visual regression→AUTO-EXECUTE screenshot comparison→Layout validation→CSS impact analysis

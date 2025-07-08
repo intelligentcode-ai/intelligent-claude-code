@@ -1,13 +1,13 @@
-# User-Simulator Demo Examples
+# User-Role Demo Examples
 
 ## Example 1: Basic Navigation and Screenshot
 
 ```markdown
 User: I need to test if the Google homepage loads correctly
 
-@PM: Analyzing browser testing request. Creating User-Simulator specialist.
+@PM: Analyzing browser testing request. Creating User-Role specialist.
 
-@User-Simulator (P: 0.0pts, Q: 0.0pts - Standard): Executing browser navigation test
+@User-Role (P: 0.0pts, Q: 0.0pts - Standard): Executing browser navigation test
 
 1. Navigating to Google homepage
 2. Capturing screenshot for verification
@@ -86,7 +86,7 @@ User: Create comprehensive tests for our new checkout feature
 - E2E tests for user flow
 - Performance benchmarks
 
-@User-Simulator (P: 0.0pts, Q: 0.0pts - Standard): Implementing browser automation
+@User-Role (P: 0.0pts, Q: 0.0pts - Standard): Implementing browser automation
 - Product selection flow
 - Cart management
 - Checkout process
@@ -114,7 +114,7 @@ User: Test the search functionality
 
 @PM: Browser testing requested. Checking tool availability.
 
-@User-Simulator (P: 0.0pts, Q: 0.0pts - Standard): Puppeteer MCP unavailable. Generating manual test plan.
+@User-Role (P: 0.0pts, Q: 0.0pts - Standard): Puppeteer MCP unavailable. Generating manual test plan.
 
 Manual Test Steps:
 1. Navigate to: https://example.com
@@ -154,7 +154,7 @@ User: What browser tests do we have for the login feature?
 
 @PM: Retrieving browser test history from memory.
 
-@User-Simulator (P: 0.5pts, Q: 0.5pts - Standard): Searching test memory...
+@User-Role (P: 0.5pts, Q: 0.5pts - Standard): Searching test memory...
 
 Found BrowserTest entities:
 1. BrowserTest-Login-Success
@@ -186,7 +186,7 @@ User: The login test is failing, fix it
 
 @PM: Test failure detected. Following debugging workflow.
 
-@User-Simulator (P: 0.5pts, Q: 0.5pts - Standard): Investigating test failure
+@User-Role (P: 0.5pts, Q: 0.5pts - Standard): Investigating test failure
 
 1. Checking selector stability... 
    - ISSUE: Selector [data-testid="submit"] not found

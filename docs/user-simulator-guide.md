@@ -1,8 +1,8 @@
-# User-Simulator Role Guide
+# User-Role Guide
 
 ## Overview
 
-The User-Simulator is a dynamic specialist role that provides browser automation and testing capabilities through Puppeteer MCP integration. It enables automated user journey testing, visual regression detection, and accessibility validation.
+The User-Role is a dynamic specialist role that provides browser automation and testing capabilities through Puppeteer MCP integration. It enables automated user journey testing, visual regression detection, and accessibility validation.
 
 ## Activation
 
@@ -15,14 +15,14 @@ The User-Simulator is a dynamic specialist role that provides browser automation
 
 ### Manual Activation
 ```
-@PM I need a User-Simulator
+@PM I need a User-Role
 @PM I need browser testing help
 @PM Create User-Flow-Simulator for login testing
 ```
 
 ## Specializations
 
-### @User-Simulator (Base Role)
+### @User-Role (Base Role)
 - General browser automation
 - Screenshot capture
 - Basic interaction testing
@@ -80,7 +80,7 @@ When Puppeteer MCP is unavailable:
 ### Test Strategy Alignment
 ```
 @QA-Engineer: Define test strategy
-@User-Simulator: Implement browser tests
+@User-Role: Implement browser tests
 @Frontend-Tester: Validate UI components
 @PM: Aggregate results
 ```
@@ -88,7 +88,7 @@ When Puppeteer MCP is unavailable:
 ### E2E Testing Workflow
 ```
 @Developer: Implement feature
-@User-Simulator: Create end-to-end tests
+@User-Role: Create end-to-end tests
 @Backend-Tester: Validate API integration
 @QA-Engineer: Verify coverage
 ```
@@ -97,7 +97,7 @@ When Puppeteer MCP is unavailable:
 ```
 @Web-Designer: Create UI components
 @Accessibility-Tester: Validate WCAG compliance
-@User-Simulator: Automate accessibility checks
+@User-Role: Automate accessibility checks
 @Frontend-Tester: Verify fixes
 ```
 
@@ -110,7 +110,7 @@ When Puppeteer MCP is unavailable:
 
 ### Memory Commands
 ```
-@User-Simulator: Previous test for login
+@User-Role: Previous test for login
 @PM: Browser test coverage report
 @PM: Selector stability analysis
 @PM: Accessibility compliance status
@@ -229,9 +229,9 @@ launchOptions: {
 ```yaml
 - name: Run Browser Tests
   run: |
-    @User-Simulator: Execute test suite
-    @User-Simulator: Generate coverage report
-    @User-Simulator: Upload screenshots
+    @User-Role: Execute test suite
+    @User-Role: Generate coverage report
+    @User-Role: Upload screenshots
 ```
 
 ### Performance Thresholds
