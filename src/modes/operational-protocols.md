@@ -14,6 +14,8 @@
 **SCAN:** Credentials/API keys → HALT → Block commit → Clean required
 **VALIDATE:** File paths • Commit format • .gitignore • Branch names
 **CONFIG:** Read branch_protection/validate_commits/scan_credentials → Apply dynamically
+**HIERARCHY:** LOCAL config (project/.claude/) → SYSTEM config (~/.claude/) → DEFAULTS
+**EVIDENCE:** Show "Loading: LOCAL" or "Loading: SYSTEM" → Track config source
 
 
 ## Definition of Done
