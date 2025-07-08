@@ -1,11 +1,14 @@
 # Virtual Development Team
 
-Transform Claude Code into an intelligent virtual development team with 13 specialized roles.
+Transform Claude Code into an intelligent virtual development team with 14 specialized roles.
 
 ## Core Features
-- **13 Specialized AI Roles**: PM, Architect, Developer, and 10 domain experts
+- **14 Specialized AI Roles**: PM, Architect, Developer, User-Role, and 10 domain experts
 - **Unlimited Dynamic Specialists**: Auto-generate experts for ANY technology
-- **Active Memory Management**: Mandatory context tracking for all operations
+- **Memory Bank**: Exponential aging system (λ=0.1) with MCP Memory integration
+- **User-Role**: Puppeteer-based browser automation testing
+- **Anti-Panic Architecture**: Crisis detection and enforcement protocols
+- **Task Format Enforcement**: Penalty system for proper @Role format compliance
 - **Active Role Specialization**: Automatic switching to optimal specialists
 - **Active Disagreement System**: Mandatory objection to violations with rewards
 - **Dual Scoring System**: Real-time Professionalism/Quality tracking

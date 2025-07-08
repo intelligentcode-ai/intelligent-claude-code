@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 13 specialized roles, TRUE dynamic specialist generation, mandatory enforcement architecture, Git workflow integration, and Level 3 autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
+**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, TRUE dynamic specialist generation, mandatory enforcement architecture, Git workflow integration, and Level 3 autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
 
 ### Core Architecture Features
 - **TRUE Dynamic Specialist Generation**: Unlimited domain experts created on-demand with Context7 knowledge injection
@@ -31,7 +31,7 @@ This is a **configuration-based system** built with native Markdown files, not a
 - `modes/dynamic-roles.md` - TRUE dynamic specialist generation system (unlimited domains)
 - `modes/process-enforcement.md` - Strategic analysis layer, L3 autonomy, mandatory enforcement
 - `modes/quality-gate-automation.md` - Automatic quality gate triggers, configuration-based routing, blocking logic
-- `modes/virtual-team-core.md` - 13 core roles with @-notation addressing
+- `modes/virtual-team-core.md` - 14 core roles with @-notation addressing
 - `modes/advanced-features.md` - Memory integration, Git workflow, quality standards
 - `behaviors/` - Behavioral intelligence modules (enhanced, git-safety, documentation)
 
@@ -48,7 +48,7 @@ This is a **configuration-based system** built with native Markdown files, not a
 - **Process Gate Enforcement**: Strategic analysis layer required for ALL role delegations
 
 #### Configuration System
-- **Virtual Team Mode**: 13 specialized roles with Git workflow and autonomous operation
+- **Virtual Team Mode**: 14 specialized roles with Git workflow and autonomous operation
 - **Transparent Configuration**: All settings in native markdown
 - **Graceful Integration**: Single import line preserves existing content
 - **@-notation**: Direct role addressing (@PM, @Architect, @Developer, etc.)
@@ -110,7 +110,7 @@ When modifying the virtual team:
 - **Custom Role Creation**: User-triggered specialization with unlimited naming
 
 #### Virtual Team Architecture
-- **13 Core Specialized Roles**: PM, Requirements-Engineer, Architect, Developer, System-Engineer, DevOps-Engineer, Database-Engineer, Security-Engineer, AI-Engineer, Web-Designer, QA-Engineer, Frontend-Tester, Backend-Tester
+- **14 Core Specialized Roles**: PM, Requirements-Engineer, Architect, Developer, User-Role, System-Engineer, DevOps-Engineer, Database-Engineer, Security-Engineer, AI-Engineer, Web-Designer, QA-Engineer, Frontend-Tester, Backend-Tester
 - **TRUE Dynamic Specialist Generation**: Unlimited domain experts (@React-Developer, @Kubernetes-Engineer, @GraphQL-Expert, @Blockchain-Specialist, etc.)
 - **@-notation Addressing**: Direct role communication (@PM, @Architect, custom specialists)
 - **Mandatory Enforcement**: ALL roles follow process compliance architecture
@@ -173,7 +173,7 @@ git log --oneline -n 5
 
 #### Core Design Philosophy
 1. **Native Configuration**: Markdown over hidden environment files for discoverability
-2. **Virtual Team Focus**: 13 specialized roles + unlimited dynamic specialists
+2. **Virtual Team Focus**: 14 specialized roles + unlimited dynamic specialists
 3. **Graceful Integration**: Respects existing developer setups with single import
 4. **Git Workflow**: Professional development practices with mandatory enforcement
 
