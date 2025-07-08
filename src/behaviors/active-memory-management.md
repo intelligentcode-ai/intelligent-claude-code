@@ -11,6 +11,8 @@
 **AUTO-TRIGGERS:** ALWAYS triggered • CONSTANT loading • CONTINUOUS storing • PERPETUAL capturing • INSTANT transfer
 **LEARNING PERSISTENCE:** EVERY insight → mcp__memory__add_observations • EVERY pattern → Create relationship • EVERY lesson → Store forever
 **MEMORY ENFORCEMENT:** No memory use detected → IMMEDIATE HALT → Force memory → -1.0pts P → Continue with memory
+**MEMORY FALLBACK:** MCP unavailable → Use local file tracking → Document in progress file → Manual memory pattern
+**AVAILABILITY CHECK:** Try mcp__memory__search_nodes → Error? → Switch to file-based → Log limitation → Continue
 **BYPASS BLOCKING:** No memory → HALT → Force integration → -1.0pts P penalty
 **CONTINUOUS CAPTURE:** Every decision/action/insight/error → Store with rationale
 
