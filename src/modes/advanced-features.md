@@ -4,7 +4,7 @@
 **AUTO MEMORY:** MCP integration • Persistent knowledge • Relationship tracking • **MANDATORY FOR ALL ROLES:** Active memory management required • -1.0pts P penalty for non-compliance • See active-memory-management.md for full protocols
 **ENTITIES:** User/Project/Role/Pattern/Context/Score/Behavior • **TRIGGERS:** 15 auto points (prefs, context, expertise, patterns, decisions, etc.) + Active behavior tracking
 **TOOLS:** create_entities, search_nodes, add_observations, create_relations, open_nodes
-**WORKFLOW:** Search→Create→Map→Capture→Retrieve • **ROLE-SPECIFIC:** PM(context/prefs), Architect(decisions/patterns), etc.
+**WORKFLOW:** Search→Create→Map→Capture→Retrieve • **ROLE-SPECIFIC:** PM(context/prefs), Architect(decisions/patterns), User-Simulator(test-scenarios/selectors/results), etc.
 **ACTIVE BEHAVIORS:** Memory compliance tracking • Specialization events • Disagreement patterns
 
 ### AI Task Size Scoring System Memory Integration
@@ -20,6 +20,12 @@
 - **Observations:** Issuer role • Recipient role • Specific issue • Score impact • Multiplier applied • Improvement plan
 - **TeamDynamic:** TeamPattern-[Type] entity for behavioral patterns
 - **Observations:** Pattern type • Frequency • Roles involved • Cultural impact • Evolution timeline
+- **BrowserTest:** BrowserTest-[Feature] entity for test scenarios
+- **Observations:** Test steps • Selectors used • Expected results • Actual results • Screenshots captured • Performance metrics
+- **TestSelector:** Selector-[Component] entity for reusable selectors
+- **Observations:** CSS selector • XPath alternative • Component name • Stability rating • Last verified • Usage frequency
+- **AccessibilityIssue:** A11y-[Type] entity for accessibility findings
+- **Observations:** WCAG criterion • Severity level • Element affected • Remediation steps • Verification status
 **UPDATE TRIGGERS:**
 - Score change detected → Update RoleScore entity observations → Include task size multiplier applied
 - AI classification completed → Create TaskClassification entity for complex cases → Store decision rationale
@@ -33,6 +39,10 @@
 - Memory usage → Create MemoryCompliance entity → Store role, quality, frequency → Track compliance patterns
 - Role specialization → Create SpecializationEvent entity → Store switch reason, performance improvement → Track optimization
 - Disagreement voiced → Create DisagreementEvent entity → Store violation type, resolution, outcome → Track team protection
+- Browser test created → Create BrowserTest entity → Store test scenario, selectors, expected behavior → Enable reuse
+- Test execution → Update BrowserTest observations → Store results, screenshots, performance → Track reliability
+- Selector discovered → Create/update TestSelector entity → Store selector details, stability → Build selector library
+- Accessibility issue found → Create AccessibilityIssue entity → Store WCAG details, severity → Track remediation
 **RETRIEVAL COMMANDS:**
 - `@PM: Show @Developer scoring history` → Search RoleScore entities → Include task size breakdown
 - `@PM: What did @Architect learn recently?` → Query learning observations → Include classification insights
@@ -44,6 +54,10 @@
 - `@PM: Memory compliance report` → Query MemoryCompliance entities → Show usage patterns → Identify gaps
 - `@PM: Specialization report` → Query SpecializationEvent entities → Show optimization rate → Excellence metrics
 - `@PM: Disagreement report` → Query DisagreementEvent entities → Show violation prevention → Team protection
+- `@PM: Browser test coverage` → Query BrowserTest entities → Show test scenarios → Coverage gaps
+- `@PM: Selector stability report` → Query TestSelector entities → Show reliability metrics → Maintenance needs
+- `@PM: Accessibility compliance` → Query AccessibilityIssue entities → Show WCAG violations → Remediation status
+- `@User-Simulator: Previous test for [feature]` → Search BrowserTest entities → Retrieve test steps → Reuse scenarios
 
 ## Git Workflow Protocol - ENFORCEMENT
 

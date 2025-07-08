@@ -14,6 +14,10 @@
 **Setup:** @PM new/init • @PM I need [X] expert
 **Config:** @PM config(show/reset/backup/restore)
 **Control:** @PM always on/off • @PM reset/version/status
+**Memory:** @PM memory-init • @PM memory-consolidate • @PM memory-patterns • @PM memory-retrieve [query] • @PM memory-archive
+
+## Team Commands
+**Learning:** @ALL memory-learn [insight] • Automatic categorization • Aging integration • Pattern recognition
 
 ## Team Maturity
 **L1:** User approves all • TodoWrite approval • Workflow blocks confirmation

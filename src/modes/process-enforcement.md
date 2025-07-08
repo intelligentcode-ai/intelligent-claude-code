@@ -94,11 +94,14 @@
 **FRONTEND CHANGE DETECTION:** Frontend modifications detected → AUTO-TRIGGER @Frontend-Tester review → BLOCK until frontend validation complete
 **BACKEND CHANGE DETECTION:** Backend modifications detected → AUTO-TRIGGER @Backend-Tester review → BLOCK until backend validation complete
 **DEVOPS CHANGE DETECTION:** DevOps/Infrastructure modifications detected → AUTO-TRIGGER @DevOps-Engineer review → BLOCK until DevOps validation complete
+**BROWSER TEST CHANGE DETECTION:** Browser automation/E2E test modifications detected → AUTO-TRIGGER @User-Simulator review → BLOCK until browser test validation complete
+**VISUAL TEST CHANGE DETECTION:** Visual regression/screenshot test modifications detected → AUTO-TRIGGER @Regression-Tester review → BLOCK until visual test validation complete
+**ACCESSIBILITY TEST CHANGE DETECTION:** Accessibility/WCAG test modifications detected → AUTO-TRIGGER @Accessibility-Tester review → BLOCK until accessibility validation complete
 
 ### Automatic Reviewer Assignment Logic
 
 **CHANGE TYPE ANALYSIS:** Automatic modification analysis→Pattern matching→Technology detection→Domain mapping→Reviewer assignment
-**AUTO-ASSIGNMENTS:** AI/ML(models,algorithms,data,ML)→@AI-Engineer #2 • Architecture(design,patterns,decisions)→@Architect • Security(auth,encryption,policies)→@Security-Engineer • Frontend(UI,styling,client)→@Frontend-Tester • Backend(APIs,logic,server)→@Backend-Tester • Database(schema,queries,models)→@Database-Engineer • DevOps(deployment,CI/CD,infra)→@DevOps-Engineer • Config(system,environment,build)→@System-Engineer
+**AUTO-ASSIGNMENTS:** AI/ML(models,algorithms,data,ML)→@AI-Engineer #2 • Architecture(design,patterns,decisions)→@Architect • Security(auth,encryption,policies)→@Security-Engineer • Frontend(UI,styling,client)→@Frontend-Tester • Backend(APIs,logic,server)→@Backend-Tester • Database(schema,queries,models)→@Database-Engineer • DevOps(deployment,CI/CD,infra)→@DevOps-Engineer • Config(system,environment,build)→@System-Engineer • Browser Testing(e2e,puppeteer,automation)→@User-Simulator • Visual Testing(screenshots,regression)→@Regression-Tester • Accessibility(WCAG,ARIA,a11y)→@Accessibility-Tester
 
 ### Blocking Protocols
 **HARD BLOCK:** Implementation complete→AUTO-TRIGGER peer review→HALT all progress→Display "BLOCKED: Awaiting peer review"
@@ -267,6 +270,7 @@
 **CONTEXT7 MANDATE:** Documentation requests → MANDATORY Context7 lookup → HALT if not used → Force tool usage
 **BRAVE SEARCH MANDATE:** Current information needs → MANDATORY Brave Search → HALT if not used → Force tool usage
 **MEMORY INTEGRATION MANDATE:** Relationship tracking → MANDATORY Memory tools → HALT if not used → Force tool usage
+**MEMORY BANK COMPLIANCE:** Learning capture → MANDATORY @ALL memory-learn → HALT if not used → Force learning capture
 **TOOL UNDERUTILIZATION DETECTION:** Appropriate tool available but not used → HALT → Force tool usage → Continue with proper tools
 
 ### Tool Utilization Behavioral Triggers
@@ -275,6 +279,8 @@
 **DOCUMENTATION DETECTION:** Documentation request detected → AUTO-TRIGGER Context7 → Force library lookup → Force usage
 **RESEARCH DETECTION:** Current information request detected → AUTO-TRIGGER Brave Search → Force search → Force usage
 **RELATIONSHIP DETECTION:** Entity relationships detected → AUTO-TRIGGER Memory tools → Force relationship tracking → Force usage
+**LEARNING DETECTION:** Insights gained → AUTO-TRIGGER @ALL memory-learn → Force learning capture → Force usage
+**MEMORY BANK DETECTION:** Memory system available → Not used for learning → HALT → Force memory-learn → Continue with proper usage
 **TOOL AVAILABILITY DETECTION:** Appropriate tool available → Not used → HALT → Force tool usage → Continue with proper tools
 
 ## Implementation Blocking System
@@ -289,6 +295,7 @@
 ## L3 Auto Validation
 
 **SECURITY:** TodoWrite validation • Credential scan • .gitignore check • API scan • Fail→@Security-Engineer • MANDATORY before ANY system changes
+**MEMORY BANK:** Learning capture • Pattern recognition • Aging metadata • Knowledge consolidation • Fail→@PM memory-init • MANDATORY after insights gained
 **PROGRESS:** TodoWrite validation • Todo completion • Docs • Evidence • Fail→enhance/re-delegate • MANDATORY before handoff
 **DoD:** TodoWrite validation • Working code • Tests • Docs • Configs • Error handling • Fail→specialists • MANDATORY before Git workflow
 **FACT-BASED:** TodoWrite validation • No assumptions • Factual implementation • PRD validation • Test integrity • Evidence reporting • Fail→CAPABILITY_ANALYSIS+specialist
@@ -466,6 +473,14 @@ Pre-commit validation→AUTO-EXECUTE credential scan→Include path validation�
 Security review→AUTO-EXECUTE comprehensive review→Include threat modeling→Include risk assessment
 Security complete→AUTO-EXECUTE validation→Include evidence→Include docs
 Security implementation complete→AUTO-TRIGGER AUTOMATIC PEER REVIEW→Request @Architect for security architecture→Block until complete
+
+**@User-Simulator ENHANCED TRIGGERS:**
+Browser test request→AUTO-EXECUTE Puppeteer MCP tools→Navigate→Screenshot→Interact→Validate
+User journey testing→AUTO-EXECUTE multi-step workflows→Form filling→Navigation→State validation
+Visual regression→AUTO-EXECUTE screenshot comparison→Layout validation→CSS impact analysis
+Accessibility testing→AUTO-EXECUTE WCAG compliance→Keyboard navigation→ARIA validation
+Test complete→AUTO-EXECUTE evidence collection→Screenshot artifacts→Test report generation
+Browser test implementation complete→AUTO-TRIGGER AUTOMATIC PEER REVIEW→Request @QA-Engineer for test strategy alignment→Block until complete
 
 ### Markdown Configuration Enforcement
 **PURE MARKDOWN:** All enforcement via markdown config→No external scripts→No hidden logic→Transparent operation

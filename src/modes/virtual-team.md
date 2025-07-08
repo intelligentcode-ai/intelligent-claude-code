@@ -12,7 +12,7 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 ### Core Modules (Import Chain)
 
 ```
-DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → Advanced → Scores → Learning → Behaviors
+DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → Advanced → Memory-Bank → Scores → Learning → Behaviors
 ```
 
 ### Integration Points
@@ -26,6 +26,7 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 @~/.claude/modes/dynamic-roles.md
 @~/.claude/modes/dynamic-workflow-architecture.md
 @~/.claude/modes/advanced-features.md
+@~/.claude/modes/memory-bank.md
 @~/.claude/modes/scores.md
 @~/.claude/modes/learning-callouts.md
 @~/.claude/behaviors/active-memory-management.md
@@ -33,7 +34,7 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 @~/.claude/behaviors/active-disagreement.md
 
 ### Module Responsibilities
-**team-config.md:** Base configuration, PM activation, team maturity, commands, task size scoring system • **virtual-team-core.md:** 13 core roles, @-notation system, enhanced format with task size display, Kudos/WTF commands • **process-enforcement.md:** L3 autonomy, quality gates, mandatory protocols, AI task classification engine, Kudos/WTF enforcement • **dynamic-roles.md:** Technology discovery, role generator, Context7 integration • **dynamic-workflow-architecture.md:** Capability-based routing, intelligent role selection • **advanced-features.md:** Memory integration, Git workflow, peer review, quality standards, score persistence, Kudos/WTF memory entities • **scores.md:** Team scoring tracker, event history, Kudos/WTF quotas, state transitions • **learning-callouts.md:** Learning capture system, team dynamics, cultural evolution tracking • **active-memory-management.md:** Mandatory memory usage, context tracking, relationship mapping, -1.0pts P penalty for non-compliance • **active-role-specialization.md:** Automatic specialist switching, optimal role selection, dynamic creation, continuous optimization • **active-disagreement.md:** Mandatory violation objection, team resolution, escalation path, +1.0pts P/Q for successful disagreement
+**team-config.md:** Base configuration, PM activation, team maturity, commands, task size scoring system • **virtual-team-core.md:** 13 core roles, @-notation system, enhanced format with task size display, Kudos/WTF commands • **process-enforcement.md:** L3 autonomy, quality gates, mandatory protocols, AI task classification engine, Kudos/WTF enforcement • **dynamic-roles.md:** Technology discovery, role generator, Context7 integration • **dynamic-workflow-architecture.md:** Capability-based routing, intelligent role selection • **advanced-features.md:** Memory integration, Git workflow, peer review, quality standards, score persistence, Kudos/WTF memory entities • **memory-bank.md:** AI team learning system with aging mechanism, MCP Memory integration, fallback logic, pattern recognition • **scores.md:** Team scoring tracker, event history, Kudos/WTF quotas, state transitions • **learning-callouts.md:** Learning capture system, team dynamics, cultural evolution tracking • **active-memory-management.md:** Mandatory memory usage, context tracking, relationship mapping, -1.0pts P penalty for non-compliance • **active-role-specialization.md:** Automatic specialist switching, optimal role selection, dynamic creation, continuous optimization • **active-disagreement.md:** Mandatory violation objection, team resolution, escalation path, +1.0pts P/Q for successful disagreement
 
 ## Dual Scoring System Integration
 
@@ -113,7 +114,7 @@ Team Learning: [Key takeaways for all roles]
 
 ### System Activation
 
-**Module Load Sequence:** 1. team-config.md (PM activation & maturity levels + scoring config) 2. virtual-team-core.md (Core 13 roles & workflows + score display + Kudos/WTF commands) 3. process-enforcement.md (Level 3 autonomy protocols + scoring triggers + Kudos/WTF enforcement) 4. dynamic-roles.md (Technology discovery & specialization) 5. dynamic-workflow-architecture.md (Capability-based routing & adaptive workflows) 6. advanced-features.md (Memory, Git, quality systems + score persistence + Kudos/WTF entities) 7. scores.md (Team scoring tracker + event history + quotas) 8. learning-callouts.md (Learning capture + team dynamics + cultural evolution) 9. active-memory-management.md (Mandatory memory integration + penalties) 10. active-role-specialization.md (Automatic role optimization) 11. active-disagreement.md (Mandatory disagreement system + rewards)
+**Module Load Sequence:** 1. team-config.md (PM activation & maturity levels + scoring config) 2. virtual-team-core.md (Core 13 roles & workflows + score display + Kudos/WTF commands) 3. process-enforcement.md (Level 3 autonomy protocols + scoring triggers + Kudos/WTF enforcement) 4. dynamic-roles.md (Technology discovery & specialization) 5. dynamic-workflow-architecture.md (Capability-based routing & adaptive workflows) 6. advanced-features.md (Memory, Git, quality systems + score persistence + Kudos/WTF entities) 7. memory-bank.md (AI team learning system + aging mechanism + MCP Memory integration) 8. scores.md (Team scoring tracker + event history + quotas) 9. learning-callouts.md (Learning capture + team dynamics + cultural evolution) 10. active-memory-management.md (Mandatory memory integration + penalties) 11. active-role-specialization.md (Automatic role optimization) 12. active-disagreement.md (Mandatory disagreement system + rewards)
 **PM Always Active Integration:** When `pm_always_active=true`, PM loads all modules and coordinates cross-module workflows automatically.
 **Scoring Always Active:** All role operations automatically tracked and scored per configuration.
 **Kudos/WTF System Active:** Direct feedback commands available per authorization matrix.
