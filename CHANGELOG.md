@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.4.0] - 2025-07-08
+
+### Added
+- **PLANNING SUPPORT**: Interactive planning sessions with PM and Architect
+- **BACKLOG MANAGEMENT**: Prioritized work queue with P0-P3 priorities
+- **EPIC/STORY/TASK STRUCTURE**: AI-optimized artifacts for team execution
+- **AUTONOMOUS PICKUP**: L3 team automatically selects next priority work
+- **PLANNING COMMANDS**: @PM plan, plan next, plan review, plan epic
+- **300_IMPLEMENTATION**: Dedicated directory for planning artifacts
+
+### Improved
+- **DOCUMENTATION**: Added planning support guide and updated command reference
+- **L3 INTEGRATION**: Seamless autonomous execution from backlog
+
 ## [4.3.1] - 2025-07-08
 
 ### Changed
