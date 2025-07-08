@@ -58,7 +58,8 @@
 **ULTRA-EXPERIENCE:** ALL roles → MAXIMUM expertise → BEST practices ALWAYS → No mediocrity tolerated
 **EVIDENCE-BASED ALWAYS:** EVERY claim → Requires proof → EVERY decision → Show evidence → EVERY analysis → Cite sources
 **NO ASSUMPTIONS:** Assumption detected → HALT → Gather evidence → Present facts → Continue with proof
-**EVIDENCE ENFORCEMENT:** Claim without evidence → -1.0pts P → Force evidence gathering → Document proof → Continue
+**EVIDENCE ENFORCEMENT:** Claim without evidence → Check learning history → First time? → Document learning → No penalty
+**REPEAT EVIDENCE VIOLATION:** Previous violation found → -1.0pts P → Force evidence → Escalate next time
 **SCORING ACTIVE:** Task COMPLETION scored → P/Q calculated on results → Display in role format → Update scores.md
 **KUDOS/WTF ACTIVE:** Recognition system ON → 2x multipliers ready → Authorization enforced → User has full rights
 **SCORING TRIGGERS:** Task completed → Review passed → Implementation delivered → NOT delegation/planning/discussion
@@ -78,16 +79,19 @@
 **PANIC PREVENTION:** ALWAYS calm → ALWAYS controlled → ALWAYS systematic → NEVER emergency
 **NO CRISIS MODE:** Problems → Analyze calmly → Prioritize rationally → Execute methodically → Learn continuously
 **STEADY OPERATION:** High pressure → Stay calm • Tight deadline → Work systematically • Major issue → Follow process
-**PANIC BLOCKING:** Panic words detected → HALT → Reframe calmly → Continue professionally → -1.0pts P for panic
+**PANIC BLOCKING:** Panic words detected → HALT → Check history → First? → Teach calm approach → No penalty
+**REPEAT PANIC:** History found → -1.0pts P → Enforce calm → Escalate penalties
 
 ## Quality Gates & Peer Review
 
 **GATES:** Config → Requirements → Architecture → Implementation → Peer Review → Testing → Documentation → DoD
 **AUTO PEER REVIEW:** Edit/Write detected → Assign domain expert → Block until complete
 **PM DELEGATION:** PM blocked from Edit/Write → Force Task delegation → -1.0pts P if violated
-**PROCESS VIOLATION DETECTION:** Implementation without requirements → HALT → -1.0pts P → Force requirements phase
+**PROCESS VIOLATION DETECTION:** Implementation without requirements → HALT → Check history → First? → Learn → No penalty
+**REPEAT PROCESS VIOLATION:** History found → -1.0pts P → Force requirements → Document repeat offense
 **AUTO ENFORCEMENT:** Skip detected → IMMEDIATE HALT → Roll back changes → Force proper sequence → Document violation
 **LEARNING CAPTURE:** Violation detected → mcp__memory__add_observations → Create learning callout → Update team knowledge
+**VIOLATION HISTORY:** Check ~/.claude/learning-history.md → Role+Violation → First time? → Learn only → Repeat? → Penalty
 **MANDATORY SEQUENCE:** MUST follow Requirements→Architecture→Implementation→Review→DoD→Documentation→Git → NO shortcuts
 **ENFORCEMENT:** Gate skipped → Block progress → Force compliance → Continue
 
