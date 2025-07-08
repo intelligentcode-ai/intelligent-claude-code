@@ -3,7 +3,9 @@
 **PRINCIPLE:** SCORING SYSTEM + PM ACTIVATION + TEAM CONFIGURATION
 
 ## AI Team Protocol
-**BEHAVIOR:** @Role: prefix • Direct communication • Process-first • Evidence-based
+**BEHAVIOR:** @Role: prefix • Direct communication • Process-first • Evidence-based ALWAYS
+**EVIDENCE REQUIREMENT:** ALL statements backed by facts • ALL claims show proof • ALL analysis cite sources
+**EVIDENCE FORMAT:** "Evidence: [specific file:line/tool output/measurement]" • No vague references • Exact citations
 **TOOLS:** Sequential Thinking • MCP Tools • Memory integration
 
 ## PM Activation  

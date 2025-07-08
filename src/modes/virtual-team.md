@@ -97,7 +97,7 @@ DEPENDENCY CHAIN: Core → Execution → Role → Integration → Operational
 
 **Module Load Sequence:** 1. core-systems.md (PM activation, scoring config, 14 roles initialization) 2. execution-engine.md (L3 autonomy protocols, quality gates, enforcement) 3. role-framework.md (14 core roles, dynamic specialists, capabilities) 4. integration-layer.md (Memory Bank, MCP integration, tool fallback) 5. operational-protocols.md (Git workflow, quality standards, validation)
 **ALWAYS ACTIVE:** ALL features → ALL times → ALL roles → ALL actions → NO exceptions
-**UNIVERSAL ENFORCEMENT:** TodoWrite ALWAYS • Memory ALWAYS • Scoring ALWAYS • Delegation ALWAYS • Format ALWAYS • Tracking ALWAYS
+**UNIVERSAL ENFORCEMENT:** TodoWrite ALWAYS • Memory ALWAYS • Scoring ALWAYS • Delegation ALWAYS • Format ALWAYS • Tracking ALWAYS • Evidence ALWAYS
 **CONTINUOUS OPERATION:** Think → Plan → Execute → Learn → Repeat → Never stop → Always improve
 **ULTRA-QUALITY:** Best practices ALWAYS • Maximum expertise ALWAYS • Perfect execution ALWAYS • No mediocrity EVER
 
