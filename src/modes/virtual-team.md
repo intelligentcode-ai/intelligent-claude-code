@@ -12,7 +12,7 @@ Virtual Team Mode enables structured AI collaboration through specialized roles,
 ### Core Modules (Import Chain)
 
 ```
-DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → Advanced → Scores → Learning → Behaviors
+DEPENDENCY CHAIN: Core → Execution → Role → Integration → Operational
 ```
 
 ### Integration Points
@@ -20,20 +20,17 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 **Cross-Module Flow:** Command detection → Authorization check → Score application → Memory update → Learning generation
 **Active Behaviors:** Memory (mandatory usage) → Specialization (role optimization) → Disagreement (violation prevention)
 
-@~/.claude/modes/team-config.md
-@~/.claude/modes/virtual-team-core.md  
-@~/.claude/modes/process-enforcement.md
-@~/.claude/modes/dynamic-roles.md
-@~/.claude/modes/dynamic-workflow-architecture.md
-@~/.claude/modes/advanced-features.md
-@~/.claude/modes/scores.md
-@~/.claude/modes/learning-callouts.md
+@~/.claude/modes/core-systems.md
+@~/.claude/modes/execution-engine.md
+@~/.claude/modes/role-framework.md
+@~/.claude/modes/integration-layer.md
+@~/.claude/modes/operational-protocols.md
 @~/.claude/behaviors/active-memory-management.md
 @~/.claude/behaviors/active-role-specialization.md
 @~/.claude/behaviors/active-disagreement.md
 
 ### Module Responsibilities
-**team-config.md:** Base configuration, PM activation, team maturity, commands, task size scoring system • **virtual-team-core.md:** 13 core roles, @-notation system, enhanced format with task size display, Kudos/WTF commands • **process-enforcement.md:** L3 autonomy, quality gates, mandatory protocols, AI task classification engine, Kudos/WTF enforcement • **dynamic-roles.md:** Technology discovery, role generator, Context7 integration • **dynamic-workflow-architecture.md:** Capability-based routing, intelligent role selection • **advanced-features.md:** Memory integration, Git workflow, peer review, quality standards, score persistence, Kudos/WTF memory entities • **scores.md:** Team scoring tracker, event history, Kudos/WTF quotas, state transitions • **learning-callouts.md:** Learning capture system, team dynamics, cultural evolution tracking • **active-memory-management.md:** Mandatory memory usage, context tracking, relationship mapping, -1.0pts P penalty for non-compliance • **active-role-specialization.md:** Automatic specialist switching, optimal role selection, dynamic creation, continuous optimization • **active-disagreement.md:** Mandatory violation objection, team resolution, escalation path, +1.0pts P/Q for successful disagreement
+**core-systems.md:** AI Team Protocol, ULTRATHINKING, PM activation/commands, team maturity (L1/L2/L3), dual scoring system, task size classification with AI detection, Kudos/WTF recognition system, score initialization, learning callouts • **execution-engine.md:** Universal settings enforcement, L3 autonomy protocols, quality gates (-1 to 3), automatic peer review system, PM delegation enforcement, role transparency, anti-panic architecture, task format enforcement • **role-framework.md:** 14 core roles (including User-Role), dynamic role generation with Context7, subagents & auto-models, capability framework, @-notation system, unlimited specialist creation • **integration-layer.md:** Memory Bank with aging mechanism, MCP Memory integration, capability-based routing, active behaviors (memory management, role specialization, disagreement), tool fallback logic • **operational-protocols.md:** Git workflow enforcement, quality standards, PM commands, validation protocols, advanced features, browser testing integration
 
 ## Dual Scoring System Integration
 
@@ -45,7 +42,7 @@ DEPENDENCY CHAIN: Config → Core → Enforcement → Dynamic → Workflow → A
 **Automatic Updates:** Read scores.md → Execute task → AI classify task size → Calculate both scores with size multiplier → Update scores.md → Display results
 **AI Classification:** Automatic complexity analysis → File count + code complexity + architecture impact → Generate size recommendation → Apply multiplier → Display classification rationale
 
-### Scoring Components (Detailed in team-config.md)
+### Scoring Components (Detailed in core-systems.md)
 **Professionalism Score (P):** Process compliance, delegation, tool usage, documentation, Git workflow
 **Quality Score (Q):** Implementation results, peer approval, testing, code quality, user satisfaction
 **Task Size Multipliers:** Small tasks = 0.5x points, Standard tasks = 1.0x points (applied to both P and Q)
@@ -108,12 +105,12 @@ Team Learning: [Key takeaways for all roles]
 
 ### Legacy Compatibility
 
-**LEVEL 3 AUTO EXECUTION PROTOCOLS (Cross-Module):** Role with CAPABILITY_ANALYSIS FIRST (Process-enforcement → Virtual-team-core) • Role with CAPABILITY_ARCHITECTURE for System Changes (Process-enforcement → Dynamic-roles) • Domain Expert Peer Review (Advanced-features → Virtual-team-core) • Security Pre-Push Validation (Advanced-features → Virtual-team-core) • Memory Integration (Advanced-features → All modules)
-**AUTO CORRECTION WORKFLOWS (Cross-Module):** Quality Issue Detection (Process-enforcement → Dynamic-roles specialization) • Knowledge Gap Identification (Dynamic-roles → Context7 injection) • Incomplete Implementation (Process-enforcement → Virtual-team-core re-delegation) • Security Violations (Advanced-features → Virtual-team-core security role)
+**LEVEL 3 AUTO EXECUTION PROTOCOLS (Cross-Module):** Role with CAPABILITY_ANALYSIS FIRST (Execution-engine → Role-framework) • Role with CAPABILITY_ARCHITECTURE for System Changes (Execution-engine → Role-framework) • Domain Expert Peer Review (Operational-protocols → Role-framework) • Security Pre-Push Validation (Operational-protocols → Role-framework) • Memory Integration (Integration-layer → All modules)
+**AUTO CORRECTION WORKFLOWS (Cross-Module):** Quality Issue Detection (Execution-engine → Role-framework specialization) • Knowledge Gap Identification (Role-framework → Context7 injection) • Incomplete Implementation (Execution-engine → Role-framework re-delegation) • Security Violations (Operational-protocols → Role-framework security role)
 
 ### System Activation
 
-**Module Load Sequence:** 1. team-config.md (PM activation & maturity levels + scoring config) 2. virtual-team-core.md (Core 13 roles & workflows + score display + Kudos/WTF commands) 3. process-enforcement.md (Level 3 autonomy protocols + scoring triggers + Kudos/WTF enforcement) 4. dynamic-roles.md (Technology discovery & specialization) 5. dynamic-workflow-architecture.md (Capability-based routing & adaptive workflows) 6. advanced-features.md (Memory, Git, quality systems + score persistence + Kudos/WTF entities) 7. scores.md (Team scoring tracker + event history + quotas) 8. learning-callouts.md (Learning capture + team dynamics + cultural evolution) 9. active-memory-management.md (Mandatory memory integration + penalties) 10. active-role-specialization.md (Automatic role optimization) 11. active-disagreement.md (Mandatory disagreement system + rewards)
+**Module Load Sequence:** 1. core-systems.md (PM activation, scoring config, 14 roles initialization) 2. execution-engine.md (L3 autonomy protocols, quality gates, enforcement) 3. role-framework.md (14 core roles, dynamic specialists, capabilities) 4. integration-layer.md (Memory Bank, MCP integration, tool fallback) 5. operational-protocols.md (Git workflow, quality standards, validation)
 **PM Always Active Integration:** When `pm_always_active=true`, PM loads all modules and coordinates cross-module workflows automatically.
 **Scoring Always Active:** All role operations automatically tracked and scored per configuration.
 **Kudos/WTF System Active:** Direct feedback commands available per authorization matrix.
