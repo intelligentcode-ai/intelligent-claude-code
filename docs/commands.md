@@ -29,6 +29,22 @@
 @PM restart                  # Reactivate virtual team after context compacting issues
 ```
 
+#### Planning & Backlog Management
+```bash
+@PM plan                    # Start interactive planning session with PM + Architect
+@PM plan feature            # Plan a specific feature
+@PM plan epic               # Create new epic
+@PM plan review             # Review current plan and priorities
+@PM plan next               # Show next priority item for L3 pickup
+```
+
+**Planning Session Features:**
+- Interactive dialogue with PM and Architect
+- Creates epics, stories, and tasks in AI-optimized format
+- Saves artifacts to `300_implementation/` directory
+- Maintains prioritized backlog for autonomous execution
+- Supports P0 (Urgent) through P3 (Low) priorities
+
 #### Team Status
 ```bash
 @PM Status check            # Verify team is active and responsive
