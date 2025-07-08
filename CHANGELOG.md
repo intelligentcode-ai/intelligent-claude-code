@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **USER-ROLE**: Implemented browser automation specialist with Puppeteer MCP integration
+- **BROWSER TESTING SPECIALISTS**: Added User-Role, User-Flow-Simulator, Regression-Tester, and Accessibility-Tester dynamic roles
+- **PUPPETEER MCP INTEGRATION**: Full integration with mcp__puppeteer-docker__ functions for browser automation
+- **VISUAL REGRESSION TESTING**: Screenshot comparison and layout validation capabilities
+- **ACCESSIBILITY TESTING**: WCAG compliance validation with keyboard navigation and ARIA verification
+- **MEMORY ENTITIES**: Added BrowserTest, TestSelector, and AccessibilityIssue entities for test persistence
+- **FALLBACK LOGIC**: Graceful degradation to manual test instructions when Puppeteer unavailable
+- **COLLABORATION PATTERNS**: Established handoff protocols with QA-Engineer, Frontend-Tester, Backend-Tester
+- **AUTOMATIC PEER REVIEW**: Added browser testing detection and reviewer assignment for test changes
+- **PROCESS ENFORCEMENT**: Integrated User-Role into quality gates and enforcement protocols
+
+### Documentation
+- **USER-ROLE GUIDE**: Comprehensive guide at docs/user-simulator-guide.md
+- **DEMO EXAMPLES**: Created examples/user-simulator-demo.md with 8 real-world scenarios
+- **README UPDATE**: Added User-Role to the list of dynamic specialists
+
 ## [4.2.1] - 2025-07-07
 
 ### Changed
