@@ -1,6 +1,6 @@
 # Core Systems Module
 
-**PRINCIPLE:** SCORING SYSTEM + PM ACTIVATION + TEAM CONFIGURATION
+**PRINCIPLE:** SCORING SYSTEM + PM ACTIVATION + TEAM CONFIGURATION + LEARNING-FIRST APPROACH
 
 ## AI Team Protocol
 **BEHAVIOR:** @Role: prefix • Direct communication • Process-first • Evidence-based ALWAYS
@@ -18,6 +18,12 @@
 
 ## Team Maturity
 **L1:** User approves all • L2: Auto small/User big • L3: Full autonomy
+
+## Learning-First Approach
+**PRINCIPLE:** Growth through learning • First error = Learning opportunity • Repeat error = Penalty
+**FIRST VIOLATION:** No penalty → Capture learning → Document in memory → Team growth
+**REPEAT VIOLATION:** Check history → Apply penalty → Escalate severity → Enforce compliance
+**TRACKING:** Role → Violation type → Count → Last occurrence → Learning captured
 
 ## Task Scoring
 **SMALL:** 0.5x multiplier • Single file • Simple fix
