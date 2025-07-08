@@ -1,5 +1,11 @@
 # Version History
 
+## [4.4.0] - Interactive Planning Support
+**Core:** Planning sessions • Epic/Story/Task structure • Backlog management • L3 autonomous pickup • Priority system • AI-optimized artifacts
+
+## [4.3.1] - README Overhaul & Settings Hierarchy
+**Core:** README clarity (75% reduction) • LOCAL > SYSTEM config hierarchy • Dynamic role discovery • Process continuation • Settings compliance
+
 ## [4.0.0] - Dual Scoring System Major Release
 **Core:** Dual scoring system • Real-time learning insights • Accountability features • Memory integration • Professional tracking
 
