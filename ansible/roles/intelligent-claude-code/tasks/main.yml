@@ -85,6 +85,40 @@
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
   when: config_md_exists.stat.exists
 
+- name: Check if scores.md exists
+  stat:
+    path: "{{ claude_install_path }}/scores.md"
+  register: scores_md_exists
+
+- name: Create scores.md from template (ONLY if not exists)
+  copy:
+    src: "{{ playbook_dir }}/../src/scores.md"
+    dest: "{{ claude_install_path }}/scores.md"
+    mode: '0644'
+  when: not scores_md_exists.stat.exists
+
+- name: Display scores preservation notice
+  debug:
+    msg: "Scores file preserved: {{ claude_install_path }}/scores.md already exists - keeping user scoring data"
+  when: scores_md_exists.stat.exists
+
+- name: Check if learning-callouts.md exists
+  stat:
+    path: "{{ claude_install_path }}/learning-callouts.md"
+  register: learning_callouts_exists
+
+- name: Create learning-callouts.md from template (ONLY if not exists)
+  copy:
+    src: "{{ playbook_dir }}/../src/learning-callouts.md"
+    dest: "{{ claude_install_path }}/learning-callouts.md"
+    mode: '0644'
+  when: not learning_callouts_exists.stat.exists
+
+- name: Display learning-callouts preservation notice
+  debug:
+    msg: "Learning callouts preserved: {{ claude_install_path }}/learning-callouts.md already exists - keeping team learning data"
+  when: learning_callouts_exists.stat.exists
+
 - name: Handle project-specific integration
   include_tasks: project_integration.yml
   when: claude_scope == "project"
@@ -115,6 +149,9 @@
     msg:
       - "Installation complete!"
       - "Location: {{ claude_install_path }}"
-      - "Mode: Virtual Team (13 roles)"
-      - "Activation: @-notation for 13 specialized roles"
+      - "Mode: Enhanced Virtual Team (14 core roles + unlimited dynamic specialists)"
+      - "Core Roles: @PM, @Architect, @Developer, @User-Role, @System/DevOps/Database/Security/AI/Web/QA/Frontend/Backend-Engineers, @Requirements-Engineer"
+      - "Features: Memory Bank (λ=0.1), User-Role (Puppeteer), Anti-Panic, Task Format Enforcement"
+      - "Activation: @-notation for specialized roles (@PM, @Architect, @Developer, @User-Role, etc.)"
+      - "Architecture: 5-module clustered system with Level 3 autonomy"
       - "{{ 'Update mode: Files forcefully updated' if (update_mode is defined and update_mode | bool) else 'Preservation mode: User modifications preserved' }}"

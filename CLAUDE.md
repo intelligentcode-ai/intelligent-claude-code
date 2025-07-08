@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 13 specialized roles, TRUE dynamic specialist generation, mandatory enforcement architecture, Git workflow integration, and Level 3 autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
+**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, TRUE dynamic specialist generation, mandatory enforcement architecture, Git workflow integration, and Level 3 autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
 
 ### Core Architecture Features
 - **TRUE Dynamic Specialist Generation**: Unlimited domain experts created on-demand with Context7 knowledge injection
@@ -28,12 +28,12 @@ This is a **configuration-based system** built with native Markdown files, not a
 - `CLAUDE.md` - Master configuration template (installed to `~/.claude/CLAUDE.md`)
 - `config.md` - Native markdown configuration template
 - `modes/virtual-team.md` - Virtual team mode implementation with modular architecture
-- `modes/dynamic-roles.md` - TRUE dynamic specialist generation system (unlimited domains)
-- `modes/process-enforcement.md` - Strategic analysis layer, L3 autonomy, mandatory enforcement
-- `modes/quality-gate-automation.md` - Automatic quality gate triggers, configuration-based routing, blocking logic
-- `modes/virtual-team-core.md` - 13 core roles with @-notation addressing
-- `modes/advanced-features.md` - Memory integration, Git workflow, quality standards
-- `behaviors/` - Behavioral intelligence modules (enhanced, git-safety, documentation)
+- `modes/core-systems.md` - PM activation, scoring system, team configuration
+- `modes/execution-engine.md` - Universal enforcement, L3 autonomy, quality gates
+- `modes/role-framework.md` - 14 core roles with ultra-experienced standards
+- `modes/integration-layer.md` - Memory Bank with aging, MCP integration, tool fallback
+- `modes/operational-protocols.md` - Git workflow enforcement, quality standards
+- `behaviors/` - Behavioral intelligence modules (memory, specialization, disagreement)
 
 #### Mandatory Enforcement Architecture
 - **Universal Process Compliance**: ALL roles must follow enforcement protocols for ALL activities
@@ -48,7 +48,7 @@ This is a **configuration-based system** built with native Markdown files, not a
 - **Process Gate Enforcement**: Strategic analysis layer required for ALL role delegations
 
 #### Configuration System
-- **Virtual Team Mode**: 13 specialized roles with Git workflow and autonomous operation
+- **Virtual Team Mode**: 14 specialized roles with Git workflow and autonomous operation
 - **Transparent Configuration**: All settings in native markdown
 - **Graceful Integration**: Single import line preserves existing content
 - **@-notation**: Direct role addressing (@PM, @Architect, @Developer, etc.)
@@ -95,10 +95,12 @@ When modifying the virtual team:
 #### Modular Architecture System
 - **Base Configuration**: `src/CLAUDE.md` with import chain management
 - **Virtual Team Core**: `src/modes/virtual-team.md` with modular dependency chain
-- **Dynamic Roles**: `src/modes/dynamic-roles.md` with unlimited specialist generation
-- **Process Enforcement**: `src/modes/process-enforcement.md` with mandatory compliance
-- **Advanced Features**: `src/modes/advanced-features.md` with memory/Git integration
-- **Import Chain**: Config → Core → Enforcement → Dynamic → Advanced
+- **Core Systems**: `src/modes/core-systems.md` with PM activation and scoring
+- **Execution Engine**: `src/modes/execution-engine.md` with enforcement and L3 autonomy
+- **Role Framework**: `src/modes/role-framework.md` with 14 roles and standards
+- **Integration Layer**: `src/modes/integration-layer.md` with memory and tools
+- **Operational Protocols**: `src/modes/operational-protocols.md` with Git workflow
+- **Import Chain**: Core → Execution → Role → Integration → Operational
 - **Single Import Activation**: `@~/.claude/modes/virtual-team.md` activates entire system
 
 #### TRUE Dynamic Specialist Generation
@@ -110,7 +112,7 @@ When modifying the virtual team:
 - **Custom Role Creation**: User-triggered specialization with unlimited naming
 
 #### Virtual Team Architecture
-- **13 Core Specialized Roles**: PM, Requirements-Engineer, Architect, Developer, System-Engineer, DevOps-Engineer, Database-Engineer, Security-Engineer, AI-Engineer, Web-Designer, QA-Engineer, Frontend-Tester, Backend-Tester
+- **14 Core Specialized Roles**: PM, Requirements-Engineer, Architect, Developer, User-Role, System-Engineer, DevOps-Engineer, Database-Engineer, Security-Engineer, AI-Engineer, Web-Designer, QA-Engineer, Frontend-Tester, Backend-Tester
 - **TRUE Dynamic Specialist Generation**: Unlimited domain experts (@React-Developer, @Kubernetes-Engineer, @GraphQL-Expert, @Blockchain-Specialist, etc.)
 - **@-notation Addressing**: Direct role communication (@PM, @Architect, custom specialists)
 - **Mandatory Enforcement**: ALL roles follow process compliance architecture
@@ -173,7 +175,7 @@ git log --oneline -n 5
 
 #### Core Design Philosophy
 1. **Native Configuration**: Markdown over hidden environment files for discoverability
-2. **Virtual Team Focus**: 13 specialized roles + unlimited dynamic specialists
+2. **Virtual Team Focus**: 14 specialized roles + unlimited dynamic specialists
 3. **Graceful Integration**: Respects existing developer setups with single import
 4. **Git Workflow**: Professional development practices with mandatory enforcement
 
@@ -190,10 +192,10 @@ git log --oneline -n 5
 ### Extension Points
 
 #### Core System Extensions
-- **Core Roles**: Add new roles to `src/modes/virtual-team-core.md`
-- **Dynamic Specialists**: Extend `src/modes/dynamic-roles.md` for new domains
-- **Process Enforcement**: Enhance `src/modes/process-enforcement.md` for new quality gates
-- **Advanced Features**: Extend `src/modes/advanced-features.md` for new capabilities
+- **Core Roles**: Add new roles to `src/modes/role-framework.md`
+- **Dynamic Specialists**: Extend role framework for new domains
+- **Process Enforcement**: Enhance `src/modes/execution-engine.md` for new quality gates
+- **Advanced Features**: Extend `src/modes/integration-layer.md` for new capabilities
 - **Behaviors**: Extend `src/behaviors/` for new behavioral intelligence
 - **Configuration**: Customize `src/config.md` for project-specific settings
 - **Installation**: Modify installation process in `install.sh`
@@ -233,15 +235,15 @@ git log --oneline -n 5
 4. Update `install.sh` if needed for new patterns
 
 ### Modifying Virtual Team
-1. Edit `src/modes/virtual-team.md` for role changes
+1. Edit `src/modes/role-framework.md` for role changes
 2. Update role definitions and responsibilities
 3. Test @-notation addressing
 4. Update documentation
 
 ### Adding New Role
-1. Add role definition to `src/modes/virtual-team.md`
+1. Add role definition to `src/modes/role-framework.md`
 2. Define expertise, responsibilities, and activation
-3. Update role selection logic in PM section
+3. Update role selection logic in core-systems.md
 4. Run `make test` to verify integration
 
 ### GitHub CLI Integration Development
