@@ -32,12 +32,15 @@
 **@PM always:** Enable → Auto-delegate → Monitor → Continue
 **@PM version:** Read VERSION → Report → Check updates
 **@PM config-reload:** Force reload → Apply → Update → Report
+**@PM plan:** Start planning → PM+Architect dialogue → Create epics/stories → Save to 300_implementation/
+**@PM plan next:** Read backlog.md → Show highest priority → Ready for L3 pickup → Auto-assign role
 
 ## L3 Autonomous Operation
 
 **CONTINUOUS WORKFLOW:** Task complete → Next task → No stops • Business only → Escalate
 **L3 ACTIVATION:** ALWAYS ACTIVE → Every moment → Continuous operation → No stopping ever
 **AUTONOMY HOOK:** CONSTANT scanning → ALWAYS delegating → ALWAYS executing → NEVER waiting
+**PLANNING PICKUP:** Check 300_implementation/backlog.md → Find P0/Ready → Auto-assign by capability → Start execution
 **DELEGATION ENFORCEMENT:** ANY task → IMMEDIATE delegation → Proper role ALWAYS → Track with TodoWrite ALWAYS
 **AUTO TRIGGERS:** ANY task → Sequential thinking ALWAYS • ANY docs → Context7 ALWAYS • ANY info → Brave Search ALWAYS
 **THINKING ENFORCEMENT:** EVERY decision → ULTRATHINKING required → Sequential analysis mandatory → No shortcuts
@@ -169,9 +172,18 @@
 
 **ROLE TRIGGERS:** @PM: init/reset/config commands → Implementation blocks → L3 continuation • All roles: Implementation → Auto peer review → DoD validation → Git workflow • Violations → Auto-correction → Escalation chain
 
+## Planning Session Protocol
+
+**PLANNING MODE:** @PM plan → Activate PM+Architect → Dialogue mode → Create artifacts → Save to 300_implementation/
+**ARTIFACT STRUCTURE:** Epics (300_implementation/epics/) → Stories (stories/) → Tasks (tasks/) → Backlog (backlog.md)
+**PRIORITY SYSTEM:** P0 (Urgent) → P1 (High) → P2 (Medium) → P3 (Low) → Update backlog.md continuously
+**DOD DEFINITION:** Each artifact → Clear DoD section → Measurable criteria → AI-optimized language
+**AUTO PICKUP:** L3 scans backlog.md → Find highest priority+ready → Match capabilities → Auto-assign → Execute
+**VERIFICATION:** Planning artifacts → Must be AI-readable → Clear structure → Capability hints → Implementation context
+
 ## Summary
 
 **ENFORCEMENT:** PM blocks • Role transparency • Auto peer review • Pre-change validation • Workflow gates
 **VIOLATIONS:** → HALT → Force correction → Continue only when compliant
-**AUTOMATION:** Settings enforcement • L3 continuation • Scoring updates • Progress tracking • Tool usage
+**AUTOMATION:** Settings enforcement • L3 continuation • Scoring updates • Progress tracking • Tool usage • Planning pickup
 **ACTIVE:** All behavioral enforcement via config-driven triggers and automatic protocols

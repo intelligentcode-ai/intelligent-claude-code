@@ -43,6 +43,9 @@ Universal process compliance with auto-correction workflows. No shortcuts, no pa
 ### 🤖 **Level 3 Autonomous Operations**
 Your team makes technical decisions independently. You're only involved for business decisions like budget, timeline, or policy changes.
 
+### 📋 **Interactive Planning Support**
+Collaborate with PM and Architect to create epics, stories, and tasks. Your team autonomously picks up prioritized work from the backlog.
+
 ## How It Works
 
 Your team scales automatically based on project needs:
@@ -70,6 +73,10 @@ Every step follows mandatory quality gates with peer review, testing, and securi
 @PM init                    # Configure existing project
 @PM Build me a [project]    # Start any project
 
+# Planning & Backlog
+@PM plan                   # Start interactive planning session
+@PM plan next              # Show next priority item
+
 # Git Workflow  
 @PM mr create              # Create pull request
 @PM mr merge               # Merge after review
@@ -89,6 +96,7 @@ Every step follows mandatory quality gates with peer review, testing, and securi
 🏗️ **Architecture**  
 - [Virtual Team Roles](docs/features/virtual-team.md) - Role descriptions & capabilities
 - [Dual Scoring System](docs/features/dual-scoring-system.md) - Performance tracking details
+- [Planning Support](docs/features/planning-support.md) - Interactive planning & backlog
 - [Enforcement Architecture](docs/features/enforcement.md) - Quality gate documentation
 
 🔧 **Advanced**
