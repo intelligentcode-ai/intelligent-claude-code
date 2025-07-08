@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.3.1] - 2025-07-08
+
+### Changed
+- **README.md**: Complete overhaul - reduced from 443 to 110 lines (75% reduction) for clarity and focus
+- **SETTINGS HIERARCHY**: Implemented LOCAL > SYSTEM config hierarchy with proper fallback logic
+- **DYNAMIC ROLE DISCOVERY**: Enhanced capability-based role matching to prevent wrong role assignments
+- **PROCESS CONTINUATION**: Automatic workflow continuation after peer review to prevent process stopping
+
+### Fixed
+- **ROLE ASSIGNMENT**: Fixed systemic issue with wrong roles being assigned for tasks
+- **SETTINGS LOADING**: Fixed to check local project config before system config
+- **PROCESS FLOW**: Fixed process chain stopping after review phase
+
 ### Added
 - **USER-ROLE**: Implemented browser automation specialist with Puppeteer MCP integration
 - **BROWSER TESTING SPECIALISTS**: Added User-Role, User-Flow-Simulator, Regression-Tester, and Accessibility-Tester dynamic roles
