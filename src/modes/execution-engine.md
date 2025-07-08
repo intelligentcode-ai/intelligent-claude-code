@@ -53,7 +53,10 @@
 ## Settings & Scoring Enforcement
 
 **MANDATORY:** EVERY message → EVERY role → EVERY action → Load config ALWAYS → -2.0pts P if skipped
-**SETTINGS COMPLIANCE:** ALWAYS load .claude/config.md → EVERY role start → APPLY all settings → ENFORCE continuously
+**SETTINGS HIERARCHY:** LOCAL first (project/.claude/config.md) → SYSTEM fallback (~/.claude/config.md) → DEFAULTS last
+**SETTINGS COMPLIANCE:** Check LOCAL → Found? → Load LOCAL → Not found? → Check SYSTEM → Load if exists → Apply ALL
+**EVIDENCE:** Must show "Loading: LOCAL config" or "Loading: SYSTEM config" or "Using: DEFAULTS" → Track source
+**CHANGES:** Assume LOCAL unless stated → "Update system config" = ~/.claude/ → Default = project/.claude/
 **PROCESS COMPLIANCE:** CONSTANT enforcement → EVERY step verified → IMMEDIATE penalties → No exceptions EVER
 **ULTRA-EXPERIENCE:** ALL roles → MAXIMUM expertise → BEST practices ALWAYS → No mediocrity tolerated
 **EVIDENCE-BASED ALWAYS:** EVERY claim → Requires proof → EVERY decision → Show evidence → EVERY analysis → Cite sources
@@ -73,6 +76,9 @@
 **TRACKING FORMAT:** HH:MM:SS @Role (P: X, Q: Y): Action taken → Result achieved → Next steps
 **CONTINUOUS TRACKING:** Start task → Track → Execute → Track → Complete → Track → Hand off → Track
 **PROGRESS ENFORCEMENT:** No tracking detected → HALT → Force progress update → -0.5pts P → Continue with tracking
+**PM TRACKING MANDATORY:** @PM MUST update 999_progress/yyyy-MM-dd.md → Open issues → Next steps → Active todos → Session continuity
+**TRACKING PURPOSE:** Cross-session fallback → Capture unfinished work → Document blockers → Enable seamless resume
+**TRACKING CONTENT:** Current issues • Pending decisions • Next actions • Dependencies • Context for continuation
 
 ## Anti-Panic Architecture
 
@@ -84,7 +90,8 @@
 
 ## Quality Gates & Peer Review
 
-**GATES:** Config → Requirements → Architecture → Implementation → Peer Review → Testing → Documentation → DoD
+**GATES:** Config → Requirements → Role Discovery → Architecture → Implementation → Peer Review → Testing → Documentation → DoD → Git
+**MANDATORY FLOW:** Each gate completion → Auto-trigger next → No stopping → Continue through Git
 **AUTO PEER REVIEW:** Edit/Write detected → Assign domain expert → Block until complete
 **PM DELEGATION:** PM blocked from Edit/Write → Force Task delegation → -1.0pts P if violated
 **PROCESS VIOLATION DETECTION:** Implementation without requirements → HALT → Check history → First? → Learn → No penalty
@@ -92,7 +99,11 @@
 **AUTO ENFORCEMENT:** Skip detected → IMMEDIATE HALT → Roll back changes → Force proper sequence → Document violation
 **LEARNING CAPTURE:** Violation detected → mcp__memory__add_observations → Create learning callout → Update team knowledge
 **VIOLATION HISTORY:** Check ~/.claude/learning-history.md → Role+Violation → First time? → Learn only → Repeat? → Penalty
-**MANDATORY SEQUENCE:** MUST follow Requirements→Architecture→Implementation→Review→DoD→Documentation→Git → NO shortcuts
+**MANDATORY SEQUENCE:** Requirements→Role Discovery→Architecture→Implementation→Review→DoD→Documentation→Git → NO shortcuts
+**ROLE DISCOVERY:** Task analysis → Extract required capabilities → Search role capabilities → Score matches → Select best fit
+**DISCOVERY ALGORITHM:** Parse task for keywords → Identify domains → Check role CAPABILITY tags → Rank by match score
+**DYNAMIC MATCHING:** No hardcoded rules → Pure capability matching → Create specialist if <70% match → Learn from selections
+**AUTO CONTINUATION:** Review done → IMMEDIATELY start DoD → Then Documentation → Then Git → No manual triggers
 **ENFORCEMENT:** Gate skipped → Block progress → Force compliance → Continue
 
 ## Anti-Panic & Task Format
