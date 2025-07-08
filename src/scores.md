@@ -4,8 +4,10 @@
 
 ### Core Team Members
 - @PM (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
+- @Requirements-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @Architect (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @Developer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
+- @User-Role (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @System-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @DevOps-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @Database-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
@@ -15,7 +17,6 @@
 - @QA-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @Frontend-Tester (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @Backend-Tester (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
-- @Requirements-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 
 ### Dynamic Specialists
 <!-- Dynamic specialists will be added here as they are created -->
@@ -40,7 +41,7 @@
 
 ### Daily Kudos/WTF Quotas
 
-#### Current Date: [Use Bash date '+%Y-%m-%d']
+#### Current Date: 2025-07-08
 
 - @PM: Unlimited (Used: 0)
 - @Architect: 3/day (Used: 0)
@@ -56,6 +57,7 @@
   - @Frontend-Tester (Used: 0)
   - @Backend-Tester (Used: 0)
   - @Requirements-Engineer (Used: 0)
+  - @User-Role (Used: 0)
 
 ## Learning Callouts
 
