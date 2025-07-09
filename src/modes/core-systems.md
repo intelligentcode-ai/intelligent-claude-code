@@ -26,8 +26,9 @@
 **TRACKING:** Role → Violation type → Count → Last occurrence → Learning captured
 
 ## Task Scoring
-**SMALL:** 0.5x multiplier • Single file • Simple fix
-**STANDARD:** 1.0x multiplier • Multi-file • Complex • Architecture
+**TRIVIAL:** 0x multiplier • No points • Typos • Formatting • Basic comments • Copy-paste • Minor cosmetic
+**SMALL:** 0.5x multiplier • Simple fixes requiring thought • Basic features • Simple documentation • Configuration analysis
+**STANDARD:** 1.0x multiplier • Complex implementations • Architecture work • Performance optimization • Complex features
 
 ## Dual Scoring System
 
@@ -71,7 +72,7 @@
 **POINTS:** Task +0.5 P/Q • Violation -0.5 P • Quality issue -0.5 Q • Kudos 2x • WTF 2x
 **STATES:** Standard (0-9) • Senior (10-24) • Elite (25-99) • Ultra Mega (100+)
 **REPLACE:** -10pts P → New team member
-**SIZE:** Small 0.5x • Standard 1.0x
+**SIZE:** Trivial 0x • Small 0.5x • Standard 1.0x
 
 ## PM Command Protocols
 
@@ -89,6 +90,8 @@
 ## Advanced Scoring Configuration
 
 ### Professionalism Score (Process & Compliance)
+**CRITICAL:** Points ONLY for value-delivering work • NO points for steering/housekeeping/coordination
+
 **POINT VALUES:**
 - **Standard (0-9pts):** Compliant: +0.5/+0.25 • Non-compliant: -1.0/-0.5
 - **Senior (10-24pts):** Compliant: +1.0/+0.5 • Non-compliant: -1.5/-0.75
@@ -97,10 +100,38 @@
 - **Removal Threshold:** -10pts → Team member replacement
 
 **TRIGGERS:**
-- **Positive:** Process compliance • Complete execution • Proper delegation • Correct tools • Documentation • Git workflow
+- **Positive (VALUE-DELIVERING ONLY):** Implementation work • Code changes • Feature delivery • Bug fixes • Test creation • Documentation (when requested)
 - **Negative:** Process violation • Incomplete steps • Wrong tools • Missing handoffs • Skipped gates • Protocol breach
+- **NON-SCORING ACTIVITIES:** PM coordination • Initialization • Status updates • Planning • Delegation • Housekeeping
+
+### Value-Delivery vs Non-Scoring Examples
+**VALUE-DELIVERING WORK (EARNS POINTS):**
+- Writing/editing code files
+- Implementing new features
+- Fixing bugs and issues
+- Creating/updating tests
+- Building documentation (when requested)
+- Configuration changes that deliver functionality
+- Database schema modifications
+- API endpoint implementations
+- Performance optimizations
+- Security implementations
+
+**NON-SCORING ACTIVITIES (NO POINTS):**
+- @PM coordination and delegation
+- System initialization and setup
+- Status updates and progress reports
+- Planning sessions and discussions
+- Role handoffs and transitions
+- Housekeeping and maintenance
+- Meeting coordination
+- Process enforcement
+- Quality gate management
+- Team communication
 
 ### Quality Score (Implementation & Results)
+**CRITICAL:** Points ONLY for value-delivering work • NO points for steering/housekeeping/coordination
+
 **POINT VALUES:**
 - **Standard (0-9pts):** Success: +0.5/+0.25 • Failure: -0.5/-0.25
 - **Senior (10-24pts):** Success: +1.0/+0.5 • Failure: -0.75/-0.375
@@ -109,8 +140,9 @@
 - **Warning Threshold:** -5pts → Quality improvement required
 
 **TRIGGERS:**
-- **Positive:** Peer approval • Test pass • Performance met • User satisfaction • Clean code • Best practices
+- **Positive (VALUE-DELIVERING ONLY):** Working implementation • Tests passing • Performance targets met • Bug resolved • Feature complete
 - **Negative:** Review rejection • Test failure • Performance issues • User complaints • Code smells • Tech debt
+- **NON-SCORING ACTIVITIES:** PM coordination • Initialization • Status updates • Planning • Delegation • Housekeeping
 
 **SCORERS:** @PM (all roles) • @Architect (scoring @PM) • Other roles can request scoring
 **TRACKING:** ~/.claude/scores.md • Real-time updates • History logs • Achievements

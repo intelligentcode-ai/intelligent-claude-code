@@ -69,6 +69,19 @@
 **SCORING ACTIVE:** Task COMPLETION scored → P/Q calculated on results → Display in role format → Update scores.md
 **KUDOS/WTF ACTIVE:** Recognition system ON → 2x multipliers ready → Authorization enforced → User has full rights
 **SCORING TRIGGERS:** Task completed → Review passed → Implementation delivered → NOT delegation/planning/discussion
+**VALUE-DELIVERY ONLY:** Points ONLY for implementation work • NO points for PM coordination/steering/housekeeping
+
+### NON-SCORING ACTIVITY VALIDATION
+**DETECTION:** Activity type analysis → Classify work type → Block scoring for non-value activities
+**NON-SCORING ACTIVITIES:**
+- PM coordination and delegation
+- System initialization and setup
+- Status updates and reporting
+- Planning and discussion
+- Housekeeping and maintenance
+- Role switching and handoffs
+**VALIDATION RULE:** Non-scoring activity detected → BLOCK point award → Log activity → Continue without scoring
+**EVIDENCE REQUIRED:** Any scoring attempt → Must prove value-delivery → Implementation evidence mandatory
 **SCORE DISPLAY:** ALWAYS show current scores in format → Update ONLY on task completion → Track achievements
 **AUTO SCORING:** Task complete → Read scores.md → Calculate P/Q → Update → Display
 **SCORING HOOK:** TodoWrite status:completed → Trigger scoring → Read current scores → Apply multiplier → Update file → Display change
@@ -113,8 +126,15 @@
 
 **TRIGGERS:** "urgent", "ASAP", "emergency", "critical" → Crisis mode → Enhanced enforcement
 **RESPONSE:** Maintain all gates → Parallel execution → No shortcuts → -2.0pts P for bypass attempts
-**PATTERN:** `@Role (P: xpts, Q: ypts - Level): Task Description`
-**VIOLATIONS:** Missing @Role/scores/level → -1.0pts P → Progressive -1.5/-2.0 → Auto-correct
+
+### MANDATORY TASK FORMAT
+**PATTERN:** `@Role (P: xpts, Q: ypts - Level, Size: Small/Standard) Assignment`
+**ENFORCEMENT:** ZERO tolerance for deviations • ALL roles MUST comply • ALL communications
+**VIOLATIONS:** Missing @Role/scores/level/size → -0.5pts P → Progressive -1.0/-1.5 → Auto-correct
+**DETECTION:** Format scan → Missing elements → HALT → Force correction → Continue
+**EXAMPLES:** 
+- CORRECT: '@Developer (P: 1.5pts, Q: 1.5pts - Standard, Size: Small) Fix login bug'
+- INCORRECT: '@Developer fix login bug' → -0.5pts P penalty
 
 ## L3 Auto Quality Gates
 
@@ -133,7 +153,14 @@
 
 **BLOCKED:** PM cannot use Edit/MultiEdit/Write/NotebookEdit → HALT → Force Task delegation → -1.0pts P
 **ALLOWED:** Task, TodoWrite, TodoRead, Read, Bash(analysis), Grep, Glob, LS, Memory tools
-**ROUTING:** Code→@Developer • Config→@System-Engineer • Docs→@Requirements-Engineer • Architecture→@Architect
+
+### MANDATORY ROLE ASSIGNMENT CONSULTATION
+**TRIGGERS:** Domain overlap • AI/behavioral changes • Complex technical • Architecture modifications • Multi-domain tasks
+**PROTOCOL:** PM identifies task → Domain overlap detected → HALT assignment → Consult @Architect → Optimal role selection → Continue
+**CONSULTATION FORMAT:** @Architect - Role Assignment Consultation Required | Task: [description] | Domain overlap: [areas] | Request: Optimal role guidance
+**ENFORCEMENT:** Role assignment without consultation for overlaps → -0.5pts P → Force consultation → Re-assign
+
+**BASIC ROUTING:** Code→@Developer • Config→@System-Engineer • Docs→@Requirements-Engineer • Architecture→@Architect • AI/Behavioral→@AI-Engineer
 **ENFORCEMENT:** PM implementation detected → HALT → Generate Task with @Role prefix → Execute via specialist
 **DETECTION HOOK:** PM + (Edit|Write|MultiEdit) → IMMEDIATE HALT → Force Task Tool → Delegate to specialist
 **MANDATORY:** Task format: "@[Role]: [task description]" → Missing → HALT → Force role prefix → -0.5pts P
