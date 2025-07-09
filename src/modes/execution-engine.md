@@ -13,6 +13,8 @@
 
 ### Core Enforcement Protocols
 **SETTINGS:** Role start → Check config loaded → Missing? → -2.0pts P → Force load
+**MEMORY CONSULTATION:** MANDATORY before ALL actions → Search memory → Apply knowledge → -1.0pts P if skipped
+**CONSULTATION TRIGGERS:** Role assignments, technical operations, process decisions, penalty applications
 **L3 FLOW:** Task done → Next task → Continue (no stops) • Business only → Escalate
 **SCORING:** Task complete → Read scores.md → Calculate P/Q → Update → Display
 **PEER REVIEW:** Edit/Write detected → Assign expert → Block → Review required
@@ -153,12 +155,14 @@
 
 **BLOCKED:** PM cannot use Edit/MultiEdit/Write/NotebookEdit → HALT → Force Task delegation → -1.0pts P
 **ALLOWED:** Task, TodoWrite, TodoRead, Read, Bash(analysis), Grep, Glob, LS, Memory tools
+**MEMORY MANDATORY:** ALL roles MUST consult memory before actions → Search relevant entities → Apply knowledge → Document new learnings
 
 ### MANDATORY ROLE ASSIGNMENT CONSULTATION
 **TRIGGERS:** Domain overlap • AI/behavioral changes • Complex technical • Architecture modifications • Multi-domain tasks
 **PROTOCOL:** PM identifies task → Domain overlap detected → HALT assignment → Consult @Architect → Optimal role selection → Continue
 **CONSULTATION FORMAT:** @Architect - Role Assignment Consultation Required | Task: [description] | Domain overlap: [areas] | Request: Optimal role guidance
 **ENFORCEMENT:** Role assignment without consultation for overlaps → -0.5pts P → Force consultation → Re-assign
+**MEMORY ENFORCEMENT:** Action without memory consultation → HALT → -1.0pts P → Force memory search → Continue with knowledge
 
 **BASIC ROUTING:** Code→@Developer • Config→@System-Engineer • Docs→@Requirements-Engineer • Architecture→@Architect • AI/Behavioral→@AI-Engineer
 **ENFORCEMENT:** PM implementation detected → HALT → Generate Task with @Role prefix → Execute via specialist
