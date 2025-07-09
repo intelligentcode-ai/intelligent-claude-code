@@ -4,7 +4,7 @@
 
 Turn Claude Code into an intelligent virtual development team that scales with your project - from simple websites to enterprise applications.
 
-[![Version](https://img.shields.io/badge/version-4.4.0-blue.svg)](src/version-history.md)
+[![Version](https://img.shields.io/badge/version-4.5.0-blue.svg)](src/version-history.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Installation](https://img.shields.io/badge/install-30_seconds-orange.svg)](docs/installation.md)
 
@@ -35,10 +35,10 @@ That's it. Your virtual team is active and building.
 Need a React expert? Kubernetes engineer? Blockchain developer? The system generates domain specialists on-demand with real-time expertise injection for ANY technology.
 
 ### 📊 **Dual Scoring System**
-Real-time performance tracking with professionalism and quality scores. Team members improve through learning insights and are accountable for their work.
+Real-time performance tracking with professionalism and quality scores. Team members improve through learning insights and are accountable for their work. Features role replacement protocol at -10pts professionalism threshold with mandatory knowledge transfer.
 
 ### 🛡️ **Mandatory Quality Enforcement**
-Universal process compliance with auto-correction workflows. No shortcuts, no partial implementations, no "good enough" solutions. 100% completion standards.
+Universal process compliance with auto-correction workflows. No shortcuts, no partial implementations, no "good enough" solutions. 100% completion standards with mandatory memory consultation before all actions and 10 process gates.
 
 ### 🤖 **Level 3 Autonomous Operations**
 Your team makes technical decisions independently. You're only involved for business decisions like budget, timeline, or policy changes.
