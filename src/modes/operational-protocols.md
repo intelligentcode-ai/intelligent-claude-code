@@ -4,7 +4,7 @@
 
 ## ACTIVE QUALITY AUTOMATION ENGINE
 
-**AUTO-TRIGGERS:** Git op → Branch check → Credential scan → Block if violated • Implementation → DoD check → Block until complete
+**TRIGGERS:** Git op → Branch check → Credential scan → Block if violated • Implementation → DoD check → Block until complete
 **ENFORCEMENT:** Main branch → HALT → Force feature branch • Secrets found → HALT → Clean required • DoD incomplete → HALT → Fix required
 **SCORING:** Quality issues → Update scores • Process violations → Penalties • DoD failures → Re-work
 
