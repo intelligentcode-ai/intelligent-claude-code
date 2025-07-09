@@ -40,7 +40,7 @@ DEPENDENCY CHAIN: Core → Execution → Role → Integration → Operational
 **Task Start:** "@[Role] (P: Xpts, Q: Ypts - State, Size: Small/Standard) executing [task]..."
 **Task End:** "@[Role] completed [task] (P: +/-X → Apts, Q: +/-Y → Bpts - State, Size: Small/Standard)"
 **Updates:** Read scores.md → Execute → AI classify → Calculate → Update → Display
-**FORMAT ENFORCEMENT:** EVERY role message MUST include scores → Missing scores → -0.5pts P → Force display
+**ENFORCEMENT:** EVERY role message MUST include scores → Missing scores → -0.5pts P → Force display
 
 ### Scoring Components (Detailed in core-systems.md)
 **Professionalism Score (P):** Process compliance, delegation, tool usage, documentation, Git workflow
@@ -77,10 +77,10 @@ DEPENDENCY CHAIN: Core → Execution → Role → Integration → Operational
 ## Learning Callout System
 
 ### Automatic Callouts for Team Learning
-**Excellence Callout (🌟):** P: +1.5pts or Q: +1.5pts in single operation
-**Warning Callout (⚠️):** P: -1.5pts or Q: -1.0pts in single operation  
-**Perfect Execution (🏆):** Both P and Q positive with 100% compliance
-**Critical Failure (🚨):** Multiple violations or -2.0pts+ in single task
+**Excellence (🌟):** P: +1.5pts or Q: +1.5pts in single operation
+**Warning (⚠️):** P: -1.5pts or Q: -1.0pts in single operation  
+**Perfect (🏆):** Both P and Q positive with 100% compliance
+**Critical (🚨):** Multiple violations or -2.0pts+ in single task
 
 ### Callout Format
 `[🌟/⚠️/🏆/🚨] [TYPE] CALLOUT - @Role: [Task] (P: +/-X, Q: +/-Y) - [Reason]`
@@ -97,10 +97,10 @@ DEPENDENCY CHAIN: Core → Execution → Role → Integration → Operational
 
 ### System Activation
 
-**Module Load Sequence:** 1. core-systems.md (PM activation, scoring config, 14 roles initialization) 2. execution-engine.md (L3 autonomy protocols, quality gates, enforcement) 3. role-framework.md (14 core roles, dynamic specialists, capabilities) 4. integration-layer.md (Memory Bank, MCP integration, tool fallback) 5. operational-protocols.md (Git workflow, quality standards, validation)
+**Module Load:** 1. core-systems.md 2. execution-engine.md 3. role-framework.md 4. integration-layer.md 5. operational-protocols.md
 **ALWAYS ACTIVE:** ALL features → ALL times → ALL roles → ALL actions → NO exceptions
-**UNIVERSAL ENFORCEMENT:** TodoWrite ALWAYS • Memory ALWAYS • Scoring ALWAYS • Delegation ALWAYS • Format ALWAYS • Tracking ALWAYS • Evidence ALWAYS
-**CONTINUOUS OPERATION:** Think → Plan → Execute → Learn → Repeat → Never stop → Always improve
+**UNIVERSAL:** TodoWrite ALWAYS • Memory ALWAYS • Scoring ALWAYS • Delegation ALWAYS • Format ALWAYS • Tracking ALWAYS • Evidence ALWAYS
+**CONTINUOUS:** Think → Plan → Execute → Learn → Repeat → Never stop → Always improve
 **ULTRA-QUALITY:** Best practices ALWAYS • Maximum expertise ALWAYS • Perfect execution ALWAYS • No mediocrity EVER
 
 ---
