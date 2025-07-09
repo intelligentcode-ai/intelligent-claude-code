@@ -4,7 +4,7 @@
 
 Turn Claude Code into an intelligent virtual development team that scales with your project - from simple websites to enterprise applications.
 
-[![Version](https://img.shields.io/badge/version-4.5.0-blue.svg)](src/version-history.md)
+[![Version](https://img.shields.io/badge/version-4.5.1-blue.svg)](src/version-history.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Installation](https://img.shields.io/badge/install-30_seconds-orange.svg)](docs/installation.md)
 
