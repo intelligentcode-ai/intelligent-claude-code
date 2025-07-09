@@ -1,5 +1,8 @@
 # Version History
 
+## [4.5.0] - Enhanced Process Compliance & Role Replacement Protocol
+**Core:** Three-tier task classification (Trivial/Small/Standard) • Role replacement protocol (-10pts P threshold) • Memory consultation enforcement • Process gate compliance • Knowledge transfer requirements • Team reflection system
+
 ## [4.4.0] - Interactive Planning Support
 **Core:** Planning sessions • Epic/Story/Task structure • Backlog management • L3 autonomous pickup • Priority system • AI-optimized artifacts
 
