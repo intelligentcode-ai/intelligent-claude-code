@@ -45,19 +45,21 @@ DEPENDENCY CHAIN: Core → Execution → Role → Integration → Operational
 ### Scoring Components (Detailed in core-systems.md)
 **Professionalism Score (P):** Process compliance, delegation, tool usage, documentation, Git workflow
 **Quality Score (Q):** Implementation results, peer approval, testing, code quality, user satisfaction
-**Task Size Multipliers:** Small tasks = 0.5x points, Standard tasks = 1.0x points (applied to both P and Q)
+**Task Size Multipliers:** Trivial tasks = 0x points, Small tasks = 0.5x points, Standard tasks = 1.0x points (applied to both P and Q)
 
 ### Task Size Based Scoring
-**Small (0.5x):** Single-file changes, basic modifications, simple fixes, documentation
-**Standard (1.0x):** Multi-file changes, architecture modifications, complex implementations
-**AI Classification:** File count + complexity + architecture impact + dependencies + testing
-**Thresholds:** <40% = Small • 40-60% = Evidence required • >60% = Standard
+**Trivial (0x):** Typo corrections, simple formatting, basic comments, copy-paste operations, minor cosmetic changes
+**Small (0.5x):** Simple fixes requiring thought, basic features, simple documentation, configuration analysis
+**Standard (1.0x):** Complex implementations, architecture work, performance optimization, complex features
+**AI Classification:** EFFORT + COMPLEXITY (not file count) + architecture impact + dependencies + testing
+**Thresholds:** <20% = Trivial • 20-60% = Small • >60% = Standard
 
 ### Classification Examples
-**Small:** Config update, bug fix, documentation, single function, CSS tweaks
-**Standard:** Multi-file feature, architecture design, database schema, API integration
-**Borderline:** 2-3 file changes require evidence
-**Gaming Prevention:** Evidence required for Small classification, @Architect escalation
+**Trivial:** Typo fixes, formatting changes, basic comments, copy-paste, minor cosmetic tweaks
+**Small:** Simple bug fixes, basic features, simple documentation, configuration analysis
+**Standard:** Complex implementations, architecture design, database schema, API integration, performance optimization
+**Borderline:** Evidence required for non-Trivial classification
+**Gaming Prevention:** Evidence required for Small+ classification, @Architect escalation for disputes
 
 ### State Management (Based on Professionalism Score)
 **Standard (0-9pts):** Learning phase

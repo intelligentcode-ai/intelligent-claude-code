@@ -3,23 +3,23 @@
 ## Current Team Scores
 
 ### Core Team Members
-- @PM (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
-- @Requirements-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
-- @Architect (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
-- @Developer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
+- @PM (P: -5.5pts, Q: 1.0pts - Standard, Size: Standard)
+- @Requirements-Engineer (P: 3.0pts, Q: 3.0pts - Standard, Size: Standard)
+- @AI-Architect (P: 2.0pts, Q: 3.0pts - Standard, Size: Standard)
+- @Developer (P: 1.75pts, Q: 1.75pts - Standard, Size: Standard)
 - @User-Role (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
-- @System-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
-- @DevOps-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
+- @System-Engineer (P: 0.25pts, Q: 0.25pts - Standard, Size: Standard)
+- @DevOps-Engineer (P: -3.0pts, Q: -3.0pts - Standard, Size: Standard)
 - @Database-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @Security-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
-- @AI-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
+- @AI-Engineer (P: 11.0pts, Q: 12.0pts - Senior, Size: Standard)
 - @Web-Designer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
-- @QA-Engineer (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
+- @QA-Engineer (P: 2.0pts, Q: 2.0pts - Standard, Size: Standard)
 - @Frontend-Tester (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 - @Backend-Tester (P: 0.0pts, Q: 0.0pts - Standard, Size: Standard)
 
 ### Dynamic Specialists
-<!-- Dynamic specialists will be added here as they are created -->
+- @AI-Engineer-2 (P: -0.75pts, Q: 0.25pts - Standard, Size: Standard)
 
 ## Scoring History
 
@@ -34,14 +34,26 @@
 
 ### Format: [Timestamp via Bash date] - Issuer -> Recipient - Type - Reason - Score Impact - Multiplier Applied
 
-<!-- Example entries:
-2025-07-07 15:00:00 - @PM -> @Developer - Kudos - Exceptional implementation with comprehensive testing - P: +1.0, Q: +1.0 - Standard (1.0x)
-2025-07-07 15:30:00 - @Architect -> @Security-Engineer - WTF - Bypassed peer review requirement - P: -0.5, Q: -0.5 - Small (0.5x)
--->
+2025-07-08 12:17:51 - User -> @AI-Engineer - Kudos - Exceptional system restoration and optimization work - P: +1.0, Q: +1.0 - Standard (2.0x)
+2025-07-08 12:17:51 - User -> @Requirements-Engineer - Kudos - Comprehensive requirements analysis and validation - P: +1.0, Q: +1.0 - Standard (2.0x) 
+2025-07-08 12:17:51 - User -> @AI-Architect - Kudos - Outstanding architectural review and system integration - P: +1.0, Q: +1.0 - Standard (2.0x)
+2025-07-08 12:17:51 - User -> @QA-Engineer - Kudos - Thorough functionality validation and testing - P: +1.0, Q: +1.0 - Standard (2.0x)
+2025-07-08 12:17:51 - User -> @DevOps-Engineer - Kudos - Successful Git workflow and release management - P: +1.0, Q: +1.0 - Standard (2.0x)
+2025-07-08 12:17:51 - User -> @Developer - Kudos - Clean Git workflow execution and documentation fixes - P: +1.0, Q: +1.0 - Standard (2.0x)
+2025-07-08 12:17:51 - User -> @PM - Kudos - Excellent team coordination and proper delegation - P: +1.0, Q: +1.0 - Standard (2.0x)
+2025-07-09 07:26:37 - User -> @DevOps-Engineer - WTF - Configuration violations: git_privacy, branch_protection, require_pr_for_main - P: -2.0, Q: -2.0 - Standard (2.0x)
+2025-07-09 07:26:37 - User -> @PM - WTF - Failed to enforce configuration compliance - P: -1.0, Q: 0 - Standard (2.0x)
+2025-07-09 07:26:37 - User -> @DevOps-Engineer - WTF - Failed to check ~/.config/git/common.conf before GitHub operations - P: -2.0, Q: -2.0 - Standard (2.0x)
+2025-07-09 07:26:37 - User -> @PM - WTF - Failed to enforce memory consultation before task execution - P: -2.0, Q: 0 - Standard (2.0x)
+2025-07-09 07:43:34 - User -> @PM - WTF - Failed to perform proper role change and delegation - P: -2.0, Q: 0 - Standard (2.0x)
+2025-07-09 08:00:50 - User -> @AI-Engineer - Standard Penalty - Process non-compliance: Implementation without process gates - P: -1.0, Q: 0 - Standard (1.0x)
+2025-07-09 08:00:50 - User -> @AI-Engineer-2 - Standard Penalty - Process non-compliance: Implementation without process gates - P: -1.0, Q: 0 - Standard (1.0x)
+2025-07-09 08:00:50 - User -> @AI-Architect - Standard Penalty - Process non-compliance: Implementation without process gates - P: -1.0, Q: 0 - Standard (1.0x)
+2025-07-09 08:00:50 - User -> @PM - Standard Penalty - Process non-compliance: Failed to enforce process gates - P: -1.0, Q: 0 - Standard (1.0x)
 
 ### Daily Kudos/WTF Quotas
 
-#### Current Date: 2025-07-08
+#### Current Date: 2025-07-09
 
 - @PM: Unlimited (Used: 0)
 - @Architect: 3/day (Used: 0)

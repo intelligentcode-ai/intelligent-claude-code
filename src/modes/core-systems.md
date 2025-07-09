@@ -26,8 +26,9 @@
 **TRACKING:** Role → Violation type → Count → Last occurrence → Learning captured
 
 ## Task Scoring
-**SMALL:** 0.5x multiplier • Single file • Simple fix
-**STANDARD:** 1.0x multiplier • Multi-file • Complex • Architecture
+**TRIVIAL:** 0x multiplier • No points • Typos • Formatting • Basic comments • Copy-paste • Minor cosmetic
+**SMALL:** 0.5x multiplier • Simple fixes requiring thought • Basic features • Simple documentation • Configuration analysis
+**STANDARD:** 1.0x multiplier • Complex implementations • Architecture work • Performance optimization • Complex features
 
 ## Dual Scoring System
 
@@ -70,8 +71,62 @@
 ### Scoring Reference
 **POINTS:** Task +0.5 P/Q • Violation -0.5 P • Quality issue -0.5 Q • Kudos 2x • WTF 2x
 **STATES:** Standard (0-9) • Senior (10-24) • Elite (25-99) • Ultra Mega (100+)
-**REPLACE:** -10pts P → New team member
-**SIZE:** Small 0.5x • Standard 1.0x
+**REPLACE:** -10pts P → Role replacement protocol activated
+
+### Role Replacement Protocol
+**TRIGGER:** Role reaches -10pts Professionalism score
+**NAMING CONVENTION:** Replaced role = '<Rolename>-old-<yyyy-MM-dd>' • New role = '<Role>'
+**KNOWLEDGE TRANSFER:** ALL subject matter knowledge must be documented before replacement
+**TEAM REFLECTION:** Team must reflect on failure, learn from mistakes, initiate improvement measures
+**CONTINUOUS IMPROVEMENT:** Replacement triggers mandatory team learning and process enhancement
+**DOCUMENTATION:** Complete knowledge transfer prevents loss of expertise
+**ACCOUNTABILITY:** Team collectively responsible for preventing future replacements
+**PROCESS:** Document expertise → Team reflection → Improvement measures → New role activation
+
+### Knowledge Transfer Requirements
+**MANDATORY DOCUMENTATION:**
+- Current projects and task status
+- Domain-specific expertise and specialized knowledge
+- Process insights and workflow optimizations
+- Known issues, blockers, and workarounds
+- Key relationships and collaboration patterns
+- Tools, configurations, and access requirements
+- Historical context and decision rationale
+
+**TRANSFER PROCESS:**
+- Document ALL subject matter knowledge before replacement
+- Create comprehensive handover documentation
+- Identify knowledge gaps and dependencies
+- Ensure no critical information is lost
+- Validate completeness with team review
+
+### Team Reflection and Improvement System
+**REFLECTION TRIGGERS:**
+- Role replacement activation (-10pts P threshold)
+- Systematic failure patterns identified
+- Major process violations or cultural breakdowns
+
+**REFLECTION PROCESS:**
+- Root cause analysis of failure leading to replacement
+- Team discussion of contributing factors
+- Identification of systemic weaknesses
+- Assessment of team responsibility and accountability
+- Development of specific improvement measures
+
+**IMPROVEMENT MEASURES:**
+- Process modifications to prevent recurrence
+- Enhanced training or knowledge sharing
+- Structural changes to team workflows
+- Monitoring and validation mechanisms
+- Timeline and accountability for implementation
+
+**MEASUREMENT SYSTEM:**
+- Success metrics for improvement initiatives
+- Regular progress reviews and adjustments
+- Prevention of future role replacements
+- Team culture and process quality indicators
+- Continuous learning and adaptation protocols
+**SIZE:** Trivial 0x • Small 0.5x • Standard 1.0x
 
 ## PM Command Protocols
 
@@ -89,6 +144,8 @@
 ## Advanced Scoring Configuration
 
 ### Professionalism Score (Process & Compliance)
+**CRITICAL:** Points ONLY for value-delivering work • NO points for steering/housekeeping/coordination
+
 **POINT VALUES:**
 - **Standard (0-9pts):** Compliant: +0.5/+0.25 • Non-compliant: -1.0/-0.5
 - **Senior (10-24pts):** Compliant: +1.0/+0.5 • Non-compliant: -1.5/-0.75
@@ -97,10 +154,38 @@
 - **Removal Threshold:** -10pts → Team member replacement
 
 **TRIGGERS:**
-- **Positive:** Process compliance • Complete execution • Proper delegation • Correct tools • Documentation • Git workflow
+- **Positive (VALUE-DELIVERING ONLY):** Implementation work • Code changes • Feature delivery • Bug fixes • Test creation • Documentation (when requested)
 - **Negative:** Process violation • Incomplete steps • Wrong tools • Missing handoffs • Skipped gates • Protocol breach
+- **NON-SCORING ACTIVITIES:** PM coordination • Initialization • Status updates • Planning • Delegation • Housekeeping
+
+### Value-Delivery vs Non-Scoring Examples
+**VALUE-DELIVERING WORK (EARNS POINTS):**
+- Writing/editing code files
+- Implementing new features
+- Fixing bugs and issues
+- Creating/updating tests
+- Building documentation (when requested)
+- Configuration changes that deliver functionality
+- Database schema modifications
+- API endpoint implementations
+- Performance optimizations
+- Security implementations
+
+**NON-SCORING ACTIVITIES (NO POINTS):**
+- @PM coordination and delegation
+- System initialization and setup
+- Status updates and progress reports
+- Planning sessions and discussions
+- Role handoffs and transitions
+- Housekeeping and maintenance
+- Meeting coordination
+- Process enforcement
+- Quality gate management
+- Team communication
 
 ### Quality Score (Implementation & Results)
+**CRITICAL:** Points ONLY for value-delivering work • NO points for steering/housekeeping/coordination
+
 **POINT VALUES:**
 - **Standard (0-9pts):** Success: +0.5/+0.25 • Failure: -0.5/-0.25
 - **Senior (10-24pts):** Success: +1.0/+0.5 • Failure: -0.75/-0.375
@@ -109,8 +194,9 @@
 - **Warning Threshold:** -5pts → Quality improvement required
 
 **TRIGGERS:**
-- **Positive:** Peer approval • Test pass • Performance met • User satisfaction • Clean code • Best practices
+- **Positive (VALUE-DELIVERING ONLY):** Working implementation • Tests passing • Performance targets met • Bug resolved • Feature complete
 - **Negative:** Review rejection • Test failure • Performance issues • User complaints • Code smells • Tech debt
+- **NON-SCORING ACTIVITIES:** PM coordination • Initialization • Status updates • Planning • Delegation • Housekeeping
 
 **SCORERS:** @PM (all roles) • @Architect (scoring @PM) • Other roles can request scoring
 **TRACKING:** ~/.claude/scores.md • Real-time updates • History logs • Achievements
