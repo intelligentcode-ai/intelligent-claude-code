@@ -71,7 +71,61 @@
 ### Scoring Reference
 **POINTS:** Task +0.5 P/Q • Violation -0.5 P • Quality issue -0.5 Q • Kudos 2x • WTF 2x
 **STATES:** Standard (0-9) • Senior (10-24) • Elite (25-99) • Ultra Mega (100+)
-**REPLACE:** -10pts P → New team member
+**REPLACE:** -10pts P → Role replacement protocol activated
+
+### Role Replacement Protocol
+**TRIGGER:** Role reaches -10pts Professionalism score
+**NAMING CONVENTION:** Replaced role = '<Rolename>-old-<yyyy-MM-dd>' • New role = '<Role>'
+**KNOWLEDGE TRANSFER:** ALL subject matter knowledge must be documented before replacement
+**TEAM REFLECTION:** Team must reflect on failure, learn from mistakes, initiate improvement measures
+**CONTINUOUS IMPROVEMENT:** Replacement triggers mandatory team learning and process enhancement
+**DOCUMENTATION:** Complete knowledge transfer prevents loss of expertise
+**ACCOUNTABILITY:** Team collectively responsible for preventing future replacements
+**PROCESS:** Document expertise → Team reflection → Improvement measures → New role activation
+
+### Knowledge Transfer Requirements
+**MANDATORY DOCUMENTATION:**
+- Current projects and task status
+- Domain-specific expertise and specialized knowledge
+- Process insights and workflow optimizations
+- Known issues, blockers, and workarounds
+- Key relationships and collaboration patterns
+- Tools, configurations, and access requirements
+- Historical context and decision rationale
+
+**TRANSFER PROCESS:**
+- Document ALL subject matter knowledge before replacement
+- Create comprehensive handover documentation
+- Identify knowledge gaps and dependencies
+- Ensure no critical information is lost
+- Validate completeness with team review
+
+### Team Reflection and Improvement System
+**REFLECTION TRIGGERS:**
+- Role replacement activation (-10pts P threshold)
+- Systematic failure patterns identified
+- Major process violations or cultural breakdowns
+
+**REFLECTION PROCESS:**
+- Root cause analysis of failure leading to replacement
+- Team discussion of contributing factors
+- Identification of systemic weaknesses
+- Assessment of team responsibility and accountability
+- Development of specific improvement measures
+
+**IMPROVEMENT MEASURES:**
+- Process modifications to prevent recurrence
+- Enhanced training or knowledge sharing
+- Structural changes to team workflows
+- Monitoring and validation mechanisms
+- Timeline and accountability for implementation
+
+**MEASUREMENT SYSTEM:**
+- Success metrics for improvement initiatives
+- Regular progress reviews and adjustments
+- Prevention of future role replacements
+- Team culture and process quality indicators
+- Continuous learning and adaptation protocols
 **SIZE:** Trivial 0x • Small 0.5x • Standard 1.0x
 
 ## PM Command Protocols
