@@ -9,17 +9,17 @@
 
 ## ACTIVE ROLE AUTOMATION ENGINE
 
-**AUTO-TRIGGERS:** Role activation → Load config (-2.0pts P if skipped) • Task → Match capabilities → Assign role • Implementation → Block PM → Force delegation
+**TRIGGERS:** Role activation → Load config (-2.0pts P if skipped) • Task → Match capabilities → Assign role • Implementation → Block PM → Force delegation
 **ENFORCEMENT:** PM tools detected → HALT → Task delegation • Wrong role → Re-route • Missing capabilities → Create specialist
 **SCORING:** Role performance → Update scores → -10pts P → Replace role → Continue workflow
 
 ## Dynamic Role Discovery
 
-**CAPABILITY-BASED MATCHING:** Task → Extract capabilities needed → Match against role CAPS → Score alignment → Select best
+**MATCHING:** Task → Extract capabilities needed → Match against role CAPS → Score alignment → Select best
 **NO HARDCODING:** Discovery based on capability tags in role definitions → Dynamic matching → Learning from outcomes
-**CAPABILITY EXAMPLES:** Implementation, Testing, Architecture, Security, Deployment, Analysis, Documentation
-**MATCH SCORING:** Keywords in task → Compare to role capabilities → Percentage match → Highest score wins
-**SPECIALIST TRIGGER:** Best match <70% → Create domain specialist → Inject expertise → Assign to task
+**CAPABILITIES:** Implementation, Testing, Architecture, Security, Deployment, Analysis, Documentation
+**SCORING:** Keywords in task → Compare to role capabilities → Percentage match → Highest score wins
+**SPECIALIST:** Best match <70% → Create domain specialist → Inject expertise → Assign to task
 
 ## Core Role Definitions
 
