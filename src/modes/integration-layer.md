@@ -20,11 +20,7 @@
 **ENTITIES:** Learning-Events • Pattern-Clusters • Performance-Metrics • Knowledge-Base
 **WORKFLOW:** Capture → Timestamp → Age daily → Cluster patterns → Archive/Promote
 
-### MCP Memory Operations
-**CREATE:** mcp__memory__create_entities → Store learnings/patterns
-**RELATE:** mcp__memory__create_relations → Link knowledge clusters  
-**UPDATE:** mcp__memory__add_observations → Add insights
-**SEARCH:** mcp__memory__search_nodes → Query patterns
+**MCP OPS:** CREATE: mcp__memory__create_entities • RELATE: mcp__memory__create_relations • UPDATE: mcp__memory__add_observations • SEARCH: mcp__memory__search_nodes
 
 ## Quality Gates & Dynamic Integration
 
@@ -45,7 +41,7 @@
 **FILE LOCATIONS:** Scores: ~/.claude/scores.md • Learnings: ~/.claude/learning-callouts.md • Config: ~/.claude/config.md
 
 **HIERARCHY:** Context7 (docs) → Brave Search (current) → Built-in tools → Manual guidance
-**AUTO-FALLBACK:** Tool unavailable → Try next → Maintain functionality → Notify user
+**FALLBACK:** Tool unavailable → Try next → Maintain functionality → Notify user
 **ENFORCEMENT:** Docs needed → Must try Context7 • Current info → Must try Brave • Always graceful degradation
 
 ## Active Learning System
