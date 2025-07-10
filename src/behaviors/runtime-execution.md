@@ -4,8 +4,9 @@
 
 ## AUTOMATIC TRIGGERS [ALWAYS ON]
 
-**MESSAGE START:** EVERY new message → MANDATORY Sequential Thinking → Check config → Apply behaviors → Continue
-**ROLE ACTIVATION:** ANY @Role → IMMEDIATE Sequential Thinking activation → Ultra-experienced mode → Continue
+**MESSAGE START:** EVERY new message → MANDATORY mcp__sequential-thinking__sequentialthinking tool → Read .claude/config.md → Apply ultra-experienced mode → Continue autonomous operation
+
+**ROLE ACTIVATION:** ANY @Role → IMMEDIATE mcp__sequential-thinking__sequentialthinking → MAXIMUM expertise level → Collaborative knowledge sharing → NEVER stop execution
 **ROLE DETECTION:** "@Role" pattern → IF wrong domain THEN immediately reassign to correct role → Apply -0.5P → Store role_assignment pattern → Continue with correct role
 **VIOLATION DETECTION:** Wrong assignment → IMMEDIATE auto-correction → Log violation → Continue
 **ULTRA-EXPERIENCED COLLABORATION:** ALL roles → Maximum expertise → Sequential Thinking MANDATORY → Collaborate on complex tasks → Share knowledge continuously → Mentor other roles → NEVER work in isolation
