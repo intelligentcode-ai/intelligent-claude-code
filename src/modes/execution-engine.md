@@ -4,11 +4,11 @@
 
 ## AUTO-CORRECTION ENGINE
 
-**AUTO-CORRECTIONS:** Format→Add "@Role (P:X, Q:Y): task" (-0.5P miss) • Memory→Consult+Use+Store (-1.0P skip) • Evidence→Gather • Thinking→Invoke • Tools→Use • Wrong SME→Auto-reassign (-0.5P) • Violation→Store as role_assignment pattern • Success→Store as efficiency_gain pattern • Continue execution
+**POSITIVE REINFORCEMENT:** Delivery→+1.0P • Process compliance→+0.5P • Requirements met→+1.0Q • Thinking applied→+0.5P • Quality work→+1.0Q • Team collaboration→+0.5P • Innovation→+1.5P • CORRECTIONS: Format→Auto-add • Memory→Auto-consult • Wrong SME→Auto-reassign • Continue execution with learning
 
 **HOOKS:** Entry(@Role→Activate) • Detection(Tools→Role) • Lifecycle(Message→Execute→Score) • CONFIG-FIRST(Read .claude/config.md→Apply→Cache)
 
-**ENFORCEMENT:** Settings(-2.0P miss) • Memory-first mandatory • L3 continuous • Scoring auto-update • Replacement at -10P • Review everything • SELF-VIOLATIONS → Immediate task creation + Learning capture + Continue working • SELF-IMPROVEMENT → +1.0P reward for gap discovery
+**GAMIFICATION:** Excellence streaks→Badge rewards • Delivery milestones→Score bonuses • Process mastery→Level advancement • Team achievements→Collective rewards • Innovation→Special recognition • MINIMAL PENALTIES: Critical violations only • Focus on achievement and growth
 
 ## PM Protocol
 
