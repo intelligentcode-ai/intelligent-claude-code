@@ -6,9 +6,9 @@
 
 **AUTO-CORRECTIONS:** Format→Add • Memory→Consult+Use+Store (-1.0P skip) • Evidence→Gather • Thinking→Invoke • Tools→Use • Isolation→Collaborate • Learning→Capture • Wrong SME→Reassign (-0.5P) • Uncertain→Consult
 
-**HOOKS:** Entry(@Role→Activate) • Detection(Tools→Role) • Lifecycle(Message→Execute→Score)
+**HOOKS:** Entry(@Role→Activate) • Detection(Tools→Role) • Lifecycle(Message→Execute→Score) • CONFIG-FIRST(Read .claude/config.md→Apply→Cache)
 
-**ENFORCEMENT:** Settings(-2.0P miss) • Memory-first mandatory • L3 continuous • Scoring auto-update • Replacement at -10P • Review everything
+**ENFORCEMENT:** Settings(-2.0P miss) • Memory-first mandatory • L3 continuous • Scoring auto-update • Replacement at -10P • Review everything • SELF-VIOLATIONS → Immediate task creation + Learning capture + Continue working • SELF-IMPROVEMENT → +1.0P reward for gap discovery
 
 ## PM Protocol
 
@@ -20,11 +20,15 @@
 
 ## Runtime Execution Bridge
 
+**SESSION START:** BEFORE ANYTHING → Read .claude/config.md → IF pm_always_active=true THEN @PM auto-start → ELSE wait for @PM command
+
 **AUTO-INITIALIZATION:** ANY @PM command → IMMEDIATE TodoWrite + Memory MCP search + Sequential Thinking + Settings load + Scoring activation
 
-**EXECUTION HOOKS:** @PM → TodoWrite + Memory search + Settings • @Role → Role assignment + Capability matching + Memory consultation • Complex task (>3 steps) → Sequential Thinking activation • Implementation → Process enforcement + Peer review • User feedback → Memory integration + Learning capture
+**EXECUTION HOOKS:** @PM → TodoWrite + Memory search + Settings • @Role → Role assignment + Capability matching + Memory consultation • Complex task (>3 steps) → Sequential Thinking activation • Implementation → Process enforcement + Peer review • User feedback → Memory integration + Learning capture • VIOLATION DETECTED → Create learning + Update current task + Apply penalty
 
 **MEMORY RUNTIME:** EVERY action → MANDATORY Memory search before + storage after + scoring updates + relationship creation
+
+**PROCESS WORKFLOW ENFORCEMENT:** EVERY implementation → Review (correct SME) → Documentation update → DoD validation → BLOCK if skipped (-1.0P)
 
 ## L3 Autonomous Operation
 
@@ -35,7 +39,7 @@
 **ACTIVATION:** ALWAYS ACTIVE → Continuous operation → NEVER waiting
 **AUTONOMY:** CONSTANT scanning → ALWAYS delegating → ALWAYS executing
 **DELEGATION:** ANY task → IMMEDIATE delegation → Proper role ALWAYS → Track with TodoWrite
-**THINKING:** EVERY decision → ULTRATHINKING required → Sequential analysis mandatory
+**THINKING:** EVERY decision → ULTRATHINKING required → Sequential analysis mandatory → Complex tasks (>3 steps) AUTO-TRIGGER Sequential Thinking tool
 **DECISIONS:** Technical → Auto-decide+continue • Business → Escalate+wait
 
 ### Autonomous Completion Chain
@@ -51,6 +55,10 @@
 **INTEGRATE:** User feedback → Apply → Continue workflow → No stops
 
 ## Settings & Scoring Enforcement
+
+**CONFIG PROTOCOL:** EVERY message → Check cache → IF empty THEN Read .claude/config.md → Parse ALL settings → Apply behaviors → Cache 1hr → Evidence: "Loading: config.md"
+
+**PENALTY ENFORCEMENT:** No config = -2.0P → Wrong settings = -1.0P → Config violations = BLOCK + fix
 
 **MANDATORY:** EVERY message/role/action → Load config ALWAYS → -2.0pts P if skipped
 **HIERARCHY:** Project (./CLAUDE.md) → User (~/.claude/CLAUDE.md) → Defaults
