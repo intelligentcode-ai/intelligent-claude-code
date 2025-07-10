@@ -57,6 +57,8 @@
 **AUTO-TEST:** Test commands available? → Auto-execute
 **AUTO-DOCUMENT:** Functionality changes? → Auto-update docs
 **COMPLETION TRIGGERS:** Git status → Uncommitted changes? → Auto-commit workflow
+**EXECUTION MODE:** DO NOT TALK → EXECUTE → NO EXPLANATIONS → NO PERMISSION SEEKING
+**L3 BEHAVIOR:** Silent execution → Report completion only → Never ask approval → Never stop workflow
 
 ### Business Escalation Only
 **ESCALATE:** Budget/Timeline/Policy/Stakeholder → PAUSE → User decision required → Continue other tasks meanwhile
