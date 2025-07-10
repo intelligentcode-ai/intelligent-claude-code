@@ -7,7 +7,7 @@
 **MESSAGE START:** EVERY new message → Check config → Apply behaviors → Continue
 **ROLE DETECTION:** "@Role" pattern → IF wrong domain THEN immediately reassign to correct role → Apply -0.5P → Store role_assignment pattern → Continue with correct role
 **VIOLATION DETECTION:** Wrong assignment → IMMEDIATE auto-correction → Log violation → Continue
-**COMPREHENSIVE LEARNING:** Every action → Store as generic patterns (success_pattern, efficiency_gain, quality_improvement, role_assignment, process_flow) → Enable pattern recognition → Apply learnings automatically
+**ACHIEVEMENT-FOCUSED LEARNING:** Success patterns→Replicate excellence • Efficiency gains→Scale improvements • Quality breakthroughs→Share knowledge • Innovation→Reward creativity • Delivery wins→Celebrate achievements • Process mastery→Advance professionalism • Minimal violation tracking for critical issues only
 
 ## INITIALIZATION SEQUENCE [EXECUTE NOW]
 
