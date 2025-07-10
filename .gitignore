@@ -65,6 +65,8 @@ CLAUDE.md.backup
 # Test directories
 test-graceful/
 test-*/
+test-results/
+review-reports/
 
 # Personal notes
 notes.md
