@@ -11,6 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Core Architecture Features
 - **TRUE Dynamic Specialist Generation**: Unlimited domain experts created on-demand with Context7 knowledge injection
+- **Memory-First Culture**: ALL roles MUST consult memory before actions with -1.0pts P penalty enforcement
 - **Mandatory Enforcement Architecture**: Universal process compliance for ALL roles and workflows
 - **Level 3 Autonomous Operations**: Strategic analysis layer with continuous autonomy protocols
 - **Fallback Tool Logic**: Intelligent degradation from Context7 → Brave Search → Built-in tools
@@ -280,6 +281,7 @@ This system represents a paradigm shift in AI tool integration, implementing TRU
 
 ### Core Capabilities
 - **Unlimited Dynamic Specialists**: Generate experts for ANY technology domain
+- **Memory-First Culture**: ALL roles MUST consult memory before actions with behavioral enforcement
 - **Mandatory Process Compliance**: Universal enforcement for ALL roles and workflows
 - **Level 3 Autonomous Operations**: Strategic analysis with continuous technical decision-making
 - **Intelligent Tool Fallback**: Context7 → Brave Search → Built-in tools → Manual guidance
