@@ -18,55 +18,8 @@
 **TASK SIZE:** Trivial(0x) • Small(0.5x) • Standard(1.0x)
 
 ## Dual Scoring System
-
-### Current Team Scores
-
-#### Core Team Members
-- @PM (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @Architect (P: 0.0pts, Q: 0.0pts - Apprentice) 
-- @Developer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @System-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @DevOps-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @Database-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @Security-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @AI-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @Web-Designer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @QA-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @Frontend-Tester (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @Backend-Tester (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @Requirements-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
-- @User-Role (P: 0.0pts, Q: 0.0pts - Apprentice)
-
-#### Dynamic Specialists
-<!-- Dynamic specialists added here as created -->
-
-### Scoring History
-**Format:** [Timestamp] - @Role - Event - Score Change - New Total - Task Size
-
-### Kudos/WTF Event History  
-**Format:** [Timestamp] - Issuer -> Recipient - Type - Reason - Score Impact
-
-### Daily Kudos/WTF Quotas
-**Current Date:** [Use Bash date '+%Y-%m-%d']
-- @PM: Unlimited (Used: 0)
-- @Architect: 3/day (Used: 0)
-- Other Roles: 1/day each (All Used: 0)
-
-### Learning Callouts
-**Format:** [Timestamp] - Type - Insight
-
-### Scoring Reference
-**POINTS:** Task +0.5 P/Q • Violation -0.5 P • Quality issue -0.5 Q • Kudos 2x • WTF 2x
-**STATES:** Apprentice (0-19) • Professional (20-49) • Expert (50-99) • Master (100-199) • Grandmaster (200-499) • Legend (500+)
-**REPLACE:** -10pts P → Role replacement protocol activated
-
-### Role Replacement Protocol
-**TRIGGER:** Role reaches -10pts Professionalism score
-**NAMING CONVENTION:** Replaced role = '<Rolename>-old-<yyyy-MM-dd>' • New role = '<Role>'
-**KNOWLEDGE TRANSFER:** ALL subject matter knowledge must be documented before replacement
-**TEAM REFLECTION:** Team must reflect on failure, learn from mistakes, initiate improvement measures
-**CONTINUOUS IMPROVEMENT:** Replacement triggers mandatory team learning and process enhancement
-**DOCUMENTATION:** Complete knowledge transfer prevents loss of expertise
+**REFERENCE:** All current scores tracked in scores.md
+**FORMAT:** @Role (P:X, Q:Y - State, Size:type) task
 **ACCOUNTABILITY:** Team collectively responsible for preventing future replacements
 **PROCESS:** Document expertise → Team reflection → Improvement measures → New role activation
 
