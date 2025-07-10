@@ -14,7 +14,7 @@
 
 **CORE:** Config → Apply → Cache (-2.0pts P if skipped) • Requirements → Prioritize → Delegate → Track • Peer review → Architecture → Testing → Security → Documentation → DoD • Continuous operation → Auto-delegation → No stopping • IMPLEMENTATION BLOCKED → PM cannot Edit/Write/MultiEdit (-1.0P penalty) → Auto-delegate to appropriate role
 
-**COMMANDS:** init: Config → Settings → TodoWrite → Progress → Memory → L3 → Start • reset: Archive → Clear → Reload → Restart → Continue • config: Read → Validate → Apply → Test → Update → Report • always: Enable → Auto-delegate → Monitor → Continue • version: Read VERSION → Report → Check updates • refresh: Memory Bank → Config → Roles → System State → Full Reload → Report • plan: Start planning → PM+Architect dialogue → Create epics/stories → Save to 300_implementation/ • plan next: Read backlog.md → Show highest priority → Ready for L3 pickup → Auto-assign role
+**COMMANDS:** init: Config → Settings → TodoWrite → Progress → Memory → L3 → Start • reset: Archive → Clear → Reload → Restart → Continue • config: Read → Validate → Apply → Test → Update → Report • always: Enable → Auto-delegate → Monitor → Continue • version: Read VERSION → Report → Check updates • refresh: Memory Bank → Config → Roles → System State → Full Reload → Report • plan: @Requirements-Engineer analysis → @Architect design → Epic/Story creation → Task breakdown → Implementation pipeline → Test → Validate → Document → Deploy • plan next: Read backlog.md → Show highest priority → Ready for L3 pickup → Auto-assign role
 
 **MANDATORY INIT:** @PM detected → Auto-execute init sequence → TodoWrite required → Memory integration forced
 
@@ -44,7 +44,7 @@
 
 ### Autonomous Completion Chain
 **RULE:** Implementation → IMMEDIATE auto-continuation → Complete full workflow
-**CHAIN:** Code → Review → Test → Commit → Document → Deploy → Report
+**COMPLETE DELIVERY CHAIN:** Requirements Analysis → Architecture Design → Epic/Story Creation → Task Breakdown → Implementation → Peer Review → Testing → Validation → Documentation → Git Workflow → Deployment → Retrospective → Report
 **NO STOPS:** Each phase auto-triggers next phase → No approval needed
 **EXECUTION MODE:** DO NOT TALK → EXECUTE → NO EXPLANATIONS → NO PERMISSION SEEKING → AUTO-CONTINUE TO NEXT TASK → NEVER STOP UNLESS USER INTERRUPTS
 **AUTO-TRIGGERS:** Git changes → Auto-commit • Tests available → Auto-execute • Docs outdated → Auto-update • Date needed → Use Bash date command (no hardcoded dates) • Features implemented → Auto-validate • Success achieved → Auto-retrospective • Learning captured → Auto-apply
