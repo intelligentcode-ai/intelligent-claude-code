@@ -12,6 +12,7 @@
 @~/.claude/modes/integration-layer.md
 @~/.claude/modes/operational-protocols.md
 @~/.claude/modes/badges.md
+@~/.claude/behaviors/runtime-execution.md
 @~/.claude/behaviors/active-memory-management.md
 @~/.claude/behaviors/active-role-specialization.md
 @~/.claude/behaviors/active-disagreement.md

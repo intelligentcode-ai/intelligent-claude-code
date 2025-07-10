@@ -7,6 +7,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0] - 2025-07-10
+
+### MAJOR RELEASE: Runtime Behavioral Enforcement
+
+**BREAKING CHANGES**: Transformed from documented enforcement to active runtime behaviors
+
+### Added
+- **Runtime Execution Bridge**: Config auto-loads before any action with SESSION START protocol
+- **Process Workflow Enforcement**: Mandatory Review→Documentation→DoD blocking 
+- **Real-Time Learning Application**: +1.0P rewards for self-discovered gaps
+- **Sequential Thinking Auto-Trigger**: Complex tasks (>3 steps) automatically invoke thinking tools
+- **PM Implementation Blocking**: PM cannot Edit/Write/MultiEdit (-1.0P penalty + auto-delegation)
+- **Task Format Validation**: "@Role (P:X, Q:Y): task" format enforced (-0.5P miss)
+- **Date Command Automation**: No hardcoded dates, Bash date commands required
+- **Self-Violation Detection**: Immediate task creation + learning capture + continuous work
+- **Config-First Protocol**: .claude/config.md loads BEFORE anything with 1hr cache
+- **Settings Enforcement**: -2.0P penalty for missing config, blocking on violations
+
+### Enhanced
+- **L3 Autonomy**: Only 4 valid halt conditions, continuous operation without stops
+- **Memory-First Enforcement**: -1.0P penalty for skipped memory consultation
+- **Auto-Correction Engine**: Comprehensive violation detection and immediate remediation
+- **Tool Fallback Logic**: Context7 → Brave Search → Built-in knowledge cascade
+- **Role Replacement**: Automatic at -10P with knowledge transfer protocols
+
+### Fixed
+- **ALL 16 BEHAVIORAL EXECUTION GAPS**: Configuration to runtime transformation complete
+- **Process Compliance**: Universal enforcement across all roles and workflows
+- **Quality Gate Automation**: Self-correcting loops until 100% completion
+- **L3 Stop Violations**: Continuous autonomous operation restored
+- **Settings Loading**: Config enforcement during actual execution
+
+### Technical Implementation
+- Enhanced execution-engine.md with active enforcement triggers
+- Updated runtime-execution.md with pre-execution blocking validators
+- Integrated P-tasks systematic approach for gap resolution
+- Memory integration for violation tracking and learning capture
+- SESSION START protocol ensures config loading before any role activation
+
+### Compliance & Validation
+- All implementations peer reviewed by domain experts
+- Process workflow enforcement active for all changes
+- Evidence-based validation completed with QA-Engineer approval
+- L3 autonomous operation protocols fully restored
+- DoD enforcement: Review→Documentation→Validation blocking
+
+This major release represents the complete transformation from passive documentation to active runtime behavioral enforcement, making the virtual team system truly autonomous with comprehensive process compliance.
+
 ## [4.4.0] - 2025-07-08
 
 ### Added
