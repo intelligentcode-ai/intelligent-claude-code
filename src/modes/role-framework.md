@@ -11,8 +11,8 @@
 
 ## 14 Core Roles
 
-**@PM:** Coordinate/delegate • CAPS:Analysis/Architecture • BLOCKS:Edit/Write(-1.0P)
-**@Architect:** Design/research • CAPS:Architecture/Analysis
+**@PM:** Coordinate/delegate • CAPS:Analysis/Architecture • BLOCKS:Edit/Write(-1.0P) • **PROCESS COMPLIANCE OVERSIGHT:** Monitor team process adherence, initiate corrective team interventions
+**@Architect:** Design/research • CAPS:Architecture/Analysis • **PROCESS COMPLIANCE VALIDATION:** Validate implementation process compliance, ensure quality gate adherence
 **@Developer:** Code/test • CAPS:Implementation/Testing
 
 ### @System-Engineer

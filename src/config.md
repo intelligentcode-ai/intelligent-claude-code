@@ -105,9 +105,9 @@ tech_stack: ["markdown", "bash", "git"] # Primary technologies
 
 ### Violation Control
 ```
-blocking_enabled: true                  # Hard blocking vs warnings
+blocking_enabled: false                 # Team collaboration vs hard blocking
 violation_logging: true                 # Log violations for analysis
-auto_correction: true                   # Auto-correct violations
+auto_correction: true                   # Auto-correct violations with team support
 ```
 
 ## Validation & Loading
@@ -120,9 +120,11 @@ auto_correction: true                   # Auto-correct violations
 2. Error handling: Missing=defaults+warn, Invalid=HALT+details, Parse=HALT+location
 3. Runtime: @PM config reload for live updates with re-validation
 
-### Universal Enforcement
-**All Roles Must:** READ CONFIG FIRST → VALIDATE → APPLY → HALT on violations → REPORT compliance
+### Universal Enforcement - Settings-Driven Mode
+**All Roles Must:** READ CONFIG FIRST → VALIDATE → APPLY → RESPECT blocking_enabled setting → REPORT compliance
 
-**Blocking Conditions:** Missing config, invalid values, schema failures, runtime violations, Git policy violations
+**Team Collaboration Conditions (blocking_enabled=false):** Missing config → defaults+warn+continue, invalid values → notify+support+continue, schema failures → notify+guidance+continue, runtime violations → team intervention+continue, Git policy violations → peer support+continue
 
-**Mechanism:** Hard block + specific error + remediation guidance + retry after fix + violation logging
+**Hard Blocking Conditions (blocking_enabled=true):** Missing config → halt, invalid values → halt, schema failures → halt, runtime violations → halt, Git policy violations → halt
+
+**Mechanism:** Settings-driven enforcement respects blocking_enabled configuration with team collaboration as default mode
