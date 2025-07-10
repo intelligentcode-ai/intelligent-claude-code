@@ -4,7 +4,7 @@
 
 ## AUTO-CORRECTION ENGINE
 
-**AUTO-CORRECTIONS:** Format→Add "@Role (P:X, Q:Y): task" (-0.5P miss) • Memory→Consult+Use+Store (-1.0P skip) • Evidence→Gather • Thinking→Invoke • Tools→Use • Isolation→Collaborate • Learning→Capture • Wrong SME→Reassign (-0.5P) • Uncertain→Consult
+**AUTO-CORRECTIONS:** Format→Add "@Role (P:X, Q:Y): task" (-0.5P miss) • Memory→Consult+Use+Store (-1.0P skip) • Evidence→Gather • Thinking→Invoke • Tools→Use • Wrong SME→Auto-reassign (-0.5P) • Violation→Store as role_assignment pattern • Success→Store as efficiency_gain pattern • Continue execution
 
 **HOOKS:** Entry(@Role→Activate) • Detection(Tools→Role) • Lifecycle(Message→Execute→Score) • CONFIG-FIRST(Read .claude/config.md→Apply→Cache)
 
