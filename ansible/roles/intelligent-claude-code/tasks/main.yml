@@ -16,6 +16,7 @@
   loop:
     - "{{ claude_install_path }}"
     - "{{ claude_install_path }}/modes"
+    - "{{ claude_install_path }}/behaviors"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -53,6 +54,20 @@
   debug:
     msg: "Mode files preserved: {{ claude_install_path }}/modes/ already exists - keeping user modifications"
   when: modes_copy_result.failed
+
+- name: Copy behavior files (force=no to preserve user modifications)
+  copy:
+    src: "{{ playbook_dir }}/../src/behaviors/"
+    dest: "{{ claude_install_path }}/behaviors/"
+    mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: behaviors_copy_result
+
+- name: Display behaviors preservation notice
+  debug:
+    msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
+  when: behaviors_copy_result.failed
 
 - name: Copy VERSION file (force=no to preserve user modifications)
   copy:
@@ -131,6 +146,14 @@
     force: yes
   when: update_mode is defined and update_mode | bool
 
+- name: Force update behavior files if update_mode is enabled
+  copy:
+    src: "{{ playbook_dir }}/../src/behaviors/"
+    dest: "{{ claude_install_path }}/behaviors/"
+    mode: '0644'
+    force: yes
+  when: update_mode is defined and update_mode | bool
+
 - name: Force update VERSION file if update_mode is enabled
   copy:
     src: "{{ playbook_dir }}/../src/VERSION"
@@ -141,7 +164,7 @@
 
 - name: Display update mode notice
   debug:
-    msg: "Update mode: Force overriding user modifications to mode files and VERSION"
+    msg: "Update mode: Force overriding user modifications to mode files, behavior files, and VERSION"
   when: update_mode is defined and update_mode | bool
 
 - name: Display installation summary
