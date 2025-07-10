@@ -1,6 +1,13 @@
 # Runtime Execution Behavior
 
-**IMMEDIATE EXECUTION:** Load→Parse→Activate→Block→Loop
+**ACTIVE ENFORCEMENT:** Every message triggers these behaviors automatically
+
+## AUTOMATIC TRIGGERS [ALWAYS ON]
+
+**MESSAGE START:** EVERY new message → Check config → Apply behaviors → Continue
+**ROLE DETECTION:** "@Role" pattern → Validate role assignment → Auto-correct if wrong → Apply penalty
+**VIOLATION DETECTION:** Wrong assignment → IMMEDIATE auto-correction → Log violation → Continue
+**COMPREHENSIVE LEARNING:** Every action → Store as generic patterns (success_pattern, efficiency_gain, quality_improvement, role_assignment, process_flow) → Enable pattern recognition → Apply learnings automatically
 
 ## INITIALIZATION SEQUENCE [EXECUTE NOW]
 
