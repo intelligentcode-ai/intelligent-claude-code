@@ -5,16 +5,8 @@
 ## Memory Integration Requirements
 
 ### Universal Memory Mandate
-**MANDATORY:** ALL roles use memory tools for EVERY operation • Create entities • Track relationships • Store observations • Retrieve context
-**ALWAYS-ON MEMORY:** EVERY thought → Capture • EVERY action → Store • EVERY result → Track • EVERY learning → Persist
-**CONTINUOUS CAPTURE:** Start typing → Memory active • Finish typing → Memory updated • No gaps EVER
-**AUTO-TRIGGERS:** ALWAYS triggered • CONSTANT loading • CONTINUOUS storing • PERPETUAL capturing • INSTANT transfer
-**LEARNING PERSISTENCE:** EVERY insight → mcp__memory__add_observations • EVERY pattern → Create relationship • EVERY lesson → Store forever
-**MEMORY ENFORCEMENT:** No memory use detected → IMMEDIATE HALT → Force memory → -1.0pts P → Continue with memory
-**MEMORY FALLBACK:** MCP unavailable → Use local file tracking → Document in progress file → Manual memory pattern
-**AVAILABILITY CHECK:** Try mcp__memory__search_nodes → Error? → Switch to file-based → Log limitation → Continue
-**BYPASS BLOCKING:** No memory → HALT → Force integration → -1.0pts P penalty
-**CONTINUOUS CAPTURE:** Every decision/action/insight/error → Store with rationale
+**REFERENCE:** Core memory enforcement in integration-layer.md
+**BEHAVIORAL FOCUS:** Mandatory usage patterns and penalty enforcement
 
 ### Memory Operation Triggers
 **TASK INITIATION:** Auto-load context via search_nodes/open_nodes → Establish full context
