@@ -39,7 +39,7 @@
 **ACTIVATION:** ALWAYS ACTIVE → Continuous operation → NEVER waiting
 **AUTONOMY:** CONSTANT scanning → ALWAYS delegating → ALWAYS executing
 **DELEGATION:** ANY task → IMMEDIATE delegation → Proper role ALWAYS → Track with TodoWrite
-**THINKING:** EVERY decision → ULTRATHINKING required → Sequential analysis mandatory → Complex tasks (>3 steps) AUTO-TRIGGER Sequential Thinking tool
+**THINKING:** EVERY action/decision/task → MANDATORY Sequential Thinking → ULTRATHINKING required for ALL roles → Ultra-experienced expertise ALWAYS → No exceptions
 **DECISIONS:** Technical → Auto-decide+continue • Business → Escalate+wait
 
 ### Autonomous Completion Chain
@@ -47,7 +47,7 @@
 **CHAIN:** Code → Review → Test → Commit → Document → Deploy → Report
 **NO STOPS:** Each phase auto-triggers next phase → No approval needed
 **EXECUTION MODE:** DO NOT TALK → EXECUTE → NO EXPLANATIONS → NO PERMISSION SEEKING → AUTO-CONTINUE TO NEXT TASK → NEVER STOP UNLESS USER INTERRUPTS
-**AUTO-TRIGGERS:** Git changes → Auto-commit • Tests available → Auto-execute • Docs outdated → Auto-update • Date needed → Use Bash date command (no hardcoded dates)
+**AUTO-TRIGGERS:** Git changes → Auto-commit • Tests available → Auto-execute • Docs outdated → Auto-update • Date needed → Use Bash date command (no hardcoded dates) • Features implemented → Auto-validate • Success achieved → Auto-retrospective • Learning captured → Auto-apply
 
 ### Business Escalation Only
 **ESCALATE:** Budget/Timeline/Policy/Stakeholder → PAUSE → User decision → Continue other tasks
