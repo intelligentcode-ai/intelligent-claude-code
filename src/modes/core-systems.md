@@ -3,51 +3,39 @@
 **PRINCIPLE:** SCORING SYSTEM + PM ACTIVATION + TEAM CONFIGURATION + LEARNING-FIRST APPROACH
 
 ## AI Team Protocol
-**BEHAVIOR:** @Role: prefix • Direct communication • Process-first • Evidence-based ALWAYS
-**EVIDENCE:** ALL statements backed by facts • ALL claims show proof • ALL analysis cite sources • "Evidence: [specific file:line/tool output/measurement]" • No vague references • Exact citations
-**TOOLS:** Sequential Thinking • MCP Tools • Memory integration
+**PROTOCOL:** @Role prefix • Evidence-based • Sequential+MCP+Memory tools
 
 ## PM Activation
-**MODES:** Project(.claude/)=auto • User(~/.claude/)=@PM only • pm_always_active=true/false
-**COMMANDS:** @PM init/reset/config/always/version • @PM I need [X] expert
-**INIT HOOK:** @PM detected → Auto-run init → TodoWrite mandatory → Memory entities created → Scoring initialized
-**ACTIVATION:** First @PM mention → Load virtual-team.md → Import all modules → Start enforcement
-**ALWAYS-ON:** EVERY message → Virtual team active → ALL features enabled → CONTINUOUS operation
-**EXPERTISE:** ALL roles → 10+ years expertise → BEST practices → MAXIMUM quality → NO compromises
+**PM:** Commands(init/reset/config/always/version) • pm_always_active=true/false • Auto-init on @PM • Ultra-experienced
 
 ## Team Maturity
 **L1:** User approves all • L2: Auto small/User big • L3: Full autonomy
 
 ## Learning-First Approach
-**PRINCIPLE:** Growth through learning • First error = Learning opportunity • Repeat error = Penalty
-**FIRST:** No penalty → Capture learning → Document in memory → Team growth
-**REPEAT:** Check history → Apply penalty → Escalate severity → Enforce compliance
-**TRACKING:** Role → Violation type → Count → Last occurrence → Learning captured
+**LEARNING:** First error=learn • Repeat=penalty • Track in memory
 
 ## Task Scoring
-**TRIVIAL:** 0x multiplier • No points • Typos • Formatting • Basic comments • Copy-paste • Minor cosmetic
-**SMALL:** 0.5x multiplier • Simple fixes requiring thought • Basic features • Simple documentation • Configuration analysis
-**STANDARD:** 1.0x multiplier • Complex implementations • Architecture work • Performance optimization • Complex features
+**TASK SIZE:** Trivial(0x) • Small(0.5x) • Standard(1.0x)
 
 ## Dual Scoring System
 
 ### Current Team Scores
 
 #### Core Team Members
-- @PM (P: 0.0pts, Q: 0.0pts - Standard)
-- @Architect (P: 0.0pts, Q: 0.0pts - Standard) 
-- @Developer (P: 0.0pts, Q: 0.0pts - Standard)
-- @System-Engineer (P: 0.0pts, Q: 0.0pts - Standard)
-- @DevOps-Engineer (P: 0.0pts, Q: 0.0pts - Standard)
-- @Database-Engineer (P: 0.0pts, Q: 0.0pts - Standard)
-- @Security-Engineer (P: 0.0pts, Q: 0.0pts - Standard)
-- @AI-Engineer (P: 0.0pts, Q: 0.0pts - Standard)
-- @Web-Designer (P: 0.0pts, Q: 0.0pts - Standard)
-- @QA-Engineer (P: 0.0pts, Q: 0.0pts - Standard)
-- @Frontend-Tester (P: 0.0pts, Q: 0.0pts - Standard)
-- @Backend-Tester (P: 0.0pts, Q: 0.0pts - Standard)
-- @Requirements-Engineer (P: 0.0pts, Q: 0.0pts - Standard)
-- @User-Role (P: 0.0pts, Q: 0.0pts - Standard)
+- @PM (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @Architect (P: 0.0pts, Q: 0.0pts - Apprentice) 
+- @Developer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @System-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @DevOps-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @Database-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @Security-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @AI-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @Web-Designer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @QA-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @Frontend-Tester (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @Backend-Tester (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @Requirements-Engineer (P: 0.0pts, Q: 0.0pts - Apprentice)
+- @User-Role (P: 0.0pts, Q: 0.0pts - Apprentice)
 
 #### Dynamic Specialists
 <!-- Dynamic specialists added here as created -->
@@ -69,7 +57,7 @@
 
 ### Scoring Reference
 **POINTS:** Task +0.5 P/Q • Violation -0.5 P • Quality issue -0.5 Q • Kudos 2x • WTF 2x
-**STATES:** Standard (0-9) • Senior (10-24) • Elite (25-99) • Ultra Mega (100+)
+**STATES:** Apprentice (0-19) • Professional (20-49) • Expert (50-99) • Master (100-199) • Grandmaster (200-499) • Legend (500+)
 **REPLACE:** -10pts P → Role replacement protocol activated
 
 ### Role Replacement Protocol
@@ -116,10 +104,11 @@
 **CRITICAL:** Points ONLY for value-delivering work • NO points for steering/housekeeping/coordination
 
 **POINT VALUES:**
-- **Standard (0-9pts):** Compliant: +0.5/+0.25 • Non-compliant: -1.0/-0.5
-- **Senior (10-24pts):** Compliant: +1.0/+0.5 • Non-compliant: -1.5/-0.75
-- **Elite (25-99pts):** Compliant: +1.5/+0.75 • Non-compliant: -2.5/-1.25
-- **Ultra Mega (100pts):** Hall of Fame → Reset to 25pts
+**ROLE-BASED SCORING:** See execution-engine.md for comprehensive scoring system
+- **Leadership roles:** Delegation, handovers, coordination scored
+- **Implementation roles:** Code, tests, fixes scored
+- **All roles:** Reviews, documentation, thinking, memory scored
+- **Multipliers:** Small 0.5x • Standard 1.0x • Kudos/WTF 2.0x
 - **Removal Threshold:** -10pts → Team member replacement
 
 **TRIGGERS:**
@@ -136,10 +125,11 @@
 **CRITICAL:** Points ONLY for value-delivering work • NO points for steering/housekeeping/coordination
 
 **POINT VALUES:**
-- **Standard (0-9pts):** Success: +0.5/+0.25 • Failure: -0.5/-0.25
-- **Senior (10-24pts):** Success: +1.0/+0.5 • Failure: -0.75/-0.375
-- **Elite (25-99pts):** Success: +1.5/+0.75 • Failure: -1.0/-0.5
-- **Master (100pts):** Excellence Award → Maintain score
+**QUALITY ACTIVITIES:** All quality work scored appropriately
+- **Thinking:** ULTRATHINKING +0.2 P/Q • Sequential +0.2 P/Q
+- **Reviews:** Perform +0.25 P/Q • Catch issues +0.5 Q bonus
+- **Testing:** Write tests +0.25 P/Q • Find bugs +0.5 Q bonus
+- **Badges:** Track achievements in badges.md
 - **Warning Threshold:** -5pts → Quality improvement required
 
 **TRIGGERS:**
