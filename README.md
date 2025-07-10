@@ -43,8 +43,8 @@ Universal process compliance with auto-correction workflows. No shortcuts, no pa
 ### 🤖 **Level 3 Autonomous Operations**
 Your team makes technical decisions independently. You're only involved for business decisions like budget, timeline, or policy changes.
 
-### 📋 **Interactive Planning Support**
-Collaborate with PM and Architect to create epics, stories, and tasks. Your team autonomously picks up prioritized work from the backlog.
+### 📋 **Auto-Triggered Planning Mode**
+Enhancement requests automatically activate comprehensive planning: Requirements → Architecture → Epic/Story → Implementation → Test → Validate → Document → Deploy. Complete end-to-end delivery without manual intervention.
 
 ## How It Works
 
