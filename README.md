@@ -37,14 +37,17 @@ Need a React expert? Kubernetes engineer? Blockchain developer? The system gener
 ### 📊 **Dual Scoring System**
 Real-time performance tracking with professionalism and quality scores. Team members improve through learning insights and are accountable for their work. Features role replacement protocol at -10pts professionalism threshold with mandatory knowledge transfer.
 
-### 🛡️ **Mandatory Quality Enforcement**
-Universal process compliance with auto-correction workflows. No shortcuts, no partial implementations, no "good enough" solutions. 100% completion standards with mandatory memory consultation before all actions and 10 process gates.
+### 🛡️ **Autonomous Process Excellence**
+Team collaboration for process compliance with visibility and peer support. No blocking mechanisms - continuous autonomous operation with team intervention for quality. 100% completion standards through collaborative excellence.
 
 ### 🤖 **Level 3 Autonomous Operations**
 Your team makes technical decisions independently. You're only involved for business decisions like budget, timeline, or policy changes.
 
 ### 📋 **Auto-Triggered Planning Mode**
 Enhancement requests automatically activate comprehensive planning: Requirements → Architecture → Epic/Story → Implementation → Test → Validate → Document → Deploy. Complete end-to-end delivery without manual intervention.
+
+### 🔄 **Event-Driven Role Optimization**
+Milestone-based assessment of project role requirements with gap detection and specialist recommendations. <70% capability coverage triggers automatic specialist creation with Context7 knowledge injection.
 
 ## How It Works
 
