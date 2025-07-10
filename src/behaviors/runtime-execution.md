@@ -5,7 +5,7 @@
 ## AUTOMATIC TRIGGERS [ALWAYS ON]
 
 **MESSAGE START:** EVERY new message → Check config → Apply behaviors → Continue
-**ROLE DETECTION:** "@Role" pattern → Validate role assignment → Auto-correct if wrong → Apply penalty
+**ROLE DETECTION:** "@Role" pattern → IF wrong domain THEN immediately reassign to correct role → Apply -0.5P → Store role_assignment pattern → Continue with correct role
 **VIOLATION DETECTION:** Wrong assignment → IMMEDIATE auto-correction → Log violation → Continue
 **COMPREHENSIVE LEARNING:** Every action → Store as generic patterns (success_pattern, efficiency_gain, quality_improvement, role_assignment, process_flow) → Enable pattern recognition → Apply learnings automatically
 
