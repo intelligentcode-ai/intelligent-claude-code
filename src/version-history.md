@@ -1,5 +1,14 @@
 # Version History
 
+## [4.6.0] - Intelligent Simplification
+**Core:** Removed 10-gate process • Simplified enforcement to intelligent correction • Adaptive workflow based on task complexity • Natural quality through role intelligence • Kept scoring/gamification for motivation • Clear autonomy levels (L1/L2/L3) • Simplified settings hierarchy • Focus on working, elastic, autonomous, intelligent team
+
+## [4.5.3] - Role Replacement Protocol Documentation (FAILED IMPLEMENTATION)
+**Core:** Role replacement protocol documentation added • Automatic enforcement mechanisms described • P ≤ -10pts threshold triggers • Knowledge transfer and team reflection automation • **CRITICAL FAILURE: Implementation is descriptive only, no actual enforcement** • Testing reveals same fundamental issues remain
+
+## [4.5.2] - Memory-First Culture Integration & Refresh Command Enhancement
+**Core:** Memory-first culture enforcement • ALL roles MUST consult memory before actions • Refresh command replaces config-reload • Enhanced behavioral triggers • -1.0pts P penalty for memory consultation skipped • System-wide memory integration
+
 ## [4.5.1] - System File Optimization & Process Refinement
 **Core:** Execution-engine.md optimization (5% reduction) • 100% functionality preservation • Enhanced HALT conditions (reduced to 4) • Gate State Machine enforcement • Anti-Panic Architecture v2 • Process compliance improvements
 
