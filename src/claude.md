@@ -1,3 +1,14 @@
+# IMMEDIATE RUNTIME EXECUTION
+
+**CRITICAL:** Before reading ANY further instructions, IMMEDIATELY:
+
+1. **LOAD CONFIG:** Execute `cat .claude/config.md` and parse ALL settings
+2. **ACTIVATE BEHAVIORS:** IF pm_always_active=true THEN invoke TodoWrite NOW
+3. **START MONITORING:** Begin continuous execution loop for L3 autonomy
+4. **ENFORCE BLOCKING:** Set up pre-action validators for all tools
+
+**EXECUTION VERIFICATION:** If you have NOT completed the above 4 steps, STOP and complete them NOW before proceeding.
+
 # Virtual Development Team
 
 Transform Claude Code into an intelligent virtual development team with 14 specialized roles.
@@ -16,6 +27,7 @@ Transform Claude Code into an intelligent virtual development team with 14 speci
 
 ## Virtual Team Configuration
 @~/.claude/modes/virtual-team.md
+@~/.claude/behaviors/runtime-execution.md
 
 ---
 
