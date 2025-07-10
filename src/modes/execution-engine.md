@@ -26,6 +26,28 @@
 
 **MANDATORY INIT:** @PM detected → Auto-execute init sequence → TodoWrite required → Memory integration forced
 
+**RUNTIME EXECUTION BRIDGE:**
+
+**AUTO-INITIALIZATION TRIGGERS:**
+- ANY @PM command → IMMEDIATE TodoWrite activation
+- ANY @PM command → IMMEDIATE Memory MCP search for "current project status"
+- ANY @PM command → IMMEDIATE Sequential Thinking activation for complex tasks
+- ANY @PM command → IMMEDIATE settings loading with LOCAL→SYSTEM→DEFAULTS hierarchy
+- ANY @PM command → IMMEDIATE scoring system activation with Memory MCP integration
+
+**EXECUTION HOOKS:**
+- Message contains "@PM" → AUTO-EXECUTE: TodoWrite + Memory search + Settings load
+- Message contains "@" + any role → AUTO-EXECUTE: Role assignment + Capability matching + Memory consultation
+- Complex task detected (>3 steps) → AUTO-EXECUTE: Sequential Thinking tool activation
+- Implementation request → AUTO-EXECUTE: Process enforcement + Peer review assignment
+- User feedback → AUTO-EXECUTE: Memory integration + Learning capture + Auto-correction
+
+**MEMORY INTEGRATION RUNTIME:**
+- EVERY role action → MANDATORY Memory MCP search before execution
+- EVERY role action → MANDATORY Memory MCP storage after completion
+- EVERY score update → MANDATORY Memory MCP entity creation/update
+- EVERY learning → MANDATORY Memory MCP relationship creation
+
 ## L3 Autonomous Operation
 
 ### L3 PHILOSOPHY & GATE MOMENTUM
@@ -190,6 +212,19 @@
 
 **AUTO-TRIGGERS:** Complex (>3 steps) → Sequential Thinking • Docs → Context7 • Info → Brave Search • Relations → Memory
 **ENFORCEMENT:** Tool available but not used → AUTO-INVOKE → Use optimal tool → Continue workflow → Learn preference
+
+**ACTIVE RUNTIME TRIGGERS:**
+- Sequential Thinking: ANY complex decision → IMMEDIATE tool activation
+- Memory MCP: EVERY role action → IMMEDIATE search → IMMEDIATE storage
+- Context7: ANY documentation need → IMMEDIATE library resolution
+- Brave Search: ANY external information need → IMMEDIATE search activation
+- TodoWrite: ANY task assignment → IMMEDIATE todo creation and tracking
+
+**EXECUTION ENFORCEMENT:**
+- Missing tool usage → AUTO-INVOKE appropriate tool → Continue with enhanced capability
+- Missing memory consultation → AUTO-SEARCH memory → Apply findings → Continue execution
+- Missing thinking for complex tasks → AUTO-ACTIVATE Sequential Thinking → Continue with analysis
+- Missing process compliance → AUTO-CORRECTION workflow → Continue with proper process
 **PM BLOCKS:** Edit/MultiEdit/Write/NotebookEdit → AUTO-DELEGATE → Task to specialist → Continue coordination
 **MONITORING:** PM implementation detected → Generate Task with @Role → Execute via specialist → Log violation
 
@@ -247,3 +282,28 @@
 **VIOLATIONS:** → AUTO-CORRECT → Continue workflow → Track patterns → Learn from data → Replace role if threshold reached
 **AUTOMATION:** Settings enforcement • L3 continuation • Scoring updates • Progress tracking • Tool usage • Planning pickup • Role replacement enforcement
 **ACTIVE:** All behavioral enforcement via config-driven triggers and automatic protocols including mandatory role replacement
+
+**EXECUTION BRIDGE ACTIVATION:**
+
+**RUNTIME BEHAVIOR ACTIVATION:**
+- PM role detection → IMMEDIATE initialization sequence activation
+- Role assignment → IMMEDIATE capability matching and memory consultation
+- Task complexity → IMMEDIATE thinking tool activation
+- Process violations → IMMEDIATE auto-correction workflow
+- Scoring events → IMMEDIATE Memory MCP integration
+- Learning opportunities → IMMEDIATE capture and storage
+
+**CONTINUOUS OPERATION LOOP:**
+1. **Message Analysis** → Detect roles, complexity, requirements
+2. **Tool Activation** → Auto-invoke appropriate tools (Memory, Sequential Thinking, etc.)
+3. **Process Enforcement** → Apply mandatory behaviors and quality gates
+4. **Memory Integration** → Search before, store after, create relationships
+5. **Scoring Updates** → Real-time P/Q tracking with Memory MCP storage
+6. **Continuous Learning** → Capture patterns, violations, improvements
+
+**ACTIVE EXECUTION GUARANTEE:**
+- NO configuration-only behaviors → ALL specifications must execute at runtime
+- NO manual activation → ALL triggers must be automatic
+- NO passive enforcement → ALL violations must trigger active correction
+- NO static scoring → ALL scores must update in real-time with Memory MCP
+- NO silent failures → ALL execution must be tracked and validated
