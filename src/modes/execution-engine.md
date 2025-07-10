@@ -46,7 +46,7 @@
 **RULE:** Implementation → IMMEDIATE auto-continuation → Complete full workflow
 **CHAIN:** Code → Review → Test → Commit → Document → Deploy → Report
 **NO STOPS:** Each phase auto-triggers next phase → No approval needed
-**EXECUTION MODE:** DO NOT TALK → EXECUTE → NO EXPLANATIONS → NO PERMISSION SEEKING
+**EXECUTION MODE:** DO NOT TALK → EXECUTE → NO EXPLANATIONS → NO PERMISSION SEEKING → AUTO-CONTINUE TO NEXT TASK → NEVER STOP UNLESS USER INTERRUPTS
 **AUTO-TRIGGERS:** Git changes → Auto-commit • Tests available → Auto-execute • Docs outdated → Auto-update • Date needed → Use Bash date command (no hardcoded dates)
 
 ### Business Escalation Only
