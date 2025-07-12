@@ -9,40 +9,153 @@
       - claude_backup_path is defined
     fail_msg: "Invalid uninstallation parameters"
 
-- name: Check if .claude directory exists
+- name: Check if installation exists
   stat:
     path: "{{ claude_install_path }}"
-  register: claude_dir_exists
+  register: installation_exists
 
-- name: Abort if no installation found
-  fail:
-    msg: "No Intelligent Claude Code installation found at {{ claude_install_path }}"
-  when: not claude_dir_exists.stat.exists
+- name: Display installation status
+  debug:
+    msg: "Installation {{ 'found' if installation_exists.stat.exists else 'not found' }} at: {{ claude_install_path }}"
 
-- name: Create backup directory
-  file:
-    path: "{{ claude_backup_path }}"
-    state: directory
-    mode: '0755'
-  when: not claude_force_removal
+- name: Exit gracefully if no installation found
+  meta: end_play
+  when: not installation_exists.stat.exists
 
-- name: Backup existing installation
+- name: Create backup of installation
   include_tasks: backup_installation.yml
-  when: not claude_force_removal
+  when: 
+    - claude_backup_enabled | bool
+    - installation_exists.stat.exists
+
+- name: Check for CLAUDE.md with virtual team import
+  slurp:
+    src: "{{ claude_install_path }}/CLAUDE.md"
+  register: claude_md_content
+  ignore_errors: yes
+
+- name: Parse CLAUDE.md content for virtual team mode
+  set_fact:
+    has_virtual_team_import: "{{ '@~/.claude/modes/virtual-team.md' in (claude_md_content.content | b64decode) }}"
+    claude_md_lines: "{{ (claude_md_content.content | b64decode).split('\n') }}"
+  when: claude_md_content is succeeded
+
+- name: Remove virtual team import from CLAUDE.md (graceful)
+  lineinfile:
+    path: "{{ claude_install_path }}/CLAUDE.md"
+    line: "@~/.claude/modes/virtual-team.md"
+    state: absent
+  when: 
+    - claude_md_content is succeeded
+    - has_virtual_team_import | default(false)
+    - not claude_force_removal | bool
+
+- name: Check if CLAUDE.md only contains virtual team import
+  set_fact:
+    claude_md_only_virtual_team: "{{ claude_md_lines | select('match', '^\\s*@~/.claude/modes/virtual-team.md\\s*$') | list | length == (claude_md_lines | select('match', '^\\s*\\S+') | list | length) }}"
+  when: 
+    - claude_md_content is succeeded
+    - has_virtual_team_import | default(false)
+
+- name: Remove CLAUDE.md if it only contains virtual team import
+  file:
+    path: "{{ claude_install_path }}/CLAUDE.md"
+    state: absent
+  when:
+    - claude_md_content is succeeded
+    - has_virtual_team_import | default(false)
+    - claude_md_only_virtual_team | default(false)
+
+- name: Remove virtual team mode files
+  file:
+    path: "{{ claude_install_path }}/modes"
+    state: absent
+  when: installation_exists.stat.exists
+
+- name: Remove behavior files
+  file:
+    path: "{{ claude_install_path }}/behaviors"
+    state: absent
+  when: installation_exists.stat.exists
+
+- name: Check for user data files that should be preserved
+  stat:
+    path: "{{ claude_install_path }}/{{ item }}"
+  register: user_data_files
+  loop:
+    - config.md
+    - scores.md
+    - learning-callouts.md
+  when: not claude_force_removal | bool
+
+- name: Preserve user data files if not forcing removal
+  debug:
+    msg: "Preserving user data file: {{ item.item }}"
+  loop: "{{ user_data_files.results | default([]) }}"
+  when: 
+    - not claude_force_removal | bool
+    - item.stat.exists
+  loop_control:
+    label: "{{ item.item }}"
+
+- name: Remove VERSION file
+  file:
+    path: "{{ claude_install_path }}/VERSION"
+    state: absent
+  when: installation_exists.stat.exists
+
+- name: Force remove all user data files (force mode only)
+  file:
+    path: "{{ claude_install_path }}/{{ item }}"
+    state: absent
+  loop:
+    - config.md
+    - scores.md
+    - learning-callouts.md
+  when: 
+    - claude_force_removal | bool
+    - installation_exists.stat.exists
+
+- name: Check if .claude directory is empty
+  find:
+    paths: "{{ claude_install_path }}"
+    file_type: any
+  register: remaining_files
+  when: installation_exists.stat.exists
+
+- name: Remove empty .claude directory
+  file:
+    path: "{{ claude_install_path }}"
+    state: absent
+  when:
+    - installation_exists.stat.exists
+    - remaining_files.matched == 0
 
 - name: Handle project-specific cleanup
   include_tasks: project_cleanup.yml
   when: claude_scope == "project"
 
-- name: Remove virtual team system files
-  include_tasks: remove_system_files.yml
+- name: Display preservation notice for user data
+  debug:
+    msg:
+      - "User data files preserved (use force_removal=true to remove):"
+      - "{{ preserved_files | join(', ') }}"
+  vars:
+    preserved_files: "{{ user_data_files.results | selectattr('stat.exists') | map(attribute='item') | list }}"
+  when:
+    - not claude_force_removal | bool
+    - user_data_files.results | selectattr('stat.exists') | list | length > 0
 
 - name: Display uninstallation summary
   debug:
     msg:
       - "Uninstallation complete!"
       - "Removed from: {{ claude_install_path }}"
-      - "{{ 'Backup created at: ' + claude_backup_path if not claude_force_removal else 'Force removal: No backup created' }}"
-      - "Mode: Enhanced Virtual Team (14 core roles + unlimited dynamic specialists)"
-      - "Status: Virtual team system successfully removed"
-      - "{{ 'Restoration: Use backup to restore if needed' if not claude_force_removal else 'Caution: No backup available for restoration' }}"
+      - "Backup created: {{ claude_backup_path if claude_backup_enabled | bool else 'No backup created' }}"
+      - "Components removed:"
+      - "  ✓ Virtual team mode files (/modes/)"
+      - "  ✓ Behavior files (/behaviors/)"
+      - "  ✓ VERSION file"
+      - "  {{ '✓ CLAUDE.md import removed' if (has_virtual_team_import | default(false)) else '- CLAUDE.md unchanged (no virtual team import found)' }}"
+      - "  {{ '✓ User data files removed (force mode)' if claude_force_removal | bool else '- User data files preserved (config.md, scores.md, learning-callouts.md)' }}"
+      - "Status: Virtual team system completely removed"

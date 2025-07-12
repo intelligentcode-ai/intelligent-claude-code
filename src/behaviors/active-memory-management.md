@@ -32,6 +32,35 @@
 **RELATIONSHIPS:** Correct direction • Meaningful type • Bidirectional • Context preserved
 **TRANSFERS:** Complete handoff • All entities • Clear relationships • Next steps
 
+## SIMPLIFIED MEMORY FORMAT [EASY RECALL PATTERNS]
+
+**SIMPLE NAMING CONVENTION:** 
+- Tasks: "TaskName-YYYY-MM-DD" (e.g., "UserAuth-2024-03-15")
+- Decisions: "Decision-Topic" (e.g., "Decision-DatabaseChoice")
+- Learnings: "Learning-Pattern" (e.g., "Learning-TestingStrategy")
+- Issues: "Issue-Description" (e.g., "Issue-PerformanceBottleneck")
+
+**QUICK SEARCH PATTERNS:**
+- By date: search_nodes("2024-03-15") → Find all activities on specific date
+- By role: search_nodes("@Developer") → Find all developer activities
+- By topic: search_nodes("authentication") → Find all auth-related work
+- By status: search_nodes("completed") → Find finished items
+- By learning: search_nodes("Learning-") → Find all captured learnings
+
+**EASY RECALL MEMORY OPERATIONS:**
+- Recent work: search_nodes("last 7 days")
+- Role context: open_nodes(["@RoleName-context", "@RoleName-current"])
+- Project overview: open_nodes(["ProjectName-overview", "ProjectName-status"])
+- Learning history: search_nodes("Learning-") → open_nodes([top 5 results])
+- Decision history: search_nodes("Decision-") → open_nodes([relevant decisions])
+
+**MEMORY RELATIONSHIP PATTERNS:**
+- "implements" → Task implements Decision
+- "requires" → Task requires Knowledge
+- "blocks" → Issue blocks Task
+- "learned-from" → Learning learned-from Experience
+- "assigned-to" → Task assigned-to Role
+
 ## Memory Behavioral Triggers
 
 ### Automatic Detection & Enforcement
