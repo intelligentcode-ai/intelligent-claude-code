@@ -179,6 +179,96 @@ Line 9 enhanced: "IMMEDIATE @PM plan activation → @Requirements-Engineer → @
 - AUTOMATIC blocking and enforcement
 ```
 
+## EXECUTABLE ENFORCEMENT ACTIVATION
+
+**ENFORCEMENT ENGINE INTEGRATION:**
+```javascript
+// IMPORT ENFORCEMENT ENGINES
+const enforcementEngine = require('./enforcement-engine.md');
+const qualityGateExecutor = require('./quality-gate-executor.md');
+const penaltySystem = require('./penalty-system.md');
+const autoCorrectionWorkflows = require('./auto-correction-workflows.md');
+const memoryEnforcementIntegration = require('./memory-enforcement-integration.md');
+
+// ACTIVATE ALL ENFORCEMENT MECHANISMS
+function activateEnforcement() {
+  // ACTIVATE PENALTY SYSTEM
+  penaltySystem.globalPenaltyTracker.activate();
+  
+  // ACTIVATE AUTO-CORRECTION
+  autoCorrectionWorkflows.autoCorrectionRuntime.activate();
+  
+  // ACTIVATE MEMORY ENFORCEMENT
+  memoryEnforcementIntegration.runtimeMemoryEnforcer.activate();
+  
+  // ACTIVATE QUALITY GATES
+  qualityGateExecutor.qualityGateOrchestrator.activate();
+  
+  // ACTIVATE ENFORCEMENT ENGINE
+  enforcementEngine.enforceAll();
+  
+  console.log('🚨 ALL ENFORCEMENT MECHANISMS ACTIVATED');
+}
+
+// AUTO-ACTIVATE ON LOAD
+activateEnforcement();
+```
+
+**BEHAVIORAL TASK AUTO-INJECTION:**
+```javascript
+// INJECT BEHAVIORAL TASKS
+function injectBehavioralTasks(technicalTask, context) {
+  const behavioralTasks = [
+    {
+      content: `${technicalTask.name} - THINKING REQUIREMENT`,
+      type: 'thinking_enforcement',
+      assignee: context.role,
+      priority: 'high',
+      blocking: true,
+      dependency_of: technicalTask.id,
+      enforcement: 'mcp__sequential-thinking__sequentialthinking'
+    },
+    {
+      content: `${technicalTask.name} - MEMORY CONSULTATION`,
+      type: 'memory_enforcement',
+      assignee: context.role,
+      priority: 'high',
+      blocking: true,
+      dependency_of: technicalTask.id,
+      enforcement: 'mcp__memory__search_nodes'
+    },
+    {
+      content: `${technicalTask.name} - PEER REVIEW`,
+      type: 'review_enforcement',
+      assignee: identifyPeerReviewer(context),
+      priority: 'high',
+      blocking: true,
+      dependency_of: technicalTask.id,
+      enforcement: 'peer_review_completion'
+    },
+    {
+      content: `${technicalTask.name} - LEARNING CAPTURE`,
+      type: 'learning_enforcement',
+      assignee: context.role,
+      priority: 'medium',
+      blocking: true,
+      dependency_of: technicalTask.id,
+      enforcement: 'mcp__memory__add_observations'
+    }
+  ];
+  
+  // INJECT INTO TASK SYSTEM
+  behavioralTasks.forEach(task => {
+    injectTask(task);
+  });
+  
+  // BLOCK TECHNICAL TASK
+  blockTask(technicalTask.id, 'behavioral_dependencies_not_met');
+  
+  return behavioralTasks;
+}
+```
+
 ---
 
 **MANDATORY ENFORCEMENT: ACTUAL runtime blocking mechanisms that FORCE behavioral compliance, not just document it.**
