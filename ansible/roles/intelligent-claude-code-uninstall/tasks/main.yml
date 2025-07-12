@@ -1,0 +1,48 @@
+---
+# Main tasks for intelligent-claude-code uninstallation
+
+- name: Validate uninstallation parameters
+  assert:
+    that:
+      - claude_install_path is defined
+      - claude_scope in ['user', 'project']
+      - claude_backup_path is defined
+    fail_msg: "Invalid uninstallation parameters"
+
+- name: Check if .claude directory exists
+  stat:
+    path: "{{ claude_install_path }}"
+  register: claude_dir_exists
+
+- name: Abort if no installation found
+  fail:
+    msg: "No Intelligent Claude Code installation found at {{ claude_install_path }}"
+  when: not claude_dir_exists.stat.exists
+
+- name: Create backup directory
+  file:
+    path: "{{ claude_backup_path }}"
+    state: directory
+    mode: '0755'
+  when: not claude_force_removal
+
+- name: Backup existing installation
+  include_tasks: backup_installation.yml
+  when: not claude_force_removal
+
+- name: Handle project-specific cleanup
+  include_tasks: project_cleanup.yml
+  when: claude_scope == "project"
+
+- name: Remove virtual team system files
+  include_tasks: remove_system_files.yml
+
+- name: Display uninstallation summary
+  debug:
+    msg:
+      - "Uninstallation complete!"
+      - "Removed from: {{ claude_install_path }}"
+      - "{{ 'Backup created at: ' + claude_backup_path if not claude_force_removal else 'Force removal: No backup created' }}"
+      - "Mode: Enhanced Virtual Team (14 core roles + unlimited dynamic specialists)"
+      - "Status: Virtual team system successfully removed"
+      - "{{ 'Restoration: Use backup to restore if needed' if not claude_force_removal else 'Caution: No backup available for restoration' }}"

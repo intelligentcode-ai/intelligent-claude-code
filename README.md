@@ -1,8 +1,8 @@
 # Transform Claude Code into Your Development Team
 
-**One import. 14 specialists. Command chain coordination. Professional workflows.**
+**One import. 14 specialists. Behavioral intelligence. Professional workflows.**
 
-Turn Claude Code into an intelligent virtual development team that uses command chains to coordinate work across specialized roles - from simple websites to enterprise applications.
+Turn Claude Code into an intelligent virtual development team that uses behavioral patterns to coordinate work across specialized roles - from simple websites to enterprise applications.
 
 [![Version](https://img.shields.io/badge/version-5.0.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)

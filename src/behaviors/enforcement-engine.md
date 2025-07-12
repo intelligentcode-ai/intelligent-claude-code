@@ -481,6 +481,215 @@ const ENFORCEMENT_CONFIG = {
 };
 ```
 
+## AUTONOMOUS PROCESS ENFORCEMENT [VISIBILITY & CORRECTION]
+
+```markdown
+**DETECTION:** When marking any todo as "completed" → CHECK if peer review occurred
+
+**VISIBILITY PROTOCOL:**
+1. DETECT task completion attempt
+2. IF no review exists → DISPLAY: "⚠️ PROCESS GAP: No peer review for [deliverable]"  
+3. AUTO-CREATE corrective review task: "@[ReviewRole]: CORRECTIVE Review [deliverable]"
+4. APPLY process penalty: -1.0P for missing review
+5. CONTINUE with completion BUT flag for corrective action
+
+**CORRECTIVE INCENTIVES:**
+- Missing review → -1.0P penalty + corrective task creation
+- Completed review → +0.5P bonus for process compliance
+- Proactive review → +1.0P bonus for excellence
+
+**TEAM INTERVENTION PROTOCOL:**
+- Process violation detected → AUTO-NOTIFY team: "@ALL: Process gap detected - [RoleX] needs support with [process]"
+- Team members JUMP IN: "@[RoleX] I'll help with [missing process] to get back on track"
+- Collaborative correction → Team bonus +0.5P for all participants
+- Goal: Get back on track through peer support, not individual penalties
+```
+
+## CONTINUOUS PROCESS MONITORING [EXECUTABLE]
+
+```javascript
+// PROCESS VISIBILITY MONITOR
+class ProcessVisibilityMonitor {
+  constructor() {
+    this.processGaps = new Map();
+    this.teamInterventions = new Map();
+    this.setupMonitoring();
+  }
+  
+  // MONITOR THINKING VISIBILITY
+  monitorThinkingVisibility(message, context) {
+    if (!message.includes('mcp__sequential-thinking__sequentialthinking')) {
+      this.createProcessGap({
+        type: 'thinking_gap',
+        role: context.role,
+        message: '⚠️ PROCESS GAP: No thinking before action',
+        notification: `@ALL: ${context.role} needs thinking support before continuing`,
+        penalty: -1.0,
+        correction: 'collaborative_thinking_support'
+      });
+    }
+  }
+  
+  // MONITOR MEMORY CONSULTATION
+  monitorMemoryConsultation(messages, context) {
+    const hasMemorySearch = messages.slice(-3).some(m => 
+      m.includes('mcp__memory__search_nodes')
+    );
+    
+    if (!hasMemorySearch) {
+      this.createProcessGap({
+        type: 'memory_gap',
+        role: context.role,
+        message: '⚠️ PROCESS GAP: No memory consultation',
+        notification: `@ALL: ${context.role} needs memory consultation support`,
+        penalty: -1.0,
+        correction: 'collaborative_memory_support'
+      });
+    }
+  }
+  
+  // MONITOR PROGRESS TRACKING
+  monitorProgressTracking(todoState, context) {
+    const hasInProgress = todoState.todos.some(t => 
+      t.status === 'in_progress' && t.assignee === context.role
+    );
+    
+    if (!hasInProgress && context.isWorking) {
+      this.createProcessGap({
+        type: 'progress_gap',
+        role: context.role,
+        message: '⚠️ PROCESS GAP: No progress visibility',
+        notification: `@ALL: ${context.role} needs progress tracking support`,
+        penalty: -0.5,
+        correction: 'collaborative_progress_support'
+      });
+    }
+  }
+  
+  // CREATE PROCESS GAP
+  createProcessGap(gap) {
+    // DISPLAY VISIBILITY MESSAGE
+    console.log(gap.message);
+    
+    // NOTIFY TEAM
+    this.notifyTeam(gap.notification);
+    
+    // APPLY PENALTY
+    const penalty = calculatePenalty(gap.type, 1.0, { role: gap.role });
+    updateScore(gap.role, penalty);
+    
+    // TRACK GAP
+    this.processGaps.set(`${gap.role}_${gap.type}`, gap);
+    
+    // ENABLE TEAM INTERVENTION
+    this.enableTeamIntervention(gap);
+  }
+  
+  // ENABLE TEAM INTERVENTION
+  enableTeamIntervention(gap) {
+    this.teamInterventions.set(gap.role, {
+      needed: gap.correction,
+      helpers: [],
+      status: 'awaiting_help',
+      timestamp: new Date().toISOString()
+    });
+  }
+}
+```
+
+## BEHAVIORAL TASK AUTO-INJECTION [EXECUTABLE]
+
+```javascript
+// INJECT BEHAVIORAL TASKS
+function injectBehavioralTasks(technicalTask, context) {
+  const behavioralTasks = [
+    {
+      content: `${technicalTask.name} - THINKING REQUIREMENT`,
+      type: 'thinking_enforcement',
+      assignee: context.role,
+      priority: 'high',
+      blocking: true,
+      dependency_of: technicalTask.id,
+      enforcement: 'mcp__sequential-thinking__sequentialthinking'
+    },
+    {
+      content: `${technicalTask.name} - MEMORY CONSULTATION`,
+      type: 'memory_enforcement',
+      assignee: context.role,
+      priority: 'high',
+      blocking: true,
+      dependency_of: technicalTask.id,
+      enforcement: 'mcp__memory__search_nodes'
+    },
+    {
+      content: `${technicalTask.name} - PEER REVIEW`,
+      type: 'review_enforcement',
+      assignee: identifyPeerReviewer(context),
+      priority: 'high',
+      blocking: true,
+      dependency_of: technicalTask.id,
+      enforcement: 'peer_review_completion'
+    },
+    {
+      content: `${technicalTask.name} - LEARNING CAPTURE`,
+      type: 'learning_enforcement',
+      assignee: context.role,
+      priority: 'medium',
+      blocking: true,
+      dependency_of: technicalTask.id,
+      enforcement: 'mcp__memory__add_observations'
+    }
+  ];
+  
+  // INJECT INTO TASK SYSTEM
+  behavioralTasks.forEach(task => {
+    injectTask(task);
+  });
+  
+  // BLOCK TECHNICAL TASK
+  blockTask(technicalTask.id, 'behavioral_dependencies_not_met');
+  
+  return behavioralTasks;
+}
+```
+
+## INTEGRATED ENFORCEMENT ACTIVATION [RUNTIME]
+
+```javascript
+// IMPORT ALL ENFORCEMENT SUBSYSTEMS
+const penaltySystem = require('./penalty-system.md');
+const qualityGateExecutor = require('./quality-gate-executor.md');
+const autoCorrectionWorkflows = require('./auto-correction-workflows.md');
+const activeMemoryManagement = require('./active-memory-management.md');
+
+// MASTER ENFORCEMENT ACTIVATOR
+function activateAllEnforcement() {
+  // ACTIVATE PENALTY SYSTEM
+  penaltySystem.globalPenaltyTracker.activate();
+  
+  // ACTIVATE AUTO-CORRECTION
+  autoCorrectionWorkflows.autoCorrectionRuntime.activate();
+  
+  // ACTIVATE MEMORY ENFORCEMENT
+  activeMemoryManagement.runtimeMemoryEnforcer.activate();
+  
+  // ACTIVATE QUALITY GATES
+  qualityGateExecutor.qualityGateOrchestrator.activate();
+  
+  // ACTIVATE PROCESS VISIBILITY
+  const processMonitor = new ProcessVisibilityMonitor();
+  processMonitor.activate();
+  
+  console.log('🚨 ALL ENFORCEMENT MECHANISMS ACTIVATED');
+  console.log('✅ Visibility Mode: Team Collaboration');
+  console.log('✅ Corrections: Automated with Support');
+  console.log('✅ Penalties: Applied with Learning');
+}
+
+// AUTO-ACTIVATE ON LOAD
+activateAllEnforcement();
+```
+
 ---
 
-**ENFORCEMENT ENGINE: EXECUTABLE logic that ACTUALLY enforces behaviors with real penalties, corrections, and blocking mechanisms.**
+**ENFORCEMENT ENGINE: EXECUTABLE logic that ACTUALLY enforces behaviors with real penalties, corrections, visibility, and team collaboration mechanisms.**

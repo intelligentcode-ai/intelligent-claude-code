@@ -29,8 +29,6 @@
 @~/.claude/behaviors/quality-gate-executor.md
 @~/.claude/behaviors/penalty-system.md
 @~/.claude/behaviors/auto-correction-workflows.md
-@~/.claude/behaviors/memory-enforcement-integration.md
-@~/.claude/behaviors/mandatory-enforcement.md
 @~/.claude/behaviors/agentic-coordination.md
 @~/.claude/behaviors/context-survival.md
 
