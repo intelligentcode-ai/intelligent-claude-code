@@ -2,7 +2,7 @@
 
 ## Overview
 
-This tutorial walks you through your first experience with the Virtual Team system, demonstrating command chain coordination and role specialization.
+This tutorial walks you through your first experience with the Virtual Team system, demonstrating streamlined behavioral intelligence and role coordination through natural @-role interaction.
 
 ## Prerequisites
 
@@ -19,11 +19,12 @@ This tutorial walks you through your first experience with the Virtual Team syst
 ```
 
 **What happens behind the scenes:**
-1. PM executes command chain:
-   - `/memory-first` - Checks for similar projects
-   - `/think-strategic` - Analyzes requirements
-   - `/parallel-delegate` - Creates tasks for different roles
-   - `/track-progress` - Sets up monitoring
+1. Runtime Execution behavior activates PM role
+2. PM Command Chain executes automatically:
+   - Memory consultation - Checks for similar projects
+   - Strategic thinking - Analyzes requirements
+   - Parallel delegation - Creates tasks for different roles
+   - Progress tracking - Sets up monitoring
 
 **Expected output:**
 - PM analysis of requirements
@@ -40,10 +41,10 @@ The PM will typically delegate to:
 - **@User-Role** - User experience validation
 
 **What to notice:**
-- Each role follows its own command chain
-- Roles work with shared context from memory
-- Progress is tracked in real-time
-- Quality validation happens automatically
+- Each role follows the streamlined behavioral intelligence pattern
+- Runtime Execution provides automatic coordination
+- Command Chains ensure consistent role behavior
+- Quality validation happens transparently
 
 ### Step 3: Review Team Coordination
 
@@ -67,11 +68,11 @@ Try direct role communication:
 @QA-Engineer What's your testing strategy?
 ```
 
-**Command chains in action:**
-- Each role consults memory first
-- Strategic thinking patterns applied
-- Specialist knowledge demonstrated
-- Quality validation embedded
+**Behavioral intelligence in action:**
+- Runtime Execution activates appropriate role expertise
+- Command Chains ensure memory consultation and strategic thinking
+- Specialist knowledge delivered naturally
+- Quality validation happens automatically
 
 ### Step 5: Monitor Learning and Scoring
 
@@ -86,57 +87,57 @@ Try direct role communication:
 - Team performance patterns
 - Memory capture working
 
-## Understanding Command Chains
+## Understanding Behavioral Intelligence
 
 ### What You Don't See
-Command chains execute internally - you don't see:
-- `/memory-first` consultations
-- `/think-strategic` analysis
-- `/quality-gates` validation
-- `/store-results` actions
+Behavioral intelligence operates transparently - you don't see:
+- Runtime Execution activation and role loading
+- Command Chain pattern execution
+- Memory consultation and strategic thinking
+- Quality validation and result storage
 
 ### What You Do See
-The results of command chain execution:
-- Consistent role behavior
-- Memory-informed responses
-- Quality-validated deliverables
-- Learning insights captured
+The results of behavioral intelligence:
+- Natural role responses with professional quality
+- Memory-informed context and solutions
+- Consistent behavior across all interactions
+- Learning insights and continuous improvement
 
 ## Common Patterns
 
 ### Project Initiation
 ```bash
 @PM Start a new [project type]
-# PM command chain coordinates entire team
+# Runtime Execution + PM Command Chain provide full coordination
 ```
 
 ### Technical Decisions
 ```bash
 @Architect Design the [component]
-# Architect command chain includes security validation
+# Behavioral intelligence ensures security validation and quality
 ```
 
 ### Implementation Work
 ```bash
 @Developer Implement [feature]
-# Developer command chain includes quality validation
+# Streamlined behaviors provide memory consultation and validation
 ```
 
 ### Quality Assurance
 ```bash
 @QA-Engineer Test [component]
-# QA command chain includes comprehensive validation
+# Behavioral patterns ensure comprehensive testing approach
 ```
 
 ## Troubleshooting Common Issues
 
-### Command Chains Not Working
+### Behavioral Intelligence Not Activating
 **Symptoms**: Roles not following expected patterns
 **Solutions**:
-- Use consistent @-notation
+- Use consistent @-notation for role addressing
 - Provide clear, specific requests
-- Allow time for command chain execution
-- Check team scores for patterns
+- Allow behavioral patterns to execute
+- Check team scores for performance patterns
 
 ### Memory Not Consulted
 **Symptoms**: Roles missing previous context
@@ -159,19 +160,19 @@ The results of command chain execution:
 ### Parallel Task Execution
 ```bash
 @PM Build a user authentication system with tests and documentation
-# PM creates parallel tasks for multiple roles
+# Behavioral intelligence coordinates parallel role execution
 ```
 
 ### Dynamic Role Specialization
 ```bash
 @PM I need help with React components
-# May generate @React-Developer with specialized knowledge
+# Runtime Execution may generate @React-Developer with specialized knowledge
 ```
 
 ### Memory-Driven Decisions
 ```bash
 @PM How did we handle user authentication last time?
-# PM consults memory for previous patterns
+# Behavioral patterns automatically consult memory for previous solutions
 ```
 
 ## Best Practices
@@ -179,44 +180,44 @@ The results of command chain execution:
 ### For New Users
 1. Start with simple, clear requests
 2. Use @PM for project-level coordination
-3. Observe command chain execution patterns
+3. Observe behavioral intelligence in action
 4. Review scores and learning regularly
 
 ### For Specific Needs
 1. Use specialized roles (@Architect, @Developer, @QA-Engineer)
 2. Provide context and requirements
-3. Allow command chains to execute fully
+3. Allow behavioral patterns to execute naturally
 4. Build on previous work through memory
 
 ### For Complex Projects
-1. Let PM coordinate multiple roles
-2. Use parallel task delegation
-3. Monitor progress and quality
-4. Provide feedback for improvement
+1. Let PM coordinate multiple roles through behavioral intelligence
+2. Trust parallel task coordination
+3. Monitor progress and quality outcomes
+4. Provide feedback for continuous improvement
 
 ## What to Expect
 
 ### Immediate Benefits
-- Structured approach to AI assistance
-- Consistent role behavior patterns
-- Memory-informed responses
-- Quality validation embedded
+- Natural @-role interaction with professional outcomes
+- Consistent behavioral patterns across all roles
+- Memory-informed responses and context awareness
+- Quality validation happening transparently
 
 ### Long-term Benefits
-- Accumulated team knowledge
-- Improved coordination patterns
-- Better quality consistency
-- Enhanced learning capture
+- Accumulated team knowledge and improved solutions
+- Enhanced coordination through streamlined behaviors
+- Better quality consistency with reduced complexity
+- Continuous learning and pattern recognition
 
 ### Realistic Expectations
-- This is a behavioral framework, not enforcement
-- Quality improves with usage and feedback
-- Command chains guide behavior, don't guarantee it
-- Memory and learning build over time
+- Behavioral intelligence operates as guidance framework
+- Quality improves with usage and team memory building
+- Streamlined behaviors provide consistency, not rigid enforcement
+- System learns and adapts through interaction patterns
 
 ## Next Steps
 
-1. **Read** [Command Chain Guide](command-chains.md)
+1. **Read** [Behavioral Intelligence Guide](behavioral-intelligence.md)
 2. **Explore** [Virtual Team Roles](features/virtual-team.md)
 3. **Understand** [Limitations](limitations.md)
 4. **Practice** with real projects
@@ -231,22 +232,22 @@ The results of command chain execution:
 4. Be patient - system learns over time
 
 ### Common Questions
-- **Q**: Why aren't command chains executing?
-  **A**: Command chains are behavioral guidance, not automated execution
+- **Q**: Why isn't behavioral intelligence working as expected?
+  **A**: Behavioral intelligence is guidance framework that improves with usage
 - **Q**: How do I know if memory is working?
-  **A**: Ask roles to reference previous work
+  **A**: Ask roles to reference previous work and observe context awareness
 - **Q**: What if quality is inconsistent?
-  **A**: Provide feedback and build team knowledge gradually
+  **A**: Provide feedback and build team knowledge - quality improves over time
 
 ## Conclusion
 
-The Virtual Team system provides structured AI assistance through command chain coordination and role specialization. Success comes from understanding it's a behavioral framework designed to organize and improve AI collaboration over time.
+The Virtual Team system provides structured AI assistance through streamlined behavioral intelligence and role specialization. Success comes from understanding it's a guidance framework designed to organize and improve AI collaboration over time.
 
 Key takeaways:
-- Use @-notation consistently
-- Allow command chains to work internally
-- Build team knowledge through usage
-- Provide feedback for improvement
-- Set realistic expectations for a behavioral framework
+- Use @-notation consistently for role addressing
+- Allow behavioral intelligence to operate transparently
+- Build team knowledge through usage and interaction
+- Provide feedback for continuous improvement
+- Trust the streamlined behavioral patterns for quality outcomes
 
-Ready to build something amazing? Start with `@PM Build me a [your project]` and watch your virtual team coordinate through command chains!
+Ready to build something amazing? Start with `@PM Build me a [your project]` and watch your virtual team coordinate through behavioral intelligence!
