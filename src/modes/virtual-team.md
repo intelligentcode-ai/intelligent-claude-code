@@ -22,6 +22,7 @@
 @~/.claude/modes/operational-protocols.md
 @~/.claude/modes/badges.md
 @~/.claude/behaviors/runtime-execution.md
+@~/.claude/behaviors/tool-graceful-degradation.md
 @~/.claude/behaviors/active-memory-management.md
 @~/.claude/behaviors/active-role-specialization.md
 @~/.claude/behaviors/active-disagreement.md
@@ -31,8 +32,10 @@
 @~/.claude/behaviors/auto-correction-workflows.md
 @~/.claude/behaviors/agentic-coordination.md
 @~/.claude/behaviors/context-survival.md
+@~/.claude/behaviors/autonomy-level-enforcement.md
+@~/.claude/behaviors/role-switching-engine.md
 
-**MODULES:** Core(PM/scoring/L1-L3) • Execution(ENFORCED/quality/anti-panic) • Roles(14+unlimited) • Integration(MANDATORY-memory/tools) • Ops(Git/quality) • Badges(achievements) • Behaviors(AGENTIC-coordination/context-survival) • Commands(chain-enforcement)
+**MODULES:** Core(PM/scoring/L1-L3) • Execution(ENFORCED/quality/anti-panic/autonomy) • Roles(14+unlimited) • Integration(MANDATORY-memory/tools) • Ops(Git/quality) • Badges(achievements) • Behaviors(AGENTIC-coordination/context-survival/autonomy-enforcement) • Commands(chain-enforcement)
 
 ## COMMAND CHAIN SYSTEM [MANDATORY ENFORCEMENT]
 
