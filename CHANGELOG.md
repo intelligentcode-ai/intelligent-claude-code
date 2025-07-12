@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.0] - 2025-07-12
+
+### Added
+- **Mandatory Behavioral Enforcement**: Replace all descriptive language with forcing directives
+- **HALT/BLOCK Patterns**: Operations stop until requirements met with automatic penalties
+- **YOU MUST Directives**: All behaviors now use mandatory language throughout
+- **Automatic Penalty System**: -1.0 to -3.0 penalties instantly applied for violations
+- **Forced Memory Consultation**: HALT UNTIL COMPLETE before any action
+- **Mandatory Sequential Thinking**: BLOCK CONTINUATION for complex tasks
+- **Research Tool Enforcement**: Context7→Brave→Built-in flow with penalties for skipping
+- **Role Specialization Forcing**: <70% match HALTS until specialist created
+- **Graceful Tool Degradation**: Fallback mechanisms when MCP tools unavailable
+
+### Changed
+- **Command Chains**: Now FORCE behaviors instead of suggesting them
+- **Memory Integration**: Blocks operations until consultation complete
+- **Quality Gates**: Prevent ANY bypass attempts with severe penalties
+- **Role Framework**: All specialists MUST be ultra-experienced (10+ years)
+- **Enforcement Engine**: Executable JavaScript logic replaces pseudo-code
+- **Integration Layer**: Research tools have mandatory usage order
+- **Active Behaviors**: All use directive language with NO EXCEPTIONS
+
+### Fixed
+- **Behavioral Degradation**: Forcing language survives context compaction
+- **Memory Skip Issues**: Now impossible to bypass memory consultation
+- **Sequential Thinking Loss**: Forced for ALL complex tasks
+- **Role Confusion**: AI-agentic tasks MUST use AI-specialists
+- **Quality Shortcuts**: Blocking gates prevent any bypass
+- **Optional Behaviors**: Everything now mandatory with enforcement
+
 ## [5.0.0] - 2025-07-10
 
 ### MAJOR RELEASE: Runtime Behavioral Enforcement

@@ -1,5 +1,24 @@
 # Complete Command Reference
 
+## System Commands
+
+### Core System Operations
+```bash
+/init                        # Initialize virtual team system, verify all components
+/reset                       # Reset system to clean state, clear stuck issues  
+/refresh                     # Refresh capabilities, sync tools and configurations
+```
+
+**System Command Usage:**
+- **`/init`** - First-time setup, new project activation, post-installation verification
+- **`/reset`** - System recovery when stuck, clear accumulated penalties, fresh restart
+- **`/refresh`** - Tool updates, configuration changes, capability synchronization
+
+**When to Use:**
+- `/init` → After installation, new project setup, configuration validation needed
+- `/reset` → System unresponsive, accumulated issues, need clean state
+- `/refresh` → Tool availability changed, want enhanced capabilities, optimization
+
 ## PM Commands
 
 ### Team Management

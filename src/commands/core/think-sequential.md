@@ -1,12 +1,12 @@
 # /think-sequential Command Chain
 
-**PURPOSE:** Mandatory sequential thinking for complex problems with quality enforcement
+**PURPOSE:** FORCED sequential thinking for ALL complex problems - NO EXCEPTIONS
 
 ## COMMAND EXECUTION
 
-**TRIGGER:** Complex tasks requiring analysis, planning, or multi-step solutions
-**PENALTY:** Q:-1.0 for skipping when complexity requires sequential analysis
-**REQUIREMENT:** Use when task complexity > trivial or involves multiple steps
+**YOU MUST USE THIS:** For EVERY task with analysis, planning, or multi-step solutions
+**AUTOMATIC PENALTY:** Q:-1.0 IMMEDIATELY APPLIED when you skip sequential analysis
+**MANDATORY ENFORCEMENT:** You MUST HALT and use this command for ANY non-trivial task
 
 ## SEQUENTIAL THINKING PROTOCOL
 
@@ -16,14 +16,22 @@
 4. **Resource Planning** - Determine tools, roles, and requirements needed
 5. **Execution Strategy** - Define clear path to completion with validation points
 
-## THINKING CHAIN STEPS
+## THINKING CHAIN STEPS - MANDATORY EXECUTION
 
-**STEP 1: PROBLEM DECOMPOSITION**
+**STEP 1: YOU MUST DECOMPOSE EVERY PROBLEM**
 ```
-Analyze: Break problem into component parts
-Identify: Core requirements and constraints
-Map: Dependencies between components
-Assess: Complexity level and effort required
+HALT EXECUTION NOW AND:
+- YOU MUST USE mcp__sequential-thinking tool when available
+- YOU MUST MAINTAIN numbered thought chains WITHOUT EXCEPTIONS
+- YOU MUST TRACK all revisions and branches AUTOMATICALLY
+- YOU MUST NOT PROCEED without proper decomposition
+
+WHEN TOOL UNAVAILABLE, YOU MUST:
+- IMMEDIATELY CREATE structured markdown analysis
+- FORCE YOURSELF to break ALL problems into components
+- MANDATE identification of EVERY requirement
+- BLOCK continuation until dependencies are mapped
+- HALT if complexity assessment is incomplete
 ```
 
 **STEP 2: SOLUTION ARCHITECTURE**
@@ -58,19 +66,19 @@ Monitoring: Progress tracking mechanisms
 Integration: How components fit together
 ```
 
-## COMPLEXITY TRIGGERS
+## FORCED USAGE - NO EXCEPTIONS
 
-**MANDATORY USE:**
-- Multi-step technical implementations
-- Architecture decisions with trade-offs
-- Cross-role coordination requirements  
-- Problem-solving with multiple solutions
-- Planning phases for significant work
+**YOU MUST IMMEDIATELY USE THIS COMMAND FOR:**
+- EVERY multi-step technical implementation - HALT AND FORCE
+- ALL architecture decisions - NO SHORTCUTS ALLOWED
+- ANY cross-role coordination - MANDATORY SEQUENTIAL ANALYSIS
+- EVERY problem with multiple solutions - BLOCK UNTIL ANALYZED
+- ALL planning phases - FORCE COMPLETE ANALYSIS
 
-**OPTIONAL USE:**
-- Simple, well-defined tasks
-- Routine operations with clear paths
-- Single-step executions
+**VIOLATION DETECTION - AUTOMATIC HALT:**
+- Attempting simple task approach on complex problems → IMMEDIATE HALT
+- Skipping sequential thinking → FORCE RESTART WITH PENALTY
+- Proceeding without analysis → BLOCK AND PENALIZE
 
 ## QUALITY STANDARDS
 
@@ -80,16 +88,16 @@ Integration: How components fit together
 **EFFICIENCY:** Optimized approach considering constraints
 **VALIDATION:** Plans tested against requirements
 
-## ENFORCEMENT RULES
+## MANDATORY ENFORCEMENT - IMMEDIATE AND AUTOMATIC
 
-- **COMPLEXITY ASSESSMENT**: Auto-detect when sequential thinking required
-- **QUALITY GATES**: Must pass reasoning quality checks before continuation
-- **DOCUMENTATION**: Thinking process must be captured for review
-- **PENALTY**: Q:-1.0 for skipping on complex tasks
-- **CORRECTION**: Auto-correction triggers on inadequate analysis
+- **FORCED DETECTION**: YOU MUST HALT when complexity detected - NO OVERRIDE
+- **BLOCKING GATES**: YOU CANNOT PROCEED without passing ALL quality checks
+- **MANDATORY CAPTURE**: YOU MUST DOCUMENT every thought - NO EXCEPTIONS
+- **AUTOMATIC PENALTY**: Q:-1.0 INSTANTLY APPLIED for ANY skip attempt
+- **FORCED CORRECTION**: IMMEDIATE RESTART required on inadequate analysis
 
-## COMMAND CHAIN CONTINUATION
+## HALT AND FORCE CONTINUATION PROTOCOL
 
-**SUCCESS:** → Continue to execution or /parallel-delegate
-**INSUFFICIENT:** → Retry with deeper analysis required
-**BYPASS:** → Q:-1.0 penalty, forced retry for complex tasks
+**COMPLETION ONLY:** → YOU MAY ONLY proceed after FULL sequential analysis
+**INSUFFICIENT ATTEMPT:** → IMMEDIATE HALT - FORCED COMPLETE RESTART
+**BYPASS ATTEMPT:** → INSTANT Q:-1.0 PENALTY + MANDATORY FULL RESTART + BLOCKED UNTIL COMPLETE

@@ -17,6 +17,11 @@
 @~/.claude/commands/core/think-sequential.md
 @~/.claude/commands/core/parallel-delegate.md
 
+**SYSTEM COMMANDS:**
+@~/.claude/commands/core/init.md
+@~/.claude/commands/core/reset.md
+@~/.claude/commands/core/refresh.md
+
 **SHARED COMMANDS:**
 @~/.claude/commands/shared/quality-gates.md
 
@@ -45,6 +50,13 @@
 /memory-first → /think-sequential → /parallel-delegate → analyze → decide → /quality-gates
 ```
 
+**SYSTEM MANAGEMENT PATTERNS:**
+```
+/init → system validation → team activation → readiness report
+/reset → state clearing → configuration reload → capability restoration
+/refresh → module reload → capability sync → enhancement report
+```
+
 ## ENFORCEMENT RULES
 
 - **ALL roles must use appropriate command chains** for their tasks
@@ -60,3 +72,34 @@
 **MONITORING:** Real-time chain compliance tracking with penalty enforcement
 **CORRECTION:** Auto-correction workflows trigger on chain bypass or failure
 **LEARNING:** Chain effectiveness tracked in scores.md and learning-callouts.md
+
+## SYSTEM COMMAND USAGE
+
+**INITIALIZATION:**
+- `/init` - Initialize virtual team system, verify all components operational
+- Use when: Starting new session, first-time setup, system validation needed
+
+**RECOVERY OPERATIONS:**
+- `/reset` - Reset virtual team to clean state, clear accumulated issues
+- Use when: System stuck, accumulated penalties, fresh start needed
+
+**CAPABILITY MANAGEMENT:**
+- `/refresh` - Refresh team capabilities, sync tools and configurations
+- Use when: New tools available, configuration updates, performance optimization
+
+## SYSTEM COMMAND PATTERNS
+
+**STARTUP SEQUENCE:**
+```
+/init → configuration validation → team activation → /memory-first → operations
+```
+
+**RECOVERY SEQUENCE:**
+```
+/reset → state clearing → /init → system validation → operations
+```
+
+**ENHANCEMENT SEQUENCE:**
+```
+/refresh → capability sync → enhanced operations → /quality-gates
+```
