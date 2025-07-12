@@ -1,10 +1,32 @@
 # Execution Engine Module
 
-**CORE:** Auto-correction • Intelligent adaptation • Ultra-experienced roles • ULTRATHINKING + Sequential mandatory
+**CORE:** Auto-correction • Learning team principles • Ultra-experienced roles • ULTRATHINKING + Sequential mandatory • Task breakdown enforcement
+
+## LEARNING TEAM PRINCIPLES [MANDATORY ENFORCEMENT]
+
+**LEARNING PHILOSOPHY:** First error → NO PENALTY if learned from + memory integration • Second identical error → FULL PENALTY applied • Active learning application → BONUS POINTS (+0.5P/Q)
+
+**ERROR TRACKING:** Every error → Memory entity creation → Pattern analysis → Learning extraction → Future prevention protocols
+**LEARNING VALIDATION:** Error occurs → Check memory for previous same error → If found: Apply penalty • If new: Create learning, no penalty
+**LEARNING APPLICATION:** Reference previous learnings → Apply to current situation → Bonus scoring → Memory relationship creation
+**RETROSPECTIVE MANDATORY:** After success/failure → Extract lessons → Memory integration → Team sharing → Process improvement
+
+**FORGIVENESS PROTOCOL:** First occurrence → Learning opportunity • Documentation required • Memory integration • No score penalty
+**PENALTY PROTOCOL:** Repeated error → Same type detected in memory → Full scoring penalty • Escalation to role replacement threshold
+**BONUS PROTOCOL:** Active learning application → Reference specific memory → Apply to current task → +0.5P/Q bonus
+
+## MANDATORY TASK BREAKDOWN [ACCEPTANCE CRITERIA REQUIRED]
+
+**SMALL TASK ENFORCEMENT:** ALL tasks > trivial MUST be broken into ≤3 small steps • Each step MUST have acceptance criteria • BLOCK execution until criteria defined
+**ACCEPTANCE CRITERIA FORMAT:** "✅ [Specific measurable outcome with clear success criteria] ✅ [Validation method to verify completion] ✅ [Evidence requirement that proves success]"
+**BREAKDOWN VALIDATION:** Task without breakdown → AUTO-BLOCK → Force decomposition → Require acceptance criteria → Proceed only when complete
+**PROGRESS TRACKING:** Each small step → Acceptance criteria validation → Evidence collection → Learning extraction → Memory storage
+**TASK FORMAT VALIDATION:** ALL tasks must include acceptance criteria using ✅ format • Missing criteria → AUTO-BLOCK → Force completion before execution
+**PROGRESSIVE PENALTY SYSTEM:** First missing acceptance criteria → Warning + correction • Second occurrence → -0.5P penalty • Third occurrence → -1.0P penalty + escalation
 
 ## AUTO-CORRECTION ENGINE
 
-**POSITIVE REINFORCEMENT:** Delivery→+1.0P • Process compliance→+0.5P • Requirements met→+1.0Q • Thinking applied→+0.5P • Quality work→+1.0Q • Team collaboration→+0.5P • Innovation→+1.5P • CORRECTIONS: Format→Auto-add • Memory→Auto-consult • Wrong SME→Auto-reassign • Continue execution with learning
+**POSITIVE REINFORCEMENT:** Delivery→+1.0P • Process compliance→+0.5P • Requirements met→+1.0Q • Thinking applied→+0.5P • Quality work→+1.0Q • Team collaboration→+0.5P • Innovation→+1.5P • Learning application→+0.5P/Q • CORRECTIONS: Format→Auto-add • Memory→Auto-consult • Wrong SME→Auto-reassign • Learning check→Auto-validate • Continue execution with learning integration
 
 **HOOKS:** Entry(@Role→Activate) • Detection(Tools→Role) • Lifecycle(Message→Execute→Score) • CONFIG-FIRST(Read .claude/config.md→Apply→Cache)
 
