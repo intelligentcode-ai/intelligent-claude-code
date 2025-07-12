@@ -13,7 +13,7 @@ Your project CLAUDE.md gets one import line:
 @~/.claude/modes/virtual-team.md
 ```
 
-**That's it.** Your virtual development team is ready with dual scoring system enabled.
+**That's it.** Your virtual development team is ready with streamlined behavioral intelligence enabled.
 
 ## Installation Options
 
@@ -141,7 +141,7 @@ Source: intelligent-claude-code/src/
 - **Adds single import line** if not present
 - **Never overwrites** your existing configuration
 - **Complete removal** by deleting one import line
-- **Dual scoring enabled** automatically for all team members
+- **Behavioral intelligence enabled** automatically for all team members
 
 ## Optional CLI Tools
 
@@ -201,16 +201,16 @@ ls ~/.claude/modes/virtual-team.md
 @PM Status check
 ```
 
-### Test Dual Scoring System
+### Test Behavioral Intelligence
 ```bash
-# Verify scoring display
-@PM (P: 0.0pts, Q: 0.0pts - Standard): Team initialization complete
+# Verify behavioral intelligence activation
+@PM Team status check
 
-# Test score tracking
-@Developer (P: 0.0pts, Q: 0.0pts - Standard): Ready for development tasks
+# Test role activation and scoring
+@Developer Ready for development tasks
 
-# Verify memory integration
-@PM: Show team scoring summary
+# Verify memory integration and learning
+@PM Show team performance and learning insights
 ```
 
 ### Test CLI Integration (Optional)

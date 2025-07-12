@@ -31,8 +31,8 @@ That's it. Your virtual team is active and building.
 ### 🎭 **Virtual Development Team**
 14 specialized roles from PM to Security Engineer, each following structured command chains for consistent execution. They coordinate through parallel task delegation and maintain professional Git workflows.
 
-### 🧠 **Behavioral Intelligence Architecture**
-Every role follows streamlined behavioral patterns that ensure memory consultation, strategic thinking, and quality validation. Behavioral intelligence operates automatically while users interact naturally with @-roles.
+### 🧠 **Streamlined Behavioral Intelligence**
+Every role follows two core behavioral patterns that ensure memory consultation, strategic thinking, and quality validation. The streamlined architecture provides professional outcomes through automatic behavioral intelligence while maintaining natural @-role interaction.
 
 ### 🚀 **Dynamic Role Specialization**  
 System can generate domain specialists (React, Kubernetes, etc.) with context-aware expertise loading. Specialists follow the same behavioral intelligence patterns as core roles.
@@ -53,27 +53,27 @@ Automatic insight capture after significant actions. Learning callouts generated
 
 Your team coordinates through behavioral intelligence that executes automatically:
 
-**Behavioral Intelligence Flow:**
+**Streamlined Behavioral Intelligence Flow:**
 1. User addresses @PM or any role
-2. Role executes behavioral patterns internally
-3. Memory consultation → Strategic thinking → Execution → Quality validation
-4. Results stored and shared with team
+2. Runtime Execution behavior activates automatically
+3. Command Chain pattern executes: Memory consultation → Strategic thinking → Execution → Quality validation
+4. Results stored and shared with team through natural responses
 
 Example workflow:
 ```bash
 User: "Build a real-time chat application"
 
-@PM: [Executes behavioral intelligence]
+@PM: [Runtime Execution & Command Chain behaviors activate]
   → Memory consultation for project context
   → Strategic thinking analysis of requirements
-  → Parallel task delegation
+  → Parallel task delegation through command chains
     → Task 1: @Architect "WebSocket architecture"
     → Task 2: @Developer "Real-time UI components"
     → Task 3: @DevOps-Engineer "Scaling infrastructure"
-  → [All roles execute simultaneously]
+  → [All roles execute with behavioral intelligence]
 ```
 
-Every role follows behavioral intelligence patterns for consistency and quality.
+Every role follows the streamlined two-behavior architecture for consistency and quality.
 
 ## Essential Commands
 
@@ -100,9 +100,9 @@ Every role follows behavioral intelligence patterns for consistency and quality.
 
 📖 **Getting Started**
 - [Installation Guide](docs/installation.md) - Platform-specific setup
+- [Streamlined Usage Guide](docs/streamlined-usage-guide.md) - Clear usage instructions
 - [Behavioral Intelligence Guide](docs/behavioral-intelligence.md) - Understanding behavioral patterns
 - [Quick Start Tutorial](docs/quickstart.md) - First project walkthrough
-- [Command Reference](docs/commands.md) - All available commands
 
 🏗️ **Architecture**  
 - [Behavioral Intelligence Architecture](docs/architecture/behavioral-intelligence.md) - Internal process flow
@@ -111,6 +111,7 @@ Every role follows behavioral intelligence patterns for consistency and quality.
 - [Memory Integration](docs/features/memory-system.md) - Knowledge persistence
 
 🔧 **Advanced**
+- [Consolidation Benefits](docs/consolidation-benefits.md) - Streamlined system improvements
 - [Configuration Guide](docs/configuration.md) - Customization options
 - [Migration Guide](docs/migration.md) - Moving from old systems
 - [Limitations & Known Issues](docs/limitations.md) - Current constraints
@@ -128,17 +129,26 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 **Ready to transform your development workflow?** Install in 30 seconds and let your virtual team coordinate through command chains while you focus on what matters.
 
-## System Architecture
+## Streamlined System Architecture
 
-This system uses a **streamlined behavioral intelligence framework** that guides role execution through two core behavioral patterns. It is not an automated enforcement system but rather a structured approach to AI collaboration that:
+This system uses a **consolidated behavioral intelligence framework** built on two essential behaviors that guide all role execution. The streamlined architecture provides:
 
-- Provides consistent behavioral patterns for role execution
-- Encourages memory consultation and strategic thinking
-- Facilitates parallel task coordination
-- Maintains quality through intelligent behavioral patterns
-- Builds team knowledge over time
-- Operates through streamlined behavioral architecture
+### Consolidation Benefits
+- **Simplified Architecture**: Reduced from 17 separate behavioral files to 2 core behaviors
+- **Enhanced Performance**: Streamlined execution with automatic quality assurance
+- **Better User Experience**: Natural @-role interaction with invisible behavioral intelligence
+- **Easier Maintenance**: Clear responsibilities and reduced complexity
 
-The system works best when used as intended - as a framework for organizing AI assistance through behavioral intelligence rather than rigid enforcement.
+### Core Behaviors
+1. **Runtime Execution**: Automatic role activation, expertise loading, and coordination
+2. **Command Chains**: Structured process patterns for memory, thinking, and quality
+
+### Design Philosophy
+- Behavioral intelligence operates automatically and transparently
+- Users interact naturally with @-roles while quality patterns ensure excellence
+- Professional development practices are built into every interaction
+- Team coordination happens through parallel execution and shared memory
+
+The system works as an intelligent framework for AI collaboration, providing structure and quality without enforcement complexity.
 
 ⭐ Star this repo to support the project!
