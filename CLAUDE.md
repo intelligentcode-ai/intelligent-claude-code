@@ -7,16 +7,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, TRUE dynamic specialist generation, mandatory enforcement architecture, Git workflow integration, and Level 3 autonomous technical decision-making. This repository contains the source code, configuration templates, and installation system for the virtual team enhancement.
+**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, command chain coordination, behavioral framework guidance, and Git workflow integration. This repository contains the configuration templates, behavioral patterns, and installation system for the virtual team enhancement.
 
 ### Core Architecture Features
-- **TRUE Dynamic Specialist Generation**: Unlimited domain experts created on-demand with Context7 knowledge injection
-- **Memory-First Culture**: ALL roles MUST consult memory before actions with -1.0pts P penalty enforcement
-- **Mandatory Enforcement Architecture**: Universal process compliance for ALL roles and workflows
-- **Level 3 Autonomous Operations**: Strategic analysis layer with continuous autonomy protocols
-- **Fallback Tool Logic**: Intelligent degradation from Context7 → Brave Search → Built-in tools
-- **Process Compliance Enforcement**: Fact-based validation with auto-correction workflows
-- **Dual Scoring System**: Real-time professionalism and quality tracking for all team members
+- **Command Chain Architecture**: Structured execution patterns for consistent role behavior
+- **Memory-First Culture**: Behavioral emphasis on consulting memory before actions
+- **Behavioral Framework**: Process guidance through documented patterns and expectations
+- **Parallel Task Coordination**: PM-driven task delegation with simultaneous role execution
+- **Tool Integration**: Coordinated use of available Claude Code tools
+- **Evidence-Based Learning**: Scoring and insight generation for continuous improvement
+- **Dual Scoring System**: Performance tracking for process compliance and quality delivery
 
 ## Development Architecture
 
@@ -36,17 +36,17 @@ This is a **configuration-based system** built with native Markdown files, not a
 - `modes/operational-protocols.md` - Git workflow enforcement, quality standards
 - `behaviors/` - Behavioral intelligence modules (memory, specialization, disagreement)
 
-#### Mandatory Enforcement Architecture
-- **Universal Process Compliance**: ALL roles must follow enforcement protocols for ALL activities
-- **Quality Gates**: Auto-correction workflows for requirements, architecture, peer review, implementation
-- **Automatic Quality Gate Triggers**: Configuration-driven routing, blocking logic, auto-delegation system
-- **Security Validation**: Mandatory pre-commit validation for ALL code changes and configurations
-- **Fact-Based Validation**: No assumptions, evidence-based reporting, PRD compliance for ALL work
-- **Git Workflow Enforcement**: Proper branching, commit standards, MR requirements for ALL changes
-- **Documentation Compliance**: Real-time updates, no document sprawl, evidence provision for ALL tasks
-- **Review Enforcement**: Mandatory peer review for ALL implementations, not just code changes
-- **Validation Enforcement**: DoD validation required for ALL deliverables and handoffs
-- **Process Gate Enforcement**: Strategic analysis layer required for ALL role delegations
+#### Behavioral Framework Architecture
+- **Command Chain Guidance**: Structured patterns for consistent role execution
+- **Quality Gate Patterns**: Process guidance for requirements, architecture, peer review, implementation
+- **Task Coordination System**: PM-driven delegation with parallel execution support
+- **Security Validation Guidelines**: Recommended practices for code changes and configurations
+- **Evidence-Based Reporting**: Encouragement of fact-based validation and documentation
+- **Git Workflow Guidance**: Professional branching, commit standards, and MR practices
+- **Documentation Patterns**: Structured approach to updates and evidence provision
+- **Review Frameworks**: Guidance for peer review processes and validation
+- **Validation Guidelines**: DoD patterns for deliverables and handoffs
+- **Strategic Analysis Patterns**: Thoughtful approach to role delegations and decisions
 
 #### Configuration System
 - **Virtual Team Mode**: 14 specialized roles with Git workflow and autonomous operation
@@ -104,25 +104,25 @@ When modifying the virtual team:
 - **Import Chain**: Core → Execution → Role → Integration → Operational
 - **Single Import Activation**: `@~/.claude/modes/virtual-team.md` activates entire system
 
-#### TRUE Dynamic Specialist Generation
-- **Technology Discovery Engine**: 3-tier auto-detection (file patterns, content analysis, context inference)
-- **Context7 Knowledge Injection**: Real-time expertise loading with fallback logic
-- **Unlimited Domain Support**: Generate specialists for ANY technology/domain
-- **Dynamic Role Evolution**: Specialists adapt capabilities based on project needs
-- **Parallel Instance Support**: Multiple same-role instances (@Developer-1, @Developer-2)
-- **Custom Role Creation**: User-triggered specialization with unlimited naming
+#### Command Chain Architecture
+- **Structured Execution Patterns**: Predefined flows for consistent role behavior
+- **Memory-First Patterns**: Behavioral emphasis on consulting memory before actions
+- **Parallel Task Coordination**: PM-driven delegation with simultaneous role execution
+- **Quality Validation Flows**: Built-in patterns for deliverable validation
+- **Learning Integration**: Automatic insight capture and knowledge building
+- **Tool Coordination**: Structured use of available Claude Code tools
 
 #### Virtual Team Architecture
 - **14 Core Specialized Roles**: PM, Requirements-Engineer, Architect, Developer, User-Role, System-Engineer, DevOps-Engineer, Database-Engineer, Security-Engineer, AI-Engineer, Web-Designer, QA-Engineer, Frontend-Tester, Backend-Tester
-- **TRUE Dynamic Specialist Generation**: Unlimited domain experts (@React-Developer, @Kubernetes-Engineer, @GraphQL-Expert, @Blockchain-Specialist, etc.)
-- **@-notation Addressing**: Direct role communication (@PM, @Architect, custom specialists)
-- **Mandatory Enforcement**: ALL roles follow process compliance architecture
-- **Strategic Analysis Layer**: Pre-execution planning with thoughtful organized responses
-- **Level 3 Autonomous Operations**: Continuous technical decision-making with business-only escalation
-- **Git Workflow Integration**: Branch/commit/MR process with mandatory security validation
-- **Fallback Tool Logic**: Context7 → Brave Search → Built-in tools → Manual guidance
-- **Fact-Based Validation**: Evidence-based reporting, no assumptions, PRD compliance
-- **Auto-Correction Workflows**: Self-correcting quality loops until completion standards achieved
+- **Dynamic Specialist Support**: Context-aware role specialization (@React-Developer, @Kubernetes-Engineer, etc.)
+- **@-notation Addressing**: Direct role communication (@PM, @Architect, specialists)
+- **Behavioral Framework**: All roles follow command chain patterns for consistency
+- **Strategic Analysis Patterns**: Pre-execution planning with thoughtful organized responses
+- **Parallel Task Coordination**: PM-driven delegation with simultaneous role execution
+- **Git Workflow Integration**: Branch/commit/MR process with quality validation patterns
+- **Tool Integration Logic**: Coordinated use of available Claude Code tools
+- **Evidence-Based Validation**: Emphasis on fact-based reporting and documentation
+- **Learning-Based Improvement**: Continuous enhancement through insight capture and scoring
 
 #### Graceful Integration Philosophy
 - Never overwrite existing configurations
@@ -215,17 +215,16 @@ git log --oneline -n 5
 - **No environment variable dependencies** (pure markdown configuration)
 - **Graceful integration only** (never overwrite existing files)
 - **Single import control** (one line to activate/deactivate)
-- **Git standards enforced** (no AI mentions in commits)
+- **Git standards encouraged** (professional commit practices)
 
-#### Enforcement Constraints
-- **Universal process compliance** (ALL roles must follow enforcement architecture)
-- **Mandatory quality gates** (auto-correction workflows required)
-- **Fact-based validation** (no assumptions, evidence-based reporting)
-- **Security validation** (pre-commit validation for ALL changes)
-- **Documentation compliance** (real-time updates, evidence provision)
-- **Strategic analysis required** (thoughtful responses, not reactive)
-- **L3 autonomy boundaries** (technical autonomy, business escalation only)
-- **Tool availability adaptation** (graceful degradation through fallback layers)
+#### Behavioral Framework Constraints
+- **Command chain guidance** (roles follow structured patterns for consistency)
+- **Quality gate patterns** (guidance for validation workflows)
+- **Evidence-based reporting** (emphasis on fact-based documentation)
+- **Memory-first culture** (behavioral emphasis on consulting memory)
+- **Strategic analysis patterns** (thoughtful responses through structured thinking)
+- **Tool coordination** (structured use of available tools)
+- **Learning integration** (continuous improvement through insight capture)
 
 ## Common Development Tasks
 
@@ -277,24 +276,24 @@ git log --oneline -n 5
 
 ## System Architecture Summary
 
-This system represents a paradigm shift in AI tool integration, implementing TRUE dynamic role transformation with mandatory enforcement architecture. The system provides:
+This system represents a behavioral framework for AI tool integration, implementing command chain coordination with structured role specialization. The system provides:
 
 ### Core Capabilities
-- **Unlimited Dynamic Specialists**: Generate experts for ANY technology domain
-- **Memory-First Culture**: ALL roles MUST consult memory before actions with behavioral enforcement
-- **Mandatory Process Compliance**: Universal enforcement for ALL roles and workflows
-- **Level 3 Autonomous Operations**: Strategic analysis with continuous technical decision-making
-- **Intelligent Tool Fallback**: Context7 → Brave Search → Built-in tools → Manual guidance
-- **Fact-Based Validation**: Evidence-driven development with auto-correction workflows
+- **Command Chain Architecture**: Structured execution patterns for consistent role behavior
+- **Memory-First Culture**: Behavioral emphasis on consulting memory before actions
+- **Parallel Task Coordination**: PM-driven delegation with simultaneous role execution
+- **Strategic Analysis Patterns**: Thoughtful approach to problem-solving through structured thinking
+- **Tool Integration**: Coordinated use of available Claude Code tools
+- **Evidence-Based Learning**: Scoring and insight generation for continuous improvement
 - **Memory Integration**: Persistent knowledge capture and relationship tracking
-- **Security-First Architecture**: Mandatory pre-commit validation for all changes
-- **Dual Scoring System**: Real-time accountability and continuous improvement for all team members
+- **Quality Validation Patterns**: Structured approach to deliverable validation
+- **Dual Scoring System**: Performance tracking for process compliance and quality delivery
 
 ### Quality Standards
-- **100% Completion Enforcement**: No partial implementations or "good enough" solutions
-- **Document Sprawl Prevention**: Single progress file per day, update existing docs only
-- **Professional Git Workflow**: Proper branching, commit standards, MR requirements
-- **Evidence-Based Reporting**: All claims backed by evidence, no assumptions permitted
-- **Auto-Correction Workflows**: Self-correcting quality loops until standards achieved
+- **Behavioral Guidance**: Structured patterns that encourage quality completion
+- **Documentation Patterns**: Organized approach to updates and evidence provision
+- **Professional Git Workflow**: Guidance for branching, commit standards, and MR practices
+- **Evidence-Based Reporting**: Emphasis on fact-based documentation and validation
+- **Learning-Based Improvement**: Continuous enhancement through insight capture and scoring
 
-This architecture prioritizes developer experience, team compatibility, and professional development practices while maintaining complete quality assurance through mandatory enforcement protocols.
+This architecture prioritizes developer experience, team compatibility, and professional development practices while providing structured guidance for AI collaboration through behavioral frameworks.
