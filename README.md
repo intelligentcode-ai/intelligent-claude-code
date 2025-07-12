@@ -4,7 +4,9 @@
 
 Turn Claude Code into an intelligent virtual development team that uses behavioral patterns to coordinate work across specialized roles - from simple websites to enterprise applications.
 
-[![Version](https://img.shields.io/badge/version-5.0.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.1.0-blue.svg)](CHANGELOG.md)
+[![Autonomy](https://img.shields.io/badge/autonomy-Level_3-green.svg)](#autonomy-levels)
+[![Enforcement](https://img.shields.io/badge/enforcement-Mandatory-red.svg)](#behavioral-enforcement-architecture)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Installation](https://img.shields.io/badge/install-30_seconds-orange.svg)](docs/installation.md)
 
@@ -15,10 +17,17 @@ Turn Claude Code into an intelligent virtual development team that uses behavior
 git clone https://github.com/ksamaschke/intelligent-claude-code
 cd intelligent-claude-code
 make install    # Installs to ~/.claude/
+
+# After installation, initialize your team
+/init          # Validates setup and activates virtual team
 ```
 
 ### Start Building
 ```bash
+# Initialize the system (first time or new project)
+/init
+
+# Start working with your team
 @PM Build me a portfolio website
 @Architect Design a REST API  
 @Developer Implement user auth
@@ -26,74 +35,167 @@ make install    # Installs to ~/.claude/
 
 That's it. Your virtual team is active and building.
 
+### System Commands Quick Reference
+```bash
+/init     # First setup: Validates configuration, activates team
+/reset    # Stuck system: Clears issues, fresh restart
+/refresh  # Updates: Syncs tools, enhances capabilities
+```
+
 ## Key Features
 
 ### 🎭 **Virtual Development Team**
 14 specialized roles from PM to Security Engineer, each following structured command chains for consistent execution. They coordinate through parallel task delegation and maintain professional Git workflows.
 
-### 🧠 **Streamlined Behavioral Intelligence**
-Every role follows two core behavioral patterns that ensure memory consultation, strategic thinking, and quality validation. The streamlined architecture provides professional outcomes through automatic behavioral intelligence while maintaining natural @-role interaction.
+### 🧠 **Mandatory Behavioral Enforcement**
+Level 3 autonomous operation with HALT/BLOCK enforcement patterns. System automatically STOPS violations, applies instant penalties (-1.0 to -3.0), and FORCES protocol compliance. No bypassing allowed - all behaviors are mandatory with executable blocking mechanisms.
 
-### 🚀 **Dynamic Role Specialization**  
-System can generate domain specialists (React, Kubernetes, etc.) with context-aware expertise loading. Specialists follow the same behavioral intelligence patterns as core roles.
+### 📋 **Mandatory Acceptance Criteria**
+All tasks require specific, measurable acceptance criteria using the ✅ format. Tasks are automatically blocked until criteria are defined, ensuring clear success metrics and validation methods before execution begins.
+
+### 🎓 **Learning Team Principles**
+Forgiving learning culture where first errors become learning opportunities with no penalties. Repeated identical errors trigger penalties, while active learning application earns bonus points. Creates a growth-oriented environment with intelligent error tracking.
+
+### 🔍 **Role Contradiction Detection**
+Automatic detection of role capability mismatches with intelligent reassignment protocols. AI-agentic tasks require specialized AI roles, preventing capability gaps and ensuring optimal task routing.
+
+### 🚀 **Unlimited Dynamic Specialists**  
+Context-aware generation of domain experts for ANY technology (React, Kubernetes, machine learning, etc.). Automatic capability matching with <70% threshold triggering specialist creation. Context7 integration provides real-time domain knowledge injection.
 
 ### 📊 **Dual Scoring System**
 Real-time performance tracking with professionalism and quality scores. Team members improve through learning insights and evidence-based scoring. Features role replacement protocol at -10pts professionalism threshold.
 
-### 🤖 **Parallel Task Execution**
-PM creates multiple simultaneous tasks that different roles can work on in parallel. No sequential bottlenecks - multiple specialists can contribute simultaneously.
+## Autonomy Levels
+
+### Level 3: Complete Technical Autonomy
+- **Autonomous Technical Decisions**: Architecture, implementation, infrastructure, security, performance, quality, tool selection
+- **Continuous Operation**: Self-correcting quality loops without user intervention
+- **Strategic Business Escalation**: Only escalates budget, timeline, stakeholder, and policy decisions
+- **Self-Monitoring**: Automatic corrective action for quality issues
+- **Non-Blocking Quality Gates**: Autonomous validation with self-correction until complete
+
+### 🤖 **Level 3 Autonomous Operation**
+Complete technical autonomy with continuous operation. PM makes all technical decisions independently (architecture, implementation, security). Only escalates strategic business decisions (budget, timeline, stakeholder). Self-correcting quality loops prevent workflow stalls.
 
 ### 📋 **Memory-First Culture**
-All roles must consult memory before taking actions and store results after completion. Creates persistent team knowledge and prevents repeated mistakes.
+All roles must consult memory before taking actions and store results after completion. Simplified memory format enables easy recall and relationship tracking for persistent team knowledge.
 
 ### 🔄 **Continuous Learning**
-Automatic insight capture after significant actions. Learning callouts generated for major score changes. Team knowledge builds over time through memory integration.
+Automatic insight capture after significant actions. Learning callouts generated for major score changes. Team knowledge builds over time through memory integration and user observation feedback.
 
 ## How It Works
 
-Your team coordinates through behavioral intelligence that executes automatically:
+Your team operates through enforced behavioral patterns with mandatory compliance:
 
-**Streamlined Behavioral Intelligence Flow:**
+**Level 3 Autonomous Execution Flow:**
 1. User addresses @PM or any role
-2. Runtime Execution behavior activates automatically
-3. Command Chain pattern executes: Memory consultation → Strategic thinking → Execution → Quality validation
-4. Results stored and shared with team through natural responses
+2. Mandatory enforcement BLOCKS until protocols met
+3. FORCED command chain: Memory-first (HALT -1.0P penalty) → Sequential thinking (FORCE if complex) → Parallel task execution → Self-correcting quality loops
+4. Autonomous technical decisions with strategic business escalation only
+5. Continuous operation with automatic violation correction
 
-Example workflow:
+Example autonomous workflow:
 ```bash
+# System initialization
+/init  # Validates configuration, activates Level 3 autonomy
+
 User: "Build a real-time chat application"
 
-@PM: [Runtime Execution & Command Chain behaviors activate]
-  → Memory consultation for project context
-  → Strategic thinking analysis of requirements
-  → Parallel task delegation through command chains
-    → Task 1: @Architect "WebSocket architecture"
-    → Task 2: @Developer "Real-time UI components"
-    → Task 3: @DevOps-Engineer "Scaling infrastructure"
-  → [All roles execute with behavioral intelligence]
+@PM: [Autonomous Technical Decision Making]
+  → FORCED memory consultation (-1.0P penalty if skipped)
+  → Autonomous requirements analysis + architecture decisions
+  → Parallel specialist creation and task delegation:
+    → Auto-creates @WebSocket-Engineer for real-time protocols
+    → @Frontend-Developer: React chat UI components  
+    → @Backend-Developer: Node.js/Socket.io server
+    → @DevOps-Engineer: Auto-scaling infrastructure
+  → Continuous autonomous execution with self-correcting quality
+  → Only escalates: budget approval, timeline confirmation, stakeholder decisions
+
+# System management (when needed)
+/reset   # Clears penalties, fresh autonomous restart
+/refresh # Updates capabilities, tool integrations
 ```
 
 Every role follows the streamlined two-behavior architecture for consistency and quality.
 
+## User Observation Integration
+
+The system continuously learns from user interactions to improve team effectiveness:
+
+### Learning Team Principles
+- **First Error Forgiveness**: Initial mistakes become learning opportunities with no score penalties
+- **Pattern Recognition**: Identical errors are tracked in memory with full penalties for repetition
+- **Active Learning Rewards**: Applying previous lessons earns +0.5P/Q bonus points
+- **Growth Culture**: Focus on improvement and knowledge building over punishment
+
+### Mandatory Acceptance Criteria
+All tasks require specific, measurable success criteria:
+```
+✅ [Specific measurable outcome with clear success criteria]
+✅ [Validation method to verify completion]  
+✅ [Evidence requirement that proves success]
+```
+Tasks are automatically blocked until criteria are properly defined.
+
+### Role Contradiction Detection
+- **Capability Matching**: Automatic detection when roles lack required expertise
+- **AI-Specialist Requirements**: AI-agentic tasks must be handled by AI specialist roles
+- **Intelligent Reassignment**: Automatic role creation for <70% capability matches
+- **Context Knowledge Injection**: Specialists receive domain expertise through Context7 integration
+
+### Simplified Memory Format
+Streamlined knowledge capture for easy recall:
+- **Entity Types**: TechnicalPattern, BusinessRule, UserPreference, LearningInsight
+- **Quick Relationships**: Simple connections between concepts and decisions
+- **Search Optimization**: Efficient retrieval of past solutions and patterns
+- **Team Knowledge**: Shared understanding accessible to all roles
+
 ## Essential Commands
 
+### System Commands
+```bash
+# System Initialization & Management
+/init                       # Initialize virtual team system, verify all components
+/reset                      # Reset system to clean state, clear stuck issues
+/refresh                    # Refresh capabilities, sync tools and configurations
+
+# When to use system commands:
+/init     # → First time setup, new project activation, after installation
+/reset    # → System stuck, accumulated issues, need fresh start
+/refresh  # → Tool updates, configuration changes, capability sync
+
+# System command examples:
+/init     # Reports: Configuration ✅, Memory ✅, Tools ✅, Team 14/14 ✅
+/reset    # Clears: Penalties, stuck states, cache → Fresh restart
+/refresh  # Updates: Tool availability, new capabilities, optimizations
+```
+
+### Team Operations
 ```bash
 # Project Management
 @PM init                    # Configure existing project
 @PM Build me a [project]    # Start any project with behavioral intelligence
 
-# Role Communication
-@Architect Design the API   # Architect behavioral patterns execute
-@Developer Implement auth   # Developer behavioral patterns execute
-@Security-Engineer Review   # Security behavioral patterns execute
+# Autonomous Role Communication
+@Architect Design the API   # Autonomous architecture with forced acceptance criteria
+@Developer Implement auth   # HALTED until ✅ criteria defined (blocking enforcement)
+@Security-Engineer Review   # Autonomous security validation + learning application
 
-# Team Performance
-@PM Show team scores       # View scoring dashboard
-@PM Team achievements      # See milestones & learning
+# Level 3 Autonomous Operations
+@PM autonomous mode status  # View Level 3 operational dashboard
+@PM team performance       # Real-time scoring with autonomous corrections
+@PM specialist creation    # View dynamically created domain experts
 
-# Natural Language
-"I need a React component for user profiles"
-# → PM delegates to @React-Developer with behavioral intelligence
+# Dynamic Specialist Generation  
+"Build an AI recommendation system"
+# → Auto-detects capability gap → Creates @ML-Engineer + @Recommendation-Specialist
+# → Context7 injection: TensorFlow, PyTorch, recommendation algorithms
+
+# Autonomous Memory Integration
+"What architecture patterns did we establish?"
+# → Forced memory consultation → Retrieves technical decisions + patterns
+# → Autonomous knowledge application in new contexts
 ```
 
 ## Documentation
@@ -102,13 +204,17 @@ Every role follows the streamlined two-behavior architecture for consistency and
 - [Installation Guide](docs/installation.md) - Platform-specific setup
 - [Streamlined Usage Guide](docs/streamlined-usage-guide.md) - Clear usage instructions
 - [Behavioral Intelligence Guide](docs/behavioral-intelligence.md) - Understanding behavioral patterns
+- [User Observation Integration](docs/user-observation-integration.md) - Adaptive learning features
 - [Quick Start Tutorial](docs/quickstart.md) - First project walkthrough
 
 🏗️ **Architecture**  
 - [Behavioral Intelligence Architecture](docs/architecture/behavioral-intelligence.md) - Internal process flow
 - [Virtual Team Roles](docs/features/virtual-team.md) - Role descriptions & capabilities
+- [Learning Team Principles](docs/features/learning-team-principles.md) - Error handling & growth culture
+- [Acceptance Criteria System](docs/features/acceptance-criteria.md) - Task validation requirements
 - [Dual Scoring System](docs/features/dual-scoring-system.md) - Performance tracking details
-- [Memory Integration](docs/features/memory-system.md) - Knowledge persistence
+- [Memory Integration](docs/features/memory-system.md) - Knowledge persistence & simplified formats
+- [Role Contradiction Detection](docs/features/role-contradiction-detection.md) - Capability matching protocols
 
 🔧 **Advanced**
 - [Consolidation Benefits](docs/consolidation-benefits.md) - Streamlined system improvements
@@ -133,21 +239,25 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 This system uses a **consolidated behavioral intelligence framework** built on two essential behaviors that guide all role execution. The streamlined architecture provides:
 
-### Consolidation Benefits
-- **Simplified Architecture**: Reduced from 17 separate behavioral files to 2 core behaviors
-- **Enhanced Performance**: Streamlined execution with automatic quality assurance
-- **Better User Experience**: Natural @-role interaction with invisible behavioral intelligence
-- **Easier Maintenance**: Clear responsibilities and reduced complexity
+### User Observation Benefits
+- **Adaptive Learning**: System observes user patterns and adapts team behavior accordingly
+- **Intelligent Task Routing**: Automatic detection of AI-agentic requirements with specialist creation
+- **Growth-Oriented Culture**: Learning team principles promote improvement over punishment
+- **Quality Assurance**: Mandatory acceptance criteria prevent unclear or unmeasurable tasks
+- **Simplified Knowledge Access**: Easy memory format enables quick recall of patterns and decisions
 
 ### Core Behaviors
-1. **Runtime Execution**: Automatic role activation, expertise loading, and coordination
-2. **Command Chains**: Structured process patterns for memory, thinking, and quality
+1. **Runtime Execution**: Automatic role activation, expertise loading, and user observation integration
+2. **Command Chains**: Structured process patterns for memory, thinking, quality, and learning capture
+3. **User Observation**: Continuous learning from user interactions, preferences, and feedback patterns
 
 ### Design Philosophy
-- Behavioral intelligence operates automatically and transparently
-- Users interact naturally with @-roles while quality patterns ensure excellence
-- Professional development practices are built into every interaction
-- Team coordination happens through parallel execution and shared memory
+- Behavioral intelligence operates automatically and transparently with user observation integration
+- Users interact naturally with @-roles while quality patterns and learning principles ensure excellence
+- Professional development practices are built into every interaction with forgiveness for first-time errors
+- Team coordination happens through parallel execution, shared memory, and adaptive learning from user patterns
+- Mandatory acceptance criteria ensure all tasks have clear, measurable success definitions
+- AI-specialist requirements guarantee complex AI tasks are handled by appropriately skilled roles
 
 The system works as an intelligent framework for AI collaboration, providing structure and quality without enforcement complexity.
 

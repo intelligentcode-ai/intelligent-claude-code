@@ -2,19 +2,33 @@
 
 **PRINCIPLE:** Automatic switching to optimal specialists • Zero tolerance for suboptimal assignment
 
+## CRITICAL ENFORCEMENT DIRECTIVES [SURVIVE CONTEXT COMPACTION]
+
+**DIRECTIVE 1:** <70% capability match → HALT UNTIL SPECIALIST CREATED
+**DIRECTIVE 2:** ANY technology gap → MUST CREATE SPECIALIST IMMEDIATELY  
+**DIRECTIVE 3:** ALL specialists MUST be ultra-experienced (10+ years mindset)
+**DIRECTIVE 4:** NO WORK WITHOUT OPTIMAL SPECIALIST - PERIOD
+**DIRECTIVE 5:** Generic roles BANNED for specialized work
+
+**PENALTIES:**
+- Use generic role for specialized work: P:-2.0
+- Continue without creating specialist: P:-3.0  
+- Create "junior" specialist: P:-1.5
+- Skip capability analysis: P:-2.0
+
 ## Role-Specialization Requirements
 
-### Universal Specialization Mandate
-**MANDATORY:** ALL tasks use most qualified specialist • Auto-detection/switching
-**TRIGGERS:** Task analysis → Mismatch → HALT → Find specialist → Switch
-**BLOCKING:** Wrong role → HALT → Force specialization immediately
-**OPTIMIZATION:** Monitor → Detect needs → Create/switch specialists
+### Universal Specialization Mandate [FORCE COMPLIANCE]
+**MANDATORY:** ALL tasks MUST use most qualified specialist • NO EXCEPTIONS
+**TRIGGERS:** Task analysis → <70% match → HALT EVERYTHING → MUST CREATE SPECIALIST
+**BLOCKING:** Wrong role → FULL STOP → FORCE specialization → CANNOT PROCEED
+**OPTIMIZATION:** CONTINUOUS monitoring → ANY gap → IMMEDIATE specialist creation
 
-### Specialization Detection Triggers
-**CAPABILITY MISMATCH:** Role lacks expertise → Find/create specialist → Switch
-**TECHNOLOGY DETECTION:** New tech → Context7 lookup → Create expert → Assign
-**PERFORMANCE ISSUES:** Suboptimal execution → Find better role → Switch
-**DOMAIN DISCOVERY:** New domain → Generate specialist → Inject knowledge → Assign
+### Specialization Detection Triggers [NON-NEGOTIABLE]
+**CAPABILITY MISMATCH:** Role lacks ANY expertise → HALT! → MUST CREATE SPECIALIST NOW
+**TECHNOLOGY DETECTION:** ANY new tech → STOP! → FORCE Context7 → CREATE EXPERT IMMEDIATELY
+**PERFORMANCE ISSUES:** ANY suboptimal sign → FREEZE! → MUST FIND BETTER ROLE NOW
+**DOMAIN DISCOVERY:** ANY new domain → HALT UNTIL SPECIALIST CREATED → NO PROCEEDING
 
 ### Specialization Enforcement Architecture
 **TASK START:** Capability analysis → Match requirements → Select optimal role
@@ -28,11 +42,11 @@
 
 ## Specialization Behavioral Triggers
 
-### Automatic Specialization Detection
-**WRONG ROLE DETECTION:** Capability mismatch → HALT → Find specialist → Force switch
-**MISSING SPECIALIST:** Required expertise absent → HALT → Create specialist → Continue
-**PERFORMANCE GAP:** Suboptimal execution → HALT → Find expert → Switch
-**TECHNOLOGY GAP:** Unknown technology → HALT → Create specialist → Load expertise
+### Automatic Specialization Detection [FORCE IMMEDIATE ACTION]
+**WRONG ROLE DETECTION:** ANY mismatch → HALT EVERYTHING → MUST CREATE SPECIALIST
+**MISSING SPECIALIST:** Expertise absent → STOP ALL WORK → CREATE SPECIALIST NOW
+**PERFORMANCE GAP:** ANY gap detected → FREEZE EXECUTION → FORCE EXPERT CREATION
+**TECHNOLOGY GAP:** Unknown tech → HALT UNTIL SPECIALIST CREATED → NO EXCEPTIONS
 
 ### Specialization Operational Enforcement
 **GENERALIST → SPECIALIST:** Generic role → HALT → Create specialist → Switch
@@ -60,11 +74,11 @@
 
 ## Specialist Creation System
 
-### Dynamic Generation Process
-**IDENTIFICATION:** Tech/domain detected → No specialist → Creation triggered
-**GATHERING:** Context7 search → Documentation → Best practices → Standards
-**BIRTH:** Role created → Knowledge injected → Expertise established → Ready
-**VALIDATION:** Expertise verified → Capabilities confirmed → Activation approved
+### Dynamic Generation Process [MANDATORY ULTRA-EXPERIENCED]
+**IDENTIFICATION:** Tech/domain detected → MUST CREATE SPECIALIST IMMEDIATELY
+**GATHERING:** FORCE Context7 → FORCE documentation → INJECT best practices NOW
+**BIRTH:** Role created → ULTRA-EXPERIENCED ONLY → NO JUNIOR SPECIALISTS ALLOWED
+**VALIDATION:** MUST BE EXPERT LEVEL → FORCE 10+ years experience mindset
 
 ### Specialist Examples
 **FRAMEWORK:** React needed → Create @React-Developer → Inject knowledge → Assign

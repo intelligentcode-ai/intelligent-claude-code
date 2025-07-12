@@ -12,6 +12,18 @@ This tutorial walks you through your first experience with the Virtual Team syst
 
 ## Tutorial: Building a Simple Todo App
 
+### Step 0: System Initialization (First Time)
+
+```bash
+/init    # Validates team configuration and activates all systems
+```
+
+**What this does:**
+- ✅ Verifies configuration files properly installed
+- ✅ Activates all 14 core team roles
+- ✅ Validates memory system and tool integrations
+- ✅ Reports system readiness status
+
 ### Step 1: Initialize Project Management
 
 ```bash
@@ -131,6 +143,15 @@ The results of behavioral intelligence:
 
 ## Troubleshooting Common Issues
 
+### System Not Responding
+**Symptoms**: Team seems inactive or unresponsive
+**Solutions**:
+```bash
+/init     # Initialize system and verify configuration
+/reset    # Clear stuck states and restart fresh
+/refresh  # Update capabilities and tool integrations
+```
+
 ### Behavioral Intelligence Not Activating
 **Symptoms**: Roles not following expected patterns
 **Solutions**:
@@ -138,6 +159,7 @@ The results of behavioral intelligence:
 - Provide clear, specific requests
 - Allow behavioral patterns to execute
 - Check team scores for performance patterns
+- Try `/reset` if behaviors seem stuck
 
 ### Memory Not Consulted
 **Symptoms**: Roles missing previous context
@@ -226,10 +248,11 @@ The results of behavioral intelligence:
 ## Getting Help
 
 ### If Things Don't Work
-1. Check your @-notation usage
-2. Review [Limitations](limitations.md)
-3. Provide specific feedback
-4. Be patient - system learns over time
+1. Try system commands: `/init`, `/reset`, or `/refresh`
+2. Check your @-notation usage
+3. Review [Limitations](limitations.md)
+4. Provide specific feedback
+5. Be patient - system learns over time
 
 ### Common Questions
 - **Q**: Why isn't behavioral intelligence working as expected?

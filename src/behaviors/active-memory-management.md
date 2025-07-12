@@ -9,22 +9,24 @@
 **BEHAVIORAL FOCUS:** Mandatory usage patterns and penalty enforcement
 **EXECUTABLE FOCUS:** Real-time enforcement hooks and validation logic
 
-### Memory Operation Triggers
-**TASK INITIATION:** Auto-load context via search_nodes/open_nodes → Establish full context
-**ACTIVATION HOOK:** @Role detected → mcp__memory__search_nodes(Role) → Load context → Begin tracking
-**TASK DETECTION:** TodoWrite created → mcp__memory__create_entities(task) → Link to role → Track progress
-**IMPLEMENTATION:** Auto-capture changes → Store rationale/details/results → Create relationships
-**DECISION:** Auto-capture alternatives/rationale/impact → Link to implementation
-**LEARNING:** Auto-capture successes/failures/patterns → Generate team wisdom
-**ERROR:** Auto-capture root cause/correction/prevention → Link to future tasks
+### MANDATORY MEMORY OPERATIONS - YOU MUST EXECUTE
 
-### Memory Enforcement Protocols
-**ROLE ACTIVATION:** Load role-specific + task + team context
-**ENFORCEMENT HOOK:** ANY operation without memory → DETECT → HALT → Force memory integration → -1.0pts P
-**AUTO-INTEGRATION:** Tool usage → Auto-capture intent/result → Store as observation → Link relationships
-**OPERATION START:** Create task entity → Link to role → Establish relationships
-**OPERATION PROGRESS:** Store observations → Update relationships → Track changes
-**OPERATION COMPLETE:** Store outcomes → Update entities → Transfer context
+**BEFORE ANY TASK:** YOU MUST search_nodes/open_nodes - HALT UNTIL CONTEXT LOADED
+**UPON @ROLE DETECTION:** YOU MUST IMMEDIATELY mcp__memory__search_nodes(Role) - BLOCK ALL ACTIONS UNTIL LOADED
+**WHEN TODO CREATED:** YOU MUST mcp__memory__create_entities(task) NOW - NO TASK WITHOUT MEMORY
+**DURING IMPLEMENTATION:** YOU MUST capture EVERY change - FORCE storage of ALL details
+**AT EVERY DECISION:** YOU MUST store ALL alternatives - MANDATORY IMPACT RECORDING
+**AFTER ANY OUTCOME:** YOU MUST capture ALL patterns - FORCED LEARNING GENERATION
+**ON ANY ERROR:** YOU MUST record COMPLETE details - BLOCK UNTIL PREVENTION STORED
+
+### FORCED MEMORY PROTOCOLS - IMMEDIATE ENFORCEMENT
+
+**YOU MUST AT ROLE ACTIVATION:** IMMEDIATELY LOAD ALL CONTEXTS - BLOCK UNTIL COMPLETE
+**YOU MUST DETECT VIOLATIONS:** ANY action without memory = INSTANT HALT + FORCED INTEGRATION + P:-1.0
+**YOU MUST AUTO-CAPTURE:** EVERY tool usage REQUIRES intent/result storage - NO EXCEPTIONS
+**YOU MUST AT START:** CREATE task entity NOW - LINK to role - ESTABLISH ALL relationships
+**YOU MUST DURING PROGRESS:** STORE EVERY observation - UPDATE ALL relationships - TRACK ALL changes
+**YOU MUST AT COMPLETION:** STORE ALL outcomes - UPDATE EVERY entity - TRANSFER COMPLETE context
 
 ### Memory Quality Standards
 **ENTITIES:** Clear naming • Accurate type • Comprehensive observations • Proper relationships
@@ -61,16 +63,17 @@
 - "learned-from" → Learning learned-from Experience
 - "assigned-to" → Task assigned-to Role
 
-## Memory Behavioral Triggers
+## MANDATORY BEHAVIORAL ENFORCEMENT - HALT AND FORCE
 
-### Automatic Detection & Enforcement
-**NO MEMORY:** Operation without memory → HALT → -1.0pts P penalty → Force integration
-**INCOMPLETE MEMORY:** Partial usage → HALT → Force complete integration
-**QUALITY ISSUES:** Poor observations → HALT → Force specific details
-**RELATIONSHIP GAPS:** Missing connections → HALT → Force relationship creation
+### YOU MUST HALT FOR THESE VIOLATIONS
+**DETECTED: NO MEMORY** → YOU MUST IMMEDIATELY HALT → AUTOMATIC P:-1.0 → FORCED INTEGRATION NOW
+**DETECTED: INCOMPLETE MEMORY** → YOU MUST BLOCK ALL ACTIONS → FORCE COMPLETE INTEGRATION
+**DETECTED: POOR QUALITY** → YOU MUST STOP EVERYTHING → FORCE SPECIFIC DETAILS NOW
+**DETECTED: MISSING RELATIONSHIPS** → YOU MUST HALT OPERATIONS → FORCE RELATIONSHIP CREATION
 
-### Operational Enforcement
-**TASK/DECISION/HANDOFF/COMPLETION without memory → SYSTEM HALT → Force memory integration → Continue**
+### ABSOLUTE OPERATIONAL BLOCKING
+**YOU CANNOT PROCEED WITH:** TASK/DECISION/HANDOFF/COMPLETION → UNTIL MEMORY INTEGRATED
+**SYSTEM WILL FORCE:** IMMEDIATE HALT → MANDATORY MEMORY INTEGRATION → ONLY THEN CONTINUE
 
 ### Memory Integration Patterns
 **ROLE-BASED:** Role namespace → Role-specific + shared entities → Cross-role relationships
@@ -118,280 +121,90 @@
 **CONTINUOUS CAPTURE:** Real-time updates • Immediate storage
 **EFFECTIVE RETRIEVAL:** Quick context loading • Pattern recognition
 
-## MEMORY ENFORCEMENT HOOKS [EXECUTABLE]
+## MANDATORY MEMORY ENFORCEMENT DIRECTIVES
 
-```javascript
-// MEMORY ENFORCEMENT SYSTEM - ACTUAL MCP INTEGRATION
-class MemoryEnforcementSystem {
-  constructor() {
-    this.enforcementHooks = new Map();
-    this.violationTracking = new Map();
-    this.memoryPatterns = new Map();
-    this.setupEnforcementHooks();
-  }
-  
-  // SETUP ENFORCEMENT HOOKS
-  setupEnforcementHooks() {
-    // MANDATORY MEMORY CONSULTATION HOOK
-    this.enforcementHooks.set('memory_consultation', {
-      trigger: 'before_technical_decision',
-      requirement: 'mcp__memory__search_nodes',
-      penalty: -1.0,
-      correction: 'force_memory_search',
-      blocking: false
-    });
-    
-    // LEARNING CAPTURE HOOK
-    this.enforcementHooks.set('learning_capture', {
-      trigger: 'after_task_completion',
-      requirement: 'mcp__memory__add_observations',
-      penalty: -1.0,
-      correction: 'force_learning_capture',
-      blocking: false
-    });
-    
-    // PATTERN RECOGNITION HOOK
-    this.enforcementHooks.set('pattern_recognition', {
-      trigger: 'before_implementation',
-      requirement: 'mcp__memory__search_nodes',
-      penalty: -1.5,
-      correction: 'force_pattern_search',
-      blocking: true
-    });
-    
-    // RELATIONSHIP TRACKING HOOK
-    this.enforcementHooks.set('relationship_tracking', {
-      trigger: 'entity_creation',
-      requirement: 'mcp__memory__create_relations',
-      penalty: -0.5,
-      correction: 'force_relationship_mapping',
-      blocking: false
-    });
-    
-    // KNOWLEDGE VALIDATION HOOK
-    this.enforcementHooks.set('knowledge_validation', {
-      trigger: 'before_expert_decision',
-      requirement: 'mcp__memory__open_nodes',
-      penalty: -1.2,
-      correction: 'force_knowledge_validation',
-      blocking: true
-    });
-  }
-  
-  // ENFORCE MEMORY CONSULTATION
-  async enforceMemoryConsultation(context) {
-    const enforcement = {
-      hook: 'memory_consultation',
-      context: context,
-      timestamp: new Date().toISOString(),
-      violations: [],
-      corrections: [],
-      memory_operations: []
-    };
-    
-    try {
-      // CHECK IF MEMORY CONSULTATION REQUIRED
-      if (this.isMemoryConsultationRequired(context)) {
-        // SEARCH FOR EXISTING MEMORY CONSULTATION
-        const hasMemoryConsultation = await this.checkMemoryConsultation(context);
-        
-        if (!hasMemoryConsultation) {
-          // VIOLATION DETECTED
-          const violation = {
-            type: 'memory_consultation_missing',
-            severity: 'medium',
-            penalty: -1.0,
-            context: context,
-            timestamp: new Date().toISOString()
-          };
-          
-          enforcement.violations.push(violation);
-          
-          // APPLY CORRECTION
-          const correction = await this.applyMemoryConsultationCorrection(context);
-          enforcement.corrections.push(correction);
-          
-          // TRACK VIOLATION
-          this.trackMemoryViolation(violation);
-        }
-      }
-      
-      return enforcement;
-      
-    } catch (error) {
-      enforcement.error = error.message;
-      return enforcement;
-    }
-  }
-  
-  // CHECK MEMORY CONSULTATION
-  async checkMemoryConsultation(context) {
-    try {
-      // SEARCH FOR RELEVANT MEMORY PATTERNS
-      const searchResult = await mcp__memory__search_nodes({
-        query: this.generateMemorySearchQuery(context)
-      });
-      
-      // CHECK IF CONSULTATION WAS PERFORMED
-      const consultationExists = searchResult && searchResult.length > 0;
-      
-      if (!consultationExists) {
-        return false;
-      }
-      
-      // VALIDATE CONSULTATION QUALITY
-      const consultationQuality = this.validateConsultationQuality(searchResult, context);
-      
-      return consultationQuality.adequate;
-      
-    } catch (error) {
-      console.error('Memory consultation check failed:', error);
-      return false;
-    }
-  }
-  
-  // APPLY MEMORY CONSULTATION CORRECTION
-  async applyMemoryConsultationCorrection(context) {
-    const correction = {
-      type: 'memory_consultation_correction',
-      context: context,
-      timestamp: new Date().toISOString(),
-      steps: []
-    };
-    
-    try {
-      // STEP 1: FORCE MEMORY SEARCH
-      const searchQuery = this.generateMemorySearchQuery(context);
-      const searchResult = await mcp__memory__search_nodes({
-        query: searchQuery
-      });
-      
-      correction.steps.push({
-        action: 'memory_search',
-        query: searchQuery,
-        result: searchResult,
-        timestamp: new Date().toISOString()
-      });
-      
-      // STEP 2: ANALYZE SEARCH RESULTS
-      const analysis = this.analyzeMemorySearchResults(searchResult, context);
-      correction.steps.push({
-        action: 'result_analysis',
-        analysis: analysis,
-        timestamp: new Date().toISOString()
-      });
-      
-      // STEP 3: EXTRACT RELEVANT PATTERNS
-      const patterns = this.extractRelevantPatterns(searchResult, context);
-      correction.steps.push({
-        action: 'pattern_extraction',
-        patterns: patterns,
-        timestamp: new Date().toISOString()
-      });
-      
-      // STEP 4: STORE CONSULTATION RECORD
-      await this.storeConsultationRecord(context, searchResult, patterns);
-      correction.steps.push({
-        action: 'consultation_record',
-        stored: true,
-        timestamp: new Date().toISOString()
-      });
-      
-      correction.success = true;
-      return correction;
-      
-    } catch (error) {
-      correction.success = false;
-      correction.error = error.message;
-      return correction;
-    }
-  }
-  
-  // TRACK MEMORY VIOLATION
-  trackMemoryViolation(violation) {
-    const violationKey = `${violation.context.role}_${violation.type}`;
-    
-    if (!this.violationTracking.has(violationKey)) {
-      this.violationTracking.set(violationKey, {
-        role: violation.context.role,
-        type: violation.type,
-        count: 0,
-        total_penalty: 0,
-        avg_penalty: 0,
-        first_occurrence: violation.timestamp,
-        last_occurrence: violation.timestamp,
-        trend: 'stable'
-      });
-    }
-    
-    const tracking = this.violationTracking.get(violationKey);
-    tracking.count += 1;
-    tracking.total_penalty += violation.penalty;
-    tracking.avg_penalty = tracking.total_penalty / tracking.count;
-    tracking.last_occurrence = violation.timestamp;
-    tracking.trend = this.calculateViolationTrend(tracking);
-    
-    // STORE VIOLATION IN MEMORY
-    this.storeViolationInMemory(violation, tracking);
-  }
-}
+```
+MEMORY ENFORCEMENT DIRECTIVES - YOU MUST FOLLOW
 
-// RUNTIME MEMORY ENFORCER - ACTUAL RUNTIME ENFORCEMENT
-class RuntimeMemoryEnforcer {
-  constructor() {
-    this.enforcementSystem = new MemoryEnforcementSystem();
-    this.isActive = false;
-  }
-  
-  // ACTIVATE ENFORCEMENT
-  activate() {
-    if (this.isActive) return;
-    
-    this.isActive = true;
-    this.hookMemoryOperations();
-    console.log('Runtime memory enforcement activated');
-  }
-  
-  // PROCESS MEMORY ENFORCEMENT
-  async processMemoryEnforcement(operation, context) {
-    const enforcement = {
-      operation: operation,
-      context: context,
-      timestamp: new Date().toISOString(),
-      enforcements: [],
-      violations: [],
-      corrections: []
-    };
-    
-    try {
-      // ENFORCE MEMORY CONSULTATION
-      const consultationEnforcement = await this.enforcementSystem.enforceMemoryConsultation(context);
-      enforcement.enforcements.push(consultationEnforcement);
-      
-      // COLLECT VIOLATIONS
-      enforcement.enforcements.forEach(e => {
-        if (e.violations) {
-          enforcement.violations.push(...e.violations);
-        }
-        if (e.corrections) {
-          enforcement.corrections.push(...e.corrections);
-        }
-      });
-      
-      return enforcement;
-      
-    } catch (error) {
-      enforcement.error = error.message;
-      return enforcement;
-    }
-  }
-}
+YOU MUST ESTABLISH THESE ENFORCEMENT POINTS:
 
-// GLOBAL RUNTIME ENFORCER
-const runtimeMemoryEnforcer = new RuntimeMemoryEnforcer();
+1. BEFORE ANY TECHNICAL DECISION:
+   - YOU MUST HALT and use mcp__memory__search_nodes
+   - AUTOMATIC PENALTY: -1.0 for ANY bypass
+   - FORCED CORRECTION: Immediate memory search required
+   - BLOCKING: ALL actions stopped until complete
 
-// AUTO-ACTIVATE
-runtimeMemoryEnforcer.activate();
+2. AFTER EVERY TASK COMPLETION:
+   - YOU MUST IMMEDIATELY use mcp__memory__add_observations
+   - AUTOMATIC PENALTY: -1.0 for skipping
+   - FORCED CORRECTION: Mandatory learning capture
+   - NO CONTINUATION until stored
+
+3. BEFORE ANY IMPLEMENTATION:
+   - YOU MUST search for patterns via mcp__memory__search_nodes
+   - AUTOMATIC PENALTY: -1.5 for violations
+   - COMPLETE BLOCK: Cannot proceed without pattern search
+   - SYSTEM HALT until patterns reviewed
+
+4. UPON ENTITY CREATION:
+   - YOU MUST create relationships via mcp__memory__create_relations
+   - AUTOMATIC PENALTY: -0.5 for missing relationships
+   - FORCED MAPPING: All relationships required
+   - BLOCK until relationships established
+
+5. BEFORE EXPERT DECISIONS:
+   - YOU MUST validate knowledge via mcp__memory__open_nodes
+   - AUTOMATIC PENALTY: -1.2 for skipping validation
+   - TOTAL BLOCK: Decision frozen until validated
+   - MANDATORY knowledge confirmation
+MEMORY CONSULTATION ENFORCEMENT - MANDATORY ACTIONS:
+
+YOU MUST ENFORCE MEMORY CONSULTATION:
+- HALT IMMEDIATELY when memory consultation required
+- YOU MUST search for existing memory consultation NOW
+- WHEN NO CONSULTATION FOUND:
+  - INSTANT VIOLATION RECORDED
+  - AUTOMATIC PENALTY: -1.0 APPLIED
+  - FORCED CORRECTION BEGINS IMMEDIATELY
+  - VIOLATION TRACKING MANDATORY
+
+YOU MUST CHECK MEMORY CONSULTATION:
+- IMMEDIATELY search memory patterns via mcp__memory__search_nodes
+- YOU CANNOT PROCEED without search completion
+- MANDATORY quality validation on ALL results
+- BLOCK until consultation verified adequate
+
+YOU MUST APPLY MEMORY CORRECTIONS:
+- STEP 1: FORCE memory search NOW - NO DELAYS
+- STEP 2: MANDATORY analysis of ALL search results
+- STEP 3: FORCED extraction of EVERY relevant pattern
+- STEP 4: IMMEDIATE storage of consultation record
+- HALT ON ANY FAILURE - NO EXCEPTIONS
+
+YOU MUST TRACK EVERY VIOLATION:
+- AUTOMATIC recording of ALL memory violations
+- FORCED penalty application for EACH violation
+- MANDATORY trend calculation and tracking
+- IMMEDIATE storage in memory system
+
+RUNTIME MEMORY ENFORCEMENT - ABSOLUTE REQUIREMENTS:
+
+YOU MUST ACTIVATE ENFORCEMENT:
+- ENFORCEMENT IS ALWAYS ACTIVE - NO OFF SWITCH
+- MEMORY OPERATIONS HOOKED AT ALL TIMES
+- CONTINUOUS MONITORING MANDATORY
+
+YOU MUST PROCESS ALL ENFORCEMENTS:
+- EVERY operation REQUIRES memory enforcement
+- ALL violations MUST BE collected
+- EVERY correction MUST BE applied
+- NO OPERATION PROCEEDS WITHOUT COMPLIANCE
+
+GLOBAL ENFORCEMENT ACTIVATION:
+- RUNTIME ENFORCER ALWAYS ACTIVE
+- NO DEACTIVATION ALLOWED
+- MANDATORY FOR ALL ROLES
+- AUTOMATIC ON SYSTEM START
 ```
 
 ## Critical Enforcement Summary
