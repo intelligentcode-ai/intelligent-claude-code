@@ -4,6 +4,10 @@
 
 ### Format: [Timestamp via Bash date] - Type - Category - Insight - Relevance Score
 
+2025-07-12 18:16:42 - CRITICAL_LEARNING - System_Audit - Learning system was CONFIGURED but NOT actively executing until user demand - 1.0
+2025-07-12 18:16:42 - PROCESS_LEARNING - Learning_Activation - User accountability demands trigger immediate system activation and evidence generation - 0.9
+2025-07-12 18:16:42 - BEHAVIORAL_LEARNING - Memory_Integration - Learning must be stored in MCP Memory AND recalled in future decisions - 0.8
+
 <!-- Example entries:
 2025-07-08 10:00:00 - PROCESS_LEARNING - Task_Format - Team needs consistent @Role format enforcement - 0.9
 2025-07-08 10:15:00 - TECHNICAL_LEARNING - Memory_Integration - MCP Memory provides better token efficiency than file storage - 0.8

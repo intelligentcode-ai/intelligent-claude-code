@@ -29,7 +29,18 @@
 
 ## INITIALIZATION SEQUENCE [EXECUTE NOW]
 
-**STEP 1: MANDATORY CONFIG LOAD**
+**STEP 1: TOOL CAPABILITY DETECTION**
+```
+DETECT mcp__sequential-thinking availability → Store flag
+DETECT mcp__memory availability → Store flag  
+DETECT mcp__github/gitlab availability → Store flag
+DETECT mcp__context7 availability → Store flag
+DETECT TodoWrite availability → Store flag
+SET runtime.capabilities based on detection
+ACTIVATE graceful degradation for missing tools
+```
+
+**STEP 2: MANDATORY CONFIG LOAD**
 ```
 READ .claude/config.md FIRST → MUST SUCCEED
 PARSE blocking_enabled → ENFORCE false value → CRITICAL
@@ -41,7 +52,7 @@ STORE ALL configuration in active memory → ALWAYS PRESENT
 IF config missing/invalid → Use defaults + WARN + CONTINUE
 ```
 
-**STEP 2: SETTINGS-DRIVEN BEHAVIOR ACTIVATION**
+**STEP 3: SETTINGS-DRIVEN BEHAVIOR ACTIVATION**
 ```
 IF blocking_enabled=false THEN [CRITICAL ENFORCEMENT]
   ACTIVATE team collaboration mode → NO BLOCKING EVER

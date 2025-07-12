@@ -13,7 +13,51 @@ Your project CLAUDE.md gets one import line:
 @~/.claude/modes/virtual-team.md
 ```
 
-**That's it.** Your virtual development team is ready with streamlined behavioral intelligence enabled.
+**That's it.** Your virtual development team is ready with Level 3 autonomous operation and mandatory behavioral enforcement enabled.
+
+### Post-Installation: Initialize Your Team
+After installation, initialize the virtual team system:
+```bash
+/init    # Validates configuration, verifies components, activates team
+```
+
+The `/init` command will:
+- ✅ Verify configuration files are properly installed
+- ✅ Check all 14 core roles are available  
+- ✅ Validate memory system connectivity
+- ✅ Confirm tool integrations are working
+- ✅ Activate Level 3 autonomous operation mode
+- ✅ Enable mandatory behavioral enforcement with penalty system
+- ✅ Initialize dynamic specialist creation capabilities
+- ✅ Report team readiness status
+
+## What You Get: Level 3 Autonomous System
+
+After installation, your system includes:
+
+### 🤖 **Level 3 Autonomous Operation**
+- **Complete Technical Autonomy**: PM makes all technical decisions independently
+- **Continuous Operation**: Self-correcting quality loops without user intervention
+- **Strategic Business Escalation**: Only escalates budget, timeline, stakeholder decisions
+- **Non-Blocking Quality Gates**: Autonomous validation with self-correction
+
+### 🛡️ **Mandatory Behavioral Enforcement**
+- **HALT/BLOCK Patterns**: Operations stop until requirements met
+- **Automatic Penalties**: -1.0 to -3.0 instant penalties for violations
+- **Forced Protocol Compliance**: No bypassing allowed for any behaviors
+- **Memory-First Enforcement**: HALT until memory consultation complete (-1.0P penalty)
+
+### 🎭 **Unlimited Dynamic Specialists**
+- **Context-Aware Creation**: Generates domain experts for ANY technology
+- **Capability Matching**: <70% match triggers automatic specialist creation
+- **Context7 Integration**: Real-time domain knowledge injection
+- **AI-Specialist Requirements**: Complex AI tasks automatically routed to AI specialists
+
+### 📊 **Dual Scoring & Learning System**
+- **Real-Time Performance Tracking**: Professionalism and quality scores
+- **Learning Team Principles**: First errors become learning opportunities
+- **Automatic Role Replacement**: -10pts professionalism triggers replacement
+- **Evidence-Based Scoring**: All score changes require documented evidence
 
 ## Installation Options
 
@@ -197,20 +241,32 @@ export GITLAB_TOKEN=your_personal_access_token
 ls ~/.claude/CLAUDE.md
 ls ~/.claude/modes/virtual-team.md
 
+# Initialize and verify system
+/init           # Should report all components ✅
+
 # Test team activation
 @PM Status check
 ```
 
-### Test Behavioral Intelligence
+### Test Level 3 Autonomous Operation
 ```bash
-# Verify behavioral intelligence activation
-@PM Team status check
+# Verify Level 3 autonomous activation
+@PM autonomous operation status
 
-# Test role activation and scoring
-@Developer Ready for development tasks
+# Test mandatory behavioral enforcement
+@Developer Build authentication system    # Should HALT until acceptance criteria defined
 
-# Verify memory integration and learning
-@PM Show team performance and learning insights
+# Test dynamic specialist creation
+@PM Create machine learning recommendation system    # Should auto-create @ML-Engineer
+
+# Verify autonomous technical decisions
+@PM Design and implement REST API    # Should proceed autonomously without user escalation
+
+# Test memory-first enforcement
+@Architect Review previous patterns    # Should FORCE memory consultation first
+
+# Verify penalty system
+# Try skipping required steps - should see immediate penalty application
 ```
 
 ### Test CLI Integration (Optional)
@@ -255,6 +311,49 @@ make install PATH=~/development/.claude
 ```
 
 ## Troubleshooting
+
+### System Command Issues
+
+If `/init` reports configuration problems:
+```bash
+# Check configuration file exists
+ls ~/.claude/CLAUDE.md
+
+# Check all required files are present
+ls ~/.claude/modes/virtual-team.md
+ls ~/.claude/behaviors/
+
+# Verify Level 3 autonomy configuration
+grep -r "Level 3" ~/.claude/
+
+# If files are missing, reinstall
+make install
+```
+
+If system becomes unresponsive or has penalties accumulated:
+```bash
+/reset          # Clears penalties, accumulated issues, fresh autonomous restart
+/refresh        # Updates capabilities, tool integrations, specialist definitions
+```
+
+If autonomous operation stops unexpectedly:
+```bash
+# Check for accumulated penalties
+@PM show team scores and violations
+
+# Clear penalty state and restart autonomy
+/reset
+
+# Verify Level 3 operation resumed
+@PM autonomous operation status
+```
+
+### System Command Usage
+```bash
+/init           # First setup, new project activation, after installation
+/reset          # System stuck, accumulated penalties, need fresh start  
+/refresh        # Tool updates, configuration changes, capability sync
+```
 
 ### Ansible Not Found
 ```bash

@@ -5,9 +5,9 @@
 ## AUTOMATED LEARNING ENFORCEMENT
 
 **ERROR DETECTION:** Every error/failure → AUTO-CAPTURE → Memory entity creation → Pattern analysis
-**LEARNING VALIDATION:** Before penalty → Search memory for identical error type → If found: Apply penalty • If new: Create learning entry
-**FORGIVENESS PROTOCOL:** First occurrence of error type → Learning opportunity → No penalty → Memory integration required
-**PENALTY TRIGGER:** Identical error type found in memory → Full scoring penalty applied → Escalation protocols activated
+**LEARNING VALIDATION:** Before penalty → Search memory for identical error type → If found: Apply DOUBLE penalty • If new: Create learning entry with NO penalty
+**FORGIVENESS PROTOCOL:** First occurrence of error type → Learning opportunity → NO PENALTY → MANDATORY memory integration with Learning-[ErrorType]-[YYYY-MM-DD] format
+**PENALTY TRIGGER:** Identical error type found in memory → DOUBLE scoring penalty applied → Escalation protocols activated → Learning ignored violation recorded
 
 ## LEARNING MEMORY FORMAT [SIMPLIFIED]
 
@@ -51,3 +51,12 @@
 **LEARNING CHECK:** Error occurs → AUTO-SEARCH identical patterns → Apply forgiveness/penalty logic → Continue with learning
 **PATTERN PREVENTION:** Task starts → Search related error patterns → Apply prevention measures → Proactive learning application
 **CROSS-ROLE LEARNING:** Learning in one role → AUTO-SHARE with relevant roles → Prevent team-wide repetition
+
+## PENALTY SYSTEM INTEGRATION
+
+**REFERENCE:** Enhanced penalty-system.md with learning team integration
+**FIRST ERROR HANDLING:** calculatePenalty() checks checkForPreviousLearning() → Returns zero penalty if first occurrence with learning captured
+**REPEATED ERROR HANDLING:** calculatePenalty() applies 2x base penalty multiplier for repeated errors after learning captured
+**BONUS DETECTION:** detectAndApplyLearningBonuses() automatically scans actions for learning application patterns
+**MEMORY INTEGRATION:** All learning events stored using simple naming: Learning-[ErrorType]-[YYYY-MM-DD]
+**AUTOMATIC REWARDS:** +0.5P/Q applied automatically when learning application detected in role communications

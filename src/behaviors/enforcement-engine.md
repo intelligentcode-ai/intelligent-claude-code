@@ -30,7 +30,7 @@ function calculatePenalty(violationType, severity, context) {
   };
 }
 
-// SCORE UPDATER - ACTUAL EXECUTION
+// SCORE UPDATER - ACTUAL EXECUTION WITH FALLBACK
 function updateScore(role, penaltyData) {
   const currentScore = getScore(role);
   const newScore = {
@@ -40,8 +40,12 @@ function updateScore(role, penaltyData) {
     lastUpdate: penaltyData.timestamp
   };
   
-  // STORE IN MEMORY MCP
-  storeScoreInMemory(role, newScore, penaltyData);
+  // STORE WITH GRACEFUL FALLBACK
+  if (runtime.capabilities.memory) {
+    storeScoreInMemory(role, newScore, penaltyData);
+  } else {
+    storeScoreInFile(role, newScore, penaltyData);
+  }
   
   // CHECK REPLACEMENT TRIGGER
   if (newScore.professionalism <= -10) {
@@ -124,29 +128,42 @@ EXECUTE:
 ## MEMORY INTEGRATION HOOKS [EXECUTABLE]
 
 ```javascript
-// MEMORY INTEGRATION - ACTUAL MCP CALLS
+// MEMORY INTEGRATION - ADAPTIVE EXECUTION
 async function enforceMemoryIntegration(action, context) {
-  // MANDATORY MEMORY SEARCH
-  const searchResult = await mcp__memory__search_nodes({
-    query: extractSearchQuery(action, context)
-  });
+  let searchResult;
+  
+  // MANDATORY MEMORY SEARCH WITH FALLBACK
+  if (runtime.capabilities.memory) {
+    searchResult = await mcp__memory__search_nodes({
+      query: extractSearchQuery(action, context)
+    });
+  } else {
+    searchResult = await searchFileMemory(
+      extractSearchQuery(action, context)
+    );
+  }
   
   // VIOLATION DETECTION
   if (!searchResult || searchResult.length === 0) {
     const penalty = calculatePenalty('skip_memory', 1.2, context);
     await updateScore(context.role, penalty);
     
-    // FORCE MEMORY CONSULTATION
-    await mcp__memory__search_nodes({
-      query: "patterns similar to " + context.task
-    });
+    // FORCE MEMORY CONSULTATION WITH FALLBACK
+    if (runtime.capabilities.memory) {
+      await mcp__memory__search_nodes({
+        query: "patterns similar to " + context.task
+      });
+    } else {
+      await searchFileMemory("patterns similar to " + context.task);
+    }
   }
   
-  // STORE ACTION IN MEMORY
-  await mcp__memory__add_observations({
-    observations: [{
-      entityName: context.role,
-      contents: [
+  // STORE ACTION IN MEMORY WITH FALLBACK
+  if (runtime.capabilities.memory) {
+    await mcp__memory__add_observations({
+      observations: [{
+        entityName: context.role,
+        contents: [
         "Action: " + action.type,
         "Context: " + JSON.stringify(context),
         "Timestamp: " + new Date().toISOString(),
