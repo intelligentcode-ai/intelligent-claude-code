@@ -1,71 +1,72 @@
 ---
 # Backup installation before removal
 
-- name: Create timestamped backup of entire .claude directory
-  archive:
-    path: "{{ claude_install_path }}"
-    dest: "{{ claude_backup_path }}/claude-complete-backup.tar.gz"
-    format: gz
-    mode: '0644'
+- name: Check if backup directory already exists
+  stat:
+    path: "{{ claude_backup_path }}"
+  register: backup_exists
+
+- name: Create unique backup path if directory exists
+  set_fact:
+    claude_backup_path: "{{ claude_backup_path }}-{{ 999999 | random }}"
+  when: backup_exists.stat.exists
+
+- name: Create backup directory
+  file:
+    path: "{{ claude_backup_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy entire .claude directory to backup
+  copy:
+    src: "{{ claude_install_path }}/"
+    dest: "{{ claude_backup_path }}/"
+    remote_src: yes
+    mode: preserve
   register: backup_result
 
-- name: Copy individual configuration files to backup
-  copy:
-    src: "{{ claude_install_path }}/{{ item }}"
-    dest: "{{ claude_backup_path }}/{{ item }}"
-    remote_src: yes
-    mode: '0644'
-  loop:
-    - CLAUDE.md
-    - config.md
-    - scores.md
-    - learning-callouts.md
-    - VERSION
-  ignore_errors: yes
-  when: backup_result is succeeded
-
-- name: Copy modes directory to backup
-  copy:
-    src: "{{ claude_install_path }}/modes/"
-    dest: "{{ claude_backup_path }}/modes/"
-    remote_src: yes
-    mode: '0644'
-  ignore_errors: yes
-  when: backup_result is succeeded
-
-- name: Copy behaviors directory to backup
-  copy:
-    src: "{{ claude_install_path }}/behaviors/"
-    dest: "{{ claude_backup_path }}/behaviors/"
-    remote_src: yes
-    mode: '0644'
-  ignore_errors: yes
-  when: backup_result is succeeded
-
-- name: Create backup restoration script
-  template:
-    src: restore.sh.j2
-    dest: "{{ claude_backup_path }}/restore.sh"
-    mode: '0755'
-  when: backup_result is succeeded
+- name: Display backup status
+  debug:
+    msg: "Backup {{ 'successful' if backup_result is succeeded else 'failed' }}: {{ claude_backup_path }}"
 
 - name: Create backup manifest
-  template:
-    src: backup-manifest.md.j2
-    dest: "{{ claude_backup_path }}/backup-manifest.md"
+  copy:
+    dest: "{{ claude_backup_path }}/BACKUP_MANIFEST.txt"
+    content: |
+      Intelligent Claude Code - Installation Backup
+      Created: {{ ansible_date_time.iso8601 }}
+      Original Path: {{ claude_install_path }}
+      Backup Path: {{ claude_backup_path }}
+      Host: {{ ansible_hostname }}
+      User: {{ ansible_user_id }}
+      
+      This backup contains the complete virtual team installation including:
+      - CLAUDE.md (main configuration)
+      - modes/ (virtual team mode files)
+      - behaviors/ (behavioral intelligence modules)
+      - config.md (user configuration)
+      - scores.md (team scoring data)
+      - learning-callouts.md (team learning data)
+      - VERSION (system version)
+      
+      To restore this installation:
+      1. Copy contents back to {{ claude_install_path }}
+      2. Ensure proper file permissions (644 for files, 755 for directories)
+      3. Verify import paths in CLAUDE.md match your current setup
+      
+      Backup created by: ansible/uninstall.yml
     mode: '0644'
-  when: backup_result is succeeded
 
-- name: Display backup success
+- name: Verify backup integrity
+  find:
+    paths: "{{ claude_backup_path }}"
+    recurse: yes
+  register: backup_files
+
+- name: Display backup contents summary
   debug:
     msg:
-      - "Backup created successfully!"
-      - "Archive: {{ claude_backup_path }}/claude-complete-backup.tar.gz"
-      - "Individual files: {{ claude_backup_path }}/"
-      - "Restoration script: {{ claude_backup_path }}/restore.sh"
-  when: backup_result is succeeded
-
-- name: Backup failed warning
-  debug:
-    msg: "WARNING: Backup failed - proceeding with uninstallation anyway"
-  when: backup_result is failed
+      - "Backup created successfully:"
+      - "Location: {{ claude_backup_path }}"
+      - "Files backed up: {{ backup_files.matched }}"
+      - "Manifest: {{ claude_backup_path }}/BACKUP_MANIFEST.txt"
