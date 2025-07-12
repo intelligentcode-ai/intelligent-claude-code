@@ -1,161 +1,150 @@
 ---
 # Main tasks for intelligent-claude-code uninstallation
 
-- name: Validate uninstallation parameters
+- name: Validate uninstall parameters
   assert:
     that:
       - claude_install_path is defined
       - claude_scope in ['user', 'project']
-      - claude_backup_path is defined
-    fail_msg: "Invalid uninstallation parameters"
+    fail_msg: "Invalid uninstall parameters"
 
 - name: Check if installation exists
   stat:
     path: "{{ claude_install_path }}"
-  register: installation_exists
+  register: install_directory
 
-- name: Display installation status
+- name: Display uninstall mode
   debug:
-    msg: "Installation {{ 'found' if installation_exists.stat.exists else 'not found' }} at: {{ claude_install_path }}"
+    msg: "Uninstall mode: {{ 'Force removal (all files)' if (force_remove is defined and force_remove | bool) else 'Conservative (preserve user data)' }}"
 
-- name: Exit gracefully if no installation found
-  meta: end_play
-  when: not installation_exists.stat.exists
+- name: Handle project-specific removal
+  include_tasks: project_removal.yml
+  when: claude_scope == "project"
 
-- name: Create backup of installation
-  include_tasks: backup_installation.yml
-  when: 
-    - claude_backup_enabled | bool
-    - installation_exists.stat.exists
+- name: Handle graceful removal from user CLAUDE.md
+  include_tasks: graceful_removal.yml
+  when: install_directory.stat.exists
 
-- name: Check for CLAUDE.md with virtual team import
-  slurp:
-    src: "{{ claude_install_path }}/CLAUDE.md"
-  register: claude_md_content
-  ignore_errors: yes
-
-- name: Parse CLAUDE.md content for virtual team mode
-  set_fact:
-    has_virtual_team_import: "{{ '@~/.claude/modes/virtual-team.md' in (claude_md_content.content | b64decode) }}"
-    claude_md_lines: "{{ (claude_md_content.content | b64decode).split('\n') }}"
-  when: claude_md_content is succeeded
-
-- name: Remove virtual team import from CLAUDE.md (graceful)
-  lineinfile:
-    path: "{{ claude_install_path }}/CLAUDE.md"
-    line: "@~/.claude/modes/virtual-team.md"
-    state: absent
-  when: 
-    - claude_md_content is succeeded
-    - has_virtual_team_import | default(false)
-    - not claude_force_removal | bool
-
-- name: Check if CLAUDE.md only contains virtual team import
-  set_fact:
-    claude_md_only_virtual_team: "{{ claude_md_lines | select('match', '^\\s*@~/.claude/modes/virtual-team.md\\s*$') | list | length == (claude_md_lines | select('match', '^\\s*\\S+') | list | length) }}"
-  when: 
-    - claude_md_content is succeeded
-    - has_virtual_team_import | default(false)
-
-- name: Remove CLAUDE.md if it only contains virtual team import
-  file:
-    path: "{{ claude_install_path }}/CLAUDE.md"
-    state: absent
-  when:
-    - claude_md_content is succeeded
-    - has_virtual_team_import | default(false)
-    - claude_md_only_virtual_team | default(false)
-
-- name: Remove virtual team mode files
+- name: Remove system files (modes directory)
   file:
     path: "{{ claude_install_path }}/modes"
     state: absent
-  when: installation_exists.stat.exists
+  ignore_errors: yes
+  register: modes_removal
+  when: install_directory.stat.exists
 
-- name: Remove behavior files
+- name: Display modes removal result
+  debug:
+    msg: "{{ 'Modes directory removed' if not modes_removal.failed else 'Could not remove modes directory: ' + (modes_removal.msg | default('Permission denied')) }}"
+  when: install_directory.stat.exists
+
+- name: Remove system files (behaviors directory)
   file:
     path: "{{ claude_install_path }}/behaviors"
     state: absent
-  when: installation_exists.stat.exists
+  ignore_errors: yes
+  register: behaviors_removal
+  when: install_directory.stat.exists
 
-- name: Check for user data files that should be preserved
-  stat:
-    path: "{{ claude_install_path }}/{{ item }}"
-  register: user_data_files
-  loop:
-    - config.md
-    - scores.md
-    - learning-callouts.md
-  when: not claude_force_removal | bool
-
-- name: Preserve user data files if not forcing removal
+- name: Display behaviors removal result
   debug:
-    msg: "Preserving user data file: {{ item.item }}"
-  loop: "{{ user_data_files.results | default([]) }}"
-  when: 
-    - not claude_force_removal | bool
-    - item.stat.exists
-  loop_control:
-    label: "{{ item.item }}"
+    msg: "{{ 'Behaviors directory removed' if not behaviors_removal.failed else 'Could not remove behaviors directory: ' + (behaviors_removal.msg | default('Permission denied')) }}"
+  when: install_directory.stat.exists
 
-- name: Remove VERSION file
+- name: Remove system files (VERSION file)
   file:
     path: "{{ claude_install_path }}/VERSION"
     state: absent
-  when: installation_exists.stat.exists
+  ignore_errors: yes
+  register: version_removal
+  when: install_directory.stat.exists
 
-- name: Force remove all user data files (force mode only)
+- name: Display VERSION removal result
+  debug:
+    msg: "{{ 'VERSION file removed' if not version_removal.failed else 'Could not remove VERSION file: ' + (version_removal.msg | default('Permission denied')) }}"
+  when: install_directory.stat.exists
+
+- name: Remove user data files (force mode only)
   file:
-    path: "{{ claude_install_path }}/{{ item }}"
+    path: "{{ item }}"
     state: absent
+  ignore_errors: yes
   loop:
-    - config.md
-    - scores.md
-    - learning-callouts.md
+    - "{{ claude_install_path }}/config.md"
+    - "{{ claude_install_path }}/scores.md"
+    - "{{ claude_install_path }}/learning-callouts.md"
+  register: user_data_removal
   when: 
-    - claude_force_removal | bool
-    - installation_exists.stat.exists
+    - install_directory.stat.exists
+    - force_remove is defined and force_remove | bool
+
+- name: Display user data removal result
+  debug:
+    msg: "User data files removed (force mode)"
+  when: 
+    - install_directory.stat.exists
+    - force_remove is defined and force_remove | bool
+
+- name: Display user data preservation notice
+  debug:
+    msg: "User data preserved: config.md, scores.md, learning-callouts.md (use FORCE=true to remove)"
+  when: 
+    - install_directory.stat.exists
+    - not (force_remove is defined and force_remove | bool)
 
 - name: Check if .claude directory is empty
   find:
     paths: "{{ claude_install_path }}"
     file_type: any
-  register: remaining_files
-  when: installation_exists.stat.exists
+  register: claude_dir_contents
+  when: install_directory.stat.exists
 
 - name: Remove empty .claude directory
   file:
     path: "{{ claude_install_path }}"
     state: absent
-  when:
-    - installation_exists.stat.exists
-    - remaining_files.matched == 0
+  ignore_errors: yes
+  register: claude_dir_removal
+  when: 
+    - install_directory.stat.exists
+    - claude_dir_contents.matched == 0
 
-- name: Handle project-specific cleanup
-  include_tasks: project_cleanup.yml
-  when: claude_scope == "project"
+- name: Display directory removal result
+  debug:
+    msg: "{{ '.claude directory removed (was empty)' if (claude_dir_contents.matched == 0 and not claude_dir_removal.failed) else '.claude directory preserved (contains user files)' }}"
+  when: install_directory.stat.exists
 
-- name: Display preservation notice for user data
+- name: Force remove .claude directory (force mode only)
+  file:
+    path: "{{ claude_install_path }}"
+    state: absent
+  ignore_errors: yes
+  register: claude_dir_force_removal
+  when: 
+    - install_directory.stat.exists
+    - force_remove is defined and force_remove | bool
+    - claude_dir_contents.matched > 0
+
+- name: Display force removal result
+  debug:
+    msg: "{{ '.claude directory force removed' if not claude_dir_force_removal.failed else 'Could not force remove .claude directory: ' + (claude_dir_force_removal.msg | default('Permission denied')) }}"
+  when: 
+    - install_directory.stat.exists
+    - force_remove is defined and force_remove | bool
+    - claude_dir_contents.matched > 0
+
+- name: Display uninstall summary
   debug:
     msg:
-      - "User data files preserved (use force_removal=true to remove):"
-      - "{{ preserved_files | join(', ') }}"
-  vars:
-    preserved_files: "{{ user_data_files.results | selectattr('stat.exists') | map(attribute='item') | list }}"
-  when:
-    - not claude_force_removal | bool
-    - user_data_files.results | selectattr('stat.exists') | list | length > 0
+      - "Uninstall complete!"
+      - "Location: {{ claude_install_path }}"
+      - "Mode: {{ 'Force removal - all files removed' if (force_remove is defined and force_remove | bool) else 'Conservative - user data preserved' }}"
+      - "Removed: Virtual team modes, behaviors, VERSION file"
+      - "{{ 'Preserved: config.md, scores.md, learning-callouts.md' if not (force_remove is defined and force_remove | bool) else 'All files removed' }}"
+      - "{{ 'Directory preserved (contains user files)' if (claude_dir_contents.matched > 0 and not (force_remove is defined and force_remove | bool)) else 'Directory removed' }}"
+  when: install_directory.stat.exists
 
-- name: Display uninstallation summary
+- name: Display no installation found message
   debug:
-    msg:
-      - "Uninstallation complete!"
-      - "Removed from: {{ claude_install_path }}"
-      - "Backup created: {{ claude_backup_path if claude_backup_enabled | bool else 'No backup created' }}"
-      - "Components removed:"
-      - "  ✓ Virtual team mode files (/modes/)"
-      - "  ✓ Behavior files (/behaviors/)"
-      - "  ✓ VERSION file"
-      - "  {{ '✓ CLAUDE.md import removed' if (has_virtual_team_import | default(false)) else '- CLAUDE.md unchanged (no virtual team import found)' }}"
-      - "  {{ '✓ User data files removed (force mode)' if claude_force_removal | bool else '- User data files preserved (config.md, scores.md, learning-callouts.md)' }}"
-      - "Status: Virtual team system completely removed"
+    msg: "No installation found at {{ claude_install_path }}"
+  when: not install_directory.stat.exists
