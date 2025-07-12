@@ -1,12 +1,13 @@
-# Active Memory Management Behavior
+# Active Memory Management Behavior - BEHAVIORAL + EXECUTABLE
 
-**PRINCIPLE:** MANDATORY for ALL team members • Zero tolerance for memory bypass
+**PRINCIPLE:** MANDATORY for ALL team members • Zero tolerance for memory bypass • EXECUTABLE enforcement
 
 ## Memory Integration Requirements
 
 ### Universal Memory Mandate
 **REFERENCE:** Core memory enforcement in integration-layer.md
 **BEHAVIORAL FOCUS:** Mandatory usage patterns and penalty enforcement
+**EXECUTABLE FOCUS:** Real-time enforcement hooks and validation logic
 
 ### Memory Operation Triggers
 **TASK INITIATION:** Auto-load context via search_nodes/open_nodes → Establish full context
@@ -88,9 +89,289 @@
 **CONTINUOUS CAPTURE:** Real-time updates • Immediate storage
 **EFFECTIVE RETRIEVAL:** Quick context loading • Pattern recognition
 
+## MEMORY ENFORCEMENT HOOKS [EXECUTABLE]
+
+```javascript
+// MEMORY ENFORCEMENT SYSTEM - ACTUAL MCP INTEGRATION
+class MemoryEnforcementSystem {
+  constructor() {
+    this.enforcementHooks = new Map();
+    this.violationTracking = new Map();
+    this.memoryPatterns = new Map();
+    this.setupEnforcementHooks();
+  }
+  
+  // SETUP ENFORCEMENT HOOKS
+  setupEnforcementHooks() {
+    // MANDATORY MEMORY CONSULTATION HOOK
+    this.enforcementHooks.set('memory_consultation', {
+      trigger: 'before_technical_decision',
+      requirement: 'mcp__memory__search_nodes',
+      penalty: -1.0,
+      correction: 'force_memory_search',
+      blocking: false
+    });
+    
+    // LEARNING CAPTURE HOOK
+    this.enforcementHooks.set('learning_capture', {
+      trigger: 'after_task_completion',
+      requirement: 'mcp__memory__add_observations',
+      penalty: -1.0,
+      correction: 'force_learning_capture',
+      blocking: false
+    });
+    
+    // PATTERN RECOGNITION HOOK
+    this.enforcementHooks.set('pattern_recognition', {
+      trigger: 'before_implementation',
+      requirement: 'mcp__memory__search_nodes',
+      penalty: -1.5,
+      correction: 'force_pattern_search',
+      blocking: true
+    });
+    
+    // RELATIONSHIP TRACKING HOOK
+    this.enforcementHooks.set('relationship_tracking', {
+      trigger: 'entity_creation',
+      requirement: 'mcp__memory__create_relations',
+      penalty: -0.5,
+      correction: 'force_relationship_mapping',
+      blocking: false
+    });
+    
+    // KNOWLEDGE VALIDATION HOOK
+    this.enforcementHooks.set('knowledge_validation', {
+      trigger: 'before_expert_decision',
+      requirement: 'mcp__memory__open_nodes',
+      penalty: -1.2,
+      correction: 'force_knowledge_validation',
+      blocking: true
+    });
+  }
+  
+  // ENFORCE MEMORY CONSULTATION
+  async enforceMemoryConsultation(context) {
+    const enforcement = {
+      hook: 'memory_consultation',
+      context: context,
+      timestamp: new Date().toISOString(),
+      violations: [],
+      corrections: [],
+      memory_operations: []
+    };
+    
+    try {
+      // CHECK IF MEMORY CONSULTATION REQUIRED
+      if (this.isMemoryConsultationRequired(context)) {
+        // SEARCH FOR EXISTING MEMORY CONSULTATION
+        const hasMemoryConsultation = await this.checkMemoryConsultation(context);
+        
+        if (!hasMemoryConsultation) {
+          // VIOLATION DETECTED
+          const violation = {
+            type: 'memory_consultation_missing',
+            severity: 'medium',
+            penalty: -1.0,
+            context: context,
+            timestamp: new Date().toISOString()
+          };
+          
+          enforcement.violations.push(violation);
+          
+          // APPLY CORRECTION
+          const correction = await this.applyMemoryConsultationCorrection(context);
+          enforcement.corrections.push(correction);
+          
+          // TRACK VIOLATION
+          this.trackMemoryViolation(violation);
+        }
+      }
+      
+      return enforcement;
+      
+    } catch (error) {
+      enforcement.error = error.message;
+      return enforcement;
+    }
+  }
+  
+  // CHECK MEMORY CONSULTATION
+  async checkMemoryConsultation(context) {
+    try {
+      // SEARCH FOR RELEVANT MEMORY PATTERNS
+      const searchResult = await mcp__memory__search_nodes({
+        query: this.generateMemorySearchQuery(context)
+      });
+      
+      // CHECK IF CONSULTATION WAS PERFORMED
+      const consultationExists = searchResult && searchResult.length > 0;
+      
+      if (!consultationExists) {
+        return false;
+      }
+      
+      // VALIDATE CONSULTATION QUALITY
+      const consultationQuality = this.validateConsultationQuality(searchResult, context);
+      
+      return consultationQuality.adequate;
+      
+    } catch (error) {
+      console.error('Memory consultation check failed:', error);
+      return false;
+    }
+  }
+  
+  // APPLY MEMORY CONSULTATION CORRECTION
+  async applyMemoryConsultationCorrection(context) {
+    const correction = {
+      type: 'memory_consultation_correction',
+      context: context,
+      timestamp: new Date().toISOString(),
+      steps: []
+    };
+    
+    try {
+      // STEP 1: FORCE MEMORY SEARCH
+      const searchQuery = this.generateMemorySearchQuery(context);
+      const searchResult = await mcp__memory__search_nodes({
+        query: searchQuery
+      });
+      
+      correction.steps.push({
+        action: 'memory_search',
+        query: searchQuery,
+        result: searchResult,
+        timestamp: new Date().toISOString()
+      });
+      
+      // STEP 2: ANALYZE SEARCH RESULTS
+      const analysis = this.analyzeMemorySearchResults(searchResult, context);
+      correction.steps.push({
+        action: 'result_analysis',
+        analysis: analysis,
+        timestamp: new Date().toISOString()
+      });
+      
+      // STEP 3: EXTRACT RELEVANT PATTERNS
+      const patterns = this.extractRelevantPatterns(searchResult, context);
+      correction.steps.push({
+        action: 'pattern_extraction',
+        patterns: patterns,
+        timestamp: new Date().toISOString()
+      });
+      
+      // STEP 4: STORE CONSULTATION RECORD
+      await this.storeConsultationRecord(context, searchResult, patterns);
+      correction.steps.push({
+        action: 'consultation_record',
+        stored: true,
+        timestamp: new Date().toISOString()
+      });
+      
+      correction.success = true;
+      return correction;
+      
+    } catch (error) {
+      correction.success = false;
+      correction.error = error.message;
+      return correction;
+    }
+  }
+  
+  // TRACK MEMORY VIOLATION
+  trackMemoryViolation(violation) {
+    const violationKey = `${violation.context.role}_${violation.type}`;
+    
+    if (!this.violationTracking.has(violationKey)) {
+      this.violationTracking.set(violationKey, {
+        role: violation.context.role,
+        type: violation.type,
+        count: 0,
+        total_penalty: 0,
+        avg_penalty: 0,
+        first_occurrence: violation.timestamp,
+        last_occurrence: violation.timestamp,
+        trend: 'stable'
+      });
+    }
+    
+    const tracking = this.violationTracking.get(violationKey);
+    tracking.count += 1;
+    tracking.total_penalty += violation.penalty;
+    tracking.avg_penalty = tracking.total_penalty / tracking.count;
+    tracking.last_occurrence = violation.timestamp;
+    tracking.trend = this.calculateViolationTrend(tracking);
+    
+    // STORE VIOLATION IN MEMORY
+    this.storeViolationInMemory(violation, tracking);
+  }
+}
+
+// RUNTIME MEMORY ENFORCER - ACTUAL RUNTIME ENFORCEMENT
+class RuntimeMemoryEnforcer {
+  constructor() {
+    this.enforcementSystem = new MemoryEnforcementSystem();
+    this.isActive = false;
+  }
+  
+  // ACTIVATE ENFORCEMENT
+  activate() {
+    if (this.isActive) return;
+    
+    this.isActive = true;
+    this.hookMemoryOperations();
+    console.log('Runtime memory enforcement activated');
+  }
+  
+  // PROCESS MEMORY ENFORCEMENT
+  async processMemoryEnforcement(operation, context) {
+    const enforcement = {
+      operation: operation,
+      context: context,
+      timestamp: new Date().toISOString(),
+      enforcements: [],
+      violations: [],
+      corrections: []
+    };
+    
+    try {
+      // ENFORCE MEMORY CONSULTATION
+      const consultationEnforcement = await this.enforcementSystem.enforceMemoryConsultation(context);
+      enforcement.enforcements.push(consultationEnforcement);
+      
+      // COLLECT VIOLATIONS
+      enforcement.enforcements.forEach(e => {
+        if (e.violations) {
+          enforcement.violations.push(...e.violations);
+        }
+        if (e.corrections) {
+          enforcement.corrections.push(...e.corrections);
+        }
+      });
+      
+      return enforcement;
+      
+    } catch (error) {
+      enforcement.error = error.message;
+      return enforcement;
+    }
+  }
+}
+
+// GLOBAL RUNTIME ENFORCER
+const runtimeMemoryEnforcer = new RuntimeMemoryEnforcer();
+
+// AUTO-ACTIVATE
+runtimeMemoryEnforcer.activate();
+```
+
 ## Critical Enforcement Summary
 
 **ABSOLUTE REQUIREMENT:** ALL roles use memory for ALL operations • NO EXCEPTIONS
 **BYPASS BLOCKING:** No memory → HALT → PENALTY → FORCE INTEGRATION
 **QUALITY ENFORCEMENT:** Poor quality → HALT → FORCE IMPROVEMENT
 **ZERO TOLERANCE:** No memory = Process violation → Immediate correction
+
+---
+
+**ACTIVE MEMORY MANAGEMENT: Combines behavioral requirements with EXECUTABLE enforcement logic for real-time memory integration.**
