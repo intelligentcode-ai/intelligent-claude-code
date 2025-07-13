@@ -8,6 +8,21 @@
 **AUTOMATIC PENALTY:** P:-1.0 INSTANTLY APPLIED for ANY skip attempt
 **BLOCKING ENFORCEMENT:** YOU ARE BLOCKED from ALL actions until memory consulted
 
+## /icc Command Examples
+```bash
+# Basic memory consultation
+/icc memory-first "user authentication implementation"
+
+# Role-specific memory loading
+/icc memory-first --role "@Developer" --context "API endpoints"
+
+# Project-wide memory search
+/icc memory-first --project "UserAuthSystem" --depth 30
+
+# Learning pattern retrieval
+/icc memory-first --type "Learning-" --topic "security patterns"
+```
+
 ## MEMORY CONSULTATION PROTOCOL
 
 1. **Search Memory** - Query relevant entities and relationships

@@ -34,8 +34,11 @@
 @~/.claude/behaviors/context-survival.md
 @~/.claude/behaviors/autonomy-level-enforcement.md
 @~/.claude/behaviors/role-switching-engine.md
+@~/.claude/behaviors/pm-architect-consultation.md
+@~/.claude/behaviors/task-tool-enforcement.md
+@~/.claude/behaviors/sequential-thinking-enforcement.md
 
-**MODULES:** Core(PM/scoring/L1-L3) • Execution(ENFORCED/quality/anti-panic/autonomy) • Roles(14+unlimited) • Integration(MANDATORY-memory/tools) • Ops(Git/quality) • Badges(achievements) • Behaviors(AGENTIC-coordination/context-survival/autonomy-enforcement) • Commands(chain-enforcement)
+**MODULES:** Core(PM/scoring/L1-L3) • Execution(ENFORCED/quality/anti-panic/autonomy) • Roles(14+unlimited) • Integration(MANDATORY-memory/tools) • Ops(Git/quality) • Badges(achievements) • Behaviors(AGENTIC-coordination/context-survival/autonomy-enforcement/consultation/task-tool/sequential-thinking) • Commands(chain-enforcement)
 
 ## COMMAND CHAIN SYSTEM [MANDATORY ENFORCEMENT]
 

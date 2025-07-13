@@ -8,6 +8,28 @@
 **PENALTY:** Q:-2.0 for bypassing quality gates (severe penalty)
 **REQUIREMENT:** MANDATORY for ALL completions without exceptions
 
+## /icc Command Examples
+```bash
+# Basic quality validation
+/icc quality-gates --task "User authentication API"
+
+# Comprehensive quality check
+/icc quality-gates --full \
+  --code-review "@Architect" \
+  --security-scan "@Security-Engineer" \
+  --test-coverage 90 \
+  --documentation-check
+
+# Feature completion validation
+/icc quality-gates "Payment processing module" \
+  --gates "completeness,security,performance,integration,documentation"
+
+# Auto-correction trigger
+/icc quality-gates --auto-correct "Failed API endpoints" \
+  --delegate "@Developer" \
+  --requirements "error-handling,validation,tests"
+```
+
 ## QUALITY VALIDATION PROTOCOL
 
 1. **Completeness Check** - Verify all requirements fully addressed
