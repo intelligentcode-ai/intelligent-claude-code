@@ -4,6 +4,78 @@
 
 ## Disagreement Requirements
 
+```pseudocode
+// DISAGREEMENT DETECTION ENGINE
+FUNCTION initializeDisagreementDetection():
+    
+    violationPatterns = {
+        "PROCESS_VIOLATION": {
+            detect: (action) => action.skipsRequiredStep,
+            response: "DISAGREEMENT: @" + action.role + " skipping " + action.skippedStep,
+            action: () => haltProgress() AND blockContinuation()
+        },
+        "QUALITY_SHORTCUT": {
+            detect: (implementation) => implementation.qualityScore < 0.7,
+            response: "DISAGREEMENT: Implementation lacks " + implementation.missingQuality,
+            action: () => blockDeployment() AND requireQualityFix()
+        },
+        "WRONG_ASSIGNMENT": {
+            detect: (assignment) => assignment.roleMatch < 0.7,
+            response: "DISAGREEMENT: @" + assignment.role + " on " + assignment.task + " - need @" + assignment.optimalRole,
+            action: () => blockAssignment() AND redirectToOptimalRole()
+        },
+        "STANDARD_VIOLATION": {
+            detect: (code) => violatesStandards(code),
+            response: "DISAGREEMENT: " + code.violation + " - " + code.violationType + " violation",
+            action: () => blockMerge() AND requireStandardsCompliance()
+        },
+        "SCOPE_CREEP": {
+            detect: (change) => NOT change.authorized AND change.expandsScope,
+            response: "DISAGREEMENT: " + change.description + " without requirements",
+            action: () => blockImplementation() AND requireRequirementsApproval()
+        }
+    }
+    
+    // CONTINUOUS MONITORING
+    setInterval(() => {
+        currentActions = getCurrentActions()
+        FOR EACH action IN currentActions:
+            FOR EACH pattern IN violationPatterns:
+                IF pattern.detect(action):
+                    executeDisagreement(pattern, action)
+    }, 100)
+    
+END FUNCTION
+
+// DISAGREEMENT EXECUTION
+FUNCTION executeDisagreement(pattern, action):
+    
+    // HALT PROGRESS IMMEDIATELY
+    haltProgress(action)
+    
+    // VOICE DISAGREEMENT
+    voiceDisagreement(pattern.response)
+    
+    // BLOCK CONTINUATION
+    blockContinuation(action)
+    
+    // EXECUTE PATTERN ACTION
+    pattern.action()
+    
+    // LOG FOR RESOLUTION
+    logDisagreement({
+        pattern: pattern.type,
+        action: action,
+        response: pattern.response,
+        timestamp: getCurrentTimestamp()
+    })
+    
+    // INITIATE RESOLUTION
+    initiateResolution(pattern, action)
+    
+END FUNCTION
+```
+
 **MANDATORY:** ALL roles MUST disagree on violations • Voice concerns • Block violations
 **TRIGGERS:** Violation → HALT → Disagree → Block → Resolve → Escalate if needed
 **TOLERANCE:** ZERO for violations • Shortcuts BLOCKED • Wrong assignments CHALLENGED
@@ -41,6 +113,114 @@
 
 ## Resolution Process
 
+```pseudocode
+// RESOLUTION ENGINE
+FUNCTION initiateResolution(disagreement, context):
+    
+    resolution = {
+        disagreement: disagreement,
+        context: context,
+        escalationLevel: 1,
+        status: "PENDING",
+        evidence: [],
+        resolution: null
+    }
+    
+    // START WITH PEER RESOLUTION
+    resolution = attemptPeerResolution(resolution)
+    
+    IF resolution.status == "UNRESOLVED":
+        resolution.escalationLevel = 2
+        resolution = attemptPMMediation(resolution)
+    
+    IF resolution.status == "UNRESOLVED" AND resolution.isTechnical:
+        resolution.escalationLevel = 3
+        resolution = attemptArchitectArbitration(resolution)
+    
+    IF resolution.status == "UNRESOLVED" AND resolution.hasBusinessImpact:
+        resolution.escalationLevel = 4
+        resolution = escalateToUser(resolution)
+    
+    // FINALIZE RESOLUTION
+    finalizeResolution(resolution)
+    
+    RETURN resolution
+END FUNCTION
+
+// PEER RESOLUTION
+FUNCTION attemptPeerResolution(resolution):
+    
+    // GATHER EVIDENCE FROM BOTH PARTIES
+    evidence = gatherEvidence(resolution.disagreement.parties)
+    resolution.evidence.append(evidence)
+    
+    // FACILITATE DISCUSSION
+    discussion = facilitateDiscussion(resolution.disagreement.parties, evidence)
+    
+    // CHECK FOR MUTUAL AGREEMENT
+    IF discussion.mutualAgreement:
+        resolution.status = "RESOLVED"
+        resolution.resolution = discussion.agreement
+        resolution.resolutionMethod = "PEER_AGREEMENT"
+    ELSE:
+        resolution.status = "UNRESOLVED"
+        resolution.peerAttemptDetails = discussion
+    
+    RETURN resolution
+END FUNCTION
+
+// PM MEDIATION
+FUNCTION attemptPMMediation(resolution):
+    
+    // PM REVIEWS ALL EVIDENCE
+    pmReview = conductPMReview(resolution.evidence)
+    
+    // PM MAKES DECISION
+    pmDecision = makePMDecision(pmReview, resolution.context)
+    
+    resolution.status = "RESOLVED"
+    resolution.resolution = pmDecision
+    resolution.resolutionMethod = "PM_MEDIATION"
+    
+    RETURN resolution
+END FUNCTION
+
+// ARCHITECT ARBITRATION
+FUNCTION attemptArchitectArbitration(resolution):
+    
+    // ARCHITECT TECHNICAL REVIEW
+    architectReview = conductArchitectReview(resolution.evidence, resolution.context)
+    
+    // ARCHITECT FINAL DECISION
+    architectDecision = makeArchitectDecision(architectReview)
+    
+    resolution.status = "RESOLVED"
+    resolution.resolution = architectDecision
+    resolution.resolutionMethod = "ARCHITECT_ARBITRATION"
+    
+    RETURN resolution
+END FUNCTION
+
+// RESOLUTION FINALIZATION
+FUNCTION finalizeResolution(resolution):
+    
+    // IMPLEMENT CORRECTIVE ACTION
+    correctiveAction = defineCorrectiveAction(resolution)
+    implementCorrectiveAction(correctiveAction)
+    
+    // CAPTURE LEARNING
+    learning = captureResolutionLearning(resolution)
+    storeInMemory(learning)
+    
+    // UPDATE SCORES
+    updateDisagreementScores(resolution)
+    
+    // NOTIFY TEAM
+    notifyTeamOfResolution(resolution)
+    
+END FUNCTION
+```
+
 **ESCALATION LEVELS:**
 1. Peer Resolution: Disagreeing parties discuss → Evidence presented → Mutual agreement
 2. PM Mediation: Peers cannot agree → PM reviews evidence → Makes decision
@@ -54,6 +234,78 @@
 - Learning Capture: Resolution documented → Pattern identified → Future prevention
 
 ## Scoring System
+
+```pseudocode
+// DISAGREEMENT SCORING ENGINE
+FUNCTION updateDisagreementScores(resolution):
+    
+    // SUCCESSFUL DISAGREEMENT REWARDS
+    IF resolution.status == "RESOLVED" AND resolution.violationPrevented:
+        
+        SWITCH resolution.impact:
+            CASE "VIOLATION_PREVENTED":
+                applyReward(resolution.disagreer, +1.0, "P")
+                applyReward(resolution.disagreer, +1.0, "Q")
+                logSuccess("Team protected from violation")
+            
+            CASE "MAJOR_VIOLATION_STOPPED":
+                applyReward(resolution.disagreer, +2.0, "P")
+                applyReward(resolution.disagreer, +2.0, "Q")
+                generateKudos(resolution.disagreer, "Major violation prevention")
+            
+            CASE "STANDARD_ENFORCEMENT":
+                applyReward(resolution.disagreer, +0.5, "P")
+                applyReward(resolution.disagreer, +0.5, "Q")
+                logRecognition("Best practice upheld")
+            
+            CASE "SCOPE_PROTECTION":
+                applyReward(resolution.disagreer, +1.0, "P")
+                applyReward(resolution.disagreer, +1.0, "Q")
+                notifyPM("Scope creep prevented")
+    
+    // PENALTY AVOIDANCE (NO PENALTY CASES)
+    ELSE IF resolution.isGoodFaith:
+        // NO PENALTY even if disagreement was wrong
+        logNoPenalty("Good faith disagreement")
+    
+    ELSE IF resolution.hasPartialMerit:
+        // NO PENALTY if some merit found
+        logNoPenalty("Partial merit recognized")
+    
+    ELSE IF resolution.createdLearning:
+        // NO PENALTY if learning opportunity
+        logNoPenalty("Learning opportunity created")
+    
+    ELSE IF resolution.wasRespectful:
+        // NO PENALTY for professional objection
+        logNoPenalty("Respectful professional challenge")
+    
+    // PENALTY TRIGGERS
+    ELSE:
+        
+        SWITCH resolution.violationType:
+            CASE "SABOTAGE":
+                applyPenalty(resolution.disagreer, -5.0, "P")
+                flagForReplacement(resolution.disagreer)
+            
+            CASE "OVERRIDE_IGNORED":
+                applyPenalty(resolution.disagreer, -2.0, "P")
+                requireEscalation(resolution)
+            
+            CASE "BAD_FAITH":
+                applyPenalty(resolution.disagreer, -3.0, "P")
+                requireCounseling(resolution.disagreer)
+            
+            CASE "PATTERN_ABUSE":
+                applyPenalty(resolution.disagreer, -5.0, "P")
+                requireReview(resolution.disagreer)
+    
+    // GENERATE LEARNING CALLOUT IF SIGNIFICANT
+    IF resolution.scoreImpact >= 1.5:
+        generateLearningCallout(resolution)
+    
+END FUNCTION
+```
 
 **DISAGREEMENT REWARDS:**
 - Successful Disagreement: Violation prevented → +1.0pts P/Q → Team protected

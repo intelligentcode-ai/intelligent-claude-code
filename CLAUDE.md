@@ -21,7 +21,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Architecture
 
 ### System Type
-This is a **configuration-based system** built with native Markdown files, not a traditional software project. There are no build tools, package managers, or compiled artifacts.
+This is a **hybrid configuration-based system** built with native Markdown files and structured pseudo-code implementation patterns. The system combines behavioral documentation with actionable pseudo-code for direct implementation, without requiring traditional build tools, package managers, or compiled artifacts.
+
+### Pseudo-Code Implementation Approach
+The system uses a **hybrid documentation strategy** that maintains Claude Code's native markdown support while adding structured pseudo-code patterns for actionable implementation:
+
+#### Implementation Philosophy
+- **Pure Markdown Foundation**: Maintains Claude Code's native CLAUDE.md file support
+- **Structured Pseudo-Code Enhancement**: Adds actionable implementation logic within markdown format
+- **Behavioral Intelligence**: Combines documentation with executable behavioral patterns
+- **Direct Implementation Path**: Pseudo-code translates directly to any programming language
+
+#### Hybrid Architecture Benefits
+- **Developer Ready**: Technical implementation details directly available
+- **AI Optimized**: Claude Code understands both markdown context and pseudo-code logic
+- **Version Control Friendly**: Clear diffs show both documentation and logic changes
+- **Professional Integration**: Maintains Git workflow and development standards
 
 ### Core Components
 
@@ -34,19 +49,35 @@ This is a **configuration-based system** built with native Markdown files, not a
 - `modes/role-framework.md` - 14 core roles with ultra-experienced standards
 - `modes/integration-layer.md` - Memory Bank with aging, MCP integration, tool fallback
 - `modes/operational-protocols.md` - Git workflow enforcement, quality standards
-- `behaviors/` - Behavioral intelligence modules (memory, specialization, disagreement)
+- `behaviors/` - **Behavioral intelligence modules with pseudo-code implementation**
+  - `pseudo-code-integration.md` - Master behavioral framework orchestrator
+  - `enforcement-autonomy.md` - Process compliance and auto-correction patterns
+  - `memory-coordination.md` - Memory-first culture enforcement patterns
+  - `command-chains.md` - Structured execution and tool integration patterns
+  - `active-disagreement.md` - Violation detection and resolution patterns
+  - `role-assessment.md` - Capability optimization and specialist creation
+  - `learning-team-automation.md` - Error forgiveness and pattern capture
 
 #### Behavioral Framework Architecture
-- **Command Chain Guidance**: Structured patterns for consistent role execution
-- **Quality Gate Patterns**: Process guidance for requirements, architecture, peer review, implementation
-- **Task Coordination System**: PM-driven delegation with parallel execution support
-- **Security Validation Guidelines**: Recommended practices for code changes and configurations
-- **Evidence-Based Reporting**: Encouragement of fact-based validation and documentation
-- **Git Workflow Guidance**: Professional branching, commit standards, and MR practices
-- **Documentation Patterns**: Structured approach to updates and evidence provision
-- **Review Frameworks**: Guidance for peer review processes and validation
-- **Validation Guidelines**: DoD patterns for deliverables and handoffs
-- **Strategic Analysis Patterns**: Thoughtful approach to role delegations and decisions
+- **Pseudo-Code Implementation**: Actionable behavioral patterns with structured execution logic
+- **Command Chain Orchestration**: Structured patterns with pseudo-code implementation details
+- **Quality Gate Enforcement**: Process guidance with blocking patterns and auto-correction
+- **Task Coordination System**: PM-driven delegation with parallel execution pseudo-code
+- **Security Validation Automation**: Automated code validation with enforcement patterns
+- **Evidence-Based Monitoring**: Real-time validation with scoring and learning integration
+- **Git Workflow Automation**: Professional standards with automated compliance checking
+- **Documentation Intelligence**: Structured updates with pseudo-code pattern generation
+- **Review Framework Automation**: Automated peer review with quality enforcement
+- **Validation Engine**: DoD patterns with blocking enforcement and auto-correction
+- **Strategic Analysis Intelligence**: Thoughtful role delegation with optimization algorithms
+
+#### Pseudo-Code Integration Benefits
+- **Direct Implementation**: Functions translate directly to any programming language
+- **Clear Decision Logic**: Explicit conditional flows for behavioral responses
+- **Modular Architecture**: Independent components with defined interfaces
+- **Error Handling**: Comprehensive auto-correction and penalty systems
+- **Monitoring Systems**: Continuous behavioral compliance monitoring
+- **Integration Patterns**: Clear interfaces between behavioral modules
 
 #### Configuration System
 - **Virtual Team Mode**: 14 specialized roles with Git workflow and autonomous operation
@@ -56,24 +87,69 @@ This is a **configuration-based system** built with native Markdown files, not a
 
 ## Development Workflow
 
+### Pseudo-Code Implementation Workflow
+
+#### Hybrid Development Approach
+The system uses a **hybrid development approach** combining markdown documentation with structured pseudo-code implementation:
+
+```bash
+# Implementation development cycle
+1. Edit behavioral logic in pseudo-code blocks
+2. Update markdown documentation for context
+3. make lint         # Validate both markdown and pseudo-code syntax
+4. make test         # Test behavioral pattern integration
+5. git commit        # Track implementation and documentation changes
+```
+
+#### Pseudo-Code Development Patterns
+```markdown
+# Example behavioral module structure:
+## Behavioral Description (Markdown)
+Human-readable explanation of the behavioral pattern
+
+## Implementation Logic (Pseudo-Code)
+```pseudocode
+FUNCTION behavioralPattern(context):
+    // Structured implementation logic
+    result = processPattern(context)
+    validateOutcome(result)
+    RETURN result
+END FUNCTION
+```
+
+## Integration Guidelines (Markdown)
+Instructions for integration with other modules
+```
+
 ### Standard Tasks
 ```bash
 # Quick setup
 make install          # Interactive installation
 make test            # Validate everything works
 
-# Development cycle
-1. Edit source files in src/
-2. make lint         # Validate changes
-3. make test         # Test functionality
-4. git commit        # Follow Git workflow
+# Development cycle for pseudo-code implementation
+1. Edit pseudo-code logic in src/behaviors/*.md files
+2. Update markdown context and documentation
+3. make lint         # Validate both markdown and pseudo-code syntax
+4. make test         # Test behavioral pattern integration
+5. git commit        # Follow Git workflow for hybrid changes
 ```
 
 ### File Editing Patterns
 - **Virtual Team**: Edit `src/modes/virtual-team.md`
 - **Roles**: Edit `src/modes/role-framework.md`
-- **Behaviors**: Edit files in `src/behaviors/`
+- **Behavioral Pseudo-Code**: Edit files in `src/behaviors/` with hybrid approach
+  - Update pseudo-code blocks for implementation logic
+  - Maintain markdown sections for context and documentation
+  - Ensure integration patterns between modules remain clear
 - **Config**: Edit `src/config.md`
+
+### Pseudo-Code Implementation Guidelines
+- **Function Structure**: Use clear function names with descriptive parameters
+- **Decision Logic**: Implement explicit IF/ELSE patterns for behavioral responses
+- **Error Handling**: Include comprehensive error detection and auto-correction
+- **Integration Points**: Define clear interfaces between behavioral modules
+- **Monitoring Patterns**: Include continuous monitoring for real-time enforcement
 
 ### Testing
 ```bash
@@ -185,10 +261,16 @@ git log --oneline -n 5
 ## Architecture Overview
 
 ### System Design
-- **Configuration-based**: Native Markdown files, no build tools
-- **Modular**: Import chain activation via single line
-- **Graceful**: Never overwrites existing configurations
-- **Professional**: Git workflow enforcement with quality gates
+- **Hybrid Configuration**: Native Markdown with structured pseudo-code implementation
+- **Modular Architecture**: Import chain activation via single line with pseudo-code patterns
+- **Graceful Integration**: Never overwrites existing configurations while adding implementation logic
+- **Professional Development**: Git workflow enforcement with automated behavioral compliance
+
+### Pseudo-Code Implementation Architecture
+- **Behavioral Intelligence Framework**: Structured pseudo-code patterns for AI coordination
+- **Implementation-Ready Logic**: Direct translation from pseudo-code to any programming language
+- **Monitoring and Enforcement**: Real-time behavioral compliance with auto-correction patterns
+- **Quality Automation**: Comprehensive validation with blocking patterns and penalty systems
 
 ### Core Components
 - **14 Specialized Roles**: PM, Architect, Developer, QA, Security, etc.
