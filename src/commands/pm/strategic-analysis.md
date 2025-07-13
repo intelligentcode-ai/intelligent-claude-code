@@ -1,4 +1,4 @@
-# /pm-strategic-analysis Command Chain
+# /icc:strategic-analysis Command Chain
 
 **PURPOSE:** Complete strategic analysis with enforcement for PM coordination and decision-making
 
@@ -152,7 +152,7 @@ Recommendation: Provide clear strategic recommendation
 
 ## COMMAND CHAIN INTEGRATION
 
-**PREREQUISITES:** /memory-first → strategic context loaded
+**PREREQUISITES:** /icc:memory-first → strategic context loaded
 **EXECUTION:** Strategic analysis with specialist consultation
-**VALIDATION:** /quality-gates → strategic decision validation
+**VALIDATION:** /icc:quality-gates → strategic decision validation
 **FOLLOW-UP:** Implementation delegation and monitoring

@@ -1,6 +1,6 @@
 # Penalty System - MATHEMATICAL ENFORCEMENT
 
-**CRITICAL**: This file contains EXECUTABLE penalty calculation system with REAL mathematical enforcement that ACTUALLY calculates and applies penalties.
+**CRITICAL**: MAXIMUM STRENGTH automatic self-enforcement system. INSTANT penalty application, ZERO tolerance, AUTOMATIC violation detection, FORCED behavioral correction. NO EXTERNAL PROMPTING NEEDED.
 
 ## PENALTY CALCULATION ENGINE [EXECUTABLE]
 

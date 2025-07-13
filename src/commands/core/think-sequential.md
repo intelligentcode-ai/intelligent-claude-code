@@ -1,4 +1,4 @@
-# /think-sequential Command Chain
+# /icc:think-sequential Command Chain
 
 **PURPOSE:** FORCED sequential thinking for ALL complex problems - NO EXCEPTIONS
 

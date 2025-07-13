@@ -1,4 +1,4 @@
-# /parallel-delegate Command Chain
+# /icc:parallel-delegate Command Chain
 
 **PURPOSE:** Intelligent parallel delegation for multi-role work with coordination enforcement
 
@@ -113,6 +113,6 @@ Setup: Quality validation across all components
 
 ## COMMAND CHAIN CONTINUATION
 
-**SUCCESS:** → Parallel execution begins → Integration phase → /quality-gates
+**SUCCESS:** → Parallel execution begins → Integration phase → /icc:quality-gates
 **INSUFFICIENT:** → Retry delegation with clearer decomposition
 **BYPASS:** → P:-1.0 penalty, forced multi-role coordination
