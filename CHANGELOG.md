@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.0] - 2025-07-12
+
+### Added
+- **System Commands**: /icc:init, /icc:reset, /icc:refresh for system management
+- **Continuous Operation**: L2/L3 autonomy with self-correction instead of halts
+- **PM-Architect Consultation**: Mandatory equal-partner consultation enforcement
+- **Task Tool Enforcement**: Complex work requires Task tool delegation
+- **Sequential Thinking Enforcement**: Complex decisions require thinking chains
+- **Command Prefix**: All commands use icc: prefix for clarity
+- **CLAUDE.md Improvements**: Practical developer guide with troubleshooting
+
+### Changed
+- **L2/L3 Behavior**: Replace HALT/STOP with continuous correction
+- **Command Chains**: Integrated /icc: prefix throughout system
+- **Behavioral Triggers**: Maximum strength autonomous enforcement
+- **Memory Patterns**: Simplified format for easy recall
+
+### Fixed
+- **Scope Violations**: All work confined to project repository
+- **Process Compliance**: Proper review and documentation workflows
+- **Role Assignment**: AI-specialists for AI-agentic work
+- **Continuous Operation**: No stops for L2/L3 autonomy
+
 ## [5.1.0] - 2025-07-12
 
 ### Added
