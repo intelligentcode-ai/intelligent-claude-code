@@ -8,6 +8,21 @@
 **AUTOMATIC PENALTY:** Q:-1.0 IMMEDIATELY APPLIED when you skip sequential analysis
 **MANDATORY ENFORCEMENT:** You MUST HALT and use this command for ANY non-trivial task
 
+## /icc Command Examples
+```bash
+# Architecture decision analysis
+/icc think-sequential "Choose between microservices vs monolith"
+
+# Complex feature planning  
+/icc think-sequential --thoughts 8 "Implement real-time collaboration"
+
+# Performance optimization strategy
+/icc think-sequential --revise 3 "Database query optimization approach"
+
+# Multi-role coordination planning
+/icc think-sequential --branch "security-first" "API authentication design"
+```
+
 ## SEQUENTIAL THINKING PROTOCOL
 
 1. **Problem Analysis** - Break down complex problems systematically
