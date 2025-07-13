@@ -4,7 +4,7 @@
 
 Turn Claude Code into an intelligent virtual development team that uses behavioral patterns to coordinate work across specialized roles - from simple websites to enterprise applications.
 
-[![Version](https://img.shields.io/badge/version-5.1.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.2.0-blue.svg)](CHANGELOG.md)
 [![Autonomy](https://img.shields.io/badge/autonomy-Level_3-green.svg)](#autonomy-levels)
 [![Enforcement](https://img.shields.io/badge/enforcement-Mandatory-red.svg)](#behavioral-enforcement-architecture)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
