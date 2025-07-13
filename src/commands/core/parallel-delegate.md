@@ -8,6 +8,28 @@
 **PENALTY:** P:-1.0 for bypassing when multi-role work identified  
 **AUTHORITY:** PM-led coordination with role specialization optimization
 
+## /icc Command Examples
+```bash
+# Basic multi-role delegation
+/icc parallel-delegate "Build user dashboard" --roles "@Developer,@Web-Designer,@QA-Engineer"
+
+# Complex feature with dependencies
+/icc parallel-delegate --staged "E-commerce checkout flow" \
+  --stage1 "@Architect:design,@Security-Engineer:review" \
+  --stage2 "@Developer:implement,@Frontend-Developer:UI" \
+  --stage3 "@QA-Engineer:test,@User-Role:e2e"
+
+# Performance optimization delegation
+/icc parallel-delegate "Optimize API response times" \
+  --analyze "@Architect,@Database-Engineer" \
+  --implement "@Developer,@DevOps-Engineer" \
+  --validate "@Backend-Tester,@QA-Engineer"
+
+# Specialist creation and delegation
+/icc parallel-delegate --create-specialists "Blockchain integration" \
+  --roles "@Blockchain-Developer,@Smart-Contract-Auditor,@Security-Engineer"
+```
+
 ## PARALLEL DELEGATION PROTOCOL
 
 1. **Role Analysis** - Identify optimal roles for each task component

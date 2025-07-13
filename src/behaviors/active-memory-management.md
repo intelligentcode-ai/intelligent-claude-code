@@ -63,6 +63,61 @@
 - "learned-from" → Learning learned-from Experience
 - "assigned-to" → Task assigned-to Role
 
+## MEMORY RECALL ENFORCEMENT [MANDATORY]
+
+### /icc Command Examples
+```bash
+# Before any task - memory search required
+/icc memory-recall "authentication implementation"
+
+# Role context loading
+/icc load-role-memory "@Developer"
+
+# Project context retrieval
+/icc recall-project-context "UserAuthSystem"
+
+# Learning pattern search
+/icc search-learnings "performance optimization"
+```
+
+### Recall Enforcement Triggers
+**BEFORE ANY IMPLEMENTATION:** Must search for similar past work
+**BEFORE ARCHITECTURE DECISIONS:** Must recall past decisions and outcomes
+**BEFORE TESTING:** Must load previous test strategies and results
+**BEFORE OPTIMIZATION:** Must retrieve performance patterns and benchmarks
+
+### Recall Patterns by Role
+
+**@PM Memory Recall:**
+```
+START: search_nodes("project-status") → open_nodes(recent 5)
+PLANNING: search_nodes("sprint-planning") → analyze velocity
+DELEGATION: search_nodes("@Role assignments") → workload check
+DECISION: search_nodes("Decision-Strategic") → impact analysis
+```
+
+**@Developer Memory Recall:**
+```
+START: search_nodes("current-implementation") → load context
+CODING: search_nodes("similar-features") → reuse patterns
+DEBUG: search_nodes("Issue-") → known problems check
+HANDOFF: create_entities(implementation-complete)
+```
+
+**@Architect Memory Recall:**
+```
+DESIGN: search_nodes("architecture-patterns") → proven solutions
+REVIEW: search_nodes("Decision-Technical") → consistency check
+GUIDANCE: search_nodes("best-practices") → team standards
+VALIDATION: compare with past architectural decisions
+```
+
+### Recall Quality Metrics
+**DEPTH:** How far back was memory searched (days/weeks/months)
+**BREADTH:** How many related entities were examined
+**RELEVANCE:** How closely recalled items match current task
+**APPLICATION:** How recalled knowledge influenced current work
+
 ## MANDATORY BEHAVIORAL ENFORCEMENT - HALT AND FORCE
 
 ### YOU MUST SELF-CORRECT FOR THESE VIOLATIONS

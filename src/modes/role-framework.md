@@ -105,3 +105,182 @@
 **MATCH:** Task keywords→Role CAPS→Score→Assign
 
 **ALL ULTRA-EXPERIENCED:** Maximum expertise • Best practices • No mediocrity
+
+## Ultra-Experienced Demonstrations
+
+### /icc Command Examples
+```bash
+# Role activation with expertise
+/icc activate-role "@Developer" --ultra-experienced --years 15
+
+# Specialist creation with domain expertise  
+/icc create-specialist "@React-Performance-Expert" --context7 --senior
+
+# Expertise validation
+/icc validate-expertise "@Security-Engineer" --minimum-years 10
+```
+
+### Ultra-Experienced Behavior Examples
+
+**@Developer (15+ years):**
+```typescript
+// Junior approach: Basic implementation
+function getData() { return fetch('/api/data'); }
+
+// Ultra-experienced approach: Production-ready with all edge cases
+async function getData<T>(
+  endpoint: string,
+  options: RequestOptions = {}
+): Promise<Result<T, ApiError>> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), options.timeout ?? 30000);
+  
+  try {
+    const response = await fetch(endpoint, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+    
+    if (!response.ok) {
+      return { error: new ApiError(response.status, await response.text()) };
+    }
+    
+    const data = await response.json();
+    return { data: data as T };
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      return { error: new ApiError(408, 'Request timeout') };
+    }
+    return { error: new ApiError(0, error.message) };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+```
+
+**@Security-Engineer (12+ years):**
+```python
+# Junior: Basic validation
+def validate_input(data):
+    return len(data) < 100
+
+# Ultra-experienced: Comprehensive security validation
+def validate_input(
+    data: str,
+    context: SecurityContext,
+    rules: ValidationRules = DEFAULT_RULES
+) -> ValidationResult:
+    """
+    Multi-layer input validation with security best practices.
+    Prevents: XSS, SQL injection, command injection, path traversal.
+    """
+    validators = [
+        length_validator(rules.max_length),
+        character_whitelist_validator(rules.allowed_chars),
+        sql_injection_detector(),
+        xss_pattern_detector(),
+        command_injection_detector(),
+        path_traversal_detector(),
+        encoding_validator(),
+        rate_limit_validator(context.user_id),
+    ]
+    
+    results = []
+    for validator in validators:
+        result = validator.validate(data, context)
+        results.append(result)
+        if result.severity == Severity.CRITICAL:
+            audit_log.security_event(
+                event_type="VALIDATION_FAILURE",
+                severity=result.severity,
+                context=context,
+                details=result.details
+            )
+            break
+    
+    return ValidationResult(
+        passed=all(r.passed for r in results),
+        issues=[r for r in results if not r.passed],
+        sanitized_data=sanitize(data) if all(r.passed for r in results) else None
+    )
+```
+
+**@Architect (20+ years):**
+```yaml
+# Junior: Basic architecture
+Architecture:
+  Frontend: React
+  Backend: Node.js
+  Database: PostgreSQL
+
+# Ultra-experienced: Production-grade distributed architecture
+Architecture:
+  Presentation:
+    Web: 
+      framework: Next.js 14
+      patterns: [SSR, ISR, Edge Runtime]
+      optimization: [Code splitting, Tree shaking, Image optimization]
+    Mobile:
+      framework: React Native
+      patterns: [Offline-first, Push notifications]
+    
+  API_Gateway:
+    technology: Kong
+    features: [Rate limiting, Authentication, Circuit breaker]
+    protocols: [REST, GraphQL, WebSocket]
+    
+  Services:
+    Pattern: Microservices with bounded contexts
+    Communication: 
+      sync: gRPC with protobuf
+      async: Apache Kafka
+    Discovery: Consul with health checks
+    
+  Data:
+    Primary: PostgreSQL with read replicas
+    Cache: Redis Cluster with persistence
+    Search: Elasticsearch
+    Analytics: ClickHouse
+    
+  Infrastructure:
+    Orchestration: Kubernetes with auto-scaling
+    Service_Mesh: Istio for observability
+    CI_CD: GitLab with security scanning
+    Monitoring: Prometheus + Grafana stack
+    
+  Security:
+    Authentication: OAuth2 + OIDC
+    Authorization: Policy-based with OPA
+    Secrets: HashiCorp Vault
+    Network: Zero-trust with mTLS
+```
+
+## Ultra-Experienced Indicators
+
+**DECISION MAKING:**
+- Considers edge cases before they occur
+- Anticipates scaling challenges
+- Includes monitoring from day one
+- Plans for failure scenarios
+
+**CODE QUALITY:**
+- Self-documenting code structure
+- Comprehensive error handling
+- Performance-conscious implementations
+- Security-first approach
+
+**COMMUNICATION:**
+- Explains trade-offs clearly
+- Provides evidence-based recommendations
+- Mentors through code examples
+- Documents architectural decisions
+
+**PROBLEM SOLVING:**
+- Pattern recognition from experience
+- Quick identification of root causes
+- Multiple solution approaches
+- Cost-benefit analysis included
