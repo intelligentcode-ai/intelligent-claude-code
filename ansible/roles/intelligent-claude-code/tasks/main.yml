@@ -17,7 +17,6 @@
     - "{{ claude_install_path }}"
     - "{{ claude_install_path }}/modes"
     - "{{ claude_install_path }}/behaviors"
-    - "{{ claude_install_path }}/commands"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -70,19 +69,23 @@
     msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
   when: behaviors_copy_result.failed
 
-- name: Copy command files (force=no to preserve user modifications)
+- name: Check if commands.md exists
+  stat:
+    path: "{{ claude_install_path }}/commands.md"
+  register: commands_md_exists
+
+- name: Copy commands.md file (force=no to preserve user modifications)
   copy:
-    src: "{{ playbook_dir }}/../src/commands/"
-    dest: "{{ claude_install_path }}/commands/"
+    src: "{{ playbook_dir }}/../src/commands.md"
+    dest: "{{ claude_install_path }}/commands.md"
     mode: '0644'
     force: no
-  ignore_errors: yes
-  register: commands_copy_result
+  when: not commands_md_exists.stat.exists
 
 - name: Display commands preservation notice
   debug:
-    msg: "Command files preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
-  when: commands_copy_result.failed
+    msg: "Commands file preserved: {{ claude_install_path }}/commands.md already exists - keeping user modifications"
+  when: commands_md_exists.stat.exists
 
 - name: Copy VERSION file (force=no to preserve user modifications)
   copy:
@@ -177,17 +180,17 @@
     force: yes
   when: update_mode is defined and update_mode | bool
 
-- name: Force update command files if update_mode is enabled
+- name: Force update commands.md file if update_mode is enabled
   copy:
-    src: "{{ playbook_dir }}/../src/commands/"
-    dest: "{{ claude_install_path }}/commands/"
+    src: "{{ playbook_dir }}/../src/commands.md"
+    dest: "{{ claude_install_path }}/commands.md"
     mode: '0644'
     force: yes
   when: update_mode is defined and update_mode | bool
 
 - name: Display update mode notice
   debug:
-    msg: "Update mode: Force overriding user modifications to mode files, behavior files, command files, and VERSION"
+    msg: "Update mode: Force overriding user modifications to mode files, behavior files, commands.md file, and VERSION"
   when: update_mode is defined and update_mode | bool
 
 - name: Display installation summary

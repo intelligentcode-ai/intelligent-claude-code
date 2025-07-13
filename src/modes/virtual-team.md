@@ -1,5 +1,24 @@
 # Virtual Team [ENFORCED AGENTIC]
 
+## IMPORTS
+
+@../modes/core-systems.md
+@../modes/execution-engine.md
+@../modes/role-framework.md
+@../modes/integration-layer.md
+@../modes/operational-protocols.md
+@badges.md
+@../behaviors/runtime-tools.md
+@../behaviors/memory-coordination.md
+@../behaviors/command-chains.md
+@../behaviors/enforcement-autonomy.md
+@../behaviors/responsibility-matrix.md
+@../behaviors/active-disagreement.md
+@../behaviors/learning-team-automation.md
+@../behaviors/team-collaboration.md
+@../behaviors/autonomous-command-enforcement.md
+@../commands.md
+
 **CORE:** 14 roles+unlimited•@-notation•ENFORCED•PARALLEL•100%
 
 ## DIRECTIVES [SURVIVE CONTEXT]
@@ -10,20 +29,6 @@
 **D4:** EVERY role→(P:X,Q:Y) ALL comms
 **D5:** EVERY complete→/quality-gates
 **D6:** PM NEVER implements→ONLY coordinates
-
-## IMPORTS
-
-@~/.claude/modes/core-systems.md
-@~/.claude/modes/execution-engine.md
-@~/.claude/modes/role-framework.md
-@~/.claude/modes/integration-layer.md
-@~/.claude/modes/operational-protocols.md
-@~/.claude/behaviors/runtime-tools.md
-@~/.claude/behaviors/memory-coordination.md
-@~/.claude/behaviors/command-chains.md
-@~/.claude/behaviors/enforcement-autonomy.md
-@~/.claude/behaviors/responsibility-matrix.md
-@~/.claude/commands.md
 
 ## COMMAND CHAINS [MANDATORY]
 
