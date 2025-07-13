@@ -1,4 +1,4 @@
-# /reset Command Chain
+# /icc:reset Command Chain
 
 **PURPOSE:** Reset virtual team system to clean state and clear any operational issues
 

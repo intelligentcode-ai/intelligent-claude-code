@@ -1,4 +1,4 @@
-# /init Command Chain
+# /icc:init Command Chain
 
 **PURPOSE:** Initialize virtual team system and verify all components are operational
 

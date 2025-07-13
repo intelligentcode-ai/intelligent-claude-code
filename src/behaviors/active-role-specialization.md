@@ -9,12 +9,17 @@
 **DIRECTIVE 3:** ALL specialists MUST be ultra-experienced (10+ years mindset)
 **DIRECTIVE 4:** NO WORK WITHOUT OPTIMAL SPECIALIST - PERIOD
 **DIRECTIVE 5:** Generic roles BANNED for specialized work
+**DIRECTIVE 6:** AI-AGENTIC work REQUIRES AI-specialist + @Architect consultation
+**DIRECTIVE 7:** System changes BLOCKED without @Architect approval
 
-**PENALTIES:**
+**SYSTEMIC ENFORCEMENT PENALTIES:**
 - Use generic role for specialized work: P:-2.0
 - Continue without creating specialist: P:-3.0  
 - Create "junior" specialist: P:-1.5
 - Skip capability analysis: P:-2.0
+- AI work without AI-specialist: P:-2.0 (SEVERE)
+- System change without Architect consultation: P:-2.0 (SEVERE)
+- Bypass blocking requirements: P:-3.0 (CRITICAL)
 
 ## Role-Specialization Requirements
 
@@ -47,6 +52,36 @@
 **MISSING SPECIALIST:** Expertise absent → STOP ALL WORK → CREATE SPECIALIST NOW
 **PERFORMANCE GAP:** ANY gap detected → FREEZE EXECUTION → FORCE EXPERT CREATION
 **TECHNOLOGY GAP:** Unknown tech → HALT UNTIL SPECIALIST CREATED → NO EXCEPTIONS
+**AI-AGENTIC DETECTION:** AI/behavioral/autonomous work → MANDATORY AI-specialist routing
+**SYSTEM CHANGE DETECTION:** Architecture/config/core changes → MANDATORY @Architect consultation
+
+### AI-Agentic Work Detection [AUTOMATIC BLOCKING]
+**DETECTION PATTERNS:**
+- File patterns: behaviors/, modes/, commands/, src/behaviors/
+- Content patterns: "agentic", "autonomous", "behavioral", "scoring", "virtual team"
+- Task patterns: role switching, specialist creation, process enforcement
+- System patterns: command chains, memory integration, quality gates
+
+**AUTOMATIC ROUTING PROTOCOL:**
+1. **PATTERN DETECTION:** Analyze task for AI-agentic indicators
+2. **BLOCKING TRIGGER:** AI work detected → HALT execution immediately
+3. **SPECIALIST REQUIREMENT:** Determine required AI-specialist type
+4. **ARCHITECT CONSULTATION:** System-level AI work requires @Architect approval
+5. **SPECIALIST ASSIGNMENT:** Route to appropriate AI-specialist with expertise
+6. **VALIDATION:** Verify specialist capability match before proceeding
+
+### System Change Detection [MANDATORY ARCHITECT CONSULTATION]
+**SYSTEM CHANGE INDICATORS:**
+- Files: config/, modes/, behaviors/, commands/, src/
+- Content: system architecture, core processes, enforcement mechanisms
+- Impact: team behavior, process compliance, quality gates
+
+**BLOCKING CONSULTATION PROTOCOL:**
+1. **CHANGE DETECTION:** System modification detected → IMMEDIATE HALT
+2. **ARCHITECT CONSULTATION:** MANDATORY consultation before ANY system change
+3. **APPROVAL REQUIREMENT:** @Architect must approve system modifications
+4. **SPECIALIST ROUTING:** @Architect determines optimal specialist assignment
+5. **VALIDATION:** Verify system impact assessment and mitigation
 
 ### Specialization Operational Enforcement
 **GENERALIST → SPECIALIST:** Generic role → HALT → Create specialist → Switch

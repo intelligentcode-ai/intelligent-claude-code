@@ -137,12 +137,50 @@
 **TASK TOOL PRIMACY:** EVERY work item → MUST use Task tool → PARALLEL delegation → MULTIPLE roles simultaneously → NEVER sequential bottlenecks
 **MEMORY-FIRST:** ALL roles MUST consult memory before actions → -1.0pts P if skipped
 
-### Role Assignment Consultation
-**TRIGGERS:** Domain overlap • Complex technical • Architecture modifications • Multi-domain tasks
-**PROTOCOL:** PM identifies → Domain overlap → QUICK CONSULT → @Architect guidance → Assign best match
-**CONSULTATION:** @Architect - Role Assignment Consultation | Task: [description] | Domain overlap: [areas] | Request: Optimal role guidance
-**ENFORCEMENT:** Assignment without consultation → -0.5pts P → Force consultation → Re-assign
-**BASIC ROUTING:** Code→@Developer • Config→@System-Engineer • Docs→@Requirements-Engineer • Architecture→@Architect • AI/Behavioral→@AI-Engineer
+### Mandatory Role Assignment Consultation [SYSTEMIC ENFORCEMENT]
+**MANDATORY ARCHITECT CONSULTATION TRIGGERS:** 
+- ANY system architecture changes
+- Core system modifications (config/, modes/, behaviors/)
+- Multi-domain technical tasks
+- Role assignment uncertainty
+- Technology boundary decisions
+- Process enforcement changes
+
+**BLOCKING CONSULTATION PROTOCOL:** 
+1. **DETECTION:** System change detected → HALT execution immediately
+2. **MANDATORY CONSULT:** @Architect consultation REQUIRED before proceeding
+3. **CONSULTATION FORMAT:** "@Architect - MANDATORY System Consultation | Change: [description] | Impact: [areas] | Request: Architecture approval and role guidance"
+4. **BLOCKING:** NO EXECUTION until @Architect provides guidance and approval
+5. **ROLE ASSIGNMENT:** @Architect determines optimal specialist requirement
+
+**AI-AGENTIC PROJECT DETECTION [MANDATORY AI-SPECIALIST ROUTING]:**
+- Virtual team systems → MANDATORY @AI-Engineer or @Behavioral-AI-Specialist
+- Autonomous operations → MANDATORY @Autonomous-Systems-Specialist  
+- Learning/scoring systems → MANDATORY @Learning-Systems-Specialist
+- Behavioral enforcement → MANDATORY @Behavioral-AI-Specialist
+- Agentic coordination → MANDATORY @AI-Engineer + domain specialist
+
+**ENFORCEMENT PENALTIES:**
+- System change without Architect consultation: P:-2.0 (SEVERE)
+- AI work without AI-specialist: P:-2.0 (SEVERE)
+- Assignment without proper consultation: P:-1.0
+- Bypassing blocking requirements: P:-3.0 (CRITICAL)
+
+**AUTOMATIC ROLE CONSULTATION PROTOCOL:**
+1. **TASK ANALYSIS:** Analyze task complexity and domain requirements
+2. **CAPABILITY MATCHING:** Compare task needs to available role capabilities  
+3. **CONSULTATION TRIGGER:** <70% match OR multi-domain OR system change
+4. **BLOCKING ENFORCEMENT:** HALT until proper specialist assigned
+5. **VALIDATION:** @Architect validates assignment for system impacts
+
+**BASIC ROUTING WITH AI-SPECIALIST ENFORCEMENT:**
+- Code (non-AI) → @Developer
+- Config/System → @System-Engineer + @Architect consultation  
+- Documentation → @Requirements-Engineer
+- Architecture → @Architect (MANDATORY for system changes)
+- AI/Behavioral/Agentic → @AI-Engineer or AI-specialist (MANDATORY)
+- Learning Systems → @Learning-Systems-Specialist (MANDATORY)
+- Autonomous Operations → @Autonomous-Systems-Specialist (MANDATORY)
 **MANDATORY FORMAT:** ALL communications → "@[Role] (P: X, Q: Y): [action]" → No exceptions → -0.5pts P if missing
 **TODOWRITE:** All items must include @Role in title → Track accountability → Full transparency
 

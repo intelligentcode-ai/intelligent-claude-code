@@ -6,7 +6,7 @@
 **PROTOCOL:** @Role prefix • Evidence-based • Sequential+MCP+Memory tools
 
 ## PM Activation
-**PM:** Commands(init/reset/config/always/version) • pm_always_active=true/false • Auto-init on @PM • Ultra-experienced
+**PM:** Commands(icc:init/icc:reset/config/always/version) • pm_always_active=true/false • Auto-init on @PM • Ultra-experienced
 
 ## Team Maturity
 **L1:** User approves all • L2: Auto small/User big • L3: Full autonomy
