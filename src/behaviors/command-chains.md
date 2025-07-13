@@ -1,350 +1,328 @@
-# Command Chain Architecture for Virtual Team
+# Command Chains
 
-**INTERNAL PROCESS BACKBONE:** Commands execute automatically, users interact naturally with @-roles
+**CORE:** Auto-execute•Natural @-role interaction
 
-## Command Chain Definitions
+## COMMAND CHAIN EXECUTION ENGINE
 
-### PM Command Chain
-**TRIGGER:** User addresses @PM or planning mode activates
-```
-/icc:init-context
-  → /icc:memory-first "project context"
-  → /icc:think-strategic [5-10 thoughts minimum]
-  → /analyze-work
-    → /identify-streams [parallel workstreams]
-    → /consult-architect [role selection]
-  → /icc:parallel-delegate
-    → /create-tasks [Task tool, multiple simultaneous]
-    → /assign-roles [with context injection]
-  → /track-progress
-    → /update-todos [real-time status]
-    → /monitor-blockers [immediate resolution]
-  → /capture-insight
-    → /generate-learning [team patterns]
-    → /update-scores [evidence-based]
-```
+```pseudocode
+// COMMAND CHAIN ORCHESTRATOR
+FUNCTION executeCommandChain(role, trigger, context):
+    
+    // UNIVERSAL PRE-EXECUTION
+    initializeRole(role)
+    memoryContext = executeMemoryFirst(context)
+    
+    // ROLE-SPECIFIC CHAIN EXECUTION
+    SWITCH role:
+        CASE "PM":
+            executePMChain(trigger, memoryContext)
+        CASE "Architect":
+            executeArchitectChain(trigger, memoryContext)
+        CASE "Developer":
+            executeDeveloperChain(trigger, memoryContext)
+        CASE "Requirements-Engineer":
+            executeRequirementsChain(trigger, memoryContext)
+        CASE "Security-Engineer":
+            executeSecurityChain(trigger, memoryContext)
+        CASE "QA-Engineer":
+            executeQAChain(trigger, memoryContext)
+    
+    // UNIVERSAL POST-EXECUTION
+    captureResults(role, context)
+    updateScores(role, context)
+    
+END FUNCTION
 
-### Architect Command Chain  
-**TRIGGER:** Technical decisions, role consultations, architecture needs
-```
-/icc:init-context
-  → /icc:memory-first "architecture patterns"
-  → /icc:think-strategic [architecture analysis]
-  → /analyze-technical
-    → /evaluate-options [multiple approaches]
-    → /assess-tradeoffs [pros/cons matrix]
-  → /design-solution
-    → /create-diagrams [when needed]
-    → /document-decisions [ADRs]
-  → /validate-security
-    → /threat-model [identify risks]
-    → /mitigation-plan [security controls]
-  → /store-results
-    → /architecture-memory [patterns, decisions]
-    → /share-knowledge [team education]
-```
+// PM COMMAND CHAIN
+FUNCTION executePMChain(trigger, memoryContext):
+    sequentialThinking(minThoughts=5, maxThoughts=10)
+    parallelAnalysis()
+    taskDelegation(useTool="Task")
+    progressTracking(useTool="TodoWrite")
+    learningCapture()
+    scoreUpdate()
+END FUNCTION
 
-### Developer Command Chain
-**TRIGGER:** Implementation tasks, code changes, technical work
-```
-/icc:init-context
-  → /icc:memory-first "similar implementations"
-  → /icc:think-strategic [implementation approach]
-  → /acknowledge-task
-    → /confirm-understanding [requirements clarity]
-    → /estimate-effort [size classification]
-  → /execute-expert
-    → /setup-environment [tooling ready]
-    → /implement-solution [clean code]
-    → /self-review [quality check]
-  → /validate-quality
-    → /run-tests [automated validation]
-    → /security-scan [vulnerability check]
-  → /store-results
-    → /code-patterns [reusable solutions]
-    → /performance-metrics [benchmarks]
+// ARCHITECT COMMAND CHAIN
+FUNCTION executeArchitectChain(trigger, memoryContext):
+    sequentialThinking()
+    optionsAnalysis()
+    designDecision()
+    securityReview()
+    knowledgeStorage()
+    knowledgeSharing()
+END FUNCTION
+
+// DEVELOPER COMMAND CHAIN
+FUNCTION executeDeveloperChain(trigger, memoryContext):
+    sequentialThinking()
+    taskAcknowledgment()
+    codeExecution()
+    validation(includeTests=true, includeSecurity=true)
+    resultStorage()
+END FUNCTION
 ```
 
-### Requirements-Engineer Command Chain
-**TRIGGER:** Requirement analysis, user story creation, acceptance criteria
+## CHAINS
+
+### PM
+**TRIGGER:** @PM/planning
 ```
-/icc:init-context
-  → /icc:memory-first "requirement patterns"
-  → /icc:think-strategic [requirement analysis]
-  → /gather-context
-    → /stakeholder-analysis [identify needs]
-    → /constraint-mapping [limitations]
-  → /create-artifacts
-    → /user-stories [Gherkin format]
-    → /acceptance-criteria [testable]
-    → /success-metrics [measurable]
-  → /validate-completeness
-    → /coverage-check [all scenarios]
-    → /ambiguity-scan [clarity verification]
-  → /store-results
-    → /requirement-patterns [templates]
-    → /domain-knowledge [business rules]
+/init→/memory-first→/think[5-10]→/analyze[parallel]→/delegate[Task tool]→/track[TodoWrite]→/learn→/score
 ```
 
-### Security-Engineer Command Chain
-**TRIGGER:** Security reviews, vulnerability assessments, compliance checks
+### Architect
+**TRIGGER:** Tech decisions/consults
 ```
-/icc:init-context
-  → /icc:memory-first "security vulnerabilities"
-  → /icc:think-strategic [threat analysis]
-  → /scan-codebase
-    → /static-analysis [code patterns]
-    → /dependency-audit [vulnerable packages]
-  → /threat-assessment
-    → /attack-vectors [identify risks]
-    → /impact-analysis [severity rating]
-  → /implement-controls
-    → /security-headers [configuration]
-    → /access-controls [authorization]
-  → /validate-compliance
-    → /policy-check [standards adherence]
-    → /audit-trail [evidence collection]
-  → /store-results
-    → /vulnerability-db [known issues]
-    → /security-patterns [best practices]
+/init→/memory-first→/think→/analyze[options]→/design→/security→/store→/share
 ```
 
-### QA-Engineer Command Chain
-**TRIGGER:** Testing tasks, quality assurance, test automation
+### Developer
+**TRIGGER:** Implementation
 ```
-/icc:init-context
-  → /icc:memory-first "test patterns"
-  → /icc:think-strategic [test strategy]
-  → /plan-testing
-    → /coverage-analysis [test gaps]
-    → /risk-assessment [priority areas]
-  → /create-tests
-    → /unit-tests [component level]
-    → /integration-tests [system level]
-    → /e2e-tests [user journeys]
-  → /execute-validation
-    → /run-suite [automated execution]
-    → /manual-testing [exploratory]
-  → /report-findings
-    → /defect-tracking [issue creation]
-    → /quality-metrics [coverage, pass rate]
-  → /store-results
-    → /test-patterns [reusable tests]
-    → /failure-analysis [root causes]
+/init→/memory-first→/think→/ack[size]→/execute[code]→/validate[test+security]→/store
 ```
 
-## Universal Command Patterns
-
-### Memory-First Enforcement
+### Requirements-Engineer
+**TRIGGER:** Req analysis
 ```
-EVERY action starts with:
-/icc:memory-first [context]
-  → Search entities related to current task
-  → Retrieve past solutions and patterns
-  → Identify potential issues from history
-  → Load team knowledge and decisions
-  
-PENALTY: -1.0P if skipped (auto-detected)
+/init→/memory-first→/think→/gather→/create[stories+criteria]→/validate→/store
 ```
 
-### Sequential Thinking Enforcement  
+### Security-Engineer
+**TRIGGER:** Security/compliance
 ```
-EVERY decision requires:
-/think-strategic [minimum 3 thoughts]
-  → Thought 1: Problem analysis
-  → Thought 2: Solution options
-  → Thought 3: Selected approach
-  → Thought N: Refinements as needed
-  
-QUALITY: More thoughts = better solutions
+/init→/memory-first→/think→/scan[static+deps]→/assess[threats]→/controls→/validate→/store
 ```
 
-### Parallel Execution Pattern
+### QA-Engineer
+**TRIGGER:** Testing/QA
 ```
-PM identifies multiple workstreams:
-/icc:parallel-delegate
-  → Task 1: @Developer-1 "API implementation"
-  → Task 2: @Developer-2 "Frontend components"  
-  → Task 3: @QA-Engineer "Test framework"
-  → Task 4: @DevOps-Engineer "CI/CD setup"
-  → ALL EXECUTE SIMULTANEOUSLY
+/init→/memory-first→/think→/plan[coverage]→/create[tests]→/execute→/report→/store
 ```
 
-### Learning Capture Pattern
-```
-AFTER every significant action:
-/capture-insight
-  → What worked well?
-  → What was challenging?
-  → What patterns emerged?
-  → How to improve next time?
-  
-/generate-learning
-  → Create callout if score change ≥ 1.5
-  → Store in learning-callouts.md
-  → Share with team in memory
-```
+## UNIVERSAL PATTERNS
 
-### Score Update Pattern
-```
-EVIDENCE-BASED scoring:
-/update-scores
-  → Gather evidence of action
-  → Calculate P impact (process compliance)
-  → Calculate Q impact (quality delivery)
-  → Update scores.md with justification
-  → Trigger learning if significant
-```
+```pseudocode
+// UNIVERSAL PATTERN EXECUTION
 
-## Command Chain Integration Points
+// MEMORY-FIRST PATTERN
+FUNCTION executeMemoryFirst(context):
+    IF NOT memoryConsulted(context):
+        applyPenalty(-1.0, "MEMORY_SKIP")
+    
+    memoryResults = searchMemoryNodes(context.query)
+    relevantContext = retrieveRelevantContext(memoryResults)
+    loadContext(relevantContext)
+    
+    RETURN relevantContext
+END FUNCTION
 
-### Task Tool Integration
-```javascript
-// When PM needs to delegate
-/icc:parallel-delegate triggers:
-{
-  Tool: "Task",
-  Description: "Multiple implementation tasks",
-  Tasks: [
-    "@Developer - Implement user authentication",
-    "@Security-Engineer - Security review auth flow",
-    "@QA-Engineer - Create auth test suite"
-  ]
-}
-```
-
-### TodoWrite Integration
-```javascript
-// Real-time progress tracking
-/track-progress triggers:
-{
-  Tool: "TodoWrite",
-  Todos: [
-    {
-      content: "@Developer - Auth implementation",
-      status: "in_progress",
-      priority: "high",
-      id: "auth-impl-001"
+// SEQUENTIAL THINKING PATTERN
+FUNCTION executeSequentialThinking(minThoughts=3):
+    thoughtChain = []
+    
+    FOR i = 1 TO minThoughts:
+        thought = generateThought(i, thoughtChain)
+        thoughtChain.append(thought)
+    
+    analysis = analyzeOptions(thoughtChain)
+    selection = selectOptimalApproach(analysis)
+    
+    RETURN {
+        thoughts: thoughtChain,
+        analysis: analysis,
+        selection: selection
     }
-  ]
-}
+END FUNCTION
+
+// PARALLEL DELEGATION PATTERN
+FUNCTION executeParallelDelegation(tasks):
+    IF currentRole != "PM":
+        RETURN "DELEGATION_NOT_ALLOWED"
+    
+    parallelTasks = []
+    
+    FOR EACH task IN tasks:
+        parallelTask = {
+            task: task,
+            role: findOptimalRole(task),
+            simultaneous: true
+        }
+        parallelTasks.append(parallelTask)
+    
+    executeSimultaneously(parallelTasks)
+    
+    RETURN parallelTasks
+END FUNCTION
+
+// LEARNING CAPTURE PATTERN
+FUNCTION captureLearning(context, results):
+    patterns = extractPatterns(results)
+    improvements = identifyImprovements(context, results)
+    
+    IF significantChange(results, threshold=1.5):
+        learningEntity = createLearningEntity(patterns, improvements)
+        storeInMemory(learningEntity)
+        shareWithTeam(learningEntity)
+    
+    RETURN learningEntity
+END FUNCTION
+
+// SCORING PATTERN
+FUNCTION updateScores(role, evidence, impact):
+    IF NOT hasEvidence(evidence):
+        RETURN "EVIDENCE_REQUIRED"
+    
+    processImpact = calculateProcessImpact(evidence)
+    qualityImpact = calculateQualityImpact(evidence)
+    
+    updateRoleScores(role, processImpact, qualityImpact)
+    updateScoresFile(role, evidence, impact)
+    
+    IF significantChange(processImpact, qualityImpact):
+        captureScoreLearning(role, evidence, impact)
+    
+END FUNCTION
 ```
 
-### Memory Integration
-```javascript
-// Knowledge persistence
-/store-results triggers:
-{
-  Tool: "mcp__memory__create_entities",
-  Entities: [
-    {
-      name: "AuthenticationPattern",
-      entityType: "TechnicalPattern",
-      observations: ["JWT implementation", "Rate limiting added"]
-    }
-  ]
-}
+### Memory-First
+```
+EVERY: /memory-first→Search→Retrieve→Load (-1.0P skip)
 ```
 
-## Behavioral Strengthening
-
-### Thinking Reinforcement
-- EVERY command chain starts with /think-strategic
-- Minimum thought requirements prevent shallow analysis
-- Quality increases with thought depth
-- Stored thoughts become team knowledge
-
-### Learning Amplification
-- Automatic insight capture after every task
-- Pattern recognition across team actions
-- Continuous improvement through stored learnings
-- Team-wide knowledge distribution
-
-### Scoring Precision
-- Evidence required for every score update
-- Clear justification trails in memory
-- Learning generation for significant changes
-- Peer validation through stored evidence
-
-### Memory Maximization
-- Mandatory consultation before actions
-- Automatic storage after completions
-- Relationship tracking between entities
-- Exponential aging preserves important knowledge
-
-## Parallel Execution Enablers
-
-### Independent Work Streams
+### Sequential Think
 ```
-PM creates parallel tracks:
-- Frontend team works on UI
-- Backend team builds APIs
-- QA team creates tests
-- DevOps team sets up infrastructure
-ALL PROGRESS SIMULTANEOUSLY
+EVERY: /think[≥3 thoughts]→Analyze→Options→Select
 ```
 
-### Async Coordination
+### Parallel
 ```
-Roles communicate through memory:
-- Store progress updates
-- Share blockers immediately
-- Document decisions
-- No waiting for synchronous meetings
+PM: /parallel-delegate→Multiple tasks→ALL SIMULTANEOUS
 ```
 
-### Resource Optimization
+### Learning
 ```
-Multiple specialists of same type:
-- @Developer-1 on feature A
-- @Developer-2 on feature B
-- @Developer-3 on bugfixes
-MAXIMIZE THROUGHPUT
+AFTER: /capture→What worked→Patterns→Improve→Store if ≥1.5 change
 ```
 
-## Anti-Pattern Prevention
-
-### "Talking About" Prevention
+### Scoring
 ```
-DETECT: Role says "I would..." or "I could..."
-ACTION: /execute-expert → Actually do it now
-ENFORCEMENT: -0.5P for talking without doing
+EVIDENCE: /update-scores→Evidence→P/Q impact→scores.md→Learn if significant
 ```
 
-### Sequential Bottleneck Prevention
+## INTEGRATION
+
+```pseudocode
+// TOOL INTEGRATION PATTERNS
+
+// TASK TOOL INTEGRATION
+FUNCTION integrateTaskTool(delegation):
+    IF delegation.type == "PARALLEL":
+        FOR EACH task IN delegation.tasks:
+            executeTaskTool({
+                role: task.role,
+                description: task.description,
+                simultaneous: true
+            })
+    
+    trackExecution(delegation.tasks)
+    RETURN delegation.results
+END FUNCTION
+
+// TODOWRITE INTEGRATION
+FUNCTION integrateTodoWrite(progressData):
+    todos = []
+    
+    FOR EACH role IN progressData.activeRoles:
+        todo = {
+            content: "@" + role.name + " - " + role.currentTask,
+            status: role.status,
+            priority: role.priority
+        }
+        todos.append(todo)
+    
+    executeTodoWrite(todos)
+    
+    // REAL-TIME UPDATES
+    scheduleRealTimeUpdates(todos)
+    
+    RETURN todos
+END FUNCTION
+
+// MEMORY INTEGRATION
+FUNCTION integrateMemoryStorage(results, context):
+    
+    // CREATE ENTITIES
+    entities = []
+    FOR EACH result IN results:
+        entity = {
+            name: result.name + "-" + getCurrentDate(),
+            entityType: result.type,
+            observations: result.details
+        }
+        entities.append(entity)
+    
+    executeMCPMemoryCreate(entities)
+    
+    // CREATE RELATIONS
+    relations = []
+    FOR EACH entity IN entities:
+        FOR EACH relatedEntity IN entity.relations:
+            relation = {
+                from: entity.name,
+                to: relatedEntity.name,
+                relationType: relatedEntity.relationType
+            }
+            relations.append(relation)
+    
+    executeMCPMemoryRelations(relations)
+    
+    // PERSIST WITH AGING
+    applyExponentialAging(entities, lambda=0.1)
+    
+    RETURN entities
+END FUNCTION
 ```
-DETECT: Tasks waiting on each other
-ACTION: /icc:parallel-delegate → Restructure as parallel
-ENFORCEMENT: PM coaching on parallelization
+
+### Task Tool
+```
+/parallel-delegate→Task tool→Multiple roles→SIMULTANEOUS
 ```
 
-### Memory Skip Prevention
+### TodoWrite
 ```
-DETECT: Action without memory consultation
-ACTION: /icc:memory-first → Force consultation
-ENFORCEMENT: -1.0P automatic penalty
+/track-progress→TodoWrite→@Role status→Real-time
 ```
 
-## Command Chain Activation
+### Memory
+```
+/store-results→mcp__memory__→Entities→Relations→Persist
+```
 
-### Automatic Triggers
-1. User message → Scan for @-notation
-2. @Role detected → Load role command chain
-3. Execute chain start to finish
-4. No manual intervention needed
+## BEHAVIORAL
 
-### Chain Completion Verification
-1. All commands in chain must execute
-2. Skipped commands trigger penalties
-3. Incomplete chains require re-execution
-4. Quality gates enforce standards
+**THINK:** EVERY chain→/think→Min requirements→Quality→Store
+**LEARN:** Auto capture→Patterns→Improve→Share team
+**SCORE:** Evidence required→Justify→Learn if ≥1.5→Peer validate
+**MEMORY:** Consult before→Store after→Relations→Aging λ=0.1
 
-### Continuous Improvement
-1. Chains evolve based on learnings
-2. New patterns added to chains
-3. Inefficient commands removed
-4. Team feedback incorporated
+## PARALLEL
 
----
+**STREAMS:** Front→UI•Back→APIs•QA→Tests•DevOps→Infra•ALL SIMULTANEOUS
+**ASYNC:** Memory comms→Progress→Blockers→Decisions→No waiting
+**OPTIMIZE:** Multiple same role→Different features→MAX THROUGHPUT
 
-**ACTIVATION:** These command chains execute AUTOMATICALLY when roles are addressed. Users continue natural @-role interaction while chains ensure process compliance internally.
+## ANTI-PATTERNS
+
+**TALKING:** "I would/could"→/execute→DO IT→-0.5P
+**SEQUENTIAL:** Tasks waiting→/parallel→Restructure
+**MEMORY SKIP:** No consult→/memory-first→-1.0P
+
+## ACTIVATION
+
+**AUTO:** User→@Role→Load chain→Execute→Complete
+**VERIFY:** All commands→Skip=penalty→Incomplete=redo→Quality gates
+**IMPROVE:** Learn→Add patterns→Remove inefficient→Team feedback
+
+**AUTOMATIC:** Chains execute internally•Users interact naturally with @-roles

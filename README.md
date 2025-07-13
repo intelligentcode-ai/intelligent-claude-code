@@ -47,8 +47,8 @@ That's it. Your virtual team is active and building.
 ### 🎭 **Virtual Development Team**
 14 specialized roles from PM to Security Engineer, each following structured command chains for consistent execution. They coordinate through parallel task delegation and maintain professional Git workflows.
 
-### 🧠 **Mandatory Behavioral Enforcement**
-Level 3 autonomous operation with HALT/BLOCK enforcement patterns. System automatically STOPS violations, applies instant penalties (-1.0 to -3.0), and FORCES protocol compliance. No bypassing allowed - all behaviors are mandatory with executable blocking mechanisms.
+### 🧠 **Pseudo-Code Behavioral Intelligence**
+Hybrid documentation approach combining human-readable markdown with structured pseudo-code implementation patterns. System provides actionable implementation logic that translates directly to any programming language, including Level 3 autonomous operation with HALT/BLOCK enforcement patterns, automatic violation detection, and comprehensive auto-correction workflows.
 
 ### 📋 **Mandatory Acceptance Criteria**
 All tasks require specific, measurable acceptance criteria using the ✅ format. Tasks are automatically blocked until criteria are defined, ensuring clear success metrics and validation methods before execution begins.
@@ -203,12 +203,16 @@ Streamlined knowledge capture for easy recall:
 📖 **Getting Started**
 - [Installation Guide](docs/installation.md) - Platform-specific setup
 - [Streamlined Usage Guide](docs/streamlined-usage-guide.md) - Clear usage instructions
+- [Pseudo-Code Implementation Guide](docs/pseudo-code-implementation-guide.md) - Complete developer implementation guide
+- [Pseudo-Code Usage Patterns](docs/pseudo-code-usage-patterns.md) - Real-world examples and patterns
+- [Hybrid Approach Migration Guide](docs/hybrid-approach-migration-guide.md) - Migration from pure markdown
 - [Behavioral Intelligence Guide](docs/behavioral-intelligence.md) - Understanding behavioral patterns
 - [User Observation Integration](docs/user-observation-integration.md) - Adaptive learning features
 - [Quick Start Tutorial](docs/quickstart.md) - First project walkthrough
 
 🏗️ **Architecture**  
 - [Behavioral Intelligence Architecture](docs/architecture/behavioral-intelligence.md) - Internal process flow
+- [Pseudo-Code Implementation Patterns](docs/pseudo-code-implementation-guide.md) - Structured implementation with actionable logic
 - [Virtual Team Roles](docs/features/virtual-team.md) - Role descriptions & capabilities
 - [Learning Team Principles](docs/features/learning-team-principles.md) - Error handling & growth culture
 - [Acceptance Criteria System](docs/features/acceptance-criteria.md) - Task validation requirements
@@ -235,9 +239,27 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 **Ready to transform your development workflow?** Install in 30 seconds and let your virtual team coordinate through command chains while you focus on what matters.
 
+## Pseudo-Code Implementation Architecture
+
+This system uses a **hybrid behavioral intelligence framework** combining human-readable documentation with structured pseudo-code implementation patterns. The architecture provides:
+
+### Pseudo-Code Implementation Benefits
+- **Developer Ready**: Technical implementation details directly available in pseudo-code format
+- **AI Optimized**: Claude Code understands both markdown context and structured pseudo-code logic
+- **Implementation Path**: Direct translation from pseudo-code to any programming language
+- **Professional Integration**: Maintains Git workflow while adding actionable implementation patterns
+- **Version Control Friendly**: Clear diffs show both documentation and behavioral logic changes
+
+### Implementation Framework Features
+- **Behavioral Framework Orchestrator**: Master class coordinating all behavioral patterns
+- **Monitoring and Enforcement**: Real-time behavioral compliance with auto-correction workflows
+- **Quality Gate Automation**: Comprehensive validation with blocking patterns and penalty systems
+- **Learning Integration**: Automatic pattern capture and continuous improvement mechanisms
+- **Error Handling**: Comprehensive auto-correction and penalty systems with violation detection
+
 ## Streamlined System Architecture
 
-This system uses a **consolidated behavioral intelligence framework** built on two essential behaviors that guide all role execution. The streamlined architecture provides:
+This system uses a **hybrid behavioral intelligence framework** built with actionable pseudo-code patterns that guide all role execution. The enhanced architecture provides:
 
 ### User Observation Benefits
 - **Adaptive Learning**: System observes user patterns and adapts team behavior accordingly
