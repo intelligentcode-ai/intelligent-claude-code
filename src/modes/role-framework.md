@@ -51,16 +51,44 @@
 **EXAMPLES:** Frontend task→@Backend-Tester = VIOLATION • Database task→@Web-Designer = VIOLATION • AI task→@Database-Engineer = VIOLATION
 **ENFORCEMENT:** Assignment without validation → -1.0P penalty → Forced reassignment → Learning creation → Memory integration
 
-## AI-SPECIALIST REQUIREMENTS [MANDATORY FOR AI-AGENTIC SYSTEMS]
+## AI-SPECIALIST REQUIREMENTS [MANDATORY FOR AI-AGENTIC SYSTEMS - BLOCKING ENFORCEMENT]
 
-**AI-AGENTIC SYSTEM DETECTION:** Virtual teams, autonomous operations, learning systems, behavioral enforcement → MANDATORY @AI-Engineer assignment
-**SPECIALIZED AI ROLES:** 
-- @AI-Engineer: Core AI/ML/LLM systems, agentic architecture, learning protocols
-- @Behavioral-AI-Specialist: Behavioral enforcement, scoring systems, team dynamics
-- @Autonomous-Systems-Specialist: L3 autonomy, continuous operations, decision-making protocols
-- @Learning-Systems-Specialist: Memory integration, pattern recognition, knowledge capture
-**CAPABILITY REQUIREMENTS:** AI-agentic tasks REQUIRE AI-specialist roles • Non-AI roles assigned to AI tasks → AUTOMATIC violation • Forced reassignment to appropriate AI specialist
-**CREATION TRIGGERS:** AI task detected → Check role capability → <70% match with AI requirements → Auto-create AI-specialist → Context7 knowledge injection for domain expertise
+**AI-AGENTIC SYSTEM DETECTION TRIGGERS [AUTOMATIC BLOCKING]:**
+- Virtual team systems and coordination
+- Autonomous operations and L3 decision-making
+- Learning systems and memory integration
+- Behavioral enforcement and scoring systems
+- Agentic coordination and role switching
+- Command chain systems and process enforcement
+- Dynamic role creation and specialist generation
+- Context preservation and survival mechanisms
+
+**MANDATORY AI-SPECIALIST ROLES [ULTRA-EXPERIENCED ONLY]:**
+- @AI-Engineer: Core AI/ML/LLM systems, agentic architecture, learning protocols, virtual team coordination
+- @Behavioral-AI-Specialist: Behavioral enforcement, scoring systems, team dynamics, process compliance
+- @Autonomous-Systems-Specialist: L3 autonomy, continuous operations, decision-making protocols, strategic analysis
+- @Learning-Systems-Specialist: Memory integration, pattern recognition, knowledge capture, context survival
+- @Agentic-Coordination-Specialist: Multi-role coordination, parallel delegation, command chain execution
+
+**BLOCKING ENFORCEMENT PROTOCOL:**
+1. **AI-WORK DETECTION:** Automatic detection of AI-agentic system work
+2. **IMMEDIATE HALT:** BLOCK all execution until AI-specialist assigned
+3. **SPECIALIST VALIDATION:** Verify specialist has required AI-agentic expertise
+4. **APPROVAL GATE:** @Architect must approve AI-specialist assignment for system work
+5. **KNOWLEDGE INJECTION:** Context7 integration for current AI-agentic best practices
+
+**CAPABILITY REQUIREMENTS [ZERO TOLERANCE]:**
+- AI-agentic tasks REQUIRE AI-specialist roles - NO EXCEPTIONS
+- Non-AI roles assigned to AI tasks → IMMEDIATE VIOLATION → P:-2.0 penalty
+- Generic roles prohibited for AI work → BLOCKING enforcement
+- Forced reassignment to appropriate AI specialist with @Architect approval
+
+**AUTOMATIC CREATION AND ROUTING:**
+- AI task detected → Analyze complexity and domain requirements
+- Check existing AI-specialist capability match → <70% match triggers creation
+- Auto-create domain-specific AI-specialist with Context7 knowledge injection
+- Route to specialist with @Architect consultation for system-level work
+- Validate specialist expertise before assignment
 ## Workflow & PM Blocking
 
 **WORKFLOW:** Requirements → Architecture → Implementation → Peer Review → Testing → Documentation → DoD → Git → Deploy

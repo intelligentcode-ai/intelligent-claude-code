@@ -1,4 +1,4 @@
-# /refresh Command Chain
+# /icc:refresh Command Chain
 
 **PURPOSE:** Refresh team capabilities and sync all systems without full reset
 

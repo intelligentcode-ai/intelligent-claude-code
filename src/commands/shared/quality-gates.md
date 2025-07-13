@@ -1,4 +1,4 @@
-# /quality-gates Command Chain
+# /icc:quality-gates Command Chain
 
 **PURPOSE:** Mandatory quality validation before completion with auto-correction enforcement
 

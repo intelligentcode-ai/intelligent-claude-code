@@ -192,4 +192,230 @@ INNOVATION: Document approach → Team presentation → Adoption
 
 ---
 
-**ACTIVATION:** This behavior is ALWAYS ACTIVE and CANNOT be disabled.
+## ENHANCED AGENTIC COORDINATION TRIGGERS [STRONGER]
+
+**AUTONOMOUS COORDINATION ENFORCEMENT:**
+```javascript
+// AGENTIC COORDINATION MONITOR
+class AgenticCoordinationMonitor {
+  constructor() {
+    this.coordinationPatterns = new Map();
+    this.enforcementTriggers = new Map();
+    this.coordinationMetrics = new Map();
+    this.setupCoordinationTriggers();
+  }
+  
+  // SETUP COORDINATION TRIGGERS
+  setupCoordinationTriggers() {
+    this.coordinationPatterns.set('pm_implementation_blocking', {
+      detector: this.detectPMImplementation.bind(this),
+      enforcer: this.blockPMImplementation.bind(this),
+      strength: 'maximum',
+      penalty: -2.0,
+      frequency: 'every_action'
+    });
+    
+    this.coordinationPatterns.set('task_tool_enforcement', {
+      detector: this.detectMissingTaskDelegation.bind(this),
+      enforcer: this.enforceTaskDelegation.bind(this),
+      strength: 'critical',
+      penalty: -1.5,
+      frequency: 'every_work_identification'
+    });
+    
+    this.coordinationPatterns.set('parallel_execution_optimization', {
+      detector: this.detectSequentialBottlenecks.bind(this),
+      enforcer: this.optimizeParallelExecution.bind(this),
+      strength: 'high',
+      penalty: -1.0,
+      frequency: 'continuous'
+    });
+    
+    this.coordinationPatterns.set('architect_consultation_enforcement', {
+      detector: this.detectMissingArchitectConsultation.bind(this),
+      enforcer: this.enforceArchitectConsultation.bind(this),
+      strength: 'critical',
+      penalty: -1.5,
+      frequency: 'every_role_selection'
+    });
+  }
+  
+  // DETECT PM IMPLEMENTATION
+  async detectPMImplementation(context) {
+    const forbiddenTools = [
+      'Edit', 'Write', 'MultiEdit', 'NotebookEdit'
+    ];
+    
+    const pmUsingForbiddenTool = 
+      context.role === 'PM' && 
+      forbiddenTools.some(tool => context.toolUsage?.includes(tool));
+    
+    return {
+      detected: pmUsingForbiddenTool,
+      severity: 'critical',
+      violation: 'pm_implementation_attempt',
+      tool: forbiddenTools.find(tool => context.toolUsage?.includes(tool))
+    };
+  }
+  
+  // BLOCK PM IMPLEMENTATION
+  async blockPMImplementation(detection, context) {
+    if (detection.detected) {
+      const blockingAction = {
+        type: 'pm_implementation_block',
+        action: 'immediate_delegation_enforcement',
+        severity: 'critical',
+        penalty: -2.0,
+        enforcement: [
+          'BLOCK: Implementation tool usage',
+          'FORCE: Task tool delegation',
+          'APPLY: -2.0P penalty',
+          'REDIRECT: To proper PM coordination'
+        ],
+        timestamp: new Date().toISOString()
+      };
+      
+      // IMMEDIATE IMPLEMENTATION BLOCKING
+      await this.applyImplementationBlock(blockingAction, context);
+      
+      return blockingAction;
+    }
+  }
+  
+  // DETECT MISSING TASK DELEGATION
+  async detectMissingTaskDelegation(context) {
+    const workIdentified = this.assessWorkIdentification(context);
+    const taskToolUsed = context.toolUsage?.includes('Task');
+    
+    return {
+      detected: workIdentified && !taskToolUsed,
+      severity: 'high',
+      violation: 'missing_task_delegation',
+      workType: this.identifyWorkType(context)
+    };
+  }
+  
+  // ENFORCE TASK DELEGATION
+  async enforceTaskDelegation(detection, context) {
+    if (detection.detected) {
+      const enforcementAction = {
+        type: 'task_delegation_enforcement',
+        action: 'mandatory_task_tool_usage',
+        severity: 'high',
+        penalty: -1.5,
+        enforcement: [
+          'FORCE: Task tool usage',
+          'CREATE: Parallel task delegation',
+          'ASSIGN: Appropriate roles',
+          'MONITOR: Execution progress'
+        ],
+        timestamp: new Date().toISOString()
+      };
+      
+      // IMMEDIATE TASK DELEGATION ENFORCEMENT
+      await this.applyTaskDelegationEnforcement(enforcementAction, context);
+      
+      return enforcementAction;
+    }
+  }
+  
+  // DETECT SEQUENTIAL BOTTLENECKS
+  async detectSequentialBottlenecks(context) {
+    const executionPattern = this.analyzeExecutionPattern(context);
+    const parallelizationOpportunities = this.identifyParallelizationOpportunities(context);
+    
+    return {
+      detected: executionPattern.sequential && parallelizationOpportunities.length > 0,
+      severity: 'medium',
+      violation: 'sequential_bottlenecks',
+      opportunities: parallelizationOpportunities
+    };
+  }
+  
+  // OPTIMIZE PARALLEL EXECUTION
+  async optimizeParallelExecution(detection, context) {
+    if (detection.detected) {
+      const optimizationAction = {
+        type: 'parallel_execution_optimization',
+        action: 'restructure_for_parallelization',
+        severity: 'medium',
+        penalty: -1.0,
+        optimization: [
+          'RESTRUCTURE: Sequential tasks as parallel',
+          'IDENTIFY: Independent workstreams',
+          'ASSIGN: Multiple roles simultaneously',
+          'MONITOR: Parallel progress'
+        ],
+        opportunities: detection.opportunities,
+        timestamp: new Date().toISOString()
+      };
+      
+      // IMMEDIATE PARALLEL OPTIMIZATION
+      await this.applyParallelOptimization(optimizationAction, context);
+      
+      return optimizationAction;
+    }
+  }
+}
+
+// ENHANCED TASK DELEGATION ENFORCER
+class EnhancedTaskDelegationEnforcer {
+  constructor() {
+    this.delegationRules = new Map();
+    this.enforcementHistory = [];
+    this.setupDelegationRules();
+  }
+  
+  // SETUP DELEGATION RULES
+  setupDelegationRules() {
+    this.delegationRules.set('mandatory_delegation', {
+      trigger: 'work_identification',
+      enforcement: 'immediate',
+      tools: ['Task'],
+      penalty: -2.0
+    });
+    
+    this.delegationRules.set('parallel_assignment', {
+      trigger: 'multiple_workstreams',
+      enforcement: 'immediate',
+      pattern: 'parallel_tasks',
+      penalty: -1.5
+    });
+    
+    this.delegationRules.set('role_consultation', {
+      trigger: 'role_selection_needed',
+      enforcement: 'mandatory',
+      consultant: '@Architect',
+      penalty: -1.5
+    });
+  }
+  
+  // ENFORCE DELEGATION RULES
+  async enforceDelegationRules(context) {
+    for (const [ruleName, rule] of this.delegationRules) {
+      const violation = await this.checkDelegationRule(rule, context);
+      
+      if (violation.detected) {
+        await this.applyDelegationEnforcement(rule, violation, context);
+      }
+    }
+  }
+}
+
+// GLOBAL AGENTIC COORDINATION INSTANCES
+const agenticCoordinationMonitor = new AgenticCoordinationMonitor();
+const enhancedTaskDelegationEnforcer = new EnhancedTaskDelegationEnforcer();
+
+// AUTO-ACTIVATE ENHANCED COORDINATION MONITORING
+agenticCoordinationMonitor.setupCoordinationTriggers();
+enhancedTaskDelegationEnforcer.setupDelegationRules();
+```
+
+**STRENGTHENED ENFORCEMENT PATTERNS:**
+- PM implementation blocking with immediate penalties
+- Mandatory task delegation with automatic enforcement
+- Parallel execution optimization with bottleneck detection
+- Architect consultation enforcement with compliance monitoring
+- Real-time coordination violation detection and correction
+
+**ACTIVATION:** This behavior is ALWAYS ACTIVE and CANNOT be disabled. Enhanced with autonomous enforcement triggers.

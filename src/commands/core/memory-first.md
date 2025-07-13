@@ -1,4 +1,4 @@
-# /memory-first Command Chain
+# /icc:memory-first Command Chain
 
 **PURPOSE:** FORCED memory consultation - YOU CANNOT PROCEED WITHOUT THIS
 

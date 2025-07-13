@@ -7,13 +7,13 @@
 ### PM Command Chain
 **TRIGGER:** User addresses @PM or planning mode activates
 ```
-/init-context
-  → /memory-first "project context"
-  → /think-strategic [5-10 thoughts minimum]
+/icc:init-context
+  → /icc:memory-first "project context"
+  → /icc:think-strategic [5-10 thoughts minimum]
   → /analyze-work
     → /identify-streams [parallel workstreams]
     → /consult-architect [role selection]
-  → /parallel-delegate
+  → /icc:parallel-delegate
     → /create-tasks [Task tool, multiple simultaneous]
     → /assign-roles [with context injection]
   → /track-progress
@@ -27,9 +27,9 @@
 ### Architect Command Chain  
 **TRIGGER:** Technical decisions, role consultations, architecture needs
 ```
-/init-context
-  → /memory-first "architecture patterns"
-  → /think-strategic [architecture analysis]
+/icc:init-context
+  → /icc:memory-first "architecture patterns"
+  → /icc:think-strategic [architecture analysis]
   → /analyze-technical
     → /evaluate-options [multiple approaches]
     → /assess-tradeoffs [pros/cons matrix]
@@ -47,9 +47,9 @@
 ### Developer Command Chain
 **TRIGGER:** Implementation tasks, code changes, technical work
 ```
-/init-context
-  → /memory-first "similar implementations"
-  → /think-strategic [implementation approach]
+/icc:init-context
+  → /icc:memory-first "similar implementations"
+  → /icc:think-strategic [implementation approach]
   → /acknowledge-task
     → /confirm-understanding [requirements clarity]
     → /estimate-effort [size classification]
@@ -68,9 +68,9 @@
 ### Requirements-Engineer Command Chain
 **TRIGGER:** Requirement analysis, user story creation, acceptance criteria
 ```
-/init-context
-  → /memory-first "requirement patterns"
-  → /think-strategic [requirement analysis]
+/icc:init-context
+  → /icc:memory-first "requirement patterns"
+  → /icc:think-strategic [requirement analysis]
   → /gather-context
     → /stakeholder-analysis [identify needs]
     → /constraint-mapping [limitations]
@@ -89,9 +89,9 @@
 ### Security-Engineer Command Chain
 **TRIGGER:** Security reviews, vulnerability assessments, compliance checks
 ```
-/init-context
-  → /memory-first "security vulnerabilities"
-  → /think-strategic [threat analysis]
+/icc:init-context
+  → /icc:memory-first "security vulnerabilities"
+  → /icc:think-strategic [threat analysis]
   → /scan-codebase
     → /static-analysis [code patterns]
     → /dependency-audit [vulnerable packages]
@@ -112,9 +112,9 @@
 ### QA-Engineer Command Chain
 **TRIGGER:** Testing tasks, quality assurance, test automation
 ```
-/init-context
-  → /memory-first "test patterns"
-  → /think-strategic [test strategy]
+/icc:init-context
+  → /icc:memory-first "test patterns"
+  → /icc:think-strategic [test strategy]
   → /plan-testing
     → /coverage-analysis [test gaps]
     → /risk-assessment [priority areas]
@@ -138,7 +138,7 @@
 ### Memory-First Enforcement
 ```
 EVERY action starts with:
-/memory-first [context]
+/icc:memory-first [context]
   → Search entities related to current task
   → Retrieve past solutions and patterns
   → Identify potential issues from history
@@ -162,7 +162,7 @@ QUALITY: More thoughts = better solutions
 ### Parallel Execution Pattern
 ```
 PM identifies multiple workstreams:
-/parallel-delegate
+/icc:parallel-delegate
   → Task 1: @Developer-1 "API implementation"
   → Task 2: @Developer-2 "Frontend components"  
   → Task 3: @QA-Engineer "Test framework"
@@ -201,7 +201,7 @@ EVIDENCE-BASED scoring:
 ### Task Tool Integration
 ```javascript
 // When PM needs to delegate
-/parallel-delegate triggers:
+/icc:parallel-delegate triggers:
 {
   Tool: "Task",
   Description: "Multiple implementation tasks",
@@ -314,14 +314,14 @@ ENFORCEMENT: -0.5P for talking without doing
 ### Sequential Bottleneck Prevention
 ```
 DETECT: Tasks waiting on each other
-ACTION: /parallel-delegate → Restructure as parallel
+ACTION: /icc:parallel-delegate → Restructure as parallel
 ENFORCEMENT: PM coaching on parallelization
 ```
 
 ### Memory Skip Prevention
 ```
 DETECT: Action without memory consultation
-ACTION: /memory-first → Force consultation
+ACTION: /icc:memory-first → Force consultation
 ENFORCEMENT: -1.0P automatic penalty
 ```
 
