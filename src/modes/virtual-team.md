@@ -4,11 +4,11 @@
 
 ## CRITICAL ENFORCEMENT DIRECTIVES [SURVIVE CONTEXT COMPACTION]
 
-**DIRECTIVE 1:** EVERY message → Use command chains FIRST (/memory-first → /think-sequential → execute)
-**DIRECTIVE 2:** EVERY action → Memory search BEFORE + store AFTER via /memory-first
-**DIRECTIVE 3:** EVERY task → Use /parallel-delegate for multi-role work
+**DIRECTIVE 1:** EVERY message → Use command chains FIRST (/icc:memory-first → /icc:think-sequential → execute)
+**DIRECTIVE 2:** EVERY action → Memory search BEFORE + store AFTER via /icc:memory-first
+**DIRECTIVE 3:** EVERY task → Use /icc:parallel-delegate for multi-role work
 **DIRECTIVE 4:** EVERY role → Show (P:X, Q:Y) in ALL communications
-**DIRECTIVE 5:** EVERY completion → Pass /quality-gates before finalization
+**DIRECTIVE 5:** EVERY completion → Pass /icc:quality-gates before finalization
 **DIRECTIVE 6:** PM NEVER implements → ONLY coordinates via command chains
 
 ## Module Architecture
@@ -43,13 +43,13 @@
 @~/.claude/commands/index.md
 
 **CORE COMMAND CHAINS:**
-- `/memory-first` → Mandatory memory consultation (P:-1.0 penalty for skip)
-- `/think-sequential` → Mandatory sequential thinking (Q:-1.0 penalty for skip)
-- `/parallel-delegate` → Intelligent parallel delegation (P:-1.0 penalty for bypass)
-- `/quality-gates` → Mandatory quality validation (Q:-2.0 penalty for bypass)
+- `/icc:memory-first` → Mandatory memory consultation (P:-1.0 penalty for skip)
+- `/icc:think-sequential` → Mandatory sequential thinking (Q:-1.0 penalty for skip)
+- `/icc:parallel-delegate` → Intelligent parallel delegation (P:-1.0 penalty for bypass)
+- `/icc:quality-gates` → Mandatory quality validation (Q:-2.0 penalty for bypass)
 
 **PM COMMAND CHAINS:**
-- `/pm-strategic-analysis` → Complete strategic analysis with enforcement
+- `/icc:strategic-analysis` → Complete strategic analysis with enforcement
 
 **COMMAND CHAIN ENFORCEMENT:**
 - **ALL roles must use appropriate command chains** for their tasks
@@ -58,10 +58,10 @@
 - **Memory integration mandatory** for all command execution
 
 **COMMAND CHAIN PATTERNS:**
-- Simple: `/memory-first` → execute → `/quality-gates`
-- Complex: `/memory-first` → `/think-sequential` → execute → `/quality-gates`
-- Multi-role: `/memory-first` → `/think-sequential` → `/parallel-delegate` → integrate → `/quality-gates`
-- Strategic: `/memory-first` → `/think-sequential` → `/parallel-delegate` → analyze → decide → `/quality-gates`
+- Simple: `/icc:memory-first` → execute → `/icc:quality-gates`
+- Complex: `/icc:memory-first` → `/icc:think-sequential` → execute → `/icc:quality-gates`
+- Multi-role: `/icc:memory-first` → `/icc:think-sequential` → `/icc:parallel-delegate` → integrate → `/icc:quality-gates`
+- Strategic: `/icc:memory-first` → `/icc:think-sequential` → `/icc:parallel-delegate` → analyze → decide → `/icc:quality-gates`
 
 ## ENFORCED SCORING & COORDINATION
 
@@ -88,19 +88,19 @@
 ## AGENTIC COORDINATION PROTOCOL [SURVIVES CONTEXT COMPACTION]
 
 **PM COORDINATION LOOP:**
-1. `/memory-first` for strategic context
-2. `/think-sequential` for strategic analysis
-3. `/parallel-delegate` for role coordination
+1. `/icc:memory-first` for strategic context
+2. `/icc:think-sequential` for strategic analysis
+3. `/icc:parallel-delegate` for role coordination
 4. Progress tracking via TodoWrite
-5. `/quality-gates` for completion validation
+5. `/icc:quality-gates` for completion validation
 6. Continuous monitoring and reporting
 
 **ROLE EXECUTION PROTOCOL:**
 1. Receive task via delegation
-2. `/memory-first` for task context
-3. `/think-sequential` for complex problems
+2. `/icc:memory-first` for task context
+3. `/icc:think-sequential` for complex problems
 4. Execute with ultra-experienced expertise
-5. `/quality-gates` for deliverable validation
+5. `/icc:quality-gates` for deliverable validation
 6. Store results in memory and report completion
 
 **PARALLEL EXECUTION:**

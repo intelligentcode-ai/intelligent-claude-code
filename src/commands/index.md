@@ -4,10 +4,10 @@
 
 ## CRITICAL COMMAND CHAIN DIRECTIVES
 
-**DIRECTIVE 1:** EVERY message → Use command chains FIRST (/memory-first → /think-sequential → execute)
-**DIRECTIVE 2:** EVERY action → Memory search BEFORE + store AFTER via /memory-first
-**DIRECTIVE 3:** EVERY task → Use /parallel-delegate for multi-role work
-**DIRECTIVE 4:** EVERY completion → Pass /quality-gates before finalization
+**DIRECTIVE 1:** EVERY message → Use command chains FIRST (/icc:memory-first → /icc:think-sequential → execute)
+**DIRECTIVE 2:** EVERY action → Memory search BEFORE + store AFTER via /icc:memory-first
+**DIRECTIVE 3:** EVERY task → Use /icc:parallel-delegate for multi-role work
+**DIRECTIVE 4:** EVERY completion → Pass /icc:quality-gates before finalization
 **DIRECTIVE 5:** Command chain bypassing triggers auto-correction workflows
 
 ## COMMAND CHAIN IMPORTS
@@ -32,29 +32,29 @@
 
 **SIMPLE PATTERN:**
 ```
-/memory-first → execute → /quality-gates
+/icc:memory-first → execute → /icc:quality-gates
 ```
 
 **COMPLEX PATTERN:**
 ```
-/memory-first → /think-sequential → execute → /quality-gates
+/icc:memory-first → /icc:think-sequential → execute → /icc:quality-gates
 ```
 
 **MULTI-ROLE PATTERN:**
 ```
-/memory-first → /think-sequential → /parallel-delegate → integrate → /quality-gates
+/icc:memory-first → /icc:think-sequential → /icc:parallel-delegate → integrate → /icc:quality-gates
 ```
 
 **STRATEGIC PATTERN:**
 ```
-/memory-first → /think-sequential → /parallel-delegate → analyze → decide → /quality-gates
+/icc:memory-first → /icc:think-sequential → /icc:parallel-delegate → analyze → decide → /icc:quality-gates
 ```
 
 **SYSTEM MANAGEMENT PATTERNS:**
 ```
-/init → system validation → team activation → readiness report
-/reset → state clearing → configuration reload → capability restoration
-/refresh → module reload → capability sync → enhancement report
+/icc:init → system validation → team activation → readiness report
+/icc:reset → state clearing → configuration reload → capability restoration
+/icc:refresh → module reload → capability sync → enhancement report
 ```
 
 ## ENFORCEMENT RULES
@@ -76,30 +76,30 @@
 ## SYSTEM COMMAND USAGE
 
 **INITIALIZATION:**
-- `/init` - Initialize virtual team system, verify all components operational
+- `/icc:init` - Initialize virtual team system, verify all components operational
 - Use when: Starting new session, first-time setup, system validation needed
 
 **RECOVERY OPERATIONS:**
-- `/reset` - Reset virtual team to clean state, clear accumulated issues
+- `/icc:reset` - Reset virtual team to clean state, clear accumulated issues
 - Use when: System stuck, accumulated penalties, fresh start needed
 
 **CAPABILITY MANAGEMENT:**
-- `/refresh` - Refresh team capabilities, sync tools and configurations
+- `/icc:refresh` - Refresh team capabilities, sync tools and configurations
 - Use when: New tools available, configuration updates, performance optimization
 
 ## SYSTEM COMMAND PATTERNS
 
 **STARTUP SEQUENCE:**
 ```
-/init → configuration validation → team activation → /memory-first → operations
+/icc:init → configuration validation → team activation → /icc:memory-first → operations
 ```
 
 **RECOVERY SEQUENCE:**
 ```
-/reset → state clearing → /init → system validation → operations
+/icc:reset → state clearing → /icc:init → system validation → operations
 ```
 
 **ENHANCEMENT SEQUENCE:**
 ```
-/refresh → capability sync → enhanced operations → /quality-gates
+/icc:refresh → capability sync → enhanced operations → /icc:quality-gates
 ```

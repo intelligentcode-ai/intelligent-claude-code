@@ -56,83 +56,101 @@ This is a **configuration-based system** built with native Markdown files, not a
 
 ## Development Workflow
 
-### Primary Development Tasks
-
-#### Virtual Team Updates
-When modifying the virtual team:
-1. Edit `src/modes/virtual-team.md` for role changes
-2. Update role definitions and workflows
-3. Test @-notation addressing works correctly
-4. Verify Git workflow integration
-
-#### Configuration Updates
-- Edit `src/config.md` for configuration changes
-- Maintain native markdown format consistency
-- Update `install.sh` if needed
-- Test installation with all three scopes
-
-### Testing Approach
-
-#### Installation Testing
+### Standard Tasks
 ```bash
-# Test all installation scopes
-./install.sh  # Test interactive installer
-# Options: 1) Current Project, 2) Specific Project, 3) User (~/.claude/)
+# Quick setup
+make install          # Interactive installation
+make test            # Validate everything works
+
+# Development cycle
+1. Edit source files in src/
+2. make lint         # Validate changes
+3. make test         # Test functionality
+4. git commit        # Follow Git workflow
 ```
 
-#### Configuration Validation
-1. Verify all imports resolve correctly
-2. Check token counts match documentation
-3. Test mode switching works properly
-4. Validate graceful integration preserves existing files
+### File Editing Patterns
+- **Virtual Team**: Edit `src/modes/virtual-team.md`
+- **Roles**: Edit `src/modes/role-framework.md`
+- **Behaviors**: Edit files in `src/behaviors/`
+- **Config**: Edit `src/config.md`
 
-#### Documentation Consistency
-1. Verify all @-notation examples work correctly
-2. Ensure Git workflow documentation is accurate
-3. Check role definitions match implementation
+### Testing
+```bash
+./install.sh  # Test interactive installer
+make validate-imports  # Check all imports
+make test-roles       # Verify @-notation
+```
 
-### Key Development Patterns
+## Behavioral Framework Patterns
 
-#### Modular Architecture System
-- **Base Configuration**: `src/CLAUDE.md` with import chain management
-- **Virtual Team Core**: `src/modes/virtual-team.md` with modular dependency chain
-- **Core Systems**: `src/modes/core-systems.md` with PM activation and scoring
-- **Execution Engine**: `src/modes/execution-engine.md` with enforcement and L3 autonomy
-- **Role Framework**: `src/modes/role-framework.md` with 14 roles and standards
-- **Integration Layer**: `src/modes/integration-layer.md` with memory and tools
-- **Operational Protocols**: `src/modes/operational-protocols.md` with Git workflow
-- **Import Chain**: Core → Execution → Role → Integration → Operational
-- **Single Import Activation**: `@~/.claude/modes/virtual-team.md` activates entire system
+### Command Chain Patterns
+```bash
+# Standard execution flow
+/memory-first → /think-sequential → execute → /quality-gates
 
-#### Command Chain Architecture
-- **Structured Execution Patterns**: Predefined flows for consistent role behavior
-- **Memory-First Patterns**: Behavioral emphasis on consulting memory before actions
-- **Parallel Task Coordination**: PM-driven delegation with simultaneous role execution
-- **Quality Validation Flows**: Built-in patterns for deliverable validation
-- **Learning Integration**: Automatic insight capture and knowledge building
-- **Tool Coordination**: Structured use of available Claude Code tools
+# Multi-role coordination
+/memory-first → /parallel-delegate → integrate → /quality-gates
 
-#### Virtual Team Architecture
-- **14 Core Specialized Roles**: PM, Requirements-Engineer, Architect, Developer, User-Role, System-Engineer, DevOps-Engineer, Database-Engineer, Security-Engineer, AI-Engineer, Web-Designer, QA-Engineer, Frontend-Tester, Backend-Tester
-- **Dynamic Specialist Support**: Context-aware role specialization (@React-Developer, @Kubernetes-Engineer, etc.)
-- **@-notation Addressing**: Direct role communication (@PM, @Architect, specialists)
-- **Behavioral Framework**: All roles follow command chain patterns for consistency
-- **Strategic Analysis Patterns**: Pre-execution planning with thoughtful organized responses
-- **Parallel Task Coordination**: PM-driven delegation with simultaneous role execution
-- **Git Workflow Integration**: Branch/commit/MR process with quality validation patterns
-- **Tool Integration Logic**: Coordinated use of available Claude Code tools
-- **Evidence-Based Validation**: Emphasis on fact-based reporting and documentation
-- **Learning-Based Improvement**: Continuous enhancement through insight capture and scoring
+# Strategic analysis
+/pm-strategic-analysis → delegate → monitor → validate
+```
 
-#### Graceful Integration Philosophy
-- Never overwrite existing configurations
-- Single import line for activation
-- Complete removal via single line deletion
-- Preserve team standards and existing workflows
+### Role Coordination
+- **@-notation**: Direct role addressing (@PM, @Developer, @Architect)
+- **Dynamic Specialists**: Auto-created for any technology (@React-Developer)
+- **Parallel Execution**: Multiple roles work simultaneously
+- **Quality Gates**: Mandatory validation before completion
 
-## Development Commands
+### Memory Integration
+- Consult memory before every action (/memory-first)
+- Store insights and learning outcomes
+- Build persistent knowledge relationships
+- Enable context survival across sessions
 
-### File Operations
+## System Integration Requirements
+
+### Tool Dependencies
+- **Claude Code**: Core platform (claude.ai/code)
+- **MCP Memory**: Persistent knowledge storage
+- **Context7**: Real-time documentation injection
+- **GitHub CLI**: Repository management (optional, fallback available)
+- **Brave Search**: Web search capability
+
+### Integration Validation
+```bash
+# Check tool availability
+command -v gh          # GitHub CLI
+claude --version       # Claude Code CLI
+
+# Test MCP connections
+# Memory integration test
+# Context7 documentation access
+```
+
+### Fallback Handling
+- Context7 → Brave Search → Built-in tools
+- GitHub CLI → Manual Git workflow
+- MCP Memory → File-based storage
+
+## Essential Development Commands
+
+### Core Makefile Commands
+```bash
+# Development workflow
+make install        # Install virtual team to current project or ~/.claude/
+make test          # Validate configuration and role addressing
+make clean         # Remove generated files
+make lint          # Validate markdown and import chains
+make package       # Package for distribution
+
+# Validation commands
+make validate-imports    # Check all @~/ imports resolve
+make test-roles         # Verify @-notation addressing
+make check-tokens       # Validate token counts
+```
+
+### Quick Validation
 ```bash
 # Validate imports exist
 find . -name "*.md" -exec grep -l "@~/" {} \;
@@ -143,12 +161,6 @@ echo "@PM Status check" | claude
 # Verify Git workflow
 git log --oneline -n 5
 ```
-
-### Configuration Management
-- Edit `src/config.md` to add new options
-- Update `src/CLAUDE.md` mode sections for new behaviors
-- Modify installation process via `make install` to handle new configuration patterns
-- Test GitHub CLI integration and graceful fallbacks
 
 ### Quality Assurance
 
@@ -170,109 +182,134 @@ git log --oneline -n 5
 13. **Automated Versioning**: Verify version bumping and changelog generation
 14. **L3 Autonomy**: Strategic analysis layer and continuous autonomy protocols
 
-## Architecture Insights
+## Architecture Overview
 
-### Why This Design
+### System Design
+- **Configuration-based**: Native Markdown files, no build tools
+- **Modular**: Import chain activation via single line
+- **Graceful**: Never overwrites existing configurations
+- **Professional**: Git workflow enforcement with quality gates
 
-#### Core Design Philosophy
-1. **Native Configuration**: Markdown over hidden environment files for discoverability
-2. **Virtual Team Focus**: 14 specialized roles + unlimited dynamic specialists
-3. **Graceful Integration**: Respects existing developer setups with single import
-4. **Git Workflow**: Professional development practices with mandatory enforcement
-
-#### Advanced Architecture Benefits
-5. **TRUE Dynamic Adaptation**: Unlimited specialists for ANY technology domain
-6. **Mandatory Quality**: Universal process compliance prevents shortcuts
-7. **Strategic Intelligence**: Pre-execution analysis with thoughtful responses
-8. **Autonomous Operations**: Level 3 continuous technical decision-making
-9. **Fallback Resilience**: Multiple tool layers ensure availability
-10. **Fact-Based Validation**: Evidence-driven development with auto-correction
-11. **Memory Integration**: Persistent knowledge capture and relationship tracking
-12. **Security-First**: Mandatory pre-commit validation for all changes
+### Core Components
+- **14 Specialized Roles**: PM, Architect, Developer, QA, Security, etc.
+- **Dynamic Specialists**: Unlimited auto-generated experts (@React-Developer)
+- **Command Chains**: Structured execution patterns (/memory-first, /quality-gates)
+- **Memory System**: Persistent learning with MCP integration
+- **Tool Integration**: Context7, GitHub CLI, Brave Search with fallbacks
 
 ### Extension Points
+- **Roles**: Add to `src/modes/role-framework.md`
+- **Behaviors**: Extend `src/behaviors/` modules
+- **Commands**: Add to `src/commands/` directory
+- **Config**: Customize `src/config.md`
 
-#### Core System Extensions
-- **Core Roles**: Add new roles to `src/modes/role-framework.md`
-- **Dynamic Specialists**: Extend role framework for new domains
-- **Process Enforcement**: Enhance `src/modes/execution-engine.md` for new quality gates
-- **Advanced Features**: Extend `src/modes/integration-layer.md` for new capabilities
-- **Behaviors**: Extend `src/behaviors/` for new behavioral intelligence
-- **Configuration**: Customize `src/config.md` for project-specific settings
-- **Installation**: Modify installation process in `install.sh`
-
-#### Dynamic Architecture Extensions
-- **Technology Discovery**: Add new file patterns and content recognition
-- **Context7 Integration**: Extend knowledge injection for new domains
-- **Fallback Logic**: Enhance tool availability detection and degradation
-- **Enforcement Rules**: Add new mandatory compliance requirements
-- **Memory Patterns**: Extend persistent knowledge capture points
-- **Security Validation**: Add new pre-commit validation rules
-
-### Critical Constraints
-
-#### Configuration Constraints
-- **No environment variable dependencies** (pure markdown configuration)
-- **Graceful integration only** (never overwrite existing files)
-- **Single import control** (one line to activate/deactivate)
-- **Git standards encouraged** (professional commit practices)
-
-#### Behavioral Framework Constraints
-- **Command chain guidance** (roles follow structured patterns for consistency)
-- **Quality gate patterns** (guidance for validation workflows)
-- **Evidence-based reporting** (emphasis on fact-based documentation)
-- **Memory-first culture** (behavioral emphasis on consulting memory)
-- **Strategic analysis patterns** (thoughtful responses through structured thinking)
-- **Tool coordination** (structured use of available tools)
-- **Learning integration** (continuous improvement through insight capture)
+### Design Constraints
+- Pure Markdown configuration (no environment variables)
+- Single import activation/deactivation
+- Never overwrite existing files
+- Command chain mandatory enforcement
+- Quality gates for all completions
 
 ## Common Development Tasks
 
-### Adding New Configuration Option
-1. Add to `src/config.md` in appropriate section
-2. Update documentation with usage examples
-3. Test installation creates correct config files
-4. Update `install.sh` if needed for new patterns
-
-### Modifying Virtual Team
-1. Edit `src/modes/role-framework.md` for role changes
-2. Update role definitions and responsibilities
-3. Test @-notation addressing
-4. Update documentation
-
 ### Adding New Role
-1. Add role definition to `src/modes/role-framework.md`
-2. Define expertise, responsibilities, and activation
-3. Update role selection logic in core-systems.md
-4. Run `make test` to verify integration
+```bash
+1. Edit src/modes/role-framework.md
+2. Define role expertise and responsibilities
+3. make test  # Verify integration
+4. Update documentation
+```
 
-### GitHub CLI Integration Development
-1. Test GitHub CLI detection: `command -v gh`
-2. Validate authentication: `gh auth status`
-3. Test PR creation with fallback mechanisms
-4. Verify graceful degradation when gh CLI unavailable
+### Modifying Behaviors
+```bash
+1. Edit relevant file in src/behaviors/
+2. make lint  # Validate changes
+3. make test  # Test functionality
+4. make install  # Apply changes
+```
 
-### Dynamic Role System Development
-1. Validate technology discovery engine: File patterns, content analysis, context inference
-2. Test Context7 knowledge injection: Library resolution, documentation retrieval
-3. Verify fallback tool logic: Context7 → Brave Search → Built-in tools
-4. Test unlimited specialist generation: Custom roles, domain experts, parallel instances
-5. Validate enforcement integration: Process compliance, quality gates, auto-correction
+### Configuration Changes
+```bash
+1. Edit src/config.md
+2. Update installation if needed
+3. make validate-imports
+4. Test with all installation scopes
+```
 
-### Process Enforcement Development
-1. Test mandatory quality gates: Requirements, architecture, peer review, security
-2. Validate fact-based validation: Evidence requirements, assumption detection
-3. Test auto-correction workflows: Quality loops, specialist re-delegation
-4. Verify L3 autonomy: Strategic analysis, continuous operations, business escalation
-5. Test security validation: Pre-commit validation, credential scanning, compliance
+### Quality Validation
+```bash
+# Full validation suite
+make test
+make validate-imports
+make check-tokens
+make test-roles
+```
 
-### Dual Scoring System Development
-1. Validate score display: All roles show P/Q scores in correct format
-2. Test scoring triggers: Process compliance and quality outcomes update scores
-3. Verify learning generation: Callouts created for significant score changes
-4. Test memory integration: Scores persist and history is retrievable
-5. Validate team replacement: -10 professionalism triggers seamless replacement
-6. Test enforcement: Only PM and Architect can assign scores, evidence required
+## Troubleshooting
+
+### Common Issues
+
+#### Import Resolution Failures
+```bash
+# Check imports
+make validate-imports
+find . -name "*.md" -exec grep -l "@~/" {} \;
+
+# Fix: Ensure all referenced files exist
+```
+
+#### Role Addressing Not Working
+```bash
+# Test role functionality
+make test-roles
+echo "@PM Status check" | claude
+
+# Fix: Verify virtual-team.md is properly imported
+```
+
+#### Installation Issues
+```bash
+# Clean and reinstall
+make clean
+make install
+
+# Check permissions
+ls -la ~/.claude/
+```
+
+#### Tool Integration Problems
+```bash
+# Check tool availability
+command -v gh
+claude --version
+
+# Test fallback chains
+# Context7 → Brave Search → Built-in tools
+```
+
+### Debug Commands
+```bash
+# System validation
+make lint              # Check markdown syntax
+make validate-imports  # Verify all imports
+make test             # Full test suite
+
+# Manual checks
+find . -name "*.md" -exec grep -H "@~/" {} \;
+grep -r "CLAUDE" src/
+```
+
+### Recovery Procedures
+```bash
+# Complete reset
+make clean
+rm -rf ~/.claude/modes ~/.claude/behaviors ~/.claude/commands
+make install
+
+# Partial reset
+cp src/CLAUDE.md ~/.claude/CLAUDE.md  # Reset master config
+make test
+```
 
 ## System Architecture Summary
 

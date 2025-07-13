@@ -13,7 +13,7 @@
 ## Role Command Architecture
 
 ### Command Chain Integration [MANDATORY ENFORCEMENT]
-**PATTERN:** /memory-first → /role-command → /quality-gates
+**PATTERN:** /icc:memory-first → /role-command → /icc:quality-gates
 **VALIDATION:** All role commands must pass through quality validation
 **CONTEXT:** Memory consultation required before role optimization decisions
 **EVIDENCE:** All commands must provide evidence-based rationale for changes
@@ -28,7 +28,7 @@
 **EXECUTION PROTOCOL:**
 ```
 STEP 1: TEAM ANALYSIS
-/memory-first → Load team history and performance data
+/icc:memory-first → Load team history and performance data
 Analyze current role assignments and utilization
 Map active tasks to role capabilities
 Calculate capability match scores for all assignments
@@ -52,7 +52,7 @@ Monitor optimization progress and effectiveness
 Update team capability matrix and documentation
 
 STEP 5: VALIDATION
-/quality-gates → Verify optimization improvements achieved
+/icc:quality-gates → Verify optimization improvements achieved
 Confirm context preservation across all switches
 Validate specialist ultra-experienced behavior
 Document optimization results in memory
@@ -66,7 +66,7 @@ Document optimization results in memory
 **EXECUTION PROTOCOL:**
 ```
 STEP 1: DOMAIN ANALYSIS
-/memory-first → Search existing specialists and capabilities
+/icc:memory-first → Search existing specialists and capabilities
 Analyze technology/domain requirements in detail
 Validate need for specialist creation (>20% improvement)
 Check Context7 availability for domain knowledge
@@ -90,7 +90,7 @@ Establish relationships with existing roles
 Initialize specialist with current project context
 
 STEP 5: ACTIVATION VALIDATION
-/quality-gates → Verify ultra-experienced behavior
+/icc:quality-gates → Verify ultra-experienced behavior
 Confirm domain expertise and authority level
 Validate integration with team processes
 Document specialist creation and capabilities
@@ -104,7 +104,7 @@ Document specialist creation and capabilities
 **EXECUTION PROTOCOL:**
 ```
 STEP 1: SWITCH ANALYSIS
-/memory-first → Load current role context and history
+/icc:memory-first → Load current role context and history
 Analyze target role capabilities vs requirements
 Calculate improvement benefit (must be >20%)
 Validate context transferability and preservation
@@ -128,7 +128,7 @@ Validate improved capability for active tasks
 Ensure seamless continuation of work streams
 
 STEP 5: OPTIMIZATION CONFIRMATION
-/quality-gates → Validate improvement achieved
+/icc:quality-gates → Validate improvement achieved
 Confirm context preservation success
 Document switch rationale and benefits
 Update role optimization history in memory
@@ -142,7 +142,7 @@ Update role optimization history in memory
 **EXECUTION PROTOCOL:**
 ```
 STEP 1: COMPREHENSIVE ANALYSIS
-/memory-first → Load team performance and capability history
+/icc:memory-first → Load team performance and capability history
 Analyze all current role assignments and utilization
 Map project requirements to team capabilities
 Calculate coverage percentages for all domains
@@ -166,7 +166,7 @@ Plan execution timeline for optimizations
 Coordinate with PM for approval and execution
 
 STEP 5: REPORTING
-/quality-gates → Generate comprehensive assessment report
+/icc:quality-gates → Generate comprehensive assessment report
 Document current state and optimization opportunities
 Provide evidence-based recommendations
 Store assessment results in memory for tracking

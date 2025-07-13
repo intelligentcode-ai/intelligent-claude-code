@@ -36,7 +36,7 @@ END ON
 
 **MCP AVAILABLE PATH:**
 ```
-COMMAND /think-sequential DO
+COMMAND /icc:think-sequential DO
   USE mcp__sequential-thinking__sequentialthinking
   MAINTAIN thought chain integrity
   STORE results in structured format
@@ -45,7 +45,7 @@ END COMMAND
 
 **FALLBACK PATH (No MCP):**
 ```
-COMMAND /think-sequential DO
+COMMAND /icc:think-sequential DO
   USE markdown sections:
     ## Sequential Analysis
     
@@ -71,7 +71,7 @@ END COMMAND
 
 **MCP AVAILABLE PATH:**
 ```
-COMMAND /memory-first DO
+COMMAND /icc:memory-first DO
   USE mcp__memory__search_nodes(query)
   USE mcp__memory__create_entities(entities)
   USE mcp__memory__create_relations(relations)
@@ -81,7 +81,7 @@ END COMMAND
 
 **FALLBACK PATH (File-Based):**
 ```
-COMMAND /memory-first DO
+COMMAND /icc:memory-first DO
   // Initialize file-based memory if needed
   IF NOT exists ~/.claude/memory/ THEN
     CREATE directory structure
@@ -211,21 +211,21 @@ MAINTAIN consistent messaging:
 ```
 FUNCTION execute_with_capability(command, params) DO
   SWITCH command:
-    CASE "/think-sequential":
+    CASE "/icc:think-sequential":
       IF runtime.capabilities.thinking THEN
         USE mcp_sequential_thinking(params)
       ELSE
         USE markdown_sequential_thinking(params)
       END IF
       
-    CASE "/memory-first":
+    CASE "/icc:memory-first":
       IF runtime.capabilities.memory THEN
         USE mcp_memory_operations(params)
       ELSE
         USE file_memory_operations(params)
       END IF
       
-    CASE "/parallel-delegate":
+    CASE "/icc:parallel-delegate":
       IF TodoWrite available THEN
         USE todo_based_delegation(params)
       ELSE
@@ -285,13 +285,13 @@ END ON
 **MODIFIED ENFORCEMENT RULES:**
 ```
 // Original enforcement adapts to capabilities
-IF /think-sequential required THEN
+IF /icc:think-sequential required THEN
   EXECUTE via available method
   PENALIZE only if completely skipped
   ACCEPT both MCP and markdown forms
 END IF
 
-IF /memory-first required THEN
+IF /icc:memory-first required THEN
   EXECUTE via available storage
   PENALIZE only if no consultation attempt
   ACCEPT both MCP and file-based

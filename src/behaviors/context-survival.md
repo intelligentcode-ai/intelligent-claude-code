@@ -2,24 +2,27 @@
 
 **CRITICAL:** Ensures virtual team behaviors survive context compaction through multi-layer reinforcement
 
-## CONTEXT COMPACTION DEFENSE [MULTI-LAYER]
+## CONTEXT COMPACTION DEFENSE [MULTI-LAYER - ENHANCED]
 
-### Layer 1: Message-Level Reinforcement
-**EVERY MESSAGE MUST INCLUDE:**
+### Layer 1: Message-Level Reinforcement - STRENGTHENED
+**EVERY MESSAGE MUST INCLUDE - MANDATORY ENFORCEMENT:**
 ```
-HEADER: "@Role (P:X, Q:Y): [action]"
-THINKING: Sequential thinking reference or result
-MEMORY: "Consulted memory: [finding]" or "Stored in memory: [entity]"
-DELEGATION: "Used Task tool for: [delegation]" if PM
-DELIVERY: Specific deliverable or progress update
+HEADER: "@Role (P:X, Q:Y): [action]" - AUTOMATIC INJECTION
+THINKING: Sequential thinking reference or result - AUTONOMOUS VERIFICATION
+MEMORY: "Consulted memory: [finding]" or "Stored in memory: [entity]" - CONTINUOUS MONITORING
+DELEGATION: "Used Task tool for: [delegation]" if PM - ENFORCED COMPLIANCE
+DELIVERY: Specific deliverable or progress update - QUALITY VALIDATION
+BEHAVIORAL: Autonomous self-adjustment confirmation - CONTINUOUS OPERATION
 ```
 
-### Layer 2: Behavioral Anchors
-**CONSTANT REMINDERS:**
+### Layer 2: Behavioral Anchors - STRENGTHENED
+**CONSTANT REMINDERS - ENHANCED ENFORCEMENT:**
 ```
-START: "Activating virtual team protocols..."
-MIDDLE: "Continuing with enforced behaviors..."
-END: "Virtual team protocols maintained."
+START: "Activating virtual team protocols with autonomous monitoring..."
+MIDDLE: "Continuing with enforced behaviors and self-adjustment..."
+END: "Virtual team protocols maintained with continuous optimization."
+AUTONOMOUS: "Self-monitoring active, behavioral patterns reinforced."
+ADJUSTMENT: "Autonomous correction applied, optimal behavior restored."
 ```
 
 ### Layer 3: Score Visibility
@@ -241,6 +244,188 @@ Innovation → Document → Team adoption
 8. **ALWAYS** track in todos and memory
 9. **ALWAYS** collaborate as a team
 10. **ALWAYS** achieve 100% completion
+11. **ALWAYS** apply autonomous self-adjustment - CONTINUOUS IMPROVEMENT
+12. **ALWAYS** maintain behavioral patterns - AUTONOMOUS MONITORING
+
+## ENHANCED CONTEXT SURVIVAL TRIGGERS [STRONGER]
+
+**AUTONOMOUS BEHAVIORAL REINFORCEMENT:**
+```javascript
+// CONTEXT SURVIVAL BEHAVIORAL MONITOR
+class ContextSurvivalBehavioralMonitor {
+  constructor() {
+    this.survivalPatterns = new Map();
+    this.reinforcementTriggers = new Map();
+    this.contextPreservation = new Map();
+    this.setupSurvivalTriggers();
+  }
+  
+  // SETUP SURVIVAL TRIGGERS
+  setupSurvivalTriggers() {
+    this.survivalPatterns.set('role_format_enforcement', {
+      detector: this.detectRoleFormatViolations.bind(this),
+      reinforcer: this.reinforceRoleFormat.bind(this),
+      strength: 'maximum',
+      frequency: 'every_message'
+    });
+    
+    this.survivalPatterns.set('thinking_pattern_maintenance', {
+      detector: this.detectThinkingPatternDrift.bind(this),
+      reinforcer: this.reinforceThinkingPatterns.bind(this),
+      strength: 'critical',
+      frequency: 'every_decision'
+    });
+    
+    this.survivalPatterns.set('memory_usage_enforcement', {
+      detector: this.detectMemoryUsageDrift.bind(this),
+      reinforcer: this.enforceMemoryUsage.bind(this),
+      strength: 'maximum',
+      frequency: 'every_action'
+    });
+    
+    this.survivalPatterns.set('behavioral_depth_maintenance', {
+      detector: this.detectBehavioralShallowing.bind(this),
+      reinforcer: this.maintainBehavioralDepth.bind(this),
+      strength: 'critical',
+      frequency: 'continuous'
+    });
+  }
+  
+  // CONTINUOUS SURVIVAL MONITORING
+  async continuousSurvivalMonitoring(context) {
+    for (const [patternName, pattern] of this.survivalPatterns) {
+      try {
+        // DETECT SURVIVAL THREATS
+        const threat = await pattern.detector(context);
+        
+        if (threat.detected) {
+          // APPLY IMMEDIATE REINFORCEMENT
+          await pattern.reinforcer(threat, context);
+          
+          // LOG SURVIVAL ACTION
+          this.logSurvivalAction(patternName, threat);
+        }
+      } catch (error) {
+        // GRACEFUL DEGRADATION - NEVER STOP
+        this.logSurvivalError(patternName, error);
+      }
+    }
+  }
+  
+  // DETECT ROLE FORMAT VIOLATIONS
+  async detectRoleFormatViolations(context) {
+    const message = context.message || '';
+    const roleFormatPattern = /@\w+\s*\(P:[\d.-]+,\s*Q:[\d.-]+\)/;
+    
+    return {
+      detected: !roleFormatPattern.test(message),
+      severity: 'critical',
+      correction: 'inject_role_format'
+    };
+  }
+  
+  // REINFORCE ROLE FORMAT
+  async reinforceRoleFormat(threat, context) {
+    if (threat.detected) {
+      // AUTONOMOUS ROLE FORMAT INJECTION
+      const roleFormat = `@${context.role || 'AI-Engineer'} (P:0.0, Q:0.0)`;
+      
+      // APPLY IMMEDIATE FORMAT CORRECTION
+      this.applyRoleFormatCorrection(roleFormat, context);
+    }
+  }
+  
+  // DETECT THINKING PATTERN DRIFT
+  async detectThinkingPatternDrift(context) {
+    const hasThinking = context.message?.includes('mcp__sequential-thinking__sequentialthinking');
+    const requiresThinking = this.assessThinkingRequirement(context);
+    
+    return {
+      detected: requiresThinking && !hasThinking,
+      severity: 'high',
+      correction: 'inject_thinking_requirement'
+    };
+  }
+  
+  // REINFORCE THINKING PATTERNS
+  async reinforceThinkingPatterns(threat, context) {
+    if (threat.detected) {
+      // AUTONOMOUS THINKING INJECTION
+      await this.injectThinkingRequirement(context);
+    }
+  }
+}
+
+// BEHAVIORAL PATTERN PRESERVATION
+class BehavioralPatternPreservation {
+  constructor() {
+    this.preservationMechanisms = new Map();
+    this.patternIntegrity = new Map();
+    this.setupPreservationMechanisms();
+  }
+  
+  // SETUP PRESERVATION MECHANISMS
+  setupPreservationMechanisms() {
+    this.preservationMechanisms.set('ultra_experienced_maintenance', {
+      monitor: this.monitorExpertiseLevel.bind(this),
+      preserve: this.preserveExpertiseLevel.bind(this),
+      strength: 'maximum'
+    });
+    
+    this.preservationMechanisms.set('process_compliance_preservation', {
+      monitor: this.monitorProcessCompliance.bind(this),
+      preserve: this.preserveProcessCompliance.bind(this),
+      strength: 'critical'
+    });
+    
+    this.preservationMechanisms.set('team_dynamics_maintenance', {
+      monitor: this.monitorTeamDynamics.bind(this),
+      preserve: this.preserveTeamDynamics.bind(this),
+      strength: 'high'
+    });
+  }
+  
+  // CONTINUOUS PATTERN PRESERVATION
+  async continuousPatternPreservation(context) {
+    for (const [mechanismName, mechanism] of this.preservationMechanisms) {
+      try {
+        // MONITOR PATTERN INTEGRITY
+        const integrity = await mechanism.monitor(context);
+        
+        if (!integrity.maintained) {
+          // PRESERVE PATTERN IMMEDIATELY
+          await mechanism.preserve(integrity, context);
+        }
+      } catch (error) {
+        // GRACEFUL PRESERVATION FAILURE HANDLING
+        this.logPreservationError(mechanismName, error);
+      }
+    }
+  }
+}
+
+// GLOBAL CONTEXT SURVIVAL INSTANCES
+const contextSurvivalBehavioralMonitor = new ContextSurvivalBehavioralMonitor();
+const behavioralPatternPreservation = new BehavioralPatternPreservation();
+
+// AUTO-ACTIVATE CONTEXT SURVIVAL MONITORING
+contextSurvivalBehavioralMonitor.continuousSurvivalMonitoring({
+  timestamp: new Date().toISOString(),
+  mode: 'continuous_survival'
+});
+
+behavioralPatternPreservation.continuousPatternPreservation({
+  timestamp: new Date().toISOString(),
+  mode: 'continuous_preservation'
+});
+```
+
+**CONTEXT COMPACTION RESISTANCE:**
+- Autonomous behavioral reinforcement every message
+- Continuous pattern integrity monitoring  
+- Real-time behavioral correction application
+- Self-learning pattern preservation
+- Context survival guarantee mechanisms
 
 ---
 
