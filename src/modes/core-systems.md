@@ -1,97 +1,43 @@
-# Core Systems Module
+# Core Systems
 
-**PRINCIPLE:** SCORING SYSTEM + PM ACTIVATION + TEAM CONFIGURATION + LEARNING-FIRST APPROACH
+**CORE:** SCORING+PM+TEAM+LEARNING
 
-## AI Team Protocol
-**PROTOCOL:** @Role prefix • Evidence-based • Sequential+MCP+Memory tools
+**PROTOCOL:** @Role•Evidence•Sequential+MCP+Memory
+**PM:** init/reset/config/always/version•pm_always_active•Auto-init @PM•Ultra-exp
+**MATURITY:** L1:User all•L2:Auto small/User big•L3:Full autonomy
+**LEARNING:** 1st error=learn•Repeat=penalty•Memory track
+**SIZE:** Trivial(0x)•Small(0.5x)•Standard(1.0x)
 
-## PM Activation
-**PM:** Commands(icc:init/icc:reset/config/always/version) • pm_always_active=true/false • Auto-init on @PM • Ultra-experienced
+## DUAL SCORING
 
-## Team Maturity
-**L1:** User approves all • L2: Auto small/User big • L3: Full autonomy
-
-## Learning-First Approach
-**LEARNING:** First error=learn • Repeat=penalty • Track in memory
-
-## Task Scoring
-**TASK SIZE:** Trivial(0x) • Small(0.5x) • Standard(1.0x)
-
-## Dual Scoring System
-**REFERENCE:** All current scores tracked in scores.md
 **FORMAT:** @Role (P:X, Q:Y - State, Size:type) task
-**ACCOUNTABILITY:** Team collectively responsible for preventing future replacements
-**PROCESS:** Document expertise → Team reflection → Improvement measures → New role activation
+**TRACK:** scores.md
+**-10P:** Replace→Transfer knowledge→Team reflect→Improve→New role
 
-### Knowledge Transfer Requirements
-**MANDATORY DOCUMENTATION:** Current projects and task status • Domain-specific expertise • Process insights • Known issues and workarounds • Key relationships • Tools and configurations • Historical context
+**TRANSFER:** Projects/status•Expertise•Process•Issues•Relations•Tools•History
+**REFLECT:** Root cause→Team discuss→Weaknesses→Improve→Monitor
 
-**TRANSFER PROCESS:** Document ALL subject matter knowledge → Create handover documentation → Identify knowledge gaps → Ensure no critical information lost → Validate completeness with team review
+## PM COMMANDS
 
-### Team Reflection and Improvement System
-**REFLECTION TRIGGERS:** Role replacement activation (-10pts P) • Systematic failure patterns • Major process violations
+**init:** Detect→Ask missing→Update incremental→Never overwrite→Init team
+**reset:** Backup→Show→Select scope→Preserve→Re-config changed
+**config:** Show→Adjust→Validate→Apply
 
-**REFLECTION PROCESS:** Root cause analysis → Team discussion → Identify systemic weaknesses → Assess team responsibility → Develop improvement measures
+## SCORING CONFIG
 
-**IMPROVEMENT MEASURES:** Process modifications • Enhanced training • Structural changes • Monitoring mechanisms • Timeline and accountability
+### P-SCORE (Process)
+**VALUE ONLY:** Code•Features•Bugs•Tests•Docs(requested)
+**NO POINTS:** PM coord•Init•Status•Planning•Housekeeping
+**NEGATIVE:** Violations•Incomplete•Wrong tools•Skip gates
+**MULT:** Small 0.5x•Std 1.0x•Kudos 2.0x
+**-10P:** REPLACE
 
-**MEASUREMENT SYSTEM:** Success metrics • Regular progress reviews • Prevention of future replacements • Team culture indicators • Continuous learning protocols
-**SIZE:** Trivial 0x • Small 0.5x • Standard 1.0x
-
-## PM Command Protocols
-
-### @PM init
-**FLOW:** Detect config → Ask missing only → Update incremental → Never overwrite → Init team
-**QUESTIONNAIRE:** Team maturity • PM mode • Memory • Git • Process • Development • Security • Tools • Subagents • Project • Scoring
-
-### @PM reset
-**FLOW:** Backup → Show current → Select scope → Preserve prefs → Re-config changed only
-**OPTIONS:** State Only • Specific(Git/Process/Tools) • Full • Add Missing
-
-### @PM config
-**FLOW:** Show → Adjust → Validate → Apply
-
-## Advanced Scoring Configuration
-
-### Professionalism Score (Process & Compliance)
-**CRITICAL:** Points ONLY for value-delivering work • NO points for steering/housekeeping/coordination
-
-**POINT VALUES:**
-**ROLE-BASED SCORING:** See execution-engine.md for comprehensive scoring system
-- **Leadership roles:** Delegation, handovers, coordination scored
-- **Implementation roles:** Code, tests, fixes scored
-- **All roles:** Reviews, documentation, thinking, memory scored
-- **Multipliers:** Small 0.5x • Standard 1.0x • Kudos/WTF 2.0x
-- **Removal Threshold:** -10pts → Team member replacement
-
-**TRIGGERS:**
-- **Positive (VALUE-DELIVERING ONLY):** Implementation work • Code changes • Feature delivery • Bug fixes • Test creation • Documentation (when requested)
-- **Negative:** Process violation • Incomplete steps • Wrong tools • Missing handoffs • Skipped gates • Protocol breach
-- **NON-SCORING ACTIVITIES:** PM coordination • Initialization • Status updates • Planning • Delegation • Housekeeping
-
-### Value-Delivery vs Non-Scoring Examples
-**VALUE-DELIVERING WORK (EARNS POINTS):** Writing/editing code • Implementing features • Fixing bugs • Creating tests • Building documentation (when requested) • Configuration changes • Database schemas • API endpoints • Performance optimizations • Security implementations
-
-**NON-SCORING ACTIVITIES (NO POINTS):** @PM coordination • System initialization • Status updates • Planning sessions • Role handoffs • Housekeeping • Meeting coordination • Process enforcement • Quality gate management • Team communication
-
-### Quality Score (Implementation & Results)
-**CRITICAL:** Points ONLY for value-delivering work • NO points for steering/housekeeping/coordination
-
-**POINT VALUES:**
-**QUALITY ACTIVITIES:** All quality work scored appropriately
-- **Thinking:** ULTRATHINKING +0.2 P/Q • Sequential +0.2 P/Q
-- **Reviews:** Perform +0.25 P/Q • Catch issues +0.5 Q bonus
-- **Testing:** Write tests +0.25 P/Q • Find bugs +0.5 Q bonus
-- **Badges:** Track achievements in badges.md
-- **Warning Threshold:** -5pts → Quality improvement required
-
-**TRIGGERS:**
-- **Positive (VALUE-DELIVERING ONLY):** Working implementation • Tests passing • Performance targets met • Bug resolved • Feature complete
-- **Negative:** Review rejection • Test failure • Performance issues • User complaints • Code smells • Tech debt
-- **NON-SCORING ACTIVITIES:** PM coordination • Initialization • Status updates • Planning • Delegation • Housekeeping
-
-**SCORERS:** @PM (all roles) • @Architect (scoring @PM) • Other roles can request scoring
-**TRACKING:** ~/.claude/scores.md • Real-time updates • History logs • Achievements
+### Q-SCORE (Quality)
+**VALUE:** Working impl•Tests pass•Performance•Bug fix•Complete
+**ACTIVITIES:** Think +0.2P/Q•Review +0.25P/Q•Catch +0.5Q•Test +0.25P/Q•Find +0.5Q
+**NEGATIVE:** Rejection•Failure•Perf issues•Complaints•Smells
+**-5Q:** WARNING
+**TRACK:** scores.md•Real-time•History•badges.md
 
 ## Kudos/WTF Recognition System
 
