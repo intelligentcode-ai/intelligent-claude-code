@@ -40,7 +40,7 @@ This document provides an honest assessment of the Virtual Team system's current
 **Reality**: Command chains are documentation of intended behavior, not executable code
 
 **What This Means**:
-- `/memory-first` is a behavioral prompt, not a function call
+- `icc:memory-first` is a behavioral prompt, not a function call
 - Command chain "execution" is AI following patterns
 - No technical prevention of command chain skipping
 - Quality depends on AI understanding and compliance

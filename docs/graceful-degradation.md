@@ -73,25 +73,25 @@ The Intelligent Claude Code system implements comprehensive graceful degradation
 
 ## Command Chain Adaptations
 
-### /memory-first
+### icc:memory-first
 - Detects memory tool availability
 - Uses MCP or file-based storage
 - Same consultation requirements
 - Same penalty for skipping
 
-### /think-sequential
+### icc:think-sequential
 - Detects thinking tool availability
 - Uses MCP or markdown structure
 - Same analysis depth required
 - Same quality standards enforced
 
-### /parallel-delegate
+### icc:parallel-delegate
 - Uses TodoWrite if available
 - Falls back to markdown tracking
 - Same delegation patterns
 - Same coordination requirements
 
-### /quality-gates
+### icc:quality-gates
 - Adapts validation methods
 - Maintains same standards
 - Uses available tools for checks

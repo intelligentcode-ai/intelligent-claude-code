@@ -48,40 +48,40 @@ All command chains follow this basic structure:
 
 #### PM Command Chain
 ```
-/init-context
-  → /memory-first "project context"
-  → /think-strategic [strategic analysis]
-  → /analyze-work [workstream identification]
-  → /parallel-delegate [task creation]
-  → /track-progress [status monitoring]
-  → /capture-insight [learning generation]
+icc:init-context
+  → icc:memory-first "project context"
+  → icc:think-strategic [strategic analysis]
+  → icc:analyze-work [workstream identification]
+  → icc:parallel-delegate [task creation]
+  → icc:track-progress [status monitoring]
+  → icc:capture-insight [learning generation]
 ```
 
 #### Architect Command Chain
 ```
-/init-context
-  → /memory-first "architecture patterns"
-  → /think-strategic [architecture analysis]
-  → /analyze-technical [options evaluation]
-  → /design-solution [architecture creation]
-  → /validate-security [threat assessment]
-  → /store-results [pattern capture]
+icc:init-context
+  → icc:memory-first "architecture patterns"
+  → icc:think-strategic [architecture analysis]
+  → icc:analyze-technical [options evaluation]
+  → icc:design-solution [architecture creation]
+  → icc:validate-security [threat assessment]
+  → icc:store-results [pattern capture]
 ```
 
 #### Developer Command Chain
 ```
-/init-context
-  → /memory-first "implementation patterns"
-  → /think-strategic [implementation approach]
-  → /acknowledge-task [requirements confirmation]
-  → /execute-expert [code implementation]
-  → /validate-quality [testing and validation]
-  → /store-results [pattern storage]
+icc:init-context
+  → icc:memory-first "implementation patterns"
+  → icc:think-strategic [implementation approach]
+  → icc:acknowledge-task [requirements confirmation]
+  → icc:execute-expert [code implementation]
+  → icc:validate-quality [testing and validation]
+  → icc:store-results [pattern storage]
 ```
 
 ## Command Definitions
 
-### /memory-first
+### icc:memory-first
 **Purpose**: Consult team memory before taking action
 **Implementation**: 
 - Search for relevant entities
@@ -95,7 +95,7 @@ All command chains follow this basic structure:
 - Maintains context continuity
 - Leverages team knowledge
 
-### /think-strategic
+### icc:think-strategic
 **Purpose**: Systematic problem analysis
 **Implementation**:
 - Minimum 3 thoughts for simple tasks
@@ -109,7 +109,7 @@ All command chains follow this basic structure:
 - Pattern recognition
 - Knowledge building
 
-### /parallel-delegate
+### icc:parallel-delegate
 **Purpose**: Create multiple simultaneous tasks
 **Implementation**:
 - Task identification
@@ -123,7 +123,7 @@ All command chains follow this basic structure:
 - Reduces overall time
 - Enables complex coordination
 
-### /quality-gates
+### icc:quality-gates
 **Purpose**: Validate deliverable quality
 **Implementation**:
 - Testing validation
@@ -144,7 +144,7 @@ Command chains coordinate with Claude Code tools:
 
 ```javascript
 // PM parallel delegation
-/parallel-delegate → {
+icc:parallel-delegate → {
   Tool: "Task",
   Tasks: [
     "@Developer - Implement feature X",
@@ -159,13 +159,13 @@ Command chains interact with memory system:
 
 ```javascript
 // Memory consultation
-/memory-first → {
+icc:memory-first → {
   Tool: "mcp__memory__search_nodes",
   Query: "authentication implementation patterns"
 }
 
 // Result storage
-/store-results → {
+icc:store-results → {
   Tool: "mcp__memory__create_entities",
   Entities: [
     {
@@ -182,7 +182,7 @@ Command chains coordinate with progress tracking:
 
 ```javascript
 // Progress tracking
-/track-progress → {
+icc:track-progress → {
   Tool: "TodoWrite",
   Todos: [
     {

@@ -19,13 +19,13 @@ cd intelligent-claude-code
 make install    # Installs to ~/.claude/
 
 # After installation, initialize your team
-/init          # Validates setup and activates virtual team
+icc:init          # Validates setup and activates virtual team
 ```
 
 ### Start Building
 ```bash
 # Initialize the system (first time or new project)
-/init
+icc:init
 
 # Start working with your team
 @PM Build me a portfolio website
@@ -37,9 +37,9 @@ That's it. Your virtual team is active and building.
 
 ### System Commands Quick Reference
 ```bash
-/init     # First setup: Validates configuration, activates team
-/reset    # Stuck system: Clears issues, fresh restart
-/refresh  # Updates: Syncs tools, enhances capabilities
+icc:init     # First setup: Validates configuration, activates team
+icc:reset    # Stuck system: Clears issues, fresh restart
+icc:refresh  # Updates: Syncs tools, enhances capabilities
 ```
 
 ## Key Features
@@ -97,7 +97,7 @@ Your team operates through enforced behavioral patterns with mandatory complianc
 Example autonomous workflow:
 ```bash
 # System initialization
-/init  # Validates configuration, activates Level 3 autonomy
+icc:init  # Validates configuration, activates Level 3 autonomy
 
 User: "Build a real-time chat application"
 
@@ -113,8 +113,8 @@ User: "Build a real-time chat application"
   → Only escalates: budget approval, timeline confirmation, stakeholder decisions
 
 # System management (when needed)
-/reset   # Clears penalties, fresh autonomous restart
-/refresh # Updates capabilities, tool integrations
+icc:reset   # Clears penalties, fresh autonomous restart
+icc:refresh # Updates capabilities, tool integrations
 ```
 
 Every role follows the streamlined two-behavior architecture for consistency and quality.
@@ -156,19 +156,19 @@ Streamlined knowledge capture for easy recall:
 ### System Commands
 ```bash
 # System Initialization & Management
-/init                       # Initialize virtual team system, verify all components
-/reset                      # Reset system to clean state, clear stuck issues
-/refresh                    # Refresh capabilities, sync tools and configurations
+icc:init                       # Initialize virtual team system, verify all components
+icc:reset                      # Reset system to clean state, clear stuck issues
+icc:refresh                    # Refresh capabilities, sync tools and configurations
 
 # When to use system commands:
-/init     # → First time setup, new project activation, after installation
-/reset    # → System stuck, accumulated issues, need fresh start
-/refresh  # → Tool updates, configuration changes, capability sync
+icc:init     # → First time setup, new project activation, after installation
+icc:reset    # → System stuck, accumulated issues, need fresh start
+icc:refresh  # → Tool updates, configuration changes, capability sync
 
 # System command examples:
-/init     # Reports: Configuration ✅, Memory ✅, Tools ✅, Team 14/14 ✅
-/reset    # Clears: Penalties, stuck states, cache → Fresh restart
-/refresh  # Updates: Tool availability, new capabilities, optimizations
+icc:init     # Reports: Configuration ✅, Memory ✅, Tools ✅, Team 14/14 ✅
+icc:reset    # Clears: Penalties, stuck states, cache → Fresh restart
+icc:refresh  # Updates: Tool availability, new capabilities, optimizations
 ```
 
 ### Team Operations
