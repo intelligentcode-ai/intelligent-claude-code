@@ -163,13 +163,13 @@ make test-roles       # Verify @-notation
 ### Command Chain Patterns
 ```bash
 # Standard execution flow
-/memory-first → /think-sequential → execute → /quality-gates
+icc:memory-first → icc:think-sequential → execute → icc:quality-gates
 
 # Multi-role coordination
-/memory-first → /parallel-delegate → integrate → /quality-gates
+icc:memory-first → icc:parallel-delegate → integrate → icc:quality-gates
 
 # Strategic analysis
-/pm-strategic-analysis → delegate → monitor → validate
+icc:pm-strategic-analysis → delegate → monitor → validate
 ```
 
 ### Role Coordination
@@ -179,7 +179,7 @@ make test-roles       # Verify @-notation
 - **Quality Gates**: Mandatory validation before completion
 
 ### Memory Integration
-- Consult memory before every action (/memory-first)
+- Consult memory before every action (icc:memory-first)
 - Store insights and learning outcomes
 - Build persistent knowledge relationships
 - Enable context survival across sessions
@@ -275,7 +275,7 @@ git log --oneline -n 5
 ### Core Components
 - **14 Specialized Roles**: PM, Architect, Developer, QA, Security, etc.
 - **Dynamic Specialists**: Unlimited auto-generated experts (@React-Developer)
-- **Command Chains**: Structured execution patterns (/memory-first, /quality-gates)
+- **Command Chains**: Structured execution patterns (icc:memory-first, icc:quality-gates)
 - **Memory System**: Persistent learning with MCP integration
 - **Tool Integration**: Context7, GitHub CLI, Brave Search with fallbacks
 

@@ -33,9 +33,9 @@ LOG: capabilities
 **CAPABILITY-BASED EXECUTION PATTERNS:**
 
 **ADAPTIVE COMMAND EXECUTION:**
-- **/think-sequential**: MCP sequential thinking (preferred) → Markdown sequential thinking (fallback)
-- **/memory-first**: MCP memory operations (preferred) → File-based memory operations (fallback)
-- **/parallel-delegate**: TodoWrite delegation (preferred) → Markdown task tracking (fallback)
+- **icc:think-sequential**: MCP sequential thinking (preferred) → Markdown sequential thinking (fallback)
+- **icc:memory-first**: MCP memory operations (preferred) → File-based memory operations (fallback)
+- **icc:parallel-delegate**: TodoWrite delegation (preferred) → Markdown task tracking (fallback)
 - **Default Commands**: Best available method automatically selected for any command
 
 **RUNTIME CAPABILITY DETECTION:**

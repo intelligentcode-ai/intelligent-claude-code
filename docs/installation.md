@@ -18,10 +18,10 @@ Your project CLAUDE.md gets one import line:
 ### Post-Installation: Initialize Your Team
 After installation, initialize the virtual team system:
 ```bash
-/init    # Validates configuration, verifies components, activates team
+icc:init    # Validates configuration, verifies components, activates team
 ```
 
-The `/init` command will:
+The `icc:init` command will:
 - ✅ Verify configuration files are properly installed
 - ✅ Check all 14 core roles are available  
 - ✅ Validate memory system connectivity
@@ -242,7 +242,7 @@ ls ~/.claude/CLAUDE.md
 ls ~/.claude/modes/virtual-team.md
 
 # Initialize and verify system
-/init           # Should report all components ✅
+icc:init           # Should report all components ✅
 
 # Test team activation
 @PM Status check
@@ -314,7 +314,7 @@ make install PATH=~/development/.claude
 
 ### System Command Issues
 
-If `/init` reports configuration problems:
+If `icc:init` reports configuration problems:
 ```bash
 # Check configuration file exists
 ls ~/.claude/CLAUDE.md
@@ -332,8 +332,8 @@ make install
 
 If system becomes unresponsive or has penalties accumulated:
 ```bash
-/reset          # Clears penalties, accumulated issues, fresh autonomous restart
-/refresh        # Updates capabilities, tool integrations, specialist definitions
+icc:reset          # Clears penalties, accumulated issues, fresh autonomous restart
+icc:refresh        # Updates capabilities, tool integrations, specialist definitions
 ```
 
 If autonomous operation stops unexpectedly:
@@ -342,7 +342,7 @@ If autonomous operation stops unexpectedly:
 @PM show team scores and violations
 
 # Clear penalty state and restart autonomy
-/reset
+icc:reset
 
 # Verify Level 3 operation resumed
 @PM autonomous operation status
@@ -350,9 +350,9 @@ If autonomous operation stops unexpectedly:
 
 ### System Command Usage
 ```bash
-/init           # First setup, new project activation, after installation
-/reset          # System stuck, accumulated penalties, need fresh start  
-/refresh        # Tool updates, configuration changes, capability sync
+icc:init           # First setup, new project activation, after installation
+icc:reset          # System stuck, accumulated penalties, need fresh start  
+icc:refresh        # Tool updates, configuration changes, capability sync
 ```
 
 ### Ansible Not Found
