@@ -8,7 +8,7 @@ The memory system provides persistent knowledge capture and retrieval, enabling 
 
 ### Memory-First Culture
 The system emphasizes consulting memory before taking actions:
-- All command chains start with `/memory-first`
+- All command chains start with `icc:memory-first`
 - Past solutions and patterns are retrieved
 - Team knowledge is leveraged
 - Context is preserved across sessions
@@ -80,7 +80,7 @@ Uses the MCP Memory provider for:
 Every command chain begins with memory consultation:
 
 ```bash
-/memory-first "authentication implementation"
+icc:memory-first "authentication implementation"
   → Search for: AuthenticationPattern entities
   → Retrieve: Previous implementations
   → Identify: Known issues and solutions
@@ -91,7 +91,7 @@ Every command chain begins with memory consultation:
 Every command chain ends with result storage:
 
 ```bash
-/store-results
+icc:store-results
   → Create: New entities for patterns
   → Update: Existing entities with new observations
   → Link: Related entities together
@@ -104,7 +104,7 @@ Every command chain ends with result storage:
 ```bash
 @Developer Implement user login
 # Developer command chain:
-# 1. /memory-first "user authentication"
+# 1. icc:memory-first "user authentication"
 # 2. Retrieves previous auth patterns
 # 3. Identifies security considerations
 # 4. Loads implementation templates
@@ -114,7 +114,7 @@ Every command chain ends with result storage:
 ```bash
 @Architect Design API rate limiting
 # Architect command chain:
-# 1. /memory-first "rate limiting patterns"
+# 1. icc:memory-first "rate limiting patterns"
 # 2. Reviews previous implementations
 # 3. Identifies performance considerations
 # 4. Loads security requirements

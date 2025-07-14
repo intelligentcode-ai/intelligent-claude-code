@@ -117,16 +117,16 @@ icc:apply-learning
 **STORE:** EVERY action→observations→lessons→relations→patterns
 **FLOW:** Consult→Execute→Store→Continue seamlessly
 
-## /think-sequential
+## icc:think-sequential
 **PURPOSE:** FORCED thinking•ALL complex•NO EXCEPTIONS
 **USE:** EVERY analysis/planning/multi-step•PENALTY:-1.0Q skip•HALT non-trivial
 
 **USAGE:**
 ```
-/think-sequential "problem"
-/think-sequential --thoughts 8 "complex"
-/think-sequential --revise 3 "optimize"
-/think-sequential --branch "approach" "design"
+icc:think-sequential "problem"
+icc:think-sequential --thoughts 8 "complex"
+icc:think-sequential --revise 3 "optimize"
+icc:think-sequential --branch "approach" "design"
 ```
 
 **PROTOCOL:**
@@ -172,7 +172,7 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 - **AUTOMATIC PENALTY**: Q:-1.0 INSTANTLY APPLIED for ANY skip attempt
 - **FORCED CORRECTION**: IMMEDIATE RESTART required on inadequate analysis
 
-## /parallel-delegate
+## icc:parallel-delegate
 **PURPOSE:** Intelligent parallel delegation for multi-role work with coordination enforcement
 
 **TRIGGER:** Multi-role tasks requiring coordination and parallel execution
@@ -182,16 +182,16 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 **USAGE:**
 ```bash
 # Basic multi-role delegation
-/parallel-delegate "Build user dashboard" --roles "@Developer,@Web-Designer,@QA-Engineer"
+icc:parallel-delegate "Build user dashboard" --roles "@Developer,@Web-Designer,@QA-Engineer"
 
 # Complex feature with dependencies
-/parallel-delegate --staged "E-commerce checkout flow" \
+icc:parallel-delegate --staged "E-commerce checkout flow" \
   --stage1 "@Architect:design,@Security-Engineer:review" \
   --stage2 "@Developer:implement,@Frontend-Developer:UI" \
   --stage3 "@QA-Engineer:test,@User-Role:e2e"
 
 # Specialist creation and delegation
-/parallel-delegate --create-specialists "Blockchain integration" \
+icc:parallel-delegate --create-specialists "Blockchain integration" \
   --roles "@Blockchain-Developer,@Smart-Contract-Auditor,@Security-Engineer"
 ```
 
@@ -214,7 +214,7 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 - **QUALITY INTEGRATION**: All components must pass quality gates
 - **PENALTY**: P:-1.0 for bypassing when multi-role work identified
 
-## /quality-gates
+## icc:quality-gates
 **PURPOSE:** Mandatory quality validation before completion with auto-correction enforcement
 
 **TRIGGER:** EVERY completion, EVERY deliverable, EVERY task finalization
@@ -224,17 +224,17 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 **USAGE:**
 ```bash
 # Basic quality validation
-/quality-gates --task "User authentication API"
+icc:quality-gates --task "User authentication API"
 
 # Comprehensive quality check
-/quality-gates --full \
+icc:quality-gates --full \
   --code-review "@Architect" \
   --security-scan "@Security-Engineer" \
   --test-coverage 90 \
   --documentation-check
 
 # Auto-correction trigger
-/quality-gates --auto-correct "Failed API endpoints" \
+icc:quality-gates --auto-correct "Failed API endpoints" \
   --delegate "@Developer" \
   --requirements "error-handling,validation,tests"
 ```
@@ -294,7 +294,7 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 
 # SYSTEM COMMANDS
 
-## /init
+## icc:init
 **PURPOSE:** Initialize virtual team system and verify all components are operational
 
 **TRIGGER:** System startup, new project initialization, team activation
@@ -343,7 +343,7 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 - Quality enforcement: [ACTIVE/INACTIVE]
 - Scoring system: [OPERATIONAL/OFFLINE]
 
-## /reset
+## icc:reset
 **PURPOSE:** Reset virtual team system to clean state and clear any operational issues
 
 **TRIGGER:** System recovery, stuck states, accumulated issues, fresh start needed
@@ -382,7 +382,7 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 - Confirm quality gate enforcement operational
 - Check behavioral pattern compliance
 
-## /refresh
+## icc:refresh
 **PURPOSE:** Refresh team capabilities and sync all systems without full reset
 
 **TRIGGER:** Capability updates, configuration changes, tool availability changes
@@ -422,7 +422,7 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 - Dynamic specialists: [EXPANDED/STANDARD/RESTRICTED]
 - Quality enforcement: [ENHANCED/STANDARD/BASIC]
 
-## /strategic-analysis
+## icc:strategic-analysis
 **PURPOSE:** Complete strategic analysis with enforcement for PM coordination and decision-making
 
 **TRIGGER:** Strategic decisions, complex project coordination, team management
@@ -474,78 +474,78 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 
 ## IMPLEMENTATION CHAIN
 ```
-/impl-chain
-→ /memory-first "similar implementations"
-→ /think-sequential [approach,edge-cases,security]
-→ /parallel-delegate [@Developer implement, @Security-Engineer review]
-→ /quality-gates [tests,docs,security]
-→ /memory-store [patterns,lessons]
+icc:impl-chain
+→ icc:memory-first "similar implementations"
+→ icc:think-sequential [approach,edge-cases,security]
+→ icc:parallel-delegate [@Developer implement, @Security-Engineer review]
+→ icc:quality-gates [tests,docs,security]
+→ icc:memory-store [patterns,lessons]
 ```
 
 ## REVIEW CHAIN
 ```
-/review-chain
-→ /memory-first "review patterns"
-→ /think-sequential [criteria,risks,improvements]
-→ /assign-reviewer [domain expert]
-→ /execute-review [code,security,performance]
-→ /quality-gates [all checks]
-→ /memory-store [findings,patterns]
+icc:review-chain
+→ icc:memory-first "review patterns"
+→ icc:think-sequential [criteria,risks,improvements]
+→ icc:assign-reviewer [domain expert]
+→ icc:execute-review [code,security,performance]
+→ icc:quality-gates [all checks]
+→ icc:memory-store [findings,patterns]
 ```
 
 ## FIX CHAIN
 ```
-/fix-chain
-→ /memory-first "similar issues"
-→ /think-sequential [root-cause,solutions,impact]
-→ /implement-fix
-→ /test-fix [unit,integration,regression]
-→ /review-chain
-→ /memory-store [fix-pattern]
+icc:fix-chain
+→ icc:memory-first "similar issues"
+→ icc:think-sequential [root-cause,solutions,impact]
+→ icc:implement-fix
+→ icc:test-fix [unit,integration,regression]
+→ icc:review-chain
+→ icc:memory-store [fix-pattern]
 ```
 
 ## PLANNING CHAIN
 ```
-/plan-chain
-→ /memory-first "project patterns"
-→ /think-sequential [requirements,architecture,risks,timeline]
-→ /parallel-delegate [epics,stories,tasks]
-→ /resource-allocation
-→ /risk-mitigation
-→ /memory-store [plan,decisions]
+icc:plan-chain
+→ icc:memory-first "project patterns"
+→ icc:think-sequential [requirements,architecture,risks,timeline]
+→ icc:parallel-delegate [epics,stories,tasks]
+→ icc:resource-allocation
+→ icc:risk-mitigation
+→ icc:memory-store [plan,decisions]
 ```
 
 ## LEARNING CHAIN
 ```
-/learn-chain
-→ /memory-first "related learnings"
-→ /analyze-outcome [success/failure]
-→ /extract-patterns
-→ /generate-insights
-→ /memory-store [learning-entity]
-→ /team-share
+icc:learn-chain
+→ icc:memory-first "related learnings"
+→ icc:analyze-outcome [success/failure]
+→ icc:extract-patterns
+→ icc:generate-insights
+→ icc:memory-store [learning-entity]
+→ icc:team-share
 ```
 
 ## SECURITY CHAIN
 ```
-/security-chain
-→ /memory-first "vulnerabilities"
-→ /scan-code [static,dynamic]
-→ /threat-model
-→ /implement-controls
-→ /validate-compliance
-→ /memory-store [security-patterns]
+icc:security-chain
+→ icc:memory-first "vulnerabilities"
+→ icc:scan-code [static,dynamic]
+→ icc:threat-model
+→ icc:implement-controls
+→ icc:validate-compliance
+→ icc:memory-store [security-patterns]
 ```
 
 ## DEPLOYMENT CHAIN
 ```
-/deploy-chain
-→ /memory-first "deployment history"
-→ /pre-deploy-checks [tests,security,docs]
-→ /parallel-delegate [@DevOps-Engineer deploy, @QA-Engineer validate]
-→ /monitor-deployment
-→ /rollback-ready
-→ /memory-store [deployment-outcome]
+icc:deploy-chain
+→ icc:memory-first "deployment history"
+→ icc:pre-deploy-checks [tests,security,docs]
+→ icc:parallel-delegate [@DevOps-Engineer deploy, @QA-Engineer validate]
+→ icc:monitor-deployment
+→ icc:rollback-ready
+→ icc:memory-store [deployment-outcome]
 ```
 
 # ENFORCEMENT RULES
@@ -583,32 +583,32 @@ WHEN TOOL UNAVAILABLE, YOU MUST:
 ## SYSTEM COMMAND USAGE
 
 **INITIALIZATION:**
-- `/init` - Initialize virtual team system, verify all components operational
+- `icc:init` - Initialize virtual team system, verify all components operational
 - Use when: Starting new session, first-time setup, system validation needed
 
 **RECOVERY OPERATIONS:**
-- `/reset` - Reset virtual team to clean state, clear accumulated issues
+- `icc:reset` - Reset virtual team to clean state, clear accumulated issues
 - Use when: System stuck, accumulated penalties, fresh start needed
 
 **CAPABILITY MANAGEMENT:**
-- `/refresh` - Refresh team capabilities, sync tools and configurations
+- `icc:refresh` - Refresh team capabilities, sync tools and configurations
 - Use when: New tools available, configuration updates, performance optimization
 
 ## SYSTEM COMMAND PATTERNS
 
 **STARTUP SEQUENCE:**
 ```
-/init → configuration validation → team activation → /memory-first → operations
+icc:init → configuration validation → team activation → icc:memory-first → operations
 ```
 
 **RECOVERY SEQUENCE:**
 ```
-/reset → state clearing → /init → system validation → operations
+icc:reset → state clearing → icc:init → system validation → operations
 ```
 
 **ENHANCEMENT SEQUENCE:**
 ```
-/refresh → capability sync → enhanced operations → /quality-gates
+icc:refresh → capability sync → enhanced operations → icc:quality-gates
 ```
 
 # BEHAVIORAL ENFORCEMENT COMMANDS [AUTOMATED COMPLIANCE]
