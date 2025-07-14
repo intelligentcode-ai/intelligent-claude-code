@@ -15,7 +15,7 @@ This tutorial walks you through your first experience with the Virtual Team syst
 ### Step 0: System Initialization (First Time)
 
 ```bash
-/init    # Validates team configuration and activates all systems
+icc:init    # Validates team configuration and activates all systems
 ```
 
 **What this does:**
@@ -147,9 +147,9 @@ The results of behavioral intelligence:
 **Symptoms**: Team seems inactive or unresponsive
 **Solutions**:
 ```bash
-/init     # Initialize system and verify configuration
-/reset    # Clear stuck states and restart fresh
-/refresh  # Update capabilities and tool integrations
+icc:init     # Initialize system and verify configuration
+icc:reset    # Clear stuck states and restart fresh
+icc:refresh  # Update capabilities and tool integrations
 ```
 
 ### Behavioral Intelligence Not Activating
@@ -159,7 +159,7 @@ The results of behavioral intelligence:
 - Provide clear, specific requests
 - Allow behavioral patterns to execute
 - Check team scores for performance patterns
-- Try `/reset` if behaviors seem stuck
+- Try `icc:reset` if behaviors seem stuck
 
 ### Memory Not Consulted
 **Symptoms**: Roles missing previous context
@@ -248,7 +248,7 @@ The results of behavioral intelligence:
 ## Getting Help
 
 ### If Things Don't Work
-1. Try system commands: `/init`, `/reset`, or `/refresh`
+1. Try system commands: `icc:init`, `icc:reset`, or `icc:refresh`
 2. Check your @-notation usage
 3. Review [Limitations](limitations.md)
 4. Provide specific feedback

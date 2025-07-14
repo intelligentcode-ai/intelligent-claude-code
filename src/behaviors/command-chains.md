@@ -68,37 +68,37 @@ END FUNCTION
 ### PM
 **TRIGGER:** @PM/planning
 ```
-/init→/memory-first→/think[5-10]→/analyze[parallel]→/delegate[Task tool]→/track[TodoWrite]→/learn→/score
+icc:init→icc:memory-first→icc:think-sequential[5-10]→icc:analyze[parallel]→icc:parallel-delegate[Task tool]→icc:track-progress[TodoWrite]→icc:capture-learning→icc:score
 ```
 
 ### Architect
 **TRIGGER:** Tech decisions/consults
 ```
-/init→/memory-first→/think→/analyze[options]→/design→/security→/store→/share
+icc:init→icc:memory-first→icc:think-sequential→icc:analyze[options]→icc:design→icc:security→icc:store→icc:share
 ```
 
 ### Developer
 **TRIGGER:** Implementation
 ```
-/init→/memory-first→/think→/ack[size]→/execute[code]→/validate[test+security]→/store
+icc:init→icc:memory-first→icc:think-sequential→icc:ack[size]→icc:execute[code]→icc:validate[test+security]→icc:store
 ```
 
 ### Requirements-Engineer
 **TRIGGER:** Req analysis
 ```
-/init→/memory-first→/think→/gather→/create[stories+criteria]→/validate→/store
+icc:init→icc:memory-first→icc:think-sequential→icc:gather→icc:create[stories+criteria]→icc:validate→icc:store
 ```
 
 ### Security-Engineer
 **TRIGGER:** Security/compliance
 ```
-/init→/memory-first→/think→/scan[static+deps]→/assess[threats]→/controls→/validate→/store
+icc:init→icc:memory-first→icc:think-sequential→icc:scan[static+deps]→icc:assess[threats]→icc:controls→icc:validate→icc:store
 ```
 
 ### QA-Engineer
 **TRIGGER:** Testing/QA
 ```
-/init→/memory-first→/think→/plan[coverage]→/create[tests]→/execute→/report→/store
+icc:init→icc:memory-first→icc:think-sequential→icc:plan[coverage]→icc:create[tests]→icc:execute→icc:report→icc:store
 ```
 
 ## UNIVERSAL PATTERNS
@@ -188,27 +188,27 @@ END FUNCTION
 
 ### Memory-First
 ```
-EVERY: /memory-first→Search→Retrieve→Load (-1.0P skip)
+EVERY: icc:memory-first→Search→Retrieve→Load (-1.0P skip)
 ```
 
 ### Sequential Think
 ```
-EVERY: /think[≥3 thoughts]→Analyze→Options→Select
+EVERY: icc:think-sequential[≥3 thoughts]→Analyze→Options→Select
 ```
 
 ### Parallel
 ```
-PM: /parallel-delegate→Multiple tasks→ALL SIMULTANEOUS
+PM: icc:parallel-delegate→Multiple tasks→ALL SIMULTANEOUS
 ```
 
 ### Learning
 ```
-AFTER: /capture→What worked→Patterns→Improve→Store if ≥1.5 change
+AFTER: icc:capture-learning→What worked→Patterns→Improve→Store if ≥1.5 change
 ```
 
 ### Scoring
 ```
-EVIDENCE: /update-scores→Evidence→P/Q impact→scores.md→Learn if significant
+EVIDENCE: icc:update-scores→Evidence→P/Q impact→scores.md→Learn if significant
 ```
 
 ## INTEGRATION
@@ -287,22 +287,22 @@ END FUNCTION
 
 ### Task Tool
 ```
-/parallel-delegate→Task tool→Multiple roles→SIMULTANEOUS
+icc:parallel-delegate→Task tool→Multiple roles→SIMULTANEOUS
 ```
 
 ### TodoWrite
 ```
-/track-progress→TodoWrite→@Role status→Real-time
+icc:track-progress→TodoWrite→@Role status→Real-time
 ```
 
 ### Memory
 ```
-/store-results→mcp__memory__→Entities→Relations→Persist
+icc:store-results→mcp__memory__→Entities→Relations→Persist
 ```
 
 ## BEHAVIORAL
 
-**THINK:** EVERY chain→/think→Min requirements→Quality→Store
+**THINK:** EVERY chain→icc:think-sequential→Min requirements→Quality→Store
 **LEARN:** Auto capture→Patterns→Improve→Share team
 **SCORE:** Evidence required→Justify→Learn if ≥1.5→Peer validate
 **MEMORY:** Consult before→Store after→Relations→Aging λ=0.1
@@ -315,9 +315,9 @@ END FUNCTION
 
 ## ANTI-PATTERNS
 
-**TALKING:** "I would/could"→/execute→DO IT→-0.5P
-**SEQUENTIAL:** Tasks waiting→/parallel→Restructure
-**MEMORY SKIP:** No consult→/memory-first→-1.0P
+**TALKING:** "I would/could"→icc:execute→DO IT→-0.5P
+**SEQUENTIAL:** Tasks waiting→icc:parallel-delegate→Restructure
+**MEMORY SKIP:** No consult→icc:memory-first→-1.0P
 
 ## ACTIVATION
 
