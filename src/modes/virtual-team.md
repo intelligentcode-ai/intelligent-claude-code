@@ -11,12 +11,10 @@
 @../behaviors/runtime-tools.md
 @../behaviors/memory-coordination.md
 @../behaviors/command-chains.md
-@../behaviors/enforcement-autonomy.md
-@../behaviors/responsibility-matrix.md
+@../behaviors/unified-enforcement.md
+@../behaviors/team-coordination.md
 @../behaviors/active-disagreement.md
 @../behaviors/learning-team-automation.md
-@../behaviors/team-collaboration.md
-@../behaviors/autonomous-command-enforcement.md
 @../commands.md
 
 **CORE:** 14 roles+unlimited•@-notation•ENFORCED•PARALLEL•100%
