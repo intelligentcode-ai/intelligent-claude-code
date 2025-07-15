@@ -1,0 +1,68 @@
+bug:
+  id: "BUG-016"
+  title: "Workflow Template Names Include Unnecessary '-corrected' Suffix"
+  epic: "EPIC-002"
+  created: "2025-07-15 14:25:00"
+  created_by: "@PM"
+  assigned_to: "@AI-Engineer"
+  priority: "P1"  # HIGH - Naming consistency issue
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  BUG: Workflow template files have unnecessary '-corrected' suffix in their names.
+  
+  CURRENT NAMING:
+  - outer-workflow-corrected.yaml
+  - inner-workflow-corrected.yaml
+  
+  EXPECTED NAMING:
+  - outer-workflow.yaml
+  - inner-workflow.yaml
+  
+  IMPACT:
+  - Confusing naming convention
+  - Implies files are corrections rather than standard templates
+  - Creates unnecessary complexity in file references
+  - Poor naming hygiene
+
+acceptance_criteria:
+  - Workflow templates renamed to remove '-corrected' suffix
+  - All import references updated to use new names
+  - System continues to function with renamed files
+  - No broken imports or references
+  - Clean, professional naming convention
+
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  
+root_cause_analysis:
+  issue_type: "naming_inconsistency"
+  severity: "medium"
+  affects_maintainability: true
+  
+current_files:
+  - name: "outer-workflow-corrected.yaml"
+    should_be: "outer-workflow.yaml"
+    location: "workflow-templates/"
+  - name: "inner-workflow-corrected.yaml"
+    should_be: "inner-workflow.yaml"
+    location: "workflow-templates/"
+  
+import_references:
+  - file: "src/modes/virtual-team.md"
+    imports: 
+      - "@../../workflow-templates/outer-workflow-corrected.yaml"
+      - "@../../workflow-templates/inner-workflow-corrected.yaml"
+  
+required_fix:
+  - "Rename workflow template files to remove '-corrected' suffix"
+  - "Update all import references to use new names"
+  - "Validate all imports still work"
+  - "Maintain system functionality"
+  
+tasks:
+  # Will be created during PLAN phase

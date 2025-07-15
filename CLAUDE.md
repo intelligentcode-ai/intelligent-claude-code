@@ -131,6 +131,8 @@ make test            # Validate everything works
 - **Roles**: Edit `src/roles/specialists.md`
 - **Workflow Engine**: Edit `src/behaviors/lean-workflow-executor.md`
 - **Workflow Templates**: Edit `workflow-templates/outer-workflow-corrected.yaml` and `inner-workflow-corrected.yaml`
+  - **Inner workflow:** Handles git commits/pushes, peer reviews, and learning per task
+  - **Outer workflow:** Handles branching/merging, coordination, and learning synthesis per story/bug
 - **Config**: Edit `src/config.md`
 
 ### Pseudo-Code Implementation Guidelines
@@ -170,6 +172,18 @@ icc:detect-work-type → icc:require-triage → icc:validate-assignments → icc
 - **Parallel Execution**: Multiple roles work simultaneously
 - **Quality Gates**: Mandatory validation before completion
 - **Role Assignment Validation**: Mandatory PM + Specialist Architect triage for all assignments
+
+### Workflow Architecture
+- **Inner Workflow (Per Task)**: 
+  - Git commits and pushes per task completion
+  - Peer reviews per task by domain experts  
+  - Learning capture per task (TaskLearning entities)
+  - Knowledge utilization from task-specific patterns
+- **Outer Workflow (Per Story/Bug)**:
+  - Branch creation and merge coordination per story/bug
+  - Learning synthesis across multiple tasks (StoryLearning entities)
+  - Integration validation and main branch preparation
+  - Cross-task pattern extraction and architecture insights
 
 ### Memory Integration
 - Consult memory before every action (icc:memory-first)

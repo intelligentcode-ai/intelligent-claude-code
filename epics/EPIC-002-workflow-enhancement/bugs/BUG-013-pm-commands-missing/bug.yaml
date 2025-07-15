@@ -1,0 +1,74 @@
+bug:
+  id: "BUG-013"
+  title: "PM Management Commands Missing"
+  epic: "EPIC-002"
+  created: "2025-07-15 14:21:00"
+  created_by: "@PM"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"  # CRITICAL - System management broken
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  CRITICAL BUG: Essential PM management commands are missing from the system.
+  
+  MISSING COMMANDS:
+  - @PM init (Initialize/reset system state)
+  - @PM refresh (Refresh team capabilities and configuration)
+  - @PM reset (Reset system to clean state)
+  
+  CURRENT BEHAVIOR:
+  - Commands don't exist in current system
+  - No way to properly initialize system
+  - No way to refresh team capabilities
+  - No way to reset system state
+  
+  EXPECTED BEHAVIOR:
+  - @PM init should initialize/reset system state
+  - @PM refresh should refresh team capabilities and configuration
+  - @PM reset should reset system to clean state
+  - System management commands should be functional
+  
+  IMPACT:
+  - No proper system initialization
+  - No way to manage system state
+  - Cannot refresh or reset system
+  - System management is broken
+
+acceptance_criteria:
+  - @PM init command restored and functional
+  - @PM refresh command restored and functional
+  - @PM reset command restored and functional
+  - System management commands work as expected
+  - Proper system initialization possible
+
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  
+root_cause_analysis:
+  issue_type: "missing_functionality"
+  severity: "critical"
+  affects_system_management: true
+  
+missing_commands:
+  - command: "@PM init"
+    purpose: "Initialize/reset system state"
+    current_status: "missing"
+  - command: "@PM refresh"
+    purpose: "Refresh team capabilities and configuration"
+    current_status: "missing"
+  - command: "@PM reset"
+    purpose: "Reset system to clean state"
+    current_status: "missing"
+  
+required_fix:
+  - "Implement @PM init command"
+  - "Implement @PM refresh command"
+  - "Implement @PM reset command"
+  - "Add system management functionality"
+  
+tasks:
+  # Will be created during PLAN phase
