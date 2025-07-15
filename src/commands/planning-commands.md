@@ -2,16 +2,16 @@
 
 **CORE:** Structured task management•Phase-based workflow•Assignment files•Explicit criteria
 
-## /plan-task
+## icc:plan-task
 **PURPOSE:** Create structured task with assignment file and planning workflow
 **TRIGGER:** User needs planned implementation of feature/bug/enhancement
 **AUTHORITY:** @PM initiates with @Architect consultation
 
 **USAGE:**
 ```bash
-/plan-task "Implement user authentication system"
-/plan-task "Fix memory leak in worker process" --type bug
-/plan-task "Add dark mode support" --epic EPIC-UI-001
+icc:plan-task "Implement user authentication system"
+icc:plan-task "Fix memory leak in worker process" --type bug
+icc:plan-task "Add dark mode support" --epic EPIC-UI-001
 ```
 
 **PROTOCOL:**
@@ -61,15 +61,15 @@ END FUNCTION
 - **ACCEPTANCE CRITERIA**: Required before execution
 - **SUBTASK DEFINITION**: Atomic operations with clear outcomes
 
-## /execute-task
+## icc:execute-task
 **PURPOSE:** Execute task following assignment file specifications
 **TRIGGER:** Task in EXECUTE phase with complete planning
 **AUTHORITY:** Assigned role(s) execute autonomously
 
 **USAGE:**
 ```bash
-/execute-task TASK-001
-/execute-task TASK-002 --subtask ST-003  # Resume from specific subtask
+icc:execute-task TASK-001
+icc:execute-task TASK-002 --subtask ST-003  # Resume from specific subtask
 ```
 
 **PROTOCOL:**
@@ -113,15 +113,15 @@ END FUNCTION
 - **PROGRESS TRACKING**: Real-time updates required
 - **OUTCOME HANDLING**: Explicit flow control
 
-## /accept-task
+## icc:accept-task
 **PURPOSE:** Validate task completion against acceptance criteria
 **TRIGGER:** All subtasks completed
 **AUTHORITY:** @QA roles and user validation
 
 **USAGE:**
 ```bash
-/accept-task TASK-001
-/accept-task TASK-002 --criteria AC-003  # Check specific criteria
+icc:accept-task TASK-001
+icc:accept-task TASK-002 --criteria AC-003  # Check specific criteria
 ```
 
 **PROTOCOL:**
@@ -170,16 +170,16 @@ END FUNCTION
 - **USER FEEDBACK**: Incorporated in acceptance
 - **COMPLETION OPS**: Git operations executed on success
 
-## /task-status
+## icc:task-status
 **PURPOSE:** Display current task status and progress
 **TRIGGER:** Status check needed
 **AUTHORITY:** Any role can check status
 
 **USAGE:**
 ```bash
-/task-status TASK-001
-/task-status --all
-/task-status --phase EXECUTE
+icc:task-status TASK-001
+icc:task-status --all
+icc:task-status --phase EXECUTE
 ```
 
 **PROTOCOL:**
@@ -220,12 +220,12 @@ Status updates: PUT /rest/api/2/issue/{id}/transitions
 
 **TYPICAL FLOW:**
 ```
-/plan-task → /execute-task → /accept-task → DONE
+icc:plan-task → icc:execute-task → icc:accept-task → DONE
      ↓              ↓              ↓
   (PLAN)       (EXECUTE)     (ACCEPTANCE)
 ```
 
 **ERROR HANDLING:**
 ```
-/accept-task (failed) → /plan-task (refinement) → /execute-task
+icc:accept-task (failed) → icc:plan-task (refinement) → icc:execute-task
 ```

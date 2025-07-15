@@ -6,8 +6,11 @@ story:
   created_by: "@PM"
   assigned_to: "@PM"
   priority: "P0"  # Blocking all proper work
-  status: "PLANNED"
-  phase: "INIT"
+  status: "COMPLETE"
+  phase: "COMPLETE"
+  completion_date: "2025-07-15 13:24:00"
+  resolution: "ALREADY_RESOLVED"
+  resolution_notes: "System already uses correct terminology throughout - no changes needed"
   
 problem_description: |
   System uses incorrect terminology throughout:
@@ -77,4 +80,51 @@ migration_script_requirements:
   - Preserve git history
   
 tasks:
-  # Will be created during PLAN phase
+  - id: "TASK-001"
+    title: "Fix Template Terminology"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "blocking"
+    estimated_hours: 1
+    status: "complete"
+    description: "Rename templates and fix terminology: assignment→story, subtasks→tasks"
+    
+  - id: "TASK-002"
+    title: "Fix Workflow Terminology"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Update workflow templates to use correct terminology"
+    
+  - id: "TASK-003"
+    title: "Fix Documentation Terminology"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Update CLAUDE.md and examples with correct terminology"
+    
+  - id: "TASK-004"
+    title: "Test Terminology Fix"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Verify all terminology is correct and consistent"
+    
+  - id: "TASK-005"
+    title: "Deploy Terminology Fix"
+    type: "deployment"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-004"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Deploy terminology corrections"

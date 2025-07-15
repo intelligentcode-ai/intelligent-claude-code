@@ -2,9 +2,9 @@
 
 ## Epic Management Commands
 
-### /create-epic
+### icc:create-epic
 **PURPOSE:** Create new epic for overarching feature
-**USAGE:** /create-epic "title" [--owner @PM]
+**USAGE:** icc:create-epic "title" [--owner @PM]
 **AUTHORITY:** PM, Architect, Requirements-Engineer, User
 **EXECUTION:**
 1. Create epic directory structure
@@ -12,9 +12,9 @@
 3. Enter epic planning phase
 4. Trigger story identification
 
-### /plan-epic
+### icc:plan-epic
 **PURPOSE:** Plan stories and bugs for epic
-**USAGE:** /plan-epic EPIC-XXX
+**USAGE:** icc:plan-epic EPIC-XXX
 **EXECUTION:**
 1. Knowledge retrieval for similar epics
 2. Story identification workshop
@@ -23,9 +23,9 @@
 
 ## Story/Bug Management Commands
 
-### /create-story
+### icc:create-story
 **PURPOSE:** Create new story within epic
-**USAGE:** /create-story "title" --epic EPIC-XXX [--type feature|enhancement|refactor]
+**USAGE:** icc:create-story "title" --epic EPIC-XXX [--type feature|enhancement|refactor]
 **AUTHORITY:** PM, Architect, Requirements-Engineer, User
 **EXECUTION:**
 1. Create story directory under epic
@@ -33,9 +33,9 @@
 3. Enter story INIT phase
 4. Trigger task planning
 
-### /create-bug
+### icc:create-bug
 **PURPOSE:** Create bug report within epic
-**USAGE:** /create-bug "title" --epic EPIC-XXX --severity HIGH
+**USAGE:** icc:create-bug "title" --epic EPIC-XXX --severity HIGH
 **AUTHORITY:** Anyone can report, PM/Architect/RE create
 **EXECUTION:**
 1. Create bug directory under epic
@@ -43,9 +43,9 @@
 3. Capture reproduction steps
 4. Trigger task planning
 
-### /plan-story
+### icc:plan-story
 **PURPOSE:** Break story into executable tasks
-**USAGE:** /plan-story STORY-XXX
+**USAGE:** icc:plan-story STORY-XXX
 **EXECUTION:**
 1. Read embedded_config
 2. Knowledge retrieval
@@ -54,9 +54,9 @@
 5. Define task dependencies
 6. Knowledge generation
 
-### /plan-bug
+### icc:plan-bug
 **PURPOSE:** Plan tasks for bug resolution
-**USAGE:** /plan-bug BUG-XXX
+**USAGE:** icc:plan-bug BUG-XXX
 **EXECUTION:**
 1. Analyze bug impact
 2. Define investigation tasks
@@ -66,9 +66,9 @@
 
 ## Task Management Commands
 
-### /assign-task
+### icc:assign-task
 **PURPOSE:** Assign task to specialist
-**USAGE:** /assign-task TASK-XXX @Specialist
+**USAGE:** icc:assign-task TASK-XXX @Specialist
 **AUTHORITY:** PM
 **EXECUTION:**
 1. Verify capability match >70%
@@ -76,9 +76,9 @@
 3. Notify specialist
 4. Update story progress
 
-### /execute-task
+### icc:execute-task
 **PURPOSE:** Specialist executes assigned task
-**USAGE:** /execute-task TASK-XXX
+**USAGE:** icc:execute-task TASK-XXX
 **AUTHORITY:** Assigned specialist
 **EXECUTION:**
 1. Knowledge retrieval
@@ -87,9 +87,9 @@
 4. Update progress
 5. Knowledge generation
 
-### /create-subtask
+### icc:create-subtask
 **PURPOSE:** Break task into atomic steps
-**USAGE:** /create-subtask "title" --task TASK-XXX
+**USAGE:** icc:create-subtask "title" --task TASK-XXX
 **AUTHORITY:** Assigned specialist only
 **EXECUTION:**
 1. Add subtask to task file
@@ -98,9 +98,9 @@
 
 ## Progress Commands
 
-### /story-status
+### icc:story-status
 **PURPOSE:** Show story progress
-**USAGE:** /story-status STORY-XXX
+**USAGE:** icc:story-status STORY-XXX
 **OUTPUT:**
 ```
 STORY-002: Login and Session Management
@@ -114,9 +114,9 @@ Blockers: None
 ETA: 2 hours
 ```
 
-### /epic-status
+### icc:epic-status
 **PURPOSE:** Show epic progress
-**USAGE:** /epic-status EPIC-XXX
+**USAGE:** icc:epic-status EPIC-XXX
 **OUTPUT:**
 ```
 EPIC-003: User Authentication
@@ -126,9 +126,9 @@ Overall: 25% complete
 Next milestone: MVP in 3 days
 ```
 
-### /task-status
+### icc:task-status
 **PURPOSE:** Show task details
-**USAGE:** /task-status TASK-XXX
+**USAGE:** icc:task-status TASK-XXX
 **OUTPUT:**
 ```
 TASK-002: Implement login endpoint
@@ -143,27 +143,27 @@ Subtasks: 2/6 completed
 
 ## Workflow Commands
 
-### /complete-task
+### icc:complete-task
 **PURPOSE:** Mark task as complete
-**USAGE:** /complete-task TASK-XXX
+**USAGE:** icc:complete-task TASK-XXX
 **VALIDATION:**
 1. All subtasks completed
 2. Deliverables present
 3. Validation passed
 4. Knowledge captured
 
-### /complete-story
+### icc:complete-story
 **PURPOSE:** Mark story as done
-**USAGE:** /complete-story STORY-XXX
+**USAGE:** icc:complete-story STORY-XXX
 **VALIDATION:**
 1. All tasks completed
 2. Acceptance criteria met
 3. Integration successful
 4. Knowledge generated
 
-### /resolve-bug
+### icc:resolve-bug
 **PURPOSE:** Mark bug as resolved
-**USAGE:** /resolve-bug BUG-XXX
+**USAGE:** icc:resolve-bug BUG-XXX
 **VALIDATION:**
 1. Fix implemented
 2. Tests passing
