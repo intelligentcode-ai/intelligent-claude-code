@@ -77,6 +77,10 @@ workflow:
             - "blocked"
             - "completed"
             - "needs_review"
+          priority_display:
+            - "Show priority prefix: [P0], [P1], [P2], [P3]"
+            - "Highlight P0 items, dim P3 items"
+            - "Sort status updates by priority"
             
         - id: "handle_blockers"
           action: "Escalate if blocked"
@@ -84,6 +88,10 @@ workflow:
             - "Technical blocker: Consult architect"
             - "Requirement unclear: Consult PM/RE"
             - "Dependency missing: Coordinate with team"
+          priority_escalation:
+            - "Blocking dependencies escalate to critical_path priority"
+            - "System failures escalate to P0"
+            - "Customer escalations increase priority by 1 level"
             
     - id: "task_validation"
       name: "Task Validation"
@@ -180,6 +188,11 @@ workflow:
             - "Quality delivery: +Q points"
             - "Learning shared: Bonus"
             - "Issues found: Penalties"
+          priority_bonuses:
+            - "P0 task completion: +2.0P bonus"
+            - "P1 task completion: +1.5P bonus"
+            - "P2 task completion: +1.0P bonus"
+            - "P3 task completion: +0.5P bonus"
             
 git_operations:
   task_level:
@@ -211,3 +224,11 @@ validation:
     - "No generic roles for specialist work"
     - "Capability match >70% verified"
     - "Security reviews required for architecture tasks"
+    
+  priority_execution:
+    - "Execute tasks in priority order: P0 → P1 → P2 → P3"
+    - "Within same priority: blocking → critical_path → parallel → optional"
+    - "Priority display: [P0], [P1], [P2], [P3] prefixes"
+    - "Priority bonuses: P0 (+2.0P), P1 (+1.5P), P2 (+1.0P), P3 (+0.5P)"
+    - "Blocker escalation: Dependencies escalate to critical_path"
+    - "System failures: Automatic escalation to P0"

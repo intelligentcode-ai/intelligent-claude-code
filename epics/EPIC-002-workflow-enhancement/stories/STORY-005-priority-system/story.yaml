@@ -6,8 +6,8 @@ story:
   created_by: "@PM"
   assigned_to: "@PM"
   priority: "P0"  # Critical - system unusable without proper priorities
-  status: "PLANNED"
-  phase: "INIT"
+  status: "TRIAGED"
+  phase: "PLAN"
   
 problem_description: |
   The system currently treats the LAST item as highest priority, which is
@@ -53,4 +53,61 @@ technical_references:
   - Bug severity mapping: CRITICAL→P0, HIGH→P1, MEDIUM→P2, LOW→P3
   
 tasks:
-  # Will be created during PLAN phase with proper priority assignments
+  - id: "TASK-001"
+    title: "Design Priority System Architecture"
+    type: "architecture_design"
+    assigned_to: "@AI-Architect"
+    priority: "blocking"
+    estimated_hours: 2
+    status: "planned"
+    description: "Define priority levels, inheritance rules, and execution order logic"
+    
+  - id: "TASK-002"
+    title: "Implement Priority Logic in Lean Workflow Executor"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    estimated_hours: 3
+    status: "planned"
+    description: "Add priority sorting functions and fix execution order (P0 first, not last)"
+    
+  - id: "TASK-003"
+    title: "Update Workflow Templates with Priority Support"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    estimated_hours: 2
+    status: "planned"
+    description: "Add priority sorting to workflows and TodoWrite integration"
+    
+  - id: "TASK-004"
+    title: "Test Priority System"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003"]
+    estimated_hours: 2
+    status: "planned"
+    description: "Verify P0 executes before P1/P2/P3 and test priority inheritance"
+    
+  - id: "TASK-005"
+    title: "Update Documentation"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "parallel"
+    dependencies: ["TASK-004"]
+    estimated_hours: 1
+    status: "planned"
+    description: "Document priority system design and usage guidelines"
+    
+  - id: "TASK-006"
+    title: "Deploy Priority System"
+    type: "deployment"
+    assigned_to: "@DevOps-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-004"]
+    estimated_hours: 1
+    status: "planned"
+    description: "Deploy priority system with proper execution order fix"
