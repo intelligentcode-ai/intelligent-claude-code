@@ -362,6 +362,40 @@ Settings are automatically loaded and applied:
 
 The settings system ensures consistent behavior across the entire virtual team while allowing flexibility through the configuration hierarchy.
 
+### PM Commands
+
+The PM (Project Manager) role provides essential system management commands for controlling the intelligent-claude-code system. These commands handle initialization, configuration refresh, state reset, and status monitoring.
+
+#### Available Commands
+- **@PM init** - Initialize or reinitialize the system
+- **@PM refresh** - Refresh configuration and capabilities
+- **@PM reset** - Reset to clean state while preserving config
+- **@PM status** - Display comprehensive system status
+
+#### Command Usage
+```bash
+# Initialize system on first setup
+@PM init
+
+# Refresh after configuration changes
+@PM refresh
+
+# Reset when system has issues
+@PM reset
+
+# Check current system state
+@PM status
+```
+
+#### Key Features
+- **Role Restriction**: All PM commands require @PM role activation
+- **Configuration Respect**: Honors the full configuration hierarchy
+- **State Management**: Smart state clearing with config preservation
+- **Performance**: Fast execution (50-250ms depending on command)
+- **Integration**: Seamlessly integrated with all system components
+
+For detailed command documentation, see `docs/PM-COMMANDS.md`.
+
 ### Integration Validation
 ```bash
 # Check tool availability
