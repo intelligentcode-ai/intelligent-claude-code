@@ -11,6 +11,9 @@
 @./role-activation-system.md
 @./pm-command-system.md
 @./learning-team-automation.md
+@./l3-continuous-engine.md
+@./task-queue-manager.md
+@./auto-continue-triggers.md
 
 ## Core Functions
 
@@ -26,11 +29,16 @@ function: initialize_system()
     - Cache settings for session
     - Initialize PM command processor
     - Initialize learning enforcement system
+    - Initialize L3 continuous engine if L3 mode
   integration: 
     - SettingsAPI.getSettings()
     - AutonomyController.initialize()
     - PMCommandProcessor.initialize()
     - initializeLearningEnforcement()
+    - IF settings.autonomy_level == "L3":
+        ContinuousExecutionEngine.initialize()
+        TaskQueueManager.initialize()
+        AutoContinueTriggers.initialize()
 ```
 
 ### 0.1. Process PM Commands (NEW)
@@ -66,11 +74,16 @@ function: execute_phase(assignment, phase)
     - Apply autonomy level before each phase
     - Get approval if required by L1/L2
     - Continue autonomously in L3
+  l3_mode:
+    - IF settings.autonomy_level == "L3":
+        Add to task queue instead of direct execution
+        Let continuous engine handle execution
+        Auto-transition phases when criteria met
   phases:
     INIT: Capture initial information
     PLAN: Break down into smaller units (stories→tasks)
-    EXECUTE: Perform the actual work
-    ACCEPTANCE: Validate completion
+    EXECUTE: Perform the actual work (or queue in L3)
+    ACCEPTANCE: Validate completion (auto in L3)
     DONE: Archive and capture learnings
 ```
 
@@ -165,6 +178,10 @@ icc:detect-work-type(content)
    - Always end with knowledge task
 5. Assign specialists to tasks (validated assignments only)
 6. Update story file with validated tasks
+7. **L3 MODE:** 
+   - Add all tasks to TaskQueueManager
+   - Let ContinuousEngine execute in parallel
+   - Auto-transition phases via triggers
 ```
 
 ### Task Execution (Specialist executes)
@@ -176,6 +193,10 @@ icc:detect-work-type(content)
 5. Update progress
 6. Knowledge generation (automatic last step)
 7. Mark complete
+8. **L3 MODE:**
+   - Trigger auto-continue for next task
+   - Update queue with completion
+   - Check for unblocked tasks
 ```
 
 ### Git Operations Integration
@@ -579,6 +600,95 @@ learning_detection:
     - +0.5Q for quality improvement
 ```
 
+## L3 Continuous Execution Mode
+
+### Continuous Flow Architecture
+```pseudocode
+FUNCTION enableL3ContinuousMode():
+    IF settings.autonomy_level != "L3":
+        RETURN  // Only for L3
+    
+    // Initialize continuous components
+    continuousEngine = new ContinuousExecutionEngine()
+    taskQueue = new TaskQueueManager()
+    triggers = new AutoContinueTriggers()
+    
+    // Start continuous execution
+    continuousEngine.initialize()
+    
+    // Override normal execution flow
+    setExecutionMode("continuous")
+    logInfo("L3 Continuous Mode ACTIVE")
+```
+
+### L3 Execution Differences
+```yaml
+Normal Mode (L1/L2):
+  - Sequential task execution
+  - Manual phase transitions
+  - Blocking on reviews
+  - Stop after each task
+  - User drives progression
+
+L3 Continuous Mode:
+  - Parallel task execution
+  - Automatic phase transitions
+  - Non-blocking reviews
+  - Continuous flow between tasks
+  - System drives progression
+```
+
+### Task Queue Integration
+```pseudocode
+FUNCTION addWorkToQueue(workItem):
+    IF executionMode != "continuous":
+        RETURN normalExecution(workItem)
+    
+    // Add all tasks to queue
+    FOR task IN workItem.tasks:
+        taskQueue.addTask(task)
+    
+    // Let continuous engine handle execution
+    continuousEngine.processQueue()
+```
+
+### Auto-Continue Integration
+```pseudocode
+FUNCTION onTaskComplete(task):
+    // Normal completion logic
+    updateTaskStatus(task, "completed")
+    
+    IF executionMode == "continuous":
+        // Trigger auto-continue
+        triggers.triggerEvent("task.completed", {task: task})
+        
+        // Check for phase transitions
+        checkPhaseTransition(task.parent)
+        
+        // Continue without stopping
+        RETURN
+    
+    // Normal mode - stop for user
+    notifyUserTaskComplete(task)
+```
+
+### L3 Stop Conditions
+```pseudocode
+FUNCTION shouldStopExecution(context):
+    IF settings.autonomy_level != "L3":
+        RETURN true  // Always stop in L1/L2
+    
+    // L3 only stops for critical issues
+    L3_STOP_CONDITIONS = [
+        "BUSINESS_CRITICAL_DECISION",
+        "SECURITY_VIOLATION",
+        "DATA_LOSS_RISK",
+        "UNRECOVERABLE_ERROR"
+    ]
+    
+    RETURN context.issue IN L3_STOP_CONDITIONS
+```
+
 ## Why This Works
 
 1. **Structure Enforces Behavior**: Assignment files contain all needed information
@@ -587,6 +697,7 @@ learning_detection:
 4. **Natural Flow**: Knowledge→Work→Knowledge
 5. **Automatic Scoring**: Completion triggers updates
 6. **Simple Tools**: Basic operations only
+7. **L3 Continuous**: True autonomous execution without stops
 
 ## Usage Examples
 
