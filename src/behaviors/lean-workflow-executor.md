@@ -9,6 +9,7 @@
 @./role-detection-engine.md
 @./autonomy-controller.md
 @./role-activation-system.md
+@./pm-command-system.md
 
 ## Core Functions
 
@@ -22,9 +23,25 @@ function: initialize_system()
     - Check pm_always_active flag
     - Set blocking behavior mode
     - Cache settings for session
+    - Initialize PM command processor
   integration: 
     - SettingsAPI.getSettings()
     - AutonomyController.initialize()
+    - PMCommandProcessor.initialize()
+```
+
+### 0.1. Process PM Commands (NEW)
+```pseudocode
+FUNCTION processUserMessage(message):
+    // Check for PM commands first
+    IF message.startsWith("@PM"):
+        processor = PMCommandProcessor()
+        result = processor.processCommand(message)
+        IF result != null:
+            RETURN result
+    
+    // Continue with normal processing
+    RETURN processNormalMessage(message)
 ```
 
 ### 1. Read Assignment
@@ -276,8 +293,19 @@ FUNCTION applyAutonomyLevel(action):
 FUNCTION checkPMActivation():
     settings = SettingsAPI.getSettings()
     IF settings.pm_always_active == true:
-        activateRole("@PM")
+        controller = RoleActivationController()
+        controller.activateRole("PM")
         initializeTaskManagement()
+        initializePMCommands()
+
+FUNCTION initializePMCommands():
+    processor = PMCommandProcessor()
+    processor.initialize()
+    // Register command handlers
+    registerCommandHandler("@PM init", processor.executeInit)
+    registerCommandHandler("@PM refresh", processor.executeRefresh)
+    registerCommandHandler("@PM reset", processor.executeReset)
+    registerCommandHandler("@PM status", processor.executeStatus)
 ```
 
 ### Blocking Behavior Control
