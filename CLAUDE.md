@@ -281,6 +281,85 @@ Blocking dependencies → critical_path priority
   - 72% faster execution, 94% fewer interruptions
   - See `docs/L3-AUTONOMY-GUIDE.md` for details
 
+### Settings Configuration
+
+The system supports flexible configuration through a hierarchical settings system. Settings can be defined at multiple levels with clear priority ordering.
+
+#### Configuration Hierarchy (Highest to Lowest Priority)
+1. **Embedded Config** - Settings within assignment files (epic.yaml, story.yaml)
+2. **Project Config** - `.claude/config.md` in project root
+3. **User Global** - `~/.claude/config.md` for user preferences
+4. **System Defaults** - Built-in fallback values
+
+#### Available Settings
+
+##### Git Settings
+- `git_privacy: true|false` - Strip AI/Claude mentions from commits (default: false)
+- `branch_protection: true|false` - Force feature branch workflow (default: true)
+- `default_branch: "main"|"master"|"develop"` - Default branch name (default: "main")
+- `require_pr_for_main: true|false` - Require PR/MR for main branch (default: true)
+
+##### Autonomy Settings
+- `autonomy_level: "L1"|"L2"|"L3"` - System autonomy level (default: "L2")
+- `pm_always_active: true|false` - Auto-activate PM role on startup (default: false)
+- `blocking_enabled: true|false` - Allow blocking behaviors (default: true)
+
+##### Team Settings
+- `default_reviewer: "@Role"` - Default peer reviewer (default: "@AI-Architect")
+- `specialist_creation: true|false` - Allow dynamic specialist creation (default: true)
+- `role_validation: true|false` - Enforce role assignment validation (default: true)
+
+#### Configuration Examples
+
+```yaml
+# Example L3 autonomous configuration
+autonomy_level: "L3"
+pm_always_active: true
+blocking_enabled: false
+git_privacy: true
+
+# Example L1 manual configuration
+autonomy_level: "L1"
+pm_always_active: false
+blocking_enabled: true
+git_privacy: false
+
+# Example project-specific config in .claude/config.md
+---
+git_privacy: true
+autonomy_level: "L2"
+default_branch: "develop"
+default_reviewer: "@Security-Engineer"
+---
+
+# Example embedded config in story.yaml
+embedded_config:
+  autonomy_level: "L3"
+  blocking_enabled: false
+```
+
+#### Git Privacy Feature
+
+When `git_privacy: true` is enabled, the system automatically strips:
+- Direct AI mentions ("AI-generated", "Claude", "Anthropic")
+- AI-related emojis (🤖, 🧠)
+- Co-authorship lines ("Co-Authored-By: Claude")
+- Indirect references ("automated assistant", "virtual developer")
+
+Examples:
+- Before: "Implement user auth with Claude's assistance 🤖"
+- After: "Implement user auth"
+
+#### Settings Application
+
+Settings are automatically loaded and applied:
+- At system startup
+- When processing assignment files
+- Cached for 5 minutes for performance
+- Embedded configs cached for 1 hour
+
+The settings system ensures consistent behavior across the entire virtual team while allowing flexibility through the configuration hierarchy.
+
 ### Integration Validation
 ```bash
 # Check tool availability
