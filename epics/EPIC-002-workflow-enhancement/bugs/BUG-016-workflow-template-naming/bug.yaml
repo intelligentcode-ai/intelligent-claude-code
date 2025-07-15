@@ -6,8 +6,8 @@ bug:
   created_by: "@PM"
   assigned_to: "@AI-Engineer"
   priority: "P1"  # HIGH - Naming consistency issue
-  status: "PLANNED"
-  phase: "PLAN"
+  status: "COMPLETED"
+  phase: "DEPLOY"
   
 problem_description: |
   BUG: Workflow template files have unnecessary '-corrected' suffix in their names.

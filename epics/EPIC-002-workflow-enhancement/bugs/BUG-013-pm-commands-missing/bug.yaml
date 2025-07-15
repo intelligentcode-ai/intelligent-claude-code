@@ -7,7 +7,7 @@ bug:
   assigned_to: "@AI-Engineer"
   priority: "P0"  # CRITICAL - System management broken
   status: "PLANNED"
-  phase: "INIT"
+  phase: "PLAN"
   
 problem_description: |
   CRITICAL BUG: Essential PM management commands are missing from the system.
@@ -71,4 +71,55 @@ required_fix:
   - "Add system management functionality"
   
 tasks:
-  # Will be created during PLAN phase
+  - id: "TASK-001"
+    title: "Design PM management commands"
+    type: "architecture"
+    assigned_to: "@AI-Architect"
+    priority: "blocking"
+    status: "planned"
+    description: "Design @PM init, refresh, reset commands"
+    
+  - id: "TASK-002"
+    title: "Implement PM commands"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    status: "planned"
+    description: "Implement @PM init, refresh, reset functionality"
+    
+  - id: "TASK-003"
+    title: "Manual test PM commands"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    status: "planned"
+    description: "Manually test all PM commands work correctly"
+    
+  - id: "TASK-004"
+    title: "Peer review PM commands"
+    type: "review"
+    assigned_to: "@AI-Architect"
+    priority: "critical_path"
+    dependencies: ["TASK-003"]
+    status: "planned"
+    description: "Review PM commands implementation"
+    
+  - id: "TASK-005"
+    title: "Update documentation"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-004"]
+    status: "planned"
+    description: "Document PM commands usage"
+    
+  - id: "TASK-006"
+    title: "Commit and push changes"
+    type: "git_operations"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-005"]
+    status: "planned"
+    description: "Git operations for PM commands"
