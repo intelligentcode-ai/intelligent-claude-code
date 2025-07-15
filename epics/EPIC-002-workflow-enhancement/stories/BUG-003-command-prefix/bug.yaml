@@ -8,7 +8,9 @@ bug:
   assigned_to: "@PM"
   priority: "P1"  # Important but not blocking
   status: "TRIAGED"
-  phase: "INIT"
+  phase: "EXECUTE"
+  triage_date: "2025-07-15 13:26:00"
+  triage_by: "@PM + @AI-Architect"
   
 bug_description: |
   All new commands are missing the required 'icc:' prefix, making them
@@ -74,4 +76,51 @@ integration_with_lean_executor:
   - Commands update progress in files
   
 tasks:
-  # Will be created during PLAN phase
+  - id: "TASK-001"
+    title: "Audit commands missing icc: prefix"
+    type: "analysis"
+    assigned_to: "@AI-Engineer"
+    priority: "blocking"
+    estimated_hours: 1
+    status: "planned"
+    description: "Find all commands missing icc: prefix and document correct versions"
+    
+  - id: "TASK-002"
+    title: "Add icc: prefix to all commands"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    estimated_hours: 2
+    status: "planned"
+    description: "Update all commands to use icc: prefix consistently"
+    
+  - id: "TASK-003"
+    title: "Update documentation"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    estimated_hours: 1
+    status: "planned"
+    description: "Update all documentation to use correct command prefixes"
+    
+  - id: "TASK-004"
+    title: "Validate command integration"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003"]
+    estimated_hours: 1
+    status: "planned"
+    description: "Test that all commands work with lean-workflow-executor"
+    
+  - id: "TASK-005"
+    title: "Deploy command fixes"
+    type: "deployment"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-004"]
+    estimated_hours: 1
+    status: "planned"
+    description: "Deploy all command prefix fixes"
