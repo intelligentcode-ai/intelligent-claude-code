@@ -1,10 +1,10 @@
-# TASK-005 Git Operations
+# TASK-007 Git Operations
 
-**Task:** Commit and push workflow template renaming  
+**Task:** Commit and push role switching implementation  
 **Assigned to:** @AI-Engineer  
-**Status:** COMPLETED  
+**Status:** PLANNED  
 **Priority:** critical_path  
-**Dependencies:** [TASK-004]
+**Dependencies:** [TASK-006]
 
 ## Git Operations Requirements
 
@@ -17,7 +17,7 @@ require_pr_for_main: true        # Force PR/MR workflow
 ```
 
 ### Commit Requirements
-- Commit renamed workflow templates
+- Commit role switching implementation
 - Include proper commit message with evidence
 - **RESPECT git_privacy: true** - NO AI/Claude mentions
 - Include all modified files
@@ -28,19 +28,15 @@ require_pr_for_main: true        # Force PR/MR workflow
 - Ensure no merge conflicts
 - Confirm deliverables complete
 
-### Files to Commit
+### Branch Management
+- Use proper branch naming
+- Ensure feature branch workflow
+- Prepare for pull request
+- Maintain clean commit history
 
-- workflow-templates/outer-workflow.yaml (renamed)
-- workflow-templates/inner-workflow.yaml (renamed)
-- src/modes/virtual-team.md (updated imports)
-- Documentation updates
+## Files to Commit
+
+- src/behaviors/lean-workflow-executor.md: Role switching implementation
+- src/roles/specialists.md: Updated role definitions
+- CLAUDE.md: Updated documentation
 - Task completion files
-
-### Git Commands
-```bash
-git add workflow-templates/*.yaml
-git add src/modes/virtual-team.md
-git add [documentation files]
-git commit -m "BUG-016: Rename workflow templates to remove '-corrected' suffix"
-git push
-```

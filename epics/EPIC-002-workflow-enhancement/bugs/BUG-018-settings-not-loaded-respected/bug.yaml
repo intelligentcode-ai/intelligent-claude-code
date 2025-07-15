@@ -1,0 +1,141 @@
+bug:
+  id: "BUG-018"
+  title: "Settings Not Being Loaded or Respected by System"
+  epic: "EPIC-002"
+  created: "2025-07-15 14:44:00"
+  created_by: "@PM"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"  # CRITICAL - System configuration broken
+  status: "PLANNED"
+  phase: "PLAN"
+  
+problem_description: |
+  CRITICAL BUG: System settings are not being loaded and respected.
+  
+  CURRENT BEHAVIOR:
+  - Settings not loaded from configuration files
+  - System behavior doesn't respect configured settings
+  - Configuration ignored during execution
+  - Settings changes have no effect
+  
+  EXPECTED BEHAVIOR:
+  - Settings should be loaded from configuration files
+  - System should respect configured settings
+  - Configuration should affect system behavior
+  - Settings changes should take effect
+  
+  IMPACT:
+  - System configuration is broken
+  - Cannot customize system behavior
+  - Settings files are meaningless
+  - Configuration system not functional
+
+acceptance_criteria:
+  - Settings loaded from configuration files
+  - System behavior respects configured settings
+  - Configuration affects system execution
+  - Settings changes take effect immediately
+  - Configuration system fully functional
+
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  
+root_cause_analysis:
+  issue_type: "configuration_system_failure"
+  severity: "critical"
+  affects_system_behavior: true
+  
+current_issues:
+  settings_loading:
+    current_behavior: "Settings not loaded from files"
+    expected_behavior: "Settings loaded and cached"
+    impact: "Configuration system broken"
+  settings_respect:
+    current_behavior: "System ignores configured settings"
+    expected_behavior: "System behavior follows settings"
+    impact: "Cannot customize system behavior"
+  settings_effect:
+    current_behavior: "Settings changes have no effect"
+    expected_behavior: "Settings changes take effect"
+    impact: "Configuration changes meaningless"
+    
+required_fix:
+  - "Implement settings loading mechanism"
+  - "Add settings respect throughout system"
+  - "Ensure configuration affects behavior"
+  - "Add settings change detection"
+  
+tasks:
+  - id: "TASK-001"
+    title: "Design settings loading architecture"
+    type: "design"
+    assigned_to: "@AI-Architect"
+    priority: "blocking"
+    status: "planned"
+    description: "Design config loading and application system"
+    
+  - id: "TASK-002"
+    title: "Implement config loader"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    status: "planned"
+    description: "Build config.md loading mechanism"
+    
+  - id: "TASK-003"
+    title: "Apply git privacy settings"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    status: "planned"
+    description: "Enforce git_privacy in commits"
+    
+  - id: "TASK-004"
+    title: "Implement autonomy levels"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    status: "planned"
+    description: "Apply L1/L2/L3 behavior controls"
+    
+  - id: "TASK-005"
+    title: "Test settings application"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003", "TASK-004"]
+    status: "planned"
+    description: "Verify all settings properly applied"
+    
+  - id: "TASK-006"
+    title: "Peer review implementation"
+    type: "review"
+    assigned_to: "@AI-Architect"
+    priority: "critical_path"
+    dependencies: ["TASK-005"]
+    status: "planned"
+    description: "Review settings implementation"
+    
+  - id: "TASK-007"
+    title: "Update documentation"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-006"]
+    status: "planned"
+    description: "Document settings system"
+    
+  - id: "TASK-008"
+    title: "Git operations"
+    type: "git_operations"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-007"]
+    status: "planned"
+    description: "Commit with proper git settings"
