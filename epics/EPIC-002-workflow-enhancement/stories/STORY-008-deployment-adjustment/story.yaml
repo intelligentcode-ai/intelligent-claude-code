@@ -1,0 +1,32 @@
+story:
+  id: "STORY-008"
+  title: "Adjust Deployment to Lean System"
+  epic: "EPIC-002"
+  created: "2025-07-15 09:51:00"
+  created_by: "@PM"
+  assigned_to: "@PM"
+  priority: "P1"
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  The deployment system needs to be adjusted to use only the lean workflow
+  system instead of the complex behavioral enforcement system. This is a
+  major infrastructure change affecting how the system is deployed.
+  
+acceptance_criteria:
+  - Deployment uses lean system only
+  - Old behavioral modules not deployed
+  - Virtual team imports updated
+  - System boots with lean executor
+  - No old enforcement patterns active
+  
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  deployment_automation: true
+  
+tasks:
+  # Will be created during PLAN phase and assigned to deployment specialists

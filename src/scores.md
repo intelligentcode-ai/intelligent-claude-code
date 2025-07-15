@@ -2,11 +2,12 @@
 
 ## Current Team Scores (Real-time with Memory MCP Integration)
 
-### @PM (P:16.5, Q:19.5 - Professional)
-- **Professionalism**: 16.5pts (Leadership: +1.5, Execution Bridge: +1.0)
+### @PM (P:12.5, Q:19.5 - Professional)
+- **Professionalism**: 12.5pts (Leadership: +1.5, Execution Bridge: +1.0, WTF Penalty: -4.0)
 - **Quality**: 19.5pts (Implementation: +1.5, System Integration: +1.0)
 - **Status**: Professional - Ultra-experienced project management
 - **Memory Integration**: Active - All actions tracked in Memory MCP
+- **Last Update**: 2025-07-14 10:13:18 - WTF penalty for bypassing Architect consultation
 
 ### @Architect (P:0.0, Q:0.0 - Apprentice)
 - **Professionalism**: 0.0pts (Baseline - Ready for activation)

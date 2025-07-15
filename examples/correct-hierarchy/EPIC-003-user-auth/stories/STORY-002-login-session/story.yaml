@@ -1,0 +1,94 @@
+story:
+  id: "STORY-002"
+  title: "Login and Session Management"
+  epic: "EPIC-003"
+  created: "2025-07-15 09:22:00"
+  created_by: "@Requirements-Engineer"
+  assigned_to: "@PM"
+  status: "IN_PROGRESS"
+  phase: "EXECUTE"
+  
+description: |
+  Implement secure login flow with session management, including
+  token generation, validation, and refresh mechanisms.
+  
+acceptance_criteria:
+  - Secure login with bcrypt password hashing
+  - JWT token generation and validation
+  - Session refresh without re-login
+  - Concurrent session limiting
+  - Audit logging of all auth events
+  
+embedded_config:
+  # From config.md - shapes task creation
+  security_validation: true
+  testing_approach: "comprehensive"
+  git_privacy: true
+  blocking_enabled: false
+  
+tasks:
+  - id: "TASK-001"
+    title: "Research authentication patterns"
+    type: "research"
+    assigned_to: "@Security-Engineer"
+    status: "COMPLETED"
+    estimated_hours: 2
+    
+  - id: "TASK-002"
+    title: "Implement login endpoint"
+    type: "implementation"
+    assigned_to: "@Backend-Developer"
+    status: "IN_PROGRESS"
+    estimated_hours: 4
+    
+  - id: "TASK-003"
+    title: "Create session management"
+    type: "implementation"
+    assigned_to: "@Backend-Developer"
+    status: "PLANNED"
+    estimated_hours: 6
+    
+  - id: "TASK-004"
+    title: "Security review"
+    type: "peer_review"
+    assigned_to: "@Security-Engineer"
+    status: "PLANNED"
+    estimated_hours: 2
+    
+  - id: "TASK-005"
+    title: "Write integration tests"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    status: "PLANNED"
+    estimated_hours: 3
+    
+  - id: "TASK-006"
+    title: "Update API documentation"
+    type: "documentation"
+    assigned_to: "@Technical-Writer"
+    status: "PLANNED"
+    estimated_hours: 2
+    
+  - id: "TASK-007"
+    title: "Create deployment plan"
+    type: "deployment"
+    assigned_to: "@DevOps-Engineer"
+    status: "PLANNED"
+    estimated_hours: 2
+    
+  - id: "TASK-008"
+    title: "Generate knowledge artifacts"
+    type: "knowledge_creation"
+    assigned_to: "@Backend-Developer"
+    status: "PLANNED"
+    estimated_hours: 1
+    
+workflow:
+  current_phase: "EXECUTE"
+  completed_tasks: 1
+  total_tasks: 8
+  blockers: []
+  
+git_operations:
+  branch: "feature/EPIC-003-user-auth"
+  commits_prefix: "auth:"

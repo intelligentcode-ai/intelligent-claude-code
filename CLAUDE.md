@@ -43,33 +43,24 @@ The system uses a **hybrid documentation strategy** that maintains Claude Code's
 #### Source Directory (`/src/`)
 - `CLAUDE.md` - Master configuration template (installed to `~/.claude/CLAUDE.md`)
 - `config.md` - Native markdown configuration template
-- `modes/virtual-team.md` - Virtual team mode implementation with modular architecture
-- `modes/core-systems.md` - PM activation, scoring system, team configuration
-- `modes/execution-engine.md` - Universal enforcement, L3 autonomy, quality gates
-- `modes/role-framework.md` - 14 core roles with ultra-experienced standards
-- `modes/integration-layer.md` - Memory Bank with aging, MCP integration, tool fallback
-- `modes/operational-protocols.md` - Git workflow enforcement, quality standards
-- `behaviors/` - **Behavioral intelligence modules with pseudo-code implementation**
-  - `pseudo-code-integration.md` - Master behavioral framework orchestrator
-  - `enforcement-autonomy.md` - Process compliance and auto-correction patterns
-  - `memory-coordination.md` - Memory-first culture enforcement patterns
-  - `command-chains.md` - Structured execution and tool integration patterns
-  - `active-disagreement.md` - Violation detection and resolution patterns
-  - `role-assessment.md` - Capability optimization and specialist creation
+- `modes/virtual-team.md` - **LEAN** virtual team mode with workflow-driven architecture
+- `modes/badges.md` - Scoring system with achievement tracking
+- `roles/specialists.md` - **NEW**: Clean role definitions (14 core + dynamic specialists)
+- `behaviors/` - **Lean behavioral modules**
+  - `lean-workflow-executor.md` - **CORE**: Assignment-driven workflow with validation
   - `learning-team-automation.md` - Error forgiveness and pattern capture
 
-#### Behavioral Framework Architecture
-- **Pseudo-Code Implementation**: Actionable behavioral patterns with structured execution logic
-- **Command Chain Orchestration**: Structured patterns with pseudo-code implementation details
-- **Quality Gate Enforcement**: Process guidance with blocking patterns and auto-correction
-- **Task Coordination System**: PM-driven delegation with parallel execution pseudo-code
-- **Security Validation Automation**: Automated code validation with enforcement patterns
-- **Evidence-Based Monitoring**: Real-time validation with scoring and learning integration
-- **Git Workflow Automation**: Professional standards with automated compliance checking
-- **Documentation Intelligence**: Structured updates with pseudo-code pattern generation
-- **Review Framework Automation**: Automated peer review with quality enforcement
-- **Validation Engine**: DoD patterns with blocking enforcement and auto-correction
-- **Strategic Analysis Intelligence**: Thoughtful role delegation with optimization algorithms
+#### Lean Workflow Architecture
+- **Assignment-Driven Execution**: Workflow structure drives behavior without complex enforcement
+- **Validation Command Chains**: Lightweight governance through icc: prefix commands
+- **Role Assignment Validation**: Mandatory PM + Specialist Architect triage for all work
+- **Capability Matching**: >70% expertise threshold with dynamic specialist creation
+- **Scoring Integration**: Automatic score updates via badges.md achievement system
+- **Learning Capture**: Error forgiveness (first time) with pattern capture and sharing
+- **File-Based Workflows**: Assignment files (epic.yaml, story.yaml) contain embedded config
+- **Quality Gates**: Peer review by subject matter experts, not enforcement automation
+- **Git Workflow Integration**: Professional standards with manual quality oversight
+- **Documentation Updates**: Assignment file processing with progress tracking
 
 #### Pseudo-Code Integration Benefits
 - **Direct Implementation**: Functions translate directly to any programming language
@@ -275,39 +266,42 @@ git log --oneline -n 5
 ### Core Components
 - **14 Specialized Roles**: PM, Architect, Developer, QA, Security, etc.
 - **Dynamic Specialists**: Unlimited auto-generated experts (@React-Developer)
-- **Command Chains**: Structured execution patterns (icc:memory-first, icc:quality-gates)
-- **Memory System**: Persistent learning with MCP integration
+- **Validation Command Chains**: Lightweight governance (icc:detect-work-type, icc:require-triage, icc:validate-assignments)
+- **Assignment Files**: Epic/story/task YAML files with embedded config drive execution
+- **Scoring System**: Achievement tracking via badges.md integration
+- **Learning System**: Error forgiveness with pattern capture via learning-team-automation.md
 - **Tool Integration**: Context7, GitHub CLI, Brave Search with fallbacks
 
 ### Extension Points
-- **Roles**: Add to `src/modes/role-framework.md`
-- **Behaviors**: Extend `src/behaviors/` modules
-- **Commands**: Add to `src/commands/` directory
+- **Roles**: Add to `src/roles/specialists.md`
+- **Validation**: Extend `src/behaviors/lean-workflow-executor.md` 
+- **Workflows**: Add to `workflow-templates/` directory
 - **Config**: Customize `src/config.md`
 
 ### Design Constraints
 - Pure Markdown configuration (no environment variables)
 - Single import activation/deactivation
 - Never overwrite existing files
-- Command chain mandatory enforcement
-- Quality gates for all completions
+- Assignment file-driven execution
+- Validation command chains for governance
+- Quality gates via peer review by SMEs
 
 ## Common Development Tasks
 
 ### Adding New Role
 ```bash
-1. Edit src/modes/role-framework.md
+1. Edit src/roles/specialists.md
 2. Define role expertise and responsibilities
-3. make test  # Verify integration
+3. Add to dynamic specialist creation patterns
 4. Update documentation
 ```
 
-### Modifying Behaviors
+### Modifying Validation
 ```bash
-1. Edit relevant file in src/behaviors/
-2. make lint  # Validate changes
-3. make test  # Test functionality
-4. make install  # Apply changes
+1. Edit src/behaviors/lean-workflow-executor.md
+2. Add validation command chains
+3. Test with assignment files
+4. Update workflow templates if needed
 ```
 
 ### Configuration Changes
