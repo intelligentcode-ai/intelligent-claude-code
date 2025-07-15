@@ -6,8 +6,9 @@ bug:
   created_by: "@PM"
   assigned_to: "@AI-Architect"
   priority: "P0"  # CRITICAL - Core functionality broken
-  status: "PLANNED"
-  phase: "PLAN"
+  status: "COMPLETED"
+  phase: "DONE"
+  completed: "2025-01-15 18:10:00"
   
 problem_description: |
   CRITICAL BUG: Role switching doesn't actually work in the current system.
