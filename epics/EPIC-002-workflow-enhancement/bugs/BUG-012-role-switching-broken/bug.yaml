@@ -1,0 +1,61 @@
+bug:
+  id: "BUG-012"
+  title: "Role Switching Not Functional"
+  epic: "EPIC-002"
+  created: "2025-07-15 14:20:00"
+  created_by: "@PM"
+  assigned_to: "@AI-Architect"
+  priority: "P0"  # CRITICAL - Core functionality broken
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  CRITICAL BUG: Role switching doesn't actually work in the current system.
+  
+  CURRENT BEHAVIOR:
+  - System mentions "@Role" assignments but doesn't actually switch roles
+  - Roles are discussed but not activated
+  - No actual role behavior change occurs
+  - System continues as same role despite assignments
+  
+  EXPECTED BEHAVIOR:
+  - When @Role is assigned, system should become that role
+  - Role behavior should actually change with assignments
+  - System should adopt the expertise and perspective of the assigned role
+  
+  IMPACT:
+  - Role assignments are meaningless
+  - Multi-role coordination doesn't work
+  - Team specialization fails
+  - System operates as generic AI instead of specialized roles
+
+acceptance_criteria:
+  - Role switching actually changes active role and expertise
+  - When @Role is assigned, system becomes that role with appropriate behavior
+  - Role expertise and perspective changes with assignments
+  - System demonstrates role-specific knowledge and decision-making
+  - Multi-role coordination works with actual role switching
+
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  
+root_cause_analysis:
+  issue_type: "missing_implementation"
+  severity: "critical"
+  affects_core_functionality: true
+  
+current_behavior:
+  - "@Role assignments discussed but not executed"
+  - "System continues as same role despite assignments"
+  - "No behavioral changes occur with role switching"
+  
+required_fix:
+  - "Implement actual role switching mechanism"
+  - "Change active role behavior based on assignments"
+  - "Activate role-specific expertise and decision-making"
+  
+tasks:
+  # Will be created during PLAN phase

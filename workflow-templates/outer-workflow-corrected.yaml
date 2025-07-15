@@ -111,6 +111,32 @@ workflow:
             - "icc:validate-assignments(task, proposed_role)"
             - "icc:require-approval(pm_role, specialist_architect)"
             
+    - id: "git_operations"
+      name: "Git Operations"
+      description: "Branch management and merge coordination"
+      steps:
+        - id: "create_feature_branch"
+          action: "Create branch for story/bug"
+          template: "{{type}}/{{id}}-{{title-slug}}"
+          examples:
+            - "story/STORY-001-user-authentication"
+            - "bug/BUG-012-role-switching-broken"
+            
+        - id: "coordinate_merges"
+          action: "Coordinate task merges into story branch"
+          validates:
+            - "All task commits present"
+            - "No merge conflicts"
+            - "All tests passing"
+            - "All reviews approved"
+            
+        - id: "prepare_integration"
+          action: "Prepare for main branch integration"
+          requirements:
+            - "All tasks completed"
+            - "Integration tests passing"
+            - "Documentation updated"
+            
     - id: "acceptance_criteria"
       name: "Define Success Criteria"
       description: "Clear completion criteria for stories/bugs"
@@ -122,6 +148,7 @@ workflow:
             - "Integration successful"
             - "Tests passing"
             - "Documentation updated"
+            - "Branch ready for merge"
             
         - id: "bug_resolution"
           action: "Define when bug is fixed"
@@ -129,10 +156,11 @@ workflow:
             - "Root cause addressed"
             - "Regression tests added"
             - "No side effects"
+            - "Branch ready for merge"
             
     - id: "knowledge_generation"
       name: "Knowledge Generation"
-      description: "Capture planning decisions"
+      description: "Capture planning decisions and synthesize learning"
       steps:
         - id: "document_decisions"
           action: "Record planning rationale"
@@ -141,6 +169,17 @@ workflow:
             - "Story priorities"
             - "Task assignments"
             - "Risk mitigations"
+            
+        - id: "synthesize_task_learning"
+          action: "Synthesize learning across all tasks"
+          inputs:
+            - "Task learning entities"
+            - "Task outcomes"
+            - "Cross-task patterns"
+          outputs:
+            - "Story-level insights"
+            - "Process improvements"
+            - "Architecture patterns"
             
         - id: "create_planning_entities"
           action: "Store in memory system"
@@ -151,6 +190,14 @@ workflow:
                 - "stories"
                 - "risks"
                 - "timeline"
+            - type: "StoryLearning"
+              attributes:
+                - "story_id"
+                - "task_outcomes"
+                - "cross_task_patterns"
+                - "architecture_insights"
+                - "process_improvements"
+                - "team_collaboration_patterns"
                 
 hooks:
   pre_planning:
@@ -172,6 +219,24 @@ hooks:
       - "icc:require-triage() for PM + Specialist Architect approval"
       - "icc:validate-assignments() for capability matching"
     
+git_operations:
+  workflow_level: "outer"
+  story_level:
+    branches: "Per story/bug (outer workflow)"
+    merges: "Per story/bug completion (outer workflow)"
+    
+  branch_standards:
+    template: "{{type}}/{{id}}-{{title-slug}}"
+    types: ["story", "bug"]
+    
+  merge_standards:
+    validation_required:
+      - "All task commits present"
+      - "No merge conflicts"
+      - "All tests passing"
+      - "All reviews approved"
+      - "Learning synthesized"
+      
 validation:
   required_outputs:
     - "epic_definition"
@@ -179,6 +244,7 @@ validation:
     - "task_breakdown"
     - "specialist_assignments"
     - "acceptance_criteria"
+    - "git_operations_planned"
     - "knowledge_captured"
     
   hierarchy_rules:
