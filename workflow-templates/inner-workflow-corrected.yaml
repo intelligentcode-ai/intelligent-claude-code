@@ -146,6 +146,29 @@ workflow:
             - condition: "embedded_config.blocking_enabled == true"
               action: "Block until resolved"
               
+    - id: "git_operations"
+      name: "Git Operations"
+      description: "Commit and push task changes"
+      steps:
+        - id: "commit_changes"
+          action: "Commit task implementation"
+          template: "{{task_id}}: {{summary}}"
+          includes:
+            - "task_deliverables"
+            - "implementation_files"
+            - "test_files"
+            - "documentation_updates"
+          conditional:
+            - condition: "embedded_config.git_privacy == true"
+              sanitize: ["AI", "Claude", "anthropic", "🤖"]
+              
+        - id: "push_changes"
+          action: "Push task commits to remote"
+          validates:
+            - "All tests passing"
+            - "No merge conflicts"
+            - "Task deliverables complete"
+            
     - id: "task_completion"
       name: "Task Completion"
       description: "Finalize task"
@@ -181,6 +204,19 @@ workflow:
             - "Tool usage"
             - "Collaboration insights"
             
+        - id: "store_learning"
+          action: "Store learning entities in memory"
+          entities:
+            - type: "TaskLearning"
+              attributes:
+                - "task_id"
+                - "approach_taken"
+                - "challenges_faced"
+                - "solutions_found"
+                - "patterns_identified"
+                - "time_taken"
+                - "specialist_role"
+            
         - id: "update_scores"
           action: "Update specialist scores"
           scoring:
@@ -195,22 +231,33 @@ workflow:
             - "P3 task completion: +0.5P bonus"
             
 git_operations:
+  workflow_level: "inner"
   task_level:
-    branch: "Created at story level"
-    commits: "Per task completion"
+    branch: "Created at story level (outer workflow)"
+    commits: "Per task completion (inner workflow)"
+    pushes: "Per task completion (inner workflow)"
     
   commit_standards:
     template: "{{task_id}}: {{summary}}"
+    evidence_required: true
     conditional:
       - condition: "embedded_config.git_privacy == true"
         sanitize: ["AI", "Claude", "anthropic", "🤖"]
+        
+  push_standards:
+    validation_required:
+      - "Tests passing"
+      - "No merge conflicts"
+      - "Task deliverables complete"
+      - "Learning captured"
         
 validation:
   task_completion:
     - "All subtasks completed (if any)"
     - "Validation passed"
     - "Reviews approved (if required)"
-    - "Knowledge captured"
+    - "Git operations completed (commits and pushes)"
+    - "Knowledge captured and stored"
     
   quality_standards:
     - "Follows team conventions"
