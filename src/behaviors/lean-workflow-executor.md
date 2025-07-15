@@ -6,9 +6,9 @@
 
 @./config-loader.md
 @./git-privacy-enforcer.md
-@./role-detection-engine.md
+@./role-detection-engine.md            # Detects @-notation patterns
 @./autonomy-controller.md
-@./role-activation-system.md
+@./role-activation-system.md          # Activates roles and switches behavior
 @./pm-command-system.md
 @./learning-team-automation.md
 @./l3-continuous-engine.md
