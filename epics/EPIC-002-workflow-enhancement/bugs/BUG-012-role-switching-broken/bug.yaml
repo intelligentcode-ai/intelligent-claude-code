@@ -7,7 +7,7 @@ bug:
   assigned_to: "@AI-Architect"
   priority: "P0"  # CRITICAL - Core functionality broken
   status: "PLANNED"
-  phase: "INIT"
+  phase: "PLAN"
   
 problem_description: |
   CRITICAL BUG: Role switching doesn't actually work in the current system.
@@ -58,4 +58,64 @@ required_fix:
   - "Activate role-specific expertise and decision-making"
   
 tasks:
-  # Will be created during PLAN phase
+  - id: "TASK-001"
+    title: "Design role switching mechanism"
+    type: "architecture"
+    assigned_to: "@AI-Architect"
+    priority: "blocking"
+    status: "planned"
+    description: "Design role switching implementation architecture"
+    
+  - id: "TASK-002"
+    title: "Implement role detection system"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    status: "planned"
+    description: "Create role detection and assignment parsing"
+    
+  - id: "TASK-003"
+    title: "Implement role activation mechanism"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    status: "planned"
+    description: "Create role activation and behavioral switching"
+    
+  - id: "TASK-004"
+    title: "Manual test role switching functionality"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003"]
+    status: "planned"
+    description: "Manually test role switching implementation"
+    
+  - id: "TASK-005"
+    title: "Peer review role switching implementation"
+    type: "review"
+    assigned_to: "@AI-Architect"
+    priority: "critical_path"
+    dependencies: ["TASK-004"]
+    status: "planned"
+    description: "Review role switching architecture and implementation"
+    
+  - id: "TASK-006"
+    title: "Update documentation for role switching"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-005"]
+    status: "planned"
+    description: "Document role switching implementation and usage"
+    
+  - id: "TASK-007"
+    title: "Commit and push role switching changes"
+    type: "git_operations"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-006"]
+    status: "planned"
+    description: "Git operations for role switching implementation"
