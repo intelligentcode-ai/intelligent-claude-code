@@ -1,0 +1,281 @@
+# Inner Workflow Template - Task Execution Process
+# Defines how individual tasks are executed by specialists
+
+metadata:
+  name: "Task Execution Workflow"
+  version: "2.0.0"
+  min_compatible: "2.0.0"
+  description: |
+    Workflow for executing individual tasks within stories/bugs.
+    Specialists execute tasks and can optionally create subtasks.
+    
+workflow:
+  phases:
+    - id: "knowledge_retrieval"
+      name: "Knowledge Retrieval"
+      description: "Retrieve relevant knowledge for this task"
+      steps:
+        - id: "search_task_patterns"
+          action: "Search for similar task implementations"
+          queries:
+            - "Past solutions for this task type"
+            - "Code patterns that worked"
+            - "Known issues and fixes"
+          outputs:
+            - "relevant_patterns"
+            - "proven_approaches"
+            - "pitfalls_to_avoid"
+            
+        - id: "load_story_context"
+          action: "Understand parent story/bug requirements"
+          inputs:
+            - "story_objectives"
+            - "task_assignment"
+            - "dependencies"
+            
+    - id: "task_planning"
+      name: "Task Planning"
+      description: "Specialist plans task execution"
+      steps:
+        - id: "assess_complexity"
+          action: "Determine if subtasks needed"
+          decision:
+            - "Simple task: Direct execution"
+            - "Complex task: Create subtasks"
+            
+        - id: "create_subtasks"
+          action: "Optional: Break into atomic steps"
+          condition: "complexity == high"
+          subtask_examples:
+            - "Setup environment"
+            - "Implement core logic"
+            - "Add error handling"
+            - "Write tests"
+            - "Update documentation"
+            
+      hooks:
+        pre_execution:
+          description: "Before task execution starts"
+          allows: ["inject", "extend"]
+          
+    - id: "task_execution"
+      name: "Task Execution"
+      description: "Execute the task or subtasks"
+      steps:
+        - id: "execute_work"
+          action: "Perform assigned work"
+          approach:
+            - "Follow retrieved patterns"
+            - "Apply specialist expertise"
+            - "Consider edge cases"
+            - "Maintain quality standards"
+            
+        - id: "track_progress"
+          action: "Update task/subtask status"
+          statuses:
+            - "in_progress"
+            - "blocked"
+            - "completed"
+            - "needs_review"
+          priority_display:
+            - "Show priority prefix: [P0], [P1], [P2], [P3]"
+            - "Highlight P0 items, dim P3 items"
+            - "Sort status updates by priority"
+            
+        - id: "handle_blockers"
+          action: "Escalate if blocked"
+          escalation:
+            - "Technical blocker: Consult architect"
+            - "Requirement unclear: Consult PM/RE"
+            - "Dependency missing: Coordinate with team"
+          priority_escalation:
+            - "Blocking dependencies escalate to critical_path priority"
+            - "System failures escalate to P0"
+            - "Customer escalations increase priority by 1 level"
+            
+    - id: "task_validation"
+      name: "Task Validation"
+      description: "Validate task completion"
+      steps:
+        - id: "self_validation"
+          action: "Specialist validates own work"
+          checks:
+            - "Task objectives met"
+            - "Quality standards followed"
+            - "No regressions introduced"
+            
+        - id: "automated_checks"
+          action: "Run automated validations"
+          types:
+            - "tests"
+            - "linting"
+            - "security_scans"
+            
+      hooks:
+        post_execution:
+          description: "After task execution"
+          allows: ["inject", "extend", "validate"]
+          
+    - id: "peer_review"
+      name: "Peer Review"
+      description: "Domain expert review if required"
+      condition: "task_type requires review"
+      steps:
+        - id: "assign_reviewer"
+          action: "Find appropriate reviewer"
+          criteria:
+            - "Domain expertise"
+            - "Not task implementer"
+            - "Available capacity"
+          validation_commands:
+            - "icc:detect-work-type(task_content)"
+            - "icc:validate-assignments(review_task, proposed_reviewer)"
+            
+        - id: "conduct_review"
+          action: "Review implementation"
+          focus:
+            - "Correctness"
+            - "Quality"
+            - "Standards compliance"
+            
+        - id: "handle_feedback"
+          action: "Process review findings"
+          conditional:
+            - condition: "embedded_config.blocking_enabled == false"
+              action: "Create follow-up tasks"
+            - condition: "embedded_config.blocking_enabled == true"
+              action: "Block until resolved"
+              
+    - id: "git_operations"
+      name: "Git Operations"
+      description: "Commit and push task changes"
+      steps:
+        - id: "commit_changes"
+          action: "Commit task implementation"
+          template: "{{task_id}}: {{summary}}"
+          includes:
+            - "task_deliverables"
+            - "implementation_files"
+            - "test_files"
+            - "documentation_updates"
+          conditional:
+            - condition: "embedded_config.git_privacy == true"
+              sanitize: ["AI", "Claude", "anthropic", "🤖"]
+              
+        - id: "push_changes"
+          action: "Push task commits to remote"
+          validates:
+            - "All tests passing"
+            - "No merge conflicts"
+            - "Task deliverables complete"
+            
+    - id: "task_completion"
+      name: "Task Completion"
+      description: "Finalize task"
+      steps:
+        - id: "verify_subtasks"
+          action: "Ensure all subtasks done"
+          condition: "has_subtasks == true"
+          
+        - id: "update_story_progress"
+          action: "Report task completion to story"
+          updates:
+            - "task_status: completed"
+            - "completion_time"
+            - "deliverables"
+            
+    - id: "knowledge_generation"
+      name: "Knowledge Generation"
+      description: "Capture task learnings"
+      steps:
+        - id: "document_approach"
+          action: "Record how task was completed"
+          captures:
+            - "Approach taken"
+            - "Challenges faced"
+            - "Solutions found"
+            - "Time taken"
+            
+        - id: "extract_patterns"
+          action: "Identify reusable patterns"
+          categories:
+            - "Technical patterns"
+            - "Process improvements"
+            - "Tool usage"
+            - "Collaboration insights"
+            
+        - id: "store_learning"
+          action: "Store learning entities in memory"
+          entities:
+            - type: "TaskLearning"
+              attributes:
+                - "task_id"
+                - "approach_taken"
+                - "challenges_faced"
+                - "solutions_found"
+                - "patterns_identified"
+                - "time_taken"
+                - "specialist_role"
+            
+        - id: "update_scores"
+          action: "Update specialist scores"
+          scoring:
+            - "Task completion: +P points"
+            - "Quality delivery: +Q points"
+            - "Learning shared: Bonus"
+            - "Issues found: Penalties"
+          priority_bonuses:
+            - "P0 task completion: +2.0P bonus"
+            - "P1 task completion: +1.5P bonus"
+            - "P2 task completion: +1.0P bonus"
+            - "P3 task completion: +0.5P bonus"
+            
+git_operations:
+  workflow_level: "inner"
+  task_level:
+    branch: "Created at story level (outer workflow)"
+    commits: "Per task completion (inner workflow)"
+    pushes: "Per task completion (inner workflow)"
+    
+  commit_standards:
+    template: "{{task_id}}: {{summary}}"
+    evidence_required: true
+    conditional:
+      - condition: "embedded_config.git_privacy == true"
+        sanitize: ["AI", "Claude", "anthropic", "🤖"]
+        
+  push_standards:
+    validation_required:
+      - "Tests passing"
+      - "No merge conflicts"
+      - "Task deliverables complete"
+      - "Learning captured"
+        
+validation:
+  task_completion:
+    - "All subtasks completed (if any)"
+    - "Validation passed"
+    - "Reviews approved (if required)"
+    - "Git operations completed (commits and pushes)"
+    - "Knowledge captured and stored"
+    
+  quality_standards:
+    - "Follows team conventions"
+    - "Meets performance requirements"
+    - "Security validated"
+    - "Documentation updated"
+    
+  role_assignment_validation:
+    - "Task assigned to appropriate specialist"
+    - "Reviewer has domain expertise"
+    - "No generic roles for specialist work"
+    - "Capability match >70% verified"
+    - "Security reviews required for architecture tasks"
+    
+  priority_execution:
+    - "Execute tasks in priority order: P0 → P1 → P2 → P3"
+    - "Within same priority: blocking → critical_path → parallel → optional"
+    - "Priority display: [P0], [P1], [P2], [P3] prefixes"
+    - "Priority bonuses: P0 (+2.0P), P1 (+1.5P), P2 (+1.0P), P3 (+0.5P)"
+    - "Blocker escalation: Dependencies escalate to critical_path"
+    - "System failures: Automatic escalation to P0"

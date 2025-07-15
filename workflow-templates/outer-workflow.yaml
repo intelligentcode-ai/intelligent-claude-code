@@ -1,0 +1,271 @@
+# Outer Workflow Template - Epic/Story/Bug Planning Process
+# Defines how epics, stories, bugs, and their tasks are created
+
+metadata:
+  name: "Epic and Story Planning Workflow"
+  version: "2.0.0"
+  min_compatible: "2.0.0"
+  description: |
+    Workflow for creating epics, stories, bugs, and breaking them into tasks.
+    PM/Architect/RE/User create stories and bugs, then decompose into tasks.
+    
+workflow:
+  phases:
+    - id: "knowledge_retrieval"
+      name: "Knowledge Retrieval"
+      description: "Retrieve relevant past knowledge before planning"
+      steps:
+        - id: "search_similar_epics"
+          action: "Search for similar epics/stories/bugs"
+          queries:
+            - "Similar features implemented"
+            - "Past architectural decisions"
+            - "Lessons learned from related work"
+          outputs:
+            - "relevant_patterns"
+            - "reusable_solutions"
+            - "known_pitfalls"
+            
+    - id: "epic_definition"
+      name: "Epic Definition"
+      description: "Define overarching feature"
+      responsible: ["@PM", "@Architect", "@Requirements-Engineer", "User"]
+      steps:
+        - id: "define_epic_scope"
+          action: "Define epic boundaries and goals"
+          outputs:
+            - "epic_objectives"
+            - "success_metrics"
+            - "constraints"
+            
+    - id: "story_creation"
+      name: "Story and Bug Creation"
+      description: "Break epic into stories and identify bugs"
+      responsible: ["@PM", "@Architect", "@Requirements-Engineer", "User"]
+      steps:
+        - id: "identify_stories"
+          action: "Create stories for new/changed implementations"
+          story_types:
+            - "NEW_FEATURE: New functionality"
+            - "ENHANCEMENT: Improve existing"
+            - "REFACTOR: Technical improvement"
+          priority_inheritance:
+            - "Story priority = MAX(epic.priority, story.severity_priority)"
+            - "Security stories automatically escalate to P0"
+            - "Customer bug stories escalate priority by 1 level"
+            
+        - id: "identify_bugs"
+          action: "Create bugs for defects/issues"
+          bug_properties:
+            - "severity"
+            - "reproducibility"
+            - "impact"
+          priority_mapping:
+            - "CRITICAL severity → P0 priority"
+            - "HIGH severity → P1 priority"
+            - "MEDIUM severity → P2 priority"
+            - "LOW severity → P3 priority"
+            
+      hooks:
+        post_story_creation:
+          description: "After stories/bugs are defined"
+          allows: ["inject", "extend"]
+          
+    - id: "task_decomposition"
+      name: "Task Breakdown"
+      description: "Break stories/bugs into assignable tasks"
+      steps:
+        - id: "identify_task_types"
+          action: "Determine required task types"
+          common_tasks:
+            - "knowledge_loading"
+            - "research"
+            - "implementation"
+            - "peer_review"
+            - "documentation"
+            - "testing"
+            - "git_operations"
+            - "deployment"
+            - "knowledge_creation"
+            
+        - id: "sequence_tasks"
+          action: "Define task dependencies and order"
+          outputs:
+            - "dependency_graph"
+            - "parallel_opportunities"
+            - "critical_path"
+          priority_logic:
+            - "Apply priority inheritance from story to tasks"
+            - "Sort tasks by priority: P0 → P1 → P2 → P3"
+            - "Within same priority: blocking → critical_path → parallel → optional"
+            
+        - id: "assign_specialists"
+          action: "Match tasks to specialist roles"
+          validation:
+            - "Capability match > 70%"
+            - "Create specialist if needed"
+            - "Load balancing considered"
+          validation_commands:
+            - "icc:detect-work-type(task_content)"
+            - "icc:require-triage(pm_role, specialist_architect)"
+            - "icc:validate-assignments(task, proposed_role)"
+            - "icc:require-approval(pm_role, specialist_architect)"
+            
+    - id: "git_operations"
+      name: "Git Operations"
+      description: "Branch management and merge coordination"
+      steps:
+        - id: "create_feature_branch"
+          action: "Create branch for story/bug"
+          template: "{{type}}/{{id}}-{{title-slug}}"
+          examples:
+            - "story/STORY-001-user-authentication"
+            - "bug/BUG-012-role-switching-broken"
+            
+        - id: "coordinate_merges"
+          action: "Coordinate task merges into story branch"
+          validates:
+            - "All task commits present"
+            - "No merge conflicts"
+            - "All tests passing"
+            - "All reviews approved"
+            
+        - id: "prepare_integration"
+          action: "Prepare for main branch integration"
+          requirements:
+            - "All tasks completed"
+            - "Integration tests passing"
+            - "Documentation updated"
+            
+    - id: "acceptance_criteria"
+      name: "Define Success Criteria"
+      description: "Clear completion criteria for stories/bugs"
+      steps:
+        - id: "story_acceptance"
+          action: "Define when story is done"
+          criteria:
+            - "All tasks completed"
+            - "Integration successful"
+            - "Tests passing"
+            - "Documentation updated"
+            - "Branch ready for merge"
+            
+        - id: "bug_resolution"
+          action: "Define when bug is fixed"
+          criteria:
+            - "Root cause addressed"
+            - "Regression tests added"
+            - "No side effects"
+            - "Branch ready for merge"
+            
+    - id: "knowledge_generation"
+      name: "Knowledge Generation"
+      description: "Capture planning decisions and synthesize learning"
+      steps:
+        - id: "document_decisions"
+          action: "Record planning rationale"
+          captures:
+            - "Epic breakdown reasoning"
+            - "Story priorities"
+            - "Task assignments"
+            - "Risk mitigations"
+            
+        - id: "synthesize_task_learning"
+          action: "Synthesize learning across all tasks"
+          inputs:
+            - "Task learning entities"
+            - "Task outcomes"
+            - "Cross-task patterns"
+          outputs:
+            - "Story-level insights"
+            - "Process improvements"
+            - "Architecture patterns"
+            
+        - id: "create_planning_entities"
+          action: "Store in memory system"
+          entities:
+            - type: "EpicPlanning"
+              attributes:
+                - "objectives"
+                - "stories"
+                - "risks"
+                - "timeline"
+            - type: "StoryLearning"
+              attributes:
+                - "story_id"
+                - "task_outcomes"
+                - "cross_task_patterns"
+                - "architecture_insights"
+                - "process_improvements"
+                - "team_collaboration_patterns"
+                
+hooks:
+  pre_planning:
+    description: "Before epic planning"
+    timing: "start"
+    allows: ["inject", "extend"]
+    
+  post_story_creation:
+    description: "After stories/bugs created"
+    timing: "after_story_creation"
+    allows: ["inject", "extend", "validate"]
+    
+  pre_task_assignment:
+    description: "Before assigning tasks"
+    timing: "before_task_decomposition"
+    allows: ["inject", "validate"]
+    validation_required:
+      - "icc:detect-work-type() for all tasks"
+      - "icc:require-triage() for PM + Specialist Architect approval"
+      - "icc:validate-assignments() for capability matching"
+    
+git_operations:
+  workflow_level: "outer"
+  story_level:
+    branches: "Per story/bug (outer workflow)"
+    merges: "Per story/bug completion (outer workflow)"
+    
+  branch_standards:
+    template: "{{type}}/{{id}}-{{title-slug}}"
+    types: ["story", "bug"]
+    
+  merge_standards:
+    validation_required:
+      - "All task commits present"
+      - "No merge conflicts"
+      - "All tests passing"
+      - "All reviews approved"
+      - "Learning synthesized"
+      
+validation:
+  required_outputs:
+    - "epic_definition"
+    - "stories_or_bugs"
+    - "task_breakdown"
+    - "specialist_assignments"
+    - "acceptance_criteria"
+    - "git_operations_planned"
+    - "knowledge_captured"
+    
+  hierarchy_rules:
+    - "Every story/bug belongs to an epic"
+    - "Every task belongs to a story/bug"
+    - "Tasks assigned to specialists only"
+    - "Subtasks optional within tasks"
+    
+  role_assignment_validation:
+    - "AI-agentic work requires @AI-Architect or @AI-Engineer"
+    - "Infrastructure work requires @System-Engineer or @DevOps-Engineer"
+    - "Peer reviews assigned to domain expert SMEs only"
+    - "Capability match >70% required for all assignments"
+    - "Security reviews mandatory for architecture changes"
+    - "PM + Specialist Architect triage required for all assignments"
+    
+  priority_system:
+    - "Epic priorities: P0 (critical) → P1 (high) → P2 (medium) → P3 (low)"
+    - "Story priority = MAX(epic.priority, story.severity_priority)"
+    - "Task priority inherits from story with type adjustments"
+    - "Execution order: P0 → P1 → P2 → P3 (NOT last item = highest)"
+    - "Within same priority: blocking → critical_path → parallel → optional"
+    - "Security tasks automatically escalate to P0"
+    - "Customer bugs escalate priority by 1 level"
