@@ -6,8 +6,8 @@
 @../behaviors/lean-workflow-executor.md
 @../behaviors/learning-team-automation.md
 @badges.md
-@../../workflow-templates/outer-workflow-corrected.yaml
-@../../workflow-templates/inner-workflow-corrected.yaml
+@../../workflow-templates/outer-workflow.yaml
+@../../workflow-templates/inner-workflow.yaml
 
 **CORE:** 14 roles+unlimited•@-notation•LEAN•WORKFLOW-DRIVEN
 
