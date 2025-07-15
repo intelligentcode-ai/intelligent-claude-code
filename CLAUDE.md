@@ -128,11 +128,9 @@ make test            # Validate everything works
 
 ### File Editing Patterns
 - **Virtual Team**: Edit `src/modes/virtual-team.md`
-- **Roles**: Edit `src/modes/role-framework.md`
-- **Behavioral Pseudo-Code**: Edit files in `src/behaviors/` with hybrid approach
-  - Update pseudo-code blocks for implementation logic
-  - Maintain markdown sections for context and documentation
-  - Ensure integration patterns between modules remain clear
+- **Roles**: Edit `src/roles/specialists.md`
+- **Workflow Engine**: Edit `src/behaviors/lean-workflow-executor.md`
+- **Workflow Templates**: Edit `workflow-templates/outer-workflow-corrected.yaml` and `inner-workflow-corrected.yaml`
 - **Config**: Edit `src/config.md`
 
 ### Pseudo-Code Implementation Guidelines
@@ -161,6 +159,9 @@ icc:memory-first → icc:parallel-delegate → integrate → icc:quality-gates
 
 # Strategic analysis
 icc:pm-strategic-analysis → delegate → monitor → validate
+
+# Role assignment validation
+icc:detect-work-type → icc:require-triage → icc:validate-assignments → icc:require-approval
 ```
 
 ### Role Coordination
@@ -168,12 +169,43 @@ icc:pm-strategic-analysis → delegate → monitor → validate
 - **Dynamic Specialists**: Auto-created for any technology (@React-Developer)
 - **Parallel Execution**: Multiple roles work simultaneously
 - **Quality Gates**: Mandatory validation before completion
+- **Role Assignment Validation**: Mandatory PM + Specialist Architect triage for all assignments
 
 ### Memory Integration
 - Consult memory before every action (icc:memory-first)
 - Store insights and learning outcomes
 - Build persistent knowledge relationships
 - Enable context survival across sessions
+
+### Role Assignment Validation System
+- **Automatic Work Type Detection**: AI-agentic, infrastructure, and domain-specific work detection
+- **Mandatory Triage**: PM + Specialist Architect approval required for all assignments
+- **Capability Matching**: >70% capability match enforced with specialist preference
+- **Error Prevention**: Prevents wrong specialist assignments and meaningless busywork
+- **Workflow Integration**: Validation gates integrated into planning and execution phases
+- **Security Requirements**: Automatic security review requirements for architecture changes
+
+#### Validation Command Chains
+```bash
+# Work type detection
+icc:detect-work-type(content) → specialist_architect_type
+
+# Mandatory triage process
+icc:require-triage(pm_role, specialist_architect) → triage_complete
+
+# Assignment validation
+icc:validate-assignments(task, proposed_role) → validation_result
+
+# Joint approval gate
+icc:require-approval(pm_role, specialist_architect) → approval_granted
+```
+
+#### Assignment Rules
+- **AI-agentic work** → @AI-Architect or @AI-Engineer required
+- **Infrastructure work** → @System-Engineer or @DevOps-Engineer required
+- **Peer reviews** → Domain expert SMEs only
+- **Security reviews** → @Security-Engineer for architecture changes
+- **Capability match** → >70% match required for all assignments
 
 ## System Integration Requirements
 

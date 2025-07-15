@@ -119,6 +119,9 @@ workflow:
             - "Domain expertise"
             - "Not task implementer"
             - "Available capacity"
+          validation_commands:
+            - "icc:detect-work-type(task_content)"
+            - "icc:validate-assignments(review_task, proposed_reviewer)"
             
         - id: "conduct_review"
           action: "Review implementation"
@@ -201,3 +204,10 @@ validation:
     - "Meets performance requirements"
     - "Security validated"
     - "Documentation updated"
+    
+  role_assignment_validation:
+    - "Task assigned to appropriate specialist"
+    - "Reviewer has domain expertise"
+    - "No generic roles for specialist work"
+    - "Capability match >70% verified"
+    - "Security reviews required for architecture tasks"
