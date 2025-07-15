@@ -205,6 +205,126 @@ use_embedded:
   simple: No runtime lookups
 ```
 
+## Priority System Implementation
+
+### Priority Level Definitions
+```yaml
+epic_priorities:
+  P0: 0    # CRITICAL - System-breaking issues, security vulnerabilities
+  P1: 1    # HIGH - Major features, important bugs
+  P2: 2    # MEDIUM - Standard features, minor bugs
+  P3: 3    # LOW - Nice-to-have features, documentation
+
+task_priorities:
+  blocking: 0       # Must complete before other tasks
+  critical_path: 1  # On critical path, affects timeline
+  parallel: 2       # Can run simultaneously
+  optional: 3       # Can be skipped if needed
+```
+
+### Priority Calculation Functions
+```yaml
+calculatePriority(item, parent):
+  base_priority = parent ? parent.priority : item.priority
+  
+  # Severity adjustments
+  if item.severity == "CRITICAL": return 0
+  if item.severity == "HIGH": return MAX(base_priority, 1)
+  if item.severity == "MEDIUM": return MAX(base_priority, 2)
+  if item.severity == "LOW": return MAX(base_priority, 3)
+  
+  # Type adjustments
+  if item.type == "security": return 0
+  if item.type == "architecture": return MAX(base_priority - 1, 0)
+  
+  return base_priority
+
+sortByPriority(items):
+  return items.sort((a, b) => {
+    # Primary sort: Priority level (P0 first)
+    if a.priority != b.priority:
+      return a.priority - b.priority
+    
+    # Secondary sort: Task type (blocking first)
+    if a.task_priority != b.task_priority:
+      return a.task_priority - b.task_priority
+    
+    # Tertiary sort: Creation time (FIFO)
+    return a.created_time - b.created_time
+  })
+```
+
+### Priority Inheritance Logic
+```yaml
+inheritPriority(story, epic):
+  story.priority = MAX(epic.priority, story.severity_priority)
+  
+  # Security escalation
+  if story.type == "security" || story.title.includes("security"):
+    story.priority = 0
+  
+  # Customer bug escalation
+  if story.type == "customer_bug":
+    story.priority = MAX(story.priority - 1, 0)
+  
+  return story.priority
+
+applyTaskPriority(task, story):
+  task.priority = story.priority
+  
+  # Task type adjustments
+  if task.type == "blocking":
+    task.task_priority = 0
+  elif task.type == "critical_path":
+    task.task_priority = 1
+  elif task.type == "parallel":
+    task.task_priority = 2
+  else:
+    task.task_priority = 3
+  
+  return task
+```
+
+### Execution Order Fix
+```yaml
+# BROKEN (old system): Last item = highest priority
+getNextItem_BROKEN(items):
+  return items[items.length - 1]  # WRONG: Returns P3 before P0
+
+# CORRECT (new system): P0 → P1 → P2 → P3
+getNextItem_CORRECT(items):
+  sorted_items = sortByPriority(items)
+  return sorted_items[0]  # CORRECT: Returns P0 first
+
+executeInPriorityOrder(items):
+  sorted_items = sortByPriority(items)
+  for item in sorted_items:
+    if item.status == "ready":
+      return executeItem(item)
+  return null
+```
+
+### Dynamic Priority Adjustment
+```yaml
+escalatePriority(item, reason):
+  old_priority = item.priority
+  
+  if reason == "security_issue":
+    item.priority = 0
+  elif reason == "customer_escalation":
+    item.priority = MAX(item.priority - 1, 0)
+  elif reason == "blocking_dependency":
+    item.task_priority = 0
+  elif reason == "system_failure":
+    item.priority = 0
+  
+  if item.priority != old_priority:
+    logPriorityChange(item, old_priority, item.priority, reason)
+    notifyTeam(item, "priority_escalated")
+  
+  return item.priority
+```
+
 ## Error Handling
 
 ### Simple Patterns
@@ -218,6 +338,11 @@ failed:
   - Capture failure reason
   - Create bug if needed
   - Learn from failure
+
+priority_conflict:
+  - Use task type for resolution
+  - Log conflict for review
+  - Default to creation time order
 ```
 
 ## Why This Works

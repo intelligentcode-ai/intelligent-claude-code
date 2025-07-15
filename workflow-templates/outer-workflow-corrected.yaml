@@ -49,6 +49,10 @@ workflow:
             - "NEW_FEATURE: New functionality"
             - "ENHANCEMENT: Improve existing"
             - "REFACTOR: Technical improvement"
+          priority_inheritance:
+            - "Story priority = MAX(epic.priority, story.severity_priority)"
+            - "Security stories automatically escalate to P0"
+            - "Customer bug stories escalate priority by 1 level"
             
         - id: "identify_bugs"
           action: "Create bugs for defects/issues"
@@ -56,6 +60,11 @@ workflow:
             - "severity"
             - "reproducibility"
             - "impact"
+          priority_mapping:
+            - "CRITICAL severity → P0 priority"
+            - "HIGH severity → P1 priority"
+            - "MEDIUM severity → P2 priority"
+            - "LOW severity → P3 priority"
             
       hooks:
         post_story_creation:
@@ -85,6 +94,10 @@ workflow:
             - "dependency_graph"
             - "parallel_opportunities"
             - "critical_path"
+          priority_logic:
+            - "Apply priority inheritance from story to tasks"
+            - "Sort tasks by priority: P0 → P1 → P2 → P3"
+            - "Within same priority: blocking → critical_path → parallel → optional"
             
         - id: "assign_specialists"
           action: "Match tasks to specialist roles"
@@ -181,3 +194,12 @@ validation:
     - "Capability match >70% required for all assignments"
     - "Security reviews mandatory for architecture changes"
     - "PM + Specialist Architect triage required for all assignments"
+    
+  priority_system:
+    - "Epic priorities: P0 (critical) → P1 (high) → P2 (medium) → P3 (low)"
+    - "Story priority = MAX(epic.priority, story.severity_priority)"
+    - "Task priority inherits from story with type adjustments"
+    - "Execution order: P0 → P1 → P2 → P3 (NOT last item = highest)"
+    - "Within same priority: blocking → critical_path → parallel → optional"
+    - "Security tasks automatically escalate to P0"
+    - "Customer bugs escalate priority by 1 level"
