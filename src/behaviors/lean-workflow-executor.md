@@ -2,19 +2,49 @@
 
 **PURPOSE:** Single module that reads assignment files and executes workflows. No complex behavioral enforcement needed - the workflow IS the behavior.
 
+## Imports
+
+@./config-loader.md
+@./git-privacy-enforcer.md
+@./role-detection-engine.md
+@./autonomy-controller.md
+
 ## Core Functions
+
+### 0. Initialize System (NEW)
+```yaml
+function: initialize_system()
+  actions:
+    - Load configuration via ConfigLoader
+    - Initialize AutonomyController
+    - Apply autonomy level settings
+    - Check pm_always_active flag
+    - Set blocking behavior mode
+    - Cache settings for session
+  integration: 
+    - SettingsAPI.getSettings()
+    - AutonomyController.initialize()
+```
 
 ### 1. Read Assignment
 ```yaml
 function: read_assignment(type, id)
   input: "EPIC-001" or "STORY-002" or "TASK-003"
   output: Parsed assignment data with embedded config
-  action: Load file, validate structure, return data
+  action: 
+    - Load file, validate structure
+    - Apply embedded config if present
+    - Return data with active config
+  integration: SettingsAPI.applyEmbeddedConfig(content)
 ```
 
 ### 2. Execute Phase
 ```yaml
 function: execute_phase(assignment, phase)
+  autonomy_check:
+    - Apply autonomy level before each phase
+    - Get approval if required by L1/L2
+    - Continue autonomously in L3
   phases:
     INIT: Capture initial information
     PLAN: Break down into smaller units (stories→tasks)
@@ -26,6 +56,10 @@ function: execute_phase(assignment, phase)
 ### 3. Role Assignment with Validation
 ```yaml
 function: assign_role(task, required_capabilities)
+  detection:
+    - Use RoleDetectionEngine to parse assignments
+    - Extract all @Role mentions from task
+    - Validate each detected role
   validation_chain:
     - icc:detect-work-type(task.content) → specialist_architect_type
     - icc:require-triage(@PM, @specialist_architect) → triage_complete
@@ -123,6 +157,27 @@ icc:detect-work-type(content)
 7. Mark complete
 ```
 
+### Git Operations Integration
+```pseudocode
+FUNCTION executeGitOperations(task, phase):
+    settings = SettingsAPI.getSettings()
+    interceptor = GitOperationInterceptor()
+    
+    FOR step IN phase.steps:
+        IF step.action == "commit":
+            message = generateCommitMessage(task, step.template)
+            interceptor.interceptCommit(message, task.files)
+            
+        ELSE IF step.action == "push":
+            validateBranchProtection(settings)
+            executePush()
+            
+        ELSE IF step.action == "create_pr":
+            title = generatePRTitle(task)
+            description = generatePRDescription(task)
+            interceptor.interceptPullRequest(title, description)
+```
+
 ### Review Handling (Config-driven)
 ```
 IF embedded_config.blocking_enabled == false:
@@ -148,6 +203,86 @@ on_story_complete:
   updates:
     - process_bonus: +2.0
     - quality_bonus: +2.0
+```
+
+## Role Detection Integration
+
+### Automatic Role Detection
+```pseudocode
+FUNCTION processTaskAssignment(task):
+    engine = RoleDetectionEngine()
+    validator = RoleValidator()
+    
+    // Detect all role assignments
+    detectedRoles = engine.detectRoleAssignments(task.content)
+    
+    FOR roleAssignment IN detectedRoles:
+        // Validate assignment
+        validation = validator.validateRoleAssignment(
+            roleAssignment.role,
+            task
+        )
+        
+        IF NOT validation.valid:
+            handleInvalidAssignment(roleAssignment, validation)
+        ELSE:
+            activateRole(roleAssignment.role)
+```
+
+### Dynamic Specialist Creation
+```pseudocode
+FUNCTION handleSpecialistNeed(task, requiredDomain):
+    settings = SettingsAPI.getSettings()
+    
+    IF settings.specialist_creation:
+        // Determine base role
+        baseRole = determineBaseRole(task.type)
+        specialistName = requiredDomain + "-" + baseRole
+        
+        // Create specialist if not exists
+        IF NOT roleExists(specialistName):
+            createDynamicSpecialist(specialistName)
+        
+        // Assign specialist
+        assignRole(specialistName, task)
+```
+
+## Configuration-Driven Behaviors
+
+### Git Privacy Enforcement
+```pseudocode
+FUNCTION enforceGitPrivacy(operation, content):
+    settings = SettingsAPI.getSettings()
+    enforcer = GitPrivacyEnforcer()
+    RETURN enforcer.enforceGitPrivacy(content, settings)
+```
+
+### Autonomy Level Application
+```pseudocode
+FUNCTION applyAutonomyLevel(action):
+    controller = AutonomyController()
+    RETURN controller.applyAutonomyLevel(action)
+```
+
+### PM Activation
+```pseudocode
+FUNCTION checkPMActivation():
+    settings = SettingsAPI.getSettings()
+    IF settings.pm_always_active == true:
+        activateRole("@PM")
+        initializeTaskManagement()
+```
+
+### Blocking Behavior Control
+```pseudocode
+FUNCTION handleBlockingEvent(event):
+    settings = SettingsAPI.getSettings()
+    IF settings.blocking_enabled == false:
+        logEvent(event)
+        createFollowUpTask(event)
+        RETURN continueExecution()
+    ELSE:
+        RETURN blockUntilResolved(event)
 ```
 
 ## Knowledge Management
