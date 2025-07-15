@@ -8,6 +8,7 @@
 @./git-privacy-enforcer.md
 @./role-detection-engine.md
 @./autonomy-controller.md
+@./role-activation-system.md
 
 ## Core Functions
 
@@ -212,6 +213,7 @@ on_story_complete:
 FUNCTION processTaskAssignment(task):
     engine = RoleDetectionEngine()
     validator = RoleValidator()
+    controller = RoleActivationController()
     
     // Detect all role assignments
     detectedRoles = engine.detectRoleAssignments(task.content)
@@ -226,13 +228,15 @@ FUNCTION processTaskAssignment(task):
         IF NOT validation.valid:
             handleInvalidAssignment(roleAssignment, validation)
         ELSE:
-            activateRole(roleAssignment.role)
+            // Use RoleActivationController for role switching
+            controller.activateRole(roleAssignment.role)
 ```
 
 ### Dynamic Specialist Creation
 ```pseudocode
 FUNCTION handleSpecialistNeed(task, requiredDomain):
     settings = SettingsAPI.getSettings()
+    controller = RoleActivationController()
     
     IF settings.specialist_creation:
         // Determine base role
@@ -242,6 +246,9 @@ FUNCTION handleSpecialistNeed(task, requiredDomain):
         // Create specialist if not exists
         IF NOT roleExists(specialistName):
             createDynamicSpecialist(specialistName)
+        
+        // Activate specialist using RoleActivationController
+        controller.activateRole(specialistName)
         
         // Assign specialist
         assignRole(specialistName, task)
