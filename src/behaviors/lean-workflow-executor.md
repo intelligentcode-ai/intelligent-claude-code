@@ -224,6 +224,35 @@ on_story_complete:
   updates:
     - process_bonus: +2.0
     - quality_bonus: +2.0
+
+on_learning_application:
+  detection: "learning reference found"
+  validation: "verified against memory"
+  updates:
+    - learning_bonus: +0.5P/Q
+    - reason: "Applied previous learning"
+```
+
+### Learning Bonus Integration
+```pseudocode
+FUNCTION processRoleAction(action, role):
+    // Standard processing
+    executeAction(action)
+    
+    // Check for learning application
+    learningBonuses = detectLearningApplication(action, role)
+    
+    // Apply any detected bonuses
+    FOR bonus IN learningBonuses:
+        IF bonus.scoreType == "P":
+            updateScore(role, bonus.score, "P")
+        ELSE IF bonus.scoreType == "Q":
+            updateScore(role, bonus.score, "Q")
+        ELSE IF bonus.scoreType == "BOTH":
+            updateScore(role, bonus.score/2, "P")
+            updateScore(role, bonus.score/2, "Q")
+        
+        logScoreUpdate(role, bonus)
 ```
 
 ## Role Detection Integration
