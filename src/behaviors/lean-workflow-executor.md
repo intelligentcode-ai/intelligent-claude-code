@@ -10,6 +10,7 @@
 @./autonomy-controller.md
 @./role-activation-system.md
 @./pm-command-system.md
+@./learning-team-automation.md
 
 ## Core Functions
 
@@ -24,10 +25,12 @@ function: initialize_system()
     - Set blocking behavior mode
     - Cache settings for session
     - Initialize PM command processor
+    - Initialize learning enforcement system
   integration: 
     - SettingsAPI.getSettings()
     - AutonomyController.initialize()
     - PMCommandProcessor.initialize()
+    - initializeLearningEnforcement()
 ```
 
 ### 0.1. Process PM Commands (NEW)
@@ -497,22 +500,54 @@ escalatePriority(item, reason):
 
 ## Error Handling
 
-### Simple Patterns
-```yaml
-blocked:
-  - Update status to blocked
-  - Note blocker in task
-  - Escalate to PM
-  
-failed:
-  - Capture failure reason
-  - Create bug if needed
-  - Learn from failure
+### Error Processing with Learning
+```pseudocode
+FUNCTION handleError(error, context):
+    // Process through learning system first
+    processErrorForLearning(error)
+    
+    // Continue with standard error handling
+    SWITCH error.type:
+        CASE "blocked":
+            updateStatus("blocked")
+            noteBlocker(error.blocker)
+            escalateToPM()
+            
+        CASE "failed":
+            captureFailureReason(error)
+            IF needsBug(error):
+                createBug(error)
+            learnFromFailure(error)
+            
+        CASE "priority_conflict":
+            useTaskTypeResolution()
+            logConflict(error)
+            defaultToCreationTime()
+```
 
-priority_conflict:
-  - Use task type for resolution
-  - Log conflict for review
-  - Default to creation time order
+### Learning Integration
+```yaml
+error_forgiveness:
+  first_occurrence:
+    - No penalty applied
+    - Learning entity created
+    - Pattern extracted
+    - Memory integration
+    
+  repeated_error:
+    - Double penalty applied
+    - Previous learning referenced
+    - Escalation triggered
+    - Pattern reinforcement
+
+learning_detection:
+  patterns:
+    - "based on previous learning"
+    - "applying lesson from"
+    - "to prevent repeat of"
+  bonuses:
+    - +0.5P for process improvement
+    - +0.5Q for quality improvement
 ```
 
 ## Why This Works
