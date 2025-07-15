@@ -2,7 +2,7 @@
 
 **Task:** Implement @PM init, refresh, reset commands  
 **Assigned to:** @AI-Engineer  
-**Status:** PLANNED  
+**Status:** COMPLETED  
 **Priority:** critical_path  
 **Dependencies:** [TASK-001]
 
