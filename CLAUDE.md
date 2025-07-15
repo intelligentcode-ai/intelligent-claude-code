@@ -130,7 +130,7 @@ make test            # Validate everything works
 - **Virtual Team**: Edit `src/modes/virtual-team.md`
 - **Roles**: Edit `src/roles/specialists.md`
 - **Workflow Engine**: Edit `src/behaviors/lean-workflow-executor.md`
-- **Workflow Templates**: Edit `workflow-templates/outer-workflow-corrected.yaml` and `inner-workflow-corrected.yaml`
+- **Workflow Templates**: Edit `workflow-templates/outer-workflow.yaml` and `inner-workflow.yaml`
   - **Inner workflow:** Handles git commits/pushes, peer reviews, and learning per task
   - **Outer workflow:** Handles branching/merging, coordination, and learning synthesis per story/bug
 - **Config**: Edit `src/config.md`
