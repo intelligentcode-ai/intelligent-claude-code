@@ -358,15 +358,15 @@ priority_conflict:
 
 ### PM Creates Story
 ```
-/create-story "Add user preferences"
+icc:create-story "Add user preferences"
 - System creates story file
-- PM runs /plan-story
+- PM runs icc:plan-story
 - Tasks auto-generated with specialists assigned
 ```
 
 ### Specialist Executes Task
 ```
-/execute-task TASK-002
+icc:execute-task TASK-002
 - System loads task assignment
 - Specialist does knowledge retrieval
 - Work happens

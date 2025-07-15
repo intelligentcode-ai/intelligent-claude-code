@@ -76,17 +76,17 @@ Enhanced planning mode transforms AI behavioral enforcement into deterministic f
 
 ## Slash Commands
 
-### /plan-task
+### icc:plan-task
 **PURPOSE:** Create new task with structured planning
-**USAGE:** /plan-task "description" [--type feature|bug] [--epic EPIC-XXX]
+**USAGE:** icc:plan-task "description" [--type feature|bug] [--epic EPIC-XXX]
 **EXECUTION:**
 1. Create assignment file from template
 2. Enter INIT phase
 3. Trigger planning workflow
 
-### /execute-task
+### icc:execute-task
 **PURPOSE:** Execute assigned task following assignment file
-**USAGE:** /execute-task TASK-XXX
+**USAGE:** icc:execute-task TASK-XXX
 **EXECUTION:**
 1. Load assignment file
 2. Validate phase = EXECUTE
