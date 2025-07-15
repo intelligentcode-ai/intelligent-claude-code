@@ -2,7 +2,7 @@
 
 **Task:** Implement role activation and behavioral switching  
 **Assigned to:** @AI-Engineer  
-**Status:** PLANNED  
+**Status:** COMPLETED  
 **Priority:** critical_path  
 **Dependencies:** [TASK-002]
 
