@@ -14,6 +14,8 @@
 @./l3-continuous-engine.md
 @./task-queue-manager.md
 @./auto-continue-triggers.md
+@./progress-monitor.md
+@./work-discovery-engine.md
 
 ## Core Functions
 
@@ -39,6 +41,8 @@ function: initialize_system()
         ContinuousExecutionEngine.initialize()
         TaskQueueManager.initialize()
         AutoContinueTriggers.initialize()
+        ProgressMonitor.initialize()
+        WorkDiscoveryEngine.initialize()
 ```
 
 ### 0.1. Process PM Commands (NEW)
