@@ -1,0 +1,55 @@
+story:
+  id: "STORY-011"
+  title: "CRITICAL: Fix Role Switching and Restore PM Commands"
+  epic: "EPIC-002"
+  created: "2025-07-15 14:16:00"
+  created_by: "@PM"
+  assigned_to: "@PM"
+  priority: "P0"  # CRITICAL - Core system functionality broken
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  CRITICAL SYSTEM FAILURES:
+  
+  1. ROLE SWITCHING DOESN'T WORK
+  - System talks about "@Role switching" but doesn't actually switch roles
+  - Roles are mentioned but not activated
+  - No actual role behavior change occurs
+  
+  2. PM COMMANDS MISSING
+  - @PM init command missing
+  - @PM refresh command missing  
+  - @PM reset command missing
+  - System management commands disappeared
+  
+acceptance_criteria:
+  - Role switching actually changes active role and expertise
+  - When @Role is assigned, system becomes that role
+  - @PM init, @PM refresh, @PM reset commands restored
+  - System management commands functional
+  - Role behavior actually changes with assignments
+  
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  
+critical_missing_functionality:
+  role_switching:
+    current_behavior: "System mentions @Role but continues as same role"
+    required_behavior: "System actually becomes the assigned role with appropriate expertise"
+    impact: "Role assignments are meaningless - system doesn't actually switch"
+    
+  pm_commands:
+    missing_commands:
+      - "@PM init" # Initialize/reset system state
+      - "@PM refresh" # Refresh team capabilities and configuration
+      - "@PM reset" # Reset system to clean state
+    current_behavior: "Commands don't exist"
+    required_behavior: "System management commands functional"
+    impact: "No way to properly initialize or manage system"
+    
+tasks:
+  # Will be created during PLAN phase - CRITICAL FIXES NEEDED
