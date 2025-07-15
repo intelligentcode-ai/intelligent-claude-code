@@ -1,0 +1,31 @@
+story:
+  id: "STORY-007"
+  title: "Remove Outdated Commands and Update to icc: Prefix"
+  epic: "EPIC-002"
+  created: "2025-07-15 09:50:00"
+  created_by: "@PM"
+  assigned_to: "@PM"
+  priority: "P1"
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  The system has outdated commands that need removal and new commands
+  that need proper icc: prefixes. This is a significant cleanup effort
+  that affects the entire command system.
+  
+acceptance_criteria:
+  - All outdated commands removed from system
+  - All new commands have proper icc: prefix
+  - Command documentation updated
+  - Help system reflects changes
+  - No broken command references remain
+  
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  
+tasks:
+  # Will be created during PLAN phase and assigned to appropriate specialists
