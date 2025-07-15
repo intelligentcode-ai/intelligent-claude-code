@@ -172,11 +172,13 @@ icc:detect-work-type → icc:require-triage → icc:validate-assignments → icc
 ```
 
 ### Role Coordination
-- **@-notation**: Direct role addressing (@PM, @Developer, @Architect)
-- **Dynamic Specialists**: Auto-created for any technology (@React-Developer)
-- **Parallel Execution**: Multiple roles work simultaneously
+- **@-notation**: Direct role addressing (@PM, @Developer, @Architect) - triggers actual role switching
+- **Role Switching**: System adopts role expertise and behavior when assigned (see `docs/ROLE-SWITCHING.md`)
+- **Dynamic Specialists**: Auto-created for any technology (@React-Developer) with Context7 knowledge injection
+- **Parallel Execution**: Multiple roles work simultaneously on different tasks
 - **Quality Gates**: Mandatory validation before completion
 - **Role Assignment Validation**: Mandatory PM + Specialist Architect triage for all assignments
+- **State Management**: Role context preserved across switches with stack-based history
 
 ### Workflow Architecture
 - **Inner Workflow (Per Task)**: 
