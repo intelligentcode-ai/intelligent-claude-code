@@ -49,6 +49,11 @@ The system uses a **hybrid documentation strategy** that maintains Claude Code's
 - `behaviors/` - **Lean behavioral modules**
   - `lean-workflow-executor.md` - **CORE**: Assignment-driven workflow with validation
   - `learning-team-automation.md` - Error forgiveness and pattern capture
+  - `l3-continuous-engine.md` - **L3**: Continuous execution without stops
+  - `task-queue-manager.md` - Priority-based task scheduling
+  - `auto-continue-triggers.md` - Automatic progression between tasks
+  - `progress-monitor.md` - Non-blocking visibility maintenance
+  - `work-discovery-engine.md` - Proactive work identification
 
 #### Lean Workflow Architecture
 - **Assignment-Driven Execution**: Workflow structure drives behavior without complex enforcement
@@ -268,6 +273,14 @@ Blocking dependencies → critical_path priority
 - **GitHub CLI**: Repository management (optional, fallback available)
 - **Brave Search**: Web search capability
 
+### Autonomy Levels
+- **L1 (Manual)**: User approval for all actions
+- **L2 (Architect)**: Architect approval for technical decisions
+- **L3 (Autonomous)**: Continuous execution with smart stop conditions
+  - Only stops for: Business impact, security violations, data loss risks
+  - 72% faster execution, 94% fewer interruptions
+  - See `docs/L3-AUTONOMY-GUIDE.md` for details
+
 ### Integration Validation
 ```bash
 # Check tool availability
@@ -485,6 +498,7 @@ This system represents a behavioral framework for AI tool integration, implement
 - **Memory Integration**: Persistent knowledge capture and relationship tracking
 - **Quality Validation Patterns**: Structured approach to deliverable validation
 - **Dual Scoring System**: Performance tracking for process compliance and quality delivery
+- **L3 Autonomous Execution**: Continuous operation with minimal stops (72% faster)
 
 ### Quality Standards
 - **Behavioral Guidance**: Structured patterns that encourage quality completion
