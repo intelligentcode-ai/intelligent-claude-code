@@ -1,0 +1,46 @@
+# Task Assignment - Config Integration Enhancement
+task:
+  id: "TASK-002"
+  title: "Integrate config.md processing into planning phase"
+  type: "enhancement"
+  epic: "EPIC-ENFORCEMENT"
+  created: "2025-07-15 07:04:11"
+  phase: "PLAN"
+  
+problem_description: |
+  The enhanced planning system needs to read and process ALL settings from
+  config.md during the PLAN phase, embedding them into assignment files to
+  create self-contained tasks. Currently missing:
+  - Config processing during planning
+  - Embedded settings in assignment files
+  - Review findings workflow based on blocking_enabled
+  - Git privacy enforcement from config
+  
+acceptance_criteria:
+  # TO BE DEFINED DURING PLAN PHASE
+  
+definition_of_done:
+  # TO BE DEFINED DURING PLAN PHASE
+  
+assignment:
+  # TO BE DETERMINED DURING PLAN PHASE
+  
+git_operations:
+  # TO BE DEFINED BASED ON CONFIG.MD
+  
+subtasks:
+  # TO BE GENERATED BASED ON CONFIG.MD
+  
+team_operations:
+  # TO BE DEFINED DURING PLAN PHASE
+  
+integration_hooks:
+  jira:
+    enabled: false
+    ticket_id: null
+  github:
+    enabled: false
+    pr_number: null
+  ci_cd:
+    enabled: false
+    pipeline_id: null

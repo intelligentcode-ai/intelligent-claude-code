@@ -1,0 +1,56 @@
+story:
+  id: "STORY-005"
+  title: "Implement Priority System"
+  epic: "EPIC-002"
+  created: "2025-07-15 09:35:00"
+  created_by: "@PM"
+  assigned_to: "@PM"
+  priority: "P0"  # Critical - system unusable without proper priorities
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  The system currently treats the LAST item as highest priority, which is
+  conceptually and contextually wrong. We need a proper priority system
+  that flows from Epic → Story/Bug → Task with clear execution order.
+  
+acceptance_criteria:
+  - Priority levels defined for epics, stories/bugs, and tasks
+  - Priority inheritance from parent items
+  - Execution follows priority order (P0 first, not last)
+  - Commands show items sorted by priority
+  - Dynamic priority adjustment supported
+  
+embedded_config:
+  # From config.md - ALL settings that affect priority system
+  autonomy_level: "L3"
+  pm_always_active: true
+  memory_integration: true
+  blocking_enabled: false  # Affects review task priority
+  git_privacy: true
+  requirements_engineer_mandatory: true  # Affects task creation
+  architecture_review_required: true  # Creates high-priority review tasks
+  enforce_peer_review: true  # Creates review tasks
+  testing_required: true  # Creates test tasks
+  security_validation: true  # Creates P0 security tasks
+  
+workflow_references:
+  outer_workflow: "workflow-templates/outer-workflow-corrected.yaml"
+  inner_workflow: "workflow-templates/inner-workflow-corrected.yaml"
+  priority_system: "src/planning/priority-system.md"
+  
+integration_requirements:
+  - Priority must flow: Epic → Story/Bug → Task
+  - P0 executes first, not last
+  - Blocking tasks before parallel tasks
+  - Security issues always P0
+  - Customer bugs escalate priority
+  
+technical_references:
+  - Current wrong behavior: Last item = highest priority
+  - Correct behavior: P0 → P1 → P2 → P3
+  - Task priority types: blocking, critical_path, parallel, optional
+  - Bug severity mapping: CRITICAL→P0, HIGH→P1, MEDIUM→P2, LOW→P3
+  
+tasks:
+  # Will be created during PLAN phase with proper priority assignments

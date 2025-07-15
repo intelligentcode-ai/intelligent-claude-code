@@ -1,0 +1,166 @@
+# Outer Workflow Template - Epic/Story/Bug Planning Process
+# Defines how epics, stories, bugs, and their tasks are created
+
+metadata:
+  name: "Epic and Story Planning Workflow"
+  version: "2.0.0"
+  min_compatible: "2.0.0"
+  description: |
+    Workflow for creating epics, stories, bugs, and breaking them into tasks.
+    PM/Architect/RE/User create stories and bugs, then decompose into tasks.
+    
+workflow:
+  phases:
+    - id: "knowledge_retrieval"
+      name: "Knowledge Retrieval"
+      description: "Retrieve relevant past knowledge before planning"
+      steps:
+        - id: "search_similar_epics"
+          action: "Search for similar epics/stories/bugs"
+          queries:
+            - "Similar features implemented"
+            - "Past architectural decisions"
+            - "Lessons learned from related work"
+          outputs:
+            - "relevant_patterns"
+            - "reusable_solutions"
+            - "known_pitfalls"
+            
+    - id: "epic_definition"
+      name: "Epic Definition"
+      description: "Define overarching feature"
+      responsible: ["@PM", "@Architect", "@Requirements-Engineer", "User"]
+      steps:
+        - id: "define_epic_scope"
+          action: "Define epic boundaries and goals"
+          outputs:
+            - "epic_objectives"
+            - "success_metrics"
+            - "constraints"
+            
+    - id: "story_creation"
+      name: "Story and Bug Creation"
+      description: "Break epic into stories and identify bugs"
+      responsible: ["@PM", "@Architect", "@Requirements-Engineer", "User"]
+      steps:
+        - id: "identify_stories"
+          action: "Create stories for new/changed implementations"
+          story_types:
+            - "NEW_FEATURE: New functionality"
+            - "ENHANCEMENT: Improve existing"
+            - "REFACTOR: Technical improvement"
+            
+        - id: "identify_bugs"
+          action: "Create bugs for defects/issues"
+          bug_properties:
+            - "severity"
+            - "reproducibility"
+            - "impact"
+            
+      hooks:
+        post_story_creation:
+          description: "After stories/bugs are defined"
+          allows: ["inject", "extend"]
+          
+    - id: "task_decomposition"
+      name: "Task Breakdown"
+      description: "Break stories/bugs into assignable tasks"
+      steps:
+        - id: "identify_task_types"
+          action: "Determine required task types"
+          common_tasks:
+            - "knowledge_loading"
+            - "research"
+            - "implementation"
+            - "peer_review"
+            - "documentation"
+            - "testing"
+            - "git_operations"
+            - "deployment"
+            - "knowledge_creation"
+            
+        - id: "sequence_tasks"
+          action: "Define task dependencies and order"
+          outputs:
+            - "dependency_graph"
+            - "parallel_opportunities"
+            - "critical_path"
+            
+        - id: "assign_specialists"
+          action: "Match tasks to specialist roles"
+          validation:
+            - "Capability match > 70%"
+            - "Create specialist if needed"
+            - "Load balancing considered"
+            
+    - id: "acceptance_criteria"
+      name: "Define Success Criteria"
+      description: "Clear completion criteria for stories/bugs"
+      steps:
+        - id: "story_acceptance"
+          action: "Define when story is done"
+          criteria:
+            - "All tasks completed"
+            - "Integration successful"
+            - "Tests passing"
+            - "Documentation updated"
+            
+        - id: "bug_resolution"
+          action: "Define when bug is fixed"
+          criteria:
+            - "Root cause addressed"
+            - "Regression tests added"
+            - "No side effects"
+            
+    - id: "knowledge_generation"
+      name: "Knowledge Generation"
+      description: "Capture planning decisions"
+      steps:
+        - id: "document_decisions"
+          action: "Record planning rationale"
+          captures:
+            - "Epic breakdown reasoning"
+            - "Story priorities"
+            - "Task assignments"
+            - "Risk mitigations"
+            
+        - id: "create_planning_entities"
+          action: "Store in memory system"
+          entities:
+            - type: "EpicPlanning"
+              attributes:
+                - "objectives"
+                - "stories"
+                - "risks"
+                - "timeline"
+                
+hooks:
+  pre_planning:
+    description: "Before epic planning"
+    timing: "start"
+    allows: ["inject", "extend"]
+    
+  post_story_creation:
+    description: "After stories/bugs created"
+    timing: "after_story_creation"
+    allows: ["inject", "extend", "validate"]
+    
+  pre_task_assignment:
+    description: "Before assigning tasks"
+    timing: "before_task_decomposition"
+    allows: ["inject", "validate"]
+    
+validation:
+  required_outputs:
+    - "epic_definition"
+    - "stories_or_bugs"
+    - "task_breakdown"
+    - "specialist_assignments"
+    - "acceptance_criteria"
+    - "knowledge_captured"
+    
+  hierarchy_rules:
+    - "Every story/bug belongs to an epic"
+    - "Every task belongs to a story/bug"
+    - "Tasks assigned to specialists only"
+    - "Subtasks optional within tasks"
