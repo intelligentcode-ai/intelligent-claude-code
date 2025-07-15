@@ -216,6 +216,177 @@ Task creation: POST /rest/api/2/issue
 Status updates: PUT /rest/api/2/issue/{id}/transitions
 ```
 
+## @PM Management Commands
+
+### @PM init
+**PURPOSE:** Initialize/reset system state and load configuration
+**TRIGGER:** System startup or state corruption
+**AUTHORITY:** PM role exclusive
+
+**USAGE:**
+```bash
+@PM init
+```
+
+**PROTOCOL:**
+```pseudocode
+FUNCTION pmInit():
+    // Load configuration hierarchy
+    configLoader.clearCache()
+    config = configLoader.loadConfiguration()
+    
+    // Initialize autonomy controller
+    autonomyController.initialize()
+    
+    // Activate PM if configured
+    IF config.pm_always_active:
+        roleController.activateRole("PM")
+    
+    // Initialize memory system
+    memorySystem.initialize()
+    createProjectEntity()
+    
+    // Load behavioral patterns
+    loadBehavioralPatterns()
+    
+    // Initialize task management
+    initializeTodoSystem()
+    
+    RETURN "System initialized successfully"
+END FUNCTION
+```
+
+**ENFORCEMENT:**
+- **PM ONLY**: Command restricted to PM role
+- **STATE CLEAR**: Clears accumulated state
+- **CONFIG LOAD**: Respects priority hierarchy
+- **MEMORY INIT**: Creates project context
+
+### @PM refresh
+**PURPOSE:** Refresh team capabilities and reload configuration
+**TRIGGER:** Configuration changes or capability updates
+**AUTHORITY:** PM role exclusive
+
+**USAGE:**
+```bash
+@PM refresh
+```
+
+**PROTOCOL:**
+```pseudocode
+FUNCTION pmRefresh():
+    // Reload configuration
+    oldConfig = systemState.config
+    newConfig = configLoader.loadConfiguration()
+    changes = detectConfigChanges(oldConfig, newConfig)
+    
+    // Refresh role capabilities
+    roleProfiles = reloadRoleProfiles()
+    updateAllRoles(roleProfiles)
+    
+    // Update behavioral patterns
+    refreshBehavioralPatterns()
+    
+    // Sync memory system
+    memorySyncResult = memorySystem.sync()
+    
+    // Apply configuration changes
+    IF changes.length > 0:
+        applyConfigurationChanges(newConfig)
+    
+    RETURN "System refreshed: " + summarizeChanges(changes)
+END FUNCTION
+```
+
+**ENFORCEMENT:**
+- **LIVE UPDATE**: Updates without restart
+- **CHANGE DETECTION**: Reports what changed
+- **CAPABILITY SYNC**: All roles updated
+- **MEMORY PRESERVE**: Keeps existing knowledge
+
+### @PM reset
+**PURPOSE:** Reset system to clean state while preserving configuration
+**TRIGGER:** Accumulated errors or clean slate needed
+**AUTHORITY:** PM role exclusive
+
+**USAGE:**
+```bash
+@PM reset
+```
+
+**PROTOCOL:**
+```pseudocode
+FUNCTION pmReset():
+    // Save configuration
+    savedConfig = systemState.config
+    
+    // Clear all state
+    roleController.clearAllStates()
+    clearTaskHistory()
+    clearTemporaryData()
+    
+    // Reset scores and penalties
+    resetAllScores()
+    clearAllPenalties()
+    
+    // Clear all caches
+    configLoader.clearCache()
+    roleController.clearCache()
+    memorySystem.clearCache()
+    
+    // Reinitialize with saved config
+    systemState.config = savedConfig
+    pmInit()
+    
+    RETURN "System reset complete"
+END FUNCTION
+```
+
+**ENFORCEMENT:**
+- **CONFIG PRESERVE**: Maintains settings
+- **STATE CLEAR**: All accumulated state removed
+- **SCORE RESET**: All roles start fresh
+- **CACHE CLEAR**: Forces reload
+
+### @PM status
+**PURPOSE:** Display comprehensive system status
+**TRIGGER:** Health check or debugging
+**AUTHORITY:** PM role exclusive
+
+**USAGE:**
+```bash
+@PM status
+```
+
+**PROTOCOL:**
+```pseudocode
+FUNCTION pmStatus():
+    status = {}
+    
+    // Configuration status
+    status.config = {
+        autonomy: config.autonomy_level,
+        pm_active: config.pm_always_active,
+        blocking: config.blocking_enabled,
+        git_privacy: config.git_privacy
+    }
+    
+    // Active roles
+    status.roles = roleController.getActiveRoles()
+    
+    // Memory statistics
+    status.memory = memorySystem.getStatistics()
+    
+    // Task statistics
+    status.tasks = getTodoStatistics()
+    
+    // System health
+    status.health = checkSystemHealth()
+    
+    RETURN formatStatusReport(status)
+END FUNCTION
+```
+
 ## Command Chaining
 
 **TYPICAL FLOW:**
@@ -223,6 +394,13 @@ Status updates: PUT /rest/api/2/issue/{id}/transitions
 icc:plan-task → icc:execute-task → icc:accept-task → DONE
      ↓              ↓              ↓
   (PLAN)       (EXECUTE)     (ACCEPTANCE)
+```
+
+**PM MANAGEMENT FLOW:**
+```
+@PM init → System Ready → Normal Operations
+    ↓           ↓              ↓
+@PM reset   @PM refresh   @PM status
 ```
 
 **ERROR HANDLING:**
