@@ -31,6 +31,63 @@ The `icc:init` command will:
 - ✅ Initialize dynamic specialist creation capabilities
 - ✅ Report team readiness status
 
+### Post-Installation: Configure Settings
+
+The system uses a hierarchical configuration system. Create settings files as needed:
+
+#### User Global Settings (All Projects)
+```bash
+# Create user-wide configuration
+cat > ~/.claude/config.md << 'EOF'
+---
+autonomy_level: "L3"        # Full autonomy mode
+pm_always_active: true      # Auto-activate PM role
+git_privacy: true           # Strip AI mentions from commits
+blocking_enabled: false     # Non-blocking for L3 mode
+---
+EOF
+```
+
+#### Project-Specific Settings
+```bash
+# Create project configuration
+cat > .claude/config.md << 'EOF'
+---
+autonomy_level: "L2"        # Architect approval for this project
+default_branch: "develop"   # Project uses develop branch
+default_reviewer: "@Security-Engineer"  # Security-focused reviews
+---
+EOF
+```
+
+#### Common Configuration Profiles
+
+**L3 Autonomous Profile (Recommended for experienced users):**
+```yaml
+autonomy_level: "L3"
+pm_always_active: true
+blocking_enabled: false
+git_privacy: true
+```
+
+**L2 Balanced Profile (Default):**
+```yaml
+autonomy_level: "L2"
+pm_always_active: false
+blocking_enabled: true
+git_privacy: false
+```
+
+**L1 Manual Profile (Maximum control):**
+```yaml
+autonomy_level: "L1"
+pm_always_active: false
+blocking_enabled: true
+branch_protection: true
+```
+
+See `docs/CONFIG.md` for complete settings documentation.
+
 ## What You Get: Level 3 Autonomous System
 
 After installation, your system includes:
