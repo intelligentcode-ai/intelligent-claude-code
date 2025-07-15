@@ -92,6 +92,11 @@ workflow:
             - "Capability match > 70%"
             - "Create specialist if needed"
             - "Load balancing considered"
+          validation_commands:
+            - "icc:detect-work-type(task_content)"
+            - "icc:require-triage(pm_role, specialist_architect)"
+            - "icc:validate-assignments(task, proposed_role)"
+            - "icc:require-approval(pm_role, specialist_architect)"
             
     - id: "acceptance_criteria"
       name: "Define Success Criteria"
@@ -149,6 +154,10 @@ hooks:
     description: "Before assigning tasks"
     timing: "before_task_decomposition"
     allows: ["inject", "validate"]
+    validation_required:
+      - "icc:detect-work-type() for all tasks"
+      - "icc:require-triage() for PM + Specialist Architect approval"
+      - "icc:validate-assignments() for capability matching"
     
 validation:
   required_outputs:
@@ -164,3 +173,11 @@ validation:
     - "Every task belongs to a story/bug"
     - "Tasks assigned to specialists only"
     - "Subtasks optional within tasks"
+    
+  role_assignment_validation:
+    - "AI-agentic work requires @AI-Architect or @AI-Engineer"
+    - "Infrastructure work requires @System-Engineer or @DevOps-Engineer"
+    - "Peer reviews assigned to domain expert SMEs only"
+    - "Capability match >70% required for all assignments"
+    - "Security reviews mandatory for architecture changes"
+    - "PM + Specialist Architect triage required for all assignments"
