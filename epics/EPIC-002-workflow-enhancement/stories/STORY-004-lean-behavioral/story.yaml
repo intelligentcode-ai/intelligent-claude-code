@@ -3,7 +3,8 @@ story:
   title: "Lean Behavioral System"
   epic: "EPIC-002"
   created: "2025-07-15 07:29:21"
-  status: "PLANNED"
+  status: "COMPLETED"
+  phase: "DONE"
   
 description: |
   Replace the complex behavioral enforcement system with a single lean workflow
@@ -81,30 +82,44 @@ tasks:
   - id: "TASK-016"
     title: "Audit current behavioral modules"
     description: "Document what each behavioral module actually does"
+    assigned_to: "@AI-Architect"
+    status: "completed"
     estimated_size: "SMALL"
     acceptance: "Clear list of functions to preserve"
     
   - id: "TASK-017"
     title: "Create workflow-executor.md"
     description: "Implement single lean execution module"
+    assigned_to: "@AI-Engineer"
+    status: "completed"
+    dependencies: ["TASK-016"]
     estimated_size: "MEDIUM"
     acceptance: "Module only reads assignments and executes"
     
   - id: "TASK-018"
     title: "Remove redundant behavioral modules"
     description: "Delete modules replaced by workflow"
+    assigned_to: "@AI-Engineer"
+    status: "completed"
+    dependencies: ["TASK-017"]
     estimated_size: "SMALL"
     acceptance: "Only workflow-executor remains"
     
   - id: "TASK-019"
     title: "Update virtual-team.md imports"
     description: "Point to lean workflow system"
+    assigned_to: "@AI-Engineer"
+    status: "completed"
+    dependencies: ["TASK-018"]
     estimated_size: "SMALL"
     acceptance: "Clean import chain with minimal modules"
     
   - id: "TASK-020"
     title: "Validate context reduction"
     description: "Measure and confirm 80% reduction"
+    assigned_to: "@QA-Engineer"
+    status: "completed"
+    dependencies: ["TASK-019"]
     estimated_size: "SMALL"
     acceptance: "Token count reduced by 80%"
     
