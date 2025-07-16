@@ -1,5 +1,12 @@
 # Outer Workflow Template - Epic/Story/Bug Planning Process
 # Defines how epics, stories, bugs, and their tasks are created
+#
+# VALIDATION ENFORCEMENT:
+# - ALL task assignments MUST go through validation chain
+# - PM + Specialist Architect approval REQUIRED for all assignments
+# - AI-agentic work REQUIRES @AI-Architect or @AI-Engineer
+# - Capability match >70% MANDATORY (create specialist if <70%)
+# - NO generic roles allowed for specialist work
 
 metadata:
   name: "Epic and Story Planning Workflow"
@@ -101,15 +108,37 @@ workflow:
             
         - id: "assign_specialists"
           action: "Match tasks to specialist roles"
-          validation:
-            - "Capability match > 70%"
-            - "Create specialist if needed"
-            - "Load balancing considered"
-          validation_commands:
-            - "icc:detect-work-type(task_content)"
-            - "icc:require-triage(pm_role, specialist_architect)"
-            - "icc:validate-assignments(task, proposed_role)"
-            - "icc:require-approval(pm_role, specialist_architect)"
+          validation_required: true
+          validation_chain:
+            - step: "detect_work_type"
+              command: "icc:detect-work-type(task_content)"
+              description: "Analyze task to determine work type (AI, infrastructure, etc.)"
+              blocking: true
+              
+            - step: "architect_triage"
+              command: "icc:require-triage(pm_role, specialist_architect)"
+              description: "PM and Specialist Architect must review all assignments"
+              blocking: true
+              enforced_rules:
+                - "AI-agentic work → REQUIRES @AI-Architect or @AI-Engineer"
+                - "Infrastructure work → REQUIRES specialized DevOps roles"
+                - "Security changes → REQUIRES @Security-Engineer review"
+                
+            - step: "validate_capability"
+              command: "icc:validate-assignments(task, proposed_role)"
+              description: "Verify capability match exceeds 70% threshold"
+              blocking: true
+              failure_action: "Create specialist if match < 70%"
+              
+            - step: "final_approval"
+              command: "icc:require-approval(pm_role, specialist_architect)"
+              description: "Final approval from PM and Specialist Architect"
+              blocking: true
+              approval_requirements:
+                - "Capability match validated"
+                - "Specialist roles appropriate"
+                - "No generic roles for specialist work"
+                - "Load balancing considered"
             
     - id: "git_operations"
       name: "Git Operations"
@@ -211,13 +240,30 @@ hooks:
     allows: ["inject", "extend", "validate"]
     
   pre_task_assignment:
-    description: "Before assigning tasks"
+    description: "Before assigning tasks - MANDATORY VALIDATION"
     timing: "before_task_decomposition"
     allows: ["inject", "validate"]
+    blocking: true
     validation_required:
-      - "icc:detect-work-type() for all tasks"
-      - "icc:require-triage() for PM + Specialist Architect approval"
-      - "icc:validate-assignments() for capability matching"
+      - command: "icc:detect-work-type()"
+        description: "Analyze all tasks to determine work types"
+        failure: "HALT - Cannot proceed without work type detection"
+        
+      - command: "icc:require-triage()"
+        description: "PM + Specialist Architect must review ALL assignments"
+        failure: "HALT - Cannot proceed without architect approval"
+        enforces:
+          - "AI-agentic work → @AI-Architect/@AI-Engineer ONLY"
+          - "Infrastructure → Specialized DevOps roles ONLY"
+          - "Generic roles → BLOCKED for specialist work"
+          
+      - command: "icc:validate-assignments()"
+        description: "Verify capability match >70% for all tasks"
+        failure: "HALT - Must create specialist if <70% match"
+        
+      - command: "icc:require-approval()"
+        description: "Final approval from PM and Specialist Architect"
+        failure: "HALT - Cannot proceed without dual approval"
     
 git_operations:
   workflow_level: "outer"
@@ -254,12 +300,32 @@ validation:
     - "Subtasks optional within tasks"
     
   role_assignment_validation:
-    - "AI-agentic work requires @AI-Architect or @AI-Engineer"
-    - "Infrastructure work requires @System-Engineer or @DevOps-Engineer"
-    - "Peer reviews assigned to domain expert SMEs only"
-    - "Capability match >70% required for all assignments"
-    - "Security reviews mandatory for architecture changes"
-    - "PM + Specialist Architect triage required for all assignments"
+    mandatory: true
+    blocking: true
+    enforcement_chain:
+      - step: "work_type_detection"
+        rule: "ALL tasks must have work type analyzed via icc:detect-work-type()"
+        failure: "HALT - No assignments without work type detection"
+        
+      - step: "architect_approval"
+        rule: "PM + Specialist Architect MUST approve ALL assignments"
+        failure: "HALT - No assignments without dual approval"
+        
+      - step: "specialist_enforcement"
+        rules:
+          - "AI-agentic work → @AI-Architect or @AI-Engineer ONLY"
+          - "Infrastructure work → @System-Engineer or @DevOps-Engineer ONLY"
+          - "Security reviews → @Security-Engineer MANDATORY"
+          - "Generic roles → BLOCKED for ANY specialist work"
+        failure: "HALT - Create specialist role if needed"
+        
+      - step: "capability_validation"
+        rule: "Capability match >70% REQUIRED for all assignments"
+        failure: "HALT - Create specialist if match < 70%"
+        
+      - step: "peer_review_validation"
+        rule: "Peer reviews assigned to domain expert SMEs only"
+        failure: "HALT - Invalid reviewer assignment"
     
   priority_system:
     - "Epic priorities: P0 (critical) → P1 (high) → P2 (medium) → P3 (low)"
