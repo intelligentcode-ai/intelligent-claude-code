@@ -6,8 +6,8 @@ story:
   created_by: "@PM"
   assigned_to: "@PM"
   priority: "P0"  # Critical - system unusable without proper priorities
-  status: "TRIAGED"
-  phase: "PLAN"
+  status: "COMPLETED"
+  phase: "DONE"
   
 problem_description: |
   The system currently treats the LAST item as highest priority, which is
