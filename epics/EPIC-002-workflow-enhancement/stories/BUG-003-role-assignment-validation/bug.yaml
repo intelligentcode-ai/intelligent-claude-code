@@ -8,8 +8,8 @@ bug:
   assigned_to: "@PM"
   severity: "CRITICAL"
   priority: "P0"  # Blocking BUG-002 completion
-  status: "TRIAGED"
-  phase: "PLAN"
+  status: "COMPLETED"
+  phase: "DONE"
   
 bug_description: |
   The lean workflow system has NO mandatory role assignment validation by specialist
