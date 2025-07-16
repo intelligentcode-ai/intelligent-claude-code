@@ -94,6 +94,47 @@ END FUNCTION
 **FORGIVENESS PROTOCOL:** First occurrence of error type → Learning opportunity → NO PENALTY → MANDATORY memory integration with Learning-[ErrorType]-[YYYY-MM-DD] format
 **PENALTY TRIGGER:** Identical error type found in memory → DOUBLE scoring penalty applied → Escalation protocols activated → Learning ignored violation recorded
 
+## BEHAVIORAL LEARNING INTEGRATION
+
+**MANDATORY MEMORY CONSULTATION:** Before making role assignments, Claude Code MUST search memory for relevant learnings:
+
+```pseudocode
+FUNCTION consultLearningsBeforeRoleAssignment(taskType, proposedRole):
+    // SEARCH FOR RELEVANT LEARNINGS
+    learningQueries = [
+        "Learning-" + proposedRole + "-",
+        "Learning-" + taskType + "-",
+        proposedRole + " cannot",
+        proposedRole + " restriction"
+    ]
+    
+    FOR query IN learningQueries:
+        relevantLearnings = searchMemoryNodes(query)
+        
+        IF relevantLearnings.length > 0:
+            // APPLY PREVIOUS LEARNING
+            logLearningApplication("Based on previous learning: " + relevantLearnings[0].observations[2])
+            
+            // APPLY PREVENTION MEASURES
+            preventionMeasure = relevantLearnings[0].observations[3]
+            
+            // BLOCK INAPPROPRIATE ASSIGNMENT
+            IF preventionMeasure.contains("Remove"):
+                RETURN {
+                    blocked: true,
+                    reason: "Learning prevents this assignment",
+                    learning: relevantLearnings[0],
+                    alternative: extractAlternativeFromPrevention(preventionMeasure)
+                }
+    
+    RETURN {blocked: false}
+```
+
+**LEARNING REFERENCE PATTERNS:**
+- "Based on previous learning about [topic]..."
+- "Applying lesson from [Learning-Entity-Name]..."
+- "To prevent repeat of [error type]..."
+
 ## LEARNING MEMORY FORMAT [SIMPLIFIED]
 
 **FORMAT:** "Learning-[ErrorType]-[YYYY-MM-DD]" 
