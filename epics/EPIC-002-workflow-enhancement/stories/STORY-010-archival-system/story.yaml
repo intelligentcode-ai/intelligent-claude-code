@@ -4,10 +4,10 @@ story:
   epic: "EPIC-002"
   created: "2025-01-15 17:15:00"
   created_by: "@PM"
-  assigned_to: "@System-Engineer"
+  assigned_to: "@AI-Engineer"
   priority: "P1"  # HIGH - Workspace management
-  status: "PLANNED"
-  phase: "PLAN"
+  status: "COMPLETED"
+  phase: "DONE"
   
 description: |
   Implement an automated archival system to manage completed work and maintain
