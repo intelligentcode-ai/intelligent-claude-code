@@ -1,0 +1,167 @@
+story:
+  id: "STORY-006"
+  title: "Migrate to Correct Terminology"
+  epic: "EPIC-002"
+  created: "2025-07-16 15:30:00"
+  created_by: "@PM"
+  assigned_to: "@PM"
+  priority: "P0"  # Critical - foundation for all other work
+  status: "COMPLETED"
+  phase: "DONE"
+  
+problem_description: |
+  The system currently uses inconsistent terminology throughout the codebase.
+  Need to fix epic→story→task→subtask hierarchy to ensure consistency across
+  all documentation, templates, and behavioral modules.
+  
+acceptance_criteria:
+  - All files use consistent epic→story→task→subtask terminology
+  - Assignment templates updated with correct hierarchy
+  - Workflow templates reference correct terminology
+  - Documentation updated throughout system
+  - No mixed terminology remains
+  
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  memory_integration: true
+  blocking_enabled: false
+  git_privacy: true
+  
+current_terminology_issues:
+  inconsistent_usage:
+    - Some files use "task" to mean "story"
+    - Some files use "subtask" to mean "task"
+    - Assignment templates mix terminology
+    - Workflow templates inconsistent
+    - Documentation uses multiple conventions
+    
+  correct_hierarchy:
+    - Epic: Large initiative (months of work)
+    - Story: Feature implementation (weeks of work)
+    - Task: Specific work item (days of work)
+    - Subtask: Granular step (hours of work)
+    
+workflow_references:
+  outer_workflow: "workflow-templates/outer-workflow.yaml"
+  inner_workflow: "workflow-templates/inner-workflow.yaml"
+  assignment_templates: "templates/"
+  
+integration_requirements:
+  - Update all assignment templates
+  - Fix workflow template references
+  - Update behavioral module documentation
+  - Fix role assignment patterns
+  - Update scoring system references
+  
+technical_details:
+  affected_files:
+    - "templates/*.yaml" (assignment templates)
+    - "workflow-templates/*.yaml" (workflow definitions)
+    - "src/behaviors/*.md" (behavioral modules)
+    - "src/roles/*.md" (role definitions)
+    - "docs/*.md" (documentation)
+    - "epics/**/*.yaml" (existing assignments)
+    
+  migration_pattern:
+    - Audit current terminology usage
+    - Define correct hierarchy mapping
+    - Update templates and workflows
+    - Update existing assignment files
+    - Update documentation
+    
+tasks:
+  - id: "TASK-001"
+    title: "Audit Current Terminology Usage"
+    type: "research"
+    assigned_to: "@AI-Architect"
+    priority: "blocking"
+    estimated_hours: 2
+    status: "planned"
+    description: "Document all current terminology usage patterns"
+    
+  - id: "TASK-002"
+    title: "Define Correct Hierarchy Mapping"
+    type: "architecture_design"
+    assigned_to: "@AI-Architect"
+    priority: "blocking"
+    dependencies: ["TASK-001"]
+    estimated_hours: 1
+    status: "planned"
+    description: "Create mapping from current terms to correct hierarchy"
+    
+  - id: "TASK-003"
+    title: "Update Assignment Templates"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    estimated_hours: 2
+    status: "planned"
+    description: "Fix all assignment templates with correct terminology"
+    
+  - id: "TASK-004"
+    title: "Update Workflow Templates"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    estimated_hours: 2
+    status: "planned"
+    description: "Update workflow templates with correct hierarchy"
+    
+  - id: "TASK-005"
+    title: "Update Behavioral Module Documentation"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    estimated_hours: 3
+    status: "planned"
+    description: "Fix terminology in all behavioral modules"
+    
+  - id: "TASK-006"
+    title: "Update Existing Assignment Files"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003", "TASK-004"]
+    estimated_hours: 2
+    status: "planned"
+    description: "Migrate existing epics/stories/tasks to correct terminology"
+    
+  - id: "TASK-007"
+    title: "Test Terminology Consistency"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-006"]
+    estimated_hours: 2
+    status: "planned"
+    description: "Validate all terminology is consistent across system"
+    
+  - id: "TASK-008"
+    title: "Update Documentation"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "parallel"
+    dependencies: ["TASK-005"]
+    estimated_hours: 1
+    status: "planned"
+    description: "Update all documentation with correct terminology"
+    
+  - id: "TASK-009"
+    title: "Deploy Terminology Migration"
+    type: "deployment"
+    assigned_to: "@DevOps-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-007"]
+    estimated_hours: 1
+    status: "planned"
+    description: "Deploy terminology migration changes"
+
+notes:
+  - P0 Critical - foundation for all other work
+  - Affects all assignment templates and workflows
+  - Must be completed before other stories can be properly implemented
+  - Ensures consistency across entire system
