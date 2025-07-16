@@ -69,23 +69,47 @@
     msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
   when: behaviors_copy_result.failed
 
-- name: Check if commands.md exists
-  stat:
-    path: "{{ claude_install_path }}/commands.md"
-  register: commands_md_exists
-
-- name: Copy commands.md file (force=no to preserve user modifications)
+- name: Copy commands directory (force=no to preserve user modifications)
   copy:
-    src: "{{ playbook_dir }}/../src/commands.md"
-    dest: "{{ claude_install_path }}/commands.md"
+    src: "{{ playbook_dir }}/../src/commands/"
+    dest: "{{ claude_install_path }}/commands/"
     mode: '0644'
     force: no
-  when: not commands_md_exists.stat.exists
+  ignore_errors: yes
+  register: commands_copy_result
 
 - name: Display commands preservation notice
   debug:
-    msg: "Commands file preserved: {{ claude_install_path }}/commands.md already exists - keeping user modifications"
-  when: commands_md_exists.stat.exists
+    msg: "Commands directory preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
+  when: commands_copy_result.failed
+
+- name: Copy roles directory (force=no to preserve user modifications)
+  copy:
+    src: "{{ playbook_dir }}/../src/roles/"
+    dest: "{{ claude_install_path }}/roles/"
+    mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: roles_copy_result
+
+- name: Display roles preservation notice
+  debug:
+    msg: "Roles directory preserved: {{ claude_install_path }}/roles/ already exists - keeping user modifications"
+  when: roles_copy_result.failed
+
+- name: Copy planning directory (force=no to preserve user modifications)
+  copy:
+    src: "{{ playbook_dir }}/../src/planning/"
+    dest: "{{ claude_install_path }}/planning/"
+    mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: planning_copy_result
+
+- name: Display planning preservation notice
+  debug:
+    msg: "Planning directory preserved: {{ claude_install_path }}/planning/ already exists - keeping user modifications"
+  when: planning_copy_result.failed
 
 - name: Copy VERSION file (force=no to preserve user modifications)
   copy:
