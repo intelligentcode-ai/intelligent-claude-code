@@ -16,6 +16,7 @@
 @./auto-continue-triggers.md
 @./progress-monitor.md
 @./work-discovery-engine.md
+@./archival-intelligence.md               # AI-driven archival automation
 
 ## Core Functions
 
@@ -43,6 +44,7 @@ function: initialize_system()
         AutoContinueTriggers.initialize()
         ProgressMonitor.initialize()
         WorkDiscoveryEngine.initialize()
+        ArchivalIntelligence.initialize()
 ```
 
 ### 0.1. Process PM Commands (NEW)
@@ -89,6 +91,10 @@ function: execute_phase(assignment, phase)
     EXECUTE: Perform the actual work (or queue in L3)
     ACCEPTANCE: Validate completion (auto in L3)
     DONE: Archive and capture learnings
+    ARCHIVED: Manual phase transition for PM-driven archival
+  archival_hook:
+    - ON phase == "ARCHIVED":
+        ArchivalIntelligence.checkArchivalEligibility(assignment)
 ```
 
 ### 3. Role Assignment with Validation
@@ -119,6 +125,11 @@ function: update_progress(item_type, item_id, status)
     - Story status in epic
     - Overall progress metrics
   automatic_scoring: Based on completion
+  archival_triggers:
+    - IF status == "COMPLETED" AND phase == "ARCHIVED":
+        ArchivalIntelligence.triggerArchivalCheck(item)  # Manual archival phase required
+    - IF task.completed == true:
+        ArchivalIntelligence.queueTaskArchival(task)  # Queue for PM manual archival command
 ```
 
 ## Validation Command Chains
@@ -201,6 +212,7 @@ icc:detect-work-type(content)
    - Trigger auto-continue for next task
    - Update queue with completion
    - Check for unblocked tasks
+   - Trigger archival check for completed tasks
 ```
 
 ### Git Operations Integration
@@ -363,6 +375,11 @@ FUNCTION initializePMCommands():
     registerCommandHandler("@PM refresh", processor.executeRefresh)
     registerCommandHandler("@PM reset", processor.executeReset)
     registerCommandHandler("@PM status", processor.executeStatus)
+    
+    // Register manual archival commands (PM-driven only)
+    registerCommandHandler("@PM archive", processor.executeArchive)  # Manual archival trigger
+    registerCommandHandler("@PM archive-status", processor.showArchivalStatus)  # Manual status check
+    registerCommandHandler("@PM restore", processor.restoreFromArchive)  # Manual restoration
 ```
 
 ### Blocking Behavior Control
@@ -661,6 +678,9 @@ FUNCTION addWorkToQueue(workItem):
 FUNCTION onTaskComplete(task):
     // Normal completion logic
     updateTaskStatus(task, "completed")
+    
+    // Trigger archival check (queues for manual PM command)
+    ArchivalIntelligence.checkArchivalEligibility(task)
     
     IF executionMode == "continuous":
         // Trigger auto-continue
