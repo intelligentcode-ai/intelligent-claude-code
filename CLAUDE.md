@@ -665,3 +665,70 @@ This system represents a behavioral framework for AI tool integration, implement
 - **Learning-Based Improvement**: Continuous enhancement through insight capture and scoring
 
 This architecture prioritizes developer experience, team compatibility, and professional development practices while providing structured guidance for AI collaboration through behavioral frameworks.
+
+## Terminology Reference
+
+The system uses a consistent hierarchy throughout all components to ensure clarity and maintainability:
+
+### Work Item Hierarchy
+```yaml
+Epic:
+  - Definition: Large initiative spanning months of work
+  - Contains: Stories and Bugs
+  - Example: "User Authentication System"
+  - File: epic.yaml
+
+Story:
+  - Definition: Feature implementation spanning weeks of work
+  - Contains: Tasks
+  - Parent: Epic
+  - Example: "Implement OAuth Login"
+  - File: story.yaml
+
+Bug:
+  - Definition: Issue resolution spanning days to weeks
+  - Contains: Tasks
+  - Parent: Epic
+  - Example: "Fix Login Timeout Issue"
+  - File: bug.yaml
+
+Task:
+  - Definition: Specific work item spanning hours to days
+  - Contains: Optional subtasks
+  - Parent: Story or Bug
+  - Example: "Write OAuth integration tests"
+  - File: task.md
+
+Subtask:
+  - Definition: Granular step spanning minutes to hours
+  - Parent: Task
+  - Example: "Add test for expired token"
+  - File: Part of task.md
+```
+
+### Terminology Standards
+- **Epic**: Always refers to the largest work container
+- **Story**: Always refers to feature implementation work
+- **Bug**: Always refers to issue resolution work
+- **Task**: Always refers to specific work items within stories/bugs
+- **Subtask**: Always refers to granular steps within tasks
+
+### Cross-References
+- **Epic → Stories/Bugs**: "This epic contains stories and bugs"
+- **Story → Tasks**: "This story contains tasks"
+- **Bug → Tasks**: "This bug contains tasks"
+- **Task → Subtasks**: "This task contains subtasks" (optional)
+
+### Git Integration
+- **Epic Level**: Repository and major branch management
+- **Story/Bug Level**: Feature branch creation and management
+- **Task Level**: Commits and pushes within feature branches
+- **Subtask Level**: Individual commits within task scope
+
+### Workflow Alignment
+- **Outer Workflow**: Handles Epic/Story/Bug level coordination
+- **Inner Workflow**: Handles Task level execution
+- **Role Assignment**: Specialists assigned to tasks, not stories/bugs
+- **Progress Tracking**: Hierarchical progress from task → story/bug → epic
+
+This consistent terminology ensures seamless integration across all system components and maintains clarity for all team members.
