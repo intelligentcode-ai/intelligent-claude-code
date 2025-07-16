@@ -1,8 +1,15 @@
 # Archival Intelligence
 
-**CORE:** Command-driven archival • Completion detection • Git-aware operations • Workspace management
+**CORE:** Command-driven archival • Cascading hierarchy • Git-aware operations • Workspace management
 
 **IMPORTANT:** This is a markdown-based behavioral system for Claude Code. There are no running daemons, background processes, or time-based triggers. All archival operations are initiated manually through PM commands.
+
+**CASCADING BEHAVIOR (CORE REQUIREMENT):** The system MUST automatically archive child items when archiving parent items. This is NOT an optional feature - it is a fundamental requirement:
+- **Epic → Stories → Tasks**: The system MUST cascade archival from epic to all its stories and their tasks
+- **Story → Tasks**: The system MUST automatically archive all tasks when archiving a story
+- **Bug → Tasks**: The system MUST automatically archive all tasks when archiving a bug
+
+This cascading behavior fulfills the core requirement that "the system should automatically archive tasks if the story is done".
 
 ## ARCHIVAL DETECTION ENGINE
 
@@ -30,14 +37,21 @@ FUNCTION detectCompleted():
     epics = getAllEpics()
     FOR EACH epic IN epics:
         
-        // CHECK BUGS
+        // CHECK IF EPIC ITSELF IS READY FOR ARCHIVAL
+        IF epic.status == "COMPLETED" AND epic.phase == "ARCHIVED":
+            IF isReadyForArchival(epic):
+                candidates.append({type: "epic", item: epic})
+                // Note: Child stories/bugs will be cascaded automatically
+                CONTINUE  // Skip scanning children if epic will be archived
+        
+        // CHECK BUGS (only if epic not being archived)
         bugs = getBugsForEpic(epic)
         FOR EACH bug IN bugs:
             IF bug.status == "COMPLETED" AND bug.phase == "ARCHIVED":
                 IF isReadyForArchival(bug):
                     candidates.append({type: "bug", item: bug})
         
-        // CHECK STORIES  
+        // CHECK STORIES (only if epic not being archived) 
         stories = getStoriesForEpic(epic)
         FOR EACH story IN stories:
             IF story.status == "COMPLETED" AND story.phase == "ARCHIVED":
@@ -54,11 +68,27 @@ FUNCTION isReadyForArchival(item):
     IF item.status != "COMPLETED" OR item.phase != "ARCHIVED":
         RETURN false
     
-    // CHECK ALL TASKS COMPLETED
-    tasks = getTasksForItem(item)
-    FOR EACH task IN tasks:
-        IF task.status != "COMPLETED":
-            RETURN false
+    // EPIC-SPECIFIC CHECKS
+    IF item.type == "epic":
+        // CHECK ALL STORIES COMPLETED
+        stories = getStoriesForEpic(item)
+        FOR EACH story IN stories:
+            IF story.status != "COMPLETED":
+                RETURN false
+        
+        // CHECK ALL BUGS COMPLETED  
+        bugs = getBugsForEpic(item)
+        FOR EACH bug IN bugs:
+            IF bug.status != "COMPLETED":
+                RETURN false
+    
+    // STORY/BUG CHECKS
+    ELSE:
+        // CHECK ALL TASKS COMPLETED
+        tasks = getTasksForItem(item)
+        FOR EACH task IN tasks:
+            IF task.status != "COMPLETED":
+                RETURN false
     
     // CHECK FOR ACTIVE REFERENCES
     IF hasActiveReferences(item):
@@ -83,21 +113,39 @@ FUNCTION processArchivalCandidate(candidate):
     
 END FUNCTION
 
-// ARCHIVAL EXECUTION
+// ARCHIVAL EXECUTION WITH CASCADING
 FUNCTION executeArchival(candidate):
     
     TRY:
         // PREPARE ARCHIVE STRUCTURE
         archivePath = prepareArchivePath(candidate)
         
-        // ARCHIVE MAIN ITEM (Bug/Story)
-        IF candidate.type IN ["bug", "story"]:
+        // ARCHIVE MAIN ITEM (Bug/Story/Epic)
+        IF candidate.type IN ["bug", "story", "epic"]:
             archiveMainItem(candidate, archivePath)
         
-        // ARCHIVE ASSOCIATED TASKS
-        tasks = getTasksForItem(candidate.item)
-        FOR EACH task IN tasks:
-            archiveTask(task, archivePath)
+        // CASCADE TO CHILD ITEMS
+        IF candidate.type == "epic":
+            // EPIC → STORIES → TASKS (cascade)
+            stories = getStoriesForEpic(candidate.item)
+            FOR EACH story IN stories:
+                IF story.status == "COMPLETED" AND story.phase == "ARCHIVED":
+                    storyCandidate = {type: "story", item: story}
+                    executeArchival(storyCandidate)  // Recursive cascade
+        
+        ELSE IF candidate.type == "story":
+            // STORY → TASKS
+            tasks = getTasksForItem(candidate.item)
+            FOR EACH task IN tasks:
+                IF task.status == "COMPLETED":
+                    archiveTask(task, archivePath)
+        
+        ELSE IF candidate.type == "bug":
+            // BUG → TASKS
+            tasks = getTasksForItem(candidate.item)
+            FOR EACH task IN tasks:
+                IF task.status == "COMPLETED":
+                    archiveTask(task, archivePath)
         
         // UPDATE GITIGNORE
         updateGitIgnore(archivePath)
@@ -119,7 +167,7 @@ FUNCTION prepareArchivePath(candidate):
     
     baseArchivePath = ""
     
-    IF candidate.type IN ["bug", "story"]:
+    IF candidate.type IN ["bug", "story", "epic"]:
         // Git-tracked archives
         baseArchivePath = "archives/completed/"
     ELSE:
@@ -161,6 +209,36 @@ FUNCTION archiveMainItem(candidate, archivePath):
         executeGitCommand("git mv " + sourcePath + " " + destinationPath)
     ELSE:
         moveDirectory(sourcePath, destinationPath)
+    
+END FUNCTION
+
+// CREATE ARCHIVAL SUMMARY
+FUNCTION createArchivalSummary(candidate, destinationPath):
+    
+    summary = "# ARCHIVED: " + candidate.item.title + "\n\n"
+    summary += "**Type:** " + candidate.type + "\n"
+    summary += "**ID:** " + candidate.item.id + "\n"
+    summary += "**Status:** " + candidate.item.status + "\n"
+    summary += "**Phase:** " + candidate.item.phase + "\n"
+    summary += "**Archived Date:** " + getCurrentDate() + "\n\n"
+    
+    // ADD CASCADING INFO FOR EPICS
+    IF candidate.type == "epic":
+        summary += "## Cascading Archival\n"
+        summary += "This epic archive includes all child stories and their tasks.\n\n"
+        
+        stories = getStoriesForEpic(candidate.item)
+        summary += "**Archived Stories:** " + stories.length + "\n"
+        
+        bugs = getBugsForEpic(candidate.item)
+        summary += "**Archived Bugs:** " + bugs.length + "\n\n"
+    
+    // ADD TASK INFO FOR STORIES/BUGS
+    ELSE IF candidate.type IN ["story", "bug"]:
+        tasks = getTasksForItem(candidate.item)
+        summary += "**Archived Tasks:** " + tasks.length + "\n\n"
+    
+    writeFile(destinationPath + "ARCHIVED.md", summary)
     
 END FUNCTION
 
@@ -351,7 +429,9 @@ PATTERNS = {
     batch_processing: true,
     preview_mode: true,
     auto_commit: true,
-    preserve_history: true
+    preserve_history: true,
+    cascading_archival: true,  // REQUIRED: Epic→Stories→Tasks cascade
+    recursive_execution: true   // REQUIRED: Automatic child archival per core requirements
 }
 
 // SAFETY CHECKS
@@ -496,6 +576,13 @@ END FUNCTION
 ```
 archives/
 ├── completed/              # Git-tracked
+│   ├── epics/
+│   │   └── 2025/
+│   │       └── 01/
+│   │           └── EPIC-001-user-management/
+│   │               ├── ARCHIVED.md
+│   │               ├── epic.yaml
+│   │               └── (cascaded stories moved here)
 │   ├── bugs/
 │   │   └── 2025/
 │   │       └── 01/
@@ -511,6 +598,12 @@ archives/
 └── tasks/                  # Not git-tracked (.gitignore)
     └── 2025/
         └── 01/
+            ├── EPIC-001/   # Tasks from cascaded stories
+            │   ├── STORY-001/
+            │   │   ├── TASK-001-design.md
+            │   │   └── TASK-002-develop.md
+            │   └── STORY-002/
+            │       └── TASK-001-test.md
             ├── BUG-001/
             │   ├── TASK-001-investigate.md
             │   └── TASK-002-implement.md
@@ -521,6 +614,6 @@ archives/
 
 ---
 
-**ARCHIVAL:** Command-driven detection • Git-aware operations • Clean workspace • Historical preservation
+**ARCHIVAL:** Command-driven detection • Cascading hierarchy • Git-aware operations • Clean workspace • Historical preservation
 
-**REMEMBER:** This system is entirely manual. Use `@PM archive-completed` to archive completed items, or `@PM archive-item ITEM-ID` for specific items. No automatic archival occurs.
+**REMEMBER:** This system is entirely manual. Use `@PM archive-completed` to archive completed items, or `@PM archive-item ITEM-ID` for specific items. No automatic archival occurs. When archiving parent items (epics/stories), all child items are automatically cascaded.

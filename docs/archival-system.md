@@ -4,17 +4,29 @@
 
 The AI-Agentic Archival System (STORY-010) provides intelligent, command-driven archival of completed work items to maintain a clean workspace. The system uses behavioral patterns to detect completed items, validate archival safety, and execute Git-aware file operations when archival commands are executed.
 
+### Core Cascading Behavior
+
+The archival system implements **cascading archival** as a fundamental requirement. When archiving parent items, the system MUST automatically include their child items to maintain work unit integrity:
+
+- **Epic Archival**: The system MUST archive the epic AND all its child stories and their tasks
+- **Story Archival**: The system MUST archive the story AND all its associated tasks
+- **Task Archival**: Archives individual tasks independently
+
+This cascading behavior is NOT optional - it is a core requirement that ensures complete work units are archived together, maintaining logical groupings and preventing orphaned items. The system MUST enforce this behavior to fulfill the requirement that "the system should automatically archive tasks if the story is done".
+
 ## Core Components
 
 ### 1. AI Detection Engine
 - **Pattern Recognition**: Detects completed bugs/stories (status: COMPLETED, phase: ARCHIVED)
 - **Task Detection**: Identifies completed tasks within items
+- **Cascading Detection**: Identifies parent-child relationships for cascading archival
 - **Manual Scanning**: Analyzes items when archival command is executed
 - **Confidence Scoring**: Validates archival eligibility with safety checks
 
 ### 2. Archival Decision Engine
 - **Intelligent Routing**: Completed tasks → archives/tasks/ (OUT of git)
 - **Git-Aware Storage**: Completed bugs/stories → archives/completed/ (IN git)
+- **Cascading Logic**: Automatically includes child items when archiving parents
 - **Safety Validation**: Checks dependencies, references, and age requirements
 - **Conflict Resolution**: Handles manual changes and git conflicts gracefully
 
@@ -51,26 +63,41 @@ icc:restore-archived TASK-002
 ### PM Commands
 
 ```bash
-# Execute archival
+# Execute archival of all eligible items
+# This command triggers the actual archival process
+# Items marked as COMPLETED + phase ARCHIVED will be moved
 @PM archive
 
+# Archive specific item with cascading
+# Will archive the item and all its child items
+@PM archive STORY-001
+
 # Check archival status
+# Shows which items are ready for archival
 @PM archive-status
 
 # Restore specific item
+# Brings item back from archive to active workspace
 @PM restore TASK-001
 ```
 
+**Important Note**: Items are NOT automatically archived when marked as done. Archival only happens when the PM explicitly runs the `archive` command. This ensures conscious control over when items are moved to archives.
+
 ## Archive Structure
 
-### Git-Tracked Archives (Bugs/Stories/Milestones)
+### Git-Tracked Archives (Epics/Bugs/Stories/Milestones)
 ```
 archives/
 └── completed/
+    ├── epics/
+    │   └── 2024/
+    │       └── 01/
+    │           └── 2024-01-15-EPIC-001-user-management.md
     ├── stories/
     │   └── 2024/
     │       └── 01/
-    │           └── 2024-01-15-STORY-001-user-authentication.md
+    │           ├── 2024-01-15-STORY-001-user-authentication.md
+    │           └── 2024-01-15-STORY-002-user-profiles.md
     ├── bugs/
     │   └── 2024/
     │       └── 01/
@@ -99,6 +126,13 @@ archives/
 3. **Dependency Validation**: No active dependencies allowed
 4. **Reference Check**: No incoming references from active items
 5. **User Lock Check**: No active user locks on files
+6. **Manual Command**: PM must explicitly run `@PM archive` command
+
+### When Archival Occurs
+- **NOT** when items are marked as done/completed
+- **NOT** when phase is changed to ARCHIVED
+- **ONLY** when PM executes the `archive` command
+- This ensures deliberate, conscious archival decisions
 
 ### Rollback Capability
 - Automatic rollback on any failure
@@ -132,17 +166,48 @@ archives/
 ### Detection Patterns
 ```pseudocode
 completionPatterns = {
+    "EPIC_COMPLETE": {
+        detect: (item) => item.status == "COMPLETED" AND item.phase == "ARCHIVED",
+        archivePath: "archives/completed/epics/",
+        gitTracked: true,
+        cascade: true,
+        cascadeTypes: ["story", "task"]
+    },
     "STORY_COMPLETE": {
         detect: (item) => item.status == "COMPLETED" AND item.phase == "ARCHIVED",
         archivePath: "archives/completed/stories/",
-        gitTracked: true
+        gitTracked: true,
+        cascade: true,
+        cascadeTypes: ["task"]
     },
     "TASK_COMPLETE": {
         detect: (task) => task.completed == true OR task.status == "DONE",
         archivePath: "archives/tasks/",
-        gitTracked: false
+        gitTracked: false,
+        cascade: false
     }
 }
+```
+
+### Cascading Logic
+```pseudocode
+FUNCTION archiveWithCascade(item):
+    // Archive the parent item first
+    archiveItem(item)
+    
+    // If item supports cascading, archive children
+    IF item.cascade == true:
+        FOR EACH childType IN item.cascadeTypes:
+            children = findChildren(item, childType)
+            FOR EACH child IN children:
+                archiveWithCascade(child)  // Recursive for nested cascades
+    
+    // Update all references
+    updateReferences(item)
+    
+    // Commit changes
+    commitArchival(item)
+END FUNCTION
 ```
 
 ### Learning Patterns
@@ -192,6 +257,37 @@ archival_configuration:
 7. Commit with meaningful message
 ```
 
+### Cascading Archival Examples
+
+#### Epic → Stories → Tasks
+```
+@PM archive EPIC-001
+Result:
+- EPIC-001 → archives/completed/epics/2024/01/
+- STORY-001 → archives/completed/stories/2024/01/
+- STORY-002 → archives/completed/stories/2024/01/
+- task-001 → archives/tasks/2024/01/STORY-001/
+- task-002 → archives/tasks/2024/01/STORY-001/
+- task-003 → archives/tasks/2024/01/STORY-002/
+```
+
+#### Story → Tasks
+```
+@PM archive STORY-003
+Result:
+- STORY-003 → archives/completed/stories/2024/01/
+- task-010 → archives/tasks/2024/01/STORY-003/
+- task-011 → archives/tasks/2024/01/STORY-003/
+- task-012 → archives/tasks/2024/01/STORY-003/
+```
+
+#### Individual Task
+```
+@PM archive TASK-020
+Result:
+- task-020 → archives/tasks/2024/01/unassociated/
+```
+
 ### Specific Item Archival
 ```
 @PM archive --manual STORY-010
@@ -209,7 +305,7 @@ archival_configuration:
 - Preserves all relationships
 ```
 
-## Future Enhancements
+## Additional Features for Consideration
 
 1. **Compression**: Archive old items to save space
 2. **Search**: Enhanced archive search capabilities
