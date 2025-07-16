@@ -6,8 +6,8 @@ story:
   created_by: "@PM"
   assigned_to: "@PM"
   priority: "P2"  # Important but not blocking
-  status: "PLANNED"
-  phase: "INIT"
+  status: "COMPLETED"
+  phase: "DONE"
   
 problem_description: |
   The current system has a complex scoring system (P/Q scores, penalties, bonuses).
