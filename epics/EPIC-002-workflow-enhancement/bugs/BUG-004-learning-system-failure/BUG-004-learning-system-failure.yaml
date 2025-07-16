@@ -1,0 +1,74 @@
+---
+id: BUG-004
+title: Learning System Not Capturing Previous Corrections
+type: bug
+status: COMPLETED
+priority: P0
+phase: DONE
+epic: EPIC-002
+created_date: 2025-01-16
+severity: CRITICAL
+description: >
+  The learning-team-automation.md system is not capturing user corrections and preventing 
+  repeated errors. Memory system shows empty results despite multiple corrections about 
+  QA-Engineer testing limitations and DevOps-Engineer deployment restrictions.
+
+reproduction_steps:
+  - User corrects role assignment errors (QA testing, DevOps deployment)
+  - System should capture learning entities in memory
+  - Memory search returns empty results
+  - Same errors repeated in subsequent tasks
+
+expected_behavior:
+  - Learning entities created for each correction
+  - Memory search returns relevant learnings
+  - Future role assignments avoid repeated errors
+  - Learning bonuses applied when referencing previous corrections
+
+actual_behavior:
+  - Memory system empty despite corrections
+  - No learning entities found
+  - Same role assignment errors repeated
+  - No learning bonuses applied
+
+embedded_config:
+  autonomy_level: "L3"
+  blocking_enabled: false
+
+tasks:
+  - id: TASK-001
+    title: "@AI-Engineer: Diagnose learning system memory integration"
+    description: "Investigate why learning entities are not being created and stored"
+    assigned_to: "@AI-Engineer"
+    type: "investigation"
+    status: "planned"
+    dependencies: []
+    
+  - id: TASK-002
+    title: "@AI-Engineer: Fix learning capture mechanism"
+    description: "Repair automatic learning entity creation from user corrections"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "planned"
+    dependencies: ["TASK-001"]
+    
+  - id: TASK-003
+    title: "@AI-Architect: Review learning system architecture"
+    description: "Validate learning system integration with memory and role assignment"
+    assigned_to: "@AI-Architect"
+    type: "review"
+    status: "planned"
+    dependencies: ["TASK-002"]
+    
+  - id: TASK-004
+    title: "@AI-Engineer: Update documentation with learning patterns"
+    description: "Document learning system behavior and memory integration"
+    assigned_to: "@AI-Engineer"
+    type: "documentation"
+    status: "planned"
+    dependencies: ["TASK-003"]
+
+notes:
+  - Critical P0 bug affecting system learning capability
+  - Based on previous learning about QA testing and DevOps deployment restrictions
+  - Learning system should prevent repeated role assignment errors
