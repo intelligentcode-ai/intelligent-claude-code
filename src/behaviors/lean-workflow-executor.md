@@ -7,6 +7,7 @@
 @./config-loader.md
 @./git-privacy-enforcer.md
 @./role-detection-engine.md            # Detects @-notation patterns
+@./role-assignment-validator.md       # Validates role assignments
 @./autonomy-controller.md
 @./role-activation-system.md          # Activates roles and switches behavior
 @./pm-command-system.md
@@ -79,7 +80,8 @@ function: execute_phase(assignment, phase)
   autonomy_check:
     - Apply autonomy level before each phase
     - Get approval if required by L1/L2
-    - Continue autonomously in L3
+    - L3 MODE: NEVER ask for permission, execute autonomously
+    - L3 BEHAVIORAL RULE: Proceed with all decisions without confirmation
   l3_mode:
     - IF settings.autonomy_level == "L3":
         Add to task queue instead of direct execution
@@ -100,20 +102,27 @@ function: execute_phase(assignment, phase)
 ### 3. Role Assignment with Validation
 ```yaml
 function: assign_role(task, required_capabilities)
-  detection:
-    - Use RoleDetectionEngine to parse assignments
-    - Extract all @Role mentions from task
-    - Validate each detected role
+  integration:
+    - RoleDetectionEngine for @-notation parsing
+    - RoleAssignmentValidator for comprehensive validation
   validation_chain:
     - icc:detect-work-type(task.content) → specialist_architect_type
     - icc:require-triage(@PM, @specialist_architect) → triage_complete
     - icc:validate-assignments(tasks) → capability_match_check
     - icc:require-approval(@PM, @specialist_architect) → approval_status
-  logic:
-    - Calculate capability match (must be >70%)
-    - Enforce specialist preference (@AI-Architect not @Architect)
-    - Block generic roles when specialists exist
-    - Create dynamic specialist if needed
+  implementation:
+    validator = new RoleAssignmentValidator()
+    proposedRole = task.assigned_to || detectProposedRole(task)
+    validation = validator.validateAssignment(task, proposedRole, allTasks)
+    
+    IF NOT validation.valid:
+      handleValidationFailure(validation)
+      IF validation.suggestions.length > 0:
+        proposedRole = validation.suggestions[0].suggested
+      ELSE:
+        THROW "No valid role assignment possible"
+    
+    RETURN activateAndAssignRole(proposedRole, task)
   governance: Architect-validated assignments only
 ```
 
@@ -138,10 +147,12 @@ function: update_progress(item_type, item_id, status)
 ```yaml
 icc:detect-work-type(content):
   patterns:
-    ai_agentic: ["AI", "ML", "agentic", "behavioral", "automation", "intelligence"]
-    infrastructure: ["deployment", "infrastructure", "system", "server", "cloud"]
-    security: ["security", "authentication", "authorization", "encryption"]
-    database: ["database", "SQL", "data", "schema", "migration"]
+    ai_agentic: ["AI", "ML", "agentic", "behavioral", "automation", "intelligence", 
+                 "virtual team", "modes/", "behaviors/", "command chains", "AI system"]
+    infrastructure: ["deployment", "infrastructure", "kubernetes", "docker", "cloud", "AWS"]
+    security: ["security", "authentication", "authorization", "encryption", "OAuth"]
+    database: ["database", "SQL", "PostgreSQL", "schema", "migration", "query"]
+    frontend: ["UI", "UX", "React", "frontend", "component", "responsive"]
   output: specialist_architect_type (@AI-Architect, @System-Architect, etc.)
 
 icc:require-triage(pm_role, specialist_architect):
@@ -179,24 +190,63 @@ icc:detect-work-type(content)
 ## Workflow Execution Patterns
 
 ### Story Planning (PM executes) - WITH VALIDATION
-```
-1. Read story assignment file
-2. Check embedded_config
-3. **VALIDATION CHAIN EXECUTION:**
-   - icc:detect-work-type(story.content) → specialist_architect
-   - icc:require-triage(@PM, @specialist_architect) → BLOCK until complete
-   - icc:validate-assignments(proposed_tasks) → capability validation
-   - icc:require-approval(@PM, @specialist_architect) → BLOCK until approved
-4. Create validated tasks:
-   - Always start with knowledge task
-   - Add type-specific tasks (validated by specialist architect)
-   - Always end with knowledge task
-5. Assign specialists to tasks (validated assignments only)
-6. Update story file with validated tasks
-7. **L3 MODE:** 
-   - Add all tasks to TaskQueueManager
-   - Let ContinuousEngine execute in parallel
-   - Auto-transition phases via triggers
+```pseudocode
+FUNCTION planStory(story):
+    // 1. Read story assignment file
+    storyData = readAssignment("STORY", story.id)
+    
+    // 2. Check embedded_config
+    applyEmbeddedConfig(storyData.embedded_config)
+    
+    // 3. VALIDATION CHAIN EXECUTION
+    validator = new RoleAssignmentValidator()
+    
+    // Detect work type
+    workType = validator.detectWorkType(storyData)
+    
+    IF workType:
+        specialistArchitect = WORK_TYPE_PATTERNS[workType].required_architect
+        
+        // Require triage - BLOCK until complete
+        IF NOT hasTriageApproval(story, "PM", specialistArchitect):
+            BLOCK("Triage required with " + specialistArchitect)
+        
+        // Create proposed tasks
+        proposedTasks = generateTasks(story, workType)
+        
+        // Validate all assignments
+        FOR task IN proposedTasks:
+            validation = validator.validateAssignment(
+                task, 
+                task.assigned_to, 
+                proposedTasks
+            )
+            
+            IF NOT validation.valid:
+                // Use suggestions or block
+                IF validation.suggestions.length > 0:
+                    task.assigned_to = validation.suggestions[0].suggested
+                ELSE:
+                    BLOCK("No valid assignment for " + task.title)
+        
+        // Require approval - BLOCK until approved
+        IF NOT hasJointApproval(story, "PM", specialistArchitect):
+            BLOCK("Joint approval required from PM and " + specialistArchitect)
+    
+    // 4. Create validated tasks
+    tasks = [
+        createKnowledgeTask("retrieve", proposedTasks[0].assigned_to),
+        ...proposedTasks,
+        createKnowledgeTask("generate", proposedTasks[0].assigned_to)
+    ]
+    
+    // 5. Update story file with validated tasks
+    updateStoryFile(story, tasks)
+    
+    // 6. L3 MODE execution
+    IF settings.autonomy_level == "L3":
+        taskQueue.addAll(tasks)
+        continuousEngine.processQueue()
 ```
 
 ### Task Execution (Specialist executes)
@@ -338,6 +388,43 @@ FUNCTION handleSpecialistNeed(task, requiredDomain):
         
         // Assign specialist
         assignRole(specialistName, task)
+```
+
+## L3 Autonomous Behavioral Enforcement
+
+```pseudocode
+FUNCTION applyL3AutonomousBehavior():
+    settings = SettingsAPI.getSettings()
+    
+    IF settings.autonomy_level == "L3":
+        // L3 BEHAVIORAL ENFORCEMENT
+        setResponse("L3 autonomous mode - executing without permission")
+        disablePermissionRequests()
+        enableContinuousExecution()
+        
+        // L3 SPECIFIC BEHAVIORS
+        setBehavioralPattern("autonomous_execution")
+        setStopConditions(["BUSINESS_CRITICAL", "SECURITY_VIOLATION", "DATA_LOSS_RISK"])
+        
+        logInfo("L3 autonomous behavioral mode activated")
+    
+    RETURN settings.autonomy_level
+
+FUNCTION shouldStopInL3(action):
+    // ONLY stop for critical conditions in L3
+    criticalPatterns = [
+        "delete all data",
+        "expose credentials", 
+        "major business logic change",
+        "security violation"
+    ]
+    
+    FOR pattern IN criticalPatterns:
+        IF action.description.contains(pattern):
+            RETURN true
+    
+    // DEFAULT: Never stop in L3 for normal operations
+    RETURN false
 ```
 
 ## Configuration-Driven Behaviors
@@ -756,47 +843,82 @@ Review finds issue:
 
 ### AI-Agentic Work Detection
 ```yaml
-Input: "Update virtual team behavioral patterns"
-icc:detect-work-type() → @AI-Architect required
-Result: PM + @AI-Architect triage (not generic @Architect)
+Input: "Update virtual team behavioral patterns in modes/"
+Detection: 
+  - Work type: "ai_agentic" (matches: behavioral, modes/)
+  - Required architect: @AI-Architect
+  - Blocked roles: @Developer, @System-Engineer
+Validation Flow:
+  1. icc:detect-work-type() → "ai_agentic"
+  2. icc:require-triage(@PM, @AI-Architect) → BLOCK until complete
+  3. icc:validate-assignments() → Check all proposed assignments
+  4. icc:require-approval(@PM, @AI-Architect) → Joint approval required
+Result: Tasks assigned to @AI-Engineer after validation
 ```
 
 ### Wrong Assignment Prevention
 ```yaml
-Input: Task assigned to @System-Engineer for AI work
-icc:validate-assignments() → FAIL (capability mismatch)
-Correction: Reassign to @AI-Engineer with @AI-Architect approval
-```
-
-### Meaningless Task Prevention
-```yaml
-Input: "Test Role Switching" with no clear purpose
-icc:require-triage() → BLOCK (no business value identified)
-Result: Task rejected, require specific valuable work definition
+Input: "Deploy kubernetes infrastructure" assigned to @Developer
+Detection:
+  - Work type: "infrastructure" (matches: kubernetes, infrastructure)
+  - Capability match: 0.25 (FAIL - below 0.7 threshold)
+  - Role blocked for infrastructure work
+Validation:
+  - icc:validate-assignments() → FAIL
+  - Suggestion: @DevOps-Engineer (match: 0.85)
+  - Required: @System-Architect review
+Result: Auto-reassign to @DevOps-Engineer with architect approval
 ```
 
 ### Specialist Preference Enforcement
 ```yaml
-Input: Task assigned to generic @Architect
-icc:validate-assignments() → FAIL (specialist exists)
-Correction: Require @AI-Architect for AI-related architecture work
+Input: "Design authentication system" assigned to generic @Architect
+Detection:
+  - Work type: "security" (matches: authentication)
+  - Specialist available: @Security-Architect
+Validation:
+  - Specialist preference rule triggered
+  - Generic @Architect blocked when specialist exists
+  - Required: @Security-Architect review
+Result: Reassign to @Security-Engineer with @Security-Architect approval
+```
+
+### Multi-Domain Work Handling
+```yaml
+Input: "Build ML model with secure API deployment"
+Detection:
+  - Primary: "ai_agentic" (ML model)
+  - Secondary: "security" (secure API)
+Validation:
+  - Primary architect: @AI-Architect
+  - Secondary consult: @Security-Architect
+  - Suggested: @AI-Engineer with security review task
+Result: Multi-architect triage, primary assignment to AI specialist
 ```
 
 ## Benefits
 
 ### Governance Without Complexity
-- **Lightweight**: Uses command chains, not complex enforcement
-- **Mandatory**: Cannot skip validation steps in chain
-- **Traceable**: Clear audit trail of all validation decisions
-- **Consistent**: Same validation pattern for all work types
-- **Expert-Driven**: Specialist architects ensure proper expertise matching
+- **Lightweight**: Validation integrated into existing workflow without heavy enforcement
+- **Pattern-Based**: Work type detection through keyword patterns
+- **Capability Scoring**: Objective 0-70% threshold for role matching
+- **Suggestion Engine**: Always provides alternatives when validation fails
+- **Architect-Driven**: Specialist architects validate their domain assignments
 
 ### Problem Prevention
-✅ **Zero wrong specialist assignments** through detection + validation
-✅ **Mandatory PM + Specialist Architect collaboration** for all stories/bugs
-✅ **No meaningless busywork** through triage value validation
-✅ **Proper expertise matching** through capability validation + specialist preference
+✅ **Pattern-based work type detection** identifies AI, infrastructure, security, database, frontend work
+✅ **Capability matching prevents <70% matches** with automatic reassignment suggestions
+✅ **Blocked role lists** prevent obviously wrong assignments (e.g., @Web-Designer for database work)
+✅ **Specialist preference enforcement** ensures @AI-Architect over generic @Architect
+✅ **Multi-architect support** for cross-domain work requiring multiple specialists
+
+### Validation Features
+- **Work Type Patterns**: Comprehensive keyword lists for each specialty domain
+- **Role Capabilities**: Defined capabilities for accurate matching
+- **Optimal Role Finding**: Always suggests the best available role
+- **Duplicate Prevention**: No role assigned to multiple tasks simultaneously
+- **Graceful Fallback**: Suggestions provided even when validation fails
 
 ## Summary
 
-This enhanced lean executor adds essential governance through validation command chains while maintaining simplicity. The validation system prevents systemic role assignment errors and ensures proper specialist expertise application for all work.
+This role assignment validation system integrates seamlessly with the lean workflow executor to prevent incorrect specialist assignments. By detecting work types through pattern matching and validating capability matches above 70%, the system ensures the right specialists are assigned to the right work, with architect oversight for all specialist domains.

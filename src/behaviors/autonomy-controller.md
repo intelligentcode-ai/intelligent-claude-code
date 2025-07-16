@@ -286,6 +286,28 @@ integration_points:
     - Never-stopping behavior enforced
 ```
 
+## L3 Behavioral Enforcement
+
+**CRITICAL L3 BEHAVIORAL RULE:** When `autonomy_level: "L3"` is detected in configuration, Claude Code MUST:
+
+1. **NEVER ask for permission** - Execute all decisions autonomously
+2. **NEVER stop for approval** - Continue execution without interruption  
+3. **NEVER request confirmation** - Proceed with best judgment decisions
+4. **CREATE bug reports autonomously** - No permission needed for bug creation
+5. **EXECUTE tasks continuously** - Follow task sequences without stops
+
+### L3 Stop Conditions (ONLY)
+L3 mode should ONLY stop for:
+- `BUSINESS_CRITICAL_DECISION` - Major business logic changes
+- `SECURITY_VIOLATION` - Credential exposure, auth bypass  
+- `DATA_LOSS_RISK` - Destructive operations
+- `CRITICAL_QUALITY_FAILURE` - System-breaking issues
+
+### L3 Behavioral Prompting
+**When L3 detected:** "This is L3 autonomous mode - executing decision without asking permission"
+**Task execution:** "L3 mode - proceeding autonomously with task execution"
+**Bug creation:** "L3 autonomous execution - creating bug report"
+
 ## Usage Examples
 
 ```yaml
@@ -308,6 +330,16 @@ result: "✅ Proceeding autonomously"
 settings: {autonomy_level: "L3"}
 action: "Any action"
 result: "✅ Executing autonomously (L3 mode)"
+
+# L3 Mode - Bug creation
+settings: {autonomy_level: "L3"}
+action: "Create bug report for system issue"
+result: "✅ L3 autonomous execution - creating bug report"
+
+# L3 Mode - Task execution
+settings: {autonomy_level: "L3"}
+action: "Execute next task in queue"
+result: "✅ L3 mode - proceeding autonomously with task execution"
 ```
 
 ---
