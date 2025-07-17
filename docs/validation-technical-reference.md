@@ -71,7 +71,7 @@ END FUNCTION
 
 ### Validation Command Implementation
 
-#### /validate-assignment Command
+#### icc:validate-assignment Command
 ```pseudocode
 COMMAND validateAssignment:
     INPUT: currentRole, currentTask

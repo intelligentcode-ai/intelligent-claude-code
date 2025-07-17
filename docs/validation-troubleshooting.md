@@ -30,7 +30,7 @@ Before diving into specific issues, run through this checklist:
 @PM Show current role assignments
 
 # Manually trigger validation
-/validate-assignment
+icc:validate-assignment
 
 # Check work type detection
 @PM What work type was detected for this task?
@@ -39,7 +39,7 @@ Before diving into specific issues, run through this checklist:
 **Solutions:**
 1. **Immediate Fix**: Force revalidation
    ```
-   /validate-assignment --force
+   icc:validate-assignment --force
    ```
 
 2. **Provide Context**: Be more specific
@@ -70,7 +70,7 @@ Before diving into specific issues, run through this checklist:
 **Diagnosis:**
 ```bash
 # Check capability match
-/validate-assignment --verbose
+icc:validate-assignment --verbose
 
 # View threshold settings
 @PM Show validation thresholds
@@ -83,7 +83,7 @@ Before diving into specific issues, run through this checklist:
 1. **Force Specialist Creation**:
    ```
    # Lower threshold temporarily
-   /validate-assignment --threshold 0.8
+   icc:validate-assignment --threshold 0.8
    ```
 
 2. **Explicit Technology Request**:
@@ -117,7 +117,7 @@ Before diving into specific issues, run through this checklist:
 @PM Is validation system active?
 
 # Test validation manually
-/validate-assignment
+icc:validate-assignment
 
 # Check behavioral modules
 @PM Show loaded behavioral modules
@@ -126,17 +126,17 @@ Before diving into specific issues, run through this checklist:
 **Solutions:**
 1. **Restart Validation System**:
    ```
-   /refresh
+   icc:refresh
    @PM Reinitialize validation system
    ```
 
 2. **Manual Validation Trigger**:
    ```
    # For current task
-   /validate-assignment
+   icc:validate-assignment
    
    # For specific role
-   /validate-assignment @Frontend-Developer
+   icc:validate-assignment @Frontend-Developer
    ```
 
 3. **Check Module Loading**:
@@ -148,7 +148,7 @@ Before diving into specific issues, run through this checklist:
 
 **Prevention:**
 - Ensure behavioral modules are imported
-- Run /init at session start
+- Run icc:init at session start
 - Monitor for validation confirmations
 
 ---
@@ -165,7 +165,7 @@ Before diving into specific issues, run through this checklist:
 @PM Show assignment history for current task
 
 # View validation scores
-/validate-assignment --history
+icc:validate-assignment --history
 
 # Check for conflicts
 @PM Are there conflicting requirements?
@@ -175,7 +175,7 @@ Before diving into specific issues, run through this checklist:
 1. **Break Assignment Cycle**:
    ```
    # Accept current assignment
-   /validate-assignment --accept-current
+   icc:validate-assignment --accept-current
    ```
 
 2. **Clarify Requirements**:
@@ -187,7 +187,7 @@ Before diving into specific issues, run through this checklist:
 
 3. **Reset Validation State**:
    ```
-   /reset --validation-only
+   icc:reset --validation-only
    @PM Clear assignment history
    ```
 
@@ -215,13 +215,13 @@ Before diving into specific issues, run through this checklist:
 @PM What dependencies exist between roles?
 
 # Check coordination
-/parallel-delegate --status
+icc:parallel-delegate --status
 ```
 
 **Solutions:**
 1. **Force Parallel Execution**:
    ```
-   /parallel-delegate --force
+   icc:parallel-delegate --force
    @PM Ensure roles work simultaneously
    ```
 
@@ -309,7 +309,7 @@ Before diving into specific issues, run through this checklist:
 @PM Show validation metrics
 
 # Monitor current validation
-/validate-assignment --profile
+icc:validate-assignment --profile
 
 # Check for bottlenecks
 @PM What's causing validation delays?
@@ -319,10 +319,10 @@ Before diving into specific issues, run through this checklist:
 1. **Optimize Validation**:
    ```
    # Use cached results
-   /validate-assignment --use-cache
+   icc:validate-assignment --use-cache
    
    # Limit validation scope
-   /validate-assignment --quick
+   icc:validate-assignment --quick
    ```
 
 2. **Reduce Complexity**:
@@ -334,7 +334,7 @@ Before diving into specific issues, run through this checklist:
 
 3. **System Optimization**:
    ```
-   /refresh --optimize
+   icc:refresh --optimize
    @PM Clear validation cache
    @PM Rebuild role indices
    ```
@@ -352,13 +352,13 @@ Before diving into specific issues, run through this checklist:
 
 ```bash
 # Enable verbose logging
-/debug --validation on
+icc:debug --validation on
 
 # Show internal state
 @PM Show validation state
 
 # Trace decision path
-/validate-assignment --trace
+icc:validate-assignment --trace
 
 # Export validation data
 @PM Export validation metrics
@@ -370,14 +370,14 @@ When experiencing persistent issues:
 
 1. **Soft Reset**:
    ```bash
-   /refresh
+   icc:refresh
    @PM Reinitialize validation
    ```
 
 2. **Hard Reset**:
    ```bash
-   /reset
-   /init
+   icc:reset
+   icc:init
    @PM Rebuild validation system
    ```
 
@@ -387,10 +387,10 @@ When experiencing persistent issues:
    @PM Backup system state
    
    # Clean reset
-   /reset --full
+   icc:reset --full
    
    # Restore configuration
-   /init
+   icc:init
    @PM Restore from backup
    ```
 
