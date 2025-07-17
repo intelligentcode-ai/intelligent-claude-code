@@ -1,0 +1,58 @@
+bug:
+  id: "BUG-062"
+  title: "Pseudo-code assumes runtime state instead of stateless execution"
+  type: "implementation_pattern_violation"
+  epic: "EPIC-002"
+  created: "2025-07-17 16:45:00"
+  created_by: "@AI-Engineer"
+  assigned_to: "@AI-Architect"
+  priority: "P1"
+  severity: "HIGH"
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  Pseudo-code blocks correctly use structured logic (as designed), but
+  incorrectly assume persistent runtime state between Claude invocations.
+  
+  Examples of incorrect assumptions:
+  - Cache objects that persist between runs
+  - Session state that survives
+  - API objects that don't exist (SettingsAPI, ConfigLoader)
+  - Global variables that remain set
+  
+  The pseudo-code approach is CORRECT (hybrid markdown+pseudo-code),
+  but the implementation assumes stateful runtime instead of stateless.
+  
+root_cause: |
+  Misunderstanding that each Claude Code invocation is fresh/stateless.
+  Writing pseudo-code as if it's a long-running application server.
+  Not understanding the execution model of Claude Code.
+  
+impact: |
+  - Pseudo-code logic doesn't work as intended
+  - Other Claude instances can't follow the patterns
+  - Behavioral patterns fail due to state assumptions
+  - Configuration not properly loaded each time
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "All pseudo-code assumes stateless execution"
+    validation_method: "code_review"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "No persistent cache or session references"
+    validation_method: "pattern_audit"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "Configuration read from files each execution"
+    validation_method: "behavioral_test"
+    status: "pending"
+    
+definition_of_done:
+  - "Pseudo-code patterns work in stateless model"
+  - "No runtime state assumptions"
+  - "Each execution is self-contained"
+  - "Memory persistence only through MCP Memory"
