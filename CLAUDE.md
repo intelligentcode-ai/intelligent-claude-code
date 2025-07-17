@@ -11,6 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Core Architecture Features
 - **Command Chain Architecture**: Structured execution patterns for consistent role behavior
+- **Slash Command Integration**: icc: prefixed commands for reliable workflow execution
 - **Memory-First Culture**: Behavioral emphasis on consulting memory before actions
 - **Behavioral Framework**: Process guidance through documented patterns and expectations
 - **Parallel Task Coordination**: PM-driven task delegation with simultaneous role execution
@@ -48,6 +49,13 @@ The system uses a **hybrid documentation strategy** that maintains Claude Code's
 - `roles/specialists.md` - **NEW**: Clean role definitions (14 core + dynamic specialists)
 - `behaviors/` - **Lean behavioral modules**
   - `lean-workflow-executor.md` - **CORE**: Assignment-driven workflow with validation
+- `commands/` - **Slash command definitions**
+  - `icc-init-system.md` - System initialization command
+  - `icc-activate-role.md` - Role activation command
+  - `icc-create-story.md` - Story creation command
+  - `icc-validate-work-type.md` - Work type validation command
+  - `icc-memory-search.md` - Memory search command
+  - `icc-system-status.md` - System status command
   - `learning-team-automation.md` - Error forgiveness and pattern capture
   - `l3-continuous-engine.md` - **L3**: Continuous execution without stops
   - `task-queue-manager.md` - Priority-based task scheduling
@@ -135,10 +143,33 @@ make test            # Validate everything works
 - **Virtual Team**: Edit `src/modes/virtual-team.md`
 - **Roles**: Edit `src/roles/specialists.md`
 - **Workflow Engine**: Edit `src/behaviors/lean-workflow-executor.md`
+- **Slash Commands**: Edit `src/commands/icc-*.md`
 - **Workflow Templates**: Edit `workflow-templates/outer-workflow.yaml` and `inner-workflow.yaml`
   - **Inner workflow:** Handles git commits/pushes, peer reviews, and learning per task
   - **Outer workflow:** Handles branching/merging, coordination, and learning synthesis per story/bug
 - **Config**: Edit `src/config.md`
+
+### Slash Command Usage
+```bash
+# System management
+/icc-init-system              # Initialize virtual team system
+/icc-system-status           # Check system status
+/icc-restore-state           # Restore behavioral state
+/icc-verify-behaviors        # Validate all behaviors
+
+# Role management  
+/icc-activate-role @PM       # Activate PM role
+/icc-activate-role @AI-Engineer  # Activate specialist role
+
+# Workflow operations
+/icc-create-story "Story title"  # Create new story
+/icc-plan-story STORY-001       # Plan story tasks
+/icc-validate-work-type content # Validate work type
+
+# Memory operations
+/icc-memory-search "keyword"    # Search memory
+/icc-archive-completed         # Archive completed items
+```
 
 ### Pseudo-Code Implementation Guidelines
 - **Function Structure**: Use clear function names with descriptive parameters
