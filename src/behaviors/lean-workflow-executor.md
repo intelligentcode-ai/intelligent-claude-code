@@ -25,6 +25,7 @@
 ```yaml
 function: initialize_system()
   actions:
+    - EXECUTE /icc-init-system command for full initialization
     - Load configuration via ConfigLoader
     - Initialize AutonomyController
     - Apply autonomy level settings
@@ -34,8 +35,8 @@ function: initialize_system()
     - Initialize PM command processor
     - Initialize learning enforcement system
     - Initialize L3 continuous engine if L3 mode
-    - RESTORE SYSTEM STATE from .claude/system-state.json
-    - VALIDATE behavioral pattern restoration
+    - EXECUTE /icc-restore-state for system state restoration
+    - EXECUTE /icc-verify-behaviors for behavioral validation
   integration: 
     - SettingsAPI.getSettings()
     - AutonomyController.initialize()
@@ -109,7 +110,7 @@ function: assign_role(task, required_capabilities)
     - RoleDetectionEngine for @-notation parsing
     - RoleAssignmentValidator for comprehensive validation
   validation_chain:
-    - icc:detect-work-type(task.content) → specialist_architect_type
+    - /icc-validate-work-type(task.content) → specialist_architect_type
     - icc:require-triage(@PM, @specialist_architect) → triage_complete
     - icc:validate-assignments(tasks) → capability_match_check
     - icc:require-approval(@PM, @specialist_architect) → approval_status
@@ -125,7 +126,12 @@ function: assign_role(task, required_capabilities)
       ELSE:
         THROW "No valid role assignment possible"
     
-    RETURN activateAndAssignRole(proposedRole, task)
+    RETURN executeRoleActivation(proposedRole, task)
+    
+FUNCTION executeRoleActivation(role, task):
+    // Use slash command for role activation
+    EXECUTE /icc-activate-role role
+    RETURN assignRoleToTask(role, task)
   governance: Architect-validated assignments only
 ```
 
@@ -183,11 +189,11 @@ icc:require-approval(pm_role, specialist_architect):
 ### Story/Bug Creation Chain
 ```yaml
 MANDATORY VALIDATION CHAIN:
-icc:detect-work-type(content) 
+/icc-validate-work-type(content) 
 → icc:require-triage(@PM, @detected_specialist_architect) 
 → icc:validate-assignments(tasks) 
 → icc:require-approval(@PM, @detected_specialist_architect)
-→ icc:create-assignment(story.yaml)
+→ /icc-create-story(story.yaml)
 ```
 
 ## Workflow Execution Patterns
