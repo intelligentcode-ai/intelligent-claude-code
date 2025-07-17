@@ -111,36 +111,52 @@ function: execute_phase(assignment, phase)
         ArchivalIntelligence.checkArchivalEligibility(assignment)
 ```
 
-### 3. Role Assignment with Validation
+### 3. Role Assignment with Self-Correcting Validation
 ```yaml
 function: assign_role(task, required_capabilities)
   integration:
+    - ValidationInterceptor for auto-correction
     - RoleDetectionEngine for @-notation parsing
     - RoleAssignmentValidator for comprehensive validation
-  validation_chain:
-    - /icc-validate-work-type(task.content) → specialist_architect_type
-    - icc:require-triage(@PM, @specialist_architect) → triage_complete
-    - icc:validate-assignments(tasks) → capability_match_check
-    - icc:require-approval(@PM, @specialist_architect) → approval_status
+  self_correcting_validation:
+    - Auto-detect missing validation steps
+    - Auto-execute specialist architect consultation
+    - Auto-perform capability matching
+    - Auto-apply role suggestions
   implementation:
-    validator = new RoleAssignmentValidator()
-    proposedRole = task.assigned_to || detectProposedRole(task)
-    validation = validator.validateAssignment(task, proposedRole, allTasks)
+    interceptor = new ValidationInterceptor()
+    RETURN interceptor.interceptRoleAssignment(task)
     
-    IF NOT validation.valid:
-      handleValidationFailure(validation)
-      IF validation.suggestions.length > 0:
-        proposedRole = validation.suggestions[0].suggested
-      ELSE:
-        THROW "No valid role assignment possible"
+FUNCTION ValidationInterceptor.interceptRoleAssignment(task):
+    // SELF-CORRECTING VALIDATION SYSTEM
     
-    RETURN executeRoleActivation(proposedRole, task)
+    // 1. AUTO-DETECT WORK TYPE
+    workType = autoDetectWorkType(task.content)
     
-FUNCTION executeRoleActivation(role, task):
+    // 2. AUTO-ACTIVATE SPECIALIST ARCHITECT
+    IF workType:
+        specialistArchitect = getSpecialistArchitect(workType)
+        autoActivateRole(specialistArchitect)
+        
+        // 3. AUTO-PERFORM TRIAGE
+        autoPerformTriage(task, "PM", specialistArchitect)
+        
+        // 4. AUTO-VALIDATE ASSIGNMENT
+        validation = autoValidateAssignment(task, specialistArchitect)
+        
+        // 5. AUTO-APPLY CORRECTIONS
+        IF NOT validation.valid:
+            task.assigned_to = validation.suggestions[0].suggested
+            logAutoCorrection("Role assignment", task.assigned_to)
+    
+    // 6. EXECUTE WITH FULL VALIDATION
+    RETURN executeValidatedRoleActivation(task.assigned_to, task)
+    
+FUNCTION executeValidatedRoleActivation(role, task):
     // Use slash command for role activation
     EXECUTE /icc-activate-role role
     RETURN assignRoleToTask(role, task)
-  governance: Architect-validated assignments only
+  governance: Auto-corrected architect validation
 ```
 
 ### 4. Progress Tracking
@@ -287,25 +303,62 @@ FUNCTION planStory(story):
    - Trigger archival check for completed tasks
 ```
 
-### Git Operations Integration
+### Git Operations with Auto-Correction
 ```pseudocode
 FUNCTION executeGitOperations(task, phase):
-    settings = SettingsAPI.getSettings()
-    interceptor = GitOperationInterceptor()
+    // SELF-CORRECTING GIT OPERATIONS
+    interceptor = new ValidationInterceptor()
     
     FOR step IN phase.steps:
-        IF step.action == "commit":
-            message = generateCommitMessage(task, step.template)
-            interceptor.interceptCommit(message, task.files)
-            
-        ELSE IF step.action == "push":
-            validateBranchProtection(settings)
-            executePush()
-            
-        ELSE IF step.action == "create_pr":
-            title = generatePRTitle(task)
-            description = generatePRDescription(task)
-            interceptor.interceptPullRequest(title, description)
+        // Auto-correct all git operations
+        correctedStep = interceptor.interceptGitOperation(step, task)
+        executeGitStep(correctedStep)
+        
+FUNCTION ValidationInterceptor.interceptGitOperation(step, task):
+    // AUTO-INJECT SETTINGS
+    settings = SettingsAPI.getSettings()
+    step.settings = settings
+    
+    // AUTO-CORRECT BASED ON OPERATION TYPE
+    IF step.action == "commit":
+        // Auto-generate message with settings
+        message = generateCommitMessage(task, step.template)
+        
+        // Auto-enforce privacy settings
+        IF settings.git_privacy:
+            message = autoStripAIMentions(message)
+        
+        // Auto-apply branch protection
+        IF settings.branch_protection:
+            autoValidateBranchProtection(step)
+        
+        step.message = message
+        step.validated = true
+        
+    ELSE IF step.action == "push":
+        // Auto-validate branch protection
+        IF settings.branch_protection:
+            autoValidateBranchProtection(step)
+        
+        // Auto-apply push restrictions
+        step.validated = true
+        
+    ELSE IF step.action == "create_pr":
+        // Auto-generate PR content
+        title = generatePRTitle(task)
+        description = generatePRDescription(task)
+        
+        // Auto-enforce privacy in PR
+        IF settings.git_privacy:
+            title = autoStripAIMentions(title)
+            description = autoStripAIMentions(description)
+        
+        step.title = title
+        step.description = description
+        step.validated = true
+    
+    logAutoCorrection("Git operation", step.action)
+    RETURN step
 ```
 
 ### Review Handling (Config-driven)
@@ -412,25 +465,46 @@ FUNCTION handleSpecialistNeed(task, requiredDomain):
         assignRole(specialistName, task)
 ```
 
-## L3 Autonomous Behavioral Enforcement
+## L3 Self-Correcting Behavioral Enforcement
 
 ```pseudocode
-FUNCTION applyL3AutonomousBehavior():
+FUNCTION applyL3SelfCorrectingBehavior():
     settings = SettingsAPI.getSettings()
     
     IF settings.autonomy_level == "L3":
-        // L3 BEHAVIORAL ENFORCEMENT
-        setResponse("L3 autonomous mode - executing without permission")
-        disablePermissionRequests()
-        enableContinuousExecution()
+        // L3 SELF-CORRECTING ENFORCEMENT
+        interceptor = new ValidationInterceptor()
+        
+        // Enable auto-correction for all operations
+        enableAutoCorrection()
+        
+        // L3 RULE: Execute ALL processes, just faster
+        setBehavioralPattern("self_correcting_autonomous")
         
         // L3 SPECIFIC BEHAVIORS
-        setBehavioralPattern("autonomous_execution")
+        setValidationMode("auto_correct")
         setStopConditions(["BUSINESS_CRITICAL", "SECURITY_VIOLATION", "DATA_LOSS_RISK"])
         
-        logInfo("L3 autonomous behavioral mode activated")
+        logInfo("L3 self-correcting behavioral mode activated")
     
     RETURN settings.autonomy_level
+
+FUNCTION processL3Action(action):
+    // L3 SELF-CORRECTING WORKFLOW
+    IF settings.autonomy_level == "L3":
+        // 1. AUTO-DETECT MISSING VALIDATION
+        missingValidation = detectMissingValidation(action)
+        
+        // 2. AUTO-EXECUTE MISSING STEPS
+        FOR step IN missingValidation:
+            autoExecuteValidationStep(step)
+            logAutoCorrection("L3 validation", step.type)
+        
+        // 3. EXECUTE ACTION WITH FULL COMPLIANCE
+        RETURN executeWithFullCompliance(action)
+    
+    // Normal execution for L1/L2
+    RETURN executeWithManualValidation(action)
 
 FUNCTION shouldStopInL3(action):
     // ONLY stop for critical conditions in L3
@@ -445,7 +519,7 @@ FUNCTION shouldStopInL3(action):
         IF action.description.contains(pattern):
             RETURN true
     
-    // DEFAULT: Never stop in L3 for normal operations
+    // DEFAULT: Never stop in L3 - auto-correct instead
     RETURN false
 ```
 
@@ -822,15 +896,87 @@ FUNCTION shouldStopExecution(context):
     RETURN context.issue IN L3_STOP_CONDITIONS
 ```
 
+## Auto-Correction Helper Functions
+
+```pseudocode
+// AUTO-CORRECTION DETECTION
+FUNCTION detectMissingValidation(action):
+    missing = []
+    
+    // Check role assignment validation
+    IF action.type == "role_assignment":
+        IF NOT hasSpecialistArchitectConsultation(action):
+            missing.append("specialist_architect_consultation")
+        IF NOT hasCapabilityMatch(action):
+            missing.append("capability_validation")
+        IF NOT hasTriageApproval(action):
+            missing.append("triage_approval")
+    
+    // Check git operation validation
+    IF action.type == "git_operation":
+        IF NOT hasSettingsInjection(action):
+            missing.append("settings_injection")
+        IF NOT hasPrivacyEnforcement(action):
+            missing.append("privacy_enforcement")
+        IF NOT hasBranchProtection(action):
+            missing.append("branch_protection")
+    
+    RETURN missing
+
+// AUTO-EXECUTION FUNCTIONS
+FUNCTION autoExecuteValidationStep(step):
+    SWITCH step.type:
+        CASE "specialist_architect_consultation":
+            workType = detectWorkType(step.context)
+            architect = getSpecialistArchitect(workType)
+            autoActivateRole(architect)
+            
+        CASE "capability_validation":
+            validation = performCapabilityMatch(step.context)
+            IF NOT validation.valid:
+                autoApplyRoleSuggestion(validation.suggestions[0])
+                
+        CASE "settings_injection":
+            settings = SettingsAPI.getSettings()
+            injectSettings(step.context, settings)
+            
+        CASE "privacy_enforcement":
+            IF settings.git_privacy:
+                stripAIMentions(step.context)
+                
+        CASE "branch_protection":
+            IF settings.branch_protection:
+                validateBranchProtection(step.context)
+
+// AUTO-CORRECTION LOGGING
+FUNCTION logAutoCorrection(type, details):
+    timestamp = getCurrentTime()
+    correctionLog = {
+        timestamp: timestamp,
+        type: type,
+        details: details,
+        autonomy_level: settings.autonomy_level,
+        auto_corrected: true
+    }
+    
+    // Store in file-based memory system
+    appendToFile("auto_corrections.log", correctionLog)
+    
+    // Update learning system
+    createLearningEntry("auto_correction", correctionLog)
+    
+    logInfo("Auto-correction applied: " + type + " - " + details)
+```
+
 ## Why This Works
 
 1. **Structure Enforces Behavior**: Assignment files contain all needed information
-2. **No Complex Logic**: Just read files and execute steps
+2. **Self-Correcting Logic**: Missing validation automatically executed
 3. **Config-Driven**: Embedded settings shape execution
 4. **Natural Flow**: Knowledge→Work→Knowledge
 5. **Automatic Scoring**: Completion triggers updates
-6. **Simple Tools**: Basic operations only
-7. **L3 Continuous**: True autonomous execution without stops
+6. **Auto-Correction**: Validation never bypassed, only accelerated
+7. **L3 Continuous**: True autonomous execution with full compliance
 
 ## Usage Examples
 
