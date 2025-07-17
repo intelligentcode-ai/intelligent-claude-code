@@ -45,6 +45,7 @@ temp/
 
 # Archive
 archive/
+archives/tasks/
 
 # Node (if ever added)
 node_modules/
@@ -65,6 +66,8 @@ CLAUDE.md.backup
 # Test directories
 test-graceful/
 test-*/
+test-results/
+review-reports/
 
 # Personal notes
 notes.md

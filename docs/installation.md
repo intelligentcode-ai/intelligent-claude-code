@@ -13,7 +13,108 @@ Your project CLAUDE.md gets one import line:
 @~/.claude/modes/virtual-team.md
 ```
 
-**That's it.** Your virtual development team is ready with dual scoring system enabled.
+**That's it.** Your virtual development team is ready with Level 3 autonomous operation and mandatory behavioral enforcement enabled.
+
+### Post-Installation: Initialize Your Team
+After installation, initialize the virtual team system:
+```bash
+icc:init    # Validates configuration, verifies components, activates team
+```
+
+The `icc:init` command will:
+- ✅ Verify configuration files are properly installed
+- ✅ Check all 14 core roles are available  
+- ✅ Validate memory system connectivity
+- ✅ Confirm tool integrations are working
+- ✅ Activate Level 3 autonomous operation mode
+- ✅ Enable mandatory behavioral enforcement with penalty system
+- ✅ Initialize dynamic specialist creation capabilities
+- ✅ Report team readiness status
+
+### Post-Installation: Configure Settings
+
+The system uses a hierarchical configuration system. Create settings files as needed:
+
+#### User Global Settings (All Projects)
+```bash
+# Create user-wide configuration
+cat > ~/.claude/config.md << 'EOF'
+---
+autonomy_level: "L3"        # Full autonomy mode
+pm_always_active: true      # Auto-activate PM role
+git_privacy: true           # Strip AI mentions from commits
+blocking_enabled: false     # Non-blocking for L3 mode
+---
+EOF
+```
+
+#### Project-Specific Settings
+```bash
+# Create project configuration
+cat > .claude/config.md << 'EOF'
+---
+autonomy_level: "L2"        # Architect approval for this project
+default_branch: "develop"   # Project uses develop branch
+default_reviewer: "@Security-Engineer"  # Security-focused reviews
+---
+EOF
+```
+
+#### Common Configuration Profiles
+
+**L3 Autonomous Profile (Recommended for experienced users):**
+```yaml
+autonomy_level: "L3"
+pm_always_active: true
+blocking_enabled: false
+git_privacy: true
+```
+
+**L2 Balanced Profile (Default):**
+```yaml
+autonomy_level: "L2"
+pm_always_active: false
+blocking_enabled: true
+git_privacy: false
+```
+
+**L1 Manual Profile (Maximum control):**
+```yaml
+autonomy_level: "L1"
+pm_always_active: false
+blocking_enabled: true
+branch_protection: true
+```
+
+See `docs/CONFIG.md` for complete settings documentation.
+
+## What You Get: Level 3 Autonomous System
+
+After installation, your system includes:
+
+### 🤖 **Level 3 Autonomous Operation**
+- **Complete Technical Autonomy**: PM makes all technical decisions independently
+- **Continuous Operation**: Self-correcting quality loops without user intervention
+- **Strategic Business Escalation**: Only escalates budget, timeline, stakeholder decisions
+- **Non-Blocking Quality Gates**: Autonomous validation with self-correction
+
+### 🛡️ **Mandatory Behavioral Enforcement**
+- **HALT/BLOCK Patterns**: Operations stop until requirements met
+- **Automatic Penalties**: -1.0 to -3.0 instant penalties for violations
+- **Forced Protocol Compliance**: No bypassing allowed for any behaviors
+- **Memory-First Enforcement**: HALT until memory consultation complete (-1.0P penalty)
+
+### 🎭 **Unlimited Dynamic Specialists**
+- **Context-Aware Creation**: Generates domain experts for ANY technology
+- **Capability Matching**: <70% match triggers automatic specialist creation
+- **Context7 Integration**: Real-time domain knowledge injection
+- **AI-Specialist Requirements**: Complex AI tasks automatically routed to AI specialists
+
+### 📊 **Dual Scoring & Learning System**
+- **Real-Time Performance Tracking**: Professionalism and quality scores
+- **Learning Team Principles**: First errors become learning opportunities
+- **Automatic Role Replacement**: -10pts professionalism triggers replacement
+- **Evidence-Based Scoring**: All score changes require documented evidence
 
 ## Installation Options
 
@@ -141,7 +242,7 @@ Source: intelligent-claude-code/src/
 - **Adds single import line** if not present
 - **Never overwrites** your existing configuration
 - **Complete removal** by deleting one import line
-- **Dual scoring enabled** automatically for all team members
+- **Behavioral intelligence enabled** automatically for all team members
 
 ## Optional CLI Tools
 
@@ -197,20 +298,32 @@ export GITLAB_TOKEN=your_personal_access_token
 ls ~/.claude/CLAUDE.md
 ls ~/.claude/modes/virtual-team.md
 
+# Initialize and verify system
+icc:init           # Should report all components ✅
+
 # Test team activation
 @PM Status check
 ```
 
-### Test Dual Scoring System
+### Test Level 3 Autonomous Operation
 ```bash
-# Verify scoring display
-@PM (P: 0.0pts, Q: 0.0pts - Standard): Team initialization complete
+# Verify Level 3 autonomous activation
+@PM autonomous operation status
 
-# Test score tracking
-@Developer (P: 0.0pts, Q: 0.0pts - Standard): Ready for development tasks
+# Test mandatory behavioral enforcement
+@Developer Build authentication system    # Should HALT until acceptance criteria defined
 
-# Verify memory integration
-@PM: Show team scoring summary
+# Test dynamic specialist creation
+@PM Create machine learning recommendation system    # Should auto-create @ML-Engineer
+
+# Verify autonomous technical decisions
+@PM Design and implement REST API    # Should proceed autonomously without user escalation
+
+# Test memory-first enforcement
+@Architect Review previous patterns    # Should FORCE memory consultation first
+
+# Verify penalty system
+# Try skipping required steps - should see immediate penalty application
 ```
 
 ### Test CLI Integration (Optional)
@@ -255,6 +368,49 @@ make install PATH=~/development/.claude
 ```
 
 ## Troubleshooting
+
+### System Command Issues
+
+If `icc:init` reports configuration problems:
+```bash
+# Check configuration file exists
+ls ~/.claude/CLAUDE.md
+
+# Check all required files are present
+ls ~/.claude/modes/virtual-team.md
+ls ~/.claude/behaviors/
+
+# Verify Level 3 autonomy configuration
+grep -r "Level 3" ~/.claude/
+
+# If files are missing, reinstall
+make install
+```
+
+If system becomes unresponsive or has penalties accumulated:
+```bash
+icc:reset          # Clears penalties, accumulated issues, fresh autonomous restart
+icc:refresh        # Updates capabilities, tool integrations, specialist definitions
+```
+
+If autonomous operation stops unexpectedly:
+```bash
+# Check for accumulated penalties
+@PM show team scores and violations
+
+# Clear penalty state and restart autonomy
+icc:reset
+
+# Verify Level 3 operation resumed
+@PM autonomous operation status
+```
+
+### System Command Usage
+```bash
+icc:init           # First setup, new project activation, after installation
+icc:reset          # System stuck, accumulated penalties, need fresh start  
+icc:refresh        # Tool updates, configuration changes, capability sync
+```
 
 ### Ansible Not Found
 ```bash

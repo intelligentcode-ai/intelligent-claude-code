@@ -16,6 +16,7 @@
   loop:
     - "{{ claude_install_path }}"
     - "{{ claude_install_path }}/modes"
+    - "{{ claude_install_path }}/behaviors"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -53,6 +54,62 @@
   debug:
     msg: "Mode files preserved: {{ claude_install_path }}/modes/ already exists - keeping user modifications"
   when: modes_copy_result.failed
+
+- name: Copy behavior files (force=no to preserve user modifications)
+  copy:
+    src: "{{ playbook_dir }}/../src/behaviors/"
+    dest: "{{ claude_install_path }}/behaviors/"
+    mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: behaviors_copy_result
+
+- name: Display behaviors preservation notice
+  debug:
+    msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
+  when: behaviors_copy_result.failed
+
+- name: Copy commands directory (force=no to preserve user modifications)
+  copy:
+    src: "{{ playbook_dir }}/../src/commands/"
+    dest: "{{ claude_install_path }}/commands/"
+    mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: commands_copy_result
+
+- name: Display commands preservation notice
+  debug:
+    msg: "Commands directory preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
+  when: commands_copy_result.failed
+
+- name: Copy roles directory (force=no to preserve user modifications)
+  copy:
+    src: "{{ playbook_dir }}/../src/roles/"
+    dest: "{{ claude_install_path }}/roles/"
+    mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: roles_copy_result
+
+- name: Display roles preservation notice
+  debug:
+    msg: "Roles directory preserved: {{ claude_install_path }}/roles/ already exists - keeping user modifications"
+  when: roles_copy_result.failed
+
+- name: Copy planning directory (force=no to preserve user modifications)
+  copy:
+    src: "{{ playbook_dir }}/../src/planning/"
+    dest: "{{ claude_install_path }}/planning/"
+    mode: '0644'
+    force: no
+  ignore_errors: yes
+  register: planning_copy_result
+
+- name: Display planning preservation notice
+  debug:
+    msg: "Planning directory preserved: {{ claude_install_path }}/planning/ already exists - keeping user modifications"
+  when: planning_copy_result.failed
 
 - name: Copy VERSION file (force=no to preserve user modifications)
   copy:
@@ -131,6 +188,14 @@
     force: yes
   when: update_mode is defined and update_mode | bool
 
+- name: Force update behavior files if update_mode is enabled
+  copy:
+    src: "{{ playbook_dir }}/../src/behaviors/"
+    dest: "{{ claude_install_path }}/behaviors/"
+    mode: '0644'
+    force: yes
+  when: update_mode is defined and update_mode | bool
+
 - name: Force update VERSION file if update_mode is enabled
   copy:
     src: "{{ playbook_dir }}/../src/VERSION"
@@ -139,9 +204,17 @@
     force: yes
   when: update_mode is defined and update_mode | bool
 
+- name: Force update commands.md file if update_mode is enabled
+  copy:
+    src: "{{ playbook_dir }}/../src/commands.md"
+    dest: "{{ claude_install_path }}/commands.md"
+    mode: '0644'
+    force: yes
+  when: update_mode is defined and update_mode | bool
+
 - name: Display update mode notice
   debug:
-    msg: "Update mode: Force overriding user modifications to mode files and VERSION"
+    msg: "Update mode: Force overriding user modifications to mode files, behavior files, commands.md file, and VERSION"
   when: update_mode is defined and update_mode | bool
 
 - name: Display installation summary

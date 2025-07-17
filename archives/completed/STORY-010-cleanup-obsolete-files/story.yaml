@@ -1,0 +1,108 @@
+story:
+  id: "STORY-010"
+  title: "URGENT: Clean Up Obsolete Files and Fix Workflow Imports"
+  epic: "EPIC-002"
+  created: "2025-07-15 14:05:00"
+  created_by: "@PM"
+  assigned_to: "@PM"
+  priority: "P0"  # CRITICAL - System using wrong workflow files
+  status: "COMPLETE"
+  phase: "COMPLETE"
+  completion_date: "2025-07-15 14:17:00"
+  resolution: "IMPLEMENTED"
+  triage_date: "2025-07-15 14:06:00"
+  triage_by: "@PM + @System-Architect"
+  triage_notes: "EMERGENCY - System using wrong workflow files"
+  
+problem_description: |
+  CRITICAL SYSTEM ISSUE: The virtual team is importing old workflow files instead of corrected versions.
+  
+  CURRENT IMPORTS (WRONG):
+  - outer-workflow.yaml (v1.0.0)
+  - inner-workflow.yaml (v1.0.0)
+  
+  CORRECT FILES EXIST:
+  - outer-workflow-corrected.yaml (v2.0.0)
+  - inner-workflow-corrected.yaml (v2.0.0)
+  
+  PLUS: ~60KB of obsolete files in src/ that should be removed.
+  
+acceptance_criteria:
+  - Virtual team imports correct workflow files (v2.0.0)
+  - Old workflow files removed
+  - Obsolete src/ files removed
+  - System uses only required files
+  - No duplicate/obsolete files remain
+  
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  
+critical_files_to_fix:
+  wrong_imports:
+    - "outer-workflow.yaml (v1.0.0)" # WRONG - virtual team imports this
+    - "inner-workflow.yaml (v1.0.0)" # WRONG - virtual team imports this
+  correct_files:
+    - "outer-workflow-corrected.yaml (v2.0.0)" # CORRECT - should be imported
+    - "inner-workflow-corrected.yaml (v2.0.0)" # CORRECT - should be imported
+    
+obsolete_files_to_remove:
+  planning_files:
+    - "planning/workflow-enforcement-guide.md" # 3.4 KB - Enforcement removed
+    - "planning/system-simplification.md" # 5.1 KB - Planning doc, not operational
+    - "planning/commands-corrected.md" # 4.7 KB - Duplicate of commands/planning-commands.md
+    - "planning/enhanced-planning-mode.md" # 7.8 KB - Complex planning replaced
+    - "planning/capability-matcher.md" # 9.0 KB - Complex matching replaced
+    - "planning/config-processor.md" # 12.9 KB - Complex processing replaced
+    - "planning/review-findings-handler.md" # 7.5 KB - Complex review handling replaced
+    - "planning/priority-system.md" # 3.9 KB - Planning document, implemented
+  potentially_obsolete:
+    - "learning-callouts.md" # 1.6 KB - May be unused
+    - "scores.md" # 3.7 KB - May be replaced by badges.md
+    
+tasks:
+  - id: "TASK-001"
+    title: "Fix workflow imports in virtual-team.md"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "blocking"
+    status: "complete"
+    description: "Update virtual-team.md to import corrected workflow files (v2.0.0)"
+    
+  - id: "TASK-002"
+    title: "Remove obsolete workflow files"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    status: "complete"
+    description: "Remove old v1.0.0 workflow files after imports fixed"
+    
+  - id: "TASK-003"
+    title: "Remove obsolete planning files"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    status: "complete"
+    description: "Remove obsolete planning files that are no longer needed"
+    
+  - id: "TASK-004"
+    title: "Validate system integrity"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003"]
+    status: "complete"
+    description: "Test system with correct workflow files and verify no broken imports"
+    
+  - id: "TASK-005"
+    title: "Deploy cleanup"
+    type: "deployment"
+    assigned_to: "@DevOps-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-004"]
+    status: "complete"
+    description: "Deploy cleaned up system with correct workflow files"
