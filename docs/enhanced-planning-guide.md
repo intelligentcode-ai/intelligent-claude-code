@@ -406,7 +406,7 @@ Replace complex behavioral chains with direct task assignments:
 
 ```yaml
 # Instead of behavioral chains:
-# /memory-first → /think-sequential → /parallel-delegate → /quality-gates
+# icc:memory-first → icc:think-sequential → icc:parallel-delegate → icc:quality-gates
 
 # Use simple task structure:
 tasks:
