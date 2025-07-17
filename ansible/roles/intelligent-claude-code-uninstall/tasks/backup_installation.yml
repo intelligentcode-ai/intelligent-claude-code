@@ -1,0 +1,72 @@
+---
+# Backup installation before removal
+
+- name: Check if backup directory already exists
+  stat:
+    path: "{{ claude_backup_path }}"
+  register: backup_exists
+
+- name: Create unique backup path if directory exists
+  set_fact:
+    claude_backup_path: "{{ claude_backup_path }}-{{ 999999 | random }}"
+  when: backup_exists.stat.exists
+
+- name: Create backup directory
+  file:
+    path: "{{ claude_backup_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy entire .claude directory to backup
+  copy:
+    src: "{{ claude_install_path }}/"
+    dest: "{{ claude_backup_path }}/"
+    remote_src: yes
+    mode: preserve
+  register: backup_result
+
+- name: Display backup status
+  debug:
+    msg: "Backup {{ 'successful' if backup_result is succeeded else 'failed' }}: {{ claude_backup_path }}"
+
+- name: Create backup manifest
+  copy:
+    dest: "{{ claude_backup_path }}/BACKUP_MANIFEST.txt"
+    content: |
+      Intelligent Claude Code - Installation Backup
+      Created: {{ ansible_date_time.iso8601 }}
+      Original Path: {{ claude_install_path }}
+      Backup Path: {{ claude_backup_path }}
+      Host: {{ ansible_hostname }}
+      User: {{ ansible_user_id }}
+      
+      This backup contains the complete virtual team installation including:
+      - CLAUDE.md (main configuration)
+      - modes/ (virtual team mode files)
+      - behaviors/ (behavioral intelligence modules)
+      - config.md (user configuration)
+      - scores.md (team scoring data)
+      - learning-callouts.md (team learning data)
+      - VERSION (system version)
+      
+      To restore this installation:
+      1. Copy contents back to {{ claude_install_path }}
+      2. Ensure proper file permissions (644 for files, 755 for directories)
+      3. Verify import paths in CLAUDE.md match your current setup
+      
+      Backup created by: ansible/uninstall.yml
+    mode: '0644'
+
+- name: Verify backup integrity
+  find:
+    paths: "{{ claude_backup_path }}"
+    recurse: yes
+  register: backup_files
+
+- name: Display backup contents summary
+  debug:
+    msg:
+      - "Backup created successfully:"
+      - "Location: {{ claude_backup_path }}"
+      - "Files backed up: {{ backup_files.matched }}"
+      - "Manifest: {{ claude_backup_path }}/BACKUP_MANIFEST.txt"

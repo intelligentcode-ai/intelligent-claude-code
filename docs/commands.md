@@ -1,5 +1,24 @@
 # Complete Command Reference
 
+## System Commands
+
+### Core System Operations
+```bash
+icc:init                        # Initialize virtual team system, verify all components
+icc:reset                       # Reset system to clean state, clear stuck issues  
+icc:refresh                     # Refresh capabilities, sync tools and configurations
+```
+
+**System Command Usage:**
+- **`icc:init`** - First-time setup, new project activation, post-installation verification
+- **`icc:reset`** - System recovery when stuck, clear accumulated penalties, fresh restart
+- **`icc:refresh`** - Tool updates, configuration changes, capability synchronization
+
+**When to Use:**
+- `icc:init` → After installation, new project setup, configuration validation needed
+- `icc:reset` → System unresponsive, accumulated issues, need clean state
+- `icc:refresh` → Tool availability changed, want enhanced capabilities, optimization
+
 ## PM Commands
 
 ### Team Management

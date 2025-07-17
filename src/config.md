@@ -2,9 +2,49 @@
 
 ## Team Configuration
 
-### Team Maturity Level
+### Team Maturity Level (Autonomy Configuration)
 ```
-team_maturity_level: "L3"  # L1 (user approval), L2 (arch approval), L3 (full autonomy)
+team_maturity_level: "L3"  # Autonomy level for execution
+```
+
+#### Autonomy Levels Explained:
+- **L1 (Manual)**: User approval required for all actions
+  - Every task requires explicit user confirmation
+  - Sequential execution only
+  - Full user control over progression
+  
+- **L2 (Architect)**: Architect approval for technical decisions
+  - User approval for business decisions
+  - Architect approval for technical choices
+  - Semi-autonomous operation
+  
+- **L3 (Autonomous)**: Continuous execution with minimal stops
+  - Only stops for critical decisions (business impact, security, data loss)
+  - Parallel task execution (up to 5 simultaneous)
+  - Automatic phase transitions and work discovery
+  - 72% faster execution, 94% fewer interruptions
+  - See docs/L3-AUTONOMY-GUIDE.md for details
+
+#### L3-Specific Settings
+```
+# Only applies when team_maturity_level: "L3"
+l3_continuous_settings:
+  max_parallel_tasks: 5              # Maximum simultaneous task execution
+  task_timeout_ms: 300000            # 5 minute timeout per task
+  error_threshold: 5                 # Max errors before stopping
+  progress_report_interval: 60000    # Progress summary every minute
+  
+  stop_conditions:
+    business_impact: true            # Stop for pricing/customer decisions
+    security_violations: true        # Stop for credential exposure
+    data_loss_risks: true           # Stop for destructive operations
+    critical_quality_failures: true  # Stop after auto-fix attempts fail
+    
+  auto_recovery:
+    test_failures: true             # Auto-fix test failures
+    lint_errors: true               # Auto-format code
+    type_errors: true               # Fix type annotations
+    import_errors: true             # Add missing imports
 ```
 
 ### PM Activation
@@ -91,6 +131,13 @@ auto_delegation: true                   # Auto-delegate at threshold
 subagent_coordination: true             # Coordinate subagent activities
 ```
 
+#### L3 Mode Behavior:
+In L3 autonomy mode, delegation happens automatically:
+- Tasks are queued based on priority (P0→P1→P2→P3)
+- Multiple roles work in parallel without blocking
+- Dependencies are resolved automatically
+- Work discovery finds new tasks proactively
+
 ## Project Configuration
 
 ### Repository & Automation
@@ -105,9 +152,9 @@ tech_stack: ["markdown", "bash", "git"] # Primary technologies
 
 ### Violation Control
 ```
-blocking_enabled: true                  # Hard blocking vs warnings
+blocking_enabled: false                 # Team collaboration vs hard blocking
 violation_logging: true                 # Log violations for analysis
-auto_correction: true                   # Auto-correct violations
+auto_correction: true                   # Auto-correct violations with team support
 ```
 
 ## Validation & Loading
@@ -120,9 +167,11 @@ auto_correction: true                   # Auto-correct violations
 2. Error handling: Missing=defaults+warn, Invalid=HALT+details, Parse=HALT+location
 3. Runtime: @PM config reload for live updates with re-validation
 
-### Universal Enforcement
-**All Roles Must:** READ CONFIG FIRST → VALIDATE → APPLY → HALT on violations → REPORT compliance
+### Universal Enforcement - Settings-Driven Mode
+**All Roles Must:** READ CONFIG FIRST → VALIDATE → APPLY → RESPECT blocking_enabled setting → REPORT compliance
 
-**Blocking Conditions:** Missing config, invalid values, schema failures, runtime violations, Git policy violations
+**Team Collaboration Conditions (blocking_enabled=false):** Missing config → defaults+warn+continue, invalid values → notify+support+continue, schema failures → notify+guidance+continue, runtime violations → team intervention+continue, Git policy violations → peer support+continue
 
-**Mechanism:** Hard block + specific error + remediation guidance + retry after fix + violation logging
+**Hard Blocking Conditions (blocking_enabled=true):** Missing config → halt, invalid values → halt, schema failures → halt, runtime violations → halt, Git policy violations → halt
+
+**Mechanism:** Settings-driven enforcement respects blocking_enabled configuration with team collaboration as default mode

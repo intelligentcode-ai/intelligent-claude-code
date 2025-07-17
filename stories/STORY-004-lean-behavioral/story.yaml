@@ -1,0 +1,55 @@
+story:
+  id: "STORY-004"
+  title: "Lean Behavioral System"
+  epic: "EPIC-002"
+  created: "2025-07-15 07:29:21"
+  status: "PLANNED"
+  
+description: |
+  Replace the complex behavioral enforcement system with a single lean workflow
+  executor. The workflow IS the behavior - assignment files contain all needed
+  instructions. This makes the system LEAN and reduces context bloat by 80%.
+  
+acceptance_criteria:
+  - Single workflow-executor.md replaces behavioral modules
+  - All behavior driven by assignment file structure
+  - No penalties, monitoring, or complex prompts
+  - Context size reduced by 80%
+  - System remains fully functional
+  
+tasks:
+  - id: "TASK-016"
+    title: "Audit current behavioral modules"
+    description: "Document what each behavioral module actually does"
+    estimated_size: "SMALL"
+    acceptance: "Clear list of functions to preserve"
+    
+  - id: "TASK-017"
+    title: "Create workflow-executor.md"
+    description: "Implement single lean execution module"
+    estimated_size: "MEDIUM"
+    acceptance: "Module only reads assignments and executes"
+    
+  - id: "TASK-018"
+    title: "Remove redundant behavioral modules"
+    description: "Delete modules replaced by workflow"
+    estimated_size: "SMALL"
+    acceptance: "Only workflow-executor remains"
+    
+  - id: "TASK-019"
+    title: "Update virtual-team.md imports"
+    description: "Point to lean workflow system"
+    estimated_size: "SMALL"
+    acceptance: "Clean import chain with minimal modules"
+    
+  - id: "TASK-020"
+    title: "Validate context reduction"
+    description: "Measure and confirm 80% reduction"
+    estimated_size: "SMALL"
+    acceptance: "Token count reduced by 80%"
+    
+technical_notes: |
+  - Preserve only: task reading, execution, status update
+  - Remove: penalties, monitoring, enforcement patterns
+  - Assignment files become single source of truth
+  - Simpler system is more reliable system

@@ -1,0 +1,53 @@
+epic:
+  id: "EPIC-003"
+  title: "User Authentication System"
+  created: "2025-07-15 09:20:00"
+  created_by: "@PM"
+  status: "IN_PROGRESS"
+  
+description: |
+  Implement a complete user authentication system including registration,
+  login, password reset, and session management with security best practices.
+  
+objectives:
+  - Secure user authentication
+  - Session management
+  - Password reset capability
+  - Multi-factor authentication support
+  - Audit logging
+  
+success_metrics:
+  - Zero security vulnerabilities
+  - < 200ms authentication time
+  - 99.9% uptime
+  - GDPR compliant
+  
+constraints:
+  - Must integrate with existing user database
+  - Cannot break current API contracts
+  - Must support legacy session tokens during transition
+  
+stories:
+  - id: "STORY-001"
+    title: "User Registration Flow"
+    status: "PLANNED"
+    
+  - id: "STORY-002"
+    title: "Login and Session Management"
+    status: "IN_PROGRESS"
+    
+  - id: "STORY-003"
+    title: "Password Reset Flow"
+    status: "PLANNED"
+    
+  - id: "BUG-001"
+    title: "Fix Session Timeout Issue"
+    status: "IN_PROGRESS"
+    
+knowledge_entities:
+  - type: "EpicPlanning"
+    name: "UserAuth-Epic-Planning-2025-07-15"
+    observations:
+      - "Phased approach: registration → login → reset"
+      - "Security-first design principle"
+      - "Backward compatibility required"
