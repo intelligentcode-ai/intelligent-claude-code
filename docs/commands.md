@@ -9,6 +9,18 @@ icc:reset                       # Reset system to clean state, clear stuck issue
 icc:refresh                     # Refresh capabilities, sync tools and configurations
 ```
 
+### Claude Code Slash Commands
+```bash
+/icc:init-system                # Initialize intelligent-claude-code virtual team system
+/icc:system-status              # Display comprehensive system status and health
+/icc:activate-role @RoleName    # Activate specific role with behavioral switching
+/icc:memory-search "query"      # Search memory system for patterns and learnings
+/icc:create-story "title" --epic EPIC-XXX  # Create new story with validation
+/icc:plan-story STORY-XXX       # Plan story tasks with architect validation
+/icc:validate-work-type "description"  # Validate work type and specialist requirements
+/icc:archive-completed          # Archive completed work items with cascading
+```
+
 **System Command Usage:**
 - **`icc:init`** - First-time setup, new project activation, post-installation verification
 - **`icc:reset`** - System recovery when stuck, clear accumulated penalties, fresh restart

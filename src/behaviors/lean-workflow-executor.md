@@ -34,11 +34,14 @@ function: initialize_system()
     - Initialize PM command processor
     - Initialize learning enforcement system
     - Initialize L3 continuous engine if L3 mode
+    - RESTORE SYSTEM STATE from .claude/system-state.json
+    - VALIDATE behavioral pattern restoration
   integration: 
     - SettingsAPI.getSettings()
     - AutonomyController.initialize()
     - PMCommandProcessor.initialize()
     - initializeLearningEnforcement()
+    - SystemStateManager.restoreState()
     - IF settings.autonomy_level == "L3":
         ContinuousExecutionEngine.initialize()
         TaskQueueManager.initialize()
