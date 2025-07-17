@@ -1,0 +1,99 @@
+bug:
+  id: "BUG-058"
+  title: "badges.md file missing after make install/update"
+  type: "installation"
+  epic: "EPIC-002"
+  created: "2025-07-17 18:30:00"
+  created_by: "@Developer"
+  assigned_to: "@System-Engineer"
+  priority: "P0"
+  severity: "HIGH"
+  status: "PLANNED"
+  phase: "PLAN"
+  
+problem_description: |
+  The /icc-init-system command enforces usage of badges.md for scoring system,
+  but src/modes/badges.md file does not exist on client systems after 
+  make install or make update. This causes command failures when badges
+  are referenced but the file is missing.
+  
+root_cause: |
+  Installation process does not properly deploy badges.md file to client
+  systems, but commands expect it to be available.
+  
+impact: |
+  - /icc-init-system command fails when badges.md missing
+  - Scoring system cannot function without badges file
+  - Installation appears successful but system is broken
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "badges.md properly installed by make install"
+    validation_method: "installation_test"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "make update deploys badges.md if missing"
+    validation_method: "update_test"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "/icc-init-system works with badges.md present"
+    validation_method: "integration_test"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "Installation validation detects missing badges.md"
+    validation_method: "validation_test"
+    status: "pending"
+    
+definition_of_done:
+  - "badges.md deployed by installation process"
+  - "Commands work properly with badges file"
+  - "Installation validation checks for required files"
+  - "System functions end-to-end after installation"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L2"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: true
+  
+# Critical installation bug
+workflow:
+  current_phase: "EXECUTE"
+  fix_approach: "fix_installation"
+  testing_required: true
+
+tasks:
+  - id: "TASK-059"
+    title: "Fix ansible badges.md deployment"
+    description: "Add badges.md copy task to ansible role main.yml"
+    assigned_to: "@System-Engineer"
+    status: "completed"
+    type: "implementation"
+    
+  - id: "TASK-060"
+    title: "Peer review ansible changes"
+    description: "DevOps engineer review of ansible installation fixes"
+    assigned_to: "@DevOps-Engineer"
+    status: "pending"
+    type: "review"
+    dependencies: ["TASK-059"]
+    
+  - id: "TASK-061"
+    title: "Update installation documentation"
+    description: "Document badges.md installation requirements"
+    assigned_to: "@System-Engineer"
+    status: "pending"
+    type: "documentation"
+    dependencies: ["TASK-060"]
+    
+  - id: "TASK-062"
+    title: "Git operations for BUG-058"
+    description: "Commit and push BUG-058 fixes"
+    assigned_to: "@System-Engineer"
+    status: "pending"
+    type: "git_operations"
+    dependencies: ["TASK-061"]

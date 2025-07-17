@@ -4,7 +4,7 @@ Restore full system state from preservation data after context compaction or sys
 
 ## Usage
 ```
-/icc:restore-state
+icc-restore-state
 ```
 
 ## Implementation
@@ -49,7 +49,7 @@ Last State: 2025-07-17T17:35:00Z | Mode: L3 | Active Work: BUG-024
 - Validation failure → Report issues and continue
 
 ## Integration
-- Used by /icc:init-system for automatic restoration
+- Used by icc-init-system for automatic restoration
 - Can be called manually after context loss
 - Integrates with ID tracking and memory systems
 - Preserves all workflow and process states

@@ -1,10 +1,23 @@
 # icc:activate-role
 
-Activate a specific specialist role with full behavioral switching and expertise loading.
+Activate a specialist role (PM, AI-Engineer, Developer, etc.) with full behavioral switching and expertise loading. Supports dynamic specialist creation for any technology domain.
 
 ## Usage
 ```
-/icc:activate-role @Role-Name
+icc-activate-role @Role-Name
+```
+
+## Examples
+```bash
+# Activate core roles
+icc-activate-role @PM
+icc-activate-role @AI-Engineer
+icc-activate-role @Developer
+
+# Activate dynamic specialists (auto-created)
+icc-activate-role @React-Developer
+icc-activate-role @AWS-Engineer
+icc-activate-role @Security-Specialist
 ```
 
 ## Parameters

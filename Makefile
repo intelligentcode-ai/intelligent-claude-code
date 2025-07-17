@@ -121,6 +121,7 @@ test:
 	@echo "Verifying installation..."
 	@test -f test-install/CLAUDE.md || (echo "FAIL: CLAUDE.md not created"; exit 1)
 	@test -f test-install/.claude/modes/virtual-team.md || (echo "FAIL: virtual-team.md not installed"; exit 1)
+	@test -f test-install/.claude/badges.md || (echo "FAIL: badges.md not installed to root directory"; exit 1)
 	@grep -q "@~/.claude/modes/virtual-team.md" test-install/CLAUDE.md || (echo "FAIL: Import not added"; exit 1)
 	@echo "✅ Installation tests passed!"
 	@echo ""

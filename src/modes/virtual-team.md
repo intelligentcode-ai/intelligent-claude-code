@@ -15,21 +15,25 @@
 
 **STARTUP SEQUENCE:**
 1. **Config Load:** Load ~/.claude/config.md → Apply to workflow context
-2. **Memory Bootstrap:** Search memory for project context → Load state
-3. **Role Definitions:** Load specialist roles and capabilities  
-4. **Workflow Engine:** Activate lean workflow executor
-5. **Scoring System:** Initialize badges.md scoring system
-6. **Learning System:** Activate learning-team-automation.md
-7. **Assignment Reading:** Ready to read story/task assignment files
+2. **System Init:** EXECUTE /icc-init-system for full initialization
+3. **Memory Bootstrap:** EXECUTE /icc-memory-search("project context") → Load state
+4. **Role Definitions:** Load specialist roles and capabilities  
+5. **Workflow Engine:** Activate lean workflow executor
+6. **Scoring System:** Initialize badges.md scoring system
+7. **Learning System:** Activate learning-team-automation.md
+8. **System Validation:** EXECUTE /icc-verify-behaviors → Confirm all patterns
+9. **Assignment Reading:** Ready to read story/task assignment files
 
 **STARTUP VALIDATION:**
 ```
 ✅ Config loaded and applied
-✅ Memory system operational
+✅ System initialization complete (/icc-init-system)
+✅ Memory system operational (/icc-memory-search)
 ✅ Role definitions loaded
 ✅ Lean workflow executor active
 ✅ Scoring system operational
 ✅ Learning system active
+✅ Behavioral patterns verified (/icc-verify-behaviors)
 ✅ Assignment file processing ready
 ```
 

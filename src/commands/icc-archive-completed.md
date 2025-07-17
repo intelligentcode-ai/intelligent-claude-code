@@ -4,8 +4,8 @@ Archive all completed work items with cascading hierarchy and git-aware operatio
 
 ## Usage
 ```
-/icc:archive-completed
-/icc:archive-completed --dry-run
+icc-archive-completed
+icc-archive-completed --dry-run
 ```
 
 ## Parameters
