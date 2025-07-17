@@ -1,0 +1,21 @@
+task:
+  id: "TASK-007-fix-validation-schema"
+  title: "Create workflow validation schema"
+  type: "enhancement"
+  parent: "TASK-007"
+  created: "2025-07-15 09:00:00"
+  phase: "INIT"
+  priority: "P2"
+  
+problem_description: |
+  The workflow templates reference validation schemas but the schema file 
+  (workflow-templates/schemas/workflow-schema.yaml) was not created.
+  Need to add proper schema validation for workflow templates.
+  
+acceptance_criteria:
+  - Schema file created at correct location
+  - Validates all required sections
+  - Supports customization validation
+  - Includes usage examples
+  
+estimated_size: "SMALL"
