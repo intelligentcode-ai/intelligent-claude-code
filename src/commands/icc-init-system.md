@@ -10,16 +10,17 @@ icc-init-system
 ## Implementation
 This command triggers the lean-workflow-executor initialization sequence with full state restoration:
 
-1. **Config Load**: Load ~/.claude/config.md → Apply to workflow context
-2. **STATE RESTORATION**: Execute icc-restore-state → Restore behavioral patterns
-3. **Memory Bootstrap**: Search memory for project context → Load state  
-4. **Role Definitions**: Load specialist roles and capabilities
-5. **Workflow Engine**: Activate lean workflow executor
-6. **Scoring System**: Initialize badges.md scoring system
-7. **Learning System**: Activate learning-team-automation.md
-8. **Assignment Reading**: Ready to read story/task assignment files
-9. **BEHAVIORAL VALIDATION**: Execute icc-verify-behaviors → Verify all patterns restored correctly
-10. **RECOVERY CONFIRMATION**: Confirm full system restoration complete
+1. **FORCE-LOAD BEHAVIORS**: Execute /icc-load → Force-load all virtual team patterns
+2. **Config Load**: Load ~/.claude/config.md → Apply to workflow context
+3. **STATE RESTORATION**: Execute /icc-restore-state → Restore behavioral patterns
+4. **Memory Bootstrap**: Search memory for project context → Load state  
+5. **Role Definitions**: Load specialist roles and capabilities
+6. **Workflow Engine**: Activate lean workflow executor
+7. **Scoring System**: Initialize badges.md scoring system
+8. **Learning System**: Activate learning-team-automation.md
+9. **Assignment Reading**: Ready to read story/task assignment files
+10. **BEHAVIORAL VALIDATION**: Execute /icc-verify-behaviors → Verify all patterns restored correctly
+11. **RECOVERY CONFIRMATION**: Confirm full system restoration complete
 
 ## Expected Output
 ```
