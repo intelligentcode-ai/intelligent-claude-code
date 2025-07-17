@@ -39,19 +39,19 @@ stories:
   - id: "STORY-004"
     title: "Lean Behavioral System"
     description: "Replace complex behaviors with workflow executor"
-    status: "PLANNED"
+    status: "COMPLETED"
     priority: "P1"
     
   - id: "STORY-005"
     title: "Implement Priority System"
     description: "Add proper prioritization instead of last-is-highest"
-    status: "PLANNED"
+    status: "COMPLETED"
     priority: "P0"
     
   - id: "STORY-006"
     title: "Migrate to Correct Terminology"
     description: "Fix epic→story→task→subtask hierarchy throughout"
-    status: "PLANNED"
+    status: "COMPLETED"
     priority: "P0"
     
   - id: "STORY-007"
@@ -69,20 +69,20 @@ stories:
   - id: "STORY-009"
     title: "Evaluate Scoring System for Lean Architecture"
     description: "Decide if scoring adds value or just complexity"
-    status: "PLANNED"
+    status: "COMPLETED"
     priority: "P2"
     
 bugs:
   - id: "BUG-002"
     title: "System Bloat - Old and New Systems Active"
     severity: "CRITICAL"
-    status: "IN_PROGRESS"
+    status: "COMPLETED"
     priority: "P0"
     
   - id: "BUG-003"
     title: "Missing Role Assignment Validation in Lean Workflow"
     severity: "CRITICAL"
-    status: "TRIAGED"
+    status: "COMPLETED"
     priority: "P0"
     
   - id: "BUG-004"

@@ -26,24 +26,30 @@ FUNCTION readAssignment(type, id):
     RETURN content
 ```
 
-### 2. Execute Workflow
+### 2. Execute Workflow (MEMORY-FIRST)
 ```pseudocode
 FUNCTION executeWorkflow(assignment):
-    // Check autonomy level once
+    // MANDATORY: Consult memory BEFORE starting work
+    relevantKnowledge = consultMemoryForTask(assignment)
+    
+    // Apply retrieved knowledge to current work
+    applyKnowledgeToWork(relevantKnowledge, assignment)
+    
+    // Check autonomy level
     isL3 = getConfig("autonomy_level") == "L3"
     
-    // Execute based on phase
+    // Execute based on phase with knowledge
     SWITCH assignment.phase:
         CASE "INIT":
-            planWork(assignment)
+            planWorkWithKnowledge(assignment, relevantKnowledge)
         CASE "PLAN":
-            createTasks(assignment)
+            createTasksWithKnowledge(assignment, relevantKnowledge)
         CASE "EXECUTE":
-            executeTasks(assignment, isL3)
+            executeTasksWithKnowledge(assignment, relevantKnowledge, isL3)
         CASE "ACCEPTANCE":
-            validateWork(assignment)
+            validateWorkWithKnowledge(assignment, relevantKnowledge)
         CASE "DONE":
-            captureKnowledge(assignment)
+            captureNewKnowledge(assignment, relevantKnowledge)
 ```
 
 ### 3. Assign Role
@@ -89,15 +95,127 @@ ELSE:
     requestApproval()
 ```
 
-### Memory Storage
+### Memory-First Implementation (CRITICAL FIX)
 ```pseudocode
-// Simple memory operations without complex learning system
-FUNCTION storeKnowledge(item, knowledge):
-    memory.create({
-        name: item.id + "-knowledge",
-        type: "Knowledge",
-        content: knowledge
-    })
+FUNCTION consultMemoryForTask(task):
+    // Extract keywords from task
+    keywords = extractKeywords(task.title, task.description)
+    relevantKnowledge = {learnings: [], similarTasks: [], errorPatterns: []}
+    
+    // Search for relevant learnings
+    FOR keyword IN keywords:
+        results = mcp__memory__search_nodes(keyword)
+        relevantKnowledge.learnings.extend(results)
+    
+    // Search for similar tasks
+    similarTasks = searchSimilarTasks(task.type, task.domain)
+    relevantKnowledge.similarTasks = similarTasks
+    
+    // Search for error patterns
+    errorPatterns = searchErrorPatterns(task.type)
+    relevantKnowledge.errorPatterns = errorPatterns
+    
+    RETURN relevantKnowledge
+
+FUNCTION applyKnowledgeToWork(knowledge, task):
+    applicationLog = []
+    
+    // Apply different types of learnings
+    FOR learning IN knowledge.learnings:
+        application = null
+        
+        SWITCH learning.entityType:
+            CASE "CriticalBug":
+                application = applyCriticalBugLearning(learning, task)
+            CASE "TechnicalPattern":
+                application = applyTechnicalPattern(learning, task)
+            CASE "UserCorrection":
+                application = applyUserCorrection(learning, task)
+            CASE "StoryLearning":
+                application = applyStoryLearning(learning, task)
+            DEFAULT:
+                application = applyGenericLearning(learning, task)
+        
+        IF application:
+            applicationLog.append(application)
+    
+    // Apply patterns from similar tasks
+    FOR pattern IN knowledge.similarTasks:
+        application = applyPatternToTask(pattern, task)
+        applicationLog.append(application)
+    
+    // Avoid known error patterns
+    FOR errorPattern IN knowledge.errorPatterns:
+        application = avoidErrorPattern(errorPattern, task)
+        applicationLog.append(application)
+    
+    // Log all applications
+    logLearningApplications(applicationLog, task)
+    
+    RETURN applicationLog
+
+FUNCTION captureNewKnowledge(task, previousKnowledge):
+    // Capture user information as learnings
+    userInformation = extractUserInformation(task)
+    IF userInformation:
+        storeUserInformation(userInformation)
+    
+    // Capture corrections as learnings
+    corrections = extractCorrections(task)
+    IF corrections:
+        storeCorrections(corrections)
+    
+    // Store task completion with new insights
+    storeTaskCompletion(task, previousKnowledge)
+
+// Learning Application Functions
+FUNCTION applyCriticalBugLearning(bugLearning, task):
+    preventionMeasures = []
+    
+    // Extract prevention measures from bug observations
+    FOR observation IN bugLearning.observations:
+        IF observation.contains("Must consult memory"):
+            preventionMeasures.append("memory_consultation_mandatory")
+        IF observation.contains("Should learn from information"):
+            preventionMeasures.append("capture_user_information")
+        IF observation.contains("recall before tasks"):
+            preventionMeasures.append("memory_first_workflow")
+    
+    // Apply prevention measures
+    FOR measure IN preventionMeasures:
+        applyPreventionMeasure(measure, task)
+    
+    RETURN {
+        type: "critical_bug_prevention",
+        learning: bugLearning,
+        measures: preventionMeasures,
+        applied: true
+    }
+
+FUNCTION applyTechnicalPattern(pattern, task):
+    // Check if pattern applies to current task
+    IF isPatternApplicable(pattern, task):
+        applyPatternPrinciples(pattern, task)
+        RETURN {
+            type: "technical_pattern",
+            pattern: pattern,
+            applied: true
+        }
+    RETURN {type: "technical_pattern", applied: false}
+
+FUNCTION applyUserCorrection(correction, task):
+    // Extract corrected behavior
+    correctedBehavior = extractCorrectedBehavior(correction)
+    
+    // Apply correction to current task
+    applyCorrectionToTask(correctedBehavior, task)
+    
+    RETURN {
+        type: "user_correction",
+        correction: correction,
+        behavior: correctedBehavior,
+        applied: true
+    }
 ```
 
 ### Git Operations
@@ -122,10 +240,12 @@ This lean executor replaces the entire complex system of:
 ## Benefits
 
 1. **80% Token Reduction**: From ~150k to ~30k tokens
-2. **Simpler Logic**: Direct execution without loops
-3. **Easier Maintenance**: Fewer moving parts
-4. **Same Functionality**: All essential features preserved
-5. **Faster Execution**: No overhead from complex systems
+2. **Memory-First Learning**: Mandatory memory consultation before all work
+3. **Actual Learning**: Captures user information and applies knowledge
+4. **Simpler Logic**: Direct execution without loops
+5. **Easier Maintenance**: Fewer moving parts
+6. **Same Functionality**: All essential features preserved
+7. **Faster Execution**: No overhead from complex systems
 
 ## Usage
 
