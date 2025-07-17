@@ -1,0 +1,83 @@
+story:
+  id: "STORY-007"
+  title: "Remove Outdated Commands and Update to icc: Prefix"
+  epic: "EPIC-002"
+  created: "2025-07-15 09:50:00"
+  created_by: "@PM"
+  assigned_to: "@PM"
+  priority: "P1"
+  status: "COMPLETE"
+  phase: "COMPLETE"
+  completion_date: "2025-07-15 13:53:00"
+  resolution: "IMPLEMENTED"
+  triage_date: "2025-07-15 13:40:00"
+  triage_by: "@PM + @AI-Architect"
+  triage_notes: "Investigating overlap with completed BUG-003 (icc: prefix updates)"
+  
+problem_description: |
+  The system has outdated commands that need removal and new commands
+  that need proper icc: prefixes. This is a significant cleanup effort
+  that affects the entire command system.
+  
+acceptance_criteria:
+  - All outdated commands removed from system
+  - All new commands have proper icc: prefix
+  - Command documentation updated
+  - Help system reflects changes
+  - No broken command references remain
+  
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false
+  git_privacy: true
+  
+tasks:
+  - id: "TASK-001"
+    title: "Fix remaining outdated command references"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "blocking"
+    estimated_hours: 1
+    status: "complete"
+    description: "Update /accept-task, /task-status, and COMMAND /plan-task references to icc: prefix"
+    
+  - id: "TASK-002"
+    title: "Integrate commands with validation system"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    estimated_hours: 2
+    status: "complete"
+    description: "Ensure all commands integrate with lean-workflow-executor validation chains"
+    
+  - id: "TASK-003"
+    title: "Update documentation consistency"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Update all examples and usage patterns to be consistent"
+    
+  - id: "TASK-004"
+    title: "Test command integration"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Test all commands with lean-workflow-executor validation system"
+    
+  - id: "TASK-005"
+    title: "Deploy outdated command removal"
+    type: "deployment"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-004"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Deploy all remaining command updates"

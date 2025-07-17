@@ -1,0 +1,130 @@
+story:
+  id: "STORY-006"
+  title: "Migrate to Correct Terminology"
+  epic: "EPIC-002"
+  created: "2025-07-15 09:38:00"
+  created_by: "@PM"
+  assigned_to: "@PM"
+  priority: "P0"  # Blocking all proper work
+  status: "COMPLETE"
+  phase: "COMPLETE"
+  completion_date: "2025-07-15 13:24:00"
+  resolution: "ALREADY_RESOLVED"
+  resolution_notes: "System already uses correct terminology throughout - no changes needed"
+  
+problem_description: |
+  System uses incorrect terminology throughout:
+  - Current "tasks" are actually stories
+  - Current "subtasks" are actually tasks
+  - Missing proper epic structure
+  - File organization doesn't match hierarchy
+  
+acceptance_criteria:
+  - All templates use correct terminology
+  - File structure matches epic→story→task hierarchy
+  - Commands work with proper terms
+  - Examples demonstrate correct usage
+  - Migration script for existing work
+  
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  memory_integration: true
+  blocking_enabled: false
+  git_privacy: true
+  requirements_engineer_mandatory: true
+  architecture_review_required: true
+  enforce_peer_review: true
+  
+migration_mapping:
+  current_wrong:
+    "/tasks/": "Actually contains stories"
+    "assignment.yaml subtasks": "Actually tasks"
+    "/stories/": "Correct but contains wrong task references"
+    "No epic structure": "Everything flat"
+    
+  target_correct:
+    "/epics/": "Top level grouping"
+    "/epics/EPIC-XXX/stories/": "Stories and bugs"
+    "/epics/EPIC-XXX/stories/STORY-XXX/tasks/": "Individual tasks"
+    "story.yaml tasks section": "List of tasks"
+    "task.yaml subtasks section": "Optional atomic steps"
+    
+affected_components:
+  templates:
+    - "templates/assignment-template.yaml" → "templates/story-assignment-template.yaml"
+    - Need: "templates/task-assignment-template.yaml"
+    - Need: "templates/bug-assignment-template.yaml"
+    - Need: "templates/epic-template.yaml"
+    
+  workflows:
+    - "workflow-templates/outer-workflow.yaml" → Must create stories, not tasks
+    - "workflow-templates/inner-workflow.yaml" → Must execute tasks, not subtasks
+    
+  commands:
+    - All commands must use correct terminology
+    - "icc:plan-task" → "icc:plan-story"
+    - "icc:execute-task" → Remains (correct)
+    - Need: "icc:create-story", "icc:create-bug"
+    
+  documentation:
+    - All examples must show correct hierarchy
+    - README files need updates
+    - Command help text corrections
+    
+migration_script_requirements:
+  - Move /tasks/* → /epics/EPIC-002/stories/*/
+  - Rename "subtasks" → "tasks" in story files
+  - Create proper epic structure
+  - Update all references
+  - Preserve git history
+  
+tasks:
+  - id: "TASK-001"
+    title: "Fix Template Terminology"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "blocking"
+    estimated_hours: 1
+    status: "complete"
+    description: "Rename templates and fix terminology: assignment→story, subtasks→tasks"
+    
+  - id: "TASK-002"
+    title: "Fix Workflow Terminology"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-001"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Update workflow templates to use correct terminology"
+    
+  - id: "TASK-003"
+    title: "Fix Documentation Terminology"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-002"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Update CLAUDE.md and examples with correct terminology"
+    
+  - id: "TASK-004"
+    title: "Test Terminology Fix"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-003"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Verify all terminology is correct and consistent"
+    
+  - id: "TASK-005"
+    title: "Deploy Terminology Fix"
+    type: "deployment"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    dependencies: ["TASK-004"]
+    estimated_hours: 1
+    status: "complete"
+    description: "Deploy terminology corrections"

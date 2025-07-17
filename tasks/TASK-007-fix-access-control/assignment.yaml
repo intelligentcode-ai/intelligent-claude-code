@@ -1,0 +1,21 @@
+task:
+  id: "TASK-007-fix-access-control"
+  title: "Add workflow access control"
+  type: "enhancement"
+  parent: "TASK-007"
+  created: "2025-07-15 09:02:00"
+  phase: "INIT"
+  priority: "P2"
+  
+problem_description: |
+  Security review identified that workflow templates don't define
+  permission models for who can customize workflows. Need to add
+  role-based access control to workflow customizations.
+  
+acceptance_criteria:
+  - Define permission model for workflow customization
+  - Add access control to hook usage
+  - Document permission requirements
+  - Provide examples of restricted workflows
+  
+estimated_size: "MEDIUM"

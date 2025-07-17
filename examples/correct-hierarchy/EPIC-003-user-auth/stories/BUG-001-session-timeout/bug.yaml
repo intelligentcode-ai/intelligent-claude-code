@@ -1,0 +1,86 @@
+bug:
+  id: "BUG-001"
+  title: "Fix Session Timeout Issue"
+  epic: "EPIC-003"
+  created: "2025-07-15 09:15:00"
+  reported_by: "User"
+  assigned_to: "@PM"
+  severity: "HIGH"
+  status: "IN_PROGRESS"
+  phase: "EXECUTE"
+  
+description: |
+  Users are being logged out after 5 minutes of inactivity instead
+  of the configured 30 minutes. This is causing frustration and
+  repeated login requirements.
+  
+reproduction_steps:
+  - Login to application
+  - Wait 5 minutes without activity
+  - Try to access protected resource
+  - Observe: 401 Unauthorized response
+  
+expected_behavior: |
+  Session should remain valid for 30 minutes of inactivity as configured
+  
+actual_behavior: |
+  Session expires after 5 minutes of inactivity
+  
+impact:
+  affected_users: "All authenticated users"
+  frequency: "100% reproducible"
+  business_impact: "High - user frustration, productivity loss"
+  
+root_cause_analysis: |
+  Initial investigation suggests token expiry is set correctly but
+  the session validation middleware may be checking the wrong field.
+  
+tasks:
+  - id: "TASK-001"
+    title: "Investigate session validation logic"
+    type: "research"
+    assigned_to: "@Backend-Developer"
+    status: "COMPLETED"
+    estimated_hours: 1
+    actual_hours: 1.5
+    findings: "Middleware checking 'iat' instead of 'exp' field"
+    
+  - id: "TASK-002"
+    title: "Fix session validation check"
+    type: "implementation"
+    assigned_to: "@Backend-Developer"
+    status: "IN_PROGRESS"
+    estimated_hours: 2
+    
+  - id: "TASK-003"
+    title: "Add regression tests"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    status: "PLANNED"
+    estimated_hours: 2
+    
+  - id: "TASK-004"
+    title: "Security review the fix"
+    type: "peer_review"
+    assigned_to: "@Security-Engineer"
+    status: "PLANNED"
+    estimated_hours: 1
+    
+  - id: "TASK-005"
+    title: "Deploy hotfix to production"
+    type: "deployment"
+    assigned_to: "@DevOps-Engineer"
+    status: "PLANNED"
+    estimated_hours: 1
+    
+resolution_criteria:
+  - Session timeout works as configured (30 minutes)
+  - No security vulnerabilities introduced
+  - Regression tests prevent recurrence
+  - Existing sessions remain valid
+  
+workflow:
+  current_phase: "EXECUTE"
+  completed_tasks: 1
+  total_tasks: 5
+  target_resolution: "2025-07-15 14:00:00"
