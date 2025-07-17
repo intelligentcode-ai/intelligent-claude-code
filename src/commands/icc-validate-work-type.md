@@ -13,13 +13,15 @@ icc-validate-work-type --file story.yaml
 - `--file`: Analyze work from assignment file
 
 ## Implementation
-Uses lean-workflow-executor validation chain:
+Uses lean-workflow-executor validation chain with auto-correction:
 
 1. **Pattern Matching**: Analyze content against work type patterns
 2. **Specialist Detection**: Identify required specialist architects
-3. **Capability Assessment**: Calculate capability match scores
-4. **Assignment Validation**: Ensure >70% capability match
-5. **Recommendation Engine**: Suggest optimal role assignments
+3. **AUTO-ACTIVATION**: Automatically activate specialist architect role
+4. **Capability Assessment**: Calculate capability match scores
+5. **Assignment Validation**: Ensure >70% capability match
+6. **AUTO-CORRECTION**: Apply role suggestions automatically
+7. **Recommendation Engine**: Suggest optimal role assignments
 
 ## Expected Output
 ```
