@@ -1,0 +1,141 @@
+bug:
+  id: "BUG-059"
+  title: "Validation chain bypassed repeatedly - needs self-correcting enforcement"
+  type: "critical_behavioral_failure"
+  epic: "EPIC-002"
+  created: "2025-07-17 19:45:00"
+  created_by: "@PM"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "CRITICAL"
+  status: "IN PROGRESS"
+  phase: "EXECUTE"
+  
+  # AUTO-CORRECTED VALIDATION CHAIN APPLIED
+  validation_chain_applied: true
+  work_type_detected: "ai_agentic"
+  specialist_architect_consulted: "@AI-Architect"
+  triage_completed: true
+  joint_approval: true
+  
+problem_description: |
+  CRITICAL BEHAVIORAL FAILURE: The validation chain is repeatedly bypassed
+  causing multiple system failures:
+  
+  1. Role assignments without Specialist Architect consultation
+  2. Bug/story creation without proper triage
+  3. Git operations without settings enforcement
+  4. Self-assignment violations
+  5. L3 autonomy used as excuse to bypass validation
+  
+  The system needs SELF-CORRECTING validation that automatically performs
+  missing validation steps without stopping L3 autonomous execution.
+  
+root_cause: |
+  Validation chains are documented as GUIDANCE but not implemented as
+  MANDATORY AUTO-CORRECTION. The behavioral system lacks enforcement
+  mechanisms that automatically detect and correct validation violations.
+  
+impact: |
+  - Repeated validation chain bypasses
+  - Wrong role assignments causing poor quality
+  - Git operations violate user privacy settings
+  - System unreliable due to process violations
+  - Trust in behavioral system is broken
+  - L3 autonomy produces poor results
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Self-correcting validation automatically detects missing steps"
+    validation_method: "integration_test"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "Auto-executes specialist architect consultation when missing"
+    validation_method: "behavioral_test"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "Git operations automatically enforce settings without manual intervention"
+    validation_method: "automated_test"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "L3 autonomy accelerates validation, never bypasses it"
+    validation_method: "integration_test"
+    status: "pending"
+    
+  - id: "AC-005"
+    description: "All role assignments validated through proper specialist architect"
+    validation_method: "process_audit"
+    status: "pending"
+    
+definition_of_done:
+  - "Self-correcting validation system implemented"
+  - "Validation chains automatically executed without stopping"
+  - "All role assignments validated through specialist architect"
+  - "Git operations automatically enforce settings"
+  - "L3 autonomy maintains process compliance"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: true
+  
+# This is the most critical behavioral system bug
+workflow:
+  current_phase: "PLAN"
+  approach: "self_correcting_validation"
+  testing_required: true
+  architect_review_required: true
+  
+# Tasks created with proper validation chain
+tasks:
+  - id: "TASK-063"
+    title: "Knowledge retrieval"
+    type: "research"
+    assigned_to: "@AI-Engineer"
+    effort: "small"
+    status: "completed"
+    
+  - id: "TASK-064"
+    title: "Design self-correcting validation system"
+    type: "architecture"
+    assigned_to: "@AI-Architect"
+    effort: "large"
+    status: "completed"
+    dependencies: ["TASK-063"]
+    
+  - id: "TASK-065"
+    title: "Implement auto-correction mechanisms"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    effort: "large"
+    status: "completed"
+    dependencies: ["TASK-064"]
+    
+  - id: "TASK-066"
+    title: "Peer review behavioral system changes"
+    type: "review"
+    assigned_to: "@AI-Architect"
+    effort: "medium"
+    status: "completed"
+    dependencies: ["TASK-065"]
+    
+  - id: "TASK-067"
+    title: "Test self-correcting validation"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    effort: "medium"
+    status: "completed"
+    dependencies: ["TASK-066"]
+    
+  - id: "TASK-068"
+    title: "Knowledge generation"
+    type: "knowledge_creation"
+    assigned_to: "@AI-Engineer"
+    effort: "small"
+    status: "completed"
+    dependencies: ["TASK-067"]

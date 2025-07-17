@@ -14,13 +14,15 @@ icc-create-story "Story title" --epic EPIC-XXX [--priority P1] [--type feature]
 - `--type`: feature, enhancement, refactor (default: feature)
 
 ## Implementation
-Follows lean-workflow-executor validation chain:
+Follows lean-workflow-executor validation chain with auto-correction:
 
-1. **icc:detect-work-type**: Analyze story content for specialist requirements
-2. **icc:require-triage**: Mandatory PM + Specialist Architect approval
-3. **icc:validate-assignments**: Ensure >70% capability match for all tasks
-4. **icc:require-approval**: Joint PM + Specialist Architect approval
-5. **icc:create-assignment**: Generate story.yaml with embedded config
+1. **FORCE-LOAD**: Execute /icc-reload to ensure behavioral compliance
+2. **AUTO-DETECT**: Execute /icc-validate-work-type for content analysis
+3. **AUTO-TRIAGE**: Automatically perform PM + Specialist Architect triage
+4. **AUTO-VALIDATE**: Ensure >70% capability match for all tasks
+5. **AUTO-APPROVE**: Joint PM + Specialist Architect approval
+6. **AUTO-ASSIGN**: Generate story.yaml with validated assignments
+7. **AUTO-CORRECT**: Apply role suggestions if validation fails
 
 ## Expected Output
 ```
