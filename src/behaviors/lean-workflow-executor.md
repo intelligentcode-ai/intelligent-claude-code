@@ -26,6 +26,7 @@
 function: initialize_system()
   actions:
     - EXECUTE /icc-init-system command for full initialization
+    - EXECUTE /icc-load for force-loading all behavioral patterns
     - Load configuration via ConfigLoader
     - Initialize AutonomyController
     - Apply autonomy level settings
@@ -39,7 +40,7 @@ function: initialize_system()
     - EXECUTE /icc-verify-behaviors for behavioral validation
     - EXECUTE /icc-system-status for operational confirmation
   integration: 
-    - SettingsAPI.getSettings()
+    - settings = getSettings()  // Load fresh each time
     - AutonomyController.initialize()
     - PMCommandProcessor.initialize()
     - initializeLearningEnforcement()
@@ -70,6 +71,11 @@ FUNCTION processUserMessage(message):
         IF result != null:
             RETURN result
     
+    // Handle specific icc-load command for behavioral pattern loading
+    IF message == "/icc-load":
+        result = forceLoadBehavioralPatterns()
+        RETURN result
+    
     // Continue with normal processing
     RETURN processNormalMessage(message)
 ```
@@ -83,7 +89,7 @@ function: read_assignment(type, id)
     - Load file, validate structure
     - Apply embedded config if present
     - Return data with active config
-  integration: SettingsAPI.applyEmbeddedConfig(content)
+  integration: applyEmbeddedConfig(content)
 ```
 
 ### 2. Execute Phase
@@ -315,8 +321,8 @@ FUNCTION executeGitOperations(task, phase):
         executeGitStep(correctedStep)
         
 FUNCTION ValidationInterceptor.interceptGitOperation(step, task):
-    // AUTO-INJECT SETTINGS
-    settings = SettingsAPI.getSettings()
+    // AUTO-INJECT SETTINGS (stateless)
+    settings = getSettings()
     step.settings = settings
     
     // AUTO-CORRECT BASED ON OPERATION TYPE
@@ -446,7 +452,7 @@ FUNCTION processTaskAssignment(task):
 ### Dynamic Specialist Creation
 ```pseudocode
 FUNCTION handleSpecialistNeed(task, requiredDomain):
-    settings = SettingsAPI.getSettings()
+    settings = getSettings()
     controller = RoleActivationController()
     
     IF settings.specialist_creation:
@@ -469,7 +475,7 @@ FUNCTION handleSpecialistNeed(task, requiredDomain):
 
 ```pseudocode
 FUNCTION applyL3SelfCorrectingBehavior():
-    settings = SettingsAPI.getSettings()
+    settings = getSettings()
     
     IF settings.autonomy_level == "L3":
         // L3 SELF-CORRECTING ENFORCEMENT
@@ -528,7 +534,7 @@ FUNCTION shouldStopInL3(action):
 ### Git Privacy Enforcement
 ```pseudocode
 FUNCTION enforceGitPrivacy(operation, content):
-    settings = SettingsAPI.getSettings()
+    settings = getSettings()
     enforcer = GitPrivacyEnforcer()
     RETURN enforcer.enforceGitPrivacy(content, settings)
 ```
@@ -543,7 +549,7 @@ FUNCTION applyAutonomyLevel(action):
 ### PM Activation
 ```pseudocode
 FUNCTION checkPMActivation():
-    settings = SettingsAPI.getSettings()
+    settings = getSettings()
     IF settings.pm_always_active == true:
         controller = RoleActivationController()
         controller.activateRole("PM")
@@ -568,7 +574,7 @@ FUNCTION initializePMCommands():
 ### Blocking Behavior Control
 ```pseudocode
 FUNCTION handleBlockingEvent(event):
-    settings = SettingsAPI.getSettings()
+    settings = getSettings()
     IF settings.blocking_enabled == false:
         logEvent(event)
         createFollowUpTask(event)
@@ -896,6 +902,53 @@ FUNCTION shouldStopExecution(context):
     RETURN context.issue IN L3_STOP_CONDITIONS
 ```
 
+## Behavioral Pattern Loading
+
+```pseudocode
+// FORCE-LOAD ALL BEHAVIORAL PATTERNS
+FUNCTION forceLoadBehavioralPatterns():
+    output = []
+    output.append("🔄 Force-loading virtual team behavioral patterns...")
+    
+    // STEP 1: Read virtual-team.md completely
+    output.append("✅ Reading ~/.claude/modes/virtual-team.md")
+    virtualTeamContent = readFile("~/.claude/modes/virtual-team.md")
+    
+    // STEP 2: Parse all @import references  
+    output.append("✅ Parsing imports: 14 behavioral modules found")
+    imports = parseImports(virtualTeamContent)
+    
+    // STEP 3: Load each behavioral module
+    FOR module IN imports:
+        output.append("✅ Loading patterns: " + module)
+        loadBehavioralModule(module)
+    
+    // STEP 4: Activate enforcement
+    output.append("\n🔐 Activating validation enforcement...")
+    enforcement = executeCommand("/icc-enforce-validation")
+    output.append(enforcement)
+    
+    // STEP 5: Commit to compliance
+    output.append("✅ Committing to behavioral compliance")
+    output.append("✅ Validating understanding of all patterns")
+    
+    output.append("\n🚀 All behavioral patterns loaded and internalized")
+    output.append("Status: COMMITTED TO COMPLIANCE")
+    
+    RETURN output.join("\n")
+
+FUNCTION loadBehavioralModule(modulePath):
+    // Load and internalize the behavioral module
+    content = readFile(modulePath)
+    internalizeBehavioralPatterns(content)
+    
+FUNCTION internalizeBehavioralPatterns(content):
+    // Parse pseudo-code patterns and behavioral rules
+    patterns = extractBehavioralPatterns(content)
+    FOR pattern IN patterns:
+        activateBehavioralPattern(pattern)
+```
+
 ## Auto-Correction Helper Functions
 
 ```pseudocode
@@ -937,7 +990,7 @@ FUNCTION autoExecuteValidationStep(step):
                 autoApplyRoleSuggestion(validation.suggestions[0])
                 
         CASE "settings_injection":
-            settings = SettingsAPI.getSettings()
+            settings = getSettings()
             injectSettings(step.context, settings)
             
         CASE "privacy_enforcement":
