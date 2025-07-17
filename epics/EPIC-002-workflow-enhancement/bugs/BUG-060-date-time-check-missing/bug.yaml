@@ -1,0 +1,44 @@
+bug:
+  id: "BUG-060"
+  title: "System fails to check current date/time before using dates"
+  type: "behavioral_violation"
+  epic: "EPIC-002"
+  created: "2025-07-17 16:30:00"
+  created_by: "@AI-Engineer"
+  assigned_to: "@QA-Engineer"
+  priority: "P1"
+  severity: "HIGH"
+  status: "PLANNED"
+  phase: "INIT"
+  
+problem_description: |
+  The system uses hardcoded dates without checking actual current date/time,
+  leading to incorrect timestamps in learning entities and file names.
+  
+  Example: Created entities with "2025-01-17" when actual date was "2025-07-17"
+  
+root_cause: |
+  No behavioral pattern enforcing date/time check before date usage.
+  Developers assume dates rather than retrieving them.
+  
+impact: |
+  - Wrong dates in memory entities (6 months off!)
+  - Incorrect file naming with dates
+  - Historical data corruption
+  - Learning timeline confusion
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Behavioral pattern requires date command before date usage"
+    validation_method: "behavioral_test"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "All date-dependent operations check current date first"
+    validation_method: "integration_test"
+    status: "pending"
+    
+definition_of_done:
+  - "Date check pattern documented in behaviors"
+  - "Validation warns when dates used without checking"
+  - "All existing patterns updated"
