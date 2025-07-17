@@ -41,7 +41,7 @@ When you make a request, the system follows this validation process:
                 ↓
 3. If <70%: Create Specialist → If ≥70%: Proceed with Role
                 ↓
-4. Validation Command: /validate-assignment
+4. Validation Command: icc:validate-assignment
                 ↓
 5. Final Confirmation or Re-assignment
 ```
@@ -50,7 +50,7 @@ When you make a request, the system follows this validation process:
 
 ### Core Validation Command
 ```bash
-/validate-assignment
+icc:validate-assignment
 ```
 This command triggers a comprehensive validation of the current role assignment:
 - Analyzes the task requirements
@@ -63,14 +63,14 @@ This command triggers a comprehensive validation of the current role assignment:
 **Request**: "Create a React component for user profile"
 ```
 System: @Frontend-Developer assigned (React work detected)
-→ /validate-assignment
+→ icc:validate-assignment
 → Result: 95% match - Optimal assignment confirmed
 ```
 
 **Request**: "Set up Kubernetes deployment"
 ```
 System: @Developer assigned initially
-→ /validate-assignment
+→ icc:validate-assignment
 → Result: 45% match - Creating @Kubernetes-DevOps specialist
 → @Kubernetes-DevOps now assigned (95% match)
 ```
@@ -165,7 +165,7 @@ System Response:
 **Solution**: 
 1. System auto-detects mismatch during validation
 2. Automatic re-assignment occurs
-3. If not, manually run `/validate-assignment`
+3. If not, manually run `icc:validate-assignment`
 
 ### Issue: Specialist Not Created
 **Symptom**: Generic role on specialized work
@@ -217,7 +217,7 @@ User: "Build a payment processing system"
 
 [Initial Assignment]
 @Backend-Developer assigned
-Running /validate-assignment...
+Running icc:validate-assignment...
 
 [Validation Result]
 - Payment expertise: 60% (suboptimal)

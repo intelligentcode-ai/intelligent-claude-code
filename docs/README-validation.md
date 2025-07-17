@@ -71,7 +71,7 @@ System:
 
 Force validation at any time:
 ```bash
-/validate-assignment
+icc:validate-assignment
 ```
 
 ## Key Concepts
@@ -107,16 +107,16 @@ Complex tasks may require multiple specialists:
 ### Validation Commands
 ```bash
 # Basic validation
-/validate-assignment
+icc:validate-assignment
 
 # Force revalidation
-/validate-assignment --force
+icc:validate-assignment --force
 
 # Verbose output
-/validate-assignment --verbose
+icc:validate-assignment --verbose
 
 # Check specific role
-/validate-assignment @Frontend-Developer
+icc:validate-assignment @Frontend-Developer
 ```
 
 ### System Commands
@@ -128,7 +128,7 @@ Complex tasks may require multiple specialists:
 @PM Show validation history
 
 # Reset validation state
-/reset --validation-only
+icc:reset --validation-only
 ```
 
 ## Best Practices
@@ -172,10 +172,10 @@ Complex tasks may require multiple specialists:
 
 | Issue | Quick Fix | Details |
 |-------|-----------|---------|
-| Wrong role assigned | `/validate-assignment --force` | See [Troubleshooting](./validation-troubleshooting.md#wrong-role-type-assigned) |
+| Wrong role assigned | `icc:validate-assignment --force` | See [Troubleshooting](./validation-troubleshooting.md#wrong-role-type-assigned) |
 | No specialist created | Lower threshold or be more specific | See [Troubleshooting](./validation-troubleshooting.md#specialist-not-created) |
-| Validation not running | `/refresh` and reinitialize | See [Troubleshooting](./validation-troubleshooting.md#validation-not-running) |
-| Roles working sequentially | `/parallel-delegate --force` | See [Troubleshooting](./validation-troubleshooting.md#roles-not-working-in-parallel) |
+| Validation not running | `icc:refresh` and reinitialize | See [Troubleshooting](./validation-troubleshooting.md#validation-not-running) |
+| Roles working sequentially | `icc:parallel-delegate --force` | See [Troubleshooting](./validation-troubleshooting.md#roles-not-working-in-parallel) |
 
 ## Integration with Core Features
 
