@@ -1,0 +1,73 @@
+bug:
+  id: "BUG-020"
+  title: "Slash commands created but not integrated into workflow execution"
+  type: "integration"
+  epic: "EPIC-002"
+  created: "2025-07-17 16:45:00"
+  created_by: "@PM"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "HIGH"
+  status: "PLANNED"
+  phase: "PLAN"
+  
+problem_description: |
+  STORY-008 created 8 icc: slash commands but they are NOT integrated into
+  the actual workflow execution system. The commands exist in .claude/commands/
+  but the behavioral modules (lean-workflow-executor.md, virtual-team.md) do
+  not reference or use these commands. This means the commands are orphaned
+  and not "executed and involved more reliably" as originally requested.
+  
+root_cause: |
+  Incomplete implementation - focused on creating command files without
+  integrating them into the execution flow of the system.
+  
+impact: |
+  - Commands exist but aren't used by the system
+  - User's goal of "more reliable execution" not achieved
+  - Workflow continues using behavioral patterns instead of slash commands
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Slash commands integrated into lean-workflow-executor.md"
+    validation_method: "code_review"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "Virtual-team.md references and uses slash commands"
+    validation_method: "code_review"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "Workflow execution actually triggers slash commands"
+    validation_method: "integration_test"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "Documentation shows how commands integrate with workflow"
+    validation_method: "manual_review"
+    status: "pending"
+    
+  - id: "AC-005"
+    description: "ID-TRACKER.md checks enforced before any work item creation"
+    validation_method: "code_review"
+    status: "pending"
+    
+definition_of_done:
+  - "All behavioral modules updated to use slash commands"
+  - "Commands actually execute during workflow"
+  - "Integration tested end-to-end"
+  - "Documentation complete"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L2"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: true
+  
+# Bug requires immediate attention
+workflow:
+  current_phase: "PLAN"
+  fix_approach: "integrate_commands"
+  testing_required: true
