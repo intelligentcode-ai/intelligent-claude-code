@@ -4,7 +4,7 @@ Display comprehensive system status including configuration, roles, memory, and 
 
 ## Usage
 ```
-/icc:system-status
+icc-system-status
 ```
 
 ## Implementation

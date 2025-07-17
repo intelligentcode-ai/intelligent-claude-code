@@ -42,11 +42,14 @@ CLASS PMCommandProcessor:
         output = []
         output.append("🚀 Initializing intelligent-claude-code system...")
         
-        // Step 1: Load configuration
-        output.append("📋 Loading configuration...")
-        configLoader.clearCache()
-        config = configLoader.loadConfiguration()
-        output.append("  ✓ Configuration loaded: " + summarizeConfig(config))
+        // Delegate to icc-init-system command
+        output.append("🔄 Executing /icc-init-system...")
+        iccResult = executeCommand("/icc-init-system")
+        output.append(iccResult)
+        
+        // Additional PM-specific initialization
+        output.append("📋 PM-specific initialization...")
+        config = configLoader.getCurrentConfiguration()
         
         // Step 2: Initialize autonomy
         output.append("🎯 Setting autonomy level: " + config.autonomy_level)
@@ -83,6 +86,11 @@ CLASS PMCommandProcessor:
 FUNCTION executeRefresh():
     output = []
     output.append("🔄 Refreshing system capabilities...")
+    
+    // Delegate to icc-system-status for current state
+    output.append("📊 Getting current system status...")
+    statusResult = executeCommand("/icc-system-status")
+    output.append(statusResult)
     
     // Step 1: Reload configuration
     output.append("📋 Reloading configuration...")

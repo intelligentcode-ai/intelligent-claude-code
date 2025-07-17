@@ -1,10 +1,10 @@
 # icc:create-story
 
-Create a new story with validation command chains and specialist assignment.
+Create a new user story with automatic validation, ID tracking, and specialist assignment. Integrates with workflow validation chains and PM oversight.
 
 ## Usage
 ```
-/icc:create-story "Story title" --epic EPIC-XXX [--priority P1] [--type feature]
+icc-create-story "Story title" --epic EPIC-XXX [--priority P1] [--type feature]
 ```
 
 ## Parameters

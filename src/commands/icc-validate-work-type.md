@@ -4,8 +4,8 @@ Validate work type and determine required specialist assignments.
 
 ## Usage
 ```
-/icc:validate-work-type "work description"
-/icc:validate-work-type --file story.yaml
+icc-validate-work-type "work description"
+icc-validate-work-type --file story.yaml
 ```
 
 ## Parameters  

@@ -1,0 +1,130 @@
+story:
+  id: "STORY-008"
+  title: "Create Claude Code Slash Commands from System Functions"
+  type: "feature"
+  epic: "EPIC-002"
+  created: "2025-07-17 15:30:00"
+  created_by: "@PM"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  status: "COMPLETED"
+  phase: "DONE"
+  
+problem_description: |
+  The system contains powerful functions in behavioral modules that should be
+  accessible as Claude Code slash commands for reliable execution. Need to
+  transform key system functions into icc: prefixed slash commands and create
+  proper .claude/commands/ directory structure for Claude Code integration.
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "All essential system functions converted to icc: slash commands"
+    validation_method: "manual_review"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "Commands follow Claude Code slash command format"
+    validation_method: "automated_test"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "Commands integrate with lean-workflow-executor"
+    validation_method: "integration_test"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "Command documentation is comprehensive"
+    validation_method: "manual_review"
+    status: "pending"
+    
+definition_of_done:
+  - "All tasks completed"
+  - "Slash commands working in Claude Code"
+  - "Integration tested"
+  - "Documentation complete"
+  - "Knowledge captured"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L2"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: true
+  peer_review_required: true
+  testing_mandatory: true
+  
+# Tasks created during planning
+tasks:
+  - id: "TASK-001"
+    title: "Audit existing command capabilities"
+    type: "research"
+    assigned_to: "@AI-Architect"
+    estimated_hours: 2
+    status: "completed"
+    
+  - id: "TASK-002"
+    title: "Create system management commands"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    estimated_hours: 3
+    status: "completed"
+    dependencies: ["TASK-001"]
+    
+  - id: "TASK-003"
+    title: "Create workflow commands"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    estimated_hours: 4
+    status: "completed"
+    dependencies: ["TASK-002"]
+    
+  - id: "TASK-004"
+    title: "Peer review all commands"
+    type: "review"
+    assigned_to: "@AI-Architect"
+    estimated_hours: 2
+    status: "pending"
+    dependencies: ["TASK-003"]
+    
+  - id: "TASK-005"
+    title: "Test command functionality"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    estimated_hours: 3
+    status: "pending"
+    dependencies: ["TASK-004"]
+    
+  - id: "TASK-006"
+    title: "Update documentation"
+    type: "documentation"
+    assigned_to: "@AI-Engineer"
+    estimated_hours: 2
+    status: "pending"
+    dependencies: ["TASK-005"]
+    
+  - id: "TASK-007"
+    title: "Deploy commands"
+    type: "deployment"
+    assigned_to: "@DevOps-Engineer"
+    estimated_hours: 1
+    status: "pending"
+    dependencies: ["TASK-006"]
+    
+  - id: "TASK-008"
+    title: "Capture knowledge"
+    type: "knowledge_creation"
+    assigned_to: "@AI-Engineer"
+    estimated_hours: 1
+    status: "completed"
+    dependencies: ["TASK-007"]
+    
+workflow:
+  current_phase: "DONE"
+  task_sequencing: "sequential"
+  critical_path: ["TASK-001", "TASK-002", "TASK-003", "TASK-004", "TASK-005", "TASK-007"]
+  completed_date: "2025-07-17 17:00:00"
+  
+git_operations:
+  branch: "feature/STORY-008-slash-commands"
+  commit_prefix: "story-008:"
+  merge_strategy: "squash"
