@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.4.0] - 2025-07-17
+
+### Added - Self-Correcting Validation System
+
+#### Command-Based Enforcement
+- **ValidationInterceptor**: Core self-correcting logic in lean-workflow-executor.md
+- **/icc-enforce-validation**: Command that activates real-time enforcement hooks
+- **/icc-test-enforcement**: Test command demonstrating validation working
+- **Integration with /icc-load**: Automatic enforcement activation
+- **Documentation**: Comprehensive guide at docs/SELF-CORRECTING-VALIDATION.md
+
+#### Auto-Correction Features
+- **Work Type Detection**: Automatically identifies ai_agentic, infrastructure, security work
+- **Role Assignment Correction**: Auto-corrects to specialists with >70% capability match
+- **Git Privacy Enforcement**: Auto-strips AI mentions when git_privacy enabled
+- **Architect Consultation**: Auto-activates specialist architects when missing
+- **L3 Acceleration**: Validation executes without stopping autonomous flow
+
+### Fixed
+- **BUG-059**: Validation chains now self-correct instead of being bypassed
+- Command-based hooks enable real enforcement in markdown systems
+- L3 autonomy accelerates validation rather than bypassing it
+
+### Changed
+- /icc-load now automatically executes /icc-enforce-validation
+- All role assignments validated through proper specialist architect
+- Git operations automatically enforce privacy settings
+
 ## [5.3.0] - 2025-07-14
 
 ### MAJOR RELEASE: Behavioral Activation Protocol Implementation
