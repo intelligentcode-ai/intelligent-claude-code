@@ -159,6 +159,23 @@
     msg: "Scores file preserved: {{ claude_install_path }}/scores.md already exists - keeping user scoring data"
   when: scores_md_exists.stat.exists
 
+- name: Check if badges.md exists
+  stat:
+    path: "{{ claude_install_path }}/badges.md"
+  register: badges_md_exists
+
+- name: Create badges.md from template (ONLY if not exists)
+  copy:
+    src: "{{ playbook_dir }}/../src/modes/badges.md"
+    dest: "{{ claude_install_path }}/badges.md"
+    mode: '0644'
+  when: not badges_md_exists.stat.exists
+
+- name: Display badges preservation notice
+  debug:
+    msg: "Badges file preserved: {{ claude_install_path }}/badges.md already exists - keeping user achievement data"
+  when: badges_md_exists.stat.exists
+
 - name: Check if learning-callouts.md exists
   stat:
     path: "{{ claude_install_path }}/learning-callouts.md"
@@ -200,6 +217,14 @@
   copy:
     src: "{{ playbook_dir }}/../src/VERSION"
     dest: "{{ claude_install_path }}/VERSION"
+    mode: '0644'
+    force: yes
+  when: update_mode is defined and update_mode | bool
+
+- name: Force update badges.md file if update_mode is enabled
+  copy:
+    src: "{{ playbook_dir }}/../src/modes/badges.md"
+    dest: "{{ claude_install_path }}/badges.md"
     mode: '0644'
     force: yes
   when: update_mode is defined and update_mode | bool

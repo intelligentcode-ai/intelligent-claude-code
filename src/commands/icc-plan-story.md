@@ -4,7 +4,7 @@ Plan story tasks with architect validation and specialist assignment.
 
 ## Usage
 ```
-/icc:plan-story STORY-XXX
+icc-plan-story STORY-XXX
 ```
 
 ## Parameters

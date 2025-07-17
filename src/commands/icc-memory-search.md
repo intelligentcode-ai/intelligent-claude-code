@@ -4,9 +4,9 @@ Search memory system for patterns, learnings, and knowledge entities.
 
 ## Usage
 ```
-/icc:memory-search "search query"
-/icc:memory-search --type Learning
-/icc:memory-search --entity "Entity Name"
+icc-memory-search "search query"
+icc-memory-search --type Learning
+icc-memory-search --entity "Entity Name"
 ```
 
 ## Parameters

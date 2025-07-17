@@ -4,7 +4,7 @@ Verify that all behavioral patterns and system components are functioning correc
 
 ## Usage
 ```
-/icc:verify-behaviors
+icc-verify-behaviors
 ```
 
 ## Implementation
@@ -15,7 +15,7 @@ This command performs comprehensive behavioral validation:
 3. **WORKFLOW ENGINE CHECK**: Validate lean-workflow-executor is active
 4. **MEMORY INTEGRATION CHECK**: Test MCP memory system connectivity
 5. **SCORING SYSTEM CHECK**: Verify badges.md scoring is operational
-6. **COMMAND SYSTEM CHECK**: Test all /icc: commands are available
+6. **COMMAND SYSTEM CHECK**: Test all icc- commands are available
 7. **ID TRACKING CHECK**: Validate ID-TRACKER.md is functional
 8. **L3 AUTONOMY CHECK**: Verify L3 continuous execution if configured
 
@@ -56,7 +56,7 @@ This command performs comprehensive behavioral validation:
   ✓ Process/Quality metrics updated
 
 ✅ COMMAND SYSTEM READY
-  ✓ All /icc: commands available
+  ✓ All icc- commands available
   ✓ PM commands operational
   ✓ Recovery commands functional
 
@@ -90,7 +90,7 @@ System: FULLY OPERATIONAL | Mode: L3 | Status: READY
 - Scoring malfunctions → Reset and reinitialize system
 
 ## Integration
-- Called after /icc:restore-state for verification
+- Called after icc-restore-state for verification
 - Can be used for system health checks
 - Provides diagnostic information for troubleshooting
 - Validates all critical system components
