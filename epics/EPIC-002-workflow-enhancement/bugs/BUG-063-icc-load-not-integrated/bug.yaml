@@ -1,0 +1,135 @@
+bug:
+  id: "BUG-063"
+  title: "icc-load command created but not integrated into workflow execution"
+  type: "integration"
+  epic: "EPIC-002"
+  created: "2025-07-17 17:48:44"
+  created_by: "@AI-Engineer"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "CRITICAL"
+  status: "IN PROGRESS"
+  phase: "EXECUTE"
+  
+problem_description: |
+  The /icc-load command exists in src/commands/icc-load.md but is NOT integrated
+  into the lean-workflow-executor.md behavioral module. This critical command
+  for force-loading behavioral patterns is completely missing from:
+  - System initialization sequence
+  - Slash command processing
+  - Workflow execution flow
+  
+  This means the command cannot be executed and behavioral patterns cannot be
+  force-loaded as intended by the system design.
+  
+root_cause: |
+  Incomplete integration during command creation. The command file was created
+  but the integration step into behavioral modules was skipped, leaving the
+  command orphaned and non-functional.
+  
+impact: |
+  - System cannot force-load behavioral patterns
+  - /icc-load command is non-functional
+  - Behavioral pattern loading is incomplete
+  - System initialization missing critical step
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "/icc-load integrated into lean-workflow-executor.md initialization"
+    validation_method: "code_review"
+    status: "in_progress"
+    
+  - id: "AC-002"
+    description: "/icc-load available in slash command processing"
+    validation_method: "integration_test"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "forceLoadBehavioralPatterns() function implemented"
+    validation_method: "code_review"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "Integration tested end-to-end"
+    validation_method: "functional_test"
+    status: "pending"
+    
+  - id: "AC-005"
+    description: "Documentation updated to show integration"
+    validation_method: "manual_review"
+    status: "pending"
+    
+definition_of_done:
+  - "/icc-load fully integrated into workflow execution"
+  - "Command functions correctly when executed"
+  - "Integration tested and verified"
+  - "Documentation complete"
+  - "Git workflow followed completely"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: false
+  
+# Critical bug requires immediate attention
+workflow:
+  current_phase: "EXECUTE"
+  fix_approach: "integrate_command_into_workflow"
+  testing_required: true
+  
+tasks:
+  - id: "TASK-076"
+    title: "Knowledge retrieval - icc-load integration patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_retrieval"
+    status: "completed"
+    priority: "blocking"
+    
+  - id: "TASK-077"
+    title: "Implement icc-load integration in lean-workflow-executor"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "in_progress"
+    priority: "blocking"
+    
+  - id: "TASK-078"
+    title: "Test icc-load integration functionality"
+    assigned_to: "@QA-Engineer"
+    type: "testing"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-077"]
+    
+  - id: "TASK-079"
+    title: "Peer review icc-load integration implementation"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-077"]
+    
+  - id: "TASK-080"
+    title: "Document icc-load integration in behavioral modules"
+    assigned_to: "@Requirements-Engineer"
+    type: "documentation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-077"]
+    
+  - id: "TASK-081"
+    title: "Git operations for icc-load integration"
+    assigned_to: "@DevOps-Engineer"
+    type: "git_operations"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-078", "TASK-079", "TASK-080"]
+    
+  - id: "TASK-082"
+    title: "Knowledge generation - icc-load integration patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_generation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-081"]

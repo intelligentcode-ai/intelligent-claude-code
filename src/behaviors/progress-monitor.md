@@ -44,7 +44,7 @@ FUNCTION replaceStopPoints():
         "waitForUserConfirmation": logAndContinue,
         "askUserToContinue": autoProgress,
         "confirmTaskComplete": markCompleteAndContinue,
-        "approveReview": autoApproveInL3,
+        "approveReview": performAutomatedPeerReview,
         
         // Status prompts
         "displayStatusAndWait": logStatusAndContinue,
@@ -207,19 +207,19 @@ FUNCTION isBusinessCriticalDecision(context):
 ### Review Handling
 ```pseudocode
 FUNCTION handleReviewsNonBlocking():
-    // In L3, reviews don't block progress
+    // In L3, reviews are automated but thorough (not bypassed)
     
     FUNCTION processReview(review):
         IF settings.autonomy_level == "L3":
-            // Log review for later
-            logReviewForLater(review)
+            // Perform automated peer review
+            reviewResult = performAutomatedPeerReview(review.task, review.result)
             
-            // Create follow-up if needed
-            IF review.hasIssues():
-                createFollowUpTask(review.issues)
+            // Create follow-up if issues found
+            IF reviewResult.hasIssues():
+                createFollowUpTask(reviewResult.issues)
             
-            // Continue without blocking
-            RETURN {continue: true, blocking: false}
+            // Continue without blocking (review completed)
+            RETURN {continue: true, blocking: false, completed: true}
         ELSE:
             // Normal blocking review
             RETURN {continue: false, blocking: true}

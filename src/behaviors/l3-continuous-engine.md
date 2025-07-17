@@ -79,7 +79,7 @@ CLASS ContinuousExecutionEngine:
                NOT isCurrentlyExecuting(task)
     
     FUNCTION executeTaskAsync(task):
-        // Non-blocking asynchronous execution WITH PROCESS COMPLIANCE
+        // Non-blocking asynchronous execution WITH FULL PROCESS COMPLIANCE
         ASYNC:
             state.currentTasks.append(task)
             task.status = "in_progress"
@@ -89,8 +89,9 @@ CLASS ContinuousExecutionEngine:
                 // L3 BEHAVIORAL RULE: Execute ALL processes, just faster
                 EXECUTE /icc-memory-search("task execution " + task.id)
                 
-                // Activate appropriate role
-                role = activateRole(task.assigned_to)
+                // MANDATORY: Role validation (accelerated, not bypassed)
+                validatedRole = autoPerformRoleValidation(task)
+                role = activateRole(validatedRole)
                 
                 // MANDATORY: Knowledge retrieval (cannot be skipped)
                 performKnowledgeRetrieval(task)
@@ -98,11 +99,14 @@ CLASS ContinuousExecutionEngine:
                 // Execute task with role following ALL workflow steps
                 result = await role.executeWithProcessCompliance(task)
                 
-                // MANDATORY: Peer review (automated in L3, not skipped)
+                // MANDATORY: Peer review (automated but thorough, not skipped)
                 performAutomatedPeerReview(task, result)
                 
                 // MANDATORY: Knowledge generation (cannot be skipped)
                 performKnowledgeGeneration(task, result)
+                
+                // MANDATORY: Git operations with settings enforcement
+                enforceGitSettings(task, result)
                 
                 // Handle completion
                 handleTaskCompletion(task, result)
@@ -153,18 +157,11 @@ FUNCTION shouldStopForL3(issue):
         "CRITICAL_QUALITY_FAILURE"     // System-breaking after auto-fix attempt
     ]
     
-    // L3 BEHAVIORAL RULE: Process violations do NOT cause stops
-    L3_PROCESS_VIOLATIONS_IGNORED = [
-        "MISSING_REVIEW",              // Execute automated review instead
-        "SKIPPED_TESTING",             // Execute automated testing instead
-        "MISSING_DOCUMENTATION",       // Generate documentation instead
-        "WORKFLOW_SHORTCUT"            // Execute full workflow instead
-    ]
-    
-    IF issue.type IN L3_PROCESS_VIOLATIONS_IGNORED:
+    // L3 BEHAVIORAL RULE: Process violations are AUTO-CORRECTED, not ignored
+    IF issue.type == "PROCESS_VIOLATION":
         // Auto-correct process violations without stopping
         autoCorrectProcessViolation(issue)
-        RETURN false
+        RETURN false  // Continue execution after correction
     
     RETURN issue.type IN L3_STOP_CONDITIONS AND
            issue.severity == "CRITICAL" AND
@@ -211,16 +208,64 @@ FUNCTION performKnowledgeGeneration(task, result):
 FUNCTION autoCorrectProcessViolation(issue):
     // L3 BEHAVIORAL RULE: Fix process violations, don't ignore them
     SWITCH issue.type:
-        CASE "MISSING_REVIEW":
+        CASE "MISSING_ROLE_VALIDATION":
+            autoPerformRoleValidation(issue.task)
+            
+        CASE "MISSING_PEER_REVIEW":
             performAutomatedPeerReview(issue.task, issue.result)
-        CASE "SKIPPED_TESTING":
-            performAutomatedTesting(issue.task)
-        CASE "MISSING_DOCUMENTATION":
-            generateMissingDocumentation(issue.task)
+            
+        CASE "MISSING_KNOWLEDGE_RETRIEVAL":
+            performKnowledgeRetrieval(issue.task)
+            
+        CASE "MISSING_KNOWLEDGE_GENERATION":
+            performKnowledgeGeneration(issue.task, issue.result)
+            
+        CASE "GIT_SETTINGS_VIOLATION":
+            enforceGitSettings(issue.task, issue.result)
+            
         CASE "WORKFLOW_SHORTCUT":
             executeFullWorkflow(issue.task)
     
     logProcessCompliance("Process violation auto-corrected", issue.type)
+
+FUNCTION autoPerformRoleValidation(task):
+    // L3 BEHAVIORAL RULE: Role validation is accelerated, not bypassed
+    workType = autoDetectWorkType(task.content)
+    
+    IF workType:
+        specialistArchitect = getSpecialistArchitect(workType)
+        
+        // Auto-execute triage (faster, not skipped)
+        triageResult = autoPerformTriage(task, specialistArchitect)
+        
+        // Auto-validate assignment (faster, not skipped)  
+        validation = autoValidateAssignment(task, specialistArchitect)
+        
+        IF NOT validation.valid:
+            // Auto-correct role assignment
+            correctedRole = validation.suggestions[0].suggested
+            task.assigned_to = correctedRole
+            logAutoCorrection("Role assignment corrected", correctedRole)
+    
+    logProcessCompliance("Role validation auto-completed", task.id)
+
+FUNCTION enforceGitSettings(task, result):
+    // L3 BEHAVIORAL RULE: Git operations always enforce settings
+    settings = loadSettings()
+    
+    // Auto-enforce git privacy
+    IF settings.git_privacy:
+        cleanCommitMessage = stripAIMentions(result.commitMessage)
+        result.commitMessage = cleanCommitMessage
+    
+    // Auto-enforce branch protection
+    IF settings.branch_protection:
+        ensureFeatureBranch()
+    
+    // Execute commit with enforced settings
+    executeGitCommit(result.commitMessage, result.files)
+    
+    logProcessCompliance("Git operations with settings enforcement", task.id)
 ```
 
 ### Phase Auto-Transition
