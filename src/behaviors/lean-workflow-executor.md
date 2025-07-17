@@ -37,6 +37,7 @@ function: initialize_system()
     - Initialize L3 continuous engine if L3 mode
     - EXECUTE /icc-restore-state for system state restoration
     - EXECUTE /icc-verify-behaviors for behavioral validation
+    - EXECUTE /icc-system-status for operational confirmation
   integration: 
     - SettingsAPI.getSettings()
     - AutonomyController.initialize()
@@ -59,6 +60,13 @@ FUNCTION processUserMessage(message):
     IF message.startsWith("@PM"):
         processor = PMCommandProcessor()
         result = processor.processCommand(message)
+        IF result != null:
+            RETURN result
+    
+    // Check for slash commands
+    IF message.startsWith("/icc-"):
+        commandProcessor = SlashCommandProcessor()
+        result = commandProcessor.executeCommand(message)
         IF result != null:
             RETURN result
     
@@ -207,7 +215,11 @@ FUNCTION planStory(story):
     // 2. Check embedded_config
     applyEmbeddedConfig(storyData.embedded_config)
     
-    // 3. VALIDATION CHAIN EXECUTION
+    // 3. EXECUTE SLASH COMMANDS FOR VALIDATION
+    EXECUTE /icc-validate-work-type(storyData.content)
+    EXECUTE /icc-memory-search("story planning " + story.id)
+    
+    // 4. VALIDATION CHAIN EXECUTION
     validator = new RoleAssignmentValidator()
     
     // Detect work type
@@ -260,14 +272,15 @@ FUNCTION planStory(story):
 
 ### Task Execution (Specialist executes)
 ```
-1. Read task assignment
-2. Knowledge retrieval (automatic first step)
-3. Decide if subtasks needed
-4. Execute work
-5. Update progress
-6. Knowledge generation (automatic last step)
-7. Mark complete
-8. **L3 MODE:**
+1. EXECUTE /icc-memory-search("task execution " + task.id)
+2. Read task assignment via /icc-activate-role(task.assigned_to)
+3. Knowledge retrieval (automatic first step)
+4. Decide if subtasks needed
+5. Execute work
+6. Update progress
+7. Knowledge generation (automatic last step)
+8. Mark complete
+9. **L3 MODE:**
    - Trigger auto-continue for next task
    - Update queue with completion
    - Check for unblocked tasks

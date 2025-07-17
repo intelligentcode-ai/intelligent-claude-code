@@ -63,7 +63,7 @@ CLASS ContinuousExecutionEngine:
         availableTasks = []
         allTasks = getAllPendingTasks()
         
-        // Sort by priority: P0 ’ P1 ’ P2 ’ P3
+        // Sort by priority: P0 ï¿½ P1 ï¿½ P2 ï¿½ P3
         sortedTasks = sortTasksByPriority(allTasks)
         
         FOR task IN sortedTasks:
@@ -79,18 +79,30 @@ CLASS ContinuousExecutionEngine:
                NOT isCurrentlyExecuting(task)
     
     FUNCTION executeTaskAsync(task):
-        // Non-blocking asynchronous execution
+        // Non-blocking asynchronous execution WITH PROCESS COMPLIANCE
         ASYNC:
             state.currentTasks.append(task)
             task.status = "in_progress"
             state.lastActivity = getCurrentTime()
             
             TRY:
+                // L3 BEHAVIORAL RULE: Execute ALL processes, just faster
+                EXECUTE /icc-memory-search("task execution " + task.id)
+                
                 // Activate appropriate role
                 role = activateRole(task.assigned_to)
                 
-                // Execute task with role
-                result = await role.execute(task)
+                // MANDATORY: Knowledge retrieval (cannot be skipped)
+                performKnowledgeRetrieval(task)
+                
+                // Execute task with role following ALL workflow steps
+                result = await role.executeWithProcessCompliance(task)
+                
+                // MANDATORY: Peer review (automated in L3, not skipped)
+                performAutomatedPeerReview(task, result)
+                
+                // MANDATORY: Knowledge generation (cannot be skipped)
+                performKnowledgeGeneration(task, result)
                 
                 // Handle completion
                 handleTaskCompletion(task, result)
@@ -133,12 +145,26 @@ CLASS ContinuousExecutionEngine:
 ```pseudocode
 FUNCTION shouldStopForL3(issue):
     // Only stop for truly critical issues in L3
+    // L3 BEHAVIORAL RULE: Never stop for process compliance issues
     L3_STOP_CONDITIONS = [
         "BUSINESS_IMPACT_DECISION",    // Major business logic changes
         "SECURITY_VIOLATION",          // Credential exposure, auth bypass
         "DATA_LOSS_RISK",             // Destructive operations
         "CRITICAL_QUALITY_FAILURE"     // System-breaking after auto-fix attempt
     ]
+    
+    // L3 BEHAVIORAL RULE: Process violations do NOT cause stops
+    L3_PROCESS_VIOLATIONS_IGNORED = [
+        "MISSING_REVIEW",              // Execute automated review instead
+        "SKIPPED_TESTING",             // Execute automated testing instead
+        "MISSING_DOCUMENTATION",       // Generate documentation instead
+        "WORKFLOW_SHORTCUT"            // Execute full workflow instead
+    ]
+    
+    IF issue.type IN L3_PROCESS_VIOLATIONS_IGNORED:
+        // Auto-correct process violations without stopping
+        autoCorrectProcessViolation(issue)
+        RETURN false
     
     RETURN issue.type IN L3_STOP_CONDITIONS AND
            issue.severity == "CRITICAL" AND
@@ -154,6 +180,47 @@ FUNCTION canAutoResolve(issue):
     ]
     
     RETURN issue.subtype IN AUTO_RESOLVABLE
+
+// L3 PROCESS COMPLIANCE FUNCTIONS
+FUNCTION performKnowledgeRetrieval(task):
+    // MANDATORY in L3 - cannot be skipped
+    EXECUTE /icc-memory-search("task knowledge " + task.id)
+    searchResults = searchMemory(task.type, task.domain)
+    task.retrievedKnowledge = searchResults
+    logProcessCompliance("Knowledge retrieval completed", task.id)
+
+FUNCTION performAutomatedPeerReview(task, result):
+    // MANDATORY in L3 - automated but thorough
+    reviewer = determineReviewer(task.type)
+    reviewResult = automatedReview(result, reviewer.expertise)
+    
+    IF reviewResult.hasIssues:
+        createReviewFollowUpTask(task, reviewResult.issues)
+    
+    task.reviewStatus = "completed"
+    logProcessCompliance("Automated peer review completed", task.id)
+
+FUNCTION performKnowledgeGeneration(task, result):
+    // MANDATORY in L3 - capture learnings
+    learning = extractLearnings(task, result)
+    storeInMemory(learning)
+    
+    task.knowledgeGenerated = true
+    logProcessCompliance("Knowledge generation completed", task.id)
+
+FUNCTION autoCorrectProcessViolation(issue):
+    // L3 BEHAVIORAL RULE: Fix process violations, don't ignore them
+    SWITCH issue.type:
+        CASE "MISSING_REVIEW":
+            performAutomatedPeerReview(issue.task, issue.result)
+        CASE "SKIPPED_TESTING":
+            performAutomatedTesting(issue.task)
+        CASE "MISSING_DOCUMENTATION":
+            generateMissingDocumentation(issue.task)
+        CASE "WORKFLOW_SHORTCUT":
+            executeFullWorkflow(issue.task)
+    
+    logProcessCompliance("Process violation auto-corrected", issue.type)
 ```
 
 ### Phase Auto-Transition

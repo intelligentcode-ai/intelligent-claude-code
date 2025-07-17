@@ -305,6 +305,7 @@ Blocking dependencies → critical_path priority
 - **Context7**: Real-time documentation injection
 - **GitHub CLI**: Repository management (optional, fallback available)
 - **Brave Search**: Web search capability
+- **badges.md**: Achievement tracking system (automatically deployed during installation)
 
 ### Autonomy Levels
 - **L1 (Manual)**: User approval for all actions
@@ -553,7 +554,7 @@ git log --oneline -n 5
 - **Dynamic Specialists**: Unlimited auto-generated experts (@React-Developer)
 - **Validation Command Chains**: Lightweight governance (icc:detect-work-type, icc:require-triage, icc:validate-assignments)
 - **Assignment Files**: Epic/story/task YAML files with embedded config drive execution
-- **Scoring System**: Achievement tracking via badges.md integration
+- **Scoring System**: Achievement tracking via badges.md integration (automatically deployed)
 - **Learning System**: Error forgiveness with pattern capture via learning-team-automation.md
 - **Tool Integration**: Context7, GitHub CLI, Brave Search with fallbacks
 
