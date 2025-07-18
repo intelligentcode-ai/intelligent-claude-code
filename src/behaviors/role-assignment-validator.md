@@ -5,6 +5,27 @@
 **Status:** ACTIVE  
 **Integration:** Works with lean-workflow-executor.md and role-detection-engine.md
 
+## Executive Summary (80 tokens)
+
+**Core Function:** Prevents wrong specialist assignments via pattern detection  
+**Key Validation:** Work type detection → Capability match >70% → Architect approval  
+**Work Types:** ai_agentic, infrastructure, security, database, frontend  
+**Main API:** `validateAssignment(task, role, allTasks)` → {valid, issues, suggestions}  
+**Integration:** Mandatory for all story/bug creation and task assignment  
+
+## Quick Validation Examples
+
+```yaml
+# AI Work → @AI-Engineer (not @Developer)
+# Infrastructure → @DevOps-Engineer (not @Developer)  
+# Security → @Security-Engineer with @Security-Architect approval
+# >70% capability match required for all assignments
+```
+
+## Imports
+
+@./common-patterns.md                      # Shared behavioral patterns
+
 ## Core Validation System
 
 ### Assignment Validation Engine
@@ -81,15 +102,15 @@ CLASS RoleAssignmentValidator:
         }
         
         // Step 0: CONSULT LEARNING SYSTEM FIRST
-        learningCheck = consultLearningsBeforeRoleAssignment(task.type, proposedRole)
-        IF learningCheck.blocked:
+        learningCheck = ConsultLearnings(task.type, proposedRole)  // Use common pattern
+        IF learningCheck.hasLearning AND learningCheck.shouldPrevent:
             validation.valid = false
             validation.issues.append({
                 type: "learning_prevention",
                 role: proposedRole,
-                reason: learningCheck.reason,
-                learning: learningCheck.learning.name,
-                prevention: learningCheck.learning.observations[3]
+                reason: "Previous learning prevents this assignment",
+                learning: learningCheck.learnings[0].name,
+                prevention: learningCheck.learnings[0].observations[3]
             })
             
             IF learningCheck.alternative:
@@ -174,12 +195,12 @@ FUNCTION detectWorkType(task):
     
     workTypeScores = {}
     
-    // Score each work type based on pattern matches
-    FOR workType, config IN WORK_TYPE_PATTERNS:
+    // Use shared work type keywords from common patterns
+    FOR workType, keywords IN WORK_TYPE_KEYWORDS:
         score = 0
         matchedPatterns = []
         
-        FOR pattern IN config.patterns:
+        FOR pattern IN keywords:
             IF contentLower.contains(pattern.toLowerCase()):
                 score += 1
                 matchedPatterns.append(pattern)
@@ -188,7 +209,7 @@ FUNCTION detectWorkType(task):
             workTypeScores[workType] = {
                 score: score,
                 patterns: matchedPatterns,
-                confidence: score / config.patterns.length
+                confidence: score / keywords.length
             }
     
     // Return highest scoring work type
