@@ -2,6 +2,10 @@
 
 **PURPOSE:** Enable automatic progression between tasks and phases in L3 mode
 
+## Imports
+
+@./common-patterns.md                      # Shared behavioral patterns
+
 ## Core Implementation
 
 ### Trigger Registry
@@ -58,8 +62,8 @@ CLASS AutoContinueTriggers:
 FUNCTION handleTaskCompleted(event):
     task = event.task
     
-    // Log completion
-    logInfo("Task completed: " + task.id + " (" + task.type + ")")
+    // Log completion using common pattern
+    LogWithContext("INFO", "Task completed: " + task.id + " (" + task.type + ")")
     
     // Determine next action based on task type
     SWITCH task.type:
@@ -96,7 +100,7 @@ FUNCTION triggerTesting(implementationTask):
     
     IF testTasks.length == 0:
         // No tests defined, skip to review
-        logWarning("No test tasks found, skipping to review")
+        LogWithContext("WARNING", "No test tasks found, skipping to review")  // Use common pattern
         triggerReview(implementationTask)
         RETURN
     
@@ -303,7 +307,7 @@ FUNCTION activateWork(workItem):
 FUNCTION triggerEvent(eventType, data):
     // Check if handler exists
     IF NOT triggers.has(eventType):
-        logDebug("No handler for event: " + eventType)
+        LogWithContext("DEBUG", "No handler for event: " + eventType)  // Use common pattern
         RETURN
         
     // Get handler
@@ -320,7 +324,7 @@ FUNCTION triggerEvent(eventType, data):
     TRY:
         handler(event)
     CATCH error:
-        logError("Handler error for " + eventType + ": " + error)
+        HandleError(error, "Handler - " + eventType)  // Use common pattern
         // Continue execution despite error
         handleHandlerError(eventType, error)
 

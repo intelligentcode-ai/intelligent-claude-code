@@ -2,6 +2,10 @@
 
 **PURPOSE:** Provide continuous progress visibility without stopping execution in L3 mode
 
+**IMPORTS:**
+- @./common-patterns.md                      # Shared behavioral patterns
+- @./selective-yaml-parser.md  // For 92.5% token reduction in progress tracking
+
 ## Core Implementation
 
 ### Progress Tracking System
@@ -64,7 +68,7 @@ FUNCTION replaceStopPoints():
     RETURN stopPointReplacements
 
 FUNCTION applyL3NonBlocking(action):
-    IF settings.autonomy_level != "L3":
+    IF GetSetting("autonomy_level") != "L3":  // Use common pattern
         RETURN action.executeNormally()
     
     // L3 mode - make non-blocking
@@ -80,8 +84,8 @@ FUNCTION applyL3NonBlocking(action):
 ### Auto-Continue Handlers
 ```pseudocode
 FUNCTION logAndContinue(action):
-    // Log the action that would have stopped
-    logInfo("Auto-continuing: " + action.description)
+    // Log the action that would have stopped using common pattern
+    LogWithContext("INFO", "Auto-continuing: " + action.description)
     
     // Update progress
     updateProgress(action)
@@ -93,8 +97,8 @@ FUNCTION autoProgress(context):
     // Determine next step
     nextStep = determineNextStep(context)
     
-    // Log progression
-    logInfo("Auto-progressing to: " + nextStep.description)
+    // Log progression using common pattern
+    LogWithContext("INFO", "Auto-progressing to: " + nextStep.description)
     
     // Execute next step
     executeAsync(nextStep)
@@ -169,7 +173,7 @@ FUNCTION generatePeriodicSummaries():
 ```pseudocode
 FUNCTION shouldActuallyStop(context):
     // Only stop for truly critical issues in L3
-    IF settings.autonomy_level != "L3":
+    IF GetSetting("autonomy_level") != "L3":  // Use common pattern
         RETURN true  // Normal stop behavior
     
     criticalStopConditions = [

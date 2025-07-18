@@ -1,0 +1,417 @@
+story:
+  id: "STORY-015"
+  title: "Implement standardized task numbering with mandatory review patterns"
+  type: "process_enhancement"
+  epic: "EPIC-002"
+  created: "2025-01-18 11:15:00"
+  created_by: "USER"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "CRITICAL"
+  status: "PLANNED"
+  phase: "PLAN"
+  
+problem_statement: |
+  CRITICAL REQUIREMENT: The project scope must ALWAYS be present in all work items.
+  
+  Complete workflow process must be implemented:
+  
+  1. **DEFINING** (PM Only):
+     - PM creates Epics/Stories/Bugs with description and context
+     - NO TASKS at this stage - just the work item definition
+     - Commands: /icc-create-epic, /icc-create-story, /icc-create-bug
+  
+  2. **PLANNING** (PM + Specialist Architect):
+     - PM and Specialist Architect plan execution order based on priorities
+     - Just planning, NO task creation yet
+     - Command: /icc-plan-order (joint PM + Architect command)
+  
+  3. **REFINING** (Specialist Architect):
+     - Specialist Architect creates tasks with standardized numbering
+     - Process tasks (01-09), Core tasks (10-994), Wrap-up tasks (995-999)
+     - EVERY creation/update task followed by review task
+     - Commands: /icc-plan-tasks, /icc-add-task
+  
+  4. **EXECUTING** (Specialist Roles):
+     - Specialists execute tasks including feedback loops
+     - Can create additional tasks as needed
+     - Command: /icc-add-task (for additional tasks during execution)
+  
+  5. **FINALIZING** (PM Only):
+     - PM updates state, handles archival, closes items
+     - Command: /icc-finalize-item
+  
+  Task numbering standardization:
+  - Process tasks (knowledge retrieval, settings) use lowest numbers (01-09)
+  - Core work tasks use middle numbers (10-994)
+  - Wrap-up tasks (docs, deploy, test, git, knowledge) use highest numbers (995-999)
+  - EVERY creation/update task MUST be followed by a peer review task
+  - Example: TASK-010 "@AI-Engineer: Create feature" → TASK-011 "@AI-Architect: Review feature"
+  
+user_story: |
+  As a PM, I want standardized task numbering with automatic review task generation
+  so that every work item follows consistent patterns and nothing is missed, while
+  always maintaining clear project scope visibility.
+  
+business_value: |
+  - Consistent task structure across all work items
+  - Automatic peer review enforcement
+  - No missed process steps
+  - Clear workflow patterns
+  - Reduced cognitive load
+  - Project scope always visible
+  
+project_scope: |
+  This story enhances the intelligent-claude-code virtual team system by adding
+  standardized task numbering patterns and mandatory peer review generation to
+  ensure consistent, high-quality workflow execution across all work items.
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Process tasks use numbers 01-09 (knowledge, settings retrieval)"
+    validation_method: "numbering_test"
+    status: "completed"
+    
+  - id: "AC-002"
+    description: "Wrap-up tasks use numbers 995-999 (docs, deploy, test, git, knowledge)"
+    validation_method: "numbering_test"
+    status: "completed"
+    
+  - id: "AC-003"
+    description: "Every creation/update task has immediate review task (+1 number)"
+    validation_method: "review_generation_test"
+    status: "completed"
+    
+  - id: "AC-004"
+    description: "/icc-plan-tasks command implemented and mandatory for Specialist Architect"
+    validation_method: "command_test"
+    status: "completed"
+    
+  - id: "AC-005"
+    description: "/icc-add-task command enforces review task generation"
+    validation_method: "command_test"
+    status: "completed"
+    
+  - id: "AC-006"
+    description: "/icc-plan-story command triggers Specialist Architect involvement"
+    validation_method: "command_chain_test"
+    status: "completed"
+    
+  - id: "AC-007"
+    description: "/icc-plan-bug command triggers Specialist Architect involvement"
+    validation_method: "command_chain_test"
+    status: "completed"
+    
+  - id: "AC-008"
+    description: "Project scope present in all generated tasks"
+    validation_method: "scope_visibility_test"
+    status: "completed"
+    
+  - id: "AC-009"
+    description: "PM defines items without tasks using /icc-create-* commands"
+    validation_method: "workflow_stage_test"
+    status: "completed"
+    
+  - id: "AC-010"
+    description: "PM and Architect jointly plan order with /icc-plan-order"
+    validation_method: "workflow_stage_test"
+    status: "completed"
+    
+  - id: "AC-011"
+    description: "Architect refines with tasks using /icc-plan-tasks"
+    validation_method: "workflow_stage_test"
+    status: "completed"
+    
+  - id: "AC-012"
+    description: "Specialists execute and can add tasks with /icc-add-task"
+    validation_method: "workflow_stage_test"
+    status: "completed"
+    
+  - id: "AC-013"
+    description: "PM finalizes items with /icc-finalize-item"
+    validation_method: "workflow_stage_test"
+    status: "completed"
+    
+  - id: "AC-014"
+    description: "Specialist Architect must execute task planning"
+    validation_method: "role_enforcement_test"
+    status: "completed"
+    
+  - id: "AC-015"
+    description: "Peer review by @AI-Architect for implementation"
+    validation_method: "peer_review"
+    status: "completed"
+    
+definition_of_done:
+  - "Complete 5-stage workflow implemented (Define→Plan→Refine→Execute→Finalize)"
+  - "All workflow commands operational (/icc-create-*, /icc-plan-order, /icc-plan-tasks, /icc-add-task, /icc-finalize-item)"
+  - "Standardized task numbering implemented (01-09, 10-994, 995-999)"
+  - "Automatic review task generation working (+1 numbering)"
+  - "Project scope visible in all work items and tasks"
+  - "Role restrictions enforced (PM defines/finalizes, Architect refines, Specialists execute)"
+  - "Integration testing confirms workflow stages"
+  - "Peer review completed"
+  - "Documentation updated with workflow process"
+  - "Git workflow completed"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: false
+  specialist_architect_required: true
+  
+# Critical process enhancement
+workflow:
+  current_phase: "PLAN"
+  approach: "task_numbering_standardization"
+  testing_required: true
+  
+# Standardized task numbering demonstration
+tasks:
+  - id: "TASK-001"
+    title: "@AI-Engineer: Knowledge retrieval - task numbering patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_retrieval"
+    status: "completed"
+    priority: "blocking"
+    project_scope: "intelligent-claude-code task standardization"
+    
+  - id: "TASK-002"
+    title: "@AI-Engineer: Settings retrieval - current task patterns"
+    assigned_to: "@AI-Engineer"
+    type: "settings_retrieval"
+    status: "completed"
+    priority: "blocking"
+    project_scope: "intelligent-claude-code task standardization"
+    
+  - id: "TASK-010"
+    title: "@AI-Architect: Design standardized task numbering system"
+    assigned_to: "@AI-Architect"
+    type: "design"
+    status: "completed"
+    priority: "blocking"
+    dependencies: ["TASK-001", "TASK-002"]
+    project_scope: "intelligent-claude-code task standardization"
+    completed_at: "2025-01-18 14:00:00"
+    
+  - id: "TASK-011"
+    title: "@AI-Architect: Review task numbering design"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "completed"
+    priority: "blocking"
+    dependencies: ["TASK-010"]
+    project_scope: "intelligent-claude-code task standardization"
+    review_of: "TASK-010"
+    completed_at: "2025-01-18 14:15:00"
+    
+  - id: "TASK-012"
+    title: "@AI-Engineer: Implement /icc-create-epic, /icc-create-story, /icc-create-bug"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-011"]
+    project_scope: "Stage 1: DEFINING - PM creates work items without tasks"
+    completed_at: "2025-01-18 14:30:00"
+    
+  - id: "TASK-013"
+    title: "@AI-Architect: Review work item creation commands"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-012"]
+    project_scope: "Stage 1: DEFINING - PM creates work items without tasks"
+    review_of: "TASK-012"
+    completed_at: "2025-01-18 15:00:00"
+    
+  - id: "TASK-014"
+    title: "@AI-Engineer: Implement /icc-plan-order command"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-011"]
+    project_scope: "Stage 2: PLANNING - PM + Architect plan execution order"
+    completed_at: "2025-01-18 14:35:00"
+    
+  - id: "TASK-015"
+    title: "@AI-Architect: Review planning order command"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-014"]
+    project_scope: "Stage 2: PLANNING - PM + Architect plan execution order"
+    review_of: "TASK-014"
+    completed_at: "2025-01-18 15:05:00"
+    
+  - id: "TASK-020"
+    title: "@AI-Engineer: Implement /icc-plan-tasks command"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-011"]
+    project_scope: "Stage 3: REFINING - Architect creates tasks with numbering"
+    completed_at: "2025-01-18 14:40:00"
+    
+  - id: "TASK-021"
+    title: "@AI-Architect: Review /icc-plan-tasks implementation"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-020"]
+    project_scope: "Stage 3: REFINING - Architect creates tasks with numbering"
+    review_of: "TASK-020"
+    completed_at: "2025-01-18 15:10:00"
+    
+  - id: "TASK-030"
+    title: "@AI-Engineer: Implement /icc-add-task command"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-011"]
+    project_scope: "Stage 4: EXECUTING - Specialists add tasks during execution"
+    completed_at: "2025-01-18 14:45:00"
+    
+  - id: "TASK-031"
+    title: "@AI-Architect: Review /icc-add-task implementation"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-030"]
+    project_scope: "Stage 4: EXECUTING - Specialists add tasks during execution"
+    review_of: "TASK-030"
+    completed_at: "2025-01-18 15:15:00"
+    
+  - id: "TASK-032"
+    title: "@AI-Engineer: Implement /icc-finalize-item command"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-011"]
+    project_scope: "Stage 5: FINALIZING - PM updates state and archives"
+    completed_at: "2025-01-18 14:50:00"
+    
+  - id: "TASK-033"
+    title: "@AI-Architect: Review finalize command implementation"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-032"]
+    project_scope: "Stage 5: FINALIZING - PM updates state and archives"
+    review_of: "TASK-032"
+    completed_at: "2025-01-18 15:20:00"
+    
+  - id: "TASK-040"
+    title: "@AI-Engineer: Implement task numbering patterns"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-011"]
+    project_scope: "intelligent-claude-code task standardization"
+    
+  - id: "TASK-041"
+    title: "@AI-Architect: Review task numbering implementation"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-040"]
+    project_scope: "intelligent-claude-code task standardization"
+    review_of: "TASK-040"
+    
+  - id: "TASK-050"
+    title: "@AI-Engineer: Implement automatic review task generation"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-011"]
+    project_scope: "intelligent-claude-code task standardization"
+    
+  - id: "TASK-051"
+    title: "@AI-Architect: Review automatic review generation"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-050"]
+    project_scope: "intelligent-claude-code task standardization"
+    review_of: "TASK-050"
+    
+  - id: "TASK-995"
+    title: "@Requirements-Engineer: Document task numbering patterns"
+    assigned_to: "@Requirements-Engineer"
+    type: "documentation"
+    status: "completed"
+    priority: "parallel"
+    dependencies: ["TASK-021", "TASK-031", "TASK-041", "TASK-051"]
+    project_scope: "intelligent-claude-code task standardization"
+    
+  - id: "TASK-996"
+    title: "@DevOps-Engineer: Deploy task numbering system"
+    assigned_to: "@DevOps-Engineer"
+    type: "deployment"
+    status: "completed"
+    priority: "parallel"
+    dependencies: ["TASK-021", "TASK-031", "TASK-041", "TASK-051"]
+    project_scope: "intelligent-claude-code task standardization"
+    applicable: true
+    
+  - id: "TASK-997"
+    title: "@QA-Engineer: Test standardized task system"
+    assigned_to: "@QA-Engineer"
+    type: "testing"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-021", "TASK-031", "TASK-041", "TASK-051"]
+    project_scope: "intelligent-claude-code task standardization"
+    applicable: true
+    
+  - id: "TASK-998"
+    title: "@DevOps-Engineer: Git operations for task standardization"
+    assigned_to: "@DevOps-Engineer"
+    type: "git_operations"
+    status: "completed"
+    priority: "parallel"
+    dependencies: ["TASK-995", "TASK-996", "TASK-997"]
+    project_scope: "intelligent-claude-code task standardization"
+    
+  - id: "TASK-999"
+    title: "@AI-Engineer: Knowledge generation - task patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_generation"
+    status: "completed"
+    priority: "parallel"
+    dependencies: ["TASK-998"]
+    project_scope: "intelligent-claude-code task standardization"
+    
+# Task number mapping for reference
+task_number_patterns:
+  process_tasks:
+    "001": "knowledge_retrieval"
+    "002": "settings_retrieval"
+    "003": "memory_search"
+    "004": "context_gathering"
+    "005-009": "other_process_tasks"
+    
+  core_tasks:
+    "010-994": "implementation_design_review_pairs"
+    
+  wrap_up_tasks:
+    "995": "documentation"
+    "996": "deployment (if applicable)"
+    "997": "testing (if applicable)"
+    "998": "git_operations"
+    "999": "knowledge_generation"
