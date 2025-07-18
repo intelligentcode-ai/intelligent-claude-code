@@ -105,7 +105,7 @@ tasks:
     title: "@AI-Engineer: Implement per-type ID generation"
     assigned_to: "@AI-Engineer"
     type: "implementation"
-    status: "pending"
+    status: "completed"
     priority: "critical_path"
     dependencies: ["TASK-002"]
     

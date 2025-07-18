@@ -28,7 +28,7 @@
 ## Imports
 
 @./common-patterns.md                      # Shared behavioral patterns
-@./config-loader.md @./git-privacy-enforcer.md @./role-detection-engine.md @./role-assignment-validator.md @./autonomy-controller.md @./role-activation-system.md @./pm-command-system.md @./learning-team-automation.md @./l3-continuous-engine.md @./task-queue-manager.md @./auto-continue-triggers.md @./progress-monitor.md @./work-discovery-engine.md @./archival-intelligence.md @./selective-yaml-parser.md @./smart-content-chunker.md @./task-file-generator.md @./session-file-cache.md @./lazy-loading-integration.md @./behavioral-module-registry.md
+@./config-loader.md @./git-privacy-enforcer.md @./role-detection-engine.md @./role-assignment-validator.md @./autonomy-controller.md @./role-activation-system.md @./pm-command-system.md @./learning-team-automation.md @./l3-continuous-engine.md @./task-queue-manager.md @./auto-continue-triggers.md @./progress-monitor.md @./work-discovery-engine.md @./archival-intelligence.md @./selective-yaml-parser.md @./smart-content-chunker.md @./task-file-generator.md @./session-file-cache.md @./lazy-loading-integration.md @./behavioral-module-registry.md @./id-formatting-guide.md
 
 ## Core Functions
 
