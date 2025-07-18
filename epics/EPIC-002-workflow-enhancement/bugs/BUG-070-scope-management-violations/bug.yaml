@@ -1,0 +1,199 @@
+bug:
+  id: "BUG-070"
+  title: "Team losing focus on original scope and task execution"
+  type: "scope_management"
+  epic: "EPIC-002"
+  created: "2025-07-17 18:44:00"
+  created_by: "USER"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "CRITICAL"
+  status: "PLANNED"
+  phase: "PLAN"
+  
+problem_description: |
+  CRITICAL BUG: Virtual team is losing focus on original scope and task
+  execution. Instead of executing assigned tasks, the team is getting
+  distracted by meta-work, process discussions, and scope creep.
+  
+  Observed violations:
+  1. Team creating multiple bugs instead of executing original tasks
+  2. Focus shifting from task execution to process improvement
+  3. Original work items (BUG-065) not being completed
+  4. Scope creep through endless bug creation
+  5. Team not maintaining focus on assigned objectives
+  6. Meta-work taking priority over actual deliverables
+  
+  This violates the core principle of focused task execution and
+  scope management where teams should complete assigned work before
+  expanding scope.
+  
+root_cause: |
+  Scope management mechanisms not implemented:
+  1. No scope management controls in workflow execution
+  2. Team allowed to create unlimited new work items
+  3. No focus maintenance mechanisms
+  4. Original task execution not prioritized
+  5. No scope creep detection and prevention
+  6. Meta-work not properly controlled
+  
+impact: |
+  - Original objectives not achieved
+  - Team productivity reduced by scope creep
+  - Assigned tasks not completed
+  - Focus constantly shifting to new work
+  - Deliverables not produced
+  - Scope management ineffective
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Scope management controls implemented in workflow"
+    validation_method: "scope_test"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "Focus maintenance mechanisms enforced"
+    validation_method: "focus_test"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "Original task execution prioritized"
+    validation_method: "priority_test"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "Scope creep detection and prevention implemented"
+    validation_method: "scope_creep_test"
+    status: "pending"
+    
+  - id: "AC-005"
+    description: "Meta-work properly controlled and limited"
+    validation_method: "meta_work_test"
+    status: "pending"
+    
+  - id: "AC-006"
+    description: "Peer review by @AI-Architect for scope management architecture"
+    validation_method: "peer_review"
+    status: "pending"
+    
+definition_of_done:
+  - "Scope management controls operational in workflow"
+  - "Focus maintenance mechanisms enforced"
+  - "Original task execution consistently prioritized"
+  - "Scope creep detection and prevention active"
+  - "Meta-work properly controlled"
+  - "Team maintains focus on assigned objectives"
+  - "Integration testing confirms scope management"
+  - "Peer review completed by domain architect"
+  - "Documentation updated with scope management"
+  - "Git workflow completed"
+  - "Knowledge generation captured"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: false
+  
+# Critical scope management bug
+workflow:
+  current_phase: "PLAN"
+  fix_approach: "implement_scope_management"
+  testing_required: true
+  
+tasks:
+  - id: "TASK-163"
+    title: "Knowledge retrieval - scope management patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_retrieval"
+    status: "pending"
+    priority: "blocking"
+    
+  - id: "TASK-164"
+    title: "Design scope management architecture"
+    assigned_to: "@AI-Architect"
+    type: "design"
+    status: "pending"
+    priority: "blocking"
+    dependencies: ["TASK-163"]
+    
+  - id: "TASK-165"
+    title: "Implement scope management controls in workflow"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-164"]
+    
+  - id: "TASK-166"
+    title: "Implement focus maintenance mechanisms"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-164"]
+    
+  - id: "TASK-167"
+    title: "Implement original task execution prioritization"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-164"]
+    
+  - id: "TASK-168"
+    title: "Implement scope creep detection and prevention"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-164"]
+    
+  - id: "TASK-169"
+    title: "Implement meta-work controls"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-164"]
+    
+  - id: "TASK-170"
+    title: "Test scope management functionality"
+    assigned_to: "@QA-Engineer"
+    type: "testing"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-165", "TASK-166", "TASK-167", "TASK-168", "TASK-169"]
+    
+  - id: "TASK-171"
+    title: "Peer review by @AI-Architect for scope management architecture"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-170"]
+    
+  - id: "TASK-172"
+    title: "Document scope management patterns"
+    assigned_to: "@Requirements-Engineer"
+    type: "documentation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-171"]
+    
+  - id: "TASK-173"
+    title: "Git operations for scope management implementation"
+    assigned_to: "@DevOps-Engineer"
+    type: "git_operations"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-171", "TASK-172"]
+    
+  - id: "TASK-174"
+    title: "Knowledge generation - scope management patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_generation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-173"]
