@@ -239,7 +239,6 @@ FUNCTION configureToolAccess(allowedTools, constraints):
 
 ```pseudocode
 CLASS RoleStateManager:
-    states: Map<string, RoleState>
     handoffQueue: Queue<HandoffPackage>
     
     STRUCTURE RoleState:
@@ -270,7 +269,6 @@ CLASS RoleStateManager:
             timestamp: getCurrentTime()
         )
         
-        states.put(role.name, state)
         persistToMemory(state)
     
     FUNCTION executeRoleHandoff(fromRole, toRole, context):
