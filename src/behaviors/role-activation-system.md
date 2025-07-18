@@ -235,17 +235,28 @@ FUNCTION configureToolAccess(allowedTools, constraints):
             blockTools(tools)
 ```
 
-### Role State Management
+### Role State Management with Handoff Support
 
 ```pseudocode
 CLASS RoleStateManager:
     states: Map<string, RoleState>
+    handoffQueue: Queue<HandoffPackage>
     
     STRUCTURE RoleState:
         name: string
         scores: {P: float, Q: float}
         activeContext: Context
         taskHistory: Task[]
+        learnings: Learning[]
+        timestamp: datetime
+    
+    STRUCTURE HandoffPackage:
+        fromRole: string
+        toRole: string
+        taskContext: Context
+        workingFiles: File[]
+        decisions: Decision[]
+        progress: ProgressState
         learnings: Learning[]
         timestamp: datetime
     
@@ -262,15 +273,53 @@ CLASS RoleStateManager:
         states.put(role.name, state)
         persistToMemory(state)
     
-    FUNCTION loadRoleState(roleName):
-        // Check cache first
-        IF states.contains(roleName):
-            RETURN states.get(roleName)
+    FUNCTION executeRoleHandoff(fromRole, toRole, context):
+        // Create handoff package
+        handoffPackage = HandoffPackage(
+            fromRole: fromRole.name,
+            toRole: toRole,
+            taskContext: context.currentTask,
+            workingFiles: context.files,
+            decisions: context.decisions,
+            progress: context.progress,
+            learnings: context.sessionLearnings,
+            timestamp: getCurrentTime()
+        )
         
-        // Load from memory
+        // Save current role state with handoff context
+        saveRoleStateWithHandoff(fromRole, handoffPackage)
+        
+        // Queue handoff for target role
+        handoffQueue.enqueue(handoffPackage)
+        
+        // Log handoff for tracking
+        logRoleHandoff(fromRole.name, toRole, context.currentTask)
+        
+        RETURN handoffPackage
+    
+    FUNCTION activateRoleWithHandoff(roleName):
+        // Check for pending handoffs
+        handoffPackage = findHandoffForRole(roleName)
+        
+        IF handoffPackage != null:
+            // Activate role with handoff context
+            role = activateRoleWithContext(roleName, handoffPackage)
+            
+            // Remove handoff from queue
+            handoffQueue.remove(handoffPackage)
+            
+            // Log handoff completion
+            logHandoffCompletion(handoffPackage)
+            
+            RETURN role
+        ELSE:
+            // Normal role activation
+            RETURN activateRole(roleName)
+    
+    FUNCTION loadRoleState(roleName):
+        // Load from memory (stateless execution)
         state = retrieveFromMemory(roleName)
         IF state != null:
-            states.put(roleName, state)
             RETURN state
         
         // Create new state
@@ -281,7 +330,9 @@ CLASS RoleStateManager:
             currentTask: getCurrentTask(),
             workingFiles: getOpenFiles(),
             pendingActions: getPendingActions(),
-            activeDiscussions: getActiveDiscussions()
+            activeDiscussions: getActiveDiscussions(),
+            decisions: getSessionDecisions(),
+            progress: getCurrentProgress()
         }
 ```
 
@@ -333,6 +384,116 @@ FUNCTION formatScore(score):
     RETURN score.toFixed(1)
 ```
 
+### Shared Context and State Management
+
+```pseudocode
+CLASS SharedContextManager:
+    activeContexts: Map<string, SharedContext>
+    
+    STRUCTURE SharedContext:
+        taskId: string
+        participatingRoles: Role[]
+        sharedData: Map<string, any>
+        decisions: Decision[]
+        progress: ProgressTracker
+        collaborationMode: string
+        
+    FUNCTION createSharedContext(task, roles):
+        context = SharedContext(
+            taskId: task.id,
+            participatingRoles: roles,
+            sharedData: {},
+            decisions: [],
+            progress: new ProgressTracker(),
+            collaborationMode: determineCollaborationMode(task, roles)
+        )
+        
+        activeContexts.put(task.id, context)
+        
+        // Notify all participating roles
+        FOR role IN roles:
+            notifyRoleOfSharedContext(role, context)
+        
+        RETURN context
+    
+    FUNCTION updateSharedContext(taskId, role, key, value):
+        context = activeContexts.get(taskId)
+        IF context:
+            context.sharedData[key] = value
+            
+            // Notify other participating roles
+            FOR otherRole IN context.participatingRoles:
+                IF otherRole != role:
+                    notifyContextUpdate(otherRole, key, value)
+            
+            // Log context update
+            logContextUpdate(taskId, role, key, value)
+    
+    FUNCTION addDecisionToContext(taskId, role, decision):
+        context = activeContexts.get(taskId)
+        IF context:
+            decision.decidedBy = role
+            decision.timestamp = getCurrentTime()
+            context.decisions.append(decision)
+            
+            // Notify other roles of decision
+            FOR otherRole IN context.participatingRoles:
+                IF otherRole != role:
+                    notifyDecision(otherRole, decision)
+    
+    FUNCTION getSharedContext(taskId, role):
+        context = activeContexts.get(taskId)
+        IF context AND role IN context.participatingRoles:
+            RETURN context
+        RETURN null
+    
+    FUNCTION synchronizeRoles(taskId):
+        context = activeContexts.get(taskId)
+        IF context:
+            // Ensure all roles have consistent state
+            FOR role IN context.participatingRoles:
+                syncRoleWithContext(role, context)
+```
+
+### Role State Synchronization
+
+```pseudocode
+FUNCTION syncRoleWithContext(role, sharedContext):
+    // Update role's local context with shared data
+    role.sharedContext = sharedContext
+    
+    // Apply any pending decisions
+    FOR decision IN sharedContext.decisions:
+        IF NOT decision.appliedToRole(role):
+            applyDecisionToRole(role, decision)
+            decision.markAppliedToRole(role)
+    
+    // Update progress tracking
+    role.progress.sync(sharedContext.progress)
+
+FUNCTION notifyRoleOfSharedContext(role, context):
+    // Notify role of shared context availability
+    roleNotification = {
+        type: "shared_context_available",
+        taskId: context.taskId,
+        participatingRoles: context.participatingRoles,
+        collaborationMode: context.collaborationMode
+    }
+    
+    sendNotificationToRole(role, roleNotification)
+
+FUNCTION notifyContextUpdate(role, key, value):
+    // Notify role of context update
+    updateNotification = {
+        type: "context_update",
+        key: key,
+        value: value,
+        timestamp: getCurrentTime()
+    }
+    
+    sendNotificationToRole(role, updateNotification)
+```
+
 ### Integration Points
 
 ```yaml
@@ -341,12 +502,20 @@ integration_with_workflow:
     - Detect role in assignment
     - Activate assigned role
     - Apply role behavior
+    - Create shared context if multi-role
     
   role_handoff:
     - Save current role state
     - Package handoff info
     - Activate new role
     - Load new role context
+    - Transfer shared context access
+    
+  multi_role_coordination:
+    - Create shared context for collaboration
+    - Synchronize role states
+    - Coordinate decision making
+    - Track collaborative progress
     
   scoring_updates:
     - Track actions by role
@@ -356,6 +525,7 @@ integration_with_workflow:
   learning_capture:
     - Associate learnings with role
     - Build role expertise over time
+    - Share learnings across roles
 ```
 
 ### Dynamic Specialist Support

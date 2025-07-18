@@ -1,0 +1,190 @@
+bug:
+  id: "BUG-067"
+  title: "Role collaboration mechanisms not implemented in system"
+  type: "system_behavior"
+  epic: "EPIC-002"
+  created: "2025-07-17 18:35:00"
+  created_by: "USER"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "CRITICAL"
+  status: "PLANNED"
+  phase: "PLAN"
+  
+problem_description: |
+  CRITICAL BUG: Role collaboration mechanisms are not implemented in the system.
+  Roles operate in isolation without proper coordination, handoff, or collaborative
+  patterns as described in the virtual team specifications.
+  
+  Observed violations:
+  1. No role handoff mechanisms between specialists
+  2. No collaborative task execution patterns
+  3. Roles don't coordinate or share context
+  4. No multi-role task assignment capabilities
+  5. PM role not properly delegating to specialists
+  6. No role state sharing or context preservation
+  
+  This violates the virtual team architecture where roles should collaborate
+  seamlessly with proper handoffs, shared context, and coordinated execution.
+  
+root_cause: |
+  Role collaboration architecture not implemented:
+  1. No role handoff protocols in behavioral modules
+  2. No shared context mechanisms between roles
+  3. No collaborative task execution patterns
+  4. No multi-role coordination workflows
+  5. Role activation system doesn't support collaboration
+  6. No role state sharing mechanisms
+  
+impact: |
+  - Roles operate in isolation without coordination
+  - No collaborative task execution
+  - PM role cannot properly delegate
+  - No role handoffs or context sharing
+  - Virtual team benefits not realized
+  - Work items executed by single roles instead of team
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Role handoff mechanisms implemented"
+    validation_method: "system_test"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "Multi-role task assignment capabilities"
+    validation_method: "functional_test"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "Role state sharing and context preservation"
+    validation_method: "integration_test"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "Collaborative task execution patterns"
+    validation_method: "system_test"
+    status: "pending"
+    
+  - id: "AC-005"
+    description: "PM delegation to specialists working"
+    validation_method: "functional_test"
+    status: "pending"
+    
+  - id: "AC-006"
+    description: "Peer review by @AI-Architect for collaboration architecture"
+    validation_method: "peer_review"
+    status: "pending"
+    
+definition_of_done:
+  - "Role handoff mechanisms operational"
+  - "Multi-role task assignment functional"
+  - "Role state sharing implemented"
+  - "Collaborative execution patterns working"
+  - "PM delegation to specialists active"
+  - "Context preservation between roles"
+  - "Integration testing confirms collaboration"
+  - "Peer review completed by domain architect"
+  - "Documentation updated with collaboration patterns"
+  - "Git workflow completed"
+  - "Knowledge generation captured"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: false
+  
+# Critical collaboration system bug
+workflow:
+  current_phase: "PLAN"
+  fix_approach: "implement_role_collaboration"
+  testing_required: true
+  
+tasks:
+  - id: "TASK-129"
+    title: "Knowledge retrieval - role collaboration patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_retrieval"
+    status: "pending"
+    priority: "blocking"
+    
+  - id: "TASK-130"
+    title: "Design role collaboration architecture"
+    assigned_to: "@AI-Architect"
+    type: "design"
+    status: "pending"
+    priority: "blocking"
+    dependencies: ["TASK-129"]
+    
+  - id: "TASK-131"
+    title: "Implement role handoff mechanisms"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-130"]
+    
+  - id: "TASK-132"
+    title: "Implement multi-role task assignment"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-130"]
+    
+  - id: "TASK-133"
+    title: "Implement role state sharing mechanisms"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-130"]
+    
+  - id: "TASK-134"
+    title: "Implement collaborative execution patterns"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-130"]
+    
+  - id: "TASK-135"
+    title: "Test role collaboration functionality"
+    assigned_to: "@QA-Engineer"
+    type: "testing"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-131", "TASK-132", "TASK-133", "TASK-134"]
+    
+  - id: "TASK-136"
+    title: "Peer review by @AI-Architect for collaboration architecture"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-135"]
+    
+  - id: "TASK-137"
+    title: "Document role collaboration patterns"
+    assigned_to: "@Requirements-Engineer"
+    type: "documentation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-136"]
+    
+  - id: "TASK-138"
+    title: "Git operations for role collaboration implementation"
+    assigned_to: "@DevOps-Engineer"
+    type: "git_operations"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-136", "TASK-137"]
+    
+  - id: "TASK-139"
+    title: "Knowledge generation - role collaboration patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_generation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-138"]
