@@ -4,6 +4,19 @@
 **Type:** Core System Component  
 **Status:** ACTIVE
 
+## Executive Summary (40 tokens)
+
+**Hierarchy:** Embedded → Project → User → Defaults  
+**Main API:** `SettingsAPI.getSettings()` returns merged config  
+**Caching:** 5 minute TTL, 1 hour for embedded configs  
+**Key Settings:** autonomy_level, git_privacy, pm_always_active, blocking_enabled  
+**Integration:** Used by all behavioral modules via GetSettings() pattern  
+
+## Imports
+
+@./common-patterns.md                      # Shared behavioral patterns
+@./session-file-cache.md                  # Session-based file caching
+
 ## Configuration Loading System
 
 ### Priority Hierarchy
@@ -21,7 +34,7 @@ CLASS ConfigLoader:
     FUNCTION loadConfiguration():
         configs = []
         
-        // Load user global config
+        // Load user global config with caching
         globalPath = expandPath("~/.claude/config.md")
         IF fileExists(globalPath):
             globalConfig = parseConfigFile(globalPath)
@@ -32,7 +45,7 @@ CLASS ConfigLoader:
                     config: globalConfig
                 })
         
-        // Load project config
+        // Load project config with caching
         projectPath = ".claude/config.md"
         IF fileExists(projectPath):
             projectConfig = parseConfigFile(projectPath)
@@ -58,12 +71,13 @@ CLASS ConfigLoader:
             // Use defaults for invalid settings
             finalConfig = applyDefaultsForInvalid(finalConfig, validation)
         
-        // Return configuration directly (no caching)
+        // Return configuration (cached at file level)
         RETURN finalConfig
     
     FUNCTION parseConfigFile(path):
         TRY:
-            content = readFile(path)
+            // OPTIMIZATION: Use session cache for file content
+            content = getCachedFileContent(path, "config")
             
             // Extract YAML front matter if present
             IF content.startsWith("---"):
@@ -85,8 +99,10 @@ CLASS ConfigLoader:
             RETURN config
             
         CATCH error:
-            logError("Failed to parse config:", path, error)
-            RETURN null
+            RETURN HandleError(error, "Config parse")  // Use common pattern
+    
+    // REMOVED: readFileSelective function - replaced by session cache
+    // The session cache handles selective reading internally
     
     FUNCTION mergeConfigs(base, override):
         merged = copy(base)
@@ -103,6 +119,7 @@ CLASS ConfigLoader:
     
     FUNCTION loadEmbeddedConfig(content):
         // Extract embedded_config from assignment files
+        // Note: content here is already from cache if file was read before
         embeddedMatch = content.match(/embedded_config:\s*\n((?:\s{2}.*\n)*)/m)
         IF embeddedMatch:
             embeddedYAML = embeddedMatch[1]
@@ -183,8 +200,8 @@ CLASS SettingsAPI:
     loader: ConfigLoader
     
     FUNCTION getSettings():
-        // STATELESS: Load configuration fresh each time
-        // No caching - ensures configuration is always current
+        // Load configuration with file-level caching
+        // Configuration files are cached but final config is assembled fresh
         config = loader.loadConfiguration()
         RETURN config
     
@@ -207,7 +224,7 @@ CLASS SettingsAPI:
     FUNCTION applyEmbeddedConfig(content):
         embedded = loader.loadEmbeddedConfig(content)
         IF embedded:
-            // Merge with current settings (stateless operation)
+            // Merge with current settings (file-level cached)
             current = getSettings()
             merged = loader.mergeConfigs(current, embedded.config)
             RETURN merged
@@ -241,22 +258,8 @@ FUNCTION getSystemDefaults():
 
 ```pseudocode
 FUNCTION handleConfigError(error, source):
-    SWITCH error.type:
-        CASE "FILE_NOT_FOUND":
-            logInfo(f"Config file not found: {source}")
-            RETURN null  // Use next priority
-            
-        CASE "PARSE_ERROR":
-            logWarning(f"Failed to parse config: {source}", error)
-            RETURN null  // Skip invalid config
-            
-        CASE "VALIDATION_ERROR":
-            logWarning(f"Config validation failed: {source}", error)
-            RETURN applyDefaults(error.invalidKeys)
-            
-        DEFAULT:
-            logError(f"Unexpected config error: {source}", error)
-            RETURN null
+    // Use common error handling pattern
+    RETURN HandleError(error, f"Config - {source}")
 ```
 
 ### Integration
@@ -279,11 +282,11 @@ IF SettingsAPI.getSetting("git_privacy", false):
     stripAIMentions(commitMessage)
 
 // Apply embedded config from assignment
-assignmentContent = readFile("bug.yaml")
+assignmentContent = getCachedFileContent("bug.yaml", "assignment")
 settingsWithEmbedded = SettingsAPI.applyEmbeddedConfig(assignmentContent)
 
-// Configuration is always loaded fresh - no caching
-// Each call to getSettings() reads from files
+// Configuration files are cached for session
+// Each call to getSettings() uses cached file content
 ```
 
 ---

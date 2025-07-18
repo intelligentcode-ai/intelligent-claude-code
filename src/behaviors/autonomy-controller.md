@@ -4,6 +4,10 @@
 **Type:** Behavioral Control Component  
 **Status:** ACTIVE
 
+## Imports
+
+@./common-patterns.md                      # Shared behavioral patterns
+
 ## Autonomy Level Implementation
 
 ### Core Autonomy Controller
@@ -15,7 +19,7 @@ CLASS AutonomyController:
     continuousMode: boolean
     
     FUNCTION initialize():
-        settings = SettingsAPI.getSettings()
+        settings = GetSettings()  // Use common pattern
         continuousMode = (settings.autonomy_level == "L3")
         
         IF settings.pm_always_active:
@@ -25,7 +29,7 @@ CLASS AutonomyController:
             startContinuousLoop()
     
     FUNCTION applyAutonomyLevel(action):
-        settings = SettingsAPI.getSettings()
+        settings = GetSettings()  // Use common pattern
         
         SWITCH settings.autonomy_level:
             CASE "L1":
@@ -232,7 +236,7 @@ FUNCTION waitForArchitectApproval(request):
 
 ```pseudocode
 FUNCTION activatePMRole():
-    settings = SettingsAPI.getSettings()
+    settings = GetSettings()  // Use common pattern
     
     IF settings.pm_always_active:
         // Activate PM role immediately
@@ -251,7 +255,7 @@ FUNCTION activatePMRole():
 
 ```pseudocode
 FUNCTION handleBlockingEvent(event):
-    settings = SettingsAPI.getSettings()
+    settings = GetSettings()  // Use common pattern
     
     IF NOT settings.blocking_enabled:
         // Non-blocking mode - continue with warnings

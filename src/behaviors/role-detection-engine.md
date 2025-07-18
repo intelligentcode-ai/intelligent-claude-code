@@ -281,8 +281,8 @@ FUNCTION createDynamicSpecialist(specialistName):
     domain = parts[0..parts.length-2].join("-")
     baseRole = parts[parts.length-1]
     
-    // Validate base role
-    IF NOT baseRole IN CORE_ROLES:
+    // Validate base role using common pattern
+    IF NOT IsValidRole(baseRole):
         THROW "Invalid base role: " + baseRole
     
     // Create specialist profile

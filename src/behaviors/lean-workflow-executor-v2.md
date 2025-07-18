@@ -104,7 +104,7 @@ FUNCTION consultMemoryForTask(task):
     
     // Search for relevant learnings
     FOR keyword IN keywords:
-        results = mcp__memory__search_nodes(keyword)
+        results = SearchMemory(keyword)  // Use file-based memory
         relevantKnowledge.learnings.extend(results)
     
     // Search for similar tasks
