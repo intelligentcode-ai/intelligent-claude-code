@@ -1,0 +1,190 @@
+bug:
+  id: "BUG-068"
+  title: "Roles acting like humans instead of executing behavioral patterns"
+  type: "behavioral_violation"
+  epic: "EPIC-002"
+  created: "2025-07-17 18:40:00"
+  created_by: "USER"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "CRITICAL"
+  status: "PLANNED"
+  phase: "PLAN"
+  
+problem_description: |
+  CRITICAL BUG: Roles are acting like humans instead of executing their defined
+  behavioral patterns. This violates the virtual team architecture where roles
+  should be autonomous behavioral agents, not human-like entities.
+  
+  Observed violations:
+  1. PM "awaiting joint planning sessions" instead of delegating
+  2. Roles asking for confirmation instead of executing autonomously
+  3. Roles "waiting" for other roles instead of coordinating
+  4. Human-like communication patterns instead of role-specific behaviors
+  5. Roles not following their defined behavioral patterns
+  6. Lack of autonomous decision-making within role constraints
+  
+  This violates the core virtual team principles where roles should execute
+  their behavioral patterns autonomously with proper coordination.
+  
+root_cause: |
+  Role behavioral patterns not properly implemented:
+  1. Role activation doesn't enforce behavioral patterns
+  2. No autonomous decision-making within role constraints
+  3. Human-like communication patterns instead of role-specific
+  4. Roles not following their defined responsibilities
+  5. Lack of proper role behavior enforcement
+  6. No behavioral pattern validation during role execution
+  
+impact: |
+  - Roles behave like humans instead of specialized agents
+  - Virtual team benefits not realized
+  - No autonomous execution within role constraints
+  - Communication patterns inconsistent with role definitions
+  - Behavioral patterns not enforced
+  - Team coordination ineffective
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Role behavioral patterns enforced during activation"
+    validation_method: "behavioral_test"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "Autonomous decision-making within role constraints"
+    validation_method: "autonomy_test"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "Role-specific communication patterns implemented"
+    validation_method: "communication_test"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "Behavioral pattern validation during role execution"
+    validation_method: "validation_test"
+    status: "pending"
+    
+  - id: "AC-005"
+    description: "Role responsibilities consistently followed"
+    validation_method: "responsibility_test"
+    status: "pending"
+    
+  - id: "AC-006"
+    description: "Peer review by @AI-Architect for behavioral architecture"
+    validation_method: "peer_review"
+    status: "pending"
+    
+definition_of_done:
+  - "Role behavioral patterns consistently enforced"
+  - "Autonomous decision-making within role constraints"
+  - "Role-specific communication patterns active"
+  - "Behavioral validation during role execution"
+  - "Role responsibilities consistently followed"
+  - "No human-like behavior patterns"
+  - "Integration testing confirms behavioral compliance"
+  - "Peer review completed by domain architect"
+  - "Documentation updated with behavioral enforcement"
+  - "Git workflow completed"
+  - "Knowledge generation captured"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: false
+  
+# Critical behavioral system bug
+workflow:
+  current_phase: "PLAN"
+  fix_approach: "enforce_behavioral_patterns"
+  testing_required: true
+  
+tasks:
+  - id: "TASK-140"
+    title: "Knowledge retrieval - role behavioral patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_retrieval"
+    status: "pending"
+    priority: "blocking"
+    
+  - id: "TASK-141"
+    title: "Design behavioral pattern enforcement architecture"
+    assigned_to: "@AI-Architect"
+    type: "design"
+    status: "pending"
+    priority: "blocking"
+    dependencies: ["TASK-140"]
+    
+  - id: "TASK-142"
+    title: "Implement role behavioral pattern enforcement"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-141"]
+    
+  - id: "TASK-143"
+    title: "Implement autonomous decision-making within role constraints"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-141"]
+    
+  - id: "TASK-144"
+    title: "Implement role-specific communication patterns"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-141"]
+    
+  - id: "TASK-145"
+    title: "Implement behavioral pattern validation during execution"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-141"]
+    
+  - id: "TASK-146"
+    title: "Test behavioral pattern enforcement"
+    assigned_to: "@QA-Engineer"
+    type: "testing"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-142", "TASK-143", "TASK-144", "TASK-145"]
+    
+  - id: "TASK-147"
+    title: "Peer review by @AI-Architect for behavioral architecture"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-146"]
+    
+  - id: "TASK-148"
+    title: "Document behavioral pattern enforcement"
+    assigned_to: "@Requirements-Engineer"
+    type: "documentation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-147"]
+    
+  - id: "TASK-149"
+    title: "Git operations for behavioral pattern enforcement"
+    assigned_to: "@DevOps-Engineer"
+    type: "git_operations"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-147", "TASK-148"]
+    
+  - id: "TASK-150"
+    title: "Knowledge generation - behavioral pattern enforcement"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_generation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-149"]

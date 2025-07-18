@@ -179,51 +179,61 @@ config_schema:
     description: "Enforce role assignment validation"
 ```
 
-### Settings Access API
+### Stateless Configuration Access
 
 ```pseudocode
-CLASS SettingsAPI:
-    loader: ConfigLoader
+// STATELESS EXECUTION MODEL - No persistent APIs or caches
+// Configuration must be loaded fresh each execution
+
+FUNCTION getSettings():
+    // STATELESS: Load configuration from files each time
+    config = loadConfigurationFromFiles()
+    RETURN config
+
+FUNCTION loadConfigurationFromFiles():
+    // Load user global config
+    globalConfig = null
+    IF fileExists("~/.claude/config.md"):
+        globalConfig = parseConfigFile("~/.claude/config.md")
     
-    FUNCTION getSettings():
-        // Check cache first
-        cached = loader.cache.get()
-        IF cached AND NOT cached.expired:
-            RETURN cached.value
-        
-        // Load fresh configuration
-        config = loader.loadConfiguration()
-        RETURN config
+    // Load project config
+    projectConfig = null
+    IF fileExists(".claude/config.md"):
+        projectConfig = parseConfigFile(".claude/config.md")
     
-    FUNCTION getSetting(key, defaultValue = null):
-        settings = getSettings()
-        
-        // Support nested keys with dot notation
-        IF key.contains("."):
-            parts = key.split(".")
-            value = settings
-            FOR part IN parts:
-                IF value AND part IN value:
-                    value = value[part]
-                ELSE:
-                    RETURN defaultValue
-            RETURN value
-        
-        RETURN settings.get(key, defaultValue)
+    // Apply defaults and merge
+    finalConfig = getSystemDefaults()
+    IF globalConfig:
+        finalConfig = mergeConfigs(finalConfig, globalConfig)
+    IF projectConfig:
+        finalConfig = mergeConfigs(finalConfig, projectConfig)
     
-    FUNCTION reloadSettings():
-        loader.cache.clear()
-        RETURN getSettings()
+    RETURN finalConfig
+
+FUNCTION getSetting(key, defaultValue = null):
+    settings = getSettings()
     
-    FUNCTION applyEmbeddedConfig(content):
-        embedded = loader.loadEmbeddedConfig(content)
-        IF embedded:
-            // Temporarily override with embedded config
-            current = getSettings()
-            merged = loader.mergeConfigs(current, embedded.config)
-            loader.cache.store(merged, ttl: 3600) // 1 hour for embedded
-            RETURN merged
-        RETURN getSettings()
+    // Support nested keys with dot notation
+    IF key.contains("."):
+        parts = key.split(".")
+        value = settings
+        FOR part IN parts:
+            IF value AND part IN value:
+                value = value[part]
+            ELSE:
+                RETURN defaultValue
+        RETURN value
+    
+    RETURN settings.get(key, defaultValue)
+
+FUNCTION applyEmbeddedConfig(content):
+    embedded = loadEmbeddedConfig(content)
+    IF embedded:
+        // Merge with current settings (no caching)
+        current = getSettings()
+        merged = mergeConfigs(current, embedded.config)
+        RETURN merged
+    RETURN getSettings()
 ```
 
 ### System Defaults
@@ -283,19 +293,18 @@ The config loader integrates with all system components:
 ### Usage Example
 
 ```pseudocode
-// Load configuration on startup
-settings = SettingsAPI.getSettings()
+// Load configuration (stateless - each time)
+settings = getSettings()
 
 // Check specific setting
-IF SettingsAPI.getSetting("git_privacy", false):
+IF getSetting("git_privacy", false):
     stripAIMentions(commitMessage)
 
 // Apply embedded config from assignment
 assignmentContent = readFile("bug.yaml")
-SettingsAPI.applyEmbeddedConfig(assignmentContent)
+settingsWithEmbedded = applyEmbeddedConfig(assignmentContent)
 
-// Reload settings if needed
-SettingsAPI.reloadSettings()
+// Settings always loaded fresh - no reload needed
 ```
 
 ---

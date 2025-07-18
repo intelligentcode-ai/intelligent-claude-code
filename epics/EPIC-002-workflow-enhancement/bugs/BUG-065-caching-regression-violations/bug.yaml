@@ -1,0 +1,179 @@
+bug:
+  id: "BUG-065"
+  title: "Caching logic regression violates stateless execution model fixed in BUG-062"
+  type: "regression"
+  epic: "EPIC-002"
+  created: "2025-07-17 18:19:22"
+  created_by: "@AI-Engineer"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "CRITICAL"
+  status: "IN PROGRESS"
+  phase: "EXECUTE"
+  
+problem_description: |
+  CRITICAL REGRESSION: Multiple behavioral files contain caching logic that 
+  violates the stateless execution model that was specifically fixed in BUG-062.
+  This represents a fundamental violation of the core system architecture.
+  
+  Discovered violations:
+  1. config-loader.md: Lines 19, 63 - Persistent cache class and TTL caching
+  2. lean-workflow-executor.md: Line 35 - "Cache settings for session"
+  3. role-activation-system.md: Line 266 - "Check cache first" for role states
+  4. pm-command-system.md: Lines 157-162 - Clear caches functionality
+  5. config-loader.md: Line 185 - CONTRADICTORY logic (says no caches but implements caching)
+  
+root_cause: |
+  Incomplete implementation of BUG-062 stateless execution fixes:
+  1. Caching logic was not fully removed from all behavioral files
+  2. Some files contain contradictory stateless comments alongside caching code
+  3. PM command system still references cache clearing operations
+  4. Role activation system maintains persistent state caches
+  5. Config loader has both caching AND stateless implementations
+  
+impact: |
+  - Violates core stateless execution architecture
+  - System behavior inconsistent with BUG-062 fixes
+  - Potential runtime errors when caches assumed to exist
+  - PM commands reference non-existent cache clearing
+  - Configuration loading contradicts its own stateless model
+  - Architectural integrity compromised
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Remove ALL caching logic from config-loader.md"
+    validation_method: "code_review"
+    status: "pending"
+    
+  - id: "AC-002"
+    description: "Remove session caching reference from lean-workflow-executor.md"
+    validation_method: "code_review"
+    status: "pending"
+    
+  - id: "AC-003"
+    description: "Remove cache checking from role-activation-system.md"
+    validation_method: "code_review"
+    status: "pending"
+    
+  - id: "AC-004"
+    description: "Update PM command system to remove cache clearing references"
+    validation_method: "code_review"
+    status: "pending"
+    
+  - id: "AC-005"
+    description: "Verify all behavioral files enforce stateless execution"
+    validation_method: "system_audit"
+    status: "pending"
+    
+  - id: "AC-006"
+    description: "Peer review by @AI-Architect to ensure architectural compliance"
+    validation_method: "peer_review"
+    status: "pending"
+    
+definition_of_done:
+  - "NO caching logic exists in any behavioral file"
+  - "All files consistently implement stateless execution model"
+  - "PM commands updated to remove cache references"
+  - "Architectural integrity restored"
+  - "Peer review completed by domain architect"
+  - "Full system audit confirms compliance"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: false
+  
+# Critical regression requires immediate attention
+workflow:
+  current_phase: "EXECUTE"
+  fix_approach: "remove_all_caching_logic"
+  testing_required: true
+  
+tasks:
+  - id: "TASK-092"
+    title: "Knowledge retrieval - BUG-062 stateless execution requirements"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_retrieval"
+    status: "pending"
+    priority: "blocking"
+    
+  - id: "TASK-093"
+    title: "Audit all behavioral files for caching violations"
+    assigned_to: "@AI-Engineer"
+    type: "analysis"
+    status: "pending"
+    priority: "blocking"
+    
+  - id: "TASK-094"
+    title: "Remove caching logic from config-loader.md"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-093"]
+    
+  - id: "TASK-095"
+    title: "Remove session caching from lean-workflow-executor.md"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-093"]
+    
+  - id: "TASK-096"
+    title: "Remove cache checking from role-activation-system.md"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-093"]
+    
+  - id: "TASK-097"
+    title: "Update PM command system to remove cache references"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-093"]
+    
+  - id: "TASK-098"
+    title: "Test stateless execution compliance"
+    assigned_to: "@QA-Engineer"
+    type: "testing"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-094", "TASK-095", "TASK-096", "TASK-097"]
+    
+  - id: "TASK-099"
+    title: "Peer review by @AI-Architect for architectural compliance"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-098"]
+    
+  - id: "TASK-100"
+    title: "Document stateless execution enforcement"
+    assigned_to: "@Requirements-Engineer"
+    type: "documentation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-099"]
+    
+  - id: "TASK-101"
+    title: "Git operations for caching violations fix"
+    assigned_to: "@DevOps-Engineer"
+    type: "git_operations"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-099", "TASK-100"]
+    
+  - id: "TASK-102"
+    title: "Knowledge generation - stateless execution patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_generation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-101"]

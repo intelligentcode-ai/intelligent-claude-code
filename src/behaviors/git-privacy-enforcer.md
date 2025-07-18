@@ -104,8 +104,8 @@ CLASS GitOperationInterceptor:
     settings: Settings
     
     FUNCTION interceptCommit(message, files):
-        // Load current settings
-        settings = SettingsAPI.getSettings()
+        // Load current settings (stateless)
+        settings = getSettings()
         
         // Clean the commit message
         cleanMessage = enforcer.enforceGitPrivacy(message, settings)
@@ -118,8 +118,8 @@ CLASS GitOperationInterceptor:
         executeGitCommit(cleanMessage, files)
     
     FUNCTION interceptPullRequest(title, description):
-        // Load current settings
-        settings = SettingsAPI.getSettings()
+        // Load current settings (stateless)
+        settings = getSettings()
         
         // Clean both title and description
         cleanTitle = enforcer.enforceGitPrivacy(title, settings)
@@ -184,7 +184,7 @@ examples:
 
 ```pseudocode
 FUNCTION applyGitSettings():
-    settings = SettingsAPI.getSettings()
+    settings = getSettings()
     
     // Configure git based on settings
     IF settings.branch_protection:
