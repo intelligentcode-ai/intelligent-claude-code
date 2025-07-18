@@ -1,116 +1,44 @@
-# Epic Template
-# Epics are created by PM/Architect/RE/User for overarching features
-
+# Epic Template - Example ID formatting
 epic:
-  id: "EPIC-XXX"
-  title: "Epic Title"
-  created: "YYYY-MM-DD HH:MM:SS"
-  created_by: "@PM|@Architect|@Requirements-Engineer|User"
-  owner: "@PM"  # PM owns epic execution
-  status: "PLANNING|IN_PROGRESS|COMPLETED|ON_HOLD"
-  target_completion: "YYYY-MM-DD"
+  id: "EPIC-001"  # Format: EPIC-XXX (three digits, padded with zeros)
+  title: "User Management System"
+  type: "enhancement"
+  created: "2025-01-18 16:30:00"
+  created_by: "@PM"
+  status: "PLANNED"
+  phase: "DEFINING"
+  priority: "P1"
   
-vision: |
-  # High-level vision of what this epic achieves
-  # Business value and user impact
+description: |
+  Epic for implementing a comprehensive user management system.
+  This includes registration, authentication, and profile management.
   
-objectives:
-  - Strategic objective 1
-  - Strategic objective 2
-  - Strategic objective 3
+project_scope: |
+  - User registration and onboarding
+  - Authentication (login/logout)
+  - Profile management
+  - Role-based access control
   
-success_metrics:
-  - metric: "User adoption"
-    target: "X% increase"
-    measurement: "Analytics dashboard"
-    
-  - metric: "Performance"
-    target: "< Xms response time"
-    measurement: "APM tools"
-    
-  - metric: "Quality"
-    target: "Zero critical bugs"
-    measurement: "Bug tracking"
-    
-scope:
-  included:
-    - Feature/capability 1
-    - Feature/capability 2
-  excluded:
-    - Out of scope item 1
-    - Out of scope item 2
-  constraints:
-    - Technical constraint
-    - Business constraint
-    - Timeline constraint
-    
-# Stories and bugs within this epic
-stories:
-  - id: "STORY-001"
-    title: "Story title"
-    status: "planned|in_progress|completed"
-    priority: "P0|P1|P2|P3"
-    
-  - id: "STORY-002"
-    title: "Another story"
-    status: "planned"
-    priority: "P1"
-    
-bugs:
-  - id: "BUG-001"
-    title: "Known issue"
-    severity: "HIGH"
-    status: "triaged"
-    
-dependencies:
-  internal:
-    - "EPIC-YYY must complete first"
-  external:
-    - "Third-party API availability"
-    - "Infrastructure upgrade"
-    
-risks:
-  - risk: "Technical complexity"
-    probability: "medium"
-    impact: "high"
-    mitigation: "Spike investigations"
-    
-  - risk: "Resource availability"
-    probability: "low"
-    impact: "medium"
-    mitigation: "Cross-training team"
-    
-stakeholders:
-  - role: "Product Owner"
-    name: "@User"
-    interest: "Feature delivery"
-    
-  - role: "Technical Lead"
-    name: "@Architect"
-    interest: "Technical quality"
-    
-timeline:
-  milestones:
-    - date: "YYYY-MM-DD"
-      deliverable: "MVP release"
-      
-    - date: "YYYY-MM-DD"
-      deliverable: "Full feature set"
-      
-progress:
-  total_stories: X
-  completed_stories: Y
-  total_story_points: Z
-  completed_points: W
+goals:
+  - Secure user authentication
+  - Smooth onboarding experience
+  - Flexible profile management
   
-# Knowledge and learning
-knowledge_themes:
-  - "New technology adoption"
-  - "Performance optimization patterns"
-  - "User experience insights"
+stories: []  # Will contain STORY-001, STORY-002, etc.
+bugs: []     # Will contain BUG-001, BUG-002, etc.
+
+success_criteria:
+  - All users can register and login
+  - Profile data is secure and editable
+  - Role permissions work correctly
   
-retrospective_notes: |
-  # Added after epic completion
-  What went well
-  What could improve
-  Key learnings for future epics
+principles:
+  - Security first
+  - User experience focused
+  - Performance optimized
+
+# ID Assignment Notes:
+# - Check existing epics: ls epics/*/epic.yaml
+# - Find highest ID: EPIC-002 exists
+# - Next ID: EPIC-003
+# - If uncertain, use a safe higher number: EPIC-010
