@@ -500,6 +500,8 @@ FUNCTION notifyContextUpdate(role, key, value):
 integration_with_workflow:
   task_assignment:
     - Detect role in assignment
+    - Read task from dedicated task file
+    - Extract embedded config from task file
     - Activate assigned role
     - Apply role behavior
     - Create shared context if multi-role
