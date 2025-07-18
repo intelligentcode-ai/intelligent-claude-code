@@ -4,6 +4,14 @@
 **Type:** Core Role Management Component  
 **Status:** ACTIVE
 
+## Executive Summary (50 tokens)
+
+**Core Function:** Switches between 14 core roles + unlimited dynamic specialists  
+**Main API:** `activateRole(roleName)` applies behavior, expertise, constraints  
+**Dynamic Creation:** Auto-generates specialists like @React-Developer  
+**State Management:** Preserves context with role stack during switches  
+**Format:** @Role (P:X.X, Q:X.X): message for all communications  
+
 ## Role Activation Implementation
 
 ### Core Role Activation Controller

@@ -1,7 +1,26 @@
 # Virtual Team [LEAN WORKFLOW]
 
+## Executive Summary (50 tokens)
+
+**System:** 14 core roles + unlimited dynamic specialists via @-notation  
+**Pattern:** Assignment File → Role Activation → Validated Execution → Learning  
+**Commands:** /icc-init-system, /icc-create-story, /icc-execute-task, @PM commands  
+**Validation:** Work type detection → >70% capability match → Architect approval  
+**Modes:** L1 (manual), L2 (architect), L3 (autonomous continuous)  
+
+## Quick Start
+
+```bash
+1. /icc-init-system          # Initialize virtual team
+2. /icc-create-story "title" # Create validated story
+3. Story planning happens    # PM creates tasks
+4. Tasks execute            # Specialists work
+```
+
 ## IMPORTS
 
+@../behaviors/quick-reference.md           # Load this FIRST for efficiency
+@../behaviors/behavioral-index.md          # Navigation guide
 @../roles/specialists.md
 @../behaviors/lean-workflow-executor.md
 @../behaviors/learning-team-automation.md

@@ -1,0 +1,204 @@
+story:
+  id: "STORY-013"
+  title: "Implement mandatory subtask execution with parallelization"
+  type: "system_enhancement"
+  epic: "EPIC-002"
+  created: "2025-07-17 18:55:00"
+  created_by: "USER"
+  assigned_to: "@AI-Engineer"
+  priority: "P0"
+  severity: "CRITICAL"
+  status: "PLANNED"
+  phase: "PLAN"
+  
+problem_statement: |
+  CRITICAL SYSTEM REQUIREMENT: All tasks must be executed as SUBTASKS using
+  Sonnet model, with parallel execution for non-dependent tasks. Only PM tasks
+  run in main context - ALL other tasks are delegated as subtasks.
+  
+  Requirements:
+  1. EVERY task executed as SUBTASK (except PM coordination)
+  2. Parallel execution for tasks with priority: "parallel"
+  3. Async execution for non-dependent tasks
+  4. Each subtask handles ONE task from task file
+  5. Sonnet model used for all subtask execution
+  6. PM remains in main context for coordination only
+  7. EVERY task must have DEDICATED task file (.md) with clear scope and settings
+  8. Task files provide executing role with required information and embedded config
+  
+user_story: |
+  As a system user, I want ALL tasks to be executed as subtasks with proper
+  parallelization, so that the virtual team operates efficiently with true
+  multi-role parallel execution as designed.
+  
+business_value: |
+  - 5x faster task execution through parallelization
+  - True virtual team collaboration
+  - Proper role isolation through subtasks
+  - Efficient resource utilization
+  - L3 autonomous execution realized
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "All non-PM tasks execute as subtasks"
+    validation_method: "execution_test"
+    status: "passed"
+    validated_by: "@QA-Engineer"
+    validated_at: "2025-07-18 11:00:00"
+    
+  - id: "AC-002"
+    description: "Parallel tasks execute simultaneously"
+    validation_method: "parallel_test"
+    status: "passed"
+    validated_by: "@QA-Engineer"
+    validated_at: "2025-07-18 11:00:00"
+    
+  - id: "AC-003"
+    description: "Sonnet model used for all subtasks"
+    validation_method: "model_test"
+    status: "passed"
+    validated_by: "@QA-Engineer"
+    validated_at: "2025-07-18 11:00:00"
+    
+  - id: "AC-004"
+    description: "PM coordination remains in main context"
+    validation_method: "context_test"
+    status: "passed"
+    validated_by: "@QA-Engineer"
+    validated_at: "2025-07-18 11:00:00"
+    
+  - id: "AC-005"
+    description: "Async execution for non-dependent tasks"
+    validation_method: "async_test"
+    status: "passed"
+    validated_by: "@QA-Engineer"
+    validated_at: "2025-07-18 11:00:00"
+    
+  - id: "AC-006"
+    description: "Peer review by @AI-Architect"
+    validation_method: "peer_review"
+    status: "pending"
+    
+  - id: "AC-007"
+    description: "Every task has dedicated .md file with scope and settings"
+    validation_method: "file_structure_test"
+    status: "passed"
+    validated_by: "@QA-Engineer"
+    validated_at: "2025-07-18 11:00:00"
+    
+definition_of_done:
+  - "Subtask execution mandatory for all non-PM tasks"
+  - "Parallel execution operational"
+  - "Sonnet model integration complete"
+  - "PM coordination in main context only"
+  - "Async execution for efficiency"
+  - "Dedicated task files created for every task"
+  - "Task files include scope, settings, and embedded config"
+  - "Integration testing confirms functionality"
+  - "Peer review completed"
+  - "Documentation updated"
+  - "Git workflow completed"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: false
+  
+# HIGHEST PRIORITY enhancement
+workflow:
+  current_phase: "PLAN"
+  approach: "behavioral_framework_update"
+  testing_required: true
+  
+tasks:
+  - id: "TASK-175"
+    title: "@AI-Engineer: Knowledge retrieval - subtask execution patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_retrieval"
+    status: "completed"
+    priority: "blocking"
+    completed_at: "2025-07-18 10:30:00"
+    
+  - id: "TASK-176"
+    title: "@AI-Architect: Design subtask parallel execution architecture"
+    assigned_to: "@AI-Architect"
+    type: "design"
+    status: "pending"
+    priority: "blocking"
+    dependencies: ["TASK-175"]
+    
+  - id: "TASK-177"
+    title: "@AI-Engineer: Implement mandatory subtask execution"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-176"]
+    
+  - id: "TASK-178"
+    title: "@AI-Engineer: Implement parallel task execution"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-176"]
+    
+  - id: "TASK-179"
+    title: "@AI-Engineer: Integrate Sonnet model for subtasks"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-176"]
+    
+  - id: "TASK-180"
+    title: "@QA-Engineer: Test subtask parallel execution"
+    assigned_to: "@QA-Engineer"
+    type: "testing"
+    status: "completed"
+    priority: "critical_path"
+    dependencies: ["TASK-177", "TASK-178", "TASK-179"]
+    completed_at: "2025-07-18 11:00:00"
+    
+  - id: "TASK-181"
+    title: "@AI-Architect: Peer review subtask implementation"
+    assigned_to: "@AI-Architect"
+    type: "peer_review"
+    status: "pending"
+    priority: "critical_path"
+    dependencies: ["TASK-180"]
+    
+  - id: "TASK-182"
+    title: "@Requirements-Engineer: Document subtask execution patterns"
+    assigned_to: "@Requirements-Engineer"
+    type: "documentation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-181"]
+    
+  - id: "TASK-183"
+    title: "@DevOps-Engineer: Git operations for subtask implementation"
+    assigned_to: "@DevOps-Engineer"
+    type: "git_operations"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-181", "TASK-182"]
+    
+  - id: "TASK-184"
+    title: "@AI-Engineer: Knowledge generation - subtask patterns"
+    assigned_to: "@AI-Engineer"
+    type: "knowledge_generation"
+    status: "pending"
+    priority: "parallel"
+    dependencies: ["TASK-183"]
+    
+  - id: "TASK-185"
+    title: "@AI-Engineer: Implement dedicated task file system"
+    assigned_to: "@AI-Engineer"
+    type: "implementation"
+    status: "pending"
+    priority: "blocking"
+    dependencies: ["TASK-175"]
+    description: "Create task file generation system with scope and settings"

@@ -2,6 +2,11 @@
 
 **PURPOSE:** Continuously discover and queue new work for L3 autonomous execution
 
+**IMPORTS:** 
+- @./common-patterns.md                      # Shared behavioral patterns
+- @./selective-yaml-parser.md  // For 97.5% token reduction in status checks
+- @./smart-content-chunker.md                  # Smart content chunking for large files
+
 ## Core Implementation
 
 ### Work Discovery System
@@ -51,9 +56,9 @@ FUNCTION discoverWork():
             work = source()
             IF work.length > 0:
                 allNewWork.concat(work)
-                logInfo("Found " + work.length + " items from " + source.name)
+                LogWithContext("INFO", "Found " + work.length + " items from " + source.name)  // Use common pattern
         CATCH error:
-            logError("Discovery error in " + source.name + ": " + error)
+            HandleError(error, "Discovery - " + source.name)  // Use common pattern
     
     // Deduplicate
     uniqueWork = deduplicateWork(allNewWork)
@@ -65,12 +70,19 @@ FUNCTION scanForNewBugs():
     bugFiles = glob("epics/**/bugs/*/bug.yaml")
     
     FOR bugFile IN bugFiles:
-        bug = readYaml(bugFile)
+        // Use smart chunking + selective YAML parsing for maximum optimization
+        sessionCache = getSessionCache()
+        operationContext = createOperationContext("status_check")
+        content = sessionCache.getCachedContent(bugFile, "assignment_file", operationContext)
         
-        IF bug.status IN ["PLANNED", "IN PROGRESS"] AND
-           bug.phase IN ["PLAN", "EXECUTE"] AND
-           NOT isAlreadyDiscovered(bug.id):
-            bugs.append(bug)
+        // Parse with selective YAML parser
+        yamlParser = getSelectiveYAMLParser()
+        bug = yamlParser.parseYAMLSelective(content, "status_check")
+        
+        IF bug.data.status IN ["PLANNED", "IN PROGRESS"] AND
+           bug.data.phase IN ["PLAN", "EXECUTE"] AND
+           NOT isAlreadyDiscovered(bug.data.id):
+            bugs.append(bug.data)
             
     RETURN bugs
 
@@ -79,11 +91,18 @@ FUNCTION scanForNewStories():
     storyFiles = glob("epics/**/stories/*/story.yaml")
     
     FOR storyFile IN storyFiles:
-        story = readYaml(storyFile)
+        // Use smart chunking + selective YAML parsing for maximum optimization
+        sessionCache = getSessionCache()
+        operationContext = createOperationContext("status_check")
+        content = sessionCache.getCachedContent(storyFile, "assignment_file", operationContext)
         
-        IF story.status IN ["PLANNED", "IN PROGRESS"] AND
-           NOT isAlreadyDiscovered(story.id):
-            stories.append(story)
+        // Parse with selective YAML parser
+        yamlParser = getSelectiveYAMLParser()
+        story = yamlParser.parseYAMLSelective(content, "status_check")
+        
+        IF story.data.status IN ["PLANNED", "IN PROGRESS"] AND
+           NOT isAlreadyDiscovered(story.data.id):
+            stories.append(story.data)
             
     RETURN stories
 
@@ -259,35 +278,14 @@ FUNCTION processStory(story):
 ### Smart Work Prioritization
 ```pseudocode
 FUNCTION prioritizeDiscoveredWork(workItems):
-    // Sort by priority factors
-    priorityFactors = {
-        "security_bug": 0,
-        "customer_bug": 100,
-        "blocking_work": 200,
-        "critical_path": 300,
-        "feature_work": 400,
-        "documentation": 500,
-        "optional": 600
-    }
-    
+    // Use common priority calculation pattern
     FOR item IN workItems:
-        item.discoveryPriority = calculateDiscoveryPriority(item, priorityFactors)
+        item.discoveryPriority = CalculatePriority(item)  // Use common pattern
     
     // Sort by priority
     workItems.sort((a, b) => a.discoveryPriority - b.discoveryPriority)
     
     RETURN workItems
-
-FUNCTION calculateDiscoveryPriority(item, factors):
-    basePriority = factors[item.category] || 999
-    
-    // Adjust for age
-    ageBonus = Math.min(item.ageInDays * 10, 100)
-    
-    // Adjust for dependencies
-    depBonus = item.blockingOthers ? -50 : 0
-    
-    RETURN basePriority - ageBonus + depBonus
 ```
 
 ### Integration with Queue
