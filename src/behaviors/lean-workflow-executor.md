@@ -18,6 +18,7 @@
 @./progress-monitor.md
 @./work-discovery-engine.md
 @./archival-intelligence.md               # AI-driven archival automation
+@./task-file-generator.md                 # Generate dedicated task files
 
 ## Core Functions
 
@@ -32,7 +33,6 @@ function: initialize_system()
     - Apply autonomy level settings
     - Check pm_always_active flag
     - Set blocking behavior mode
-    - Cache settings for session
     - Initialize PM command processor
     - Initialize learning enforcement system
     - Initialize L3 continuous engine if L3 mode
@@ -115,6 +115,35 @@ function: execute_phase(assignment, phase)
   archival_hook:
     - ON phase == "ARCHIVED":
         ArchivalIntelligence.checkArchivalEligibility(assignment)
+```
+
+### 2.5. Task File Management
+```yaml
+function: findTaskFile(taskId)
+  description: Locate task file for a given task ID
+  search_patterns:
+    - "epics/*/stories/*/tasks/TASK-{taskId}-*.md"
+    - "epics/*/bugs/*/tasks/TASK-{taskId}-*.md"
+  returns: File path or null if not found
+  implementation:
+    FOR pattern IN search_patterns:
+        files = glob(pattern.replace("{taskId}", taskId))
+        IF files.length > 0:
+            RETURN files[0]
+    RETURN null
+
+function: ensureTaskDirectory(parentItem)
+  description: Ensure task directory exists for story/bug
+  actions:
+    - Create directories if needed
+    - Set proper permissions
+  implementation:
+    parentType = parentItem.type  // "story" or "bug"
+    epicId = parentItem.epic_id
+    parentId = parentItem.id
+    path = "epics/" + epicId + "/" + parentType + "s/" + parentId + "/tasks/"
+    ensureDirectoryExists(path)
+    RETURN path
 ```
 
 ### 3. Role Assignment with Self-Correcting Validation
@@ -283,30 +312,351 @@ FUNCTION planStory(story):
         createKnowledgeTask("generate", proposedTasks[0].assigned_to)
     ]
     
+    // 4.5. Generate task files for all tasks
+    taskFileGenerator = new TaskFileGenerator()
+    FOR task IN tasks:
+        taskFileGenerator.generateTaskFile(task, story)
+    
     // 5. Update story file with validated tasks
     updateStoryFile(story, tasks)
     
-    // 6. L3 MODE execution
+    // 6. Execute tasks based on mode
     IF settings.autonomy_level == "L3":
+        // L3: Add to queue for continuous execution
         taskQueue.addAll(tasks)
         continuousEngine.processQueue()
+    ELSE:
+        // L1/L2: PM delegates using Task tool
+        executePMDelegation(tasks)
+```
+
+### PM Task Delegation Pattern (Claude Code Task Tool)
+```pseudocode
+FUNCTION executePMDelegation(tasks):
+    // PM uses Claude Code's Task tool for delegation
+    IF currentRole != "PM":
+        ERROR("Only PM can delegate tasks using Task tool")
+    
+    // Group tasks by priority for execution strategy
+    blockingTasks = tasks.filter(t => t.priority == "blocking")
+    criticalTasks = tasks.filter(t => t.priority == "critical_path")
+    parallelTasks = tasks.filter(t => t.priority == "parallel")
+    optionalTasks = tasks.filter(t => t.priority == "optional")
+    
+    // Execute blocking tasks sequentially
+    FOR task IN blockingTasks:
+        createDelegatedSubtask(task)
+        waitForCompletion(task)
+    
+    // Execute critical path tasks sequentially
+    FOR task IN criticalTasks:
+        createDelegatedSubtask(task)
+        waitForCompletion(task)
+    
+    // Execute parallel tasks simultaneously in batches
+    IF parallelTasks.length > 0:
+        executeParallelTasks(parallelTasks)
+    
+    // Execute optional tasks if time permits
+    IF optionalTasks.length > 0:
+        executeParallelTasks(optionalTasks, maxBatch: 3)
+
+FUNCTION executeParallelTasks(tasks, maxBatch = 5):
+    // Group non-conflicting tasks for parallel execution
+    parallelGroups = groupNonConflictingTasks(tasks, maxBatch)
+    
+    FOR group IN parallelGroups:
+        // PM creates multiple Task calls in ONE response
+        // This is the key pattern for parallel execution!
+        
+        logInfo("PM delegating " + group.length + " tasks simultaneously:")
+        
+        // Create all subtasks in the group AT ONCE
+        subtaskIds = []
+        FOR task IN group:
+            taskId = createDelegatedSubtask(task)
+            subtaskIds.append(taskId)
+            logInfo("  - " + task.id + " to " + task.assigned_to)
+        
+        // Claude Code handles parallel execution natively
+        logInfo("Claude Code executing " + group.length + " tasks in parallel")
+        
+        // Wait for all tasks in group to complete
+        waitForGroupCompletion(subtaskIds)
+
+FUNCTION createDelegatedSubtask(task):
+    // Format subtask for Claude Code Task tool
+    subtaskTitle = "Execute " + task.id + ": " + task.title
+    
+    // CRITICAL: Include role name in description
+    subtaskDescription = "[" + task.assigned_to + "] " + task.description + "\n\n"
+    subtaskDescription += "Task File: " + task.file_path + "\n\n"
+    subtaskDescription += "Instructions:\n"
+    subtaskDescription += "1. Read the task file for complete context\n"
+    subtaskDescription += "2. Apply embedded configuration from task file\n"
+    subtaskDescription += "3. Execute according to task type and instructions\n"
+    subtaskDescription += "4. Update task file with results\n"
+    subtaskDescription += "5. Return completion status"
+    
+    // Use Claude Code's Task tool
+    result = Task.create({
+        title: subtaskTitle,
+        description: subtaskDescription,
+        instructions: "Execute as " + task.assigned_to + " role"
+    })
+    
+    logInfo("Delegated " + task.id + " to " + task.assigned_to + " via Task tool")
+    RETURN result.id
+
+FUNCTION groupNonConflictingTasks(tasks, maxBatchSize = 5):
+    // Group tasks that can execute in parallel
+    groups = []
+    currentGroup = []
+    
+    FOR task IN tasks:
+        canAddToGroup = true
+        
+        // Check batch size limit
+        IF currentGroup.length >= maxBatchSize:
+            canAddToGroup = false
+        
+        // Check for conflicts with tasks in current group
+        IF canAddToGroup:
+            FOR other IN currentGroup:
+                // Check for file conflicts
+                IF hasFileConflict(task, other):
+                    canAddToGroup = false
+                    BREAK
+                
+                // Check for resource conflicts
+                IF hasResourceConflict(task, other):
+                    canAddToGroup = false
+                    BREAK
+                
+                // Same role is OK in parallel (different subtasks)
+                // Claude Code can handle multiple subtasks for same role
+        
+        IF canAddToGroup:
+            currentGroup.append(task)
+        ELSE:
+            // Start new group
+            IF currentGroup.length > 0:
+                groups.append(currentGroup)
+            currentGroup = [task]
+    
+    // Add final group
+    IF currentGroup.length > 0:
+        groups.append(currentGroup)
+    
+    RETURN groups
+
+FUNCTION hasFileConflict(task1, task2):
+    // Check if tasks modify the same files
+    IF NOT task1.modifies_files OR NOT task2.modifies_files:
+        RETURN false
+    
+    // Check for overlapping file modifications
+    commonFiles = task1.modifies_files.intersect(task2.modifies_files)
+    
+    // Allow read-only overlaps
+    IF commonFiles.length > 0:
+        FOR file IN commonFiles:
+            IF task1.modifies(file) AND task2.modifies(file):
+                RETURN true  // Both modify same file
+    
+    RETURN false
+
+FUNCTION hasResourceConflict(task1, task2):
+    // Check for exclusive resource conflicts
+    exclusiveResources = ["database_schema", "api_endpoints", "config_files"]
+    
+    FOR resource IN exclusiveResources:
+        IF task1.requires(resource) AND task2.requires(resource):
+            IF task1.exclusive(resource) OR task2.exclusive(resource):
+                RETURN true
+    
+    RETURN false
+
+FUNCTION waitForGroupCompletion(subtaskIds):
+    // Wait for all subtasks in group to complete
+    allComplete = false
+    
+    WHILE NOT allComplete:
+        completedCount = 0
+        
+        FOR taskId IN subtaskIds:
+            status = getSubtaskStatus(taskId)
+            IF status == "completed":
+                completedCount++
+        
+        IF completedCount == subtaskIds.length:
+            allComplete = true
+        ELSE:
+            logProgress("Parallel execution: " + completedCount + "/" + subtaskIds.length + " completed")
+            wait(5000)  // Check every 5 seconds
+    
+    logInfo("All " + subtaskIds.length + " parallel tasks completed")
 ```
 
 ### Task Execution (Specialist executes)
+```pseudocode
+FUNCTION executeTask(taskId):
+    // 0. Check if executing as subtask
+    IF isExecutingAsSubtask():
+        RETURN executeSubtaskFromContext()
+    
+    // 1. Read task from dedicated file
+    taskFile = findTaskFile(taskId)
+    IF NOT taskFile:
+        ERROR("Task file not found for " + taskId)
+    
+    taskData = readTaskFile(taskFile)
+    
+    // 2. Extract and apply embedded config
+    embeddedConfig = extractEmbeddedConfig(taskData)
+    applyEmbeddedConfig(embeddedConfig)
+    
+    // 3. Activate assigned role
+    EXECUTE /icc-activate-role(taskData.assigned_to)
+    
+    // 4. Execute knowledge retrieval
+    EXECUTE /icc-memory-search("task execution " + taskId)
+    knowledgeRetrieved = retrieveRelevantKnowledge(taskData)
+    
+    // 5. Decide if subtasks needed
+    IF taskComplexityRequiresSubtasks(taskData):
+        subtasks = createSubtasks(taskData)
+        FOR subtask IN subtasks:
+            // Generate subtask files
+            taskFileGenerator.generateTaskFile(subtask, taskData)
+    
+    // 6. Execute work based on task type
+    executeTaskWork(taskData)
+    
+    // 7. Update task file with progress
+    updateTaskFileStatus(taskFile, "completed")
+    
+    // 8. Knowledge generation
+    learnings = generateTaskLearnings(taskData)
+    storeInMemory(learnings)
+    
+    // 9. Mark complete
+    markTaskComplete(taskId)
+    
+    // 10. L3 MODE operations
+    IF settings.autonomy_level == "L3":
+        triggerAutoContinue(taskId)
+        updateQueue(taskId, "completed")
+        checkUnblockedTasks()
+        triggerArchivalCheck(taskId)
+
+FUNCTION readTaskFile(filePath):
+    content = readFile(filePath)
+    
+    // Parse task metadata
+    taskData = parseTaskMetadata(content)
+    
+    // Extract embedded config
+    configMatch = content.match(/```yaml\n([\s\S]*?)\n```/)
+    IF configMatch:
+        taskData.embedded_config = yaml.parse(configMatch[1])
+    
+    RETURN taskData
 ```
-1. EXECUTE /icc-memory-search("task execution " + task.id)
-2. Read task assignment via /icc-activate-role(task.assigned_to)
-3. Knowledge retrieval (automatic first step)
-4. Decide if subtasks needed
-5. Execute work
-6. Update progress
-7. Knowledge generation (automatic last step)
-8. Mark complete
-9. **L3 MODE:**
-   - Trigger auto-continue for next task
-   - Update queue with completion
-   - Check for unblocked tasks
-   - Trigger archival check for completed tasks
+
+### Subtask Execution Pattern (Claude Code Task Tool)
+```pseudocode
+FUNCTION isExecutingAsSubtask():
+    // Check if we're in a Claude Code subtask context
+    context = getCurrentExecutionContext()
+    RETURN context.type == "subtask" OR context.hasTaskToolContext
+
+FUNCTION executeSubtaskFromContext():
+    // Extract role and task file from subtask description
+    context = getCurrentExecutionContext()
+    description = context.description
+    
+    // 1. Extract role from description pattern: [ROLE_NAME]
+    roleMatch = description.match(/^\[(@\w+(?:-\w+)*)\]/)
+    IF NOT roleMatch:
+        ERROR("No role specified in subtask description")
+    
+    roleName = roleMatch[1]
+    
+    // 2. Extract task file path
+    fileMatch = description.match(/Task File:\s*(.+\.md)/)
+    IF NOT fileMatch:
+        ERROR("No task file specified in subtask description")
+    
+    taskFilePath = fileMatch[1]
+    
+    // 3. Activate the specified role
+    EXECUTE /icc-activate-role(roleName)
+    logInfo("Subtask activated role: " + roleName)
+    
+    // 4. Read task file
+    taskData = readTaskFile(taskFilePath)
+    
+    // 5. Apply embedded config
+    IF taskData.embedded_config:
+        applyEmbeddedConfig(taskData.embedded_config)
+    
+    // 6. Execute knowledge retrieval
+    EXECUTE /icc-memory-search("subtask " + taskData.id)
+    
+    // 7. Execute the task work
+    result = executeTaskWork(taskData)
+    
+    // 8. Update task file with results
+    updateTaskFileWithResults(taskFilePath, result)
+    
+    // 9. Generate and store learnings
+    learnings = generateTaskLearnings(taskData)
+    storeInMemory(learnings)
+    
+    // 10. Return completion status
+    RETURN {
+        status: "completed",
+        task_id: taskData.id,
+        role: roleName,
+        result: result
+    }
+
+FUNCTION executeTaskWork(taskData):
+    // Execute based on task type
+    SWITCH taskData.type:
+        CASE "implementation":
+            RETURN executeImplementation(taskData)
+        CASE "testing":
+            RETURN executeTesting(taskData)
+        CASE "review":
+            RETURN executeReview(taskData)
+        CASE "documentation":
+            RETURN executeDocumentation(taskData)
+        CASE "investigation":
+            RETURN executeInvestigation(taskData)
+        CASE "fix":
+            RETURN executeFix(taskData)
+        DEFAULT:
+            RETURN executeGenericTask(taskData)
+
+FUNCTION updateTaskFileWithResults(filePath, result):
+    content = readFile(filePath)
+    
+    // Add completion section
+    completionSection = "\n\n## Execution Results\n"
+    completionSection += "- **Status**: completed\n"
+    completionSection += "- **Completed At**: " + getCurrentTime() + "\n"
+    completionSection += "- **Result**: " + summarizeResult(result) + "\n"
+    
+    IF result.outputs:
+        completionSection += "\n### Outputs\n"
+        FOR output IN result.outputs:
+            completionSection += "- " + output + "\n"
+    
+    // Update file
+    updatedContent = content + completionSection
+    writeFile(filePath, updatedContent)
 ```
 
 ### Git Operations with Auto-Correction
@@ -605,18 +955,49 @@ after_work:
 
 ## Tool Usage
 
-### Minimal Tool Set
-- **Read**: Load assignment files
-- **Write**: Update progress
-- **Task**: Create follow-up tasks
+### Core Tool Set
+- **Read**: Load assignment and task files
+- **Write**: Update progress and results
+- **Task**: PM delegates to specialists via Claude Code Task tool
 - **Memory**: Store/retrieve knowledge
 - **Git**: Commit when specified
 
-### No Complex Chains
-- No forced sequential thinking
-- No penalty systems
-- No monitoring loops
-- Just read → execute → update
+### Task Tool Pattern (PM Delegation)
+- PM uses Task tool for ALL specialist work
+- Role name MUST be in subtask description: [ROLE_NAME]
+- Task file path included in instructions
+- **PARALLEL EXECUTION**: PM creates multiple Task calls in ONE response
+- Claude Code executes parallel tasks simultaneously (up to 5)
+- Non-conflicting tasks grouped for parallel execution
+
+### Parallel Execution Patterns
+```pseudocode
+// PM delegates 3 parallel tasks in ONE response:
+Task.create({title: "Execute TASK-001", description: "[Developer] ..."})
+Task.create({title: "Execute TASK-002", description: "[QA-Engineer] ..."})  
+Task.create({title: "Execute TASK-003", description: "[AI-Engineer] ..."})
+
+// Claude Code executes all 3 simultaneously!
+```
+
+### Task Grouping Logic
+1. **Blocking tasks**: Execute sequentially (dependencies)
+2. **Critical path tasks**: Execute sequentially (timeline critical)
+3. **Parallel tasks**: Execute in batches of up to 5
+4. **Optional tasks**: Execute in smaller batches (up to 3)
+
+### Conflict Detection
+- **File conflicts**: Tasks modifying same files → sequential
+- **Resource conflicts**: Exclusive resources → sequential
+- **Role conflicts**: Same role OK (different subtasks)
+- **No conflicts**: Execute in parallel!
+
+### Execution Flow
+- PM reads story → creates tasks → groups by priority
+- PM delegates blocking/critical sequentially
+- PM delegates parallel tasks in batches (multiple Task calls)
+- Specialists execute simultaneously in subtasks
+- Results flow back → PM coordinates next batch
 
 ## Config Application
 
@@ -1039,16 +1420,42 @@ icc:create-story "Add user preferences"
 - System creates story file
 - PM runs icc:plan-story
 - Tasks auto-generated with specialists assigned
+- Task files generated for each task
 ```
 
-### Specialist Executes Task
+### PM Delegates Tasks (Task Tool) - PARALLEL EXECUTION
 ```
-icc:execute-task TASK-002
-- System loads task assignment
-- Specialist does knowledge retrieval
-- Work happens
-- Knowledge captured
-- Score updated
+PM executes story with 5 tasks (2 blocking, 3 parallel):
+
+PHASE 1 - Blocking tasks (sequential):
+1. Creates Task: "[Architect] Execute TASK-001: Design API schema..."
+   → Waits for completion
+2. Creates Task: "[Database-Engineer] Execute TASK-002: Create database schema..."
+   → Waits for completion
+
+PHASE 2 - Parallel tasks (simultaneous):
+PM creates ALL 3 tasks in ONE response:
+3. Creates Task: "[Developer] Execute TASK-003: Implement user service..."
+4. Creates Task: "[Developer] Execute TASK-004: Implement auth service..."  
+5. Creates Task: "[QA-Engineer] Execute TASK-005: Write integration tests..."
+
+Claude Code executes tasks 3, 4, and 5 SIMULTANEOUSLY!
+- Two Developer subtasks run in parallel (different services)
+- QA-Engineer works on tests at the same time
+- No file conflicts = true parallel execution
+```
+
+### Specialist Executes in Subtask
+```
+Subtask context: "[Developer] Execute TASK-002..."
+- Detects role from description: Developer
+- Activates Developer role
+- Reads task file: epics/EPIC-001/stories/STORY-002/tasks/TASK-002-implement.md
+- Applies embedded config from task file
+- Does knowledge retrieval
+- Implements feature
+- Updates task file with results
+- Returns completion to PM
 ```
 
 ### Review Creates Follow-up

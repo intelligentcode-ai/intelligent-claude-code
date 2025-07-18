@@ -201,25 +201,62 @@ FUNCTION getParallelTasks(maxParallel = 5):
     parallelTasks = []
     availableTasks = getAvailableTasks(maxParallel * 2)
     
-    // Group by execution context
-    contextGroups = groupByContext(availableTasks)
+    // First, group by priority level
+    priorityGroups = groupByPriority(availableTasks)
     
-    // Select tasks from different contexts for true parallelism
-    FOR context IN contextGroups:
-        IF parallelTasks.length < maxParallel:
-            task = context.tasks[0]
-            IF NOT hasConflict(task, parallelTasks):
-                parallelTasks.append(task)
-                
+    // Process each priority level
+    FOR priority IN ["blocking", "critical_path", "parallel", "optional"]:
+        IF priorityGroups[priority].length > 0:
+            // Find non-conflicting tasks at this priority
+            candidates = priorityGroups[priority]
+            
+            FOR candidate IN candidates:
+                IF parallelTasks.length < maxParallel:
+                    IF NOT hasConflict(candidate, parallelTasks):
+                        parallelTasks.append(candidate)
+                        
+                        // Log parallel detection
+                        logInfo("Added to parallel batch: " + candidate.id + 
+                               " (" + candidate.assigned_to + ")")
+    
     RETURN parallelTasks
+
+FUNCTION groupByPriority(tasks):
+    groups = {
+        "blocking": [],
+        "critical_path": [],
+        "parallel": [],
+        "optional": []
+    }
+    
+    FOR task IN tasks:
+        IF groups[task.priority]:
+            groups[task.priority].append(task)
+    
+    RETURN groups
 
 FUNCTION hasConflict(task, otherTasks):
     // Check for resource conflicts
     FOR other IN otherTasks:
-        IF task.modifiesFiles.intersects(other.modifiesFiles):
+        // File modification conflicts
+        IF task.modifiesFiles AND other.modifiesFiles:
+            IF task.modifiesFiles.intersects(other.modifiesFiles):
+                logDebug("File conflict: " + task.id + " vs " + other.id)
+                RETURN true
+        
+        // Database/schema conflicts
+        IF task.modifiesSchema AND other.modifiesSchema:
+            logDebug("Schema conflict: " + task.id + " vs " + other.id)
             RETURN true
-        IF task.assigned_to == other.assigned_to:
-            RETURN true  // Same role conflict
+        
+        // API endpoint conflicts
+        IF task.modifiesApi AND other.modifiesApi:
+            IF task.apiEndpoints.intersects(other.apiEndpoints):
+                logDebug("API conflict: " + task.id + " vs " + other.id)
+                RETURN true
+        
+        // Same role is NOW OK for parallel execution!
+        // Claude Code can handle multiple subtasks for same role
             
     RETURN false
 ```

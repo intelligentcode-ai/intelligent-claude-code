@@ -33,10 +33,12 @@ CLASS ContinuousExecutionEngine:
                 availableTasks = getAvailableTasks(maxTasks: 5)
                 
                 IF availableTasks.length > 0:
-                    // Execute tasks in parallel
-                    FOR task IN availableTasks:
-                        IF canExecute(task) AND NOT isExecuting(task):
-                            executeTaskAsync(task)
+                    // Group tasks for parallel execution
+                    parallelGroups = groupTasksForParallelExecution(availableTasks)
+                    
+                    FOR group IN parallelGroups:
+                        // Execute entire group in parallel
+                        executeTaskGroupAsync(group)
                     
                     // Reset error count on successful execution
                     state.errorCount = 0
@@ -116,6 +118,80 @@ CLASS ContinuousExecutionEngine:
                 
             FINALLY:
                 state.currentTasks.remove(task)
+    
+    FUNCTION groupTasksForParallelExecution(tasks):
+        // Group tasks that can execute in parallel
+        groups = []
+        currentGroup = []
+        maxGroupSize = 5
+        
+        FOR task IN tasks:
+            canAddToGroup = true
+            
+            // Check group size limit
+            IF currentGroup.length >= maxGroupSize:
+                canAddToGroup = false
+            
+            // Check for conflicts
+            IF canAddToGroup:
+                FOR other IN currentGroup:
+                    IF hasTaskConflict(task, other):
+                        canAddToGroup = false
+                        BREAK
+            
+            IF canAddToGroup:
+                currentGroup.append(task)
+            ELSE:
+                // Start new group
+                IF currentGroup.length > 0:
+                    groups.append(currentGroup)
+                currentGroup = [task]
+        
+        // Add final group
+        IF currentGroup.length > 0:
+            groups.append(currentGroup)
+        
+        RETURN groups
+    
+    FUNCTION executeTaskGroupAsync(taskGroup):
+        // Execute all tasks in group simultaneously
+        logInfo("L3: Executing " + taskGroup.length + " tasks in parallel")
+        
+        // Create parallel execution promises
+        executionPromises = []
+        
+        FOR task IN taskGroup:
+            IF canExecute(task) AND NOT isExecuting(task):
+                promise = executeTaskAsync(task)
+                executionPromises.append(promise)
+        
+        // Wait for all to complete (non-blocking)
+        Promise.all(executionPromises).then(results => {
+            logInfo("L3: Parallel group completed - " + results.length + " tasks")
+        })
+    
+    FUNCTION hasTaskConflict(task1, task2):
+        // Check for execution conflicts
+        
+        // File modification conflicts
+        IF task1.modifies_files AND task2.modifies_files:
+            commonFiles = task1.modifies_files.intersect(task2.modifies_files)
+            IF commonFiles.length > 0:
+                RETURN true
+        
+        // Database schema conflicts
+        IF task1.modifies_schema AND task2.modifies_schema:
+            RETURN true
+        
+        // API endpoint conflicts
+        IF task1.modifies_api AND task2.modifies_api:
+            commonEndpoints = task1.api_endpoints.intersect(task2.api_endpoints)
+            IF commonEndpoints.length > 0:
+                RETURN true
+        
+        // Same role is OK (Claude Code handles parallel subtasks)
+        
+        RETURN false
     
     FUNCTION handleTaskCompletion(task, result):
         task.status = "completed"
