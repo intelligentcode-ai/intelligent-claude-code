@@ -764,3 +764,14 @@ Subtask:
 - **Progress Tracking**: Hierarchical progress from task → story/bug → epic
 
 This consistent terminology ensures seamless integration across all system components and maintains clarity for all team members.
+
+### ID Formatting Conventions
+
+All work items follow a consistent ID formatting pattern:
+- **Format**: TYPE-NUMBER (e.g., EPIC-001, STORY-015, BUG-068)
+- **Types**: EPIC, STORY, BUG (always uppercase)
+- **Numbers**: Three-digit sequential (001, 002, ..., 999, 1000+)
+- **Assignment**: Manual ID assignment by users or AI roles
+- **Documentation**: See `/docs/ID-CONVENTIONS.md` for comprehensive guidelines
+
+This behavioral system uses manual ID assignment - there are no automated generators or counters. Each work item type maintains its own sequential numbering.
