@@ -94,7 +94,6 @@ FUNCTION executeRefresh():
     
     // Step 1: Reload configuration
     output.append("📋 Reloading configuration...")
-    configLoader.clearCache()
     newConfig = configLoader.loadConfiguration()
     configChanges = detectConfigChanges(systemState.config, newConfig)
     
@@ -154,14 +153,7 @@ FUNCTION executeReset():
     output.append("  ✓ All role scores reset to 0.0")
     output.append("  ✓ All penalties cleared")
     
-    // Step 4: Clear caches
-    output.append("🗑️ Clearing caches...")
-    clearAllCaches()
-    output.append("  ✓ Configuration cache cleared")
-    output.append("  ✓ Role cache cleared")
-    output.append("  ✓ Memory cache cleared")
-    
-    // Step 5: Reinitialize with saved config
+    // Step 4: Reinitialize with saved config
     output.append("🔄 Reinitializing with saved configuration...")
     systemState.config = savedConfig
     executeInit()
@@ -371,10 +363,6 @@ output: |
   📊 Resetting scores and penalties...
     ✓ All role scores reset to 0.0
     ✓ All penalties cleared
-  🗑️ Clearing caches...
-    ✓ Configuration cache cleared
-    ✓ Role cache cleared
-    ✓ Memory cache cleared
   🔄 Reinitializing with saved configuration...
   
   ✨ System reset complete!
