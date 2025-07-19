@@ -1,34 +1,64 @@
 # Create Story
 
-Create story within epic - PM-only operation
+Create a new story within an epic using $ARGUMENTS as story definition.
 
-## Usage
-```bash
-icc-create-story "Story title" --epic EPIC-XXX --scope "Story scope" [--priority P2] [--chain]
-```
+## Behavioral Sequence
+1. Verify current role is @PM:
+   - If not @PM, respond "Error: Story creation requires @PM role. Current role: [current_role]"
+2. Parse $ARGUMENTS to extract:
+   - Story title (required)
+   - Parent epic ID (EPIC-XXX format)
+   - Story scope/description
+   - Priority level (P0/P1/P2/P3)
+   - Story type (NEW_FEATURE/ENHANCEMENT/REFACTOR)
+3. Validate parent epic exists:
+   - Check for `epics/[EPIC-ID]/epic.yaml`
+   - If not found, respond "Error: Parent epic [EPIC-ID] not found"
+   - Load epic.yaml to verify status is not ARCHIVED
+4. Generate next STORY-XXX ID:
+   - Scan existing stories in epic directory
+   - Find highest existing STORY number
+   - Assign next sequential ID (e.g., STORY-001, STORY-002)
+5. Create story directory structure:
+   - Create `epics/[EPIC-ID]/stories/[STORY-ID]/`
+   - Create `epics/[EPIC-ID]/stories/[STORY-ID]/tasks/` (empty initially)
+6. Write story.yaml file:
+   ```yaml
+   id: "[STORY-ID]"
+   title: "[title from arguments]"
+   epic_id: "[EPIC-ID]"
+   type: "[NEW_FEATURE|ENHANCEMENT|REFACTOR]"
+   priority: "[P0|P1|P2|P3]"
+   status: "PLANNED"
+   phase: "DEFINING"
+   description: "[scope from arguments]"
+   acceptance_criteria: []
+   tasks: []
+   created_date: "[current_date]"
+   assigned_to: null
+   estimated_hours: null
+   actual_hours: null
+   ```
+7. Update parent epic.yaml:
+   - Add story ID to stories array
+   - Update epic progress metrics
+   - Increment story count
+8. Display success message:
+   "✅ Story [STORY-ID] created: [title]"
+   "📁 Location: epics/[EPIC-ID]/stories/[STORY-ID]/"
+   "🎯 Status: DEFINING phase (no tasks yet)"
+9. Log creation in activity tracking
 
-## Parameters
-- `title`: Story title/description (required)
-- `--epic`: Parent epic ID (required)
-- `--scope`: Story-specific scope within epic context (required)
-- `--priority`: P0|P1|P2|P3 (default: inherits from epic, see priority-system.md)
-- `--chain`: Auto-continue to icc-plan-order (optional)
+## Error Handling
+- Missing title: "Error: Story title is required"
+- Invalid epic ID format: "Error: Epic ID must be in format EPIC-XXX"
+- Epic not found: "Error: Parent epic [EPIC-ID] not found"
+- Epic archived: "Error: Cannot add stories to archived epic [EPIC-ID]"
+- Invalid priority: "Error: Priority must be P0, P1, P2, or P3"
+- File system error: "Error: Could not create story directory: [specific error]"
+- Permission denied: "Error: Insufficient permissions to create story files"
 
-## Core Actions
-- Verify @PM role and epic exists
-- Assign next STORY-XXX ID
-- Create story directory with story.yaml
-- Update parent epic with story reference
-- No tasks created (Stage 1: DEFINING only)
-
-## Validation
-- PM role required
-- Parent epic must exist
-- Story scope mandatory
-- ID uniqueness check
-
-## Output
-```
-✅ Story created: API Integration Framework
-  Epic: EPIC-002 | Priority: P1 | Phase: DEFINING
-```
+## Command Chaining
+- If --plan flag present, execute `icc-plan-story [STORY-ID]` after creation
+- If --chain flag present, output story ID for piping to next command
+- Story creation triggers potential epic status updates
