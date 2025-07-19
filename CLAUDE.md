@@ -168,6 +168,52 @@ make test            # Validate everything works
 /icc-archive-completed         # Archive completed items
 ```
 
+### $ARGUMENTS Behavioral Pattern
+
+Claude Code slash commands use **simple string substitution** where `$ARGUMENTS` is replaced with user input, not traditional parameter parsing.
+
+#### How It Works
+```markdown
+# Command file content
+Process the issue: $ARGUMENTS
+
+# Usage: /command 142
+# Result: "Process the issue: 142"
+```
+
+#### Command Creation Principles
+- **Behavioral Focus**: Commands describe what AI should do with arguments
+- **String Substitution**: `$ARGUMENTS` replaced with everything after command name
+- **Human Documentation**: Argument formats documented for human understanding
+
+#### Example Command Structure
+```markdown
+# Create Story
+
+Create a new story within an epic using $ARGUMENTS.
+
+## Behavior
+PM-only operation that extracts title, epic, and priority from $ARGUMENTS
+using pipe-separated format.
+
+## Arguments
+**Format:** "Story Title | Epic: EPIC-XXX | Priority: P1"
+**Example:** "OAuth Login | Epic: EPIC-001 | Priority: P1"
+
+## Core Actions
+- Verify @PM role and epic exists
+- Create story with extracted information
+- Apply validation and error handling
+```
+
+#### Key Guidelines
+- Focus on **what** AI does with arguments, not **how** to parse them
+- Document expected **format** and provide **concrete examples**
+- Describe **behavioral outcomes** and **role restrictions**
+- Avoid complex parsing instructions or validation rules
+
+For comprehensive documentation, see `/docs/ARGUMENTS-BEHAVIORAL-GUIDE.md`.
+
 ### Pseudo-Code Implementation Guidelines
 - **Function Structure**: Use clear function names with descriptive parameters
 - **Decision Logic**: Implement explicit IF/ELSE patterns for behavioral responses
