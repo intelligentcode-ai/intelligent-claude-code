@@ -1,119 +1,57 @@
 # Auto-Continue Triggers
 
-**PURPOSE:** Automatic progression between tasks and phases in L3 mode
+**Purpose:** Automatic progression between tasks and phases in L3 mode
 
-## Core Implementation
+## Trigger Registration
 
-```pseudocode
-CLASS AutoTriggers:
-    triggers = Map()
-    
-    FUNCTION initialize():
-        registerTriggers()
-        startListener()
-    
-    FUNCTION registerTriggers():
-        triggers.set("task.completed", handleTaskCompleted)
-        triggers.set("task.failed", handleTaskFailed)
-        triggers.set("phase.complete", handlePhaseComplete)
-        triggers.set("error.occurred", handleError)
-```
+**Core Triggers:** task.completed → Next task • task.failed → Error recovery • phase.complete → Phase transition • error.occurred → Fix generation  
+**Event Listening:** Monitor all task events → Match to registered handlers → Execute appropriate action  
+**Handler Registration:** Map event types to handler actions → Start continuous listener
 
-## Task Completion Handlers
+## Task Completion Flow
 
-```pseudocode
-FUNCTION handleTaskCompleted(task):
-    LogWithContext("INFO", "Task completed: " + task.id)
-    
-    SWITCH task.type:
-        CASE "implementation": triggerTesting(task)
-        CASE "testing": triggerReview(task)
-        CASE "review": triggerDocs(task)
-        CASE "documentation": triggerGit(task)
-        CASE "git": markStoryComplete(task)
+### Task Type Progression
+- **Implementation** → Trigger testing tasks
+- **Testing** → Trigger review process
+- **Review** → Trigger documentation
+- **Documentation** → Trigger git operations
+- **Git operations** → Mark story complete
 
-FUNCTION triggerTesting(task):
-    story = task.getParent()
-    testTasks = story.getTasksByType("testing")
-    
-    IF testTasks.length == 0:
-        LogWithContext("WARNING", "No tests, skipping to review")
-        triggerReview(task)
-        RETURN
-    
-    FOR testTask IN testTasks:
-        IF testTask.dependencies.includes(task.id):
-            testTask.status = "ready"
-            addToQueue(testTask)
-```
+### Testing Triggers
+**Find Test Tasks:** Get testing tasks from parent story → Check dependencies on completed task → Mark ready if dependent  
+**No Tests Fallback:** IF no test tasks found → Skip to review phase → Log warning
 
 ## Phase Transitions
 
-```pseudocode
-FUNCTION handlePhaseComplete(item):
-    SWITCH item.phase:
-        CASE "PLAN": 
-            IF allTasksCreated(item): transitionTo(item, "EXECUTE")
-        CASE "EXECUTE":
-            IF allTasksCompleted(item): transitionTo(item, "ACCEPTANCE")
-        CASE "ACCEPTANCE":
-            IF acceptanceMet(item): transitionTo(item, "DONE")
+**Phase Progression:** PLAN → EXECUTE → ACCEPTANCE → DONE → ARCHIVED  
+**Transition Conditions:**
+- PLAN complete → All tasks created
+- EXECUTE complete → All tasks done
+- ACCEPTANCE complete → Criteria met
+- DONE → Ready for archival
 
-FUNCTION transitionTo(item, phase):
-    item.phase = phase
-    item.transitionTime = now()
-    activatePhase(item, phase)
-```
+**Transition Actions:** Update phase → Record transition time → Activate new phase handlers
 
 ## Error Recovery
 
-```pseudocode
-FUNCTION handleError(event):
-    task = event.task
-    error = event.error
-    
-    IF canAutoFix(error):
-        fix = generateFix(error)
-        applyFix(task, fix)
-        retryTask(task)
-    ELSE:
-        createFixTask(task, error)
-        continueOtherWork()
-```
+**Auto-Fix Detection:** Check if error type is auto-fixable → Generate fix → Apply and retry  
+**Fix Task Creation:** IF not auto-fixable → Create fix task → Continue with other work  
+**Common Auto-Fixes:**
+- Test failures → Re-run with fixes
+- Lint errors → Auto-format
+- Import errors → Add missing imports
 
 ## Event Propagation
 
-```pseudocode
-FUNCTION triggerEvent(type, data):
-    IF NOT triggers.has(type):
-        LogWithContext("DEBUG", "No handler for: " + type)
-        RETURN
-        
-    handler = triggers.get(type)
-    event = {type: type, data: data, timestamp: now()}
-    
-    TRY:
-        handler(event)
-    CATCH error:
-        HandleError(error, "Trigger - " + type)
-        createRecoveryTask(type, error)
-```
+**Event Flow:** Receive event → Find handler → Create event object → Execute handler → Handle errors  
+**Error Handling:** Catch handler errors → Create recovery task → Continue processing  
+**Logging:** Log all events → Track event flow → Debug information available
 
 ## Continuous Flow
 
-```pseudocode
-FUNCTION markStoryComplete(gitTask):
-    story = gitTask.getParent()
-    story.status = "completed"
-    story.phase = "DONE"
-    
-    epic = story.getEpic()
-    epic.updateProgress()
-    
-    nextWork = findNextWork(epic)
-    IF nextWork: activateWork(nextWork)
-    ELSE: checkOtherEpics()
-```
+**Story Completion:** Mark story complete → Update phase to DONE → Update epic progress  
+**Next Work Discovery:** Find next story in epic → IF none: Check other epics → Activate found work  
+**Progress Updates:** Update all parent items → Recalculate completion percentages
 
 ## Benefits
 
