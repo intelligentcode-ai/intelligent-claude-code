@@ -1,143 +1,54 @@
 # Work Discovery Engine
 
-**PURPOSE:** Continuously discover and queue new work for L3 autonomous execution
+**Purpose:** Continuously discover and queue new work for L3 autonomous execution
 
-## Core Implementation
+## Discovery Loop
 
-```pseudocode
-CLASS WorkDiscovery:
-    state = {scanInterval: 30000, discovered: Set(), sources: []}
-    
-    FUNCTION initialize():
-        registerSources()
-        startDiscoveryLoop()
-    
-    FUNCTION registerSources():
-        sources = [scanBugs, scanStories, checkUnblocked, findFollowUps]
-    
-    FUNCTION startDiscoveryLoop():
-        ASYNC WHILE true:
-            wait(state.scanInterval)
-            newWork = discoverWork()
-            IF newWork.length > 0: processWork(newWork)
-```
+**Continuous Scanning:** Run every 30 seconds → Check all sources → Process found work → Add to queue  
+**Source Registration:** Bug scanner • Story scanner • Dependency checker • Follow-up finder  
+**Deduplication:** Track discovered items → Prevent duplicate processing → Maintain state
 
-## Work Discovery
+## Work Sources
 
-```pseudocode
-FUNCTION discoverWork():
-    allWork = []
-    
-    FOR source IN sources:
-        TRY:
-            work = source()
-            IF work.length > 0:
-                allWork.concat(work)
-                LogWithContext("INFO", "Found " + work.length + " from " + source.name)
-        CATCH error:
-            HandleError(error, "Discovery - " + source.name)
-    
-    RETURN deduplicateWork(allWork)
+### Bug Scanner
+**Bug Discovery:** Glob epics/**/bugs/*/bug.yaml → Parse YAML → Check status PLANNED/IN PROGRESS  
+**Phase Filter:** Only PLAN or EXECUTE phase → Skip completed/archived  
+**Queue Addition:** Add undiscovered bugs → Mark as discovered
 
-FUNCTION scanBugs():
-    bugs = []
-    bugFiles = glob("epics/**/bugs/*/bug.yaml")
-    
-    FOR file IN bugFiles:
-        content = readFile(file)
-        bug = parseYAML(content)
-        
-        IF bug.status IN ["PLANNED", "IN PROGRESS"] AND
-           bug.phase IN ["PLAN", "EXECUTE"] AND
-           NOT state.discovered.has(bug.id):
-            bugs.append(bug)
-            
-    RETURN bugs
+### Story Scanner  
+**Story Discovery:** Glob epics/**/stories/*/story.yaml → Parse YAML → Check active status  
+**Status Check:** PLANNED or IN PROGRESS → Skip completed  
+**Processing:** Add to discovery set → Queue for processing
 
-FUNCTION scanStories():
-    stories = []
-    storyFiles = glob("epics/**/stories/*/story.yaml")
-    
-    FOR file IN storyFiles:
-        content = readFile(file)
-        story = parseYAML(content)
-        
-        IF story.status IN ["PLANNED", "IN PROGRESS"] AND
-           NOT state.discovered.has(story.id):
-            stories.append(story)
-            
-    RETURN stories
-```
+### Dependency Checker
+**Unblock Tasks:** Find blocked tasks → Check if blockers resolved → Mark as ready  
+**Resolution:** All dependencies complete → Remove block → Add to queue  
+**Logging:** Track unblocked items → Report progress
 
-## Dependency Resolution
-
-```pseudocode
-FUNCTION checkUnblocked():
-    unblocked = []
-    
-    FOR task IN getBlockedTasks():
-        IF task.blockers.allResolved():
-            task.status = "ready"
-            unblocked.append(task)
-            logInfo("Unblocked: " + task.id)
-    
-    RETURN unblocked
-
-FUNCTION findFollowUps():
-    followUps = []
-    
-    // Review follow-ups
-    FOR review IN getCompletedReviews():
-        IF review.hasIssues() AND NOT review.followUpsCreated:
-            tasks = createReviewFollowUps(review)
-            followUps.concat(tasks)
-    
-    // Error follow-ups
-    FOR error IN getUnresolvedErrors():
-        IF NOT error.hasFixTask:
-            task = createErrorFixTask(error)
-            followUps.append(task)
-    
-    RETURN followUps
-```
+### Follow-Up Finder
+**Review Follow-Ups:** Check completed reviews → Find unaddressed issues → Create fix tasks  
+**Error Follow-Ups:** Find unresolved errors → Check for existing fixes → Create if missing  
+**Task Generation:** Generate follow-up tasks → Add to work queue
 
 ## Work Processing
 
-```pseudocode
-FUNCTION processWork(workItems):
-    FOR item IN workItems:
-        state.discovered.add(item.id)
-        
-        SWITCH item.type:
-            CASE "bug": processBug(item)
-            CASE "story": processStory(item)
-            CASE "task": processTask(item)
+### Item Processing
+**Bug Processing:** IF no tasks: Create tasks → Queue ready tasks → Track progress  
+**Story Processing:** IF PLAN phase: Trigger planning → ELSE: Queue executable tasks  
+**Task Processing:** Direct queue addition → Check execution readiness
 
-FUNCTION processBug(bug):
-    IF bug.tasks.length == 0: createBugTasks(bug)
-    
-    FOR task IN bug.tasks:
-        IF task.status IN ["planned", "ready"]:
-            addToQueue(task)
+### Planning Triggers
+**Story Planning:** No tasks + PLAN phase → Trigger task creation → Update phase  
+**Task Creation:** Follow outer workflow → Generate task files → Update story
 
-FUNCTION processStory(story):
-    IF story.phase == "PLAN" AND story.tasks.length == 0:
-        triggerPlanning(story)
-    ELSE:
-        FOR task IN story.tasks:
-            IF canExecute(task): addToQueue(task)
-```
+## Prioritization
 
-## Smart Prioritization
-
-```pseudocode
-FUNCTION prioritizeWork(items):
-    FOR item IN items:
-        item.priority = calculatePriority(item)
-    
-    items.sort((a, b) => a.priority - b.priority)
-    RETURN items
-```
+**Priority Calculation:** Apply priority formula → Sort by priority → Return ordered list  
+**Priority Levels:**
+- Security: 0 (highest)
+- Customer: 1
+- Blocking: 2  
+- Feature: 3 (lowest)
 
 ## Configuration
 

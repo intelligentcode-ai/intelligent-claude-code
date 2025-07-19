@@ -1,130 +1,63 @@
 # Progress Monitor
 
-**PURPOSE:** Continuous progress visibility without stopping execution in L3 mode
+**Purpose:** Continuous progress visibility without stopping execution in L3 mode
 
-## Core Implementation
+## Core Monitoring
 
-```pseudocode
-CLASS ProgressMonitor:
-    state = {active: Map(), completed: [], metrics: {}, lastReport: null}
-    
-    FUNCTION initialize():
-        startTracking()
-        startReporting()
-    
-    FUNCTION startTracking():
-        ASYNC WHILE true:
-            wait(1000ms)
-            updateActiveWork()
-            checkMilestones()
-            IF shouldReport(): generateReport()
-```
+**Tracking Loop:** Update active work every second → Check milestones → Generate reports periodically  
+**State Management:** Track active tasks → Completed items → Performance metrics → Report timing  
+**Continuous Operation:** Never blocks execution → Always monitoring → Real-time updates
 
 ## Non-Blocking Handlers
 
-```pseudocode
-FUNCTION applyL3NonBlocking(action):
-    IF GetSetting("autonomy_level") != "L3":
-        RETURN action.executeNormally()
-    
-    replacements = {
-        "waitForUserConfirmation": logAndContinue,
-        "confirmTaskComplete": markCompleteAndContinue,
-        "approveReview": performAutomatedReview,
-        "pauseAfterTask": continueToNext,
-        "confirmError": autoHandleError
-    }
-    
-    IF replacements.has(action.type):
-        RETURN replacements.get(action.type)(action)
-    
-    RETURN action.executeNormally()
+### L3 Action Replacements
+- **User confirmation** → Log and continue
+- **Task completion confirm** → Mark complete automatically
+- **Review approval** → Automated review process
+- **Task pause** → Continue to next immediately
+- **Error confirmation** → Handle automatically
 
-FUNCTION logAndContinue(action):
-    LogWithContext("INFO", "Auto-continuing: " + action.description)
-    updateProgress(action)
-    RETURN {continue: true, result: action.defaultResult}
-
-FUNCTION markCompleteAndContinue(task):
-    task.status = "completed"
-    task.completedAt = now()
-    triggerEvent("task.completed", {task: task})
-    RETURN {continue: true}
-```
+### Handler Logic
+**L3 Mode Check:** IF L3: Replace blocking actions → ELSE: Normal behavior  
+**Auto-Continue:** Log action → Update progress → Return continue signal  
+**Completion Flow:** Mark complete → Record timestamp → Trigger next event
 
 ## Smart Stop Conditions
 
-```pseudocode
-FUNCTION shouldStop(context):
-    IF GetSetting("autonomy_level") != "L3":
-        RETURN true  // Normal stop behavior
-    
-    criticalConditions = [
-        isBusinessCritical,
-        isSecurityViolation,
-        isDataLossRisk,
-        isSystemFailure
-    ]
-    
-    FOR condition IN criticalConditions:
-        IF condition(context):
-            logCriticalStop(condition, context)
-            RETURN true
-    
-    RETURN false  // Don't stop for non-critical
+### Critical Stops Only
+**Business Critical:** Pricing changes • Customer data deletion • API breaking changes • Legal issues • Payment processing  
+**Security Violations:** Credential exposure • Auth bypass • Privilege escalation  
+**Data Loss Risk:** Destructive operations • No backups • Irreversible changes  
+**System Failure:** Core service down • Critical dependencies failed
 
-FUNCTION isBusinessCritical(context):
-    patterns = ["pricing", "customer data deletion", "api breaking", "legal", "payment"]
-    FOR pattern IN patterns:
-        IF context.description.includes(pattern): RETURN true
-    RETURN false
-```
+### Stop Decision
+**L3 Behavior:** Check if truly critical → Log if stopping → Continue if non-critical  
+**Normal Mode:** Stop for all conditions as usual
 
 ## Review Handling
 
-```pseudocode
-FUNCTION performAutomatedReview(review):
-    IF GetSetting("autonomy_level") == "L3":
-        reviewResult = automatedPeerReview(review.task, review.result)
-        IF reviewResult.hasIssues():
-            createFollowUpTask(reviewResult.issues)
-        RETURN {continue: true, blocking: false, completed: true}
-    ELSE:
-        RETURN {continue: false, blocking: true}
-```
+**Automated Reviews:** L3 performs peer review → Check for issues → Create follow-up tasks if needed  
+**Non-Blocking:** Reviews don't stop progress → Issues become new tasks → Continue with next work  
+**Issue Tracking:** Log review findings → Create fix tasks → Track in separate queue
 
 ## Error Recovery
 
-```pseudocode
-FUNCTION autoHandleError(error):
-    IF canAutoRecover(error):
-        recovery = attemptRecovery(error)
-        IF recovery.success:
-            logInfo("Auto-recovered: " + error.type)
-            RETURN {continue: true}
-    
-    IF GetSetting("autonomy_level") == "L3":
-        createErrorFixTask(error)
-        logWarning("Created fix task: " + error.type)
-        RETURN {continue: true, createdFixTask: true}
-    
-    RETURN {continue: false}
-```
+**Auto-Recovery:** Check if recoverable → Attempt fix → Continue if successful  
+**Fix Task Creation:** IF not recoverable → Create fix task → Log warning → Continue anyway  
+**Recovery Types:**
+- Test failures → Re-run
+- Format issues → Auto-fix
+- Import errors → Resolve
 
 ## Progress Reporting
 
-```pseudocode
-FUNCTION generateReport():
-    summary = {
-        tasksCompleted: countCompletedSince(state.lastReport),
-        tasksInProgress: state.active.size(),
-        tasksQueued: getQueuedCount(),
-        milestones: getRecentMilestones()
-    }
-    
-    logProgressSummary(summary)
-    state.lastReport = now()
-```
+**Report Contents:**
+- Tasks completed since last report
+- Current tasks in progress
+- Queued task count
+- Recent milestones achieved
+
+**Report Timing:** Generate every 5 minutes → Or on milestone completion → Never interrupt work
 
 ## Benefits
 
