@@ -1,113 +1,150 @@
-# icc-plan-bug
+# Plan Bug
 
-**PURPOSE:** Generate task breakdown for bug fixing
+Generate task breakdown for bug fixing using $ARGUMENTS as bug ID.
 
-## BEHAVIORAL GUIDANCE
+## Behavioral Sequence
+1. Parse $ARGUMENTS to extract bug ID (BUG-XXX format)
+2. If bug ID missing, respond "Error: Bug ID required (format: BUG-XXX)"
+3. Validate bug exists:
+   - Locate bug file: `epics/*/bugs/[BUG-ID]/bug.yaml`
+   - If not found, respond "Error: Bug [BUG-ID] not found"
+   - Load bug.yaml and verify status is OPEN
+4. Search memory for similar bug patterns:
+   - Execute `icc-memory-search "[bug.title] [bug.severity] bug fix"`
+   - Look for TaskLearning entities with similar bug types
+   - Find Success-Pattern entities for bug resolution
+   - Display: "📚 Found X similar bug resolution patterns"
+5. Perform root cause analysis:
+   - Analyze bug symptoms and reproducibility
+   - Identify potential root causes based on:
+     * Steps to reproduce
+     * Expected vs actual behavior
+     * Environment details
+     * Similar bugs in memory
+   - Categorize likely cause (logic error, integration issue, data problem, etc.)
+6. Assess impact and scope:
+   - Determine affected systems/components
+   - Identify potential side effects of fixes
+   - Estimate complexity based on root cause analysis
+   - Calculate risk level for different fix approaches
+7. Detect work type for specialist assignment:
+   - Execute `icc-validate-work-type "[bug description and analysis]"`
+   - Identify required specialist (AI-Engineer, DevOps-Engineer, etc.)
+   - Ensure >70% capability match for assignments
+8. Generate comprehensive task breakdown:
+   
+   **Standard Bug Fix Tasks:**
+   - TASK-001: Knowledge Loading (search for similar fixes)
+   - TASK-002: Investigation (reproduce bug, analyze logs)
+   - TASK-003: Root Cause Analysis (identify exact problem)
+   - TASK-004: Fix Implementation (develop solution)
+   - TASK-005: Peer Review (domain expert review)
+   - TASK-006: Regression Testing (ensure no side effects)
+   - TASK-007: Validation Testing (verify bug fixed)
+   - TASK-008: Documentation (update docs, add comments)
+   - TASK-009: Git Operations (commit fix, create PR)
+   - TASK-010: Knowledge Creation (capture learnings)
 
-### Input
-- Bug file path (e.g., `epics/EPIC-004/bugs/BUG-059/bug.yaml`)
+9. Apply validation rules for specialist assignments:
+   - Require PM + Specialist Architect approval for all assignments
+   - Ensure domain expertise for complex bugs
+   - Security bugs → @Security-Engineer required
+   - Infrastructure bugs → @DevOps-Engineer or @System-Engineer
+   - AI/ML bugs → @AI-Engineer required
+10. Create task files in bug directory:
+    - Create `epics/[EPIC-ID]/bugs/[BUG-ID]/tasks/TASK-XXX.md` for each task
+    - Include specific bug context in each task
+    - Set appropriate dependencies and priorities
+11. Prioritize tasks based on bug severity:
+    - CRITICAL bugs → All tasks get "blocking" priority
+    - HIGH bugs → Investigation and fix tasks get "critical_path"
+    - MEDIUM/LOW bugs → Standard priority assignment
+12. Update bug.yaml with task references:
+    - Add task IDs to tasks array
+    - Update estimated_hours (sum of task estimates)
+    - Transition phase from DEFINING to INVESTIGATING
+    - Set status to IN_PROGRESS
+13. Create bug investigation plan:
+    - Document reproduction steps
+    - List investigation areas to explore
+    - Identify required tools and access
+    - Plan rollback strategy if fix causes issues
+14. Display planning summary:
+    "✅ Bug [BUG-ID] planned successfully"
+    "🐛 Severity: [SEVERITY] (Priority: [PRIORITY])"
+    "🔍 Root Cause Category: [category]"
+    "📋 Created [X] tasks with [Y] hours estimated"
+    "🎯 Ready for investigation phase"
+15. Store bug resolution insights in memory for future use
 
-### Process
-1. **Read bug YAML** → Extract requirements
-2. **Root cause analysis** → Identify underlying issues
-3. **Impact assessment** → Customer, system, security impacts
-4. **Work type detection** → Trigger specialist validation
-5. **Architect triage** → PM + Specialist-Architect approval
-6. **Task generation** → Create fix and validation tasks
-7. **Update bug file** → Write tasks array
+## Error Handling
+- Invalid bug ID format: "Error: Bug ID must be in format BUG-XXX"
+- Bug not found: "Error: Bug [BUG-ID] not found"
+- Bug already planned: "Warning: Bug already has tasks, use --replan to regenerate"
+- Bug resolved: "Error: Cannot plan resolved bug [BUG-ID]"
+- Memory search failed: "Warning: Memory search failed, proceeding without patterns"
+- Work type detection failed: "Warning: Could not detect work type, using default assignments"
+- Validation failed: "Error: Task assignment validation failed: [specific issue]"
+- File creation failed: "Error: Could not create task files: [specific error]"
 
-### Bug Analysis Requirements
-- **Root cause identification** (not just symptoms)
-- **Impact scope** (customer count, feature areas)
-- **Security implications** (data exposure, auth issues)
-- **Regression risk** (what else might break)
-- **Performance impact** (degradation metrics)
+## Bug-Specific Task Templates
 
-### Validation Chain Execution
+**Investigation Task Template:**
+```markdown
+# TASK-002: Investigate [Bug Title]
+
+**Bug**: [BUG-ID]
+**Type**: investigation
+**Priority**: [based on severity]
+
+## Investigation Areas
+- [ ] Reproduce bug in development environment
+- [ ] Analyze logs for error patterns
+- [ ] Check recent code changes in affected area
+- [ ] Review similar bugs in memory system
+- [ ] Test edge cases and boundary conditions
+
+## Expected Outputs
+- Root cause identification
+- Reproduction steps confirmed
+- Impact assessment
+- Recommended fix approach
 ```
-icc:detect-work-type → specialist_architect
-icc:require-triage(@PM, @specialist_architect)
-icc:validate-assignments(tasks)
-icc:require-approval(@PM, @specialist_architect)
+
+**Fix Implementation Template:**
+```markdown
+# TASK-004: Implement Fix for [Bug Title]
+
+**Bug**: [BUG-ID]
+**Root Cause**: [identified cause]
+**Fix Strategy**: [approach to take]
+
+## Implementation Plan
+- [ ] Implement core fix
+- [ ] Add error handling
+- [ ] Update related documentation
+- [ ] Add logging for future debugging
+
+## Validation
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+- [ ] Manual testing confirms fix
 ```
 
-### Task Generation Pattern
-```yaml
-tasks:
-  - id: TASK-001
-    title: Knowledge Retrieval
-    assigned_to: [primary_specialist]
-    priority: blocking
-    
-  - id: TASK-002
-    title: Root Cause Analysis
-    assigned_to: [specialist]
-    priority: critical_path
-    
-  - id: TASK-003
-    title: Implement Fix
-    assigned_to: [specialist]
-    priority: critical_path
-    
-  - id: TASK-004
-    title: Fix Validation
-    assigned_to: [QA-specialist]
-    priority: critical_path
-    
-  - id: TASK-005
-    title: Regression Testing
-    assigned_to: [test_specialist]
-    priority: parallel
-    
-  - id: TASK-999
-    title: Knowledge Generation
-    assigned_to: [primary_specialist]
-    priority: optional
+## Priority Assignment Logic
+```
+Bug Severity → Task Priority:
+CRITICAL → blocking (all tasks)
+HIGH → critical_path (investigation + fix)
+MEDIUM → parallel (most tasks)
+LOW → optional (documentation tasks)
+
+Security Bugs → All tasks escalate to blocking
+Customer-Reported → +1 priority level
+Production Issues → +1 priority level
 ```
 
-### Bug-Specific Task Types
-- **Root cause analysis** → Investigation and diagnosis
-- **Fix implementation** → Targeted solution
-- **Fix validation** → Verify issue resolved
-- **Regression testing** → Ensure no new breaks
-- **Customer communication** → If high impact
-
-### Priority Escalation
-- **CRITICAL severity** → Auto-escalate to P0
-- **HIGH severity + customer impact** → P1
-- **Security implications** → P0 override
-- **Performance degradation** → Priority +1
-
-### Severity Mapping
-```yaml
-severity_to_priority:
-  CRITICAL: P0  # System down, data loss
-  HIGH: P1      # Major feature broken
-  MEDIUM: P2    # Feature degraded
-  LOW: P3       # Minor issue
-```
-
-### Output
-Bug YAML updated with:
-- Tasks array with proper specialists
-- Root cause documented
-- Impact assessment included
-- Fix approach validated by architect
-- Test coverage defined
-
-### Chain Context
-- **From:** icc-plan-order (bug prioritization)
-- **To:** icc-plan-tasks (detailed planning)
-- **Integration:** Role activation via @-notation
-
-### Specialist Requirements
-- **Security bugs** → @Security-Engineer review
-- **Performance bugs** → @System-Engineer analysis
-- **Data bugs** → @Database-Engineer validation
-- **UI bugs** → @Frontend-Tester verification
-
-### Quality Gates
-- Root cause must be identified (not guessed)
-- Fix must address cause (not symptoms)
-- Tests must prevent regression
-- Customer impact must be assessed
+## Command Chaining
+- If --execute flag present, immediately start investigation tasks
+- If --assign flag present, delegate tasks to appropriate specialists
+- Planning enables bug investigation and resolution workflow

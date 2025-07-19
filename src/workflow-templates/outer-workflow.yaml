@@ -109,6 +109,13 @@ workflow:
         - id: "assign_specialists"
           action: "Match tasks to specialist roles"
           validation_required: true
+          mandatory_requirements:
+            - "ALWAYS include role in task title: '[Role] Task description'"
+            - "ALWAYS create minimum 3 subtasks per task"
+            - "ALWAYS identify parallelization opportunities"
+            - "ALWAYS use sequential thinking for analysis"
+            - "ALWAYS apply ultrathinking depth"
+            - "ALWAYS create ultra-experienced specialists"
           validation_chain:
             - step: "detect_work_type"
               command: "icc:detect-work-type(task_content)"
