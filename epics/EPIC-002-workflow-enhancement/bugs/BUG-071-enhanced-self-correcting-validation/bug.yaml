@@ -1,0 +1,202 @@
+bug:
+  id: "BUG-071"
+  title: "Enhanced self-correcting validation system - auto-fix instead of blocking"
+  type: "behavioral_enhancement"
+  epic: "EPIC-002"
+  created: "2025-07-18"
+  created_by: "@PM"
+  assigned_to: "@AI-Engineer"
+  priority: "P1"
+  severity: "HIGH"
+  status: "PLANNED"
+  phase: "INIT"
+  
+  # AUTO-CORRECTION VALIDATION CHAIN
+  validation_chain_applied: true
+  work_type_detected: "ai_agentic"
+  specialist_architect_consulted: "@AI-Architect"
+  triage_completed: true
+  joint_approval: true
+  
+problem_description: |
+  BEHAVIORAL ENHANCEMENT NEEDED: Current validation system (BUG-059) blocks 
+  execution when validation fails, but we need TRUE self-correction that
+  automatically fixes validation issues without stopping L3 autonomous execution.
+  
+  Current Issues:
+  1. Validation failures cause blocking instead of auto-correction
+  2. Missing validation steps are detected but not automatically executed
+  3. Role assignment failures stop execution instead of auto-reassigning
+  4. L3 autonomy is interrupted by validation failures
+  5. No automatic specialist architect consultation when needed
+  6. Git settings violations are detected but not auto-corrected
+  
+  The system needs to evolve from "detect and block" to "detect and auto-fix"
+  while maintaining all quality and governance standards.
+  
+root_cause: |
+  The current role-assignment-validator.md implements a blocking validation
+  approach where validation failures return errors that stop execution.
+  This contradicts the L3 autonomy requirement for continuous execution.
+  
+  We need a self-correcting approach that:
+  - Detects validation issues
+  - Automatically applies corrections
+  - Logs corrections for transparency
+  - Continues execution seamlessly
+  
+impact: |
+  - L3 autonomy frequently interrupted by validation failures
+  - Manual intervention required for routine validation corrections
+  - Reduced productivity due to blocking validation
+  - Inconsistent validation enforcement
+  - User frustration with stopped execution
+  - Reduced trust in autonomous operation
+  
+acceptance_criteria:
+  - id: "AC-001"
+    description: "Auto-correcting validation detects and fixes role assignment issues"
+    validation_method: "integration_test"
+    status: "planned"
+    
+  - id: "AC-002"
+    description: "Missing specialist architect consultation automatically executed"
+    validation_method: "behavioral_test"
+    status: "planned"
+    
+  - id: "AC-003"
+    description: "Invalid role assignments automatically corrected to valid alternatives"
+    validation_method: "automated_test"
+    status: "planned"
+    
+  - id: "AC-004"
+    description: "L3 autonomy continues seamlessly through validation corrections"
+    validation_method: "integration_test"
+    status: "planned"
+    
+  - id: "AC-005"
+    description: "All corrections logged for transparency and learning"
+    validation_method: "audit_log"
+    status: "planned"
+    
+  - id: "AC-006"
+    description: "Git settings violations automatically corrected"
+    validation_method: "automated_test"
+    status: "planned"
+    
+definition_of_done:
+  - "Self-correcting validation system implemented with auto-fix capabilities"
+  - "Validation failures automatically corrected without stopping execution"
+  - "Role assignments automatically optimized when validation fails"
+  - "Specialist architect consultation automatically triggered when needed"
+  - "L3 autonomy operates continuously through validation corrections"
+  - "All corrections logged and stored in memory for learning"
+  - "Git operations automatically enforce settings through correction"
+  
+# Embedded config drives task execution
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  git_privacy: true
+  blocking_enabled: false  # Non-blocking for true self-correction
+  
+# Enhanced behavioral system bug
+workflow:
+  current_phase: "INIT"
+  approach: "enhanced_self_correcting_validation"
+  testing_required: true
+  architect_review_required: true
+  continuous_execution: true
+  
+# Tasks with proper validation and self-correction focus
+tasks:
+  - id: "TASK-071"
+    title: "Knowledge retrieval on self-correcting validation patterns"
+    type: "research"
+    assigned_to: "@AI-Engineer"
+    effort: "small"
+    status: "planned"
+    description: "Research existing validation patterns and identify auto-correction opportunities"
+    
+  - id: "TASK-072"
+    title: "Design enhanced auto-correction architecture"
+    type: "architecture"
+    assigned_to: "@AI-Architect"
+    effort: "large"
+    status: "planned"
+    dependencies: ["TASK-071"]
+    description: "Design system that auto-corrects validation failures without blocking"
+    
+  - id: "TASK-073"
+    title: "Implement auto-correction mechanisms"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    effort: "large"
+    status: "planned"
+    dependencies: ["TASK-072"]
+    description: "Build auto-correction logic that fixes validation issues seamlessly"
+    
+  - id: "TASK-074"
+    title: "Integrate with L3 continuous execution engine"
+    type: "integration"
+    assigned_to: "@AI-Engineer"
+    effort: "medium"
+    status: "planned"
+    dependencies: ["TASK-073"]
+    description: "Ensure corrections don't interrupt L3 autonomous execution"
+    
+  - id: "TASK-075"
+    title: "Implement correction logging and learning"
+    type: "implementation"
+    assigned_to: "@AI-Engineer"
+    effort: "medium"
+    status: "planned"
+    dependencies: ["TASK-074"]
+    description: "Log all corrections and integrate with learning system"
+    
+  - id: "TASK-076"
+    title: "Peer review enhanced validation system"
+    type: "review"
+    assigned_to: "@AI-Architect"
+    effort: "medium"
+    status: "planned"
+    dependencies: ["TASK-075"]
+    description: "Review auto-correction logic and ensure quality standards"
+    
+  - id: "TASK-077"
+    title: "Test self-correcting validation with L3 scenarios"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    effort: "large"
+    status: "planned"
+    dependencies: ["TASK-076"]
+    description: "Test various validation failure scenarios with auto-correction"
+    
+  - id: "TASK-078"
+    title: "Knowledge generation and pattern capture"
+    type: "knowledge_creation"
+    assigned_to: "@AI-Engineer"
+    effort: "small"
+    status: "planned"
+    dependencies: ["TASK-077"]
+    description: "Capture patterns and learnings from enhanced validation system"
+
+# Example auto-correction scenarios
+examples:
+  role_assignment_correction:
+    before: "Task assigned to @Developer for AI behavioral work"
+    detection: "Work type: ai_agentic, capability match: 0.3"
+    correction: "Auto-reassign to @AI-Engineer, notify architect"
+    result: "Task continues with correct assignment"
+    
+  missing_architect_consultation:
+    before: "Security task created without architect approval"
+    detection: "Security work type detected, no @Security-Architect approval"
+    correction: "Auto-request architect consultation, continue with provisional assignment"
+    result: "Task continues, architect notified for review"
+    
+  git_privacy_correction:
+    before: "Commit message contains 'AI-generated' with git_privacy: true"
+    detection: "AI mention detected with privacy enabled"
+    correction: "Auto-strip AI mentions, clean commit message"
+    result: "Commit proceeds with clean message"
