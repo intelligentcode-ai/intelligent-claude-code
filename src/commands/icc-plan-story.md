@@ -1,52 +1,29 @@
-# icc:plan-story
+# Story Planning Command
 
-Plan story tasks with architect validation and specialist assignment.
-
-## Usage
-```
-icc-plan-story STORY-XXX
-```
+**BEHAVIORAL INSTRUCTION**: Plan story by generating tasks with specialist matching.
 
 ## Parameters
 - `story_id`: Story identifier (required)
+- `--chain-to <COMMAND>` - Chain to next command
+- `--dry-run` - Preview without execution
+- `--force` - Skip validation
 
-## Implementation
-Executes story planning workflow with validation:
+## Claude Behaviors
+1. **Memory-First**: Search memory for similar story patterns
+2. **Work Type Detection**: Identify AI, infrastructure, security, database, or frontend work
+3. **Specialist Activation**: Switch to appropriate architect role for work type
+4. **Validation Enforcement**: Ensure PM + Specialist-Architect triage and approval
+5. **Task Generation**: Create knowledge retrieval (001), core work (010-994), knowledge capture (999)
+6. **Assignment Validation**: Verify >70% capability match for each task
+7. **Phase Transition**: Move story from PLANNING to EXECUTE
 
-1. **Read Assignment**: Load story.yaml with embedded config
-2. **Apply Config**: Use embedded config to shape task creation
-3. **Work Type Detection**: Analyze story content for specialist requirements
-4. **Architect Triage**: Mandatory PM + Specialist Architect consultation
-5. **Task Generation**: Create tasks with appropriate specialist assignments
-6. **Validation Chain**: Ensure all assignments meet >70% capability match
-7. **Approval Gate**: Joint PM + Specialist Architect approval required
-
-## Expected Output
-```
-📋 Planning Story: STORY-XXX
-
-📖 Reading assignment file...
-⚙️  Applying embedded config: L3 autonomy, PM active
-🔍 Work Type: ai_agentic
-👥 Required Architect: @AI-Architect
-
-⏸️  Triage required with @AI-Architect
-✅ Triage completed
-✅ Tasks generated:
-   - TASK-001: Knowledge retrieval (@AI-Engineer)
-   - TASK-002: Architecture design (@AI-Architect) 
-   - TASK-003: Implementation (@AI-Engineer)
-   - TASK-004: Testing (@QA-Engineer)
-   - TASK-005: Knowledge generation (@AI-Engineer)
-
-✅ All assignments validated (>70% capability match)
-✅ Joint approval received
-📁 Updated: story.yaml with task assignments
-🎯 Phase: PLAN → EXECUTE
-```
+## Mandatory Behaviors
+- Never skip validation without --force
+- Always activate specialist architect for detected work type
+- Always generate review tasks for implementation
+- Always create knowledge tasks (retrieval and generation)
+- Always update story.yaml with tasks and phase change
 
 ## Integration
-- Follows lean-workflow-executor planning patterns
-- Integrates with role-assignment-validator for specialist matching
-- Uses embedded config from story.yaml to shape behavior
-- Triggers automatic task queue population in L3 mode
+- **Prerequisites**: icc-plan-order completion
+- **Chain Target**: icc-plan-tasks

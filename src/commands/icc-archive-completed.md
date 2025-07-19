@@ -1,28 +1,22 @@
-# icc:archive-completed
+# Archive Completed
 
-Archive all completed work items with cascading hierarchy and git-aware operations.
+Archive all completed work items with cascading hierarchy and git-aware operations
 
 ## Usage
-```
-icc-archive-completed
-icc-archive-completed --dry-run
+```bash
+icc-archive-completed [--dry-run] [--force] [--type <type>]
 ```
 
 ## Parameters
 - `--dry-run`: Preview what would be archived without executing
+- `--force`: Archive items even if dependencies exist
+- `--type <type>`: Archive only specific type (epic, story, bug)
 
 ## Implementation
-Follows archival-intelligence.md command-driven archival system:
-
-1. **Completion Detection**: Scan all epics for completed items
-2. **Readiness Check**: Verify all tasks/stories/bugs are complete
-3. **Cascading Archival**: Epic→Stories→Tasks automatic hierarchy
-4. **Git Operations**: Use git mv for tracked files
-5. **Archive Structure**: Organized by type and date
-6. **Summary Generation**: Create ARCHIVED.md summaries
+Scans all epics for completed items with status "COMPLETED" and phase "ARCHIVED". Verifies all child items are complete. Executes cascading archival with Epic→Stories→Tasks hierarchy. Uses git mv for tracked files and organizes archives by type and date. Creates ARCHIVED.md summaries with completion metadata.
 
 ## Expected Output
-```
+```bash
 📦 Archival Process
 
 🔍 Scanning for completed items...
@@ -33,24 +27,26 @@ Follows archival-intelligence.md command-driven archival system:
 
 📁 Archiving with cascading:
    ✅ EPIC-001 → archives/completed/epics/2025/07/
-      ├── STORY-001 → archived with epic
-      ├── STORY-002 → archived with epic
-      └── 8 tasks → archives/tasks/2025/07/EPIC-001/
-   
    ✅ STORY-005 → archives/completed/stories/2025/07/
-      └── 5 tasks → archives/tasks/2025/07/STORY-005/
+   ✅ BUG-002 → archives/completed/bugs/2025/07/
 
 🔧 Git operations:
-   ✅ git mv epics/EPIC-001 archives/completed/epics/2025/07/
+   ✅ git mv operations completed
    ✅ Updated .gitignore for task archives
    ✅ Committed archival changes
 
 📊 Summary:
    - 1 epic archived (cascaded 2 stories)
    - 1 story archived  
-   - 13 tasks archived
+   - 1 bug archived
    - Git history preserved
 ```
+
+## Archive Structure
+- **Completed Items**: archives/completed/ (git-tracked)
+- **Tasks**: archives/tasks/ (gitignored)
+- **Organization**: By type, year, month
+- **Summaries**: ARCHIVED.md with metadata
 
 ## Integration
 - Implements archival-intelligence.md patterns

@@ -1,6 +1,6 @@
-# icc-load
+# Load Patterns
 
-Force-load and internalize all virtual team behavioral patterns.
+Force-load and internalize all virtual team behavioral patterns
 
 ## Usage
 ```

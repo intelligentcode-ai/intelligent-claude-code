@@ -1,60 +1,61 @@
-# icc:memory-search
+# Memory Search
 
-Search memory system for patterns, learnings, and knowledge entities.
+Search memory for patterns and apply learnings to current context
 
 ## Usage
-```
-icc-memory-search "search query"
-icc-memory-search --type Learning
-icc-memory-search --entity "Entity Name"
+```bash
+icc-memory-search "search query" [--type <type>] [--apply] [--chain]
+icc-memory-search --entity "Entity Name" [--apply] [--chain]
 ```
 
 ## Parameters
 - `query`: Search term or pattern (required)
 - `--type`: Filter by entity type (Learning, Pattern, Project, etc.)
 - `--entity`: Search for specific entity name
+- `--apply`: Auto-apply relevant learnings to current context
+- `--chain`: Enable command chaining output
 
-## Implementation
-Integrates with MCP Memory system for knowledge retrieval:
-
-1. **Query Processing**: Parse search terms and filters
-2. **Memory Search**: Search nodes using MCP Memory search
-3. **Result Filtering**: Apply type and entity filters
-4. **Context Extraction**: Extract relevant observations and relations
-5. **Learning Application**: Apply findings to current context
+## Behavior
+Searches MCP Memory for entities, relations, and patterns. Automatically applies relevant learnings when --apply flag is used. Supports command chaining for workflow integration.
 
 ## Expected Output
-```
+```bash
+# Standard search
+🔍 "authentication patterns" | 5 results
+
+# With auto-apply
+🔍 "validation" | 3 results | Applied learnings
+
+# Detailed results
 🔍 Memory Search: "authentication patterns"
 
 📊 Search Results (5 found):
-
 🧠 Learning-authentication-error-2025-07-15
-   Type: Learning
-   Content: "Error: Missing validation in auth flow"
    Learning: "Always validate tokens before processing"
    Prevention: "Add middleware validation layer"
+   ✅ Applied to current context
 
 🔗 Pattern-oauth-implementation-2025-07-14
-   Type: Pattern
-   Content: "OAuth implementation best practices"
    Success: "Used industry standard patterns"
    Reuse: "Apply to all authentication features"
+   ✅ Applied to current context
 
 💡 Project-auth-system-context
-   Type: Project
-   Content: "Authentication system architecture"
    Relations: Links to 3 stories, 8 tasks
    Status: "In progress"
+```
 
-🎯 Applicable Learnings:
-   - Apply middleware validation (Learning-authentication-error)
-   - Use OAuth patterns (Pattern-oauth-implementation)
-   - Reference existing architecture (Project-auth-system)
+## Command Chaining
+```bash
+# Memory → Role → Git chain
+icc-memory-search "security patterns" --chain | icc-activate-role @Security-Engineer --chain
+
+# Memory → Validate → Apply chain
+icc-memory-search "authentication" --apply --chain | icc-validate-work-type "auth system" --chain
 ```
 
 ## Integration
-- Connects to MCP Memory system
-- Supports learning-team-automation patterns
-- Provides actionable insights for current work
-- Integrates with knowledge-first workflow principles
+- **MCP Memory**: Core memory system integration
+- **learning-team-automation.md**: Auto-learning application
+- **badges.md**: Learning bonus scoring
+- **Command chaining**: Context passing and flow control
