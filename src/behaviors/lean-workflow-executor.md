@@ -6,13 +6,13 @@
 
 @./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md @./workflow-phase-enforcer.md
 
-## Core Functions
+## Core Behaviors
 
-**initialize_system():** Load settings → Initialize controllers → IF L3: Enable continuous mode  
-**read_assignment():** Parse assignment + Apply embedded config + Determine workflow type (outer/inner)  
-**execute_phase():** L1/L2 approval, L3 autonomous → INIT→PLAN→EXECUTE→ACCEPTANCE→DONE→ARCHIVED  
-**assign_role():** Validate capability match >70% → Apply specialist architect triage  
-**update_progress():** Update status chain → Trigger scoring → Check archival eligibility → Update workflow phase
+**System Initialization:** Load settings → Initialize controllers → IF L3: Enable continuous mode  
+**Assignment Reading:** Parse assignment + Apply embedded config + Determine workflow type (outer/inner)  
+**Phase Execution:** L1/L2 approval, L3 autonomous → INIT→PLAN→EXECUTE→ACCEPTANCE→DONE→ARCHIVED  
+**Role Assignment:** Validate capability match >70% → Apply specialist architect triage  
+**Progress Updates:** Update status chain → Trigger scoring → Check archival eligibility → Update workflow phase
 
 ## Workflow Phase Integration
 
