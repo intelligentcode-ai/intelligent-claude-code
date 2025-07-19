@@ -1,0 +1,171 @@
+# Enhanced Testing Workflow Customization
+# Example showing how to customize workflows for comprehensive testing
+
+metadata:
+  name: "Testing Enhanced Workflow"
+  description: "Adds comprehensive testing steps to standard workflows"
+  extends: "../inner-workflow.yaml"
+  
+customizations:
+  # Enhanced test planning during task creation
+  planning_enhancements:
+    extends: "../outer-workflow.yaml"
+    
+    requirements_analysis:
+      extend:
+        - id: "test_requirements"
+          action: "Define testing requirements"
+          after: "define_acceptance_criteria"
+          steps:
+            - "Identify test scenarios"
+            - "Define coverage targets"
+            - "Specify performance benchmarks"
+            - "Plan test data requirements"
+          outputs:
+            - "test_scenarios"
+            - "coverage_targets"
+            - "performance_criteria"
+            
+  # Enhanced execution workflow for testing
+  execution_enhancements:
+    pre_execution:
+      inject:
+        - id: "test_setup"
+          action: "Setup test environment"
+          steps:
+            - "Create test databases"
+            - "Generate test data"
+            - "Configure test doubles/mocks"
+            - "Setup monitoring"
+            
+    implementation:
+      extend:
+        - id: "tdd_approach"
+          action: "Test-driven development"
+          before: "implement_solution"
+          steps:
+            - "Write failing tests first"
+            - "Implement minimal solution"
+            - "Refactor with confidence"
+            
+    validation:
+      override:
+        - id: "comprehensive_testing"
+          replaces: "run_tests"
+          action: "Execute comprehensive test suite"
+          test_levels:
+            - level: "unit"
+              coverage_target: "90%"
+              focus: ["business logic", "edge cases", "error handling"]
+              
+            - level: "integration"
+              coverage_target: "80%"
+              focus: ["API contracts", "database operations", "external services"]
+              
+            - level: "e2e"
+              coverage_target: "70%"
+              focus: ["user workflows", "critical paths", "error scenarios"]
+              
+            - level: "performance"
+              benchmarks:
+                - "Response time < 200ms (p95)"
+                - "Throughput > 1000 rps"
+                - "Memory usage < 512MB"
+                
+            - level: "security"
+              scans:
+                - "SAST analysis"
+                - "Dependency vulnerabilities"
+                - "OWASP top 10"
+                
+# Test-specific conditional steps
+conditional_steps:
+  - condition: "test_type == 'api'"
+    steps:
+      - id: "api_testing"
+        action: "API-specific tests"
+        validations:
+          - "Contract testing"
+          - "Response validation"
+          - "Rate limiting tests"
+          - "Authentication tests"
+          
+  - condition: "test_type == 'ui'"
+    steps:
+      - id: "ui_testing"
+        action: "UI-specific tests"
+        validations:
+          - "Cross-browser testing"
+          - "Responsive design"
+          - "Accessibility (a11y)"
+          - "Visual regression"
+          
+  - condition: "requires_load_testing == true"
+    steps:
+      - id: "load_testing"
+        action: "Load and stress testing"
+        scenarios:
+          - "Normal load"
+          - "Peak load"
+          - "Stress conditions"
+          - "Failure recovery"
+          
+# Testing hooks for external tools
+testing_hooks:
+  ci_integration:
+    trigger: "post_implementation"
+    actions:
+      - "Trigger CI pipeline"
+      - "Wait for test results"
+      - "Generate coverage reports"
+      - "Update quality metrics"
+      
+  test_reporting:
+    trigger: "validation_complete"
+    reports:
+      - "Coverage summary"
+      - "Performance metrics"
+      - "Security findings"
+      - "Test execution time"
+      
+# Test data management
+test_data:
+  strategies:
+    - type: "generated"
+      tools: ["faker", "factory_bot"]
+      
+    - type: "fixtures"
+      location: "test/fixtures"
+      
+    - type: "snapshots"
+      location: "test/snapshots"
+      
+  cleanup:
+    strategy: "transaction_rollback"
+    additional: ["cache_clear", "temp_file_cleanup"]
+    
+# Knowledge generation for testing
+knowledge_generation:
+  testing_insights:
+    - "Effective test patterns"
+    - "Common failure modes"
+    - "Performance bottlenecks"
+    - "Flaky test remediation"
+    
+  metrics_tracking:
+    - metric: "test_coverage"
+      target: "increase"
+      
+    - metric: "test_execution_time"
+      target: "decrease"
+      
+    - metric: "defect_escape_rate"
+      target: "minimize"
+      
+  entities:
+    - type: "TestPattern"
+      attributes:
+        - "pattern_type"
+        - "effectiveness"
+        - "maintenance_cost"
+        - "reusability"
