@@ -1,106 +1,50 @@
 # Task Queue Manager
 
-**PURPOSE:** Priority-based task queue for L3 execution
+**Purpose:** Priority-based task queue for L3 execution
 
-## Core Implementation
+## Queue Management
 
-```pseudocode
-CLASS TaskQueue:
-    queue = PriorityQueue(); tasks = Map(); executing = Set()
-    
-    FUNCTION add(task):
-        task.priority = calculatePriority(task)
-        queue.enqueue(task); tasks.set(task.id, task)
-        
-    FUNCTION getNext():
-        WHILE NOT queue.isEmpty():
-            task = queue.dequeue()
-            IF canExecute(task): executing.add(task.id); RETURN task
-        RETURN null
-    
-    FUNCTION getParallel(limit = 5):
-        available = []
-        WHILE NOT queue.isEmpty() AND available.length < limit:
-            task = queue.dequeue()
-            IF canExecute(task) AND NOT executing.has(task.id):
-                available.append(task)
-        RETURN available
-```
+**Task Addition:** Calculate priority → Add to priority queue → Track in task map  
+**Task Retrieval:** Get highest priority → Check if executable → Mark as executing → Return task  
+**Parallel Retrieval:** Get up to 5 tasks → Check no conflicts → Return non-conflicting set
 
 ## Priority Calculation
 
-```pseudocode
-FUNCTION calculatePriority(task):
-    epic = getEpicPriority(task)  // P0=0, P1=1, P2=2, P3=3
-    taskPri = getTaskPriority(task)  // blocking=0, critical=1, parallel=2, optional=3
-    age = MIN((now - task.created) / 60000, 99)
-    
-    composite = (epic * 1000) + (taskPri * 100) + age
-    
-    IF task.type == "security": composite = 0
-    IF task.hasTag("urgent"): composite /= 2
-    
-    RETURN composite
-```
+**Priority Formula:** Epic priority (P0-P3) × 1000 + Task type × 100 + Age in minutes  
+**Special Cases:** Security tasks → Priority 0 • Urgent tagged → Priority ÷ 2  
+**Priority Levels:**
+- P0: 0 (Critical) 
+- P1: 1000 (High)
+- P2: 2000 (Medium)
+- P3: 3000 (Low)
+
+**Task Types:**
+- blocking: 0
+- critical_path: 100
+- parallel: 200
+- optional: 300
 
 ## Readiness Checks
 
-```pseudocode
-FUNCTION canExecute(task):
-    checks = [
-        checkDependencies(task),
-        checkBlockers(task),
-        checkResources(task)
-    ]
-    FOR check IN checks: IF NOT check: RETURN false
-    RETURN true
-
-FUNCTION checkDependencies(task):
-    FOR dep IN task.dependencies:
-        depTask = tasks.get(dep)
-        IF NOT depTask OR depTask.status != "completed": RETURN false
-    RETURN true
-```
+**Execution Requirements:** Check dependencies complete → Check no blockers → Check resources available  
+**Dependency Check:** All dependent tasks completed → No missing prerequisites  
+**Blocker Check:** No active blockers → Required approvals obtained  
+**Resource Check:** Required tools available → No conflicts with executing tasks
 
 ## Parallel Execution
 
-```pseudocode
-FUNCTION getParallelTasks(max = 5):
-    parallel = []
-    candidates = getAvailable(max * 2)
-    
-    FOR candidate IN candidates:
-        IF parallel.length < max AND NOT hasConflict(candidate, parallel):
-            parallel.append(candidate)
-    
-    RETURN parallel
-
-FUNCTION hasConflict(task, others):
-    FOR other IN others:
-        IF task.files.intersects(other.files) OR
-           task.schema AND other.schema OR
-           task.api.intersects(other.api): RETURN true
-    RETURN false
-```
+**Conflict Detection:** Check file overlap → Check schema changes → Check API conflicts  
+**Parallel Selection:** Get candidates → Filter conflicts → Return up to 5 non-conflicting  
+**Conflict Types:**
+- File conflicts - Same files being modified
+- Schema conflicts - Database changes
+- API conflicts - Same endpoints
 
 ## Queue Operations
 
-```pseudocode
-FUNCTION remove(taskId):
-    task = tasks.get(taskId)
-    IF task: queue.remove(task); tasks.delete(taskId); executing.delete(taskId)
-        
-FUNCTION updateStatus(taskId, status):
-    task = tasks.get(taskId)
-    IF task:
-        task.status = status
-        IF status == "completed": remove(taskId); checkDependent(taskId)
-            
-FUNCTION checkDependent(completedId):
-    FOR task IN queue:
-        IF task.dependencies.includes(completedId) AND canExecute(task):
-            task.status = "ready"
-```
+**Remove Task:** Remove from queue → Delete from map → Clear executing flag  
+**Update Status:** Update task status → IF completed: Remove and check dependents  
+**Dependency Updates:** When task completes → Find dependent tasks → Mark as ready if unblocked
 
 ## Configuration
 
