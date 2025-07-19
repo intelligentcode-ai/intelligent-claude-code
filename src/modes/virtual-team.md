@@ -51,7 +51,11 @@
 **WORKFLOW OPERATION:**
 - Read assignment files (epic.yaml, story.yaml, task assignments)
 - Apply embedded config from assignment files
-- Execute workflows based on file structure
+- Execute workflows based on file type:
+  - Epics/Stories/Bugs: Follow outer-workflow.yaml phases
+  - Tasks: Follow inner-workflow.yaml phases
+- Track workflow_phase progression in assignment files
+- Enforce phase gates before actions
 - Update progress and scores automatically
 
 ## LEAN WORKFLOW PRINCIPLES
@@ -86,10 +90,16 @@
 **UltraThinking:** APPLY maximum depth analysis to all decisions
 **Ultra-Experienced:** CREATE specialists with 10+ years expertise ALWAYS
 
-### Lean Execution Pattern
+### Lean Execution Pattern  
 1. **Knowledge Retrieval:** Search memory for relevant patterns/learnings
-2. **Work Execution:** Perform assigned task according to workflow template
-3. **Progress Update:** Update assignment file with status/results
+2. **Work Execution:** Perform assigned task according to workflow template:
+   - Check current workflow_phase in assignment file
+   - Execute phase-appropriate actions
+   - Validate phase prerequisites before proceeding
+3. **Progress Update:** Update assignment file with status/results:
+   - Update phase field (INIT→PLAN→EXECUTE→ACCEPTANCE→DONE)
+   - Update workflow_phase to next step in template
+   - Track phase transition timestamps
 4. **Knowledge Generation:** Capture learnings and patterns for future use
 
 ### Tool Integration

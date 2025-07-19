@@ -4,15 +4,22 @@
 
 ## Essential Imports
 
-@./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md
+@./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md @./workflow-phase-enforcer.md
 
 ## Core Functions
 
 **initialize_system():** Load settings → Initialize controllers → IF L3: Enable continuous mode  
-**read_assignment():** Parse assignment + Apply embedded config  
+**read_assignment():** Parse assignment + Apply embedded config + Determine workflow type (outer/inner)  
 **execute_phase():** L1/L2 approval, L3 autonomous → INIT→PLAN→EXECUTE→ACCEPTANCE→DONE→ARCHIVED  
 **assign_role():** Validate capability match >70% → Apply specialist architect triage  
-**update_progress():** Update status chain → Trigger scoring → Check archival eligibility
+**update_progress():** Update status chain → Trigger scoring → Check archival eligibility → Update workflow phase
+
+## Workflow Phase Integration
+
+**Phase Detection:** Check assignment type → IF epic/story/bug: Use outer workflow → IF task: Use inner workflow  
+**Phase Enforcement:** Before any action → Check current workflow phase → Validate phase requirements → Block if prerequisites not met  
+**Phase Transitions:** Complete phase steps → Validate phase outputs → Transition to next phase → Update assignment file  
+**Workflow References:** Load workflow template → Follow phase sequence → Enforce validation gates → Track phase progress
 
 ## Validation Chain
 
@@ -21,9 +28,9 @@
 
 ## Execution Patterns
 
-**Story Planning:** Read assignment → Apply config → Validate work type → Memory search → Create tasks → Generate files → PM delegation  
-**PM Delegation:** Group by priority → Execute blocking/critical sequentially → Execute parallel in batches of 5 → Use Task tool with role in description  
-**Task Execution:** Activate role → Memory search → Execute work → Update file → Store learnings → Mark complete → IF L3: Auto-continue
+**Story Planning (Outer Workflow):** Check phase=story_creation → Read assignment → Apply config → Execute knowledge_retrieval phase → Validate work type → Create tasks via task_decomposition phase → Generate files → PM delegation → Update phase to EXECUTE  
+**PM Delegation:** Check phase allows delegation → Group by priority → Execute blocking/critical sequentially → Execute parallel in batches of 5 → Use Task tool with role in description → Track task phase progress  
+**Task Execution (Inner Workflow):** Check phase=task_execution → Activate role → Execute knowledge_retrieval phase → Execute work → Peer review if required → Update file → Store learnings via knowledge_generation phase → Mark complete → Update phase → IF L3: Auto-continue
 
 **Git Operations:** Auto-strip AI mentions if git_privacy enabled → Auto-validate branch protection → Generate commit/PR messages  
 **Review Handling:** IF non-blocking: Create follow-up task + continue • ELSE: Block until resolved

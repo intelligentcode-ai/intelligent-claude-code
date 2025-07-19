@@ -13,11 +13,13 @@ Add task to story or bug using $ARGUMENTS as task definition.
    - Priority level (blocking/critical_path/parallel/optional)
    - Estimated hours
    - Dependencies on other tasks
-3. Validate parent exists and is in execution phase:
+3. Validate parent exists and workflow phase allows task addition:
    - Locate parent file: `epics/*/stories/[STORY-ID]/story.yaml` or `epics/*/bugs/[BUG-ID]/bug.yaml`
    - If not found, respond "Error: Parent [PARENT-ID] not found"
    - Load parent file and verify phase is EXECUTE or IN_PROGRESS
-   - If still in DEFINING/PLANNING, respond "Error: Cannot add tasks during [phase] phase"
+   - Check workflow_phase is "git_operations" or later in outer workflow
+   - If workflow phase too early, respond "Error: Cannot add tasks during [workflow_phase] phase"
+   - Tasks can only be added after initial planning is complete
 4. Execute work type validation:
    - Run `icc-validate-work-type "[task_description]"`
    - Ensure current specialist role has >70% capability match
@@ -42,6 +44,8 @@ Add task to story or bug using $ARGUMENTS as task definition.
    **Priority**: [blocking|critical_path|parallel|optional]
    **Estimated Hours**: [X]
    **Dependencies**: [TASK-XXX, TASK-XXX]
+   **Workflow Type**: inner
+   **Workflow Phase**: knowledge_retrieval
    **Added During**: EXECUTION (additional work discovered)
    
    ## Description
