@@ -5,7 +5,7 @@
 SHELL := /bin/bash
 .SHELLFLAGS := -c
 
-.PHONY: install update uninstall test help clean
+.PHONY: install uninstall test help clean
 
 # Default shows help
 help:
@@ -13,7 +13,6 @@ help:
 	@echo ""
 	@echo "Usage:"
 	@echo "  make install   [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password]"
-	@echo "  make update    [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password]"
 	@echo "  make uninstall [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password] [FORCE=true]"
 	@echo "  make test                        # Run installation tests"
 	@echo ""
@@ -122,6 +121,8 @@ test:
 	@test -f test-install/CLAUDE.md || (echo "FAIL: CLAUDE.md not created"; exit 1)
 	@test -f test-install/.claude/modes/virtual-team.md || (echo "FAIL: virtual-team.md not installed"; exit 1)
 	@test -f test-install/.claude/badges.md || (echo "FAIL: badges.md not installed to root directory"; exit 1)
+	@test -f test-install/.claude/workflow-templates/outer-workflow.yaml || (echo "FAIL: workflow-templates not installed"; exit 1)
+	@test -f test-install/.claude/workflow-templates/inner-workflow.yaml || (echo "FAIL: workflow-templates not installed"; exit 1)
 	@grep -q "@~/.claude/modes/virtual-team.md" test-install/CLAUDE.md || (echo "FAIL: Import not added"; exit 1)
 	@echo "✅ Installation tests passed!"
 	@echo ""
@@ -147,41 +148,6 @@ test:
 	@echo "✅ Reinstall test passed!"
 	@rm -rf test-install
 
-# Update existing installation (force overwrite mode files)
-update:
-	@if [ -z "$(ANSIBLE_PLAYBOOK)" ]; then \
-		echo "ERROR: ansible-playbook not found!"; \
-		exit 1; \
-	fi
-	@if [ -z "$(HOST)" ]; then \
-		echo "Updating locally with force overwrite..."; \
-		$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
-			-i localhost, \
-			-c local \
-			-e "ansible_shell_type=sh" \
-			-e "target_path=$(TARGET_PATH)" \
-			-e "update_mode=true"; \
-	else \
-		if [ -z "$(USER)" ]; then \
-			echo "ERROR: USER parameter required for remote update!"; \
-			exit 1; \
-		fi; \
-		echo "Updating remote host $(HOST) as user $(USER) with force overwrite..."; \
-		if [ -n "$(PASS)" ]; then \
-			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
-				-i "$(USER)@$(HOST)," \
-				-k -e "ansible_ssh_pass=$(PASS)" \
-				-e "target_path=$(TARGET_PATH)" \
-				-e "update_mode=true"; \
-		else \
-			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
-				-i "$(USER)@$(HOST)," \
-				-e "ansible_ssh_private_key_file=$(KEY)" \
-				-e "target_path=$(TARGET_PATH)" \
-				-e "update_mode=true"; \
-		fi \
-	fi
-	@echo "✅ Update complete - mode files and VERSION forcefully updated"
 
 # Uninstall existing installation (conservative by default, force with FORCE=true)
 uninstall:
