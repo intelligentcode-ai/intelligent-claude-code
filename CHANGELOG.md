@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.5.0] - 2025-01-18
+
+### MAJOR RELEASE: Performance Optimization & Installation Simplification
+
+**CRITICAL FIX**: Resolved 40KB+ file performance issues by converting pseudo-code to concise behavioral commands. Installation now always updates to latest files.
+
+### Changed - Complete System Optimization
+- **Behavioral Files Reduced**: From 36KB+ pseudo-code to 4.2KB precise commands
+- **Installation Simplified**: Removed confusing update/install distinction - `make install` now always deploys latest
+- **Force Update Default**: All files now use `force: yes` to ensure latest versions deployed
+- **Command Structure**: All behavioral files use SHORT, PRECISE COMMANDS with meaningful headlines
+
+### Fixed
+- **Performance Issue**: Files over 40KB causing system slowdowns completely eliminated
+- **Installation Confusion**: Users no longer stuck with old files when running `make install`
+- **Version Stagnation**: Proper version bumping resumed (5.4.0 → 5.5.0)
+
+### Removed
+- **make update command**: No longer needed - `make install` handles everything
+- **Update mode logic**: Simplified installation by removing conditional update paths
+- **Excessive pseudo-code**: All behavioral patterns converted to concise commands
+
 ## [5.4.0] - 2025-07-17
 
 ### Added - Self-Correcting Validation System
