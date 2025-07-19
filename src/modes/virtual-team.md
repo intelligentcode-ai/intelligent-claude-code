@@ -1,32 +1,27 @@
 # Virtual Team [LEAN WORKFLOW]
 
-## Executive Summary (50 tokens)
-
-**System:** 14 core roles + unlimited dynamic specialists via @-notation  
-**Pattern:** Assignment File → Role Activation → Validated Execution → Learning  
-**Commands:** /icc-init-system, /icc-create-story, /icc-execute-task, @PM commands  
-**Validation:** Work type detection → >70% capability match → Architect approval  
-**Modes:** L1 (manual), L2 (architect), L3 (autonomous continuous)  
-
-## Quick Start
-
-```bash
-1. /icc-init-system          # Initialize virtual team
-2. /icc-create-story "title" # Create validated story
-3. Story planning happens    # PM creates tasks
-4. Tasks execute            # Specialists work
-```
-
 ## IMPORTS
 
-@../behaviors/quick-reference.md           # Load this FIRST for efficiency
-@../behaviors/behavioral-index.md          # Navigation guide
 @../roles/specialists.md
 @../behaviors/lean-workflow-executor.md
 @../behaviors/learning-team-automation.md
+@../behaviors/config-loader.md
+@../behaviors/git-privacy-enforcer.md
+@../behaviors/role-detection-engine.md
+@../behaviors/role-assignment-validator.md
+@../behaviors/autonomy-controller.md
+@../behaviors/role-activation-system.md
+@../behaviors/pm-command-system.md
+@../behaviors/l3-continuous-engine.md
+@../behaviors/task-queue-manager.md
+@../behaviors/auto-continue-triggers.md
+@../behaviors/progress-monitor.md
+@../behaviors/work-discovery-engine.md
+@../behaviors/archival-intelligence.md
+@../behaviors/priority-system.md
 @badges.md
-@../../workflow-templates/outer-workflow.yaml
-@../../workflow-templates/inner-workflow.yaml
+@../workflow-templates/outer-workflow.yaml
+@../workflow-templates/inner-workflow.yaml
 
 **CORE:** 14 roles+unlimited•@-notation•LEAN•WORKFLOW-DRIVEN
 
@@ -34,25 +29,21 @@
 
 **STARTUP SEQUENCE:**
 1. **Config Load:** Load ~/.claude/config.md → Apply to workflow context
-2. **System Init:** EXECUTE /icc-init-system for full initialization
-3. **Memory Bootstrap:** EXECUTE /icc-memory-search("project context") → Load state
-4. **Role Definitions:** Load specialist roles and capabilities  
-5. **Workflow Engine:** Activate lean workflow executor
-6. **Scoring System:** Initialize badges.md scoring system
-7. **Learning System:** Activate learning-team-automation.md
-8. **System Validation:** EXECUTE /icc-verify-behaviors → Confirm all patterns
-9. **Assignment Reading:** Ready to read story/task assignment files
+2. **Memory Bootstrap:** Search memory for project context → Load state
+3. **Role Definitions:** Load specialist roles and capabilities  
+4. **Workflow Engine:** Activate lean workflow executor
+5. **Scoring System:** Initialize badges.md scoring system
+6. **Learning System:** Activate learning-team-automation.md
+7. **Assignment Reading:** Ready to read story/task assignment files
 
 **STARTUP VALIDATION:**
 ```
 ✅ Config loaded and applied
-✅ System initialization complete (/icc-init-system)
-✅ Memory system operational (/icc-memory-search)
+✅ Memory system operational
 ✅ Role definitions loaded
 ✅ Lean workflow executor active
 ✅ Scoring system operational
 ✅ Learning system active
-✅ Behavioral patterns verified (/icc-verify-behaviors)
 ✅ Assignment file processing ready
 ```
 

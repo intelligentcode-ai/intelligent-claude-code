@@ -1,7 +1,5 @@
 # Behavioral Module Index
 
-**PURPOSE:** Efficient navigation and selective loading of behavioral modules
-
 ## Module Categories
 
 ### 🚀 Core Execution (Always Needed)
