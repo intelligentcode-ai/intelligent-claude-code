@@ -11,22 +11,27 @@ Complete work items and prepare for archival using $ARGUMENTS as item ID.
    - Locate item file based on type
    - If not found, respond "Error: Item [ITEM-ID] not found"
    - Load item YAML and current status
-5. Verify completion readiness:
+5. Verify completion readiness and workflow phases:
    
    **For Epics:**
    - Check all stories are COMPLETED
    - Check all bugs are RESOLVED
+   - Verify all stories completed knowledge_generation phase
    - Verify epic objectives achieved
    - Confirm success metrics met
    
    **For Stories:**
+   - Check workflow_phase is "knowledge_generation" (final phase)
    - Check all tasks are COMPLETED
+   - Verify all tasks completed their inner workflow
    - Verify acceptance criteria met
    - Confirm feature working as expected
    - Validate integration successful
    
    **For Bugs:**
+   - Check workflow_phase is "knowledge_generation" (final phase)
    - Check all tasks are COMPLETED
+   - Verify all tasks completed their inner workflow
    - Verify bug no longer reproduces
    - Confirm fix tested and validated
    - Ensure no regressions introduced
