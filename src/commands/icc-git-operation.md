@@ -13,11 +13,14 @@ Execute git operations using $ARGUMENTS with privacy enforcement.
    - Check `git_privacy` setting from configuration hierarchy
    - Load branch protection rules (`require_pr_for_main`, `default_branch`)
    - Display: "🔒 Git privacy: [enabled/disabled], Branch protection: [enabled/disabled]"
-3. Validate current repository state:
+3. Validate current repository state and workflow phase:
    - Verify we're in a Git repository: `git rev-parse --git-dir`
    - Check current branch: `git branch --show-current`
    - Verify no merge conflicts exist
    - Check for uncommitted changes if needed
+   - For task commits: Verify task is in "git_operations" phase or later
+   - For story/bug branches: Verify story/bug is in "git_operations" phase
+   - If phase too early, respond "Error: Cannot perform git operations during [workflow_phase] phase"
 4. Apply privacy enforcement (if git_privacy enabled):
    - Strip AI mentions from messages: "AI-generated", "Claude", "Anthropic", "🤖"
    - Remove co-authorship lines: "Co-Authored-By: Claude"

@@ -22,7 +22,10 @@ Create a new story within an epic using $ARGUMENTS as story definition.
 5. Create story directory structure:
    - Create `epics/[EPIC-ID]/stories/[STORY-ID]/`
    - Create `epics/[EPIC-ID]/stories/[STORY-ID]/tasks/` (empty initially)
-6. Write story.yaml file:
+6. Initialize outer workflow phase tracking:
+   - Set initial phase to "epic_definition" (story is part of epic)
+   - Prepare for "story_creation" phase transition
+7. Write story.yaml file:
    ```yaml
    id: "[STORY-ID]"
    title: "[title from arguments]"
@@ -30,7 +33,9 @@ Create a new story within an epic using $ARGUMENTS as story definition.
    type: "[NEW_FEATURE|ENHANCEMENT|REFACTOR]"
    priority: "[P0|P1|P2|P3]"
    status: "PLANNED"
-   phase: "DEFINING"
+   phase: "INIT"
+   workflow_phase: "story_creation"
+   workflow_type: "outer"
    description: "[scope from arguments]"
    acceptance_criteria: []
    tasks: []
@@ -39,15 +44,16 @@ Create a new story within an epic using $ARGUMENTS as story definition.
    estimated_hours: null
    actual_hours: null
    ```
-7. Update parent epic.yaml:
+8. Update parent epic.yaml:
    - Add story ID to stories array
    - Update epic progress metrics
    - Increment story count
-8. Display success message:
+9. Display success message:
    "✅ Story [STORY-ID] created: [title]"
    "📁 Location: epics/[EPIC-ID]/stories/[STORY-ID]/"
-   "🎯 Status: DEFINING phase (no tasks yet)"
-9. Log creation in activity tracking
+   "🎯 Status: INIT phase"
+   "🔄 Workflow: Outer workflow - story_creation phase"
+10. Log creation in activity tracking
 
 ## Error Handling
 - Missing title: "Error: Story title is required"
