@@ -9,7 +9,13 @@ Plan story by generating tasks using $ARGUMENTS as story ID.
    - Locate story file: `epics/*/stories/[STORY-ID]/story.yaml`
    - If not found, respond "Error: Story [STORY-ID] not found"
    - Load story.yaml and verify status is PLANNED
-4. Search memory for similar patterns:
+   - Check workflow_phase allows planning (must be "story_creation" or later)
+   - If phase invalid, respond "Error: Story must complete story_creation phase first"
+4. Execute knowledge_retrieval workflow phase:
+   - Transition workflow_phase to "knowledge_retrieval"
+   - Search memory for similar patterns
+   - Complete all knowledge retrieval steps from outer workflow
+5. Search memory for similar patterns:
    - Execute `icc-memory-search "[story.title] [story.type]"`
    - Look for TaskLearning entities with similar scope
    - Find Success-Pattern entities for story type
@@ -19,22 +25,26 @@ Plan story by generating tasks using $ARGUMENTS as story ID.
    - Identify primary domain (AI, infrastructure, frontend, etc.)
    - Determine complexity level (simple/medium/complex)
    - Calculate estimated task count based on scope
-6. Activate appropriate specialist architect:
+6. Transition to task_decomposition workflow phase:
+   - Update story workflow_phase to "task_decomposition"
+   - Follow outer workflow task_decomposition requirements
+   - Enforce all validation gates before proceeding
+7. Activate appropriate specialist architect:
    - Based on work type, activate required architect role
    - AI work: Execute `icc-activate-role @AI-Architect`
    - Infrastructure: Execute `icc-activate-role @System-Architect`
    - Security: Execute `icc-activate-role @Security-Architect`
-7. Generate task breakdown with architect expertise:
+8. Generate task breakdown with architect expertise:
    - Apply architect knowledge to create comprehensive task list
    - Standard tasks: knowledge_loading, research, implementation, peer_review, documentation, testing, git_operations, knowledge_creation
    - Sequence tasks with dependencies (blocking → critical_path → parallel → optional)
    - Estimate hours for each task
-8. Validate specialist assignments:
+9. Validate specialist assignments:
    - For each task, execute `icc-validate-work-type "[task.description]"`
    - Ensure >70% capability match for all assignments
    - Create dynamic specialists if needed (@Domain-BaseRole)
    - Require PM + Specialist Architect approval for all assignments
-9. Create task files in story directory:
+10. Create task files in story directory:
    - Create `epics/[EPIC-ID]/stories/[STORY-ID]/tasks/TASK-001.md` for each task
    - Task file format:
    ```markdown
@@ -45,6 +55,8 @@ Plan story by generating tasks using $ARGUMENTS as story ID.
    **Priority**: [blocking|critical_path|parallel|optional]
    **Estimated Hours**: [X]
    **Dependencies**: [TASK-XXX, TASK-XXX]
+   **Workflow Type**: inner
+   **Workflow Phase**: knowledge_retrieval
    
    ## Description
    [Detailed task description]
@@ -55,25 +67,32 @@ Plan story by generating tasks using $ARGUMENTS as story ID.
    
    ## Status
    - Status: PLANNED
+   - Phase: INIT
    - Created: [date]
    - Started: null
    - Completed: null
    ```
-10. Update story.yaml with task references:
+11. Update story.yaml with task references:
     - Add task IDs to tasks array
     - Update estimated_hours (sum of task estimates)
-    - Transition phase from DEFINING to PLANNING
+    - Transition phase from INIT to PLAN
+    - Transition workflow_phase to "acceptance_criteria"
     - Set status to IN_PROGRESS
-11. Create dependency graph:
+12. Create dependency graph:
     - Generate visual representation of task dependencies
     - Identify critical path through tasks
     - Flag parallel execution opportunities
-12. Display planning summary:
+13. Complete acceptance_criteria workflow phase:
+    - Define clear completion criteria for story
+    - Update story.yaml with acceptance criteria
+    - Transition workflow_phase to "git_operations"
+14. Display planning summary:
     "✅ Story [STORY-ID] planned successfully"
     "📋 Created [X] tasks with [Y] hours estimated"
     "🔗 Dependencies: [X] blocking, [Y] parallel"
+    "🔄 Workflow: Outer workflow - git_operations phase ready"
     "🎯 Ready for task execution"
-13. Store planning insights in memory for future use
+15. Store planning insights in memory for future use
 
 ## Error Handling
 - Invalid story ID format: "Error: Story ID must be in format STORY-XXX"
