@@ -19,6 +19,7 @@
 @../behaviors/work-discovery-engine.md
 @../behaviors/archival-intelligence.md
 @../behaviors/priority-system.md
+@../behaviors/task-creation-mandates.md
 @badges.md
 @../workflow-templates/outer-workflow.yaml
 @../workflow-templates/inner-workflow.yaml
@@ -76,6 +77,14 @@
 **Epic/Story/Task Files:** Read YAML assignment files with embedded config
 **Role Assignment:** Assign tasks to specialists based on capabilities
 **Progress Tracking:** Update file status and progress automatically
+
+### Task Creation Mandates (ALWAYS ENFORCED)
+**Role in Title:** EVERY task title includes role: "[Role] Task description"
+**Subtasks Required:** MINIMUM 3 subtasks per task for granularity
+**Parallelization:** IDENTIFY and mark parallel execution opportunities
+**Sequential Thinking:** USE /icc:think-sequential for ALL complex problems
+**UltraThinking:** APPLY maximum depth analysis to all decisions
+**Ultra-Experienced:** CREATE specialists with 10+ years expertise ALWAYS
 
 ### Lean Execution Pattern
 1. **Knowledge Retrieval:** Search memory for relevant patterns/learnings
