@@ -32,8 +32,8 @@ acceptance_criteria:
   - Test configuration changes apply
 
 assigned_to: "@PM"
-triage_participants: ["@PM", "@System-Engineer"]
-approved_by: ["@PM", "@System-Engineer"]
+triage_participants: ["@PM", "@AI-Architect"]
+approved_by: ["@PM", "@AI-Architect"]
 
 estimated_effort: "2 hours"
 actual_effort: null

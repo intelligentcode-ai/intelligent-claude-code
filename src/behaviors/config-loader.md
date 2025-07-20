@@ -6,57 +6,86 @@
 
 ## Operation
 
-**Hierarchy:** Embedded → Project → User → Defaults  
-**Merging:** Settings merged from all levels with hierarchy priority  
+**Hierarchy:** Embedded → Project → User → System Defaults  
+**Dynamic Loading:** All configuration loaded from files, no hardcoded values  
 **Caching:** 5 minute TTL, 1 hour for embedded configs  
 **Key Settings:** autonomy_level, git_privacy, pm_always_active, blocking_enabled  
 
-## Core Settings
+## Configuration Hierarchy
 
-```yaml
-# Git Settings
-git_privacy: false          # Strip AI/Claude mentions from commits
-branch_protection: true     # Force feature branch workflow
-default_branch: "main"      # Default branch name
-require_pr_for_main: true   # Require PR/MR for main branch
+**Behavioral Pattern:** AI should ALWAYS load configuration dynamically through the hierarchy, never use hardcoded values
 
-# Autonomy Settings
-autonomy_level: "L2"        # System autonomy level (L1/L2/L3)
-pm_always_active: false    # Auto-activate PM role on startup
-blocking_enabled: true      # Allow blocking behaviors
+### 1. Embedded Config (Highest Priority)
+- Extract `embedded_config:` section from assignment files
+- Temporary overrides for specific assignments
+- Override all other settings during assignment execution
 
-# Team Settings
-default_reviewer: "@AI-Architect"  # Default peer reviewer
-specialist_creation: true   # Allow dynamic specialist creation
-role_validation: true       # Enforce role assignment validation
-```
+### 2. Project Config 
+- Load from `.claude/config.md` in project root
+- Project-specific team standards and workflows
+- Override user preferences for project consistency
 
-## Implementation
+### 3. User Global Config
+- Load from `~/.claude/config.md` in user home
+- Personal preferences and default settings
+- User's preferred autonomy level and git settings
 
-**Configuration Loading:**
-- Read `~/.claude/config.md` (user global)
-- Read `.claude/config.md` (project specific)
-- Parse YAML front matter or key:value pairs
-- Merge with system defaults
-- Cache for 5 minutes
+### 4. System Defaults (Fallback Only)
+- Used ONLY when setting not found in hierarchy
+- Defined in configuration commands (icc-load-config.md)
+- Never hardcoded in behavioral modules
 
-**Embedded Config:**
-- Extract `embedded_config:` from assignment files
-- Override other settings temporarily
-- Cache for 1 hour
+## Dynamic Loading Behavioral Pattern
 
-**Settings Access:**
-- Retrieve merged configuration
-- Get specific setting with dot notation
-- Apply embedded overrides
+**Configuration Loading Process:**
+1. **Check Cache**: Look for valid cached configuration first
+2. **Load Embedded**: Extract embedded_config from assignment file if provided
+3. **Load Project**: Read `.claude/config.md` in project root if exists
+4. **Load User Global**: Read `~/.claude/config.md` in user home if exists
+5. **Apply Defaults**: Use system defaults ONLY for missing settings
+6. **Merge Hierarchy**: Apply priority order (embedded > project > user > defaults)
+7. **Cache Result**: Store merged configuration with appropriate TTL
 
-## Integration
+**Configuration Parsing:**
+- Parse YAML front matter between `---` markers
+- Parse key:value pairs in markdown format
+- Support nested configuration using dot notation
+- Validate configuration types and values
+- Handle malformed configuration gracefully
 
-**System Integration:**
-- Git Operations: Check `git_privacy` before commits
-- Workflow Execution: Apply `autonomy_level` rules
-- Role Assignment: Enforce `role_validation` settings
-- Team Startup: Check `pm_always_active` flag
+**Settings Retrieval:**
+- Use `icc-get-setting.md` command for individual settings
+- Support dot notation for nested values
+- Apply type conversion and validation
+- Return defaults only when setting not found in hierarchy
+
+**Cache Management:**
+- Standard configuration: 5-minute TTL
+- Embedded configuration: 1-hour TTL (more stable)
+- Invalidate cache on file changes
+- Key based on file timestamps and content hash
+
+## Integration Behavioral Patterns
+
+**Git Operations Pattern:**
+- Execute `icc-get-setting "git_privacy"` before commits
+- Load git settings dynamically, never assume defaults
+- Apply privacy mode based on loaded configuration
+
+**Workflow Execution Pattern:**
+- Execute `icc-get-setting "autonomy_level"` at workflow start
+- Load workflow settings from configuration hierarchy
+- Apply L1/L2/L3 behavior based on loaded setting
+
+**Role Assignment Pattern:**
+- Execute `icc-get-setting "role_validation"` before assignments
+- Load team settings from configuration hierarchy
+- Enforce validation based on loaded configuration
+
+**Team Startup Pattern:**
+- Execute `icc-get-setting "pm_always_active"` at initialization
+- Load startup behavior from configuration hierarchy
+- Activate PM role based on loaded setting
 
 ---
 *Config loader for intelligent-claude-code system*

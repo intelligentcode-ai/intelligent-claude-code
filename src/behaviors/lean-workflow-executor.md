@@ -83,7 +83,7 @@
 
 ## L3 Continuous Mode
 
-**Activation:** IF autonomy_level == "L3" → Enable continuous engine + task queue + auto-triggers  
+**Activation:** Use `/icc-get-setting "autonomy_level"` and IF result is "L3" → Enable continuous engine + task queue + auto-triggers  
 **Differences:** L1/L2 (manual) vs L3 (parallel execution + auto-transitions + non-blocking reviews)  
 **Integration:** Task complete → Check archival → Trigger auto-continue → Process next in queue
 

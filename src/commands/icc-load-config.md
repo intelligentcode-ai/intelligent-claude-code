@@ -49,19 +49,28 @@ merging rules and cache results for performance.
 
 ## Configuration Hierarchy
 
-### System Defaults
+### System Defaults (FALLBACK ONLY - Applied when setting not found)
+**BEHAVIORAL RULE:** These defaults are used ONLY when a setting is not found in any configuration file. Always prefer user/project configuration over these fallbacks.
+
 ```yaml
-git_privacy: false
-branch_protection: true
-default_branch: "main"
-require_pr_for_main: true
-autonomy_level: "L2"
-pm_always_active: false
-blocking_enabled: true
-default_reviewer: "@AI-Architect"
-specialist_creation: true
-role_validation: true
+# Git Settings Defaults
+git_privacy: false                    # No privacy by default
+branch_protection: true               # Enforce feature branches
+default_branch: "main"                # Standard main branch
+require_pr_for_main: true             # Require PR workflow
+
+# Autonomy Settings Defaults  
+autonomy_level: "L2"                  # Balanced autonomy
+pm_always_active: false               # Manual PM activation
+blocking_enabled: true                # Allow blocking behaviors
+
+# Team Settings Defaults
+default_reviewer: "@AI-Architect"     # Fallback reviewer
+specialist_creation: true             # Enable dynamic specialists
+role_validation: true                 # Enforce role validation
 ```
+
+**IMPORTANT:** These are NOT hardcoded values - they are fallback values used only when configuration is missing from all other sources.
 
 ### User Global (`~/.claude/config.md`)
 - Personal preferences
