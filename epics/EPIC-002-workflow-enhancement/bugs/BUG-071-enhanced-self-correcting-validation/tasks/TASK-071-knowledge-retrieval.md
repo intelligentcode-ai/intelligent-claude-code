@@ -1,4 +1,4 @@
-# TASK-071: Knowledge Retrieval on Self-Correcting Validation Patterns
+# TASK-071: [AI-Engineer] Knowledge Retrieval on Self-Correcting Validation Patterns
 
 ## Task Details
 - **ID**: TASK-071

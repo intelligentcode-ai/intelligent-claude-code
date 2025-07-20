@@ -34,16 +34,16 @@ Generate task breakdown for bug fixing using $ARGUMENTS as bug ID.
 8. Generate comprehensive task breakdown:
    
    **Standard Bug Fix Tasks:**
-   - TASK-001: Knowledge Loading (search for similar fixes)
-   - TASK-002: Investigation (reproduce bug, analyze logs)
-   - TASK-003: Root Cause Analysis (identify exact problem)
-   - TASK-004: Fix Implementation (develop solution)
-   - TASK-005: Peer Review (domain expert review)
-   - TASK-006: Regression Testing (ensure no side effects)
-   - TASK-007: Validation Testing (verify bug fixed)
-   - TASK-008: Documentation (update docs, add comments)
-   - TASK-009: Git Operations (commit fix, create PR)
-   - TASK-010: Knowledge Creation (capture learnings)
+   - TASK-001: [AI-Engineer] Knowledge Loading (search for similar fixes)
+   - TASK-002: [AI-Engineer] Investigation (reproduce bug, analyze logs)
+   - TASK-003: [AI-Engineer] Root Cause Analysis (identify exact problem)
+   - TASK-004: [Developer] Fix Implementation (develop solution)
+   - TASK-005: [AI-Architect] Peer Review (domain expert review)
+   - TASK-006: [QA-Engineer] Regression Testing (ensure no side effects)
+   - TASK-007: [QA-Engineer] Validation Testing (verify bug fixed)
+   - TASK-008: [AI-Engineer] Documentation (update docs, add comments)
+   - TASK-009: [Developer] Git Operations (commit fix, create PR)
+   - TASK-010: [AI-Engineer] Knowledge Creation (capture learnings)
 
 9. Apply validation rules for specialist assignments:
    - Require PM + Specialist Architect approval for all assignments
@@ -91,7 +91,7 @@ Generate task breakdown for bug fixing using $ARGUMENTS as bug ID.
 
 **Investigation Task Template:**
 ```markdown
-# TASK-002: Investigate [Bug Title]
+# TASK-002: [AI-Engineer] Investigate [Bug Title]
 
 **Bug**: [BUG-ID]
 **Type**: investigation
@@ -113,7 +113,7 @@ Generate task breakdown for bug fixing using $ARGUMENTS as bug ID.
 
 **Fix Implementation Template:**
 ```markdown
-# TASK-004: Implement Fix for [Bug Title]
+# TASK-004: [Developer] Implement Fix for [Bug Title]
 
 **Bug**: [BUG-ID]
 **Root Cause**: [identified cause]
