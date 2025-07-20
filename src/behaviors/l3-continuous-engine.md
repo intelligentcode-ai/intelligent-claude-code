@@ -4,7 +4,7 @@
 
 ## Core Execution
 
-**Activation:** IF autonomy_level = "L3" → Start continuous loop → Process tasks without interruption  
+**Activation:** Use `/icc-get-setting "autonomy_level"` and IF result is "L3" → Start continuous loop → Process tasks without interruption  
 **Task Discovery:** Get ready tasks (max 5) → Group non-conflicting → Execute in parallel → IF none: Discover new work  
 **Task Execution:** Consult learnings → Validate role → Execute work → Peer review → Store knowledge → Git commit → Trigger next  
 **Loop Behavior:** Continue while active → Auto-transition phases → Handle stuck states → Minimal wait between cycles

@@ -6,9 +6,11 @@
 
 ## Operation
 
-**Trigger:** When `git_privacy: true` in settings  
+**Trigger:** Use `/icc-get-setting "git_privacy"` to dynamically check - when result is true  
 **Scope:** Commit messages, PR titles, PR descriptions  
 **Fallback:** "Update implementation" if message becomes empty  
+
+**BEHAVIORAL RULE:** Always check git_privacy setting dynamically before git operations. Never assume privacy mode is enabled/disabled.  
 
 ## AI Patterns Removed
 
@@ -78,10 +80,12 @@ after: "Fix bug in authentication flow"
 ## Integration
 
 **Automatic activation when:**
-- Settings loaded with `git_privacy: true`
+- Use `/icc-get-setting "git_privacy"` returns true
 - Any git commit operation performed
 - Pull requests created
 - Merge commits generated
+
+**BEHAVIORAL RULE:** Check git_privacy setting dynamically before each git operation, not just at startup.
 
 **Error handling:**
 - Empty message → "Update implementation"
