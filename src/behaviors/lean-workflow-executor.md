@@ -8,7 +8,7 @@
 
 ## Core Behaviors
 
-**System Initialization:** Load PROJECT-CONTEXT.md → Load settings → Initialize controllers → IF L3: Enable continuous mode  
+**System Initialization:** Load PROJECT-CONTEXT.md (auto-create if missing) → Load settings → Initialize controllers → IF L3: Enable continuous mode  
 **Assignment Reading:** Parse assignment + Apply embedded config + Determine workflow type (outer/inner)  
 **Phase Execution:** L1/L2 approval, L3 autonomous → INIT→PLAN→EXECUTE→ACCEPTANCE→DONE→ARCHIVED  
 **Role Assignment:** Validate capability match >70% → Apply specialist architect triage  

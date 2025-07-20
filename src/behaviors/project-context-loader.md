@@ -117,16 +117,70 @@ Observations:
 - At least one constraint/pattern
 - Readable format
 
+## Auto-Creation Behaviors
+
+### Template Generation Rules
+**MANDATORY:** When PROJECT-CONTEXT.md missing → Auto-create with intelligent template
+- Analyze project structure to detect type
+- Generate appropriate template based on detection
+- Pre-populate with discovered patterns
+- Guide user through completion
+
+### Project Type Detection
+**Analysis Pattern:** Use `/icc-detect-project-type [project_path]` to identify:
+1. **Web Application:** package.json, React/Angular/Vue files, API endpoints
+2. **Backend Service:** API routes, database models, microservice patterns
+3. **Mobile App:** React Native, Flutter, Swift/Kotlin files
+4. **Library/Package:** Public APIs, npm/pypi configuration
+5. **Documentation Site:** Markdown files, static site generators
+6. **Data/AI Project:** Jupyter notebooks, model files, data processing
+7. **DevOps/Infrastructure:** Terraform, Docker, Kubernetes configs
+8. **Game/Engine:** Unity, Unreal, game-specific assets
+9. **Enterprise System:** Complex business logic, multiple services
+10. **Unknown/Mixed:** Generic template with common patterns
+
+### Template Creation Process
+**Sequence:** Use `/icc-create-project-template [detected_type] [project_path]` to generate:
+1. **Header Section:** Project identification and purpose
+2. **Technology Stack:** Detected technologies and versions
+3. **Architecture Patterns:** Common patterns for project type
+4. **Conventions Section:** Standard conventions with placeholders
+5. **Constraints Placeholder:** Space for project-specific constraints
+6. **Guidance Comments:** Instructions for completion
+
+### Auto-Population Intelligence
+**Smart Defaults Based on Detection:**
+- Extract package.json dependencies for tech stack
+- Detect framework patterns (React hooks, Express routes)
+- Identify database connections and ORMs
+- Find testing frameworks and configurations
+- Discover build tools and deployment configs
+- Parse CI/CD pipeline configurations
+
 ## Error Handling
 
-### Missing Context
-**Response:** "PROJECT-CONTEXT.md not found. Please create one with project details, patterns, and constraints."
+### Missing Context (Enhanced)
+**Auto-Creation Response:**
+1. "PROJECT-CONTEXT.md not found. Analyzing project to create template..."
+2. Execute project type detection
+3. Generate appropriate template
+4. Save to PROJECT-CONTEXT.md
+5. "✅ Template created! Please review and customize with project-specific details."
+
+### Template Customization Required
+**Guidance:** "PROJECT-CONTEXT.md template created but needs customization. Please complete sections marked with [TODO] and add project-specific constraints."
+
+### Detection Failures
+**Fallback:** Create generic template with comprehensive guidance comments
 
 ### Invalid Context
 **Response:** "PROJECT-CONTEXT.md exists but lacks required information. Please update with project type, patterns, and constraints."
 
 ### Load Failures
-**Fallback:** Request user guidance on project type and constraints
+**Enhanced Fallback:** 
+1. Attempt auto-creation with detection
+2. If detection fails, request user guidance
+3. Generate minimal template with user input
 
 ## Behavioral Integration
 

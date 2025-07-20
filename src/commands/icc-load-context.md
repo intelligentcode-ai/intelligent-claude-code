@@ -87,9 +87,38 @@ The command recognizes these standard sections:
 💾 Stored in memory as: ProjectContext-MyAwesomeProject
 ```
 
+## Auto-Creation Behavior
+
+When PROJECT-CONTEXT.md is not found, automatically create an intelligent template:
+
+1. **Project Analysis**
+   - Scan directory structure for file patterns
+   - Identify technology stack indicators
+   - Detect framework and tooling configurations
+   - Analyze existing documentation patterns
+
+2. **Template Generation**
+   - Generate project-type-specific template
+   - Pre-populate detected technologies
+   - Include relevant architecture patterns
+   - Add customization guidance
+
+3. **Smart Population**
+   - Extract package.json/requirements.txt data
+   - Detect testing frameworks and CI/CD
+   - Identify database connections and ORMs
+   - Parse build and deployment configurations
+
+4. **File Creation**
+   - Save template to PROJECT-CONTEXT.md
+   - Load created template into memory
+   - Display customization instructions
+
 ## Error Handling
 
-- **File Not Found:** Suggest creating PROJECT-CONTEXT.md
+- **File Not Found:** Auto-create intelligent template based on project analysis
+- **Auto-Creation Successful:** "✅ PROJECT-CONTEXT.md template created! Please review and customize."
+- **Detection Failed:** Create generic template with comprehensive guidance
 - **Invalid Format:** Report parsing issues with guidance
 - **Access Denied:** Request proper permissions
 - **Empty File:** Prompt for context content
