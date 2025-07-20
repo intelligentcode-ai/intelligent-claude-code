@@ -1,4 +1,4 @@
-# TASK-005: Peer Review Context Enforcement Implementation
+# TASK-005: [AI-Architect] Peer Review Context Enforcement Implementation
 
 ## Task Details
 - **ID**: TASK-005

@@ -1,4 +1,4 @@
-# TASK-072: Design Enhanced Auto-Correction Architecture
+# TASK-072: [AI-Architect] Design Enhanced Auto-Correction Architecture
 
 ## Task Details
 - **ID**: TASK-072

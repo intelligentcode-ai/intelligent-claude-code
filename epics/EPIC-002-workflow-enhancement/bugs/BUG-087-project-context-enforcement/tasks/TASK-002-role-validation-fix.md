@@ -1,4 +1,4 @@
-# TASK-002: Fix Role Assignment Validation Integration
+# TASK-002: [AI-Architect] Fix Role Assignment Validation Integration
 
 ## Task Details
 - **ID**: TASK-002
