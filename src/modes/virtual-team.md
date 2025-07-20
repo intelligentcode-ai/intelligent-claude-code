@@ -4,6 +4,7 @@
 
 @../roles/specialists.md
 @../behaviors/project-context-loader.md
+@../behaviors/file-based-memory.md
 @../behaviors/lean-workflow-executor.md
 @../behaviors/learning-team-automation.md
 @../behaviors/config-loader.md
@@ -21,6 +22,11 @@
 @../behaviors/archival-intelligence.md
 @../behaviors/priority-system.md
 @../behaviors/task-creation-mandates.md
+@../commands/icc-memory-search.md
+@../commands/icc-memory-store.md
+@../commands/icc-memory-init.md
+@../commands/icc-memory-backup.md
+@../commands/icc-memory-restore.md
 @badges.md
 @../workflow-templates/outer-workflow.yaml
 @../workflow-templates/inner-workflow.yaml

@@ -28,9 +28,9 @@
 
 ## Execution Patterns
 
-**Story Planning (Outer Workflow):** Check phase=story_creation → Read assignment → Apply config → Execute knowledge_retrieval phase → Validate work type → Create tasks via task_decomposition phase → Generate files → PM delegation → Update phase to EXECUTE  
+**Story Planning (Outer Workflow):** Check phase=story_creation → Read assignment → Apply config → Execute knowledge_retrieval phase (`/icc-memory-search [story_context]`) → Validate work type → Create tasks via task_decomposition phase → Generate files → PM delegation → Update phase to EXECUTE  
 **PM Delegation:** Check phase allows delegation → Group by priority → Execute blocking/critical sequentially → Execute parallel in batches of 5 → Use Task tool with role in description → Track task phase progress  
-**Task Execution (Inner Workflow):** Check phase=task_execution → Activate role → Execute knowledge_retrieval phase → Execute work → Peer review if required → Update file → Store learnings via knowledge_generation phase → Mark complete → Update phase → IF L3: Auto-continue
+**Task Execution (Inner Workflow):** Check phase=task_execution → Activate role → Execute knowledge_retrieval phase (`/icc-memory-search [task_context]`) → Execute work → Peer review if required → Update file → Store learnings via knowledge_generation phase (`/icc-memory-store`) → Mark complete → Update phase → IF L3: Auto-continue
 
 **Git Operations:** Auto-strip AI mentions if git_privacy enabled → Auto-validate branch protection → Generate commit/PR messages  
 **Review Handling:** IF non-blocking: Create follow-up task + continue • ELSE: Block until resolved
@@ -48,8 +48,14 @@
 
 ## Knowledge & Tools
 
-**Knowledge:** Search before work → Apply learnings → Capture after work → Store patterns  
-**Tools:** Read (files) • Write (updates) • Task (PM delegation) • Memory (knowledge) • Git (commits)  
+**File-Based Knowledge Pattern:** 
+1. **Search Before Work**: `/icc-memory-search [task_context]` to load relevant learnings and patterns
+2. **Apply Learnings**: Reference applicable patterns in task execution with bonus scoring
+3. **Capture After Work**: `/icc-memory-store` to create new learnings and success patterns
+4. **Store Patterns**: Update pattern entities with reuse statistics and success metrics
+
+**Tools Integration:** Read (files) • Write (updates) • Task (PM delegation) • File-based Memory (knowledge) • Git (commits)  
+**Memory Operations:** `/icc-memory-search` • `/icc-memory-store` • `/icc-memory-init` for knowledge management
 **PM Delegation:** Use Task tool • Role in description [ROLE_NAME] • Parallel execution up to 5 tasks • Sequential for conflicts
 
 ## Priority System
@@ -60,8 +66,20 @@
 
 ## Error Handling
 
-**Process:** Error → Learning check → First time: No penalty + capture • Repeated: Double penalty + escalation  
-**Learning:** "Based on previous learning" → +0.5P/Q bonus • Error patterns stored and shared across roles
+**File-Based Error Processing:**
+1. **Error Detection**: Identify error type, context, and severity
+2. **Learning Check**: `/icc-memory-search "error: [error_type]"` to find previous occurrences
+3. **Forgiveness Logic**: IF no previous learning → First time (no penalty) + create learning • ELSE → Repeated error (2x penalty)
+4. **Learning Capture**: `/icc-memory-store Learning [error_context]` with prevention measures
+5. **Pattern Sharing**: Tag learnings for cross-role discovery and application
+
+**Learning Application Bonuses:**
+- "Based on previous learning..." → +0.5P/Q bonus
+- "Applying lesson from [Learning-ID]..." → +0.5P/Q bonus  
+- "To prevent repeat of..." → +0.5Q bonus
+- Pattern breaking solutions → +1.0P/Q bonus
+
+**Storage**: All error patterns stored in ~/.claude/memory/entities/Learning/ with automatic indexing
 
 ## L3 Continuous Mode
 

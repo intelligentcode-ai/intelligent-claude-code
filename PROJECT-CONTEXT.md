@@ -7,7 +7,7 @@
 - **Language:** Markdown (behavioral patterns)
 - **Platform:** Claude Code (claude.ai/code)
 - **Architecture:** Modular import-based behaviors
-- **Integration:** MCP Memory, Context7, GitHub CLI
+- **Integration:** File-based Memory, Context7, GitHub CLI
 
 ## Core Patterns
 1. **Assignment-Driven Execution** - YAML files drive all behavior
