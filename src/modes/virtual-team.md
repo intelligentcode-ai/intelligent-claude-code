@@ -86,7 +86,7 @@
 **Role in Title:** EVERY task title includes role: "[Role] Task description"
 **Subtasks Required:** MINIMUM 3 subtasks per task for granularity
 **Parallelization:** IDENTIFY and mark parallel execution opportunities
-**Sequential Thinking:** USE /icc:think-sequential for ALL complex problems
+**Sequential Thinking:** USE /icc-think-sequential for ALL complex problems
 **UltraThinking:** APPLY maximum depth analysis to all decisions
 **Ultra-Experienced:** CREATE specialists with 10+ years expertise ALWAYS
 

@@ -4,9 +4,9 @@
 
 ## Core Monitoring
 
-**Tracking Loop:** Update active work every second → Check milestones → Generate reports periodically  
-**State Management:** Track active tasks → Completed items → Performance metrics → Report timing  
-**Continuous Operation:** Never blocks execution → Always monitoring → Real-time updates
+**Tracking Loop:** Use `/icc-monitor-progress [interval]` to update active work every second, check milestones, and generate reports periodically  
+**State Management:** Use `/icc-monitor-state` to track active tasks, completed items, performance metrics, and report timing  
+**Continuous Operation:** Use `/icc-monitor-continuous` to never block execution, always monitor, provide real-time updates
 
 ## Non-Blocking Handlers
 
@@ -18,9 +18,9 @@
 - **Error confirmation** → Handle automatically
 
 ### Handler Logic
-**L3 Mode Check:** IF L3: Replace blocking actions → ELSE: Normal behavior  
-**Auto-Continue:** Log action → Update progress → Return continue signal  
-**Completion Flow:** Mark complete → Record timestamp → Trigger next event
+**L3 Mode Check:** Use `/icc-check-autonomy-level` - IF L3: Replace blocking actions → ELSE: Normal behavior  
+**Auto-Continue:** Use `/icc-auto-continue [action]` to log action, update progress, return continue signal  
+**Completion Flow:** Use `/icc-complete-task [task_id]` to mark complete, record timestamp, trigger next event
 
 ## Smart Stop Conditions
 
@@ -36,28 +36,21 @@
 
 ## Review Handling
 
-**Automated Reviews:** L3 performs peer review → Check for issues → Create follow-up tasks if needed  
-**Non-Blocking:** Reviews don't stop progress → Issues become new tasks → Continue with next work  
-**Issue Tracking:** Log review findings → Create fix tasks → Track in separate queue
+**Automated Reviews:** Use `/icc-automated-review [review_data]` for L3 peer review, issue checking, and follow-up task creation  
+**Non-Blocking:** Use `/icc-non-blocking-review` so reviews don't stop progress, issues become new tasks, continue with next work  
+**Issue Tracking:** Use `/icc-track-review-issues [findings]` to log findings, create fix tasks, track in separate queue
 
 ## Error Recovery
 
-**Auto-Recovery:** Check if recoverable → Attempt fix → Continue if successful  
-**Fix Task Creation:** IF not recoverable → Create fix task → Log warning → Continue anyway  
-**Recovery Types:**
-- Test failures → Re-run
-- Format issues → Auto-fix
-- Import errors → Resolve
+**Auto-Recovery:** Use `/icc-auto-recover [error_data]` to check if recoverable, attempt fix, continue if successful  
+**Fix Task Creation:** Use `/icc-create-fix-task [error_data]` if not recoverable to create fix task, log warning, continue anyway  
+**Recovery Types:** Use `/icc-auto-recover` for test failures, format issues, import errors with appropriate recovery strategies
 
 ## Progress Reporting
 
-**Report Contents:**
-- Tasks completed since last report
-- Current tasks in progress
-- Queued task count
-- Recent milestones achieved
+**Report Generation:** Use `/icc-generate-progress-report` to include tasks completed, current progress, queued count, and recent milestones
 
-**Report Timing:** Generate every 5 minutes → Or on milestone completion → Never interrupt work
+**Report Timing:** Use `/icc-schedule-reports [interval]` to generate every 5 minutes or on milestone completion without interrupting work
 
 ## Benefits
 

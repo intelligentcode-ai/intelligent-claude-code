@@ -4,51 +4,30 @@
 
 ## Discovery Loop
 
-**Continuous Scanning:** Run every 30 seconds → Check all sources → Process found work → Add to queue  
-**Source Registration:** Bug scanner • Story scanner • Dependency checker • Follow-up finder  
-**Deduplication:** Track discovered items → Prevent duplicate processing → Maintain state
+**Continuous Scanning:** Use `/icc-discover-work [scan_interval]` to run every 30 seconds, check all sources, process found work, and add to queue  
+**Source Registration:** Use `/icc-register-discovery-sources` for Bug scanner • Story scanner • Dependency checker • Follow-up finder  
+**Deduplication:** Use `/icc-discover-work` with automatic deduplication tracking and state management
 
 ## Work Sources
 
-### Bug Scanner
-**Bug Discovery:** Glob epics/**/bugs/*/bug.yaml → Parse YAML → Check status PLANNED/IN PROGRESS  
-**Phase Filter:** Only PLAN or EXECUTE phase → Skip completed/archived  
-**Queue Addition:** Add undiscovered bugs → Mark as discovered
+**Bug Scanner:** Use `/icc-scan-bugs` to glob epics/**/bugs/*/bug.yaml, parse YAML, check status PLANNED/IN PROGRESS, filter by phase, and queue undiscovered bugs
 
-### Story Scanner  
-**Story Discovery:** Glob epics/**/stories/*/story.yaml → Parse YAML → Check active status  
-**Status Check:** PLANNED or IN PROGRESS → Skip completed  
-**Processing:** Add to discovery set → Queue for processing
+**Story Scanner:** Use `/icc-scan-stories` to glob epics/**/stories/*/story.yaml, parse YAML, check active status, and queue for processing
 
-### Dependency Checker
-**Unblock Tasks:** Find blocked tasks → Check if blockers resolved → Mark as ready  
-**Resolution:** All dependencies complete → Remove block → Add to queue  
-**Logging:** Track unblocked items → Report progress
+**Dependency Checker:** Use `/icc-scan-dependencies` to find blocked tasks, check blocker resolution, and mark ready tasks for queue addition
 
-### Follow-Up Finder
-**Review Follow-Ups:** Check completed reviews → Find unaddressed issues → Create fix tasks  
-**Error Follow-Ups:** Find unresolved errors → Check for existing fixes → Create if missing  
-**Task Generation:** Generate follow-up tasks → Add to work queue
+**Follow-Up Finder:** Use `/icc-scan-followups` to check completed reviews, find unaddressed issues, check unresolved errors, and generate follow-up tasks
 
 ## Work Processing
 
-### Item Processing
-**Bug Processing:** IF no tasks: Create tasks → Queue ready tasks → Track progress  
-**Story Processing:** IF PLAN phase: Trigger planning → ELSE: Queue executable tasks  
-**Task Processing:** Direct queue addition → Check execution readiness
+**Item Processing:** Use `/icc-process-discovered-work [work_items]` to handle bug processing (create tasks if needed), story processing (trigger planning or queue tasks), and task processing (direct queue addition with readiness checks)
 
-### Planning Triggers
-**Story Planning:** No tasks + PLAN phase → Trigger task creation → Update phase  
-**Task Creation:** Follow outer workflow → Generate task files → Update story
+**Planning Triggers:** Use `/icc-trigger-planning [story_id]` for stories with no tasks in PLAN phase to trigger task creation and phase updates
 
 ## Prioritization
 
-**Priority Calculation:** Apply priority formula → Sort by priority → Return ordered list  
-**Priority Levels:**
-- Security: 0 (highest)
-- Customer: 1
-- Blocking: 2  
-- Feature: 3 (lowest)
+**Priority Calculation:** Use `/icc-prioritize [discovered_items]` to apply priority formula, sort by priority, and return ordered list  
+**Priority Reference:** Security(0) → Customer(1) → Blocking(2) → Feature(3)
 
 ## Configuration
 

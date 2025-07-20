@@ -8,11 +8,11 @@
 
 ## Core Behaviors
 
-**System Initialization:** Load settings → Initialize controllers → IF L3: Enable continuous mode  
-**Assignment Reading:** Parse assignment + Apply embedded config + Determine workflow type (outer/inner)  
-**Phase Execution:** L1/L2 approval, L3 autonomous → INIT→PLAN→EXECUTE→ACCEPTANCE→DONE→ARCHIVED  
-**Role Assignment:** Validate capability match >70% → Apply specialist architect triage  
-**Progress Updates:** Update status chain → Trigger scoring → Check archival eligibility → Update workflow phase
+**System Initialization:** Use `/icc-load-config` → Initialize controllers → IF L3: Enable continuous mode via `/icc-l3-activate`  
+**Assignment Reading:** Parse assignment + Apply embedded config via `/icc-apply-config` + Determine workflow type (outer/inner)  
+**Phase Execution:** L1/L2 approval, L3 autonomous → Use `/icc-phase-transition` for INIT→PLAN→EXECUTE→ACCEPTANCE→DONE→ARCHIVED  
+**Role Assignment:** Use `/icc-validate-assignments` for capability match >70% → Apply specialist architect triage via `/icc-require-triage`  
+**Progress Updates:** Update status chain → Trigger scoring → Check archival eligibility via `/icc-archive-scan` → Update workflow phase
 
 ## Workflow Phase Integration
 
@@ -23,22 +23,22 @@
 
 ## Validation Chain
 
-**Flow:** detect-work-type → require-triage → validate-assignments → require-approval → create-story  
+**Flow:** Use `/icc-detect-work-type` → `/icc-require-triage` → `/icc-validate-assignments` → `/icc-require-approval` → `/icc-create-story`  
 **Rules:** >70% capability match • PM+Architect triage • Specialist preference • Block invalid assignments
 
 ## Execution Patterns
 
-**Story Planning (Outer Workflow):** Check phase=story_creation → Read assignment → Apply config → Execute knowledge_retrieval phase → Validate work type → Create tasks via task_decomposition phase → Generate files → PM delegation → Update phase to EXECUTE  
-**PM Delegation:** Check phase allows delegation → Group by priority → Execute blocking/critical sequentially → Execute parallel in batches of 5 → Use Task tool with role in description → Track task phase progress  
-**Task Execution (Inner Workflow):** Check phase=task_execution → Activate role → Execute knowledge_retrieval phase → Execute work → Peer review if required → Update file → Store learnings via knowledge_generation phase → Mark complete → Update phase → IF L3: Auto-continue
+**Story Planning (Outer Workflow):** Use `/icc-phase-check` → Read assignment → Apply config via `/icc-apply-config` → Execute knowledge_retrieval via `/icc-memory-search` → Validate work type via `/icc-detect-work-type` → Create tasks via `/icc-plan-tasks` → Generate files → PM delegation via `/icc-delegate-tasks` → Update phase to EXECUTE  
+**PM Delegation:** Use `/icc-delegate-tasks` for parallel execution (up to 5 tasks) with role assignment and priority grouping  
+**Task Execution (Inner Workflow):** Use `/icc-phase-check` → Activate role via `/icc-activate-role` → Execute knowledge_retrieval via `/icc-memory-search` → Execute work → Peer review if required → Update file via `/icc-validate-file` → Store learnings via `/icc-learning-capture` → Mark complete → Update phase → IF L3: Auto-continue
 
-**Git Operations:** Auto-strip AI mentions if git_privacy enabled → Auto-validate branch protection → Generate commit/PR messages  
-**Review Handling:** IF non-blocking: Create follow-up task + continue • ELSE: Block until resolved
+**Git Operations:** Use `/icc-git-clean` for AI mention stripping → Use `/icc-git-validate` for branch protection → Generate commit/PR messages  
+**Review Handling:** IF non-blocking: Create follow-up task via `/icc-create-task` + continue • ELSE: Block until resolved
 
 ## Scoring & Roles
 
-**Scoring:** Task complete +1.0P/Q • Story complete +2.0P/Q • Learning application +0.5P/Q  
-**Role Detection:** Auto-detect @-notation → Validate assignment → Activate role → Create dynamic specialists as needed
+**Scoring:** Use `/icc-score-update` for task complete +1.0P/Q • Story complete +2.0P/Q • Learning application +0.5P/Q  
+**Role Detection:** Use `/icc-detect-role` for @-notation → Validate assignment via `/icc-validate-assignments` → Activate role via `/icc-activate-role` → Create dynamic specialists as needed
 
 ## L3 Autonomous Mode
 
@@ -48,7 +48,7 @@
 
 ## Knowledge & Tools
 
-**Knowledge:** Search before work → Apply learnings → Capture after work → Store patterns  
+**Knowledge:** Use `/icc-memory-search [keywords]` before work → Apply learnings → Capture after work → Store patterns  
 **Tools:** Read (files) • Write (updates with validation) • Task (PM delegation) • Memory (knowledge) • Git (commits)  
 **PM Delegation:** Use Task tool • Role in description [ROLE_NAME] • Parallel execution up to 5 tasks • Sequential for conflicts  
 **File Management:** All Write operations validate via file-management-enforcer → Enhance existing preferred → Naming conventions enforced

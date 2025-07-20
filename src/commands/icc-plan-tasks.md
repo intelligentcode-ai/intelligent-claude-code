@@ -1,6 +1,11 @@
 # Plan Tasks
 
-Create individual task files using $ARGUMENTS as story/bug ID.
+Plan multiple tasks for a story or bug using $ARGUMENTS.
+
+## Behavior
+**PM-ONLY** strategic planning command that decomposes stories/bugs into
+complete task sets with proper role assignment validation, priority ordering,
+and parallel execution opportunities. Enforces all task creation mandates.
 
 ## Workflow Integration
 
@@ -80,7 +85,7 @@ This command creates tasks that follow the **Inner Workflow Template** phases fr
    - Accessibility compliance
 
 9. Validate specialist assignments for each task:
-   - Execute `icc-validate-work-type` for each task
+   - Execute `icc-detect-work-type` for each task
    - Ensure >70% capability match for all assignments
    - Create dynamic specialists if needed
    - Require domain expertise for complex tasks

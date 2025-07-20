@@ -28,7 +28,7 @@ Generate task breakdown for bug fixing using $ARGUMENTS as bug ID.
    - Estimate complexity based on root cause analysis
    - Calculate risk level for different fix approaches
 7. Detect work type for specialist assignment:
-   - Execute `icc-validate-work-type "[bug description and analysis]"`
+   - Execute `icc-detect-work-type "[bug description and analysis]"`
    - Identify required specialist (AI-Engineer, DevOps-Engineer, etc.)
    - Ensure >70% capability match for assignments
 8. Generate comprehensive task breakdown:
