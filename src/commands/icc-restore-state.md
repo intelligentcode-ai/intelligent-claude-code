@@ -19,12 +19,12 @@ Restore preserved system state after context loss using $ARGUMENTS for restorati
    - Verify memory system accessibility
    - Check for existing active state conflicts
    - Load restoration metadata
-4. Restore memory connections:
-   - Test MCP Memory connection
-   - If connection fails, activate file-based fallback
-   - Search for system state entities in memory
-   - Load last known memory snapshot
-   - Display: "🧠 Memory connection: [Connected|File-based fallback]"
+4. Restore file-based memory system:
+   - Check ~/.claude/memory/ directory accessibility
+   - Load memory indexes and entity directories
+   - Search for system state entities in file storage
+   - Load last known memory snapshot from files
+   - Display: "🧠 Memory system: [File-based Active|Directory Missing|Index Corrupted]"
 5. Restore active roles and context:
    
    **Role State Recovery:**
@@ -127,7 +127,7 @@ Restore preserved system state after context loss using $ARGUMENTS for restorati
     - Validate command chain execution
 
 ## Error Handling
-- Memory connection failed: "Warning: Memory system unavailable, using file-based restoration"
+- Memory directory missing: "Warning: File-based memory not found, initializing new memory system"
 - State conflicts detected: "Warning: State conflicts found, resolving with [resolution strategy]"
 - Role state corrupted: "Error: Role state corrupted, reverting to default roles"
 - Task queue inconsistent: "Warning: Task queue inconsistencies detected, rebuilding"

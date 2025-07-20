@@ -19,7 +19,7 @@ learning is accessible for future reference and bonus detection.
   - Lesson: What was learned
   - Prevention: How to prevent in future
   - Type: Classification for pattern matching
-- Store entity with MCP Memory integration
+- Store entity with file-based memory system in ~/.claude/memory/entities/Learning/
 - Create relationships with related roles and tasks
 - Add tags for easy discovery and pattern matching
 

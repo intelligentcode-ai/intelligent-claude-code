@@ -384,7 +384,7 @@ Blocking dependencies → critical_path priority
 
 ### Tool Dependencies
 - **Claude Code**: Core platform (claude.ai/code)
-- **MCP Memory**: Persistent knowledge storage
+- **File-Based Memory**: Persistent knowledge storage via ~/.claude/memory/ directory
 - **Context7**: Real-time documentation injection
 - **GitHub CLI**: Repository management (optional, fallback available)
 - **Brave Search**: Web search capability
@@ -559,15 +559,16 @@ For comprehensive documentation, see `docs/ACTIVE-LEARNING-GUIDE.md`.
 command -v gh          # GitHub CLI
 claude --version       # Claude Code CLI
 
-# Test MCP connections
-# Memory integration test
+# Test file-based memory system
+# Initialize memory: /icc-memory-init
+# Test search: /icc-memory-search test
 # Context7 documentation access
 ```
 
 ### Fallback Handling
 - Context7 → Brave Search → Built-in tools
 - GitHub CLI → Manual Git workflow
-- MCP Memory → File-based storage
+- File-based memory system (primary) → No external dependencies
 
 ## Essential Development Commands
 

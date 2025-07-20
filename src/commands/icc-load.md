@@ -42,8 +42,8 @@ Force-load all virtual team behavioral patterns using $ARGUMENTS for load option
    - Enable learning application bonuses
    
    **Memory Integration:**
-   - Test MCP Memory connection
-   - Load memory search capabilities
+   - Test file-based memory system (/icc-memory-init)
+   - Load memory search capabilities (/icc-memory-search)
    - Initialize knowledge-first patterns
    
    **Scoring System:**

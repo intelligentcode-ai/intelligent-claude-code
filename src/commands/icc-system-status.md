@@ -35,14 +35,16 @@ Display comprehensive virtual team system status using $ARGUMENTS for detail lev
    Recent: @[Role1] (P:X.X, Q:X.X), @[Role2] (P:X.X, Q:X.X)
    Available: 14 core + unlimited dynamic specialists
    ```
-5. Verify memory system connection:
-   - Test MCP Memory connection
-   - Count total entities, relations, recent activity
-   - Show learning statistics
+5. Verify file-based memory system:
+   - Check ~/.claude/memory/ directory structure
+   - Count total entities, relationships, and index health
+   - Show learning statistics and storage usage
    ```
    🧠 Memory System:
-   Status: [Connected|Disconnected|File-based fallback]
-   Entities: [X] total, [Y] learnings, [Z] patterns
+   Status: [File-based Active|Directory Missing|Index Corrupted]
+   Storage: ~/.claude/memory/ ([X] MB used)
+   Entities: [X] total, [Y] learnings, [Z] patterns, [A] projects
+   Indexes: Content([X]), Tags([Y]), Relationships([Z])
    Recent Activity: [X] new learnings in last 7 days
    ```
 6. Report task queue status:
@@ -93,7 +95,7 @@ Display comprehensive virtual team system status using $ARGUMENTS for detail lev
 
 ## Error Handling
 - Configuration load failed: "Warning: Configuration issues detected - using defaults"
-- Memory connection failed: "Warning: Memory system unavailable - using file fallback"
+- Memory directory missing: "Warning: File-based memory not initialized - run icc-memory-init"
 - Git repository issues: "Warning: Git repository problems detected"
 - Missing tools: "Info: Optional tools not available: [list]"
 - Import chain broken: "Error: Broken imports detected: [specific imports]"
