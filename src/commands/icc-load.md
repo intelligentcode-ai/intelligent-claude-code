@@ -55,8 +55,8 @@ Force-load all virtual team behavioral patterns using $ARGUMENTS for load option
    
    **Command Chain Patterns:**
    ```
-   icc:memory-first → icc:think-sequential → execute → icc:quality-gates
-   icc:detect-work-type → icc:require-triage → icc:validate-assignments
+   /icc-memory-first → /icc-think-sequential → execute → /icc-quality-gates
+   /icc-detect-work-type → /icc-require-triage → /icc-validate-assignments
    ```
    
    **Role Assignment Rules:**

@@ -26,7 +26,7 @@ Test self-correcting validation enforcement using $ARGUMENTS for test scope.
    Expected: Auto-correction to @AI-Engineer
    
    Before: @Developer assigned to "Implement behavioral patterns"
-   Enforcement: icc:detect-work-type → icc:validate-assignments
+   Enforcement: /icc-detect-work-type → /icc-validate-assignments
    After: @AI-Engineer assigned (capability match: 95%)
    Result: ✅ PASSED - Auto-corrected role assignment
    ```
@@ -37,7 +37,7 @@ Test self-correcting validation enforcement using $ARGUMENTS for test scope.
    Expected: Require triage and approval
    
    Before: Task created without architect review
-   Enforcement: icc:require-triage → icc:require-approval
+   Enforcement: /icc-require-triage → /icc-require-approval
    After: @PM + @AI-Architect approval required
    Result: ✅ PASSED - Enforced architect consultation
    ```
@@ -48,7 +48,7 @@ Test self-correcting validation enforcement using $ARGUMENTS for test scope.
    Expected: Create dynamic specialist
    
    Before: @Web-Designer assigned to database migration
-   Enforcement: icc:validate-assignments (32% match)
+   Enforcement: /icc-validate-assignments (32% match)
    After: @Database-Engineer created and assigned
    Result: ✅ PASSED - Created appropriate specialist
    ```

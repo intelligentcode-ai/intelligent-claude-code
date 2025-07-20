@@ -59,7 +59,7 @@ Successfully updated all 22 command files in src/commands/ to use the optimal pa
 - **P0 Critical**: icc-init-system, icc-load, icc-plan-story, icc-plan-bug, icc-activate-role, icc-memory-search
 - **Creation Commands**: icc-create-story, icc-create-bug, icc-create-epic
 - **System Commands**: icc-system-status, icc-archive-completed, icc-git-operation
-- **Validation Commands**: icc-validate-work-type, icc-enforce-validation, icc-test-enforcement
+- **Validation Commands**: icc-detect-work-type, icc-enforce-validation, icc-test-enforcement
 - **Task Management**: icc-add-task, icc-plan-order, icc-plan-tasks, icc-finalize-item
 - **State Management**: icc-restore-state, icc-verify-behaviors, icc-lazy-loading-status
 

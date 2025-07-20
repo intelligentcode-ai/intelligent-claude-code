@@ -63,9 +63,9 @@ The intelligent-claude-code system provides slash commands with the `icc-` prefi
 **Integration**: Called during story planning phase
 **Output**: Task breakdown with role assignments
 
-### `icc-validate-work-type`
-**Purpose**: Validate work type and determine required specialists
-**Usage**: `icc-validate-work-type "work description"`
+### `icc-detect-work-type`
+**Purpose**: Detect work type and determine required specialists
+**Usage**: `icc-detect-work-type "work description"`
 **Parameters**:
 - `content`: Work description to analyze
 **Integration**: Called during work assignment validation
@@ -93,7 +93,7 @@ Commands are integrated into the lean-workflow-executor at key workflow points:
 
 - **System Initialization**: `icc-init-system` called on startup
 - **Role Assignment**: `icc-activate-role` called during role switching
-- **Work Validation**: `icc-validate-work-type` called during assignment validation
+- **Work Validation**: `icc-detect-work-type` called during assignment validation
 - **Story Planning**: `icc-create-story` and `icc-plan-story` used in planning
 - **Knowledge Operations**: `icc-memory-search` used in retrieval phases
 

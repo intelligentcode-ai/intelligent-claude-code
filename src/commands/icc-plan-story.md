@@ -21,7 +21,7 @@ Plan story by generating tasks using $ARGUMENTS as story ID.
    - Find Success-Pattern entities for story type
    - Display: "📚 Found X relevant patterns from memory"
 5. Detect work type and complexity:
-   - Execute `icc-validate-work-type "[story.description]"`
+   - Execute `icc-detect-work-type "[story.description]"`
    - Identify primary domain (AI, infrastructure, frontend, etc.)
    - Determine complexity level (simple/medium/complex)
    - Calculate estimated task count based on scope
@@ -40,7 +40,7 @@ Plan story by generating tasks using $ARGUMENTS as story ID.
    - Sequence tasks with dependencies (blocking → critical_path → parallel → optional)
    - Estimate hours for each task
 9. Validate specialist assignments:
-   - For each task, execute `icc-validate-work-type "[task.description]"`
+   - For each task, execute `icc-detect-work-type "[task.description]"`
    - Ensure >70% capability match for all assignments
    - Create dynamic specialists if needed (@Domain-BaseRole)
    - Require PM + Specialist Architect approval for all assignments

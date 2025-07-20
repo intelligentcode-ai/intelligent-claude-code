@@ -81,7 +81,7 @@ Validate all behavioral patterns are operational using $ARGUMENTS for specific v
    - Verify validation gate integration
    
    **Command Chain Testing:**
-   - Test icc: prefix command execution
+   - Test /icc- prefix command execution
    - Verify command chaining works
    - Check command parameter parsing
    - Validate error handling
@@ -176,7 +176,7 @@ Validate all behavioral patterns are operational using $ARGUMENTS for specific v
    **Workflow Command Testing:**
    - icc-create-epic/story/bug operations
    - icc-plan-story/bug functionality
-   - icc-validate-work-type operation
+   - icc-detect-work-type operation
    - icc-archive-completed capability
    
    **Results:**
