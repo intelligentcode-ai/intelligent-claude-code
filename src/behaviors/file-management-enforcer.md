@@ -80,17 +80,14 @@ Examples:
 
 ## Pre-Creation Validation
 
-### Pre-Write Validation
+### Validation Steps
 
-**File Creation Validation:** Use `/icc-validate-file [filepath] [content]` for comprehensive pre-write validation including existence checks, necessity validation, naming corrections, and directory placement
-
-### Naming Validation
-
-**Naming Convention Enforcement:** Use `/icc-validate-naming [filename]` for lowercase-hyphenated rule enforcement and exception handling
-
-### Directory Validation
-
-**Directory Placement Validation:** Use `/icc-validate-directory [filepath]` for proper directory routing and placement verification
+**Before any file write:**
+1. Check if enhancement of existing file is possible
+2. Validate file necessity - avoid redundant files
+3. Apply lowercase-hyphenated naming rules
+4. Ensure correct directory placement
+5. Consider display-only output for temporary content
 
 ## Integration Points
 
@@ -124,13 +121,14 @@ Examples:
 
 ## Cleanup Behaviors
 
-### Project Cleanliness Check
+### Project Cleanliness
 
-**Project Cleanup:** Use `/icc-cleanup-files` for comprehensive project cleanliness validation and violation detection
-
-### Automated Cleanup
-
-**Automated File Cleanup:** Use `/icc-cleanup-project` for automated cleanup of violations with detailed reporting
+**Regular Monitoring:**
+- Scan for naming violations
+- Identify misplaced files
+- Detect duplicate content
+- Track cleanup opportunities
+- Report violation trends
 
 ## Error Prevention
 
