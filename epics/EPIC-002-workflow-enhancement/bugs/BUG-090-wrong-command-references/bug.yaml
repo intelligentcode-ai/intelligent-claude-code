@@ -1,0 +1,46 @@
+id: BUG-090
+title: "Wrong Command References in task-creation-mandates.md"
+description: |
+  task-creation-mandates.md references non-existent commands:
+  '/icc:think-sequential' should be '/icc-think-sequential'
+  Wrong command format causes confusion and broken references.
+  
+severity: CRITICAL
+priority: P0
+status: PLANNED
+phase: PLAN
+
+identified_issues:
+  - "Wrong command reference format"
+  - "Non-existent commands referenced"
+  - "Broken command chain patterns"
+  - "User confusion about correct commands"
+
+root_cause: |
+  Incorrect command format used (colon instead of hyphen).
+  Commands don't match actual command file names.
+
+impact:
+  - Broken command references
+  - User attempts to use non-existent commands
+  - System credibility issues
+  - Workflow execution failures
+
+acceptance_criteria:
+  - Fix all command references in task-creation-mandates.md
+  - Use correct hyphen format (/icc-command-name)
+  - Verify all referenced commands exist
+  - Test command references work
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@AI-Engineer"]
+approved_by: []
+
+estimated_effort: "30 minutes"
+actual_effort: null
+
+tags: ["critical", "commands", "references"]
+
+created_at: "2025-01-19T17:54:00-05:00"
+updated_at: "2025-01-19T17:54:00-05:00"
+completed_at: null

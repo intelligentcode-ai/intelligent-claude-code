@@ -1,0 +1,98 @@
+id: BUG-074
+title: "Pseudo-Code Contamination in All Behaviors"
+description: |
+  All behavioral files contain pseudo-code instead of precise behavioral text.
+  This violates our core architecture and makes behaviors unreadable by Claude Code.
+  
+severity: CRITICAL
+priority: P0
+status: COMPLETED
+phase: DONE
+workflow_type: "outer"
+workflow_phase: "knowledge_generation"
+
+identified_issues:
+  - "Pseudo-code functions throughout behaviors"
+  - "initialize_system(), processError(), etc. instead of text"
+  - "Behaviors cannot be interpreted properly"
+  - "Architecture violation"
+
+root_cause: |
+  Implementation used programming patterns instead of behavioral documentation
+  patterns as specified in our architecture.
+
+impact:
+  - Behaviors cannot guide system operation
+  - Claude Code cannot understand intent
+  - System behavior unpredictable
+
+acceptance_criteria:
+  - Remove ALL pseudo-code from behaviors
+  - Replace with SHORT, PRECISE behavioral text
+  - Ensure behaviors use commands for actions
+  - Validate behavioral clarity
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@AI-Architect"]
+approved_by: ["@PM", "@AI-Architect"]
+
+tasks:
+  - id: "TASK-001"
+    title: "[Requirements-Engineer] Load Behavioral Pattern Knowledge"
+    assigned_to: "@Requirements-Engineer"
+    priority: "blocking"
+    status: "COMPLETED"
+  - id: "TASK-002"
+    title: "[AI-Engineer] Research All Behavioral Files"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    status: "COMPLETED"
+  - id: "TASK-003"
+    title: "[AI-Engineer] Clean Core Behavioral Files"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    status: "COMPLETED"
+  - id: "TASK-004"
+    title: "[AI-Engineer] Clean Supporting Behavioral Files"
+    assigned_to: "@AI-Engineer"
+    priority: "parallel"
+    status: "COMPLETED"
+  - id: "TASK-005"
+    title: "[AI-Engineer] Clean Workflow Phase Enforcer"
+    assigned_to: "@AI-Engineer"
+    priority: "parallel"
+    status: "COMPLETED"
+  - id: "TASK-006"
+    title: "[AI-Architect] Peer Review Behavioral Cleanup"
+    assigned_to: "@AI-Architect"
+    priority: "critical_path"
+    status: "COMPLETED"
+  - id: "TASK-007"
+    title: "[AI-Engineer] Document Behavioral Pattern Standards"
+    assigned_to: "@AI-Engineer"
+    priority: "parallel"
+    status: "PLANNED"
+  - id: "TASK-008"
+    title: "[QA-Engineer] Validate Behavioral System Integrity"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-009"
+    title: "[Developer] Git Operations for Behavioral Cleanup"
+    assigned_to: "@Developer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-010"
+    title: "[AI-Engineer] Create Behavioral Pattern Learning"
+    assigned_to: "@AI-Engineer"
+    priority: "optional"
+    status: "PLANNED"
+
+estimated_effort: "3-4 hours"
+actual_effort: null
+
+tags: ["critical", "architecture", "behaviors"]
+
+created_at: "2025-01-19T12:52:00-05:00"
+updated_at: "2025-01-19T14:45:00-05:00"
+completed_at: "2025-01-19T14:45:00-05:00"
