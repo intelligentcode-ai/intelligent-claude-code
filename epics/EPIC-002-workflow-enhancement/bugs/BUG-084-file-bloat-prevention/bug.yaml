@@ -8,8 +8,8 @@ description: |
   
 severity: CRITICAL
 priority: P0
-status: IN PROGRESS
-phase: EXECUTE
+status: COMPLETED
+phase: DONE
 workflow_type: "outer"
 workflow_phase: "task_execution"
 

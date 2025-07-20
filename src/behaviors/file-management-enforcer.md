@@ -8,26 +8,12 @@
 
 ### File Creation Decision Tree
 
-**BEFORE creating any file, execute this validation:**
+**Before creating any file, validate through these steps:**
 
-```
-validateFileCreation(filepath, content):
-    1. Can this enhance an existing file?
-       YES → Enhance existing file (preferred)
-       NO → Continue to step 2
-    
-    2. Is this file truly necessary?
-       NO → Return display-only output
-       YES → Continue to step 3
-    
-    3. Does it follow naming conventions?
-       NO → Apply naming rules
-       YES → Continue to step 4
-    
-    4. Is it in the correct directory?
-       NO → Determine proper location
-       YES → Allow file creation
-```
+1. **Enhancement Check:** Can this enhance an existing file? If yes, enhance rather than create new.
+2. **Necessity Check:** Is this file truly necessary? If no, provide display-only output.
+3. **Naming Check:** Does it follow lowercase-hyphenated conventions? If no, apply naming rules.
+4. **Location Check:** Is it in the correct directory? If no, determine proper location.
 
 ### Enhancement vs Creation Logic
 
@@ -94,111 +80,47 @@ Examples:
 
 ## Pre-Creation Validation
 
-### Validation Function
-```
-preWriteValidation(filepath, content):
-    // Check existence
-    IF fileExists(filepath):
-        RETURN enhanceExisting(filepath, content)
-    
-    // Validate necessity
-    IF isTemporaryOutput(content):
-        RETURN displayOnly(content)
-    
-    // Validate naming
-    filename = extractFilename(filepath)
-    IF NOT isValidNaming(filename):
-        filename = correctNaming(filename)
-        filepath = updatePath(filepath, filename)
-    
-    // Validate location
-    IF NOT isCorrectDirectory(filepath):
-        filepath = determineCorrectPath(filepath)
-    
-    RETURN {validated: true, filepath: filepath}
-```
+### Pre-Write Validation
+
+**Before writing any file:**
+- Check if file exists - enhance existing file instead of creating new
+- Validate content necessity - use display-only output for temporary content
+- Validate naming conventions - apply lowercase-hyphenated corrections
+- Validate directory location - move to correct directory if misplaced
 
 ### Naming Validation
-```
-isValidNaming(filename):
-    // Check exception list first
-    IF filename IN [README.md, LICENSE, CHANGELOG.md, CONTRIBUTING.md, CLAUDE.md, Makefile]:
-        IF isInRootDirectory():
-            RETURN true
-    
-    // Apply lowercase-hyphenated rule
-    RETURN matches(filename, /^[a-z0-9-]+\.md$/)
 
-correctNaming(filename):
-    // Convert to lowercase
-    filename = lowercase(filename)
-    
-    // Replace invalid characters
-    filename = replace(filename, /[_\s]+/, '-')
-    filename = replace(filename, /[^a-z0-9-.]/, '')
-    
-    // Fix specific violations
-    IF filename == "readme.md" AND NOT isRootDirectory():
-        RETURN "overview.md"
-    IF filename == "archived.md":
-        RETURN "archived-summary.md"
-    
-    RETURN filename
-```
+**Valid naming patterns:**
+- Check exception list first: README.md, LICENSE, CHANGELOG.md, CONTRIBUTING.md, CLAUDE.md, Makefile (root only)
+- Apply lowercase-hyphenated rule for all other files
+
+**Naming corrections:**
+- Convert to lowercase
+- Replace underscores and spaces with hyphens
+- Remove invalid characters except letters, numbers, hyphens, dots
+- Fix specific violations: readme.md → overview.md (non-root), archived.md → archived-summary.md
 
 ### Directory Validation
-```
-isCorrectDirectory(filepath):
-    directory = extractDirectory(filepath)
-    filename = extractFilename(filepath)
-    
-    // Check root directory restrictions
-    IF directory == "/" AND filename NOT IN allowedRootFiles:
-        RETURN false
-    
-    // Check src/ subdirectory restrictions
-    IF startsWith(directory, "/src/"):
-        RETURN validateSrcSubdirectory(directory, filename)
-    
-    RETURN true
 
-determineCorrectPath(filepath):
-    filename = extractFilename(filepath)
-    
-    // Route based on content type
-    IF isAnalysisFile(filename):
-        RETURN "/analysis/" + filename
-    IF isDesignFile(filename):
-        RETURN "/design/" + filename
-    IF isKnowledgeFile(filename):
-        RETURN "/knowledge/" + filename
-    IF isDocumentation(filename):
-        RETURN "/docs/" + filename
-    
-    RETURN filepath
-```
+**Directory placement rules:**
+- Root directory: Only allow README.md, LICENSE, CHANGELOG.md, Makefile, .gitignore
+- Src subdirectories: Validate specific file types belong in correct subdirectories
+
+**Path correction routing:**
+- Analysis files → /analysis/ directory
+- Design files → /design/ directory
+- Knowledge files → /knowledge/ directory
+- Documentation → /docs/ directory
 
 ## Integration Points
 
 ### Write Tool Hook
-**ALL Write tool usage MUST call validation:**
-```
-Write(filepath, content):
-    validation = preWriteValidation(filepath, content)
-    
-    IF NOT validation.validated:
-        RETURN {error: "File creation blocked", reason: validation.reason}
-    
-    // Use validated path
-    filepath = validation.filepath
-    
-    // Check for enhancement
-    IF validation.enhance:
-        RETURN enhanceFile(filepath, content)
-    
-    // Proceed with creation
-    RETURN createFile(filepath, content)
-```
+
+**All Write tool usage must call validation first:**
+- Run pre-write validation before any file creation
+- Block file creation if validation fails
+- Use validated and corrected filepath
+- Enhance existing files when appropriate rather than creating new ones
 
 ### Command Integration
 **Commands creating files MUST:**
@@ -223,38 +145,18 @@ Write(filepath, content):
 ## Cleanup Behaviors
 
 ### Project Cleanliness Check
-```
-checkProjectCleanliness():
-    violations = []
-    
-    // Check root directory
-    rootFiles = listFiles("/")
-    FOR file IN rootFiles:
-        IF file NOT IN allowedRootFiles:
-            violations.add({file: file, issue: "root pollution"})
-    
-    // Check naming violations
-    allFiles = listAllFiles()
-    FOR file IN allFiles:
-        IF NOT isValidNaming(file) AND file NOT IN exceptions:
-            violations.add({file: file, issue: "naming violation"})
-    
-    RETURN violations
-```
+
+**Violation detection:**
+- Check root directory for non-allowed files
+- Check all files for naming convention violations
+- Identify files needing relocation or renaming
 
 ### Automated Cleanup
-```
-cleanupProject():
-    violations = checkProjectCleanliness()
-    
-    FOR violation IN violations:
-        IF violation.issue == "root pollution":
-            moveToCorrectDirectory(violation.file)
-        ELIF violation.issue == "naming violation":
-            renameFile(violation.file, correctNaming(violation.file))
-    
-    RETURN {cleaned: violations.length, remaining: checkProjectCleanliness().length}
-```
+
+**Cleanup process:**
+- Move root pollution files to appropriate directories
+- Rename files violating naming conventions
+- Report cleanup results and remaining violations
 
 ## Error Prevention
 
