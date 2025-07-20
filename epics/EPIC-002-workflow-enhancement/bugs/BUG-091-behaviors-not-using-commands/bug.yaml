@@ -7,13 +7,15 @@ description: |
   
 severity: CRITICAL
 priority: P0
-status: PLANNED
-phase: PLAN
+status: IN_PROGRESS
+phase: EXECUTE
+workflow_type: "outer"
+workflow_phase: "peer_review"
 
 identified_issues:
   - "Behaviors duplicate command content"
   - "No command references in behaviors"
-  - "Massive token waste"
+  - "Massive token waste (2,400+ tokens)"
   - "Content duplication across files"
   - "Maintenance nightmare"
 
@@ -23,7 +25,7 @@ root_cause: |
   Duplicate content easier than proper references.
 
 impact:
-  - Excessive token usage
+  - Excessive token usage (2,400+ wasted tokens)
   - Content becomes out of sync
   - Maintenance complexity increases
   - User confusion from duplicates
@@ -33,12 +35,44 @@ acceptance_criteria:
   - Update behaviors to reference commands
   - Remove duplicate content
   - Create command reference patterns
-  - Reduce token usage significantly
+  - Reduce token usage significantly (60% reduction target)
   - Maintain single source of truth
 
 assigned_to: "@PM"
 triage_participants: ["@PM", "@AI-Architect"]
-approved_by: []
+approved_by: ["@PM", "@AI-Architect"]
+
+tasks:
+  - id: "TASK-001"
+    title: "[AI-Engineer] Create command reference patterns"
+    assigned_to: "@AI-Engineer"
+    priority: "blocking"
+    status: "PLANNED"
+  - id: "TASK-002"
+    title: "[AI-Engineer] Replace validation content in role-assignment-validator"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-003"
+    title: "[AI-Engineer] Replace archival functionality in archival-intelligence"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-004"
+    title: "[AI-Engineer] Replace PM command descriptions in pm-command-system"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-005"
+    title: "[AI-Engineer] Replace memory search logic in lean-workflow-executor"
+    assigned_to: "@AI-Engineer"
+    priority: "parallel"
+    status: "PLANNED"
+  - id: "TASK-006"
+    title: "[QA-Engineer] Validate token reduction and functionality"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    status: "PLANNED"
 
 estimated_effort: "4-5 hours"
 actual_effort: null

@@ -8,10 +8,10 @@ description: |
   
 severity: CRITICAL
 priority: P0
-status: COMPLETED
-phase: DONE
+status: IN_PROGRESS
+phase: EXECUTE
 workflow_type: "outer"
-workflow_phase: "knowledge_generation"
+workflow_phase: "peer_review"
 
 identified_issues:
   - "config-loader.md contains pseudo-code functions"

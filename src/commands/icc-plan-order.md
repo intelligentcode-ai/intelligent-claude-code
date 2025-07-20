@@ -12,7 +12,7 @@ Establish execution order using $ARGUMENTS as item ID.
 4. If item not in DEFINING phase:
    - Respond "Error: Planning order only applies to items in DEFINING phase. Current: [phase]"
 5. Detect work type for specialist architect assignment:
-   - Execute `icc-validate-work-type "[item.description]"`
+   - Execute `icc-detect-work-type "[item.description]"`
    - Identify required specialist architect based on work domain:
      * AI work → @AI-Architect
      * Infrastructure → @System-Architect  

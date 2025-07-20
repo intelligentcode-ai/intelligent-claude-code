@@ -15,20 +15,20 @@ PM, Architect, Developer, System-Engineer, DevOps-Engineer, Database-Engineer, S
 
 ## Detection Process
 
-**Pattern Matching:** Scan text for @-notation patterns → Extract role names → Validate against core roles  
-**Role Validation:** Check if core role → OR check if Technology-BaseRole format → Return valid roles only  
-**Type Classification:** Direct mention → task_assignment → communication format
+**Pattern Matching:** Use `/icc-detect-role [content]` to scan text for @-notation patterns, extract role names, validate against core roles  
+**Role Validation:** Use `/icc-validate-role [role_name]` to check if core role OR Technology-BaseRole format, return valid roles only  
+**Type Classification:** Use `/icc-classify-role-mention [role_mention]` for direct mention, task_assignment, communication format
 
 ## Dynamic Specialist Validation
 
-**Format Check:** Split on hyphen → Expect exactly 2 parts → Technology-BaseRole  
-**Base Role Check:** Second part must be core role → First part is technology domain  
-**Capability Merge:** Combine base role capabilities + domain expertise
+**Format Check:** Use `/icc-validate-specialist-format [role_name]` to split on hyphen, expect exactly 2 parts, validate Technology-BaseRole  
+**Base Role Check:** Use `/icc-validate-base-role [base_role]` to ensure second part is core role, first part is technology domain  
+**Capability Merge:** Use `/icc-merge-capabilities [base_role] [domain]` to combine base role capabilities + domain expertise
 
 ## Integration Flow
 
-**Assignment Processing:** Detect roles in content → Validate each role → Activate valid roles → Log invalid attempts  
-**Role Activation:** Valid role detected → Trigger role switch → Apply role behavior
+**Assignment Processing:** Use `/icc-process-role-assignments [content]` to detect roles in content, validate each role, activate valid roles, log invalid attempts  
+**Role Activation:** Use `/icc-activate-role [detected_role]` when valid role detected to trigger role switch and apply role behavior
 
 ## Examples
 

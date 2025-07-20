@@ -11,28 +11,28 @@
 
 ## Error Processing
 
-**processErrorForLearning():** Check previous learning → IF found: Double penalty + escalation • ELSE: Create learning + no penalty  
-**createLearningEntity():** Format: Learning-[ErrorType]-[Date] + Link to role/context + Store prevention measures  
-**Pattern:** Error detected → Memory search → Apply forgiveness/penalty → Store learning → Share with team
+**Error Processing:** Use `/icc-process-error [error_type]` to check previous learning → Apply forgiveness/penalty → Create learning entities  
+**Learning Creation:** Use `/icc-learning-capture [error_type] [context]` for Learning-[ErrorType]-[Date] format with prevention measures  
+**Pattern:** Error detected → Use `/icc-memory-search [error_type]` → Apply forgiveness/penalty → Store learning → Share with team
 
 ## Memory Integration
 
-**consultLearningsBeforeRoleAssignment():** Search memory for role/task learnings → IF found: Apply prevention or block assignment  
+**Learning Consultation:** Use `/icc-memory-search [role] [task_type]` before role assignment → Apply prevention or block assignment if learnings found  
 **Reference Patterns:** "Based on previous learning..." • "Applying lesson from..." • "To prevent repeat of..."  
-**Storage:** Learning-[ErrorType]-[YYYY-MM-DD] with error/context/lesson/prevention observations
+**Storage:** Use `/icc-learning-store [learning_data]` for Learning-[ErrorType]-[YYYY-MM-DD] with error/context/lesson/prevention observations
 
 ## Bonus Detection
 
-**detectLearningApplication():** Scan content for learning patterns → Validate application → Apply bonuses  
+**Learning Application Detection:** Use `/icc-detect-learning-patterns [content]` to scan for learning patterns → Validate application → Apply bonuses  
 **Triggers:** "Based on previous learning" → +0.5P • "Applying lesson from" → +0.5P • "To prevent repeat of" → +0.5Q • Pattern breaking → +1.0P/Q  
-**Auto-Application:** Bonuses applied automatically when learning references detected
+**Auto-Application:** Use `/icc-score-update [bonus_type] [amount]` when learning references detected
 
 ## Retrospective System
 
-**executeRetrospective():** Auto-triggered on task completion/error/milestone → Extract what worked/failed/learned → Store patterns in memory  
-**Success Patterns:** Store as Success-Pattern-[Type]-[Date] with reuse instructions  
-**Error Patterns:** Store as Learning-[ErrorType]-[Date] with prevention measures  
-**Integration:** Share learnings with team → Build patterns from insights
+**Retrospective Execution:** Use `/icc-retrospective [trigger_type]` auto-triggered on task completion/error/milestone → Extract what worked/failed/learned → Store patterns in memory  
+**Success Patterns:** Use `/icc-learning-store [success_pattern]` for Success-Pattern-[Type]-[Date] with reuse instructions  
+**Error Patterns:** Use `/icc-learning-store [error_pattern]` for Learning-[ErrorType]-[Date] with prevention measures  
+**Integration:** Share learnings with team via `/icc-share-learning [team_scope]` → Build patterns from insights
 
 ## Behavioral Integration
 

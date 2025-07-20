@@ -21,7 +21,7 @@ Add task to story or bug using $ARGUMENTS as task definition.
    - If workflow phase too early, respond "Error: Cannot add tasks during [workflow_phase] phase"
    - Tasks can only be added after initial planning is complete
 4. Execute work type validation:
-   - Run `icc-validate-work-type "[task_description]"`
+   - Run `icc-detect-work-type "[task_description]"`
    - Ensure current specialist role has >70% capability match
    - If mismatch, respond "Error: Task requires different specialist. Suggested: @[RecommendedRole]"
 5. Generate next TASK-XXX ID:
@@ -68,7 +68,7 @@ Add task to story or bug using $ARGUMENTS as task definition.
 8. Auto-create review task for implementation work:
    - If task type is "implementation", create corresponding review task
    - Review task assigned to appropriate domain expert (not task creator)
-   - Use `icc-validate-work-type` to find correct reviewer
+   - Use `icc-detect-work-type` to find correct reviewer
 9. Update parent item:
    - Add task ID to tasks array in parent YAML
    - Update estimated_hours (add new task estimate)

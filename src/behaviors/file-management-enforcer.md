@@ -82,35 +82,15 @@ Examples:
 
 ### Pre-Write Validation
 
-**Before writing any file:**
-- Check if file exists - enhance existing file instead of creating new
-- Validate content necessity - use display-only output for temporary content
-- Validate naming conventions - apply lowercase-hyphenated corrections
-- Validate directory location - move to correct directory if misplaced
+**File Creation Validation:** Use `/icc-validate-file [filepath] [content]` for comprehensive pre-write validation including existence checks, necessity validation, naming corrections, and directory placement
 
 ### Naming Validation
 
-**Valid naming patterns:**
-- Check exception list first: README.md, LICENSE, CHANGELOG.md, CONTRIBUTING.md, CLAUDE.md, Makefile (root only)
-- Apply lowercase-hyphenated rule for all other files
-
-**Naming corrections:**
-- Convert to lowercase
-- Replace underscores and spaces with hyphens
-- Remove invalid characters except letters, numbers, hyphens, dots
-- Fix specific violations: readme.md → overview.md (non-root), archived.md → archived-summary.md
+**Naming Convention Enforcement:** Use `/icc-validate-naming [filename]` for lowercase-hyphenated rule enforcement and exception handling
 
 ### Directory Validation
 
-**Directory placement rules:**
-- Root directory: Only allow README.md, LICENSE, CHANGELOG.md, Makefile, .gitignore
-- Src subdirectories: Validate specific file types belong in correct subdirectories
-
-**Path correction routing:**
-- Analysis files → /analysis/ directory
-- Design files → /design/ directory
-- Knowledge files → /knowledge/ directory
-- Documentation → /docs/ directory
+**Directory Placement Validation:** Use `/icc-validate-directory [filepath]` for proper directory routing and placement verification
 
 ## Integration Points
 
@@ -146,17 +126,11 @@ Examples:
 
 ### Project Cleanliness Check
 
-**Violation detection:**
-- Check root directory for non-allowed files
-- Check all files for naming convention violations
-- Identify files needing relocation or renaming
+**Project Cleanup:** Use `/icc-cleanup-files` for comprehensive project cleanliness validation and violation detection
 
 ### Automated Cleanup
 
-**Cleanup process:**
-- Move root pollution files to appropriate directories
-- Rename files violating naming conventions
-- Report cleanup results and remaining violations
+**Automated File Cleanup:** Use `/icc-cleanup-project` for automated cleanup of violations with detailed reporting
 
 ## Error Prevention
 

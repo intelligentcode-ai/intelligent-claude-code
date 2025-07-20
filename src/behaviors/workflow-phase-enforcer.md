@@ -5,17 +5,10 @@
 ## Core Behaviors
 
 ### Phase Detection
-When reading any assignment file (epic.yaml, story.yaml, bug.yaml, task.md):
-- Check for workflow_type field (outer or inner)
-- Check for workflow_phase field
-- If missing, infer from file type and status
+Use `/icc-detect-workflow-phase [assignment_file]` when reading assignment files to check for workflow_type field (outer or inner), check for workflow_phase field, infer from file type and status if missing
 
 ### Phase Prerequisites
-Before executing any action:
-- Check current workflow phase
-- Validate phase prerequisites are met
-- Block actions that skip required phases
-- Suggest correct next phase if blocked
+Use `/icc-validate-phase-prereqs [current_phase] [action]` before executing any action to check current workflow phase, validate prerequisites are met, block actions that skip required phases, suggest correct next phase if blocked
 
 ### Outer Workflow Phases
 **Sequence:** knowledge_retrieval → epic_definition → story_creation → task_decomposition → git_operations → acceptance_criteria → knowledge_generation
@@ -36,30 +29,16 @@ Before executing any action:
 - Peer review required for certain task types
 
 ### Phase Transitions
-When completing phase requirements:
-- Update workflow_phase in assignment file
-- Log phase transition with timestamp
-- Trigger next phase actions if L3 mode
-- Update progress tracking
+Use `/icc-phase-transition [assignment_file] [next_phase]` when completing phase requirements to update workflow_phase in assignment file, log phase transition with timestamp, trigger next phase actions if L3 mode, update progress tracking
 
 ### Phase Validation Commands
-- Check phase with assignment file status
-- Validate phase prerequisites met
-- Report blocked actions with reasons
-- Suggest corrective actions
+Use `/icc-phase-check [assignment_file]` to check phase with assignment file status, `/icc-validate-phase-prereqs` to validate prerequisites met, `/icc-report-phase-block [action] [reason]` to report blocked actions, `/icc-suggest-phase-correction [current_phase]` for corrective actions
 
 ### Integration Points
-- Commands check phase before execution
-- Behaviors enforce phase sequences  
-- L3 mode auto-transitions phases
-- Progress monitor tracks phase status
+Use `/icc-phase-check` in commands before execution, `/icc-enforce-phase-sequence` in behaviors, `/icc-auto-phase-transition` in L3 mode, `/icc-track-phase-status` in progress monitor
 
 ### Error Handling
-When phase violation detected:
-- Block the action
-- Explain which phase is required
-- Show current phase vs required phase
-- Provide command to transition phase
+Use `/icc-handle-phase-violation [violation_data]` when phase violation detected to block the action, explain which phase is required, show current vs required phase, provide command to transition phase
 
 ## Benefits
 - Ensures workflow compliance
