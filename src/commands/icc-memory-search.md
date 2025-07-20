@@ -1,5 +1,7 @@
 # Memory Search
 
+**BEHAVIORAL:** Auto-adopt search patterns from $ARGUMENTS.
+
 Search memory system using $ARGUMENTS for relevant patterns.
 
 ## Behavior

@@ -1,5 +1,7 @@
 # Create Specialist
 
+**BEHAVIORAL:** Auto-adopt specialist patterns from $ARGUMENTS.
+
 Create dynamic specialist role using $ARGUMENTS.
 
 ## Behavior

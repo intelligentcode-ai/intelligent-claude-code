@@ -1,5 +1,7 @@
 # Config Loader
 
+**MANDATORY:** MUST use configuration hierarchy. Auto-correct violations.
+
 **Purpose:** Load and merge configuration from hierarchy  
 **Type:** Core System Component  
 **Status:** ACTIVE
