@@ -1,5 +1,7 @@
 # Learning Team Automation
 
+**MANDATORY:** MUST use learnings. Auto-correct violations.
+
 **CORE:** First error forgiven • Second error penalized • Active learning bonus
 
 @./shared-patterns/memory-patterns.md

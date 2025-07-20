@@ -1,5 +1,7 @@
 # Lean Workflow Executor
 
+**MANDATORY:** MUST use workflows. Auto-correct violations.
+
 **CORE:** Read → Validate → Execute → Update • Assignment-driven
 
 @./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md

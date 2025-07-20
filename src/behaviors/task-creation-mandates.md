@@ -1,5 +1,7 @@
 # Task Creation Mandates
 
+**MANDATORY:** MUST use role-in-title + 3 subtasks. Auto-correct violations.
+
 **PURPOSE:** Mandatory behavioral requirements for ALL task creation.
 
 ## MANDATORY RULES

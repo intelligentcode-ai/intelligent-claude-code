@@ -1,5 +1,7 @@
 # File-Based Memory
 
+**MANDATORY:** MUST use file operations. Auto-correct violations.
+
 **PURPOSE:** File-based memory system for knowledge persistence and learning capture
 
 ## Imports

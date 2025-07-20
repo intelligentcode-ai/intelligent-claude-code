@@ -1,5 +1,7 @@
 # Autonomy Controller
 
+**MANDATORY:** MUST use autonomy levels. Auto-correct violations.
+
 **Purpose:** Control system autonomy levels (L1/L2/L3)
 
 ## Behavioral Rules
