@@ -1,5 +1,7 @@
 # Detect Work Type
 
+**BEHAVIORAL:** Auto-detect patterns from $ARGUMENTS.
+
 Analyze task content in $ARGUMENTS to determine work type and required specialist roles.
 
 ## Behavior

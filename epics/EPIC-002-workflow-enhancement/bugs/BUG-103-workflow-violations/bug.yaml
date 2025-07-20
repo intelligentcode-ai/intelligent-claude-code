@@ -1,0 +1,68 @@
+---
+id: BUG-103
+title: CRITICAL - System violates mandatory outer/inner workflows completely
+epic: EPIC-002
+priority: P0
+severity: CRITICAL_BLOCKER
+status: IN_PROGRESS
+phase: triage_required
+assigned_to: [@PM, @AI-Architect]
+created_by: "@PM"
+created_at: 2025-07-20T22:20:00Z
+updated_at: 2025-07-20T22:20:00Z
+environment: Production
+
+description: |
+  CRITICAL BLOCKER: The system completely ignores mandatory workflow requirements:
+  
+  1. OUTER WORKFLOW VIOLATIONS:
+     - NO work type detection (detect-work-type)
+     - NO PM + Architect triage (require-triage) 
+     - NO role validation (validate-assignments)
+     - NO approval process (require-approval)
+     - Direct bug creation without workflow phases
+  
+  2. INNER WORKFLOW VIOLATIONS:
+     - NO knowledge retrieval before work
+     - NO task planning phase
+     - NO peer review requirements
+     - NO knowledge generation after work
+  
+  3. VALIDATION CHAIN COMPLETELY BYPASSED:
+     detect-work-type → require-triage → validate-assignments → require-approval
+     
+  This is MORE CRITICAL than the memory bug because it violates the entire 
+  architectural foundation of the system!
+
+root_cause: |
+  System operates in "freestyle mode" ignoring all behavioral enforcement patterns.
+  Workflows are documented but not followed - treating them as optional guidance
+  rather than mandatory architecture.
+
+acceptance_criteria:
+  - ALL work must follow outer workflow phases
+  - ALL tasks must follow inner workflow phases  
+  - Validation chain MANDATORY for all assignments
+  - PM + Architect triage REQUIRED for all bugs
+  - No direct task creation without workflow compliance
+
+technical_details:
+  violated_patterns:
+    - src/behaviors/lean-workflow-executor.md
+    - src/workflow-templates/outer-workflow.yaml
+    - src/workflow-templates/inner-workflow.yaml
+    - src/behaviors/role-assignment-validator.md
+  
+  missing_executions:
+    - /icc-detect-work-type
+    - /icc-require-triage
+    - /icc-validate-assignments
+    - /icc-require-approval
+
+validation:
+  - Verify workflow compliance on all operations
+  - Block non-compliant actions
+  - Enforce validation chain execution
+
+impact: "ARCHITECTURAL FOUNDATION VIOLATED - System integrity compromised"
+---

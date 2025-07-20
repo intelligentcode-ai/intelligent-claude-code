@@ -1,5 +1,7 @@
 # Role Assignment Validator
 
+**MANDATORY:** MUST use >70% match or create specialist. Auto-correct violations.
+
 **Purpose:** Context-aware role assignment validation with mandatory architect consultation
 
 ## Imports

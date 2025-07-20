@@ -1,5 +1,7 @@
 # Shared Validation Patterns
 
+**ENFORCE:** >70% match or auto-create. No exceptions.
+
 **PURPOSE:** Common validation patterns used across behavioral modules
 
 ## Core Validation Patterns
