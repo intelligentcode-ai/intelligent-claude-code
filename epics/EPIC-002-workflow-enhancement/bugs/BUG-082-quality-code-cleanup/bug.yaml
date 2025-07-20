@@ -1,0 +1,47 @@
+id: BUG-082
+title: "Code Quality and Cleanup Issues"
+description: |
+  Minor but important quality issues:
+  - Unnecessary comment separators ('---') in behavioral files
+  - Role-assignment-validator poorly implemented
+  - Role-detection-engine has excessive pseudo-code
+  - Task-queue-manager full of pseudo-code
+  
+severity: HIGH
+priority: P1
+status: PLANNED
+phase: PLAN
+
+identified_issues:
+  - "Unnecessary separators in files"
+  - "Poor implementation quality"
+  - "Excessive pseudo-code"
+  - "Code needs cleanup"
+
+root_cause: |
+  Rush to implement without quality review.
+  No code standards enforced.
+
+impact:
+  - Code harder to maintain
+  - Inconsistent quality
+  - Technical debt
+
+acceptance_criteria:
+  - Remove unnecessary separators
+  - Rewrite poor implementations
+  - Clean, consistent code
+  - Quality standards met
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@Developer"]
+approved_by: ["@PM", "@Developer"]
+
+estimated_effort: "2 hours"
+actual_effort: null
+
+tags: ["low", "quality", "cleanup"]
+
+created_at: "2025-01-19T13:10:00-05:00"
+updated_at: "2025-01-19T13:10:00-05:00"
+completed_at: null

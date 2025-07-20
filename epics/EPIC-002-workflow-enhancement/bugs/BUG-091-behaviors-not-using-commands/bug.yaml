@@ -1,0 +1,50 @@
+id: BUG-091
+title: "Behaviors Don't Use Commands - Token Waste and Duplication"
+description: |
+  Behavioral files contain duplicate content instead of referencing commands.
+  This causes massive token waste and content duplication.
+  Behaviors should reference commands wherever possible instead of duplicating logic.
+  
+severity: CRITICAL
+priority: P0
+status: PLANNED
+phase: PLAN
+
+identified_issues:
+  - "Behaviors duplicate command content"
+  - "No command references in behaviors"
+  - "Massive token waste"
+  - "Content duplication across files"
+  - "Maintenance nightmare"
+
+root_cause: |
+  Behaviors written without considering existing commands.
+  No pattern for referencing commands from behaviors.
+  Duplicate content easier than proper references.
+
+impact:
+  - Excessive token usage
+  - Content becomes out of sync
+  - Maintenance complexity increases
+  - User confusion from duplicates
+  - System becomes bloated
+
+acceptance_criteria:
+  - Update behaviors to reference commands
+  - Remove duplicate content
+  - Create command reference patterns
+  - Reduce token usage significantly
+  - Maintain single source of truth
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@AI-Architect"]
+approved_by: []
+
+estimated_effort: "4-5 hours"
+actual_effort: null
+
+tags: ["critical", "efficiency", "commands"]
+
+created_at: "2025-01-19T17:56:00-05:00"
+updated_at: "2025-01-19T17:56:00-05:00"
+completed_at: null

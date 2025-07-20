@@ -1,0 +1,45 @@
+id: BUG-086
+title: "Lazy Loading Command Exists but Not Supported"
+description: |
+  The system has icc-lazy-loading-status.md command but Claude Code doesn't support lazy loading.
+  This creates confusion and false expectations.
+  Need to verify and remove if not applicable.
+  
+severity: MEDIUM
+priority: P2
+status: PLANNED
+phase: PLAN
+
+identified_issues:
+  - "Lazy loading command exists"
+  - "Claude Code doesn't support lazy loading"
+  - "Creates user confusion"
+  - "Possibly obsolete functionality"
+
+root_cause: |
+  Legacy command from earlier design that wasn't removed.
+  Unclear if Claude Code supports any form of lazy loading.
+
+impact:
+  - User confusion about capabilities
+  - Attempted use of non-functional features
+  - System credibility issues
+
+acceptance_criteria:
+  - Verify Claude Code lazy loading support
+  - Remove command if not supported
+  - Update documentation accordingly
+  - Clean up any related behaviors
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@System-Engineer"]
+approved_by: []
+
+estimated_effort: "1-2 hours"
+actual_effort: null
+
+tags: ["medium", "cleanup", "obsolete"]
+
+created_at: "2025-01-19T16:51:00-05:00"
+updated_at: "2025-01-19T16:51:00-05:00"
+completed_at: null

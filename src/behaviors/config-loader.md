@@ -7,7 +7,7 @@
 ## Operation
 
 **Hierarchy:** Embedded → Project → User → Defaults  
-**API:** `SettingsAPI.getSettings()` returns merged config  
+**Access:** Load and merge configuration from hierarchy  
 **Caching:** 5 minute TTL, 1 hour for embedded configs  
 **Key Settings:** autonomy_level, git_privacy, pm_always_active, blocking_enabled  
 
@@ -45,26 +45,18 @@ role_validation: true       # Enforce role assignment validation
 - Override other settings temporarily
 - Cache for 1 hour
 
-**Settings API:**
-- `getSettings()` - Returns merged configuration
-- `getSetting(key, default)` - Get specific setting with dot notation
-- `applyEmbeddedConfig(content)` - Apply embedded overrides
+**Configuration Access:**
+- Retrieve merged configuration from hierarchy
+- Access specific settings with fallback defaults
+- Apply embedded configuration overrides from assignment files
 
 ## Integration
 
-**Usage Pattern:**
-```javascript
-// Load configuration
-settings = SettingsAPI.getSettings()
-
-// Check specific setting
-if (SettingsAPI.getSetting("git_privacy", false)) {
-    stripAIMentions(commitMessage)
-}
-
-// Apply embedded config
-settingsWithEmbedded = SettingsAPI.applyEmbeddedConfig(assignmentContent)
-```
+**Behavioral Pattern:**
+- Load configuration hierarchy at behavior activation
+- Check specific settings before applying behavioral actions
+- Apply git privacy when enabled by stripping AI mentions from commits
+- Use embedded configuration overrides from assignment files when present
 
 **System Integration:**
 - Git Operations: Check `git_privacy` before commits
