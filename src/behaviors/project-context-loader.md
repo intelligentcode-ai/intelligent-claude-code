@@ -19,10 +19,10 @@
 - Context older than 24 hours
 
 ### Loading Sequence
-1. **Memory Check:** Search for "ProjectContext" entity
-2. **Validation:** Verify context matches current project
-3. **Load/Reload:** Read PROJECT-CONTEXT.md if needed
-4. **Store:** Create/update memory entity
+1. **Memory Check:** Use `/icc-memory-search "ProjectContext"` to search for existing entity
+2. **Validation:** Verify context matches current project path and timestamp
+3. **Load/Reload:** Use `/icc-read-project-context` to read PROJECT-CONTEXT.md if needed
+4. **Store:** Use `/icc-memory-store ProjectContext [context_data]` to create/update memory entity
 5. **Activate:** Enable work to proceed
 
 ## Behavioral Patterns
@@ -44,7 +44,7 @@ System: Context loaded. Now proceeding with feature creation.
 - Context age > 24 hours
 
 ### Memory Integration
-**Entity Structure:**
+**Entity Structure:** Use `/icc-memory-store ProjectContext [context_data]` to create entity:
 ```
 Entity: ProjectContext
 Type: ProjectConfiguration
@@ -60,13 +60,13 @@ Observations:
 
 ### System Initialization
 **Hook:** Before ANY command execution
-- Check context status
-- Load if missing
-- Update if stale
+- Use `/icc-check-context-status` to check context status
+- Use `/icc-load-project-context` to load if missing
+- Use `/icc-refresh-context` to update if stale
 - Proceed only after loaded
 
 ### Command Interception
-**ALL Commands Check Context:**
+**ALL Commands Check Context:** Use `/icc-check-context-status` before execution:
 - Story creation → Context required
 - Task execution → Context required
 - Bug fixes → Context required
@@ -96,14 +96,14 @@ Observations:
 ## Context Loading Process
 
 ### File Discovery
-**Search Order:**
+**Search Order:** Use `/icc-find-project-context` to search:
 1. `./PROJECT-CONTEXT.md` (project root)
 2. `./docs/PROJECT-CONTEXT.md`
 3. `./.claude/PROJECT-CONTEXT.md`
 4. User-specified path
 
 ### Content Extraction
-**Key Sections to Parse:**
+**Key Sections to Parse:** Use `/icc-parse-project-context [content]` to extract:
 - Project type and technology
 - Architecture patterns
 - Coding standards
@@ -111,7 +111,7 @@ Observations:
 - Constraints and requirements
 
 ### Validation Rules
-**Valid Context Must Have:**
+**Valid Context Must Have:** Use `/icc-validate-project-context [context_data]` to verify:
 - Project identification
 - Technology stack OR type
 - At least one constraint/pattern
