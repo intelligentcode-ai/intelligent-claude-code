@@ -1,4 +1,4 @@
-# TASK-006: Git Operations for Context Enforcement
+# TASK-006: [Developer] Git Operations for Context Enforcement
 
 ## Task Details
 - **ID**: TASK-006
