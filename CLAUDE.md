@@ -255,16 +255,56 @@ icc:detect-work-type → icc:require-triage → icc:validate-assignments → icc
 - **State Management**: Role context preserved across switches with stack-based history
 
 ### Workflow Architecture
-- **Inner Workflow (Per Task)**: 
-  - Git commits and pushes per task completion
-  - Peer reviews per task by domain experts  
-  - Learning capture per task (TaskLearning entities)
-  - Knowledge utilization from task-specific patterns
-- **Outer Workflow (Per Story/Bug)**:
-  - Branch creation and merge coordination per story/bug
-  - Learning synthesis across multiple tasks (StoryLearning entities)
-  - Integration validation and main branch preparation
-  - Cross-task pattern extraction and architecture insights
+
+The system uses two complementary workflows that guide all development activities through assignment-driven execution:
+
+#### Outer Workflow (Planning Level)
+The outer workflow (`workflow-templates/outer-workflow.yaml`) orchestrates epic/story/bug planning:
+
+**Phases:**
+1. **Knowledge Retrieval** - Search for similar work and patterns
+2. **Epic Definition** - Define overarching features with PM/Architect/RE
+3. **Story/Bug Creation** - Break down into implementable pieces
+4. **Task Decomposition** - Create specialist-assignable tasks with validation
+5. **Git Operations** - Create feature branches per story/bug
+6. **Acceptance Criteria** - Define clear completion requirements
+7. **Knowledge Generation** - Capture and synthesize planning decisions
+
+**Key Features:**
+- Priority inheritance (Epic → Story → Task)
+- Mandatory validation chain for all assignments
+- Role-in-title enforcement for all tasks
+- Minimum 3 subtasks per task requirement
+- PM + Specialist Architect triage for work type
+
+#### Inner Workflow (Execution Level)
+The inner workflow (`workflow-templates/inner-workflow.yaml`) guides individual task execution:
+
+**Phases:**
+1. **Knowledge Retrieval** - Load task-specific patterns
+2. **Task Planning** - Specialist plans approach, optional subtasks
+3. **Task Execution** - Perform work with progress tracking
+4. **Peer Review** - Domain expert validation (>70% capability match)
+5. **Git Operations** - Commit and push per task
+6. **Task Completion** - Verify deliverables and update status
+7. **Knowledge Generation** - Capture learnings and patterns
+
+**Key Features:**
+- Per-task git commits with privacy mode support
+- Mandatory domain expert reviews (no generic reviewers)
+- Learning capture per task (TaskLearning entities)
+- Priority-based execution order and bonuses
+- Non-blocking reviews in L3 autonomous mode
+
+#### Workflow Integration
+- **Assignment-Driven**: YAML files (epic.yaml, story.yaml) contain workflow triggers
+- **Configuration Aware**: Embedded configs override workflow behavior
+- **Command Integration**: Slash commands trigger workflow phases
+- **Learning Synthesis**: Outer workflow synthesizes inner workflow learnings
+- **Git Coordination**: Outer creates branches, inner creates commits
+- **Validation Gates**: Both workflows enforce role assignment validation
+
+For detailed workflow documentation, see `docs/WORKFLOW-INTEGRATION-GUIDE.md`.
 
 ### Memory Integration
 - Consult memory before every action (icc:memory-first)

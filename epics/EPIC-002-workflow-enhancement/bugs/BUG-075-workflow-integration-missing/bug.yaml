@@ -6,8 +6,8 @@ description: |
   
 severity: HIGH
 priority: P1
-status: IN PROGRESS
-phase: EXECUTE
+status: COMPLETED
+phase: DONE
 
 identified_issues:
   - "Workflows not referenced in behaviors"
