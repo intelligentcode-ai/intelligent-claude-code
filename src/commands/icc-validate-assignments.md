@@ -1,78 +1,66 @@
 # Validate Assignments
 
-Validate role assignments against capability requirements using $ARGUMENTS.
+Validate role assignments against capability requirements using >70% threshold enforcement in $ARGUMENTS.
 
 ## Behavior
-**MANDATORY VALIDATION** - Core quality gate that ensures >70% capability
-match between assigned roles and task requirements. BLOCKS execution if
-validation fails. Part of the validation command chain enforcement.
+Capability matching analysis ensuring roles have sufficient domain expertise. Enforces >70% threshold and blocks inappropriate assignments.
 
 ## Arguments
-**Format:** "Task: task_content | Role: @ProposedRole | WorkType: detected_work_type"
-**Example:** "Task: Implement OAuth behavioral patterns in AI system | Role: @AI-Engineer | WorkType: AI-agentic"
-
-## Role Restrictions
-**ALL ROLES** can invoke this command as it's a validation gate, but PM and
-Specialist Architects must approve results for specialist work assignments.
+**Format:** "Task: [task_name] | Role: @[assigned_role] | Requirements: [capability_list]"
+**Example:** "Task: Design AI system | Role: @AI-Engineer | Requirements: ML, behavioral patterns"
 
 ## Core Actions
-- Parse task content and proposed role from $ARGUMENTS
-- Calculate capability match percentage using role definitions:
-  - Extract required capabilities from task content
-  - Compare against role's capability set
-  - Calculate match percentage (capabilities_overlap / total_required)
-- Validate capability match threshold:
-  - **PASS**: ≥70% capability match
-  - **FAIL**: <70% capability match
-- Check blocked role assignments:
-  - AI-agentic work → BLOCKS @Developer (requires @AI-Engineer)
-  - Infrastructure work → BLOCKS @Developer (requires @DevOps-Engineer)
-  - Security work → BLOCKS non-security roles
-  - Frontend work → BLOCKS @Database-Engineer
-- Generate validation result with specific feedback
 
-## Validation Results
+### Capability Matching Analysis
+1. **Role Capabilities**
+   - **@AI-Engineer**: ML, AI systems, neural networks, automation, behavioral patterns
+   - **@DevOps-Engineer**: CI/CD, deployment, infrastructure, containers, cloud platforms
+   - **@Security-Engineer**: Security protocols, encryption, auth systems, vulnerability assessment
+   - **@Database-Engineer**: SQL, database design, query optimization, data modeling
+   - **@Web-Designer**: UI/UX, frontend frameworks, CSS, user experience, visual design
+   - **@Developer**: General programming, APIs (BLOCKED for specialist work)
 
-### PASS Result
-- Capability match ≥70%
-- Role not blocked for work type
-- Specialist approval obtained (if required)
-- **Action**: Proceed with assignment
+2. **Match Calculation**: (matched ∩ required) / total_required * 100 > 70%
 
-### FAIL Result
-- Capability match <70% → **Suggest creating specialist**
-- Role blocked for work type → **Suggest appropriate role**
-- Missing specialist approval → **Require PM + Architect triage**
-- **Action**: HALT assignment until resolved
+3. **Dynamic Specialist Creation**: <70% match → @[Technology]-[BaseRole] + Context7 docs
 
-## Capability Matching Logic
+### Assignment Validation Rules
 
-### Work Type Detection
-- **AI-agentic**: behavioral, modes/, agentic, AI, ML keywords
-- **Infrastructure**: deploy, docker, kubernetes, infrastructure keywords
-- **Security**: security, auth, encrypt, OAuth keywords
-- **Database**: database, SQL, schema, migration keywords
-- **Frontend**: UI, UX, React, CSS, frontend keywords
+#### Mandatory Specialist Requirements
+- **AI-agentic**: @AI-Engineer/@AI-Architect/@[ML-Tech]-Engineer
+- **Infrastructure**: @DevOps-Engineer/@System-Engineer/@[Cloud]-Engineer  
+- **Security**: @Security-Engineer (no exceptions)
+- **Database**: @Database-Engineer/@[DB-Tech]-Engineer
+- **Frontend**: @Web-Designer/@[Frontend-Tech]-Developer
 
-### Role Capabilities
-- **@Developer**: programming, API, testing, general implementation
-- **@AI-Engineer**: ML, AI, automation, behavioral systems
-- **@DevOps-Engineer**: CI/CD, deployment, infrastructure, automation
-- **@Database-Engineer**: SQL, data, queries, schema design
-- **@Security-Engineer**: security, encryption, auth, compliance
-- **@Web-Designer**: UI, frontend, CSS, user experience
+#### Blocked Assignments
+- **@Developer** → Any specialist work
+- **@Web-Designer** → Backend/database/infrastructure
+- **@Database-Engineer** → Frontend UI/UX
+- **Generic roles** → Domain-specific work
 
-## Integration
-- **MANDATORY** for all task assignments in workflow templates
-- Used in outer-workflow.yaml validation chain
-- Triggered before task creation and role activation
-- Blocks execution until validation passes
-- Creates specialists when capability match <70%
-- Enforces specialist architect approval requirements
+### Capability Assessment Matrix
+| Role | AI | Infra | Security | DB | Frontend | Backend |
+|------|----|----|----|----|----|----|
+| @AI-Engineer | 95% | 20% | 30% | 25% | 15% | 60% |
+| @DevOps-Engineer | 15% | 90% | 50% | 30% | 10% | 40% |
+| @Security-Engineer | 25% | 40% | 95% | 35% | 20% | 50% |
+| @Database-Engineer | 20% | 25% | 40% | 95% | 10% | 70% |
+| @Web-Designer | 10% | 5% | 15% | 10% | 90% | 20% |
+| @Developer | 40% | 40% | 30% | 50% | 50% | 80% |
 
-## Quality Standards
-- Zero tolerance for capability mismatch <70%
-- No generic roles for specialist work
-- Evidence-based capability assessment
-- Clear feedback for failed validations
-- Automatic specialist creation suggestions
+### Validation Results Format
+```
+Validation: [timestamp] | Task: [name] | Role: @[role] | Match: [XX%]
+Status: [APPROVED|REJECTED|REQUIRES_SPECIALIST] | Action: [recommendation]
+```
+
+## Specialist Creation Logic
+<70% match → @[Technology]-[BaseRole] + Context7 docs + domain expertise
+
+## Error Handling
+- **Below 70%**: "❌ [XX%] below threshold - insufficient for [task_type]"
+- **Blocked**: "🚨 @[role] cannot handle [work_type] - requires @[appropriate_role]"
+- **Missing Caps**: "⚠️ Missing: [capabilities]"
+- **Need Specialist**: "💡 Create @[Tech]-[BaseRole] with [XX%] match"
+- **Invalid Role**: "❌ Role not recognized - use standard or create specialist"

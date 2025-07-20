@@ -1,123 +1,60 @@
 # Memory Cleanup
 
-Maintain and optimize the file-based memory system using $ARGUMENTS for cleanup options.
+Clean and optimize memory system with aging, archival, and maintenance using $ARGUMENTS.
 
 ## Behavior
-Perform maintenance operations on the file-based memory system including
-cleanup, optimization, archival, and index rebuilding.
+Manage memory health through exponential aging, archival, duplicate detection, and optimization.
 
 ## Arguments
-**Format:** "[--dry-run] [--aggressive] [--rebuild-indexes] [--archive-old]"
-**Example:** "--dry-run --aggressive" (preview aggressive cleanup without executing)
+**Format:** "operation:age|archive|dedupe|optimize | scope:all|type|recent | threshold:value"
+**Example:** "operation:age | scope:all | threshold:0.1"
 
 ## Core Actions
-1. Parse cleanup options from $ARGUMENTS
-2. Analyze memory usage and entity statistics
-3. Identify candidates for cleanup/archival
-4. Perform cleanup operations based on configuration
-5. Rebuild search indexes if needed
-6. Report cleanup results and space savings
+1. Parse operation → Analyze memory state → Execute cleanup with safety checks
+2. Update relationships → Optimize performance → Generate cleanup report
 
 ## Cleanup Operations
 
-### Low Relevance Cleanup
-- Identify entities with relevance score < 0.2
-- Check if entities haven't been accessed in 45+ days
-- Archive to compressed storage with notification
-- Update indexes to remove archived entities
+### Exponential Aging (λ=0.1)
+**Formula**: relevance = initial × e^(-λ × age_days) → Age out below threshold, preserve recent/high-value
 
-### Duplicate Detection
-- Compare entity content using similarity algorithms
-- Merge entities with >85% content similarity
-- Preserve relationships and update references
-- Consolidate observations and increase relevance scores
+### Archival Management
+Archive completed work (90d), old learnings, historical patterns while preserving relationships
 
-### Age-Based Archival
-- Archive entities older than 180 days (configurable)
-- Compress archived entities to save space
-- Maintain searchable index of archived content
-- Keep high-relevance entities regardless of age
+### Duplicate Detection  
+Identify >80% content overlap → Semantic matching → Merge preserving best info → Update references
 
-### Storage Optimization
-- Compress old entity files to reduce disk usage
-- Remove orphaned relationship entries
-- Consolidate fragmented index files
-- Monitor total storage against configured limits
+### Performance Optimization
+Rebuild indexes → Cleanup relationships → Invalidate caches → Defragment memory
 
-## Index Maintenance
-
-### Rebuild Operations
-**Content Index**: Rebuild full-text search capabilities
-**Tag Index**: Refresh tag-based search optimization
-**Date Index**: Update chronological organization
-**Usage Index**: Refresh access frequency tracking
-
-### Optimization Steps
-1. Backup existing indexes before rebuild
-2. Scan all entity files for content updates
-3. Rebuild search structures with current data
-4. Validate index integrity and performance
-5. Update index metadata and statistics
-
-## Configuration Integration
-Load cleanup rules from ~/.claude/memory/config/cleanup-rules.json:
-```json
-{
-  "low_relevance_threshold": 0.2,
-  "unused_entity_days": 45,
-  "duplicate_merge_threshold": 0.85,
-  "archive_after_days": 180,
-  "max_storage_mb": 500,
-  "aggressive_cleanup": false
-}
+## Aging Algorithm
+```pseudocode
+FOR entity: age_days = (current - created).days; relevance = initial * exp(-0.1 * age_days)
+IF relevance < threshold: preserve critical_learning (min 0.1) OR archive; ELSE update current_relevance
 ```
 
-## Cleanup Strategies
+## Scope Options
+**all**: Entire system | **type**: Specific types | **recent**: Last N days | **completed**: Finished work | **low_relevance**: Below threshold | **orphaned**: Broken relationships
 
-### Conservative (Default)
-- Archive only very low relevance entities
-- Minimal duplicate merging
-- Preserve recent content regardless of relevance
-- Gentle storage optimization
+## Safety Mechanisms
+Backup before cleanup, rollback capability, protect referenced entities, validate relationships, user confirmation
 
-### Aggressive (--aggressive flag)
-- More aggressive relevance thresholds
-- Active duplicate detection and merging
-- Shorter retention periods for unused content
-- Comprehensive storage optimization
+## Thresholds
+**Aging**: 0.1 | **Similarity**: 0.8 | **Age**: 90 days | **Performance**: auto
 
-## Reporting
-
-### Cleanup Summary
+## Cleanup Reporting
+```yaml
+cleanup_report:
+  operation: age|archive|dedupe|optimize | started/completed: timestamp
+  processed/archived/merged/cleaned: count
+  performance: {query_speed: "15% faster", memory: "12% reduction", index: "improved"}
+  errors: [] | warnings: []
 ```
-🧹 Memory Cleanup Complete
-📊 Entities processed: 247
-🗑️ Entities archived: 12
-🔗 Duplicates merged: 3
-💾 Space saved: 15.3 MB
-⚡ Index rebuild: Complete
-```
-
-### Statistics
-- Before/after entity counts by type
-- Storage usage before/after cleanup
-- Index performance improvements
-- Relationship integrity validation results
-
-## Safety Features
-- **Dry Run Mode**: Preview cleanup without execution
-- **Backup Creation**: Automatic backups before major changes
-- **Rollback Support**: Ability to restore from backups
-- **Selective Cleanup**: Target specific entity types or date ranges
 
 ## Error Handling
-- **Permission issues**: Guide for directory access problems
-- **Corruption detection**: Validate entity structure before cleanup
-- **Backup failures**: Ensure backup success before proceeding
-- **Index errors**: Rebuild indexes if corruption detected
-
-## Integration
-- Called periodically by autonomous maintenance systems
-- Used by icc-system-status.md for memory health monitoring
-- Referenced by memory initialization for default rule setup
-- Supports memory search optimization through index maintenance
+- **Invalid Operation**: "Must be age|archive|dedupe|optimize"
+- **Invalid Scope**: "Must be all|type|recent|completed|low_relevance|orphaned"
+- **Threshold Error**: "Must be numeric or 'auto'"
+- **Memory Access**: "Cannot access memory system"
+- **Backup Failed**: "Cannot create backup"
+- **Cleanup Failed**: "Operation failed, rolled back"

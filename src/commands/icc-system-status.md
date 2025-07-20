@@ -1,125 +1,21 @@
 # System Status
 
-Display comprehensive virtual team system status using $ARGUMENTS for detail level or focus area.
+Display virtual team status using $ARGUMENTS.
 
-## Behavioral Sequence
-1. Parse $ARGUMENTS for options:
-   - Detail level: --brief, --detailed, --full (default: detailed)
-   - Focus area: --config, --roles, --memory, --tasks, --health
-   - Output format: --json, --yaml, --table (default: table)
-2. Display system header:
-   "🚀 Intelligent Claude Code - Virtual Team Status"
-   "Timestamp: [current_datetime]"
-   "Working Directory: [current_path]"
-3. Check configuration hierarchy and active settings:
-   - Load user global config: `~/.claude/config.md`
-   - Load project config: `./.claude/config.md` 
-   - Display embedded configs if present
-   - Show merged configuration with hierarchy priority
-   - Key settings display:
-   ```
-   🔧 Configuration:
-   Autonomy Level: [L1|L2|L3]
-   Git Privacy: [enabled|disabled]
-   PM Always Active: [yes|no]
-   Blocking Enabled: [yes|no]
-   Default Branch: [main|master|develop]
-   ```
-4. List all active roles with scores:
-   - Scan role activation history
-   - Display current role with context
-   - Show role scores and recent activity
-   ```
-   👥 Active Roles:
-   Current: @[Role] (P:X.X, Q:X.X)
-   Recent: @[Role1] (P:X.X, Q:X.X), @[Role2] (P:X.X, Q:X.X)
-   Available: 14 core + unlimited dynamic specialists
-   ```
-5. Verify file-based memory system:
-   - Check ~/.claude/memory/ directory structure
-   - Count total entities, relationships, and index health
-   - Show learning statistics and storage usage
-   ```
-   🧠 Memory System:
-   Status: [File-based Active|Directory Missing|Index Corrupted]
-   Storage: ~/.claude/memory/ ([X] MB used)
-   Entities: [X] total, [Y] learnings, [Z] patterns, [A] projects
-   Indexes: Content([X]), Tags([Y]), Relationships([Z])
-   Recent Activity: [X] new learnings in last 7 days
-   ```
-6. Report task queue status:
-   - Scan for active epics/stories/bugs
-   - Count tasks by status and priority
-   - Show current work in progress
-   ```
-   📋 Task Queue:
-   Active Epics: [X]
-   Stories: [Y] planned, [Z] in progress, [A] completed
-   Bugs: [Y] open, [Z] in progress, [A] resolved
-   Tasks: P0([X]) P1([Y]) P2([Z]) P3([A])
-   ```
-7. Show system health metrics:
-   - Check file system permissions
-   - Verify Git repository status
-   - Test tool integrations (GitHub CLI, Context7, etc.)
-   - Validate import chains
-   ```
-   ❤️ System Health:
-   File System: [OK|Issues]
-   Git Repository: [Clean|Modified|Conflicts]
-   GitHub CLI: [Available|Missing]
-   Context7: [Connected|Unavailable]
-   Import Chains: [Valid|Broken links found]
-   ```
-8. Display recent learnings and activity:
-   - Show last 5 learning entities created
-   - Display recent score changes
-   - Highlight any system warnings or errors
-   ```
-   📚 Recent Activity:
-   Latest Learning: [Learning-Type-Date]
-   Score Changes: @[Role] (+X.XP, +Y.YQ)
-   Warnings: [X] active
-   Errors: [Y] unresolved
-   ```
-9. Indicate any system issues:
-   - Configuration conflicts or missing files
-   - Memory system problems
-   - Git workflow issues
-   - Tool integration failures
-   - Import resolution failures
-10. Provide actionable recommendations:
-    - Suggest fixes for detected issues
-    - Recommend next actions based on current state
-    - Highlight optimization opportunities
+## Arguments
+`[--brief|--detailed|--full] [--config|--roles|--memory|--tasks|--health] [--json|--yaml|--table]`
 
-## Error Handling
-- Configuration load failed: "Warning: Configuration issues detected - using defaults"
-- Memory directory missing: "Warning: File-based memory not initialized - run icc-memory-init"
-- Git repository issues: "Warning: Git repository problems detected"
-- Missing tools: "Info: Optional tools not available: [list]"
-- Import chain broken: "Error: Broken imports detected: [specific imports]"
+## Behavior
+- Parse detail level and focus area from $ARGUMENTS
+- Show config: autonomy_level, git_privacy, role settings
+- Display roles: active role, scores (P/Q), recent activities
+- Memory status: entities, learnings, connection health
+- Task summary: active, queued, completed counts by priority
+- System health: integrations (GitHub, Context7), validation status
+- Format output as requested (table default)
 
-## Detail Level Behaviors
-**--brief**: Show only critical status and current role
-**--detailed** (default): Show all sections with key metrics
-**--full**: Include diagnostic information and verbose output
-
-## Focus Area Behaviors
-**--config**: Show only configuration hierarchy and settings
-**--roles**: Show only role information and scores
-**--memory**: Show only memory system status and statistics
-**--tasks**: Show only task queue and work item status
-**--health**: Show only system health and diagnostic information
-
-## Status Indicators
-- ✅ **Healthy**: Component functioning normally
-- ⚠️ **Warning**: Minor issues, system functional
-- ❌ **Error**: Major issues, component non-functional
-- 🔄 **Loading**: Component initializing
-- ❔ **Unknown**: Status cannot be determined
-
-## Command Chaining
-- Status output can be piped to other monitoring tools
-- JSON/YAML output supports automated monitoring
-- Health check results can trigger automatic fixes
+## Errors
+- Invalid option → "Unknown option"
+- System not initialized → "Initialize first"
+- Memory unavailable → "Memory system offline"
+- Integration failed → "Tool X not available"
