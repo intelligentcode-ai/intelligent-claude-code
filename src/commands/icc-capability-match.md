@@ -87,20 +87,12 @@ capabilities:
 ## Capability Matching Algorithm
 
 ### Match Calculation
-```pseudocode
-function calculateCapabilityMatch(requiredCaps, roleCaps):
-  totalRequiredWeight = sum(requiredCaps.values())
-  matchedWeight = 0
-  
-  for capability, requiredLevel in requiredCaps:
-    roleLevel = roleCaps.get(capability, 0)
-    matchContribution = min(requiredLevel, roleLevel)
-    matchedWeight += matchContribution
-  
-  matchPercentage = matchedWeight / totalRequiredWeight
-  return matchPercentage
-end function
-```
+The system calculates capability match by:
+- Determining the total weight of all required capabilities
+- Finding each role's capability level for required skills
+- Identifying the overlap between required and available levels
+- Combining all capability contributions into a total score
+- Converting the matched weight to a percentage of requirements
 
 ### Example Calculation
 ```yaml
@@ -124,16 +116,16 @@ ai_engineer_capabilities:
   system_integration: 0.7  # Good match
 
 match_calculation:
-  authentication: min(0.9, 0.5) = 0.5
-  behavioral_systems: min(0.9, 0.9) = 0.9
-  ai_engineering: min(0.8, 1.0) = 0.8
-  implementation: min(0.7, 0.8) = 0.7
-  security: min(0.6, 0.5) = 0.5
-  system_integration: min(0.5, 0.7) = 0.5
+  authentication: overlap of 0.9 required with 0.5 available gives 0.5
+  behavioral_systems: overlap of 0.9 required with 0.9 available gives 0.9
+  ai_engineering: overlap of 0.8 required with 1.0 available gives 0.8
+  implementation: overlap of 0.7 required with 0.8 available gives 0.7
+  security: overlap of 0.6 required with 0.5 available gives 0.5
+  system_integration: overlap of 0.5 required with 0.7 available gives 0.5
 
-total_matched: 3.9
-total_required: 4.4
-match_percentage: 3.9 / 4.4 = 0.886 (88.6%)
+total_matched_weight: 3.9
+total_required_weight: 4.4
+match_percentage: 88.6% capability coverage
 ```
 
 ## Dynamic Specialist Creation

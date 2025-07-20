@@ -37,25 +37,30 @@
 
 ## Role Capabilities
 
-**Capability Assessment:** Use `/icc-capability-match [role] [task_content]` for automated capability scoring and recommendations
+- **Developer:** programming, API, testing
+- **AI-Engineer:** ML, AI, automation
+- **DevOps-Engineer:** CI/CD, deployment, infrastructure
+- **Database-Engineer:** SQL, data, queries
+- **Security-Engineer:** security, encryption, auth
+- **Web-Designer:** UI, frontend, CSS
 
 ## Validation Process
 
-**Work Type Detection:** Use `/icc-detect-work-type [task_content]` for domain analysis and role recommendations  
-**Capability Matching:** Apply validation results from work type detection command  
-**Architect Approval:** Use `/icc-require-triage [pm_role] [specialist_architect]` for approval workflow  
-**Role Blocking:** Command provides alternative suggestions for blocked roles
+**Work Type Detection:** Scan task title + description → Match 2+ keywords → Identify work type  
+**Capability Matching:** Compare role capabilities to task content → Calculate match percentage → Require >70%  
+**Architect Approval:** IF specialist work detected → Require architect approval → Block without approval  
+**Role Blocking:** Check blocked roles for work type → Suggest alternative if blocked
 
 ## Validation Chain
 
-**Story Validation:** Follow command sequence: `/icc-detect-work-type` → `/icc-require-triage` → `/icc-validate-assignments`  
-**Task Validation:** Use `/icc-validate-assignments [task] [proposed_role]` for capability verification  
-**Failure Actions:** Commands provide suggestions and alternatives automatically
+**Story Validation:** icc:detect-work-type → Identify specialist architect → Check PM+Architect triage → Validate all task assignments → Require joint approval  
+**Task Validation:** icc:validate-assignments → Check capability match → Verify not blocked → Ensure architect approval  
+**Failure Actions:** Low capability → Suggest better role • Blocked role → Suggest alternative • No approval → Require triage
 
 ## Integration
 
-**Assignment Flow:** Use command chain for validation and role activation via `/icc-activate-role`  
-**Command Integration:** All validation handled through dedicated commands for consistency
+**Assignment Flow:** Validate role → IF invalid: Use suggested role → IF no suggestions: Block assignment → Activate validated role  
+**Command Integration:** icc:validate-assignments performs checks → icc:require-triage ensures approval → icc:activate-role assigns specialist
 
 ## Examples
 
