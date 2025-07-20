@@ -1,76 +1,48 @@
-# System Init
+# Init System
 
-Initialize the intelligent-claude-code virtual team system using $ARGUMENTS as initialization options.
+Initialize the intelligent-claude-code virtual team system with configuration loading and role activation.
 
-## Behavioral Sequence
-1. Parse $ARGUMENTS for options (--force, --config-only, --memory-reset)
-2. Display "🔄 Initializing intelligent-claude-code virtual team system..."
-3. Load project context FIRST:
-   - Execute `/icc-load-context` to load PROJECT-CONTEXT.md
-   - If context found, display "✅ Project context loaded"
-   - If no context found, auto-create intelligent template:
-     * Execute `/icc-detect-project-type` to analyze project structure
-     * Execute `/icc-create-project-template` with detection results
-     * Display "✅ PROJECT-CONTEXT.md template created! Please customize."
-   - Context shapes all subsequent initialization steps
-4. Load configuration hierarchy:
-   - Check for `~/.claude/config.md` (user global)
-   - Check for `./.claude/config.md` (project)
-   - Apply embedded configs if present
-   - If no config found, create default at `~/.claude/config.md`
-5. Initialize file-based memory system:
-   - Execute `/icc-memory-init` to set up memory directories
-   - Create ~/.claude/memory/ structure with entities, indexes, and relationships
-   - Display "✅ File-based memory system initialized"
-6. Load role definitions from `~/.claude/roles/specialists.md`:
-   - Validate all 14 core roles are defined
-   - Initialize dynamic specialist creation capability
-   - Adjust role behavior based on project context if available
-   - Display "✅ Role system loaded (14 core + unlimited dynamic)"
-7. Start lean workflow executor:
-   - Load workflow templates from `~/.claude/workflow-templates/`
-   - Initialize validation command chains
-   - Apply project-specific workflow adjustments from context
-   - Display "✅ Workflow engine active"
-8. Initialize scoring system:
-   - Load badges definitions from `~/.claude/badges.md`
-   - Reset scores if --force flag present
-   - Display "✅ Scoring system initialized"
-9. Prepare learning automation:
-   - Load learning patterns from memory
-   - Initialize error forgiveness tracking
-   - Display "✅ Learning system active"
-10. Set up validation gates:
-    - Initialize role assignment validator
-    - Activate mandatory triage requirements
-    - Apply context-specific validation rules if available
-    - Display "✅ Validation gates operational"
-11. Display final status: "🚀 Virtual team system initialized successfully"
+## Behavior
+System bootstrap operation that loads configuration, initializes memory, activates roles,
+and prepares the virtual team for work. Can be run by any role or automatically on startup.
+
+## Arguments
+**Format:** "autonomy_level | pm_active" (optional parameters)
+**Example:** "L3 | true" or "" (empty for defaults)
+**Defaults:** Uses configuration hierarchy (embedded → project → user → system)
+
+## Core Actions
+1. **Load Configuration**: Apply configuration hierarchy (embedded → project → user → system defaults)
+2. **Initialize Memory System**: Bootstrap MCP Memory connection and search capabilities
+3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
+4. **Activate Lean Workflow**: Enable assignment-driven workflow executor
+5. **Initialize Scoring System**: Activate badges.md achievement tracking
+6. **Setup Learning System**: Enable error forgiveness and pattern capture
+7. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
+8. **Validate System**: Verify all components operational and ready
+9. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration
+10. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
+
+## Autonomy Levels
+- **L1 (Manual)**: User approval required for ALL actions
+- **L2 (Architect)**: Architect approval for technical decisions, auto-proceed for routine
+- **L3 (Autonomous)**: Full autonomous execution, only stops for critical issues
+
+## System Validation Checklist
+- ✅ Configuration loaded and applied
+- ✅ Memory system operational  
+- ✅ Role definitions loaded
+- ✅ Lean workflow executor active
+- ✅ Scoring system operational
+- ✅ Learning system active
+- ✅ Tool integrations configured
+- ✅ Assignment file processing ready
 
 ## Error Handling
-- If project context load fails but auto-creation succeeds: Display "✅ PROJECT-CONTEXT.md template created! Please review and customize."
-- If both context load and auto-creation fail: Continue with defaults but log "ℹ️ Project context unavailable, using system defaults"
-- If context file exists but is malformed: Display "⚠️ Warning: PROJECT-CONTEXT.md has formatting issues, using partial context"
-- If project type detection fails: Create generic template with comprehensive guidance
-- If configuration load fails: Create default config and continue
-- If memory initialization fails: Display error and provide directory permission guidance
-- If role definitions missing: Display "❌ Error: Role definitions not found. Run installation first."
-- If workflow templates missing: Display "❌ Error: Workflow templates not found. Run installation first."
-- If any critical component fails: Display specific error and halt initialization
-- Context loading is non-blocking: System continues with defaults if context unavailable
-
-## Context Integration
-
-When PROJECT-CONTEXT.md is available, it influences initialization:
-- **Role Behavior**: Specialists adjust expertise based on project tech stack
-- **Workflow Patterns**: Validation rules adapted to project conventions
-- **Memory Priority**: Context information prioritized in memory searches
-- **Team Structure**: Dynamic specialist creation aligned with project needs
-- **Quality Standards**: Validation gates customized to project requirements
-
-The context loading step ensures the entire virtual team understands project-specific requirements from the start.
-
-## Command Chaining
-- If --chain flag present, execute `icc-system-status` after successful initialization
-- Output format allows piping to other icc commands
-- Context information available to all subsequent commands in chain
+- **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration. Check ~/.claude/config.md"
+- **MEMORY_INIT_FAILED**: "⚠️ Warning: Memory system unavailable. Using file-based fallback"
+- **ROLE_LOAD_FAILED**: "❌ Error: Failed to load role definitions. Check specialists.md"
+- **WORKFLOW_INIT_FAILED**: "❌ Error: Workflow executor failed to initialize"
+- **TOOL_INIT_FAILED**: "⚠️ Warning: Some tools unavailable. Using fallbacks"
+- **INVALID_AUTONOMY**: "❌ Error: Autonomy level must be L1, L2, or L3"
+- **SYSTEM_BUSY**: "⏳ System busy. Current operation must complete first"
