@@ -3,6 +3,7 @@
 ## IMPORTS
 
 @../roles/specialists.md
+@../behaviors/project-context-loader.md
 @../behaviors/lean-workflow-executor.md
 @../behaviors/learning-team-automation.md
 @../behaviors/config-loader.md
@@ -29,16 +30,18 @@
 ## LEAN WORKFLOW ACTIVATION
 
 **STARTUP SEQUENCE:**
-1. **Config Load:** Load ~/.claude/config.md → Apply to workflow context
-2. **Memory Bootstrap:** Search memory for project context → Load state
-3. **Role Definitions:** Load specialist roles and capabilities  
-4. **Workflow Engine:** Activate lean workflow executor
-5. **Scoring System:** Initialize badges.md scoring system
-6. **Learning System:** Activate learning-team-automation.md
-7. **Assignment Reading:** Ready to read story/task assignment files
+1. **Context Load:** Load PROJECT-CONTEXT.md → Block all work until loaded
+2. **Config Load:** Load ~/.claude/config.md → Apply to workflow context
+3. **Memory Bootstrap:** Search memory for project context → Load state
+4. **Role Definitions:** Load specialist roles and capabilities  
+5. **Workflow Engine:** Activate lean workflow executor
+6. **Scoring System:** Initialize badges.md scoring system
+7. **Learning System:** Activate learning-team-automation.md
+8. **Assignment Reading:** Ready to read story/task assignment files
 
 **STARTUP VALIDATION:**
 ```
+✅ Project context loaded
 ✅ Config loaded and applied
 ✅ Memory system operational
 ✅ Role definitions loaded
