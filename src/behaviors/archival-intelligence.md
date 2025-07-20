@@ -15,24 +15,11 @@
 
 ## Core Functions
 
-**Detection:**
-- Scan all epics for completed items
-- Check status: COMPLETED and phase: ARCHIVED
-- Verify all child items completed
-- Ensure no active references
+**Detection:** Use `/icc-archive-completed --scan` to scan epics for completed items, check COMPLETED status and ARCHIVED phase, verify child completion, and ensure no active references
 
-**Archival Process:**
-- Create date-organized archive path (archives/completed/type/year/month/)
-- Generate ARCHIVED.md summary
-- Move main item using git mv or file operations
-- Cascade to child items automatically
-- Update .gitignore for task archives
-- Commit archival changes
+**Archival Process:** Use `/icc-archive-completed [item_id]` to create archive paths, generate summaries, move items with git operations, cascade to children, update .gitignore, and commit changes
 
-**Cascading Behavior:**
-- Epic archival → automatically archive all child stories and tasks
-- Story archival → automatically archive all child tasks
-- Bug archival → automatically archive all child tasks
+**Cascading Behavior:** Use `/icc-archive-completed [epic_id]` for automatic Epic → Stories → Tasks archival, `/icc-archive-completed [story_id]` for Story → Tasks, and `/icc-archive-completed [bug_id]` for Bug → Tasks
 
 ## Commands
 
