@@ -1,106 +1,66 @@
 # Validate File
 
-Validate file format, content, and compliance with system standards using $ARGUMENTS.
+Validate assignment files, code files, and documentation for compliance using $ARGUMENTS.
 
 ## Behavior
-Comprehensive file validation that checks format compliance, content structure,
-naming conventions, and integration with the behavioral system. Ensures all
-files meet quality standards and system requirements.
+Comprehensive validation including structure, naming, content, role assignments, and system compliance.
 
 ## Arguments
-**Format:** "FilePath: path/to/file | Type: expected_file_type | Standards: validation_standards"
-**Example:** "FilePath: epics/EPIC-001/story.yaml | Type: story | Standards: workflow_compliance,role_validation"
+**Format:** "file_path:path | validation_type:assignment|code|docs|all | strict:true|false"
+**Example:** "file_path:epic.yaml | validation_type:assignment | strict:true"
 
 ## Core Actions
-- Parse file path and expected type from $ARGUMENTS
-- Load file content and validate format:
-  - YAML files: Valid YAML syntax
-  - Markdown files: Valid markdown structure
-  - Assignment files: Required fields present
-- Check naming conventions:
-  - ID format: TYPE-NUMBER (e.g., EPIC-001, STORY-015)
-  - File naming: Consistent with type
-  - Directory structure: Proper hierarchy
-- Validate content structure:
-  - Required fields present
-  - Valid workflow phases
-  - Proper role assignments
-  - Embedded config format
-- Check system compliance:
-  - Workflow integration
-  - Role validation
-  - Priority system
-  - Git workflow standards
+1. Parse request → Detect file type → Validate structure/content
+2. Check compliance → Validate role assignments → Check dependencies
+3. Generate comprehensive validation report
 
-## Validation Standards
+## Validation Types
 
-### Assignment Files (epic.yaml, story.yaml, bug.yaml)
-- **Required Fields**: id, title, description, status, priority
-- **Workflow Fields**: workflow_type, workflow_phase
-- **Role Fields**: assigned_to, tasks (for stories/bugs)
-- **Config Fields**: embedded_config (optional)
+### Assignment Files (epic.yaml, story.yaml, bug.yaml, task.md)
+**Structure**: Valid YAML header, required fields (id, title, status, priority, assigned_to, created_date)
+**Content**: TYPE-NUMBER IDs, 10-80 char titles, valid status/priority values, @Role format >70% match
+**Tasks**: "[Role] Title" format, min 3 subtasks, parallelization identified
 
-### Task Files (task.md)
-- **Header Structure**: Title with role prefix
-- **Content Sections**: Description, subtasks, acceptance criteria
-- **Assignment**: Proper role assignment
-- **Dependency**: Clear dependency definition
+### Code Files (.js, .ts, .py, .md, .yaml, .json)  
+**Quality**: Valid syntax, style compliance, documentation, security, performance
+**Patterns**: @~/ imports resolve, valid @Role notation, proper icc: commands
 
-### Configuration Files
-- **YAML Format**: Valid YAML syntax
-- **Setting Keys**: Recognized configuration keys
-- **Value Types**: Proper value types and formats
-- **Hierarchy**: Proper import structure
+### Documentation (.md, README)
+**Standards**: Proper hierarchy, working links, valid examples, completeness, accuracy
 
-## File Type Validation
+## Validation Rules by File Type
 
-### Epic Files
-- Contains stories and bugs
-- Strategic objectives defined
-- Success metrics present
-- Priority system compliance
+### Epic/Story/Bug Files (.yaml)
+**Required**: id (TYPE-XXX), title (10-80 chars), priority (P0-P3), status, created_date
+**Validation**: Parent references exist, roles pass validation chain, >70% capability match
 
-### Story/Bug Files
-- Parent epic reference
-- Task breakdown present
-- Role assignments validated
-- Acceptance criteria defined
+### Task Files (.md)
+**Required**: [Role] title format, parent reference, min 3 subtasks, acceptance criteria
+**Validation**: Role capability >70%, parallel opportunities identified, dependencies valid
 
-### Task Files
-- Role in title format: "[Role] Task description"
-- Minimum 3 subtasks
-- Clear dependencies
-- Acceptance criteria
+## Compliance Checking
 
-## Validation Results
+### Role Assignment: Validation chain, >70% capability, specialist requirements, SME reviews
+### Task Creation: [Role] titles, min 3 subtasks, parallelization, sequential thinking, ultra-experienced
+### Git Workflow: Branch naming, commit messages, privacy mode, branch protection
 
-### PASS
-- All format checks passed
-- Content structure valid
-- Naming conventions followed
-- System compliance verified
+## Strictness Levels
+**Strict**: Zero tolerance, blocking, complete coverage, detailed reporting
+**Lenient**: Warnings, non-blocking, essential focus, summary reporting
 
-### FAIL
-- **Format Errors**: Invalid YAML/Markdown syntax
-- **Structure Errors**: Missing required fields
-- **Naming Errors**: Incorrect ID or file naming
-- **Compliance Errors**: System standard violations
+## Validation Report
+```yaml
+validation_report:
+  file_path: "path" | file_type: "assignment|code|docs" | strict_mode: true|false
+  overall_status: "PASS|FAIL|WARNING"
+  structure|content|compliance_validation: {status: "PASS|FAIL", errors: [], warnings: []}
+  summary: {errors: count, warnings: count, critical: count, recommendations: []}
+```
 
-## Error Reporting
-- Specific error location and description
-- Suggested fixes for common issues
-- Reference to relevant standards
-- Priority level based on error severity
-
-## Integration
-- Used by workflow validation systems
-- Triggered during file creation and updates
-- Integrates with git pre-commit hooks
-- Supports quality gate enforcement
-- Connected to learning system for pattern capture
-
-## Quality Standards
-- Zero tolerance for format violations
-- Clear error messages with actionable fixes
-- Fast validation for common file types
-- Comprehensive coverage of system requirements
+## Error Handling
+- **File Not Found**: "Cannot find '{file_path}'"
+- **Invalid Type**: "Must be assignment|code|docs|all"  
+- **Parse Error**: "Invalid format in '{file_path}'"
+- **Permission**: "No read access '{file_path}'"
+- **Engine Error**: "Validation failed for '{type}'"
+- **Critical**: "Critical violation: {details}"

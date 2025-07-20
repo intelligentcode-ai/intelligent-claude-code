@@ -1,141 +1,37 @@
 # Load Context
 
-Load project context from PROJECT-CONTEXT.md file in the specified location or current directory.
-
-## Description
-
-This command loads project-specific context from a PROJECT-CONTEXT.md file and stores it in memory for use throughout the session. The context provides essential project information, conventions, and guidelines that shape how the AI team operates within the specific project.
-
-## Usage
-
-```
-/icc-load-context
-/icc-load-context $ARGUMENTS
-```
-
-## Arguments
-
-**Optional:** Path to PROJECT-CONTEXT.md file or directory containing it
-- If no path provided, searches current working directory
-- If directory provided, looks for PROJECT-CONTEXT.md within it
-- If file path provided, loads that specific file
-
-**Examples:**
-- `/icc-load-context` - Load from current directory
-- `/icc-load-context /path/to/project` - Load from specific project
-- `/icc-load-context ./PROJECT-CONTEXT.md` - Load specific file
+Load project, assignment, and role context from various sources using $ARGUMENTS.
 
 ## Behavior
+Load contextual information from assignment files, memory, project state, and role history for decision-making.
 
-The command performs these actions:
+## Arguments
+**Format:** "context_type:assignment|project|role|memory | source:identifier | depth:shallow|deep"
+**Example:** "context_type:assignment | source:STORY-001 | depth:deep"
 
-1. **Locate Context File**
-   - Use provided path or current directory
-   - Search for PROJECT-CONTEXT.md
-   - Handle common variations (Project-Context.md, project-context.md)
+## Core Actions
+1. Parse request → Load by context type (assignment/project/role/memory)
+2. Process depth (shallow: core info | deep: relationships/history)
+3. Assemble context package → Validate → Cache frequently accessed
 
-2. **Read and Parse Content**
-   - Read the markdown file
-   - Extract structured sections
-   - Identify key project metadata
+## Context Types
 
-3. **Store in Memory**
-   - Create or update ProjectContext entity
-   - Link to current project path
-   - Add observations for each section
+## Context Relationships
+Hierarchical (Epic→Story→Task), dependencies, role assignments, knowledge links
 
-4. **Provide Feedback**
-   - Confirm successful loading
-   - Show key context elements loaded
-   - Report any issues or warnings
-
-## Memory Integration
-
-Creates memory entities:
-- **Entity:** ProjectContext-[ProjectName]
-- **Observations:** 
-  - Project overview
-  - Tech stack details
-  - Conventions and standards
-  - Team structure
-  - Key constraints
-
-## Expected Sections
-
-The command recognizes these standard sections:
-- Project Overview
-- Technology Stack
-- Architecture Patterns
-- Coding Standards
-- Testing Requirements
-- Deployment Process
-- Team Conventions
-
-## Success Feedback
-
-```
-✅ Project context loaded successfully!
-
-📁 Project: MyAwesomeProject
-📍 Location: /path/to/project
-📋 Sections loaded:
-   - Overview
-   - Tech Stack (React, Node.js, PostgreSQL)
-   - Conventions (5 standards)
-   - Testing (Jest, Cypress)
-   
-💾 Stored in memory as: ProjectContext-MyAwesomeProject
+## Context Packaging
+```yaml
+context_package:
+  type: assignment|project|role|memory | source: identifier | depth: shallow|deep
+  loaded_at: timestamp | core_data: {} | relationships: {} | history: {} | metadata: {}
 ```
 
-## Auto-Creation Behavior
-
-When PROJECT-CONTEXT.md is not found, automatically create an intelligent template:
-
-1. **Project Analysis**
-   - Scan directory structure for file patterns
-   - Identify technology stack indicators
-   - Detect framework and tooling configurations
-   - Analyze existing documentation patterns
-
-2. **Template Generation**
-   - Generate project-type-specific template
-   - Pre-populate detected technologies
-   - Include relevant architecture patterns
-   - Add customization guidance
-
-3. **Smart Population**
-   - Extract package.json/requirements.txt data
-   - Detect testing frameworks and CI/CD
-   - Identify database connections and ORMs
-   - Parse build and deployment configurations
-
-4. **File Creation**
-   - Save template to PROJECT-CONTEXT.md
-   - Load created template into memory
-   - Display customization instructions
+## Caching Strategy
+**Assignment**: 10min | **Project**: 30min | **Role**: 15min | **Memory**: 1hr
 
 ## Error Handling
-
-- **File Not Found:** Auto-create intelligent template based on project analysis
-- **Auto-Creation Successful:** "✅ PROJECT-CONTEXT.md template created! Please review and customize."
-- **Detection Failed:** Create generic template with comprehensive guidance
-- **Invalid Format:** Report parsing issues with guidance
-- **Access Denied:** Request proper permissions
-- **Empty File:** Prompt for context content
-
-## Integration Points
-
-- Works with `/icc-validate-context` to verify completeness
-- Status viewable via `/icc-context-status`
-- Context used by all roles during work execution
-- Auto-loaded when switching projects
-
-## Role Behavior
-
-All roles automatically:
-- Consult project context before decisions
-- Apply project-specific conventions
-- Follow documented standards
-- Respect stated constraints
-
-This command ensures the AI team understands and follows project-specific requirements and conventions.
+- **Unknown Type**: "Invalid context_type"
+- **Source Not Found**: "Cannot find source"
+- **Access Denied**: "No permission"
+- **Incomplete**: "Missing relationships"
+- **Cache Error**: "Cache unavailable"

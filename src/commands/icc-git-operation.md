@@ -1,98 +1,45 @@
 # Git Operation
 
-Execute git operations using $ARGUMENTS with privacy enforcement.
+Execute git workflow operations with branch management and privacy enforcement using $ARGUMENTS.
 
-## Behavioral Sequence
-1. Parse $ARGUMENTS to extract operation and parameters:
-   - Operation type: commit, push, create-pr, create-branch
-   - Message/title for commits and PRs
-   - Files to include (optional, defaults to all modified)
-   - Target branch (optional, defaults to current)
-   - --force flag for override warnings
-2. Load git privacy settings:
-   - Check `git_privacy` setting from configuration hierarchy
-   - Load branch protection rules (`require_pr_for_main`, `default_branch`)
-   - Display: "🔒 Git privacy: [enabled/disabled], Branch protection: [enabled/disabled]"
-3. Validate current repository state and workflow phase:
-   - Verify we're in a Git repository: `git rev-parse --git-dir`
-   - Check current branch: `git branch --show-current`
-   - Verify no merge conflicts exist
-   - Check for uncommitted changes if needed
-   - For task commits: Verify task is in "git_operations" phase or later
-   - For story/bug branches: Verify story/bug is in "git_operations" phase
-   - If phase too early, respond "Error: Cannot perform git operations during [workflow_phase] phase"
-4. Apply privacy enforcement (if git_privacy enabled):
-   - Strip AI mentions from messages: "AI-generated", "Claude", "Anthropic", "🤖"
-   - Remove co-authorship lines: "Co-Authored-By: Claude"
-   - Clean orphaned phrases: "with assistance from", "helped by"
-   - If message becomes empty, use "Update implementation"
-5. Execute operation based on type:
+## Behavior
+Professional git workflow execution with privacy enforcement, branch protection, and commit standards.
 
-   **COMMIT Operation:**
-   - Stage files: `git add [files]` or `git add -A` if no files specified
-   - Validate staged changes exist
-   - Create commit: `git commit -m "[cleaned_message]"`
-   - Display: "✅ Committed: [cleaned_message]"
+## Arguments
+**Format:** "operation_type | target | message_or_description"
+**Examples:** 
+- "commit | feat: add memory | Implement MCP integration"
+- "branch | feature/BUG-059-validation | Create validation branch"
 
-   **PUSH Operation:**
-   - Check branch protection rules
-   - If pushing to main/master and `require_pr_for_main` enabled, warn and suggest PR
-   - Execute push: `git push origin [branch]`
-   - Display: "✅ Pushed to origin/[branch]"
+## Core Actions
+1. Privacy enforcement (strip AI mentions if enabled)
+2. Branch validation (feature workflow + protection)
+3. Operation execution with professional standards
+4. Status validation and evidence capture
 
-   **CREATE-PR Operation:**
-   - Verify current branch is not main/default
-   - Create PR using GitHub CLI: `gh pr create --title "[title]" --body "[body]"`
-   - Apply privacy cleaning to PR title and description
-   - Display: "✅ Pull request created: [url]"
+## Operation Types
 
-   **CREATE-BRANCH Operation:**
-   - Validate branch name format (type/id-description)
-   - Create and switch: `git checkout -b [branch_name]`
-   - Push to origin: `git push -u origin [branch_name]`
-   - Display: "✅ Branch created: [branch_name]"
+### Branch: create, switch, delete, status
+### Commit: commit, amend, stash, unstash  
+### Integration: merge, rebase, push, pull
 
-6. Update activity log:
-   - Record git operation with timestamp
-   - Track privacy enforcement actions taken
-   - Update role scores if applicable (+0.5P for successful operations)
-7. Validate post-operation state:
-   - Verify operation completed successfully
-   - Check repository is in clean state
-   - Confirm no corruption or issues
+## Standards
+**Branch**: `feature/TYPE-ID-desc` (e.g., `story/STORY-001-auth`)
+**Commit**: `type: description` or `ID: description` (feat, fix, docs, etc.)
+**Protection**: No direct commits to main/master
+
+## Privacy Enforcement
+When `git_privacy: true`: Remove AI-generated, Claude, Anthropic, 🤖, Co-Authored-By lines
+**Fallback**: "Update implementation" if empty
+
+## Workflow Integration
+**Outer**: Branches per story/bug | **Inner**: Commits per task | **Quality**: Pre-commit validation
 
 ## Error Handling
-- Not in Git repository: "Error: Not in a Git repository. Initialize with 'git init' first."
-- No staged changes for commit: "Error: No changes staged for commit. Use 'git add' first."
-- Merge conflicts exist: "Error: Resolve merge conflicts before proceeding."
-- Branch protection violation: "Error: Cannot push directly to [branch]. Create PR instead."
-- Remote push failed: "Error: Push failed. Check network connection and permissions."
-- GitHub CLI not available: "Warning: GitHub CLI not found. Manual PR creation required."
-- Invalid branch name: "Error: Branch name must follow format: type/id-description"
-- Empty commit message: "Error: Commit message cannot be empty after privacy cleaning"
+- **No Changes**: "No changes to commit"
+- **Conflicts**: "Manual resolution required" 
+- **Protected**: "Switch to feature branch"
+- **Push Failed**: "Pull and retry"
 
-## Privacy Cleaning Patterns
-```
-AI Mentions to Remove:
-- "AI-generated", "AI-assisted", "AI assistant"
-- "Claude", "Anthropic"
-- "🤖", "🧠", "[AI]", "(AI)"
-- "Co-Authored-By: Claude"
-- "Generated with Claude Code"
-- "automated assistant", "intelligent system"
-
-Orphaned Phrases:
-- "with assistance from", "helped by"
-- "pair programmed with", "generated by"
-- "created using", "developed with"
-```
-
-## Branch Protection Rules
-- **require_pr_for_main**: Blocks direct pushes to main branch
-- **default_branch**: Identifies protected branch (main/master/develop)
-- **feature_branch_required**: Enforces feature/bug/story branch naming
-
-## Command Chaining
-- Commit operations can chain to push: `--chain-push`
-- Push operations can chain to PR creation: `--chain-pr`
-- All operations output branch/commit info for piping
+## Role Restrictions
+**Authorized**: @Developer, @DevOps-Engineer, @System-Engineer, @PM
