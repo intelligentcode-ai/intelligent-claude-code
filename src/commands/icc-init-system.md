@@ -8,7 +8,10 @@ Initialize the intelligent-claude-code virtual team system using $ARGUMENTS as i
 3. Load project context FIRST:
    - Execute `/icc-load-context` to load PROJECT-CONTEXT.md
    - If context found, display "✅ Project context loaded"
-   - If no context found, display "ℹ️ No project context found, using defaults"
+   - If no context found, auto-create intelligent template:
+     * Execute `/icc-detect-project-type` to analyze project structure
+     * Execute `/icc-create-project-template` with detection results
+     * Display "✅ PROJECT-CONTEXT.md template created! Please customize."
    - Context shapes all subsequent initialization steps
 4. Load configuration hierarchy:
    - Check for `~/.claude/config.md` (user global)
@@ -45,8 +48,10 @@ Initialize the intelligent-claude-code virtual team system using $ARGUMENTS as i
 11. Display final status: "🚀 Virtual team system initialized successfully"
 
 ## Error Handling
-- If project context load fails: Continue with defaults but log "ℹ️ Project context unavailable, using system defaults"
+- If project context load fails but auto-creation succeeds: Display "✅ PROJECT-CONTEXT.md template created! Please review and customize."
+- If both context load and auto-creation fail: Continue with defaults but log "ℹ️ Project context unavailable, using system defaults"
 - If context file exists but is malformed: Display "⚠️ Warning: PROJECT-CONTEXT.md has formatting issues, using partial context"
+- If project type detection fails: Create generic template with comprehensive guidance
 - If configuration load fails: Create default config and continue
 - If memory initialization fails: Display error and provide directory permission guidance
 - If role definitions missing: Display "❌ Error: Role definitions not found. Run installation first."
