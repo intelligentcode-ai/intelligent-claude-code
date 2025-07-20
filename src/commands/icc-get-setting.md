@@ -8,8 +8,10 @@ hierarchy with dot notation support for nested values. Provides default
 value fallback and type validation.
 
 ## Arguments
-**Format:** "SettingKey: setting.key.path | Default: default_value | Type: expected_type"
+**Format:** "SettingKey: setting.key.path | Default: fallback_value | Type: expected_type"
 **Example:** "SettingKey: git_privacy | Default: false | Type: boolean"
+
+**BEHAVIORAL RULE:** Always load setting from configuration hierarchy first. Use Default only when setting not found in any configuration file.
 
 ## Core Actions
 - Parse setting key and options from $ARGUMENTS
