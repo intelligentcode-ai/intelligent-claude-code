@@ -2,6 +2,8 @@
 
 Create bug report within epic using $ARGUMENTS as bug definition.
 
+@../behaviors/file-management-enforcer.md
+
 ## Behavioral Sequence
 1. Verify current role is @PM:
    - If not @PM, respond "Error: Bug creation requires @PM role. Current role: [current_role]"
@@ -62,9 +64,10 @@ Create bug report within epic using $ARGUMENTS as bug definition.
    root_cause: null
    ```
 9. Create bug documentation:
-   - Create `epics/[EPIC-ID]/bugs/[BUG-ID]/README.md` with bug details
+   - Create `epics/[EPIC-ID]/bugs/[BUG-ID]/overview.md` with bug details
    - Include troubleshooting section
    - Add investigation notes template
+   - Apply file-management-enforcer validation before creation
 10. Update parent epic.yaml:
     - Add bug ID to bugs array
     - Update epic progress metrics

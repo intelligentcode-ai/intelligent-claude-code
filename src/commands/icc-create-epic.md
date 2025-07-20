@@ -2,6 +2,8 @@
 
 Create epic structure using $ARGUMENTS as epic definition.
 
+@../behaviors/file-management-enforcer.md
+
 ## Behavioral Sequence
 1. Verify current role is @PM:
    - If not @PM, respond "Error: Epic creation requires @PM role. Current role: [current_role]"
@@ -48,9 +50,10 @@ Create epic structure using $ARGUMENTS as epic definition.
    progress_percentage: 0
    ```
 7. Create initial documentation:
-   - Create `epics/[EPIC-ID]/docs/README.md` with epic overview
+   - Create `epics/[EPIC-ID]/docs/overview.md` with epic overview
    - Include acceptance criteria template
    - Add architecture considerations section
+   - Apply file-management-enforcer validation before creation
 8. Initialize Git tracking:
    - Add epic files to Git
    - Create initial commit: "feat: Add epic [EPIC-ID] - [title]"
