@@ -4,7 +4,7 @@
 
 ## Essential Imports
 
-@./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md @./workflow-phase-enforcer.md
+@./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md @./workflow-phase-enforcer.md @./file-management-enforcer.md
 
 ## Core Behaviors
 
@@ -49,8 +49,9 @@
 ## Knowledge & Tools
 
 **Knowledge:** Search before work → Apply learnings → Capture after work → Store patterns  
-**Tools:** Read (files) • Write (updates) • Task (PM delegation) • Memory (knowledge) • Git (commits)  
-**PM Delegation:** Use Task tool • Role in description [ROLE_NAME] • Parallel execution up to 5 tasks • Sequential for conflicts
+**Tools:** Read (files) • Write (updates with validation) • Task (PM delegation) • Memory (knowledge) • Git (commits)  
+**PM Delegation:** Use Task tool • Role in description [ROLE_NAME] • Parallel execution up to 5 tasks • Sequential for conflicts  
+**File Management:** All Write operations validate via file-management-enforcer → Enhance existing preferred → Naming conventions enforced
 
 ## Priority System
 

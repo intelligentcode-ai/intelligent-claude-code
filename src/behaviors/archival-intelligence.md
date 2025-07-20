@@ -4,6 +4,8 @@
 **Type:** Workspace Management Component  
 **Status:** ACTIVE
 
+@./file-management-enforcer.md
+
 ## Operation
 
 **Trigger:** Manual PM commands only  
@@ -21,7 +23,7 @@
 
 **Archival Process:**
 - Create date-organized archive path (archives/completed/type/year/month/)
-- Generate ARCHIVED.md summary
+- Generate archived-summary.md summary (lowercase, following naming conventions)
 - Move main item using git mv or file operations
 - Cascade to child items automatically
 - Update .gitignore for task archives
@@ -56,13 +58,13 @@
 archives/
 ├── completed/              # Git-tracked
 │   ├── epics/2025/01/EPIC-001-title/
-│   │   ├── ARCHIVED.md
+│   │   ├── archived-summary.md
 │   │   └── epic.yaml
 │   ├── bugs/2025/01/BUG-001-title/
-│   │   ├── ARCHIVED.md
+│   │   ├── archived-summary.md
 │   │   └── bug.yaml
 │   └── stories/2025/01/STORY-001-title/
-│       ├── ARCHIVED.md
+│       ├── archived-summary.md
 │       └── story.yaml
 └── tasks/                  # Not git-tracked
     └── 2025/01/
