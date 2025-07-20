@@ -20,7 +20,7 @@ Restore preserved system state after context loss using $ARGUMENTS for restorati
    - Check for existing active state conflicts
    - Load restoration metadata
 4. Restore memory connections:
-   - Test MCP Memory connection with `mcp__memory__read_graph()`
+   - Test MCP Memory connection
    - If connection fails, activate file-based fallback
    - Search for system state entities in memory
    - Load last known memory snapshot

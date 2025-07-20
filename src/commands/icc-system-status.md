@@ -36,7 +36,7 @@ Display comprehensive virtual team system status using $ARGUMENTS for detail lev
    Available: 14 core + unlimited dynamic specialists
    ```
 5. Verify memory system connection:
-   - Test MCP Memory with `mcp__memory__read_graph()`
+   - Test MCP Memory connection
    - Count total entities, relations, recent activity
    - Show learning statistics
    ```

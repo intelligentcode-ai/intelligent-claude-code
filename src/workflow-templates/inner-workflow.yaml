@@ -22,7 +22,7 @@ workflow:
       description: "MANDATORY validation before ANY task execution"
       blocking: true
       requirements:
-        - "Task assignment validated via /icc-validate-assignments()"
+        - "Task assignment validated via /icc-validate-assignments"
         - "Specialist role verified (>70% capability match)"
         - "No generic roles for specialist work"
         - "Architect approval obtained for AI/infrastructure work"
@@ -144,12 +144,12 @@ workflow:
           validation_required: true
           validation_chain:
             - step: "detect_review_type"
-              command: "/icc-detect-work-type(task_content)"
+              command: "/icc-detect-work-type"
               description: "Analyze work type to determine review expertise needed"
               blocking: true
               
             - step: "validate_reviewer"
-              command: "/icc-validate-assignments(review_task, proposed_reviewer)"
+              command: "/icc-validate-assignments"
               description: "Verify reviewer has appropriate domain expertise"
               blocking: true
               enforced_rules:
@@ -303,11 +303,11 @@ validation:
     blocking: true
     enforcement_requirements:
       - rule: "Task MUST be assigned to appropriate specialist"
-        validation: "/icc-validate-assignments() required"
+        validation: "/icc-validate-assignments required"
         failure: "HALT - Cannot execute without proper specialist"
         
       - rule: "Reviewer MUST have domain expertise"
-        validation: "/icc-detect-work-type() + /icc-validate-assignments()"
+        validation: "/icc-detect-work-type + /icc-validate-assignments"
         failure: "HALT - Cannot review without domain expertise"
         
       - rule: "NO generic roles for specialist work"

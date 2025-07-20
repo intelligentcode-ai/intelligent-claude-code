@@ -11,9 +11,9 @@ Initialize the intelligent-claude-code virtual team system using $ARGUMENTS as i
    - Apply embedded configs if present
    - If no config found, create default at `~/.claude/config.md`
 4. Initialize MCP Memory connection:
-   - Test connection with `mcp__memory__read_graph()`
-   - If connection fails, display "⚠️ Warning: Memory system unavailable, using file-based fallback"
-   - If successful, display "✅ Memory system connected"
+   - Test memory system availability
+   - If memory unavailable, display "⚠️ Warning: Memory system unavailable, using file-based fallback"
+   - If memory available, display "✅ Memory system connected"
 5. Load role definitions from `~/.claude/roles/specialists.md`:
    - Validate all 14 core roles are defined
    - Initialize dynamic specialist creation capability

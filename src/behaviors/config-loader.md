@@ -6,10 +6,10 @@
 
 ## Operation
 
-**Hierarchy:** Use `/icc-load-config` for Embedded → Project → User → Defaults hierarchy  
-**Access:** Use `/icc-load-config` to load and merge configuration from hierarchy  
-**Caching:** Use `/icc-load-config` with 5 minute TTL, 1 hour for embedded configs  
-**Key Settings:** autonomy_level, git_privacy, pm_always_active, blocking_enabled accessed via `/icc-get-setting [setting_name]`  
+**Hierarchy:** Embedded → Project → User → Defaults  
+**Merging:** Settings merged from all levels with hierarchy priority  
+**Caching:** 5 minute TTL, 1 hour for embedded configs  
+**Key Settings:** autonomy_level, git_privacy, pm_always_active, blocking_enabled  
 
 ## Core Settings
 
@@ -33,17 +33,30 @@ role_validation: true       # Enforce role assignment validation
 
 ## Implementation
 
-**Configuration Loading:** Use `/icc-load-config` to read `~/.claude/config.md` (user global), read `.claude/config.md` (project specific), parse YAML front matter or key:value pairs, merge with system defaults, cache for 5 minutes
+**Configuration Loading:**
+- Read `~/.claude/config.md` (user global)
+- Read `.claude/config.md` (project specific)
+- Parse YAML front matter or key:value pairs
+- Merge with system defaults
+- Cache for 5 minutes
 
-**Embedded Config:** Use `/icc-apply-config [assignment_file]` to extract `embedded_config:` from assignment files, override other settings temporarily, cache for 1 hour
+**Embedded Config:**
+- Extract `embedded_config:` from assignment files
+- Override other settings temporarily
+- Cache for 1 hour
 
-**Configuration Access:** Use `/icc-get-setting [setting_name]` to retrieve merged configuration from hierarchy, access specific settings with fallback defaults, apply embedded configuration overrides
+**Settings Access:**
+- Retrieve merged configuration
+- Get specific setting with dot notation
+- Apply embedded overrides
 
 ## Integration
 
-**Behavioral Pattern:** Use `/icc-load-config` at behavior activation, `/icc-get-setting` before behavioral actions, `/icc-git-clean` when git privacy enabled, `/icc-apply-config` for embedded overrides
-
-**System Integration:** Use `/icc-get-setting [git_privacy]` before commits, `/icc-get-setting [autonomy_level]` for workflow rules, `/icc-get-setting [role_validation]` for assignment enforcement, `/icc-get-setting [pm_always_active]` for team startup
+**System Integration:**
+- Git Operations: Check `git_privacy` before commits
+- Workflow Execution: Apply `autonomy_level` rules
+- Role Assignment: Enforce `role_validation` settings
+- Team Startup: Check `pm_always_active` flag
 
 ---
 *Config loader for intelligent-claude-code system*

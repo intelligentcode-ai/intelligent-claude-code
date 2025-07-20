@@ -10,11 +10,11 @@ Search memory for patterns and apply learnings using $ARGUMENTS as the search qu
    - --exact flag (exact match vs. fuzzy search)
 2. If query empty, respond "Error: Search query required"
 3. Initialize memory search:
-   - Test MCP Memory connection with `mcp__memory__read_graph()`
-   - If connection fails, fall back to file-based search in `~/.claude/memory/`
+   - Test MCP Memory connection availability
+   - If memory unavailable, fall back to file-based search in `~/.claude/memory/`
    - Display "🔍 Searching memory for: '[query]'"
 4. Execute primary search:
-   - Use `mcp__memory__search_nodes()` with query
+   - Search memory system for matching patterns
    - Search entity names, types, and observation content
    - Apply type filter if specified
 5. Enhance search with related entities:
