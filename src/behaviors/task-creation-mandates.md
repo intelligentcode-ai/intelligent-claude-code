@@ -27,7 +27,7 @@
 - Sequential only when dependencies require
 
 ### Sequential Thinking - ALWAYS
-**Use /icc:think-sequential for ALL complex problems**
+**Use /icc-think-sequential for ALL complex problems**
 - Break down into logical steps
 - Question assumptions
 - Revise thinking as needed
@@ -58,7 +58,7 @@ These mandates are NON-NEGOTIABLE and apply to:
 ## INTEGRATION COMMANDS
 
 When creating tasks, use:
-- `/icc:think-sequential` - For problem analysis
-- `/icc:create-specialist` - For dynamic role creation
-- `/icc:plan-tasks` - With role-in-title enforcement
-- `/icc:parallelize-subtasks` - For execution planning
+- `/icc-think-sequential` - For problem analysis
+- `/icc-create-specialist` - For dynamic role creation
+- `/icc-plan-tasks` - With role-in-title enforcement
+- `/icc-parallelize-subtasks` - For execution planning
