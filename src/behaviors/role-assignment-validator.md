@@ -1,82 +1,206 @@
 # Role Assignment Validator
 
-**Purpose:** Validate role assignments match capability requirements  
-**Rule:** >70% capability match + architect approval for specialist work
+**Purpose:** Context-aware role assignment validation with mandatory architect consultation  
+**Rule:** PROJECT-CONTEXT + >70% capability match + architect approval for ALL specialist work
+**Status:** ENFORCED - Blocks all work without proper validation
 
-## Work Type Detection
+## PROJECT-CONTEXT Enforcement
 
-### AI Work
-- **Keywords:** AI, ML, agentic, behavioral, modes/
+**MANDATORY FIRST STEP:** Load PROJECT-CONTEXT.md before ANY role assignment
+**Context Check:** Validate understanding of project nature: Behavioral Configuration System
+**Generic Nature:** System works with ANY project type, not domain-specific
+
+### Context Validation Chain
+1. **Load PROJECT-CONTEXT.md** → Parse project type and constraints
+2. **Validate Understanding** → Confirm behavioral system comprehension  
+3. **Apply Context Rules** → Use project-specific assignment logic
+4. **Architect Consultation** → Mandatory for ALL specialist assignments
+
+## Work Type Detection (Context-Aware)
+
+### Behavioral System Work (PRIMARY)
+- **Context:** PROJECT-CONTEXT confirms "Behavioral Configuration System"
+- **Keywords:** behavioral, patterns, modes/, config, markdown, claude-code, virtual-team
+- **Required Architect:** @AI-Architect (MANDATORY consultation)
+- **Required Roles:** @AI-Engineer, @AI-Architect
+- **BLOCKED Roles:** @System-Engineer, @DevOps-Engineer, @Database-Engineer
+- **Auto-Correction:** System-Engineer → @AI-Engineer + @AI-Architect consultation
+
+### AI/ML Work (SECONDARY)
+- **Keywords:** AI, ML, agentic, neural, machine-learning
 - **Architect:** @AI-Architect
 - **Roles:** @AI-Engineer
-- **Blocked:** @Developer
+- **Blocked:** @Developer, @System-Engineer
 
-### Infrastructure Work
-- **Keywords:** deploy, infrastructure, docker, kubernetes
-- **Architect:** @System-Architect
-- **Roles:** @DevOps-Engineer
-- **Blocked:** @Developer
-
-### Security Work
-- **Keywords:** security, auth, encrypt, OAuth
+### Security Work (CROSS-CUTTING)
+- **Keywords:** security, auth, encrypt, OAuth, privacy
 - **Architect:** @Security-Architect
 - **Roles:** @Security-Engineer
 - **Blocked:** @Developer
 
-### Database Work
-- **Keywords:** database, SQL, schema, migration
-- **Architect:** @Data-Architect
-- **Roles:** @Database-Engineer
-- **Blocked:** @Web-Designer
+### Documentation Work (SUPPORT)
+- **Keywords:** documentation, markdown, README, guides
+- **Architect:** @Requirements-Engineer
+- **Roles:** @Requirements-Engineer, @AI-Engineer (for behavioral docs)
+- **Context Check:** If behavioral patterns → @AI-Engineer required
 
-### Frontend Work
-- **Keywords:** UI, UX, React, CSS, frontend
-- **Architect:** @Frontend-Architect
-- **Roles:** @Web-Designer
-- **Blocked:** @Database-Engineer
+### Testing Work (VALIDATION)
+- **Keywords:** test, validation, verify, check
+- **Architect:** @QA-Engineer
+- **Roles:** @QA-Engineer, @Frontend-Tester, @Backend-Tester
+- **Context Check:** If behavioral testing → @AI-Engineer + @QA-Engineer
 
-## Role Capabilities
+## Role Capabilities (Context-Aware)
 
-- **Developer:** programming, API, testing
-- **AI-Engineer:** ML, AI, automation
-- **DevOps-Engineer:** CI/CD, deployment, infrastructure
-- **Database-Engineer:** SQL, data, queries
-- **Security-Engineer:** security, encryption, auth
-- **Web-Designer:** UI, frontend, CSS
+### Primary Roles for Behavioral Systems
+- **AI-Engineer:** Behavioral patterns, AI systems, markdown configurations, virtual teams
+- **AI-Architect:** System architecture, behavioral design, pattern coordination
+- **Requirements-Engineer:** Documentation, specifications, markdown structure
 
-## Validation Process
+### Secondary Roles for Behavioral Systems  
+- **Developer:** General programming (if project involves code implementation)
+- **QA-Engineer:** Testing strategies, validation patterns
+- **Security-Engineer:** Security patterns, privacy enforcement
 
-**Work Type Detection:** Scan task title + description → Match 2+ keywords → Identify work type  
-**Capability Matching:** Compare role capabilities to task content → Calculate match percentage → Require >70%  
-**Architect Approval:** IF specialist work detected → Require architect approval → Block without approval  
-**Role Blocking:** Check blocked roles for work type → Suggest alternative if blocked
+### BLOCKED Roles for Behavioral Systems
+- **DevOps-Engineer:** BLOCKED - No deployment/infrastructure in behavioral systems
+- **System-Engineer:** BLOCKED - No system infrastructure in behavioral systems  
+- **Database-Engineer:** BLOCKED - No database work in behavioral systems
+- **Web-Designer:** BLOCKED - No UI/frontend work in behavioral systems
 
-## Validation Chain
+### Context-Aware Capability Matching
+- **If PROJECT-CONTEXT = "Behavioral Configuration System":** AI-Engineer = 95% match
+- **If PROJECT-CONTEXT = "Web Application":** Web-Designer = 90% match
+- **If PROJECT-CONTEXT = "Infrastructure":** DevOps-Engineer = 90% match
 
-**Story Validation:** icc:detect-work-type → Identify specialist architect → Check PM+Architect triage → Validate all task assignments → Require joint approval  
-**Task Validation:** icc:validate-assignments → Check capability match → Verify not blocked → Ensure architect approval  
-**Failure Actions:** Low capability → Suggest better role • Blocked role → Suggest alternative • No approval → Require triage
+## Enhanced Validation Process
 
-## Integration
+### Step 1: Context Enforcement
+**Load PROJECT-CONTEXT:** Read PROJECT-CONTEXT.md → Extract project type and constraints  
+**Context Validation:** Confirm understanding → "This is a [project_type] with [key_constraints]"  
+**Generic Awareness:** Validate system works for ANY project type (not domain-specific)  
+**Failure Action:** BLOCK all work until context loaded and understood
 
-**Assignment Flow:** Validate role → IF invalid: Use suggested role → IF no suggestions: Block assignment → Activate validated role  
-**Command Integration:** icc:validate-assignments performs checks → icc:require-triage ensures approval → icc:activate-role assigns specialist
+### Step 2: Work Type Detection (Context-Aware)
+**Context-Aware Scanning:** Use PROJECT-CONTEXT to interpret keywords → Apply project-specific rules  
+**Primary Type Identification:** Match work to project's primary domain (e.g., behavioral for this system)  
+**Secondary Type Detection:** Identify cross-cutting concerns (security, testing, documentation)  
+**Misalignment Detection:** Flag work that doesn't fit project context
 
-## Examples
+### Step 3: Architect Consultation (MANDATORY)  
+**Identify Required Architect:** Based on work type → @AI-Architect for behavioral work  
+**Mandatory Consultation:** BLOCK until architect consulted → No exceptions for any specialist work  
+**Consultation Record:** Document architect input → Store decision rationale  
+**Joint Approval:** Require PM + Architect joint approval → Both must explicitly approve
+
+### Step 4: Role Assignment Validation
+**Context-Aware Matching:** Calculate capability match using project context → Higher threshold for primary work  
+**Block Inappropriate Roles:** Prevent wrong assignments → Auto-suggest corrections  
+**Capability Threshold:** Require >70% match → Higher for core project work (>90%)  
+**Assignment Lock:** Prevent override without architect re-approval
+
+## Enhanced Validation Chain
+
+### Context-Aware Command Chain
+**Context Loading:** icc:load-project-context → Parse PROJECT-CONTEXT.md → Extract constraints  
+**Context Validation:** icc:validate-context-understanding → Confirm comprehension → Block if failed  
+**Work Type Detection:** icc:detect-work-type-with-context → Apply context-specific rules → Identify architect  
+**Mandatory Triage:** icc:require-architect-consultation → BLOCK until specialist architect consulted  
+**Assignment Validation:** icc:validate-context-aware-assignments → Check capability + context match  
+**Joint Approval:** icc:require-joint-approval → PM + Architect must both approve explicitly
+
+### Auto-Correction Patterns
+**System-Engineer to AI-Engineer:** Detect behavioral work → Auto-suggest @AI-Engineer + @AI-Architect  
+**DevOps to AI-Engineer:** Detect configuration work → Auto-correct to behavioral specialist  
+**Generic Developer Block:** For behavioral patterns → Force specialist assignment  
+**Context Mismatch Alert:** Wrong domain assumptions → Display PROJECT-CONTEXT summary
+
+### Failure Actions (Enhanced)
+**No Context:** HALT all work → Display "Load PROJECT-CONTEXT.md first"  
+**Wrong Context:** HALT assignment → Display correct project type and constraints  
+**No Architect:** HALT specialist work → Force @AI-Architect consultation for behavioral work  
+**Low Capability:** Auto-suggest correct role → Show capability comparison  
+**Blocked Role:** Hard block + redirect → Display why role is inappropriate for project type
+
+## Enhanced Integration
+
+### Context-First Assignment Flow
+**Context Check:** Load PROJECT-CONTEXT.md → Validate understanding → Extract constraints  
+**Work Analysis:** Analyze task against project context → Identify appropriate domain  
+**Architect Consultation:** Mandatory consultation with appropriate specialist architect  
+**Role Validation:** Context-aware capability matching → >90% for core work  
+**Assignment Lock:** Assign validated role → Lock with architect approval → Block overrides
+
+### Command Integration (Enhanced)
+**icc:load-project-context** → Loads and validates PROJECT-CONTEXT.md  
+**icc:validate-context-understanding** → Confirms project comprehension  
+**icc:detect-work-type-with-context** → Context-aware work type detection  
+**icc:require-architect-consultation** → Mandatory specialist architect involvement  
+**icc:validate-context-aware-assignments** → Enhanced capability + context matching  
+**icc:require-joint-approval** → PM + Architect explicit approval requirement
+
+## Enhanced Examples
+
+### Context-Aware Assignment Examples
 
 ```yaml
-# AI Work
+# Behavioral System Work (PRIMARY)
+Context: "Behavioral Configuration System"
 Task: "Update behavioral patterns in modes/"
-Result: @AI-Engineer with @AI-Architect approval
+Analysis: "Behavioral work + markdown patterns + virtual-team config"
+Required: @AI-Architect consultation + @AI-Engineer assignment
+Blocked: @System-Engineer, @DevOps-Engineer (wrong domain)
+Result: @AI-Engineer with @AI-Architect approval + context validation
 
-# Infrastructure
-Task: "Deploy kubernetes"
-Result: @DevOps-Engineer (blocked @Developer)
+# Configuration Work  
+Context: "Behavioral Configuration System"
+Task: "Update role assignment validation"
+Analysis: "AI behavioral patterns + system coordination"
+Required: @AI-Architect consultation + high capability match (>90%)
+Auto-Correction: If @System-Engineer suggested → Block + redirect to @AI-Engineer
+Result: @AI-Engineer with @AI-Architect mandatory consultation
 
-# Security
-Task: "Design auth system"
-Result: @Security-Engineer with @Security-Architect approval
+# Documentation Work
+Context: "Behavioral Configuration System" 
+Task: "Document behavioral patterns"
+Analysis: "Behavioral documentation + technical writing"
+Required: Context-aware role selection
+Options: @Requirements-Engineer OR @AI-Engineer (if behavioral focus)
+Result: @AI-Engineer (behavioral expertise) + @Requirements-Engineer (documentation)
+
+# Security Work (Cross-Cutting)
+Context: "Any project type"
+Task: "Add privacy enforcement patterns"
+Analysis: "Security + behavioral patterns"
+Required: @Security-Engineer + @AI-Engineer (if behavioral implementation)
+Result: @Security-Engineer with @AI-Engineer collaboration
+
+# BLOCKED Assignment Examples
+Context: "Behavioral Configuration System"
+Task: "Deploy virtual team system"
+Attempted: @DevOps-Engineer
+Analysis: "No deployment in behavioral systems - markdown configuration only"
+Action: BLOCK assignment + display context + suggest @AI-Engineer
+Result: Blocked with context education
+```
+
+### Auto-Correction Examples
+
+```yaml
+# Wrong Role Auto-Correction
+Input: "@System-Engineer to update behavioral config"
+Context: "Behavioral Configuration System"
+Detection: "System-Engineer inappropriate for behavioral work"
+Auto-Correction: "@AI-Engineer + @AI-Architect consultation required"
+Message: "System-Engineer blocked - behavioral work requires AI specialist"
+
+# Context Mismatch Detection
+Input: "@DevOps-Engineer to configure markdown patterns"
+Context: "Behavioral Configuration System" 
+Detection: "DevOps irrelevant to markdown behavioral patterns"
+Auto-Correction: "@AI-Engineer for behavioral configuration"
+Message: "No infrastructure in behavioral systems - use @AI-Engineer"
 ```
 
 ---
-*Ultra-optimized role assignment validation*
+*Context-aware role assignment validation with PROJECT-CONTEXT enforcement*
