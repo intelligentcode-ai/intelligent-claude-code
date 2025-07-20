@@ -1,0 +1,45 @@
+id: BUG-078
+title: "Obsolete and Non-Functional Commands"
+description: |
+  Several commands are obsolete or non-functional:
+  - icc-lazy-loading is completely obsolete
+  - icc-init-system does nothing on other systems
+  - icc-test-enforcement appears non-functional
+  
+severity: MEDIUM
+priority: P2
+status: PLANNED
+phase: PLAN
+
+identified_issues:
+  - "icc-lazy-loading obsolete"
+  - "icc-init-system non-functional externally"
+  - "icc-test-enforcement broken"
+
+root_cause: |
+  Commands not maintained or tested after initial creation.
+  No removal of obsolete functionality.
+
+impact:
+  - Dead code in system
+  - Confusion about what works
+  - Wasted maintenance effort
+
+acceptance_criteria:
+  - Remove icc-lazy-loading entirely
+  - Fix or remove icc-init-system
+  - Fix or remove icc-test-enforcement
+  - Clean up command directory
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@Developer"]
+approved_by: ["@PM", "@Developer"]
+
+estimated_effort: "1 hour"
+actual_effort: null
+
+tags: ["medium", "cleanup", "commands"]
+
+created_at: "2025-01-19T13:02:00-05:00"
+updated_at: "2025-01-19T13:02:00-05:00"
+completed_at: null
