@@ -2,6 +2,19 @@
 
 Create individual task files using $ARGUMENTS as story/bug ID.
 
+## Workflow Integration
+
+This command creates tasks that follow the **Inner Workflow Template** phases from `workflow-templates/inner-workflow.yaml`:
+
+1. **knowledge_retrieval** - Process tasks (001-009) for loading context
+2. **task_planning** - Handled during task creation by this command
+3. **task_execution** - Core implementation tasks (010-994)
+4. **task_validation** - Built into each task's acceptance criteria
+5. **peer_review** - Auto-generated review tasks for implementations
+6. **git_operations** - Wrap-up task (997) for commits/pushes
+7. **task_completion** - Wrap-up task (999) for verification
+8. **knowledge_generation** - Wrap-up task (998) for learning capture
+
 ## Behavioral Sequence
 1. Verify current role is Specialist-Architect:
    - Must be @AI-Architect, @System-Architect, @Security-Architect, etc.
@@ -22,12 +35,12 @@ Create individual task files using $ARGUMENTS as story/bug ID.
    - Apply specialist architect domain expertise
 7. Generate comprehensive task breakdown using standardized numbering:
    
-   **Process Tasks (001-009):**
+   **Process Tasks (001-009) - Inner Workflow Phase: knowledge_retrieval**
    - TASK-001: Knowledge Loading (search memory, load context)
    - TASK-002: Dependency Resolution (resolve external dependencies)
    - TASK-003: Environment Setup (prepare tools, access, etc.)
    
-   **Core Work Tasks (010-994):**
+   **Core Work Tasks (010-994) - Inner Workflow Phase: task_execution**
    - TASK-010: Analysis/Investigation (understand requirements)
    - TASK-020: Design/Architecture (create technical design)
    - TASK-030: Implementation (core development work)
@@ -35,16 +48,16 @@ Create individual task files using $ARGUMENTS as story/bug ID.
    - TASK-050: Configuration (setup and configuration)
    - TASK-060: Additional implementation tasks as needed
    
-   **Quality Assurance (Auto-generated):**
+   **Quality Assurance (Auto-generated) - Inner Workflow Phase: peer_review**
    - TASK-[X+1]: Peer Review (for each implementation task)
    - Domain expert review by appropriate specialist
    
-   **Wrap-up Tasks (995-999):**
+   **Wrap-up Tasks (995-999) - Inner Workflow Phases: git_operations, knowledge_generation, task_completion**
    - TASK-995: Documentation (update docs, comments)
    - TASK-996: Testing Validation (verify all tests pass)
-   - TASK-997: Git Operations (commit, push, PR)
-   - TASK-998: Knowledge Creation (capture learnings)
-   - TASK-999: Completion Verification (validate done)
+   - TASK-997: Git Operations (commit, push, PR) - Phase: git_operations
+   - TASK-998: Knowledge Creation (capture learnings) - Phase: knowledge_generation
+   - TASK-999: Completion Verification (validate done) - Phase: task_completion
 
 8. Apply domain-specific task patterns:
    
@@ -85,6 +98,7 @@ Create individual task files using $ARGUMENTS as story/bug ID.
     **Type**: implementation
     **Assigned To**: @[SpecialistRole]
     **Priority**: [blocking|critical_path|parallel|optional]
+    **Workflow Phase**: task_execution  # Maps to inner-workflow.yaml phase
     **Estimated Hours**: [X]
     **Dependencies**: [TASK-010, TASK-020]
     **Review Task**: TASK-031
@@ -115,6 +129,13 @@ Create individual task files using $ARGUMENTS as story/bug ID.
     - [ ] Peer review approved
     - [ ] Tests passing
     - [ ] Documentation updated
+    
+    ## Workflow Integration
+    This task follows the **task_execution** phase of the inner workflow:
+    - Execute work following retrieved patterns
+    - Apply specialist expertise
+    - Track progress updates
+    - Handle blockers appropriately
     
     ## Status
     - Status: PLANNED
@@ -157,28 +178,30 @@ Create individual task files using $ARGUMENTS as story/bug ID.
 
 ## Standardized Task Numbering System
 
-**001-009: Process Tasks**
-- 001: Knowledge Loading
-- 002: Dependency Resolution  
-- 003: Environment Setup
-- 004-009: Additional process tasks
+Each task number range maps to specific **Inner Workflow phases** from `workflow-templates/inner-workflow.yaml`:
 
-**010-994: Core Work Tasks**
-- 010: Analysis/Investigation
-- 020: Design/Architecture
-- 030: Implementation (primary)
-- 031: Peer Review (for 030)
-- 040: Integration
-- 041: Peer Review (for 040)
-- 050-094: Additional work tasks
+**001-009: Process Tasks (Phase: knowledge_retrieval)**
+- 001: Knowledge Loading - Search memory, load context
+- 002: Dependency Resolution - Resolve external dependencies
+- 003: Environment Setup - Prepare tools, access, environments
+- 004-009: Additional process tasks - Further knowledge gathering
+
+**010-994: Core Work Tasks (Phase: task_execution)**
+- 010: Analysis/Investigation - Understand requirements deeply
+- 020: Design/Architecture - Create technical design
+- 030: Implementation (primary) - Core development work
+- 031: Peer Review (for 030) - Phase: peer_review
+- 040: Integration - Connect with existing systems
+- 041: Peer Review (for 040) - Phase: peer_review
+- 050-094: Additional work tasks - Further implementation
 - 100-994: Extended work for complex items
 
-**995-999: Wrap-up Tasks**
-- 995: Documentation
-- 996: Testing Validation
-- 997: Git Operations
-- 998: Knowledge Creation
-- 999: Completion Verification
+**995-999: Wrap-up Tasks (Multiple phases)**
+- 995: Documentation - Update docs, comments (Phase: task_execution)
+- 996: Testing Validation - Verify all tests pass (Phase: task_validation)
+- 997: Git Operations - Commit, push, PR (Phase: git_operations)
+- 998: Knowledge Creation - Capture learnings (Phase: knowledge_generation)
+- 999: Completion Verification - Validate done (Phase: task_completion)
 
 ## Domain-Specific Task Patterns
 
@@ -222,3 +245,29 @@ Create individual task files using $ARGUMENTS as story/bug ID.
 - Tasks ready for PM delegation via Task tool
 - Dependencies tracked for resolution monitoring
 - Quality gates established for validation
+
+## Workflow Phase Progression
+
+Tasks created by this command follow the **Inner Workflow** phases in sequence:
+
+1. **knowledge_retrieval** (001-009): Tasks start here to gather context and patterns
+2. **task_planning**: Handled by this command during task creation
+3. **task_execution** (010-994): Main work performed by specialists
+4. **task_validation**: Built into acceptance criteria and definition of done
+5. **peer_review** (031, 041, etc.): Auto-generated for each implementation task
+6. **git_operations** (997): Commit and push completed work
+7. **task_completion** (999): Final verification and status update
+8. **knowledge_generation** (998): Capture and store learnings
+
+### Phase Prerequisites
+- Cannot execute tasks before knowledge retrieval
+- Cannot commit before validation
+- Cannot complete before knowledge generation
+- Peer review required for implementation tasks
+
+### Phase Enforcement
+The workflow phase enforcer (`behaviors/workflow-phase-enforcer.md`) ensures:
+- Tasks execute in correct phase order
+- Prerequisites are met before phase transitions
+- Blocked actions are explained with corrective guidance
+- Progress tracking follows phase completion
