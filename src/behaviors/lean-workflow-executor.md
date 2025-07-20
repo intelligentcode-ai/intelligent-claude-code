@@ -4,7 +4,7 @@
 
 ## Essential Imports
 
-@./project-context-loader.md @./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md @./workflow-phase-enforcer.md @./file-management-enforcer.md
+@./project-context-loader.md @./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md @./workflow-phase-enforcer.md @./file-management-enforcer.md @./role-title-enforcer.md @./task-creation-mandates.md
 
 ## Core Behaviors
 
@@ -23,13 +23,13 @@
 
 ## Validation Chain
 
-**Flow:** detect-work-type → require-triage → validate-assignments → require-approval → create-story  
-**Rules:** >70% capability match • PM+Architect triage • Specialist preference • Block invalid assignments
+**Flow:** detect-work-type → validate-role-title → require-triage → validate-assignments → require-approval → create-story  
+**Rules:** >70% capability match • PM+Architect triage • Specialist preference • Role-in-title mandatory • Block invalid assignments
 
 ## Execution Patterns
 
 **Story Planning (Outer Workflow):** Check phase=story_creation → Read assignment → Apply config → Execute knowledge_retrieval phase (`/icc-memory-search [story_context]`) → Validate work type → Create tasks via task_decomposition phase → Generate files → PM delegation → Update phase to EXECUTE  
-**PM Delegation:** Check phase allows delegation → Group by priority → Execute blocking/critical sequentially → Execute parallel in batches of 5 → Use Task tool with role in description → Track task phase progress  
+**PM Delegation:** Check phase allows delegation → Group by priority → Execute blocking/critical sequentially → Execute parallel in batches of 5 → Use Task tool with role in description → ENFORCE role-in-title pattern → Track task phase progress  
 **Task Execution (Inner Workflow):** Check phase=task_execution → Activate role → Execute knowledge_retrieval phase (`/icc-memory-search [task_context]`) → Execute work → Peer review if required → Update file → Store learnings via knowledge_generation phase (`/icc-memory-store`) → Mark complete → Update phase → IF L3: Auto-continue
 
 **Git Operations:** Auto-strip AI mentions if git_privacy enabled → Auto-validate branch protection → Generate commit/PR messages  
