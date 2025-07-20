@@ -1,44 +1,57 @@
 # Learning Capture
 
-Capture learning from errors, successes, or insights using $ARGUMENTS.
+Capture patterns, learnings, and insights from completed work using $ARGUMENTS.
 
 ## Behavior
-Analyze the provided context to extract actionable learning patterns,
-apply forgiveness logic for first-time errors, and create structured
-learning entities for team knowledge sharing.
+Automatically extract reusable patterns, document lessons learned, and create memory entities for future reference. Supports error forgiveness system and application bonus detection.
 
 ## Arguments
-**Format:** "Type:ErrorType|SuccessType | Context: detailed_context | Outcome: what_happened"
-**Example:** "Type:ValidationError | Context: Missing role validation in task assignment | Outcome: Created validation command chain to prevent future occurrences"
+**Format:** "outcome_type:success|error | context:task|story|epic | details:description"
+**Example:** "outcome_type:success | context:task | details:OAuth integration working perfectly"
+**Example:** "outcome_type:error | context:story | details:Authentication flow failed - missing validation"
 
 ## Core Actions
-- Parse learning type (Error, Success, Insight) from $ARGUMENTS
-- Extract context and outcome details
-- Check memory for previous similar learning
-- Apply learning-team-automation.md forgiveness logic:
-  - First occurrence: No penalty + Create learning
-  - Repeated occurrence: Double penalty + Escalation
-- Generate learning entity with prevention measures
-- Store in memory system via icc-memory-store
-- Update specialist scores based on learning type
+1. **Parse Learning Context**: Extract outcome type, context level, and details from $ARGUMENTS
+2. **Pattern Analysis**: Identify reusable patterns, anti-patterns, and insights
+3. **Memory Entity Creation**: Store learning as appropriately typed memory entity
+4. **Error Forgiveness Check**: For errors, check if this is first occurrence (no penalty) or repeat (double penalty)
+5. **Application Bonus Detection**: Scan for learning reference patterns in work output
+6. **Cross-Role Sharing**: Distribute relevant learnings to applicable specialist roles
 
 ## Learning Types
-- **ValidationError**: Process validation failures
-- **TechnicalError**: Implementation or code issues
-- **ProcessImprovement**: Workflow enhancement insights
-- **SuccessPattern**: Successful approaches worth repeating
-- **CollaborationInsight**: Team coordination improvements
-- **QualityInsight**: Quality assurance discoveries
+- **Success Patterns**: Working approaches to replicate
+- **Error Learnings**: Mistakes to avoid with prevention measures
+- **Process Improvements**: Workflow enhancements discovered
+- **Technical Insights**: Architecture or implementation discoveries
+- **Collaboration Patterns**: Effective team coordination approaches
 
-## Forgiveness Logic
-- **First Error**: +0 penalty, create Learning-[ErrorType]-[Date]
-- **Applied Learning**: +0.5P/Q bonus when referencing previous learning
-- **Repeated Error**: -2.0P penalty (double base) + escalation
-- **Pattern Breaking**: +1.0P/Q bonus for innovative solutions
+## Error Forgiveness System
+**First Error**: No penalty + Learning entity created + Pattern stored
+**Repeated Error**: 2x penalty applied + Escalation triggered
+**Learning Application**: +0.5P/Q bonus for referencing previous learnings
 
-## Integration
-- Triggered automatically by error detection systems
-- Manual invocation for success pattern capture
-- Memory search validates first/repeat occurrence
-- Scoring system integration for penalty/bonus application
-- Cross-role learning sharing for team improvement
+## Memory Entity Format
+```yaml
+type: "TaskLearning" | "StoryLearning" | "EpicLearning"
+attributes:
+  - outcome_type: success|error|insight
+  - context_level: task|story|epic
+  - pattern_type: technical|process|collaboration
+  - prevention_measures: [for errors]
+  - replication_steps: [for successes]
+  - cross_role_relevance: [@Role1, @Role2]
+  - confidence_level: high|medium|low
+```
+
+## Bonus Detection Patterns
+- "Based on previous learning" → +0.5P
+- "Applying lesson from" → +0.5P  
+- "To prevent repeat of" → +0.5Q
+- "Learned from previous" → +0.5P
+- "Breaking the pattern" → +1.0P/Q
+
+## Error Handling
+- **Missing Context**: "Error: Learning capture requires outcome_type and context"
+- **Invalid Type**: "Error: outcome_type must be success, error, or insight"
+- **Empty Details**: "Error: Learning details cannot be empty"
+- **Memory Storage Failed**: "Warning: Learning captured locally, memory storage failed"

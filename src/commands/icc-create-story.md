@@ -1,70 +1,42 @@
 # Create Story
 
-Create a new story within an epic using $ARGUMENTS as story definition.
+Create a new story within an epic using $ARGUMENTS with title, epic reference, and priority.
 
-## Behavioral Sequence
-1. Verify current role is @PM:
-   - If not @PM, respond "Error: Story creation requires @PM role. Current role: [current_role]"
-2. Parse $ARGUMENTS to extract:
-   - Story title (required)
-   - Parent epic ID (EPIC-XXX format)
-   - Story scope/description
-   - Priority level (P0/P1/P2/P3)
-   - Story type (NEW_FEATURE/ENHANCEMENT/REFACTOR)
-3. Validate parent epic exists:
-   - Check for `epics/[EPIC-ID]/epic.yaml`
-   - If not found, respond "Error: Parent epic [EPIC-ID] not found"
-   - Load epic.yaml to verify status is not ARCHIVED
-4. Generate next STORY-XXX ID:
-   - Scan existing stories in epic directory
-   - Find highest existing STORY number
-   - Assign next sequential ID (e.g., STORY-001, STORY-002)
-5. Create story directory structure:
-   - Create `epics/[EPIC-ID]/stories/[STORY-ID]/`
-   - Create `epics/[EPIC-ID]/stories/[STORY-ID]/tasks/` (empty initially)
-6. Initialize outer workflow phase tracking:
-   - Set initial phase to "epic_definition" (story is part of epic)
-   - Prepare for "story_creation" phase transition
-7. Write story.yaml file:
-   ```yaml
-   id: "[STORY-ID]"
-   title: "[title from arguments]"
-   epic_id: "[EPIC-ID]"
-   type: "[NEW_FEATURE|ENHANCEMENT|REFACTOR]"
-   priority: "[P0|P1|P2|P3]"
-   status: "PLANNED"
-   phase: "INIT"
-   workflow_phase: "story_creation"
-   workflow_type: "outer"
-   description: "[scope from arguments]"
-   acceptance_criteria: []
-   tasks: []
-   created_date: "[current_date]"
-   assigned_to: null
-   estimated_hours: null
-   actual_hours: null
-   ```
-8. Update parent epic.yaml:
-   - Add story ID to stories array
-   - Update epic progress metrics
-   - Increment story count
-9. Display success message:
-   "✅ Story [STORY-ID] created: [title]"
-   "📁 Location: epics/[EPIC-ID]/stories/[STORY-ID]/"
-   "🎯 Status: INIT phase"
-   "🔄 Workflow: Outer workflow - story_creation phase"
-10. Log creation in activity tracking
+## Behavior
+PM-only operation that creates story directories, files, and links to parent epic.
+Applies priority inheritance from epic with story-specific adjustments.
+
+## Arguments
+**Format:** "Story Title | Epic: EPIC-XXX | Priority: P1 | Type: NEW_FEATURE"
+**Example:** "OAuth Login Implementation | Epic: EPIC-001 | Priority: P1 | Type: NEW_FEATURE"
+
+## Core Actions
+1. **Validate @PM Role**: Only @PM can create stories
+2. **Parse Arguments**: Extract title, epic reference, priority, and story type
+3. **Validate Epic Exists**: Verify epic directory and epic.yaml exist
+4. **Generate Story ID**: Find next sequential STORY-XXX number
+5. **Create Directory Structure**: Create epics/EPIC-XXX/stories/STORY-XXX-title-slug/
+6. **Generate story.yaml**: Create with metadata, epic link, and workflow configuration
+7. **Apply Priority Inheritance**: story.priority = MAX(epic.priority, story.priority)
+8. **Initialize Git Tracking**: Add story directory to git
+9. **Update Epic Progress**: Link story to parent epic
+
+## Story Types
+- **NEW_FEATURE**: New functionality implementation
+- **ENHANCEMENT**: Improve existing functionality
+- **REFACTOR**: Technical improvement without feature changes
+- **INTEGRATION**: Connect systems or components
+
+## Priority Inheritance Rules
+- Story priority = MAX(epic priority, specified priority)
+- Security stories automatically escalate to P0
+- Customer-facing stories may escalate +1 priority level
 
 ## Error Handling
-- Missing title: "Error: Story title is required"
-- Invalid epic ID format: "Error: Epic ID must be in format EPIC-XXX"
-- Epic not found: "Error: Parent epic [EPIC-ID] not found"
-- Epic archived: "Error: Cannot add stories to archived epic [EPIC-ID]"
-- Invalid priority: "Error: Priority must be P0, P1, P2, or P3"
-- File system error: "Error: Could not create story directory: [specific error]"
-- Permission denied: "Error: Insufficient permissions to create story files"
-
-## Command Chaining
-- If --plan flag present, execute `icc-plan-story [STORY-ID]` after creation
-- If --chain flag present, output story ID for piping to next command
-- Story creation triggers potential epic status updates
+- **NOT_PM_ROLE**: "❌ Error: Only @PM role can create stories. Use @PM first."
+- **INVALID_FORMAT**: "❌ Error: Use format 'Title | Epic: EPIC-XXX | Priority: P0-P3 | Type: TYPE'"
+- **EPIC_NOT_FOUND**: "❌ Error: Epic EPIC-XXX not found. Create epic first."
+- **INVALID_EPIC_FORMAT**: "❌ Error: Epic reference must be format EPIC-XXX"
+- **INVALID_PRIORITY**: "❌ Error: Priority must be P0 (critical), P1 (high), P2 (medium), or P3 (low)"
+- **INVALID_TYPE**: "❌ Error: Type must be NEW_FEATURE, ENHANCEMENT, REFACTOR, or INTEGRATION"
+- **DUPLICATE_STORY**: "❌ Error: Story with similar title already exists in epic"
