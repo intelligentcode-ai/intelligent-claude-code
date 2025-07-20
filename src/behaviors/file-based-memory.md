@@ -147,58 +147,35 @@
 ## Memory Operations
 
 ### Core Storage Operations
-**Store Entity:** Save entity to appropriate directory with auto-indexing  
-**Retrieve Entity:** Load entity by ID with caching  
-**Update Entity:** Modify existing entity with versioning  
-**Delete Entity:** Remove entity and update indexes  
-**Search Entities:** Query across all entity types with ranking  
+**Store Entity:** Use `/icc-memory-store [entity_data]` to save entity with auto-indexing  
+**Retrieve Entity:** Use `/icc-memory-search [entity_id]` to load by ID with caching  
+**Update Entity:** Use `/icc-memory-store [updated_entity]` to modify with versioning  
+**Delete Entity:** Use `/icc-memory-cleanup [entity_id]` to remove and update indexes  
+**Search Entities:** Use `/icc-memory-search [query]` to query with ranking  
 
 ### Search Operations
-**Content Search:** Full-text search across observations and patterns  
-**Tag Search:** Filter by tags with relevance ranking  
-**Date Range Search:** Find entities within time periods  
-**Relationship Search:** Find related entities via relationship mapping  
-**Context Search:** Search within specific project or domain context  
+**Content Search:** Use `/icc-memory-search [content_query]` for full-text across observations  
+**Tag Search:** Use `/icc-memory-search [tag:tagname]` for tag filtering with relevance  
+**Date Range Search:** Use `/icc-memory-search [date:range]` for time period queries  
+**Relationship Search:** Use `/icc-memory-search [related:entity_id]` for relationship mapping  
+**Context Search:** Use `/icc-memory-search [context:project]` for domain-specific queries  
 
 ### Relationship Management
-**Link Entities:** Create typed relationships between entities  
-**Find Related:** Discover entities related to given entity  
+**Link Entities:** Use `/icc-memory-store [relationship_data]` for typed relationships  
+**Find Related:** Use `/icc-memory-search [related:entity_id]` to discover connections  
 **Relationship Types:** learning-to-pattern, project-to-learning, knowledge-links  
-**Automatic Linking:** Auto-detect and create relevant relationships  
+**Automatic Linking:** Use `/icc-memory-store` with auto-detection of relevant relationships  
 
 ## Implementation Patterns
 
 ### Entity Creation
-```
-1. Generate unique ID with type-content-date format
-2. Validate entity structure and required fields
-3. Calculate relevance score based on content depth
-4. Store entity in appropriate type directory
-5. Update search indexes with new content
-6. Create automatic relationships based on content
-7. Return entity ID for reference
-```
+Use `/icc-memory-store [entity_data]` to generate unique ID, validate structure, calculate relevance score, store in directory, update indexes, create relationships, and return entity ID
 
-### Search Implementation
-```
-1. Parse search query and determine search type
-2. Check indexes for fast initial filtering
-3. Load candidate entities from storage
-4. Score entities based on relevance factors
-5. Rank results by relevance score
-6. Return top results with context snippets
-7. Update entity usage statistics
-```
+### Search Implementation  
+Use `/icc-memory-search [query]` to parse query, check indexes, load candidates, score entities, rank results, return snippets, and update usage statistics
 
 ### Cleanup and Maintenance
-```
-1. Monitor storage usage and entity age
-2. Archive old entities with low relevance scores
-3. Consolidate duplicate or similar entities
-4. Rebuild indexes periodically for performance
-5. Backup critical entities before cleanup
-6. Maintain storage size within configured limits
-```
+Use `/icc-memory-cleanup [cleanup_type]` to monitor usage, archive old entities, consolidate duplicates, rebuild indexes, backup critical entities, and maintain size limits
 
 ## Configuration Options
 
@@ -244,19 +221,19 @@
 
 ## Integration Points
 
-**Command Integration:** All icc:memory-* commands use file storage  
-**Behavior Integration:** Automatic memory operations during workflow  
-**Search Integration:** Seamless search across all entity types  
-**Backup Integration:** Regular backups with git-like versioning  
-**Cleanup Integration:** Automatic maintenance during idle periods  
+**Command Integration:** Use `/icc-memory-*` commands for all file storage operations  
+**Behavior Integration:** Use `/icc-memory-store` and `/icc-memory-search` during workflow  
+**Search Integration:** Use `/icc-memory-search` for seamless queries across entity types  
+**Backup Integration:** Use `/icc-memory-backup` for regular git-like versioning  
+**Cleanup Integration:** Use `/icc-memory-cleanup` for automatic maintenance  
 
 ## Migration from MCP Memory
 
-**Detection:** Check for existing MCP memory usage patterns  
-**Replacement:** Replace all mcp__memory__ calls with file operations  
-**Data Migration:** Convert existing MCP entities to file format  
-**Validation:** Ensure all memory operations work with file storage  
-**Fallback:** Maintain compatibility during transition period  
+**Detection:** Use `/icc-memory-init` to check for existing MCP patterns  
+**Replacement:** Use `/icc-memory-*` commands instead of mcp__memory__ calls  
+**Data Migration:** Use `/icc-memory-backup` and `/icc-memory-restore` for format conversion  
+**Validation:** Use `/icc-memory-search` to ensure all operations work with file storage  
+**Fallback:** Use `/icc-memory-init` to maintain compatibility during transition  
 
 ---
 **FILE-BASED MEMORY:** Complete MCP Memory replacement • JSON storage • Fast search • Automatic maintenance

@@ -8,12 +8,7 @@
 
 ### File Creation Decision Tree
 
-**Before creating any file, validate through these steps:**
-
-1. **Enhancement Check:** Can this enhance an existing file? If yes, enhance rather than create new.
-2. **Necessity Check:** Is this file truly necessary? If no, provide display-only output.
-3. **Naming Check:** Does it follow lowercase-hyphenated conventions? If no, apply naming rules.
-4. **Location Check:** Is it in the correct directory? If no, determine proper location.
+**Before creating any file, validate through command:** Use `/icc-validate-file [file_path] [content_type]` to check enhancement possibility, validate necessity, apply naming conventions, and ensure proper directory placement.
 
 ### Enhancement vs Creation Logic
 
@@ -82,29 +77,16 @@ Examples:
 
 ### Validation Steps
 
-**Before any file write:**
-1. Check if enhancement of existing file is possible
-2. Validate file necessity - avoid redundant files
-3. Apply lowercase-hyphenated naming rules
-4. Ensure correct directory placement
-5. Consider display-only output for temporary content
+**Before any file write:** Use `/icc-validate-file [file_path] [content_type]` to check enhancement possibility, validate necessity, apply naming rules, ensure directory placement, and consider display-only alternatives
 
 ## Integration Points
 
 ### Write Tool Hook
 
-**All Write tool usage must call validation first:**
-- Run pre-write validation before any file creation
-- Block file creation if validation fails
-- Use validated and corrected filepath
-- Enhance existing files when appropriate rather than creating new ones
+**All Write tool usage must validate first:** Use `/icc-validate-file` before any file creation to block invalid files, get corrected filepath, and enhance existing files when appropriate
 
 ### Command Integration
-**Commands creating files MUST:**
-1. Import file-management-enforcer
-2. Call preWriteValidation before Write
-3. Use corrected filenames
-4. Follow directory placement
+**Commands creating files MUST:** Use `/icc-validate-file` to import file-management-enforcer, run pre-write validation, get corrected filenames, and follow directory placement
 
 ### Behavioral Reinforcement
 
@@ -123,12 +105,7 @@ Examples:
 
 ### Project Cleanliness
 
-**Regular Monitoring:**
-- Scan for naming violations
-- Identify misplaced files
-- Detect duplicate content
-- Track cleanup opportunities
-- Report violation trends
+**Regular Monitoring:** Use `/icc-cleanup-project` to scan for naming violations, identify misplaced files, detect duplicate content, track cleanup opportunities, and report violation trends
 
 ## Error Prevention
 
