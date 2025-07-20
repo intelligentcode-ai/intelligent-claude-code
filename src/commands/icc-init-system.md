@@ -15,10 +15,10 @@ Initialize the intelligent-claude-code virtual team system using $ARGUMENTS as i
    - Check for `./.claude/config.md` (project)
    - Apply embedded configs if present
    - If no config found, create default at `~/.claude/config.md`
-5. Initialize MCP Memory connection:
-   - Test memory system availability
-   - If memory unavailable, display "⚠️ Warning: Memory system unavailable, using file-based fallback"
-   - If memory available, display "✅ Memory system connected"
+5. Initialize file-based memory system:
+   - Execute `/icc-memory-init` to set up memory directories
+   - Create ~/.claude/memory/ structure with entities, indexes, and relationships
+   - Display "✅ File-based memory system initialized"
 6. Load role definitions from `~/.claude/roles/specialists.md`:
    - Validate all 14 core roles are defined
    - Initialize dynamic specialist creation capability
@@ -48,7 +48,7 @@ Initialize the intelligent-claude-code virtual team system using $ARGUMENTS as i
 - If project context load fails: Continue with defaults but log "ℹ️ Project context unavailable, using system defaults"
 - If context file exists but is malformed: Display "⚠️ Warning: PROJECT-CONTEXT.md has formatting issues, using partial context"
 - If configuration load fails: Create default config and continue
-- If memory connection fails: Switch to file-based mode and warn user
+- If memory initialization fails: Display error and provide directory permission guidance
 - If role definitions missing: Display "❌ Error: Role definitions not found. Run installation first."
 - If workflow templates missing: Display "❌ Error: Workflow templates not found. Run installation first."
 - If any critical component fails: Display specific error and halt initialization

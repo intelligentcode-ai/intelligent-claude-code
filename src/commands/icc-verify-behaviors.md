@@ -103,7 +103,7 @@ Validate all behavioral patterns are operational using $ARGUMENTS for specific v
 
 7. Validate memory system connection:
    
-   **MCP Memory Testing:**
+   **File-Based Memory Testing:**
    - Test memory connection
    - Verify entity creation and retrieval
    - Check search functionality
