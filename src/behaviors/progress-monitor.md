@@ -18,9 +18,11 @@
 - **Error confirmation** → Handle automatically
 
 ### Handler Logic
-**L3 Mode Check:** Use `/icc-check-autonomy-level` - IF L3: Replace blocking actions → ELSE: Normal behavior  
+**L3 Mode Check:** Use `/icc-get-setting "autonomy_level"` - IF result is "L3": Replace blocking actions → ELSE: Normal behavior  
 **Auto-Continue:** Use `/icc-auto-continue [action]` to log action, update progress, return continue signal  
 **Completion Flow:** Use `/icc-complete-task [task_id]` to mark complete, record timestamp, trigger next event
+
+**BEHAVIORAL RULE:** Always check autonomy_level dynamically using `/icc-get-setting "autonomy_level"` instead of cached or hardcoded values.
 
 ## Smart Stop Conditions
 
