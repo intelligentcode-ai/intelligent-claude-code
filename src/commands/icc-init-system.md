@@ -22,6 +22,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 8. **Validate System**: Verify all components operational and ready
 9. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration
 10. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
+11. **Validate Enforcement**: Check self-correcting patterns are active
 
 ## Autonomy Levels
 - **L1 (Manual)**: User approval required for ALL actions
@@ -37,6 +38,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 - ✅ Learning system active
 - ✅ Tool integrations configured
 - ✅ Assignment file processing ready
+- ✅ Enforcement validation active
 
 ## Error Handling
 - **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration. Check ~/.claude/config.md"
@@ -46,3 +48,4 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 - **TOOL_INIT_FAILED**: "⚠️ Warning: Some tools unavailable. Using fallbacks"
 - **INVALID_AUTONOMY**: "❌ Error: Autonomy level must be L1, L2, or L3"
 - **SYSTEM_BUSY**: "⏳ System busy. Current operation must complete first"
+- **ENFORCEMENT_FAILED**: "⚠️ Warning: Self-correcting enforcement inactive"

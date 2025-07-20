@@ -1,5 +1,7 @@
 # L3 Continuous Engine
 
+**MANDATORY:** MUST use continuous execution in L3. Auto-correct violations.
+
 **Purpose:** True continuous execution in L3 mode - no stops unless critical
 
 ## Core Execution

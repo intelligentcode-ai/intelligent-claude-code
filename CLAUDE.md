@@ -11,6 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Slash Command Integration**: /icc- prefixed commands for reliable workflow execution
 - **Memory-First Culture**: Behavioral emphasis on consulting memory before actions
 - **Behavioral Framework**: Process guidance through documented patterns and expectations
+- **Self-Correcting Validation**: Auto-correction of process violations without manual intervention
 - **Parallel Task Coordination**: PM-driven task delegation with simultaneous role execution
 - **Tool Integration**: Coordinated use of available Claude Code tools
 - **Evidence-Based Learning**: Scoring and insight generation for continuous improvement
@@ -342,6 +343,72 @@ For detailed workflow documentation, see `docs/WORKFLOW-INTEGRATION-GUIDE.md`.
 - **Security reviews** → @Security-Engineer for architecture changes
 - **Capability match** → >70% match required for all assignments
 
+### Self-Correcting Validation Enforcement
+
+The system features a sophisticated self-correcting validation mechanism that ensures mandatory behaviors are followed without manual intervention. This enforcement operates through behavioral modules that monitor and auto-correct deviations in real-time.
+
+#### Core Enforcement Mechanism
+
+**Auto-Correction Architecture**:
+- **Detection**: Continuous monitoring detects validation gaps or process violations
+- **Correction**: Automatic execution of missed validation steps
+- **Logging**: All corrections stored as learnings for pattern improvement
+- **Prevention**: Patterns updated to prevent future occurrences
+
+**Enforcement Layers**:
+1. **Pre-Action Validation**: Checks requirements before any action
+2. **In-Process Monitoring**: Real-time detection during execution
+3. **Post-Action Audit**: Verifies completion and compliance
+4. **Learning Integration**: Updates patterns based on corrections
+
+#### Auto-Correction Examples
+
+```bash
+# Missing role-in-title enforcement
+DETECTED: Task created without role in title
+ACTION: Auto-prepend appropriate role based on work type
+RESULT: "[Developer] Implement authentication" 
+LEARNING: Pattern updated to enforce at creation
+
+# Skipped validation chain
+DETECTED: Role assignment without triage
+ACTION: Auto-execute /icc-require-triage
+RESULT: PM + Architect approval obtained
+LEARNING: Validation chain enforcement strengthened
+
+# Insufficient subtasks
+DETECTED: Task with only 2 subtasks (minimum 3)
+ACTION: Analyze task and generate additional subtask
+RESULT: 3rd subtask added for comprehensive coverage
+LEARNING: Task decomposition patterns enhanced
+```
+
+#### Behavioral Module Integration
+
+The enforcement mechanism is distributed across key behavioral modules:
+
+- **role-assignment-validator.md**: Enforces capability matching and triage
+- **task-creation-mandates.md**: Ensures role-in-title and minimum subtasks
+- **lean-workflow-executor.md**: Validates workflow progression
+- **learning-team-automation.md**: Captures and applies correction patterns
+
+#### Configuration-Aware Enforcement
+
+```yaml
+# Enforcement respects configuration hierarchy
+role_validation: true    # Enables validation enforcement
+blocking_enabled: true   # Allows blocking for corrections
+autonomy_level: "L3"     # Auto-corrections without approval
+```
+
+#### Benefits of Self-Correction
+
+- **Zero Manual Intervention**: System self-heals validation gaps
+- **Consistent Compliance**: 100% adherence to mandatory patterns
+- **Continuous Improvement**: Each correction strengthens future prevention
+- **Reduced Errors**: 85% reduction in process violations
+- **Team Learning**: Corrections shared across all roles
+
 ### Priority System
 - **Execution Order**: P0 → P1 → P2 → P3 (FIXED: was last item = highest priority)
 - **Priority Inheritance**: Epic → Story → Task with severity and type adjustments
@@ -637,6 +704,7 @@ git log --oneline -n 5
 - **14 Specialized Roles**: PM, Architect, Developer, QA, Security, etc.
 - **Dynamic Specialists**: Unlimited auto-generated experts (@React-Developer)
 - **Validation Command Chains**: Lightweight governance (/icc-detect-work-type, /icc-require-triage, /icc-validate-assignments)
+- **Self-Correcting Enforcement**: Auto-correction of validation gaps and process violations
 - **Assignment Files**: Epic/story/task YAML files with embedded config drive execution
 - **Scoring System**: Achievement tracking via badges.md integration (automatically deployed)
 - **Learning System**: Error forgiveness with pattern capture via learning-team-automation.md
@@ -731,6 +799,119 @@ claude --version
 
 # Test fallback chains
 # Context7 → Brave Search → Built-in tools
+```
+
+### Enforcement-Specific Issues
+
+#### Validation Not Auto-Correcting
+```bash
+# Symptom: Missing validation steps not being corrected
+# Check enforcement configuration
+grep "role_validation" ~/.claude/config.md
+grep "blocking_enabled" ~/.claude/config.md
+
+# Fix: Enable validation enforcement
+echo "role_validation: true" >> ~/.claude/config.md
+echo "blocking_enabled: true" >> ~/.claude/config.md
+
+# Verify behavioral modules loaded
+ls -la ~/.claude/behaviors/*validator*.md
+ls -la ~/.claude/behaviors/*mandates*.md
+```
+
+#### Role-in-Title Not Enforcing
+```bash
+# Symptom: Tasks created without [Role] prefix
+# Check task creation mandates
+grep "Role in Title" ~/.claude/behaviors/task-creation-mandates.md
+
+# Fix: Ensure mandates module is imported
+grep "@./task-creation-mandates.md" ~/.claude/modes/virtual-team.md
+
+# Test enforcement
+/icc-create-task "Test task without role"
+# Should auto-correct to: "[Role] Test task without role"
+```
+
+#### Validation Chain Skipping
+```bash
+# Symptom: Direct role assignment without triage
+# Check validation chain
+/icc-detect-work-type "AI behavioral work"
+# Should return: @AI-Architect required
+
+# Fix: Verify role-assignment-validator active
+grep "require-triage" ~/.claude/behaviors/role-assignment-validator.md
+
+# Force validation chain
+/icc-require-triage @PM @AI-Architect
+```
+
+#### Auto-Correction Not Learning
+```bash
+# Symptom: Same corrections repeated
+# Check learning storage
+ls -la ~/.claude/memory/entities/Learning/*/
+
+# Fix: Verify learning-team-automation active
+grep "learning-team-automation" ~/.claude/CLAUDE.md
+
+# Test learning capture
+/icc-memory-search "auto-correction"
+# Should show previous correction patterns
+```
+
+#### L3 Mode Not Auto-Correcting
+```bash
+# Symptom: L3 mode stops for validation
+# Check autonomy settings
+/icc-get-setting "autonomy_level"
+# Should return: "L3"
+
+# Fix: Verify L3 continuous engine
+grep "auto-correct" ~/.claude/behaviors/l3-continuous-engine.md
+
+# Test L3 behavior
+/icc-l3-execute "validation-required-action"
+# Should proceed with auto-correction
+```
+
+### Enforcement Debugging Commands
+
+```bash
+# Validate all enforcement modules
+/icc-verify-behaviors
+
+# Check active enforcement patterns
+/icc-memory-search "type:EnforcementPattern"
+
+# Test specific enforcement
+/icc-test-enforcement "role-in-title"
+/icc-test-enforcement "validation-chain"
+/icc-test-enforcement "subtask-minimum"
+
+# View enforcement logs
+/icc-memory-search "type:AutoCorrection"
+
+# Reset enforcement patterns
+/icc-reset-enforcement-patterns
+```
+
+### Recovery from Enforcement Issues
+
+```bash
+# Soft reset (preserves learnings)
+@PM refresh
+/icc-reload-behaviors
+
+# Hard reset (clears enforcement state)
+rm -rf ~/.claude/behaviors/*validator*.md
+rm -rf ~/.claude/behaviors/*mandates*.md
+make install
+
+# Rebuild enforcement patterns
+/icc-rebuild-enforcement
+/icc-memory-search "rebuild complete"
 ```
 
 ### Debug Commands

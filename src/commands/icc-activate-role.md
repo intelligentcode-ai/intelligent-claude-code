@@ -1,5 +1,7 @@
 # Activate Role
 
+**BEHAVIORAL:** Auto-adopt role patterns from $ARGUMENTS.
+
 Switch to specialized role using $ARGUMENTS as role name.
 
 ## Process

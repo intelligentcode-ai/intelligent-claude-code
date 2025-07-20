@@ -1,0 +1,28 @@
+---
+id: BUG-107
+title: Pseudocode found in behavioral patterns - violates PURE MARKDOWN constraint
+epic: EPIC-002
+priority: P0
+severity: CRITICAL
+status: IN_PROGRESS
+phase: require_triage
+assigned_to: TBD
+created_by: "@PM"
+created_at: 2025-07-20T23:15:00Z
+updated_at: 2025-07-20T23:15:00Z
+environment: Production
+
+description: |
+  CRITICAL: The behavioral patterns contain PSEUDOCODE which violates the
+  fundamental constraint that this is a PURE MARKDOWN behavioral system!
+  
+  Evidence found:
+  - validation-patterns.md contains function definitions with IF/ELSE logic
+  - Other shared patterns likely contain similar violations
+  - System is mixing code patterns with behavioral patterns
+  
+  This is a BEHAVIORAL CONFIGURATION SYSTEM - not a coding project!
+  All patterns must be pure markdown behavioral descriptions.
+
+impact: "Violates core architectural principle of pure markdown patterns"
+---
