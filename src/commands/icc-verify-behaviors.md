@@ -104,7 +104,7 @@ Validate all behavioral patterns are operational using $ARGUMENTS for specific v
 7. Validate memory system connection:
    
    **MCP Memory Testing:**
-   - Test connection: `mcp__memory__read_graph()`
+   - Test memory connection
    - Verify entity creation and retrieval
    - Check search functionality
    - Test relation building
