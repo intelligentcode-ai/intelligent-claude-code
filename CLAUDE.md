@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Core Architecture Features
 - **Command Chain Architecture**: Structured execution patterns for consistent role behavior
-- **Slash Command Integration**: icc: prefixed commands for reliable workflow execution
+- **Slash Command Integration**: /icc- prefixed commands for reliable workflow execution
 - **Memory-First Culture**: Behavioral emphasis on consulting memory before actions
 - **Behavioral Framework**: Process guidance through documented patterns and expectations
 - **Parallel Task Coordination**: PM-driven task delegation with simultaneous role execution
@@ -50,7 +50,7 @@ The system uses a **hybrid documentation strategy** that maintains Claude Code's
   - `icc-init-system.md` - System initialization command
   - `icc-activate-role.md` - Role activation command
   - `icc-create-story.md` - Story creation command
-  - `icc-validate-work-type.md` - Work type validation command
+  - `icc-detect-work-type.md` - Work type detection command
   - `icc-memory-search.md` - Memory search command
   - `icc-system-status.md` - System status command
   - `learning-team-automation.md` - Error forgiveness and pattern capture
@@ -62,7 +62,7 @@ The system uses a **hybrid documentation strategy** that maintains Claude Code's
 
 #### Lean Workflow Architecture
 - **Assignment-Driven Execution**: Workflow structure drives behavior without complex enforcement
-- **Validation Command Chains**: Lightweight governance through icc: prefix commands
+- **Validation Command Chains**: Lightweight governance through /icc- prefix commands
 - **Role Assignment Validation**: Mandatory PM + Specialist Architect triage for all work
 - **Capability Matching**: >70% expertise threshold with dynamic specialist creation
 - **Scoring Integration**: Automatic score updates via badges.md achievement system
@@ -161,7 +161,7 @@ make test            # Validate everything works
 # Workflow operations
 /icc-create-story "Story title"  # Create new story
 /icc-plan-story STORY-001       # Plan story tasks
-/icc-validate-work-type content # Validate work type
+/icc-detect-work-type content # Detect work type
 
 # Memory operations
 /icc-memory-search "keyword"    # Search memory
@@ -233,16 +233,16 @@ make test-roles       # Verify @-notation
 ### Command Chain Patterns
 ```bash
 # Standard execution flow
-icc:memory-first → icc:think-sequential → execute → icc:quality-gates
+/icc-memory-first → /icc-think-sequential → execute → /icc-quality-gates
 
 # Multi-role coordination
-icc:memory-first → icc:parallel-delegate → integrate → icc:quality-gates
+/icc-memory-first → /icc-parallel-delegate → integrate → /icc-quality-gates
 
 # Strategic analysis
-icc:pm-strategic-analysis → delegate → monitor → validate
+/icc-pm-strategic-analysis → delegate → monitor → validate
 
 # Role assignment validation
-icc:detect-work-type → icc:require-triage → icc:validate-assignments → icc:require-approval
+/icc-detect-work-type → /icc-require-triage → /icc-validate-assignments → /icc-require-approval
 ```
 
 ### Role Coordination
@@ -307,7 +307,7 @@ The inner workflow (`workflow-templates/inner-workflow.yaml`) guides individual 
 For detailed workflow documentation, see `docs/WORKFLOW-INTEGRATION-GUIDE.md`.
 
 ### Memory Integration
-- Consult memory before every action (icc:memory-first)
+- Consult memory before every action (/icc-memory-first)
 - Store insights and learning outcomes
 - Build persistent knowledge relationships
 - Enable context survival across sessions
@@ -323,16 +323,16 @@ For detailed workflow documentation, see `docs/WORKFLOW-INTEGRATION-GUIDE.md`.
 #### Validation Command Chains
 ```bash
 # Work type detection
-icc:detect-work-type(content) → specialist_architect_type
+/icc-detect-work-type(content) → specialist_architect_type
 
 # Mandatory triage process
-icc:require-triage(pm_role, specialist_architect) → triage_complete
+/icc-require-triage(pm_role, specialist_architect) → triage_complete
 
 # Assignment validation
-icc:validate-assignments(task, proposed_role) → validation_result
+/icc-validate-assignments(task, proposed_role) → validation_result
 
 # Joint approval gate
-icc:require-approval(pm_role, specialist_architect) → approval_granted
+/icc-require-approval(pm_role, specialist_architect) → approval_granted
 ```
 
 #### Assignment Rules
@@ -635,7 +635,7 @@ git log --oneline -n 5
 ### Core Components
 - **14 Specialized Roles**: PM, Architect, Developer, QA, Security, etc.
 - **Dynamic Specialists**: Unlimited auto-generated experts (@React-Developer)
-- **Validation Command Chains**: Lightweight governance (icc:detect-work-type, icc:require-triage, icc:validate-assignments)
+- **Validation Command Chains**: Lightweight governance (/icc-detect-work-type, /icc-require-triage, /icc-validate-assignments)
 - **Assignment Files**: Epic/story/task YAML files with embedded config drive execution
 - **Scoring System**: Achievement tracking via badges.md integration (automatically deployed)
 - **Learning System**: Error forgiveness with pattern capture via learning-team-automation.md

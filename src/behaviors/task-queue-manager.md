@@ -4,47 +4,32 @@
 
 ## Queue Management
 
-**Task Addition:** Calculate priority → Add to priority queue → Track in task map  
-**Task Retrieval:** Get highest priority → Check if executable → Mark as executing → Return task  
-**Parallel Retrieval:** Get up to 5 tasks → Check no conflicts → Return non-conflicting set
+**Task Addition:** Use `/icc-queue-add [task_data]` to calculate priority, add to queue, and track in task map  
+**Task Retrieval:** Use `/icc-queue-get` to get highest priority executable task and mark as executing  
+**Parallel Retrieval:** Use `/icc-queue-get-parallel [max_count]` to get up to 5 non-conflicting tasks
 
 ## Priority Calculation
 
-**Priority Formula:** Epic priority (P0-P3) × 1000 + Task type × 100 + Age in minutes  
-**Special Cases:** Security tasks → Priority 0 • Urgent tagged → Priority ÷ 2  
-**Priority Levels:**
-- P0: 0 (Critical) 
-- P1: 1000 (High)
-- P2: 2000 (Medium)
-- P3: 3000 (Low)
-
-**Task Types:**
-- blocking: 0
-- critical_path: 100
-- parallel: 200
-- optional: 300
+**Priority Formula:** Use `/icc-prioritize [task_data]` to calculate Epic priority (P0-P3) × 1000 + Task type × 100 + Age in minutes  
+**Special Cases:** Use `/icc-prioritize [task_data]` for Security tasks → Priority 0 • Urgent tagged → Priority ÷ 2  
+**Priority Reference:** P0(0) → P1(1000) → P2(2000) → P3(3000) and blocking(0) → critical_path(100) → parallel(200) → optional(300)
 
 ## Readiness Checks
 
-**Execution Requirements:** Check dependencies complete → Check no blockers → Check resources available  
-**Dependency Check:** All dependent tasks completed → No missing prerequisites  
-**Blocker Check:** No active blockers → Required approvals obtained  
-**Resource Check:** Required tools available → No conflicts with executing tasks
+**Execution Requirements:** Use `/icc-queue-check-ready [task_id]` to verify dependencies, blockers, and resource availability  
+**Comprehensive Validation:** Command handles dependency completion, blocker status, approval requirements, and resource conflicts
 
 ## Parallel Execution
 
-**Conflict Detection:** Check file overlap → Check schema changes → Check API conflicts  
-**Parallel Selection:** Get candidates → Filter conflicts → Return up to 5 non-conflicting  
-**Conflict Types:**
-- File conflicts - Same files being modified
-- Schema conflicts - Database changes
-- API conflicts - Same endpoints
+**Conflict Detection:** Use `/icc-queue-check-conflicts [task_list]` to detect file overlap, schema changes, and API conflicts  
+**Parallel Selection:** Use `/icc-queue-get-parallel [max_count]` to get candidates, filter conflicts, and return non-conflicting tasks  
+**Conflict Types:** File conflicts, schema conflicts, API conflicts automatically detected by conflict checker
 
 ## Queue Operations
 
-**Remove Task:** Remove from queue → Delete from map → Clear executing flag  
-**Update Status:** Update task status → IF completed: Remove and check dependents  
-**Dependency Updates:** When task completes → Find dependent tasks → Mark as ready if unblocked
+**Remove Task:** Use `/icc-queue-remove [task_id]` to remove from queue, delete from map, and clear executing flag  
+**Update Status:** Use `/icc-queue-update-status [task_id] [status]` to update status and handle completion dependencies  
+**Dependency Updates:** Use `/icc-queue-unblock-dependents [completed_task_id]` to find and mark dependent tasks as ready
 
 ## Configuration
 

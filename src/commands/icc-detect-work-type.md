@@ -1,4 +1,4 @@
-# Work Type Validation
+# Work Type Detection
 
 Detect work type and recommend appropriate specialist roles using $ARGUMENTS as work description.
 

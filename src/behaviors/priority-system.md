@@ -26,32 +26,27 @@
 
 ## Execution Order
 
-**Story Level:** P0 → P1 → P2 → P3  
-**Task Level:** Blocking → Critical Path → Parallel → Optional
+**Story Level:** Use `/icc-prioritize [stories]` for P0 → P1 → P2 → P3 execution order  
+**Task Level:** Use `/icc-prioritize [tasks]` for Blocking → Critical Path → Parallel → Optional execution order
 
 ## Dynamic Escalation
 
 ### Auto-Escalation Triggers
-- Security issues → P0
-- Data loss risks → P0  
-- Customer bugs → Priority +1
-- Blocked dependencies → Critical Path
+Use `/icc-auto-escalate [item_type] [trigger]` for Security issues → P0, Data loss risks → P0, Customer bugs → Priority +1, Blocked dependencies → Critical Path
 
 ### De-escalation Rules
-- Workaround found: P1 → P2
-- Reduced impact: P2 → P3
-- Off critical path: Adjust down
+Use `/icc-de-escalate [item_id] [reason]` for Workaround found (P1 → P2), Reduced impact (P2 → P3), Off critical path (Adjust down)
 
 ## Assignment Integration
 
-Priority flows automatically through assignment files with escalation tracking and dependency management.
+Use `/icc-inherit-priority [parent_item] [child_item]` for automatic priority flow through assignment files with escalation tracking and dependency management.
 
 ## Command Integration
 
-All creation and status commands respect priority ordering with automatic sorting and visual priority indicators.
+Use `/icc-prioritize [command_type]` so all creation and status commands respect priority ordering with automatic sorting and visual priority indicators.
 
 ## Behavioral Rules
 
-**@PM**: Sets epic priorities, reviews daily adjustments  
-**@Specialists**: Execute blocking tasks first, respect critical path  
-**@System**: Auto-escalates security/data issues, maintains inheritance
+**@PM**: Use `/icc-set-priority [epic_id] [priority]` to set epic priorities, `/icc-review-priorities` for daily adjustments  
+**@Specialists**: Use `/icc-prioritize [task_list]` to execute blocking tasks first, respect critical path  
+**@System**: Use `/icc-auto-escalate [security|data]` for auto-escalation, `/icc-inherit-priority` to maintain inheritance

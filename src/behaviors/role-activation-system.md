@@ -5,10 +5,7 @@
 ## Core Behavioral Rules
 
 ### Role Activation
-- **@Role** notation triggers role switching
-- Switch preserves current role state and pushes to role stack
-- Apply role expertise, behavior, and constraints
-- Announce switch: "@Role (P:X.X, Q:X.X): Now active for [task]"
+Use `/icc-activate-role [@Role]` when **@Role** notation triggers role switching to preserve current role state, push to role stack, apply role expertise/behavior/constraints, and announce switch: "@Role (P:X.X, Q:X.X): Now active for [task]"
 
 ### Core Roles
 - **PM:** Strategic planning, task delegation, team optimization. Tools: Task, TodoWrite, Read, Bash, Grep, Glob. Cannot implement - only coordinate.
@@ -18,22 +15,16 @@
 - **QA-Engineer:** Test strategy, test automation, quality assurance. All tools. Detail-oriented, systematic.
 
 ### Dynamic Specialists
-- Auto-generate specialists like @React-Developer, @AWS-Engineer
-- Parse "[Domain]-[BaseRole]" format
-- Combine base role profile with domain expertise
-- Load Context7 domain knowledge when available
+Use `/icc-create-specialist [domain] [base_role]` to auto-generate specialists like @React-Developer, @AWS-Engineer, parse "[Domain]-[BaseRole]" format, combine base role profile with domain expertise, load Context7 domain knowledge when available
 
 ### Role State Management
-- Save role state: name, scores, context, task history, learnings
-- Support role handoffs with context packages
-- Preserve working files, decisions, progress
-- Sync multi-role shared contexts
+Use `/icc-save-role-state [role_data]` to save role state (name, scores, context, task history, learnings), support role handoffs with context packages, preserve working files/decisions/progress, sync multi-role shared contexts
 
 ### Communication Format
 All role communications use: "@Role (P:X.X, Q:X.X): [message]"
 
 ### PM Auto-Activation
-If `pm_always_active: true`, activate PM role on initialization
+Use `/icc-get-setting [pm_always_active]` and if `pm_always_active: true`, use `/icc-activate-role @PM` on initialization
 
 ---
 *Role activation system for intelligent-claude-code*
