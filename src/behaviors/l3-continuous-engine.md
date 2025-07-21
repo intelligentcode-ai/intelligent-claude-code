@@ -2,59 +2,73 @@
 
 **MANDATORY:** MUST use continuous execution in L3. Auto-correct violations.
 
-**Purpose:** True continuous execution in L3 mode - no stops unless critical
+**Purpose:** Define L1/L2/L3 team autonomy levels and continuous execution patterns
 
-## Core Execution
+## Autonomy Levels
 
-**Activation:** Use `/icc-get-setting "autonomy_level"` and IF result is "L3" → Start continuous loop → Process tasks without interruption  
-**Task Discovery:** Get ready tasks (max 5) → Group non-conflicting → Execute in parallel → IF none: Discover new work  
-**Task Execution:** Consult learnings → Validate role → Execute work → Peer review → Store knowledge → Git commit → Trigger next  
-**Loop Behavior:** Continue while active → Auto-transition phases → Handle stuck states → Minimal wait between cycles
+### L1 Teams (Manual)
+- **User approval required** for ALL actions
+- **No autonomous decisions** - everything stops for confirmation
+- **Manual workflow execution** - each step requires user permission
+- **Use case:** High-control environments, learning phase
 
-## Stop Conditions
+### L2 Teams (Architect Approval)
+- **Architect approval** required for technical decisions only
+- **Autonomous routine tasks** - standard work proceeds without approval
+- **Technical decision detection** via keywords: architecture, design, system, framework, database, schema, API, technology, security, etc.
+- **Use case:** Standard development with architectural oversight
 
-### Critical Stops Only
-- **BUSINESS_IMPACT** - Major business logic changes
-- **SECURITY_VIOLATION** - Credential exposure, auth bypass
-- **DATA_LOSS** - Destructive operations without backup
+### L3 Teams (Fully Autonomous)  
+- **No approval required** - continuous execution without interruption
+- **Auto-correction** of process violations and common errors
+- **Smart stop conditions** only for critical issues:
+  - BUSINESS_CRITICAL_DECISION - Major business logic changes
+  - SECURITY_VIOLATION - Credential exposure, auth bypass  
+  - DATA_LOSS_RISK - Destructive operations
+- **Continuous work discovery** and parallel execution
+- **Use case:** Mature teams with established processes
 
-### Auto-Resolved Issues
-- **Process violations** → Auto-correct and continue
-- **Test failures** → Apply fix patterns
-- **Lint errors** → Auto-format
-- **Import issues** → Resolve dependencies
+## L3 Continuous Execution
+
+### Core Loop
+1. **Find Ready Work** - Check tasks with status PLANNED
+2. **Execute in Parallel** - Up to 5 non-conflicting tasks
+3. **Auto-Recover Errors** - Apply known patterns for common issues
+4. **Continue Without Stops** - Only halt for critical conditions
+5. **Discover New Work** - Scan for additional ready tasks
+
+### Auto-Recovery Patterns
+- **Test failures** → Apply fix patterns and retry
+- **Lint errors** → Auto-format and continue
+- **Import errors** → Add missing dependencies
 - **Type errors** → Fix type definitions
+- **Process violations** → Auto-correct and proceed
 
-## Auto-Continue Triggers
+### Work Discovery
+- **Active Tasks** - Find PLANNED tasks in current epic/story
+- **Dependencies** - Check for unblocked prerequisite work
+- **Follow-up Tasks** - Create tasks for issues found during work
+- **Priority Queue** - Always process P0 → P1 → P2 → P3 order
 
-**Task Flow:** Implementation → Testing → Review → Documentation → Git operations → Complete  
-**Review Handling:** IF passed: Continue to docs • IF failed: Create fix task  
-**Phase Transitions:** Automatic progression without manual triggers  
-**Completion Actions:** Mark done → Update status → Find next work
+## Configuration Integration
 
-## Work Discovery
+L3 behavior controlled by settings:
+- `autonomy_level: "L3"` - Enables L3 mode
+- `blocking_enabled: false` - Prevents stops for non-critical issues
+- `pm_always_active: true` - Auto-activates PM for coordination
 
-**Sources:** Find bugs in PLANNED/IN PROGRESS → Find stories needing tasks → Check unblocked dependencies → Create follow-up tasks  
-**Queue Management:** Add discovered work to priority queue → Process by priority order  
-**Continuous Discovery:** Always scanning for new work → Never idle
+## Stop Conditions (L3 Only)
 
-## Error Recovery
+**CRITICAL STOPS:**
+- Major business logic changes affecting user experience
+- Security credential exposure or authentication bypass
+- Destructive operations without proper backups
 
-**Recovery Process:** Consult error learnings → Try recovery strategies → IF successful: Retry task • ELSE: Create fix task  
-**Learning Integration:** Apply previous error solutions → Store new patterns → Share across team  
-**Non-Blocking:** Errors create tasks, not stops → Continue with other work
+**NON-STOPS (Auto-handle):**
+- Code quality issues → Auto-fix
+- Test failures → Apply patterns  
+- Configuration problems → Auto-correct
+- Process violations → Self-heal
 
-## Configuration
-
-**L3 Settings:** Maximum parallel tasks: 5, timeout: 300 seconds, error threshold: 5 errors before escalation
-
-**Stop Conditions:** business impact, security violation, data loss risk
-
-**Auto-Recovery:** test failures, lint errors, type errors
-
-## Benefits
-
-- **Never Stops**: Only for critical L3 conditions
-- **Parallel Tasks**: Up to 5 simultaneous
-- **Auto-Recovery**: Common errors handled
-- **Smart Discovery**: Finds next work automatically
+---
+*L3 continuous engine - defines team autonomy levels and autonomous execution patterns*
