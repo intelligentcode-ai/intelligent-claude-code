@@ -1,5 +1,7 @@
 # Shared Organization Patterns
 
+**MANDATORY:** MUST use organization patterns. Auto-correct violations.
+
 **PURPOSE:** Standard patterns for workspace organization and file management
 
 ## Directory Structure Patterns
@@ -26,3 +28,12 @@
 - Active: Current work directories
 - Completed: Move to archives/completed/
 - Historical: Preserve with ARCHIVED.md summaries
+
+## File Management Patterns
+
+**Workspace Organization:** Maintain clean separation between active work and archived content → Use consistent naming conventions → Preserve historical context through summaries
+
+**Integration:** Apply organization patterns to all file operations → Ensure consistent structure across team → Enable efficient navigation and discovery
+
+---
+*Shared organization patterns for intelligent-claude-code system*
