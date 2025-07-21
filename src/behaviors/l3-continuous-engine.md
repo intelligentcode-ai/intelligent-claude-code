@@ -46,22 +46,11 @@
 
 ## Configuration
 
-```yaml
-l3_settings:
-  max_parallel: 5
-  timeout_ms: 300000
-  error_threshold: 5
-  
-  stop_for:
-    - business_impact
-    - security_violation
-    - data_loss
-    
-  auto_recover:
-    - test_failures
-    - lint_errors
-    - type_errors
-```
+**L3 Settings:** Maximum parallel tasks: 5, timeout: 300 seconds, error threshold: 5 errors before escalation
+
+**Stop Conditions:** business impact, security violation, data loss risk
+
+**Auto-Recovery:** test failures, lint errors, type errors
 
 ## Benefits
 

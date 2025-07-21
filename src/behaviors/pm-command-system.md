@@ -1,5 +1,7 @@
 # PM Command System
 
+**MANDATORY:** MUST use PM commands. Auto-correct violations.
+
 **Purpose:** System management commands for PM role
 
 ## PM Commands
