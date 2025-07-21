@@ -91,107 +91,45 @@
 
 ### MANDATORY: ALL @Role Mentions MUST Trigger Task Tool
 
-**Pattern Detection:** `/^@[A-Za-z-]+:\s*/` (matches @Role: at start of line)
-**Inline Pattern:** `/\b@[A-Za-z-]+:/` (matches @Role: anywhere in text)
-**Detection:** BEFORE any text processing or execution
-**Action:** IMMEDIATELY REPLACE with Task tool XML invocation
+**Detection Pattern:** When @Role: appears at start of line or inline
+**Auto-Correction:** Replace with Task tool XML invocation
+**Enforcement:** Block direct role execution, enforce Task tool usage
 
-### Auto-Correction Examples
+### Auto-Correction Behavior
 
-**DETECT:** "@PM: Plan STORY-XXX implementation"
-**REPLACE WITH:**
-```xml
-<invoke name="Task">
-  <parameter name="description">[PM] Plan STORY-XXX implementation</parameter>
-  <parameter name="prompt">You are @PM. Plan STORY-XXX implementation.</parameter>
-</invoke>
-```
+**When Detected:** "@PM: Plan STORY-XXX implementation"
+**Auto-Replace:** Convert to Task tool XML with proper role and prompt parameters
 
-**DETECT:** "@AI-Engineer: Implement the behavioral system"
-**REPLACE WITH:**
-```xml
-<invoke name="Task">
-  <parameter name="description">[AI-Engineer] Implement the behavioral system</parameter>
-  <parameter name="prompt">You are @AI-Engineer. Implement the behavioral system.</parameter>
-</invoke>
-```
+**When Detected:** "@AI-Engineer: Implement the behavioral system"  
+**Auto-Replace:** Convert to Task tool XML with proper role and prompt parameters
 
 ### Enforcement Mechanisms
 
-**Pre-Processing Hook:** Scan ALL input for @Role: patterns → Block direct execution → Auto-convert to Task XML → Log violation for learning
+**Pre-Processing:** Scan ALL input for @Role patterns → Block direct execution → Auto-convert to Task tool → Log violation for learning
 
-**Runtime Detection:** Monitor execution for role mentions → Interrupt if @Role: detected → Replace with Task invocation → Continue with corrected flow
+**Runtime Detection:** Monitor execution for role mentions → Interrupt if @Role detected → Replace with Task invocation → Continue with corrected flow
 
-**Multi-Line Detection:** Check for continuation patterns → "@PM: First do this\nThen do that" → Convert entire block to single Task
+**Multi-Line Detection:** Check for continuation patterns → Convert entire role block to single Task
 
 ### Blocking Direct Role Execution
 
 **BLOCK ALL:**
 - Direct @Role invocations without Task tool
-- Manual role switching via @Role: syntax
+- Manual role switching via @Role syntax
 - Inline role mentions attempting execution
 - Any circumvention attempts
 
 **ENFORCE:**
 - ONLY Task tool can invoke roles
-- ALL role work MUST go through Task XML
+- ALL role work MUST go through Task tool
 - NO exceptions, even for simple tasks
 - Violations trigger immediate correction
 
-### Detection Implementation
-
-```
-function detectRoleMention(text) {
-  const rolePattern = /(@[A-Za-z-]+):\s*(.+?)(?=\n@|$)/gs;
-  const matches = [...text.matchAll(rolePattern)];
-  
-  if (matches.length > 0) {
-    return {
-      detected: true,
-      violations: matches.map(m => ({
-        role: m[1],
-        content: m[2],
-        original: m[0]
-      }))
-    };
-  }
-  return { detected: false };
-}
-
-function autoCorrectToTask(violation) {
-  const role = violation.role.substring(1); // Remove @
-  return `<invoke name="Task">
-  <parameter name="description">[${role}] ${violation.content.split('\n')[0]}</parameter>
-  <parameter name="prompt">You are ${violation.role}. ${violation.content}</parameter>
-</invoke>`;
-}
-```
-
 ### Violation Tracking
 
-**Log Format:** `[VIOLATION] Direct role execution attempted: @Role: [content]`
-**Auto-Correction:** `[CORRECTED] Replaced with Task tool invocation`
+**Log Pattern:** Track direct role execution attempts
+**Auto-Correction:** Replace with Task tool invocation
 **Learning Capture:** Store pattern for future prevention
-
-## Behavioral Commands
-
-### Phase Check
-`@phase-check` - Validate current phase before action
-
-### Phase Enforce
-`@phase-enforce [action]` - Block if wrong phase
-
-### Phase Correct
-`@phase-correct` - Auto-redirect to correct phase
-
-### Phase Transition
-`@phase-transition [next]` - Validate and transition
-
-### Role Enforce
-`@role-enforce` - Detect and correct role mentions
-
-### Role Block
-`@role-block` - Prevent direct role execution
 
 ---
 *Workflow enforcement behavior for intelligent-claude-code system*
