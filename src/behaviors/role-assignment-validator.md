@@ -8,15 +8,14 @@
 @./shared-patterns/validation-enforcement-patterns.md
 @./shared-patterns/learning-patterns.md
 
-## Core Validation
-**Context Enforcement:** PROJECT-CONTEXT.md loading before role assignments
-**Work Type Detection:** Behavioral system → @AI-Architect/Engineer • Security → @Security-Architect/Engineer
-**Capability Matching:** >70% threshold required, auto-correction for wrong assignments
+**NOTE:** Core role assignment validation logic has been consolidated into executable-workflow.md.
+See executable-workflow.md for:
+- Validation command chains
+- Work type detection rules
+- Capability matching thresholds
+- Architect triage requirements
 
-## Validation Chain
-**Story:** detect-work-type → architect triage → validate assignments → joint approval
-**Task:** validate-assignments → capability match → architect approval
-**Commands:** `/icc-detect-work-type` • `/icc-require-triage` • `/icc-validate-assignments` • `/icc-require-approval`
+This file retained for import compatibility and shared pattern references.
 
-## Benefits
-✅ Context-aware validation ✅ Mandatory architect approval ✅ Capability matching ✅ Auto-correction
+---
+*Role assignment validator for intelligent-claude-code system*

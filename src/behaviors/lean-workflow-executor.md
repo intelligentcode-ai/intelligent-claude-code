@@ -7,13 +7,12 @@
 @./config-loader.md
 @./role-assignment-validator.md
 @./learning-team-automation.md
-@../workflow-templates/executable-workflow.md
 
 ## Core Behaviors
 
 **System Init:** Auto-load PROJECT-CONTEXT.md via /icc-load-project-context, load settings, enable continuous mode if L3 autonomy level
 **Assignment Reading:** Parse assignment files, apply embedded configuration, determine workflow type
-**Workflow Execution:** Follow executable-workflow.md for ALL workflow operations
+**Workflow Execution:** Follow executable-workflow.md patterns (imported via virtual-team.md) for ALL workflow operations
 **Role Assignment:** Require >70% capability match with architect triage validation
 **Progress Updates:** Update task status, trigger scoring system, advance to next phase
 
@@ -23,7 +22,7 @@
 
 ## Execution Delegation
 
-**ALL workflow execution delegated to executable-workflow.md:**
+**ALL workflow execution delegated to executable-workflow.md (imported via virtual-team.md):**
 - Outer workflow (Bug/Story level) 
 - Inner workflow (Task level)
 - Git operations (settings-aware)
