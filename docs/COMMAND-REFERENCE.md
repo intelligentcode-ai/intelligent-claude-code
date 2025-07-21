@@ -2,7 +2,7 @@
 
 ## Overview
 
-The intelligent-claude-code system provides slash commands with the `icc-` prefix for reliable workflow execution. Commands are integrated into the lean-workflow-executor and provide consistent, predictable behavior.
+The intelligent-claude-code system provides slash commands with the `icc-` prefix for reliable workflow execution. Commands are integrated into the executable workflow system and provide consistent, predictable behavior.
 
 ## Command Syntax
 - **Filename**: `icc-command-name.md` (how Claude Code reads the command)
@@ -89,7 +89,7 @@ The intelligent-claude-code system provides slash commands with the `icc-` prefi
 
 ## Command Integration
 
-Commands are integrated into the lean-workflow-executor at key workflow points:
+Commands are integrated into the executable workflow system at key workflow points:
 
 - **System Initialization**: `icc-init-system` called on startup
 - **Role Assignment**: `icc-activate-role` called during role switching
