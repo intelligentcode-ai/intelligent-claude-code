@@ -1,0 +1,25 @@
+id: BUG-117
+title: Remove redundancy between behaviors/commands and executable-workflow.md
+description: Critical system bloat - 50%+ duplication across 84 files needs immediate removal
+priority: P0
+severity: critical
+owner: @PM
+tasks:
+  - TASK-117-001
+  - TASK-117-002
+  - TASK-117-003
+  - TASK-117-004
+  - TASK-117-005
+reproduction_steps:
+  - Count current files: 53 commands + 24 behaviors + 7 patterns
+  - Identify duplication per BUG-109 analysis
+  - Compare with executable-workflow.md functionality
+  - Find 50%+ redundancy
+acceptance_criteria:
+  - Reduce file count by 50%
+  - Preserve 100% functionality
+  - All features work via executable-workflow.md
+  - Clean git history of deletions
+embedded_config:
+  autonomy_level: "L3"
+  git_privacy: true
