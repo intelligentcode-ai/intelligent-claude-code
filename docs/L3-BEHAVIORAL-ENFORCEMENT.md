@@ -50,8 +50,8 @@ L3 mode should ONLY stop for these critical conditions:
 ## Implementation Details
 
 ### Behavioral Files Updated
-- `src/behaviors/autonomy-controller.md` - L3 behavioral enforcement rules
-- `src/behaviors/lean-workflow-executor.md` - L3 autonomous execution patterns
+- `src/workflow-templates/executable-workflow.md` - L3 behavioral enforcement rules and autonomous execution patterns
+- `src/behaviors/config-loader.md` - Configuration management including autonomy levels
 
 ### Configuration Integration
 L3 behavior triggered by:
