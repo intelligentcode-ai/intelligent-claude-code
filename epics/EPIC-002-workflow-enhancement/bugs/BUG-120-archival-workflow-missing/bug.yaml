@@ -1,0 +1,38 @@
+---
+id: BUG-120
+title: "Archival Process Missing from Workflow - Completed Work Not Archived"
+type: bug
+priority: P1
+epic: EPIC-002
+status: PLANNED
+created: 2025-07-21
+reporter: System
+assignee: TBD
+---
+
+# BUG-120: Archival Process Missing from Workflow
+
+## Problem Description
+The executable workflow doesn't include archival of completed bugs/stories. This leads to:
+- Completed work cluttering the active workspace
+- No systematic archival after MR/PR
+- Archive functionality exists but isn't part of workflow
+- BUG-117 is complete but still in active bugs directory
+
+## Current State
+- Archival process documented in docs/ARCHIVAL-PROCESS.md
+- Archive directory exists at epics/EPIC-002-workflow-enhancement/archive/
+- Many completed bugs already archived
+- But workflow doesn't mandate archival
+
+## Expected Behavior
+- Workflow should include archival step after MR/PR
+- Completed bugs/stories automatically moved to archive
+- Clear trigger point for archival (after merge)
+- Maintains clean working directory
+
+## Acceptance Criteria
+- [ ] Add archival step to outer workflow (after MR/PR)
+- [ ] Create behavioral pattern for archival
+- [ ] Update workflow documentation
+- [ ] Archive BUG-117 as test case
