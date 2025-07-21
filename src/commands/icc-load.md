@@ -8,7 +8,7 @@ Force-load virtual team behavioral patterns using $ARGUMENTS.
 ## Behavior
 - Parse options from $ARGUMENTS
 - Load configuration hierarchy: ~/.claude/CLAUDE.md → config.md → project config
-- Follow import chains: modes/virtual-team.md, roles/specialists.md, behaviors/*.md
+- Follow import chains: modes/virtual-team.md, roles/specialists.md, behaviors/config-loader.md, behaviors/learning-team-automation.md, behaviors/pm-command-system.md, behaviors/role-management.md, behaviors/task-creation-mandates.md, behaviors/shared-patterns/ (5 pattern files)
 - Initialize: workflow executor, memory, role system, command chains
 - Validate all imports resolve and patterns load correctly
 - Check enforcement validation: self-correcting patterns active
