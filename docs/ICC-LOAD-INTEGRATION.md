@@ -2,16 +2,16 @@
 
 **Date:** 2025-07-17  
 **Bug:** BUG-063  
-**Integration:** icc-load command into lean-workflow-executor.md  
+**Integration:** icc-load command into executable workflow system  
 
 ## Integration Overview
 
-The `/icc-load` command has been successfully integrated into the lean-workflow-executor behavioral module to enable force-loading of all virtual team behavioral patterns.
+The `/icc-load` command has been successfully integrated into the executable workflow system to enable force-loading of all virtual team behavioral patterns.
 
 ## Integration Points
 
 ### 1. System Initialization
-**Location:** `src/behaviors/lean-workflow-executor.md` line 29  
+**Location:** `src/workflow-templates/executable-workflow.md`  
 **Integration:** Added `EXECUTE /icc-load for force-loading all behavioral patterns`
 
 ```yaml
@@ -23,7 +23,7 @@ function: initialize_system()
 ```
 
 ### 2. Slash Command Processing
-**Location:** `src/behaviors/lean-workflow-executor.md` lines 74-77  
+**Location:** `src/workflow-templates/executable-workflow.md`  
 **Integration:** Added dedicated handler for `/icc-load` message
 
 ```pseudocode
@@ -34,7 +34,7 @@ IF message == "/icc-load":
 ```
 
 ### 3. Function Implementation
-**Location:** `src/behaviors/lean-workflow-executor.md` lines 909-949  
+**Location:** `src/workflow-templates/executable-workflow.md`  
 **Integration:** Full implementation of behavioral pattern loading functions
 
 ```pseudocode
@@ -77,4 +77,4 @@ FUNCTION forceLoadBehavioralPatterns():
 
 ## Resolution
 
-**BUG-063 RESOLVED:** The `/icc-load` command is now fully integrated into the lean-workflow-executor behavioral module and functions correctly during system initialization and manual execution.
+**BUG-063 RESOLVED:** The `/icc-load` command is now fully integrated into the executable workflow system and functions correctly during system initialization and manual execution.
