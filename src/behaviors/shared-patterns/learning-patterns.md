@@ -26,10 +26,10 @@
 
 ### Memory-First Pattern
 **Process:**
-1. Check memory before action: `/icc-memory-search [context]`
+1. Check memory before action (built into workflow steps)
 2. Apply existing learnings if found
 3. Execute work with learning context
-4. Store new patterns: `/icc-memory-store [entity]`
+4. Store new patterns (handled by workflow retrospective)
 
 ### Error Processing Pattern
 **First Error Detected:** Search memory for similar error → If not found: create learning entity, no penalty → If found: apply 2x penalty, reference existing learning
@@ -49,13 +49,14 @@
 - Continue with other work
 - Escalate if critical
 
-## Integration Commands
+## Integration Patterns
 
 ### Memory Operations
-- `/icc-memory-search [query]` - Search before work
-- `/icc-memory-store [entity]` - Store after work
-- `/icc-learning-capture [outcome]` - Capture learning from outcome
-- `/icc-learning-store [learning]` - Store structured learning
+Memory search and storage are handled automatically by the workflow:
+- **Search**: Built into workflow steps (outer step 1, inner step 2)
+- **Storage**: Handled by retrospective phases (outer step 7, inner step 8)
+- **Learning Capture**: Automatic during task/story retrospectives
+- **Learning Storage**: Workflow creates learning entities directly
 
 ### Learning Application
 **Memory-First Process:** Always search memory before action → Apply any relevant learnings found → Enhance action with learning context → Execute with learning awareness

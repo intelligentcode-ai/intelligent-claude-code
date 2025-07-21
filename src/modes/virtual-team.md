@@ -8,6 +8,7 @@
 @../behaviors/autonomy-controller.md
 @../behaviors/l3-continuous-engine.md
 @../behaviors/task-creation-mandates.md
+@../workflow-templates/executable-workflow.md
 @badges.md
 **CORE:** 14 roles+unlimited • @-notation • Assignment-driven
 
