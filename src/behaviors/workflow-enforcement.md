@@ -89,47 +89,130 @@
 
 ## Role Mention Detection and Auto-Correction
 
-### MANDATORY: ALL @Role Mentions MUST Trigger Task Tool
+### MANDATORY: ALL @Role Mentions MUST Trigger Workflow Through Task Tool
 
-**Detection Pattern:** When @Role: appears at start of line or inline
-**Auto-Correction:** Replace with Task tool XML invocation
-**Enforcement:** Block direct role execution, enforce Task tool usage
+**Core Principle:** @Role = Workflow Launch → Task Tool Invocation → Proper Phase Execution
 
-### Auto-Correction Behavior
+### Enhanced Detection Patterns
 
-**When Detected:** "@PM: Plan STORY-XXX implementation"
-**Auto-Replace:** Convert to Task tool XML with proper role and prompt parameters
+**All @Role Formats Detected:**
+- "@Role: [action]" - Start of line with colon
+- "@Role [action]" - Inline without colon  
+- "Ask @Role to [action]" - Natural language format
+- "@Role\n[action]" - Multi-line format
+- "[@Role] [action]" - Bracketed format
+- "@Role-Name: [action]" - Hyphenated specialist roles
 
-**When Detected:** "@AI-Engineer: Implement the behavioral system"  
-**Auto-Replace:** Convert to Task tool XML with proper role and prompt parameters
+**Pre-Emptive Detection:** BEFORE any processing → Scan entire input → Detect ALL @Role patterns → Block and correct IMMEDIATELY
 
-### Enforcement Mechanisms
+### Workflow Validation Before Role Work
 
-**Pre-Processing:** Scan ALL input for @Role patterns → Block direct execution → Auto-convert to Task tool → Log violation for learning
+**Workflow Active Check Pattern:**
+1. @Role detected → Check: Is workflow active?
+2. If NO workflow → Auto-launch appropriate workflow
+3. If workflow active → Check: Correct phase?
+4. If wrong phase → Block and redirect to correct phase
 
-**Runtime Detection:** Monitor execution for role mentions → Interrupt if @Role detected → Replace with Task invocation → Continue with corrected flow
+**Workflow State Query:**
+- Current workflow type (outer/inner)
+- Current phase (1-7 for outer, 1-8 for inner)
+- Phase permissions for requested action
+- Required phase for role work
 
-**Multi-Line Detection:** Check for continuation patterns → Convert entire role block to single Task
+### Automatic Workflow Start on @Role Detection
 
-### Blocking Direct Role Execution
+**Auto-Launch Pattern:**
+When @Role detected WITHOUT active workflow:
+1. **Analyze Context:** Determine work scope (story/bug vs task)
+2. **Select Workflow:** Outer for multi-task, Inner for single task
+3. **Create Launch Task:** Generate Task tool invocation with workflow context
+4. **Preserve Intent:** Include original @Role request in workflow prompt
+5. **Start at Phase 1:** Always begin with proper planning/memory phase
 
-**BLOCK ALL:**
-- Direct @Role invocations without Task tool
-- Manual role switching via @Role syntax
-- Inline role mentions attempting execution
-- Any circumvention attempts
+**Context Preservation Example:**
+User: "@Developer fix the login validation bug"
+System: Detects no active workflow → Creates inner workflow launch:
+```xml
+<invoke name="Task">
+  <parameter name="description">[PM] Initialize workflow for login validation fix</parameter>
+  <parameter name="prompt">You are @PM. User requested: "@Developer fix the login validation bug"
+  Start inner workflow from phase 1 (Memory Search).
+  Context: [PROJECT-CONTEXT]
+  Settings: [All settings]
+  Original Intent: Fix login validation bug using Developer role</parameter>
+</invoke>
+```
 
-**ENFORCE:**
-- ONLY Task tool can invoke roles
-- ALL role work MUST go through Task tool
-- NO exceptions, even for simple tasks
-- Violations trigger immediate correction
+### Phase-Appropriate Role Routing
 
-### Violation Tracking
+**Phase Gate Validation for Roles:**
+- **Phase 1:** @PM allowed for planning, others blocked
+- **Phase 2:** @Architect allowed for review, others blocked
+- **Phase 3:** Implementation roles allowed (@Developer, @AI-Engineer, etc.)
+- **Phase 4:** Review roles allowed (pre-assigned SME)
+- **Phase 5:** @DevOps/@Developer for git operations
 
-**Log Pattern:** Track direct role execution attempts
-**Auto-Correction:** Replace with Task tool invocation
-**Learning Capture:** Store pattern for future prevention
+**Wrong Phase Prevention:**
+@Developer in Phase 1: BLOCK → Store request → Message: "Planning phase - implementation blocked. Complete planning first."
+@PM in Phase 3: BLOCK → Message: "Execution phase - PM planning not allowed. Use implementation role."
+
+### Enhanced Enforcement Mechanisms
+
+**Multi-Layer Detection:**
+1. **Input Scanner:** Pre-process ALL text before any execution
+2. **Pattern Matcher:** Regex + context analysis for @Role patterns  
+3. **Workflow Checker:** Validate workflow state before proceeding
+4. **Phase Validator:** Ensure correct phase for role work
+5. **Auto-Corrector:** Launch workflow or redirect to correct phase
+
+**Real-Time Interception:**
+- Monitor ALL text processing streams
+- Interrupt IMMEDIATELY on @Role detection
+- No partial execution before correction
+- Complete blocking until proper workflow
+
+### Seamless Workflow Integration
+
+**Smooth Transition Pattern:**
+1. User types @Role request
+2. System intercepts BEFORE processing
+3. Checks workflow state
+4. If no workflow: Launch with context
+5. If wrong phase: Guide to correct phase
+6. Execute through proper workflow
+7. User sees seamless execution
+
+**No Workflow Interruption:**
+- Preserve user intent throughout
+- Auto-handle workflow mechanics
+- Present results as if direct execution
+- Hide workflow complexity from user
+
+### Advanced Detection Cases
+
+**Complex Pattern Handling:**
+- "Can you ask @Security-Engineer to review?" → Detect and route
+- "I think @AI-Architect should design this" → Detect and route
+- "@PM and @Developer should coordinate" → Detect both, sequence execution
+- "Let's have @[Dynamic-Role] handle this" → Create specialist and route
+
+**Edge Case Prevention:**
+- Escaped @Role (\@Role) → Do not trigger
+- Code blocks with @Role → Do not trigger
+- Documentation about @Role → Do not trigger
+- Actual role work → ALWAYS trigger
+
+### Violation Prevention and Learning
+
+**Proactive Prevention:**
+- Learn common violation patterns
+- Strengthen detection for repeat attempts
+- Auto-educate on workflow benefits
+- Make workflow path easier than bypass
+
+**Learning Integration:**
+Track: Detection success rate → False positive rate → Bypass attempt patterns → Successful correction rate
+Apply: Improve detection accuracy → Reduce false triggers → Strengthen weak points → Optimize workflow launch
 
 ---
 *Workflow enforcement behavior for intelligent-claude-code system*
