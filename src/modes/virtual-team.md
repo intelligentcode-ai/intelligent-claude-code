@@ -5,6 +5,7 @@
 @../behaviors/config-loader.md
 @../behaviors/task-creation-mandates.md
 @../behaviors/workflow-enforcement.md
+@../behaviors/workflow-auto-trigger.md
 @../workflow-templates/executable-workflow.md
 @badges.md
 **CORE:** 14 roles+unlimited • @-notation • Assignment-driven
