@@ -156,6 +156,115 @@ Update task status to COMPLETED.
 ### 7. Learning Capture
 Store task learnings for future reference.
 
+## Simplified AI-Executable Steps
+
+**Purpose:** Simple numbered steps that AI agents can directly follow without complex XML parsing.
+
+### Outer Workflow Steps (Bug/Story Level)
+
+1. **@PM: Search memory and plan approach**
+   - Search memory for similar patterns
+   - Analyze requirements 
+   - Define implementation approach
+   - Pass PROJECT-CONTEXT to next steps
+
+2. **@AI-Architect: Review and approve plan**
+   - Review the implementation plan
+   - Provide architectural approval or feedback
+   - Ensure technical alignment
+
+3. **@PM: Create tasks with assignments**
+   - Break down work into tasks
+   - Use "[Role] Task description" format
+   - Ensure minimum 3 subtasks per task
+   - Create specialists if <70% match
+
+4. **@AI-Engineer: Setup Git branch**
+   - Create feature/STORY-XXX branch
+   - Checkout the new branch
+   - Prepare for development
+
+5. **Execute tasks in parallel (up to 5)**
+   - @AI-Engineer: Execute TASK-001
+   - @QA-Engineer: Execute TASK-002  
+   - @Backend-Developer: Execute TASK-003
+   - Continue with non-conflicting tasks
+
+6. **Parent: Ask user about merge request**
+   - "Would you like me to create a merge request?"
+   - If yes: @Developer creates MR
+   - If no: Continue to retrospective
+
+7. **@PM: Capture story learnings**
+   - Synthesize patterns discovered
+   - Create learning entity
+   - Store for future reference
+
+### Inner Workflow Steps (Task Level)
+
+1. **Search memory for patterns**
+   - Look for similar work done before
+   - Apply previous learnings
+
+2. **Plan task approach**
+   - Simple tasks: Direct implementation
+   - Complex tasks: Break into subtasks
+
+3. **Execute the work**
+   - Implement task requirements
+   - Follow best practices
+
+4. **Peer review**
+   - @Security-Engineer: Review if security-related
+   - @QA-Engineer: Review if testing-related
+   - Fix minor issues and re-review
+   - Escalate major issues to @PM
+
+5. **Git operations**
+   - Commit with "TASK-XXX: Description"
+   - Strip AI mentions if git_privacy=true
+
+6. **Update task status**
+   - Mark task as COMPLETED
+   - Update progress tracking
+
+7. **Capture learnings**
+   - Store patterns discovered
+   - Add to memory bank
+
+### Quick Reference: Role Activation
+
+**Instead of XML:**
+```xml
+<invoke name="Task">
+  <parameter name="description">[PM] Plan implementation</parameter>
+  <parameter name="prompt">You are @PM. Analyze requirements...</parameter>
+</invoke>
+```
+
+**Use simple format:**
+1. @PM: Plan implementation
+   - Analyze requirements
+   - Search memory for patterns
+   - Define approach
+
+### Parallel Execution Guide
+
+**Instead of multiple XML blocks, use:**
+1. Identify non-conflicting tasks
+2. Execute up to 5 simultaneously:
+   - @Frontend-Developer: Build UI
+   - @Backend-Developer: Create API
+   - @Database-Engineer: Design schema
+   - @QA-Engineer: Write test plan
+   - @Security-Engineer: Security review
+
+### Dynamic Specialist Creation
+
+**When to create:** Role has <70% capability match
+**Format:** @GraphQL-Developer, @AWS-Engineer, @React-Native-Developer
+**Expertise:** Always specify "10+ years experience"
+
 ## Workflow Phase Management
 
 ### Phase Transitions
@@ -380,6 +489,3 @@ Task templates are stored in the `templates/` directory. See:
 ## Summary
 
 This workflow uses Task tool invocations to create subagents for each role. The parent coordinates while subagents execute with specialized expertise. Dynamic specialists are created when existing roles have <70% capability match. The system includes comprehensive task queue management, autonomy control, and L3 continuous execution capabilities.
-
----
-*Unified executable workflow for intelligent-claude-code system*
