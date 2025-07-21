@@ -1,17 +1,13 @@
 # Shared L3 Autonomy Patterns
 
+**MANDATORY:** MUST use L3 autonomous patterns. Auto-correct violations.
+
 **PURPOSE:** Common patterns for L3 autonomous execution
 
 ## Core L3 Patterns
 
 ### L3 Mode Detection
-```
-autonomyLevel = getSetting("autonomy_level", "L2")
-IF autonomyLevel == "L3":
-  enableContinuousMode()
-  disableBlockingBehaviors()
-  activateAutoRecovery()
-```
+**Process:** Get autonomy level setting (default L2) → If level is L3: enable continuous mode, disable blocking behaviors, activate auto-recovery
 
 ### Stop Conditions (L3 Only)
 **Critical Stops:**
@@ -27,92 +23,32 @@ IF autonomyLevel == "L3":
 - Type errors → Fix definitions
 
 ### Continuous Execution Pattern
-```
-WHILE l3Active:
-  tasks = getReadyTasks(max: 5)
-  IF tasks.empty:
-    discoverNewWork()
-  ELSE:
-    executeParallel(tasks)
-  handleCompletions()
-  checkStopConditions()
-```
+**Process:** While L3 mode is active, continuously retrieve ready tasks (maximum 5). When no tasks are available: discover new work opportunities. When tasks exist: execute them in parallel. After each cycle: handle task completions and check for critical stop conditions.
 
 ### Auto-Recovery Pattern
-```
-IF error.isRecoverable:
-  strategy = getRecoveryStrategy(error.type)
-  applyStrategy(strategy)
-  retryTask()
-ELSE:
-  createFixTask(error)
-  continueWithOtherWork()
-```
+**Process:** When an error occurs, determine if it's recoverable. If recoverable: identify appropriate recovery strategy, apply the strategy, then retry the task. If not recoverable: create a fix task for manual resolution and continue with other available work.
 
 ### Non-Blocking Review Pattern
-```
-IF review.required AND l3Mode:
-  performAutoReview()
-  IF issues.found:
-    createFollowUpTasks(issues)
-  markReviewComplete()
-  continueExecution()
-```
+**Process:** When review is required and L3 mode is active, perform automatic review process. If issues are found during review: create follow-up tasks to address them. Always mark review as complete and continue execution without blocking the workflow.
 
 ## Common L3 Operations
 
-### enableL3Mode()
-```
-activateComponents:
-  - continuous-engine
-  - task-queue-manager
-  - auto-continue-triggers
-  - work-discovery-engine
-  - progress-monitor
-disableComponents:
-  - user-approval-prompts
-  - blocking-behaviors
-  - manual-confirmations
-```
+### L3 Mode Activation
+**When enabling L3 mode:** Activate continuous-engine, task-queue-manager, auto-continue-triggers, work-discovery-engine, and progress-monitor components. Simultaneously disable user-approval-prompts, blocking-behaviors, and manual-confirmations to ensure uninterrupted autonomous execution.
 
-### checkStopCondition(action)
-```
-IF action.type IN [BUSINESS_CRITICAL, SECURITY_VIOLATION, DATA_LOSS]:
-  RETURN true  // Stop execution
-ELSE:
-  RETURN false // Continue autonomously
-```
+### Stop Condition Evaluation
+**When evaluating actions:** If action type is business critical, security violation, or data loss risk: halt execution immediately. For all other action types: continue autonomous execution without interruption.
 
-### autoCorrect(violation)
-```
-SWITCH violation.type:
-  CASE "missing_validation":
-    addValidation()
-  CASE "skipped_step":
-    executeStep()
-  CASE "process_violation":
-    applyCorrection()
-continueExecution()
-```
+### Auto-Correction Process
+**When violations occur:** For missing validation: add required validation steps. For skipped steps: execute the missed step. For process violations: apply appropriate correction measures. After any correction: continue execution without manual intervention.
 
 ## L3 Configuration
 
 ### Required Settings
-```yaml
-autonomy_level: "L3"
-blocking_enabled: false
-auto_recovery: true
-parallel_execution: true
-continuous_mode: true
-```
+**Configuration requirements:** Set autonomy level to L3, disable blocking behaviors, enable auto-recovery mechanisms, allow parallel execution of tasks, and activate continuous operation mode.
 
 ### Performance Settings
-```yaml
-max_parallel_tasks: 5
-task_timeout_ms: 300000
-error_threshold: 5
-recovery_attempts: 3
-```
+**Operational parameters:** Maximum of 5 parallel tasks, task timeout of 300 seconds, error threshold of 5 failures before escalation, and up to 3 recovery attempts per error before creating fix tasks.
 
 ---
 *Shared L3 autonomy patterns for continuous execution*

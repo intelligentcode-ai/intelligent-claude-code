@@ -4,27 +4,39 @@
 
 **CORE:** Read → Validate → Execute → Update • Assignment-driven
 
-@./config-loader.md @./role-assignment-validator.md @./learning-team-automation.md
+@./config-loader.md
+@./role-assignment-validator.md
+@./learning-team-automation.md
+@../workflow-templates/executable-workflow.md
 
 ## Core Behaviors
 
-**System Init:** Load PROJECT-CONTEXT.md → Load settings → IF L3: Enable continuous mode  
-**Assignment Reading:** Parse + Apply embedded config + Determine workflow type  
-**Phase Execution:** L1/L2 approval, L3 autonomous → INIT→PLAN→EXECUTE→ACCEPTANCE→DONE  
-**Role Assignment:** >70% capability match + architect triage  
-**Progress Updates:** Update status → Trigger scoring → Update phase
+**System Init:** Auto-load PROJECT-CONTEXT.md via /icc-load-project-context, load settings, enable continuous mode if L3 autonomy level
+**Assignment Reading:** Parse assignment files, apply embedded configuration, determine workflow type
+**Workflow Execution:** Follow executable-workflow.md for ALL workflow operations
+**Role Assignment:** Require >70% capability match with architect triage validation
+**Progress Updates:** Update task status, trigger scoring system, advance to next phase
 
 ## Validation Chain
 
 **Flow:** detect-work-type → require-triage → validate-assignments → require-approval
 
-## Execution Patterns
+## Execution Delegation
 
-**Story Planning:** Read assignment → Apply config → Memory search → Create tasks → PM delegation  
-**Task Execution:** Activate role → Memory search → Execute → Peer review → Store learnings → L3: Auto-continue
+**ALL workflow execution delegated to executable-workflow.md:**
+- Outer workflow (Bug/Story level) 
+- Inner workflow (Task level)
+- Git operations (settings-aware)
+- Peer review requirements
+- Learning capture patterns
 
-**Git:** Auto-strip AI mentions + validate branches  
-**Review:** Non-blocking=follow-up tasks, Blocking=halt
+## System Initialization
+
+**PROJECT-CONTEXT.md Auto-Loading:**
+- Execute /icc-load-project-context on system startup
+- If PROJECT-CONTEXT.md not found, continue without error
+- Cache project context for use by all behavioral modules
+- Context-aware role assignments and workflow decisions
 
 ## L3 Autonomous Mode
 

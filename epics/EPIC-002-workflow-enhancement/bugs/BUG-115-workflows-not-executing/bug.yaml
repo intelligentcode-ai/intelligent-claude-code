@@ -1,0 +1,55 @@
+---
+id: BUG-115
+title: "CRITICAL: Inner and Outer Workflows Not Being Executed"
+type: bug
+priority: P0
+epic: EPIC-002
+status: PLANNED
+created: 2025-07-21
+reporter: User
+assignee: TBD
+---
+
+# BUG-115: CRITICAL - Inner and Outer Workflows Not Being Executed
+
+## Problem Description
+System is completely ignoring workflow templates:
+- Outer workflow phases not followed for bug/story handling
+- Inner workflow phases not executed for task execution
+- No knowledge retrieval, planning, review, or git phases
+- Wrong role names used (Developer instead of AI-Engineer)
+- Validation chains completely bypassed
+
+## Critical Impact
+- **System Integrity:** Core workflow-driven architecture not functioning
+- **Quality Loss:** No peer reviews, no knowledge capture, no validation
+- **Process Violations:** Every action violates established patterns
+- **User Experience:** "THIS BASICALLY KILLS THE SYSTEM!"
+
+## Root Cause Analysis
+1. Workflows defined in src/workflow-templates/ but not enforced
+2. Behavioral modules not triggering workflow execution
+3. Missing integration between workflows and command execution
+4. No workflow validation or auto-correction
+5. **CRITICAL: Workflows too complex for AI execution**
+   - Written as YAML engineering specs not simple steps
+   - Full of conditionals and hooks that confuse AI agents
+   - Need SIMPLE, CLEAR, EXACT numbered steps
+
+## Evidence
+- BUG-087 executed without ANY workflow phases
+- Tasks created without proper structure
+- No preparatory or closing tasks as mandated
+- Role names don't match system definitions
+
+## Acceptance Criteria
+- [ ] Workflows rewritten as SIMPLE numbered steps
+- [ ] Workflows automatically execute for all work items
+- [ ] Cannot bypass workflow phases in L3 mode
+- [ ] Auto-correction when workflows skipped
+- [ ] Proper role names enforced
+- [ ] All phases executed in sequence
+- [ ] Any AI agent can understand and execute workflows
+
+## Priority Justification
+**P0 - CRITICAL**: Without workflows, the entire system architecture fails. This is a complete breakdown of core functionality that was previously working.

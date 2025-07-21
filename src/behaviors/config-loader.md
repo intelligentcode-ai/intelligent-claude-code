@@ -26,6 +26,12 @@
 - All settings loaded dynamically, never hardcoded
 - System defaults used as fallback only
 
+### PROJECT-CONTEXT.md Loading
+- Check for PROJECT-CONTEXT.md in current working directory
+- Auto-load on system initialization if found
+- Cache project context for 15 minutes
+- Integrate project context with configuration hierarchy
+
 ## Implementation Details
 
 ### Loading Process (Using Shared Patterns)
@@ -50,6 +56,7 @@
 **Cache Management:**
 - Standard configuration: 5-minute TTL
 - Embedded configuration: 1-hour TTL (more stable)
+- PROJECT-CONTEXT.md: 15-minute TTL (moderate stability)
 - Invalidate cache on file changes
 - Key based on file timestamps and content hash
 
@@ -59,7 +66,14 @@
 - Use getSetting(key, default) from configuration-patterns.md
 - Apply checkAutonomy() for L1/L2/L3 behavior
 - Use applyEmbeddedConfig() for assignment overrides
+- Use /icc-load-project-context for PROJECT-CONTEXT.md loading
 - Follow Common Operations patterns for all settings access
+
+### PROJECT-CONTEXT.md Integration
+- Auto-execute /icc-load-project-context during system initialization
+- Merge project context with configuration hierarchy
+- Cache project-specific settings with appropriate TTL
+- Enable context-aware behavioral decisions
 
 ---
 *Config loader for intelligent-claude-code system*

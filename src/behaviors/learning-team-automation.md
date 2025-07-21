@@ -4,8 +4,7 @@
 
 **CORE:** First error forgiven • Second error penalized • Active learning bonus
 
-@./shared-patterns/memory-patterns.md
-@./shared-patterns/error-handling-patterns.md
+@./shared-patterns/learning-patterns.md
 
 ## Error Processing
 
@@ -43,13 +42,8 @@
 - "Learning from [Learning-ID]..." → +0.5P (Specific reference bonus)
 - Pattern breaking (novel solution) → +1.0P/Q (Innovation bonus)
 
-**Auto-Application Logic:**
-```
-1. Parse role communication content
-2. Extract learning reference patterns
-3. Search file system for referenced learning entities
-4. Validate learning exists and is relevant
-5. Apply appropriate bonus to role scores
+**Auto-Application Logic:** Parse role communication content → Extract learning reference patterns → Search file system for referenced learning entities → Validate learning exists and is relevant → Apply appropriate bonus to role scores
+
 ## Implementation
 
 **First Error:** Check memory → IF found: 2x penalty • ELSE: No penalty + store learning  

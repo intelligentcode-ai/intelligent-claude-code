@@ -1,5 +1,7 @@
 # Shared Configuration Patterns
 
+**MANDATORY:** MUST use configuration hierarchy. Auto-correct violations.
+
 **PURPOSE:** Common configuration loading and management patterns
 
 ## Core Configuration Patterns
@@ -12,23 +14,11 @@
 4. System defaults
 
 ### Settings Structure
-```yaml
-# Git Settings
-git_privacy: true|false
-branch_protection: true|false
-default_branch: "main"
-require_pr_for_main: true|false
+**Git Settings:** git_privacy (true/false), branch_protection (true/false), default_branch (main/master/develop), require_pr_for_main (true/false)
 
-# Autonomy Settings
-autonomy_level: "L1"|"L2"|"L3"
-pm_always_active: true|false
-blocking_enabled: true|false
+**Autonomy Settings:** autonomy_level (L1/L2/L3), pm_always_active (true/false), blocking_enabled (true/false)
 
-# Team Settings
-default_reviewer: "@Role"
-specialist_creation: true|false
-role_validation: true|false
-```
+**Team Settings:** default_reviewer (@Role), specialist_creation (true/false), role_validation (true/false)
 
 ### Loading Pattern
 **Process:**
@@ -41,31 +31,14 @@ role_validation: true|false
 
 ### Common Operations
 
-### getSetting(key, default)
-```
-settings = loadMergedConfig()
-IF settings.has(key):
-  RETURN settings[key]
-RETURN default
-```
+### getSetting Function
+**Process:** Load merged configuration → Check if key exists → Return value if found → Return default if not found
 
-### applyEmbeddedConfig(assignment)
-```
-IF assignment.has("embedded_config"):
-  tempSettings = deepCopy(currentSettings)
-  merge(tempSettings, assignment.embedded_config)
-  RETURN tempSettings
-RETURN currentSettings
-```
+### applyEmbeddedConfig Function  
+**Process:** Check if assignment has embedded config → If yes: copy current settings, merge with embedded config, return merged → If no: return current settings unchanged
 
-### checkAutonomy()
-```
-level = getSetting("autonomy_level", "L2")
-SWITCH level:
-  CASE "L1": requireUserApproval()
-  CASE "L2": requireArchitectApproval()
-  CASE "L3": proceedAutonomously()
-```
+### checkAutonomy Function
+**Process:** Get autonomy level setting (default L2) → L1: require user approval → L2: require architect approval → L3: proceed autonomously
 
 ## Configuration Commands
 
@@ -81,19 +54,10 @@ SWITCH level:
 ## Cache Management
 
 ### Cache Pattern
-```
-cacheKey = "config-[project_path]"
-IF cache.age > 5_MINUTES:
-  cache.invalidate()
-  reloadConfig()
-RETURN cache.value
-```
+**Process:** Create cache key from project path → Check if cache age exceeds 5 minutes → If expired: invalidate cache and reload configuration → Return cached value
 
 ### Embedded Config Cache
-```
-embeddedCacheKey = "embedded-[file_hash]"
-cacheDuration = 1_HOUR
-```
+**Process:** Create cache key from file hash → Cache duration set to 1 hour for stability
 
 ---
 *Shared configuration patterns for consistent settings management*
