@@ -5,8 +5,8 @@
 **Purpose:** Context-aware role assignment validation with mandatory architect consultation
 
 ## Imports
-@./shared-patterns/validation-patterns.md
-@./shared-patterns/memory-patterns.md
+@./shared-patterns/validation-enforcement-patterns.md
+@./shared-patterns/learning-patterns.md
 
 ## Core Validation
 **Context Enforcement:** PROJECT-CONTEXT.md loading before role assignments
