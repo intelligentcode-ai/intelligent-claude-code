@@ -1,12 +1,8 @@
 # Virtual Team [LEAN WORKFLOW]
 
 @../roles/specialists.md
-@../behaviors/lean-workflow-executor.md
 @../behaviors/learning-team-automation.md
 @../behaviors/config-loader.md
-@../behaviors/role-assignment-validator.md
-@../behaviors/autonomy-controller.md
-@../behaviors/l3-continuous-engine.md
 @../behaviors/task-creation-mandates.md
 @../workflow-templates/executable-workflow.md
 @badges.md
