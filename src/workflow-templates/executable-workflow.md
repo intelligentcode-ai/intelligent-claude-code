@@ -67,7 +67,7 @@ project-root/
    - Validate role assignments for work type
    - Ensure correct specialist selection
    - **Receives context AND settings from parent**
-3. **Task Creation** - "[Role] Description" format, min 3 subtasks
+3. **Task Creation** - "[Role] Description" format, complexity-based subtasks
    - **PRE-ASSIGN SME peer reviewer** during task creation
    - Include SME assignment in task definition
    - Format: "SME_Reviewer: @Security-Engineer" in task
