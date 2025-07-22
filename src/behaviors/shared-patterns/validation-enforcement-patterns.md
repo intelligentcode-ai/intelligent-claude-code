@@ -58,12 +58,12 @@
 
 ## Validation Commands
 
-### Standard Validation Commands
-- `/icc-validate-context` - Ensure context loaded
-- `/icc-detect-work-type` - Identify work domain
-- `/icc-validate-assignments` - Check capability match
-- `/icc-require-approval` - Enforce architect approval
-- `/icc-enforce-validation` - Apply validation chain
+### Validation Mechanisms
+- **Context Validation** - Handled by workflow phases
+- **Work Type Detection** - workflow-auto-trigger.md behavior
+- **Assignment Validation** - workflow-enforcement.md behavior
+- **Approval Requirements** - Enforced in workflow Architect Triage
+- **Validation Chain** - Automatic through behavioral modules
 
 ### Validation Functions
 **Capability Matching:** Calculate overlap between role capabilities and requirements → If overlap >= 70%: approve assignment → If below 70%: reject or create specialist

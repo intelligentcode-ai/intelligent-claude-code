@@ -14,11 +14,11 @@ The self-correcting validation system ensures that validation chains are automat
    - Corrects role assignments to meet >70% capability threshold
    - Enforces git privacy settings
 
-2. **/icc-enforce-validation Command**
-   - Activates real-time validation enforcement
-   - Hooks into role assignment flow
-   - Intercepts git operations
-   - Provides visible auto-correction logs
+2. **workflow-enforcement.md Behavior**
+   - Provides real-time validation enforcement
+   - Automatically intercepts role assignments
+   - Monitors git operations
+   - Enforces workflow phases
 
 3. **/icc-test-enforcement Command**
    - Tests all enforcement scenarios
@@ -41,7 +41,7 @@ AUTO-CORRECTED: @Developer → @DevOps-Engineer
 ### Integration Points
 
 1. **Automatic Activation**
-   - `/icc-load` automatically executes `/icc-enforce-validation`
+   - workflow-enforcement.md activates on system initialization
    - All behavioral pattern loading includes enforcement
 
 2. **Real-Time Interception**
@@ -99,4 +99,4 @@ The system respects all settings from the configuration hierarchy:
 
 ## Key Insight
 
-In markdown-based behavioral systems, documentation alone doesn't enforce behavior. Commands with execution hooks enable real enforcement. The ValidationInterceptor provides the logic, but `/icc-enforce-validation` makes it real.
+In markdown-based behavioral systems, documentation alone doesn't enforce behavior. The workflow-enforcement.md behavior module and ValidationInterceptor work together to provide real-time enforcement through continuous pattern detection and correction.
