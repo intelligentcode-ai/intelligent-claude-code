@@ -9,6 +9,7 @@
 ## Imports
 
 @./shared-patterns/configuration-patterns.md
+@../workflow-templates/executable-workflow.md
 
 ## Operation
 
@@ -63,11 +64,11 @@
 ## Integration Patterns
 
 ### API Usage (Using Shared Patterns)
-- Use getSetting(key, default) from configuration-patterns.md
-- Apply checkAutonomy() for L1/L2/L3 behavior
-- Use applyEmbeddedConfig() for assignment overrides
-- Use /icc-load-project-context for PROJECT-CONTEXT.md loading
-- Follow Common Operations patterns for all settings access
+- **Get Setting:** Load config → Check key exists → Return value or default
+- **Check Autonomy:** Get autonomy_level → Apply L1/L2/L3 behaviors
+- **Apply Embedded:** Check assignment config → Merge with current → Return merged
+- **Load Context:** Use /icc-load-project-context command
+- **Settings Access:** Follow configuration-patterns.md operations
 
 ### PROJECT-CONTEXT.md Integration
 - Auto-execute /icc-load-project-context during system initialization
