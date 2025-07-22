@@ -1,0 +1,42 @@
+---
+id: BUG-122
+title: "CRITICAL: System Does Not Apply and Remember Information Given"
+type: bug
+priority: P0
+epic: EPIC-002
+status: PLANNED
+created: 2025-07-22
+reporter: User
+assignee: TBD
+---
+
+# BUG-122: CRITICAL - System Does Not Apply and Remember Information Given
+
+## Problem Description
+System repeatedly fails to remember and apply critical settings and information, requiring DOZENS of reminders for the same information. This affects ALL projects and is a fundamental system failure.
+
+## Critical Evidence
+- **git_privacy setting**: Despite being set to true, system repeatedly tries to add AI mentions to commits
+- **Workspace information**: System forgets working directory and project context
+- **Settings from CLAUDE.md**: Information clearly present gets ignored
+- **PROJECT-CONTEXT.md**: Fundamental project information not retained
+- **Repeated violations**: Same errors occur dozens of times in single session
+
+## Impact
+- **User frustration**: Having to remind system of same information repeatedly
+- **Workflow disruption**: Constant corrections break flow
+- **Trust erosion**: System appears unreliable when it can't remember basics
+- **Efficiency loss**: Time wasted on repeated corrections
+
+## Root Cause Hypothesis
+- Information loaded but not properly propagated to subagents
+- Settings not persisted across Task tool invocations
+- No validation that loaded information is actually applied
+- Behavioral patterns not enforcing setting compliance
+
+## Acceptance Criteria
+- [ ] System remembers ALL settings throughout entire session
+- [ ] Settings properly propagate to ALL subagents
+- [ ] No repeated violations of known settings
+- [ ] Validation that loaded information is applied
+- [ ] Persistent enforcement of critical settings like git_privacy
