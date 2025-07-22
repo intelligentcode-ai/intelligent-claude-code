@@ -33,7 +33,7 @@
 
 **Assignment Processing:** Read YAML files → Apply embedded config → Track progress
 
-**Task Mandates:** Role in title • Min 3 subtasks • Sequential thinking • Ultra-experienced specialists
+**Task Mandates:** Role in title • Complexity-based subtasks • Sequential thinking • Ultra-experienced specialists
 
 **Execution:** Knowledge retrieval → Work → Progress update → Knowledge generation  
 
