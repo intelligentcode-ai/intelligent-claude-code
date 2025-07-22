@@ -10,108 +10,38 @@ Every work detection triggers a Task tool invocation with appropriate workflow c
 
 ## Work Detection Patterns
 
-### Assignment File Detection
-**File Types:** epic.yaml, story.yaml, bug.yaml, task files (.md)
-**Auto-Trigger Example:**
-When user says: "Let's work on BUG-115"
-System detects: BUG reference → Search for bug.yaml → Launch outer workflow
+| Trigger Type | Detection Pattern | Workflow | Auto-Action |
+|-------------|------------------|----------|-------------|
+| **File** | epic.yaml, story.yaml, bug.yaml, task.md | Outer/Inner | Create Task tool invocation with file context |
+| **Command** | /icc-create-task, /icc-start-story, /icc-fix-bug | Per command | Extract ID, launch appropriate workflow |
+| **Role** | @Role: or @Role (inline) | Inner | Convert to Task tool, block direct execution |
+| **Reference** | STORY-XXX, BUG-XXX, TASK-XXX | Outer/Inner | Search for file, launch with context |
+| **Context** | Implementation intent without ID | Inner | Assign appropriate role, launch workflow |
 
-**Task Tool Invocation:**
-```xml
-<invoke name="Task">
-  <parameter name="description">[PM] Plan BUG-115 resolution approach</parameter>
-  <parameter name="prompt">You are @PM. Load and analyze BUG-115 requirements.
-  Context: [PROJECT-CONTEXT passed from parent]
-  Settings: [All settings passed from parent]
-  Workflow: OUTER (Story/Bug level)</parameter>
-</invoke>
-```
-
-### Command Pattern Detection
-**Commands:** /icc-create-task, /icc-start-story, /icc-fix-bug
-**Auto-Trigger Example:**
-When user types: "/icc-fix-bug BUG-115"
-System detects: Bug fix command → Extract BUG-115 → Launch outer workflow
-
-### Role Mention Detection
-**Pattern:** @Role: or @Role (inline) detected
-**Auto-Trigger Example:**
-When user says: "@Developer implement the login feature"
-System detects: Role mention → Convert to Task tool → Launch inner workflow
-
-**Task Tool Invocation:**
-```xml
-<invoke name="Task">
-  <parameter name="description">[Developer] Implement the login feature</parameter>
-  <parameter name="prompt">You are @Developer. Implement the login feature.
-  Context: [PROJECT-CONTEXT passed from parent]
-  Settings: [All settings passed from parent]
-  Workflow: INNER (Task level)</parameter>
-</invoke>
-```
+**Task Tool Pattern:** See @workflow-templates/executable-workflow.md
 
 ## Workflow Type Determination
 
-### Outer Workflow Triggers (Story/Bug Level)
-**Detection Pattern:**
-1. User mentions STORY-XXX or BUG-XXX
-2. System searches for corresponding .yaml file
-3. If found: Launch outer workflow
-4. Parent loads PROJECT-CONTEXT.md and all settings ONCE
-5. Pass context and settings to all subagents
+### Workflow Selection Table
 
-**Real Examples:**
-- "Fix BUG-115" → Outer workflow
-- "Implement STORY-002" → Outer workflow
-- "Create tasks for the authentication epic" → Outer workflow
+| Work Type | Trigger | Workflow | Context Loading |
+|-----------|---------|----------|----------------|
+| **Story/Bug** | STORY-XXX, BUG-XXX, story.yaml, bug.yaml | Outer | Parent loads once |
+| **Epic** | EPIC-XXX, epic.yaml | Outer | Parent loads once |
+| **Task** | TASK-XXX, task.md, single action | Inner | Passed from parent |
+| **Ambiguous** | No explicit ID | Inner (default) | Passed from parent |
 
-### Inner Workflow Triggers (Task Level)
-**Detection Pattern:**
-1. User mentions TASK-XXX or single implementation request
-2. System identifies single-task scope
-3. Launch inner workflow with pre-loaded context
-4. Context and settings passed from parent
+**Resolution:** ID match → File search → Scope check → Default to inner
 
-**Real Examples:**
-- "Execute TASK-003" → Inner workflow
-- "@Developer fix the login bug" → Inner workflow
-- "Update the configuration file" → Inner workflow
+## Auto-Activation Flow
 
-### Ambiguous Work Detection
-**Resolution Pattern:**
-1. Search for explicit work IDs (STORY/BUG/TASK)
-2. Check scope: Multiple tasks = Outer, Single task = Inner
-3. Default to inner workflow for direct implementation
-4. Always pass parent context to avoid redundant loading
+1. **Detect** → File type, command, or intent
+2. **Load** → Assignment content and configuration
+3. **Create** → Task tool invocation with context
+4. **Launch** → Appropriate workflow (outer/inner)
+5. **Execute** → Through workflow phases
 
-## Auto-Activation Mechanisms
-
-### File-Based Activation
-**Real Behavior:**
-When user opens story.yaml:
-1. System detects file type from extension
-2. Reads assignment configuration
-3. Creates Task tool invocation with PM role
-4. Includes file content in prompt context
-5. Launches outer workflow automatically
-
-### Command-Based Activation
-**Real Behavior:**
-When user types /icc-execute-task TASK-003:
-1. System parses command and extracts TASK-003
-2. Loads task file content
-3. Creates Task tool invocation with assigned role
-4. Passes task requirements in prompt
-5. Launches inner workflow automatically
-
-### Context-Based Activation
-**Real Behavior:**
-When user says "Let's implement the auth system":
-1. System detects implementation intent
-2. Checks for related assignment files
-3. If none found, creates inner workflow
-4. Assigns appropriate role (@Developer or specialist)
-5. Launches with implementation context
+**Context:** Parent loads PROJECT-CONTEXT.md and settings ONCE, passes to all subagents
 
 ## Integration Points
 
@@ -126,55 +56,28 @@ When user says "Let's implement the auth system":
 
 ## Trigger Priority Order
 
-### Priority Hierarchy
-1. **Explicit assignment files** (epic.yaml, story.yaml, bug.yaml)
-2. **Direct commands** (/icc-start-story, /icc-execute-task)
-3. **Work ID references** (STORY-XXX, TASK-XXX mentions)
-4. **Role invocations** (@Role patterns)
-5. **Context inference** (work-related discussions)
+1. **Assignment files** (epic.yaml, story.yaml, bug.yaml)
+2. **Commands** (/icc-start-story, /icc-execute-task)
+3. **ID references** (STORY-XXX, TASK-XXX)
+4. **@Role patterns**
+5. **Context inference**
 
-### Conflict Resolution
-**Multiple Triggers:** Use highest priority trigger → Ignore lower priority → Log all detected triggers → Learn from patterns
+**Conflict:** Use highest priority → Log all → Learn patterns
 
 ## Auto-Correction Patterns
 
-### Missing Workflow Detection
-**Real Correction Example:**
-User: "@Developer implement login"
-System detects: Direct role mention without workflow
-Auto-correction:
-1. STOP the direct execution
-2. Create Task tool invocation
-3. Launch inner workflow
-4. Execute through proper phases
-
-### Wrong Workflow Detection
-**Real Correction Example:**
-User starts implementing without planning phase
-System detects: Phase skip attempt
-Auto-correction:
-1. STOP implementation
-2. Store attempted work
-3. Launch workflow from phase 1
-4. Apply work after validation
-
-### Bypass Attempt Detection
-**Real Correction Example:**
-User tries direct file edit without workflow
-System detects: Workflow bypass
-Auto-correction:
-1. Block the edit operation
-2. Identify work type from edit intent
-3. Launch appropriate workflow
-4. Guide through proper phases
+| Violation | Detection | Correction |
+|-----------|-----------|------------|
+| **Missing Workflow** | Direct @Role without Task tool | STOP → Create Task invocation → Launch workflow |
+| **Phase Skip** | Implementation before planning | STOP → Store work → Start from phase 1 |
+| **Bypass Attempt** | Direct edit without workflow | Block → Identify work type → Launch workflow |
+| **Wrong Workflow** | Inner when outer needed | Redirect → Load story/bug → Launch outer |
 
 ## Configuration Integration
 
-### Settings Recognition
-**Auto-Load:** Detect autonomy_level setting → Apply L1/L2/L3 behaviors → Respect blocking_enabled → Honor pm_always_active
-
-### Dynamic Adjustment
-**Runtime:** Monitor setting changes → Adjust trigger sensitivity → Update automation level → Maintain consistency
+### Settings Integration
+**Auto-Load:** Detect autonomy_level → Apply L1/L2/L3 → Respect blocking/pm_always_active
+**Runtime:** Monitor changes → Adjust sensitivity → Maintain consistency
 
 ## Continuous Detection (L3)
 
@@ -186,25 +89,9 @@ Auto-correction:
 4. Auto-launch workflows for each item
 5. Execute up to 5 parallel tasks
 
-**Real L3 Example:**
-System finds: TASK-003 (PLANNED), TASK-004 (PLANNED)
-Auto-action: Launch 2 parallel inner workflows
-Continue: Until all work COMPLETED
-
-### Chain Execution
-**Continuous Flow:**
-1. Complete TASK-003 workflow
-2. Immediately scan for next work
-3. Find TASK-004 ready
-4. Launch without user prompt
-5. Continue until task queue empty
-
-### Progress Tracking
-**Real-time Monitoring:**
-- Active workflows: Track phases and progress
-- Completion rates: Log success/failure
-- Stuck detection: Alert if phase exceeds time
-- Learning capture: Store patterns for improvement
+### Chain Execution & Monitoring
+**Continuous Flow:** Complete workflow → Scan for next → Launch immediately → Continue until empty
+**Tracking:** Phase progress, success rates, stuck detection, learning capture
 
 ## Critical Trigger Points
 
@@ -226,34 +113,12 @@ Continue: Until all work COMPLETED
 - Misdetection patterns for learning improvement
 - Bypass attempts with corrective actions taken
 
-## Real-World Examples
+## Critical References
 
-### Example 1: Bug Fix Request
-**User Input:** "Can you fix BUG-115?"
-**Auto-Trigger Action:**
-1. Detect BUG-115 reference
-2. Search for bug.yaml file
-3. Create PM Task tool invocation
-4. Launch outer workflow
-5. Pass bug context to PM
-
-### Example 2: Direct Implementation
-**User Input:** "Update the login validation"
-**Auto-Trigger Action:**
-1. Detect implementation intent
-2. No specific ID found
-3. Create Developer Task tool invocation
-4. Launch inner workflow
-5. Execute through phases
-
-### Example 3: L3 Autonomous Work
-**System Scan:** Finds 3 PLANNED tasks
-**Auto-Trigger Action:**
-1. Sort by priority (P0 first)
-2. Launch parallel workflows (up to 5)
-3. Monitor progress
-4. Chain to next tasks
-5. Continue until queue empty
+- **Workflow Execution:** @workflow-templates/executable-workflow.md
+- **Phase Enforcement:** @behaviors/workflow-enforcement.md  
+- **Task Tool XML:** See executable-workflow.md for invocation examples
+- **Context Loading:** Parent loads once via /icc-load-project-context
 
 ---
-*Workflow auto-trigger behavior for intelligent-claude-code system - NO PSEUDO-CODE, only real behavioral patterns*
+*Workflow auto-trigger behavior - optimized for AI execution*
