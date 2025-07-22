@@ -71,7 +71,6 @@ FUNCTION forceLoadBehavioralPatterns():
 ## Related Commands
 
 - `/icc-init-system`: System initialization (calls icc-load)
-- `/icc-enforce-validation`: Validation enforcement (called by icc-load)
 - `/icc-restore-state`: State restoration (uses loaded patterns)
 - `/icc-verify-behaviors`: Behavioral validation (verifies loaded patterns)
 

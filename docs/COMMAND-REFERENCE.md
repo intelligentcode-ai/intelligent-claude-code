@@ -63,13 +63,6 @@ The intelligent-claude-code system provides slash commands with the `icc-` prefi
 **Integration**: Called during story planning phase
 **Output**: Task breakdown with role assignments
 
-### `icc-detect-work-type`
-**Purpose**: Detect work type and determine required specialists
-**Usage**: `icc-detect-work-type "work description"`
-**Parameters**:
-- `content`: Work description to analyze
-**Integration**: Called during work assignment validation
-**Output**: Work type classification and required architect
 
 ## Memory Commands
 
@@ -93,7 +86,7 @@ Commands are integrated into the executable workflow system at key workflow poin
 
 - **System Initialization**: `icc-init-system` called on startup
 - **Role Assignment**: `icc-activate-role` called during role switching
-- **Work Validation**: `icc-detect-work-type` called during assignment validation
+- **Work Validation**: Workflow-auto-trigger.md handles work detection automatically
 - **Story Planning**: `icc-create-story` and `icc-plan-story` used in planning
 - **Knowledge Operations**: `icc-memory-search` used in retrieval phases
 
