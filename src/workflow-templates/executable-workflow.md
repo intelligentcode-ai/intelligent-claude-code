@@ -29,9 +29,16 @@ project-root/
 ├── epics/
 │   └── EPIC-001/
 │       ├── epic.yaml
-│       └── stories/
-└── tasks/
-    └── TASK-001.md
+│       ├── stories/
+│       │   └── STORY-001/
+│       │       ├── story.yaml
+│       │       └── tasks/
+│       │           └── TASK-001.md
+│       └── bugs/
+│           └── BUG-001/
+│               ├── bug.yaml
+│               └── tasks/
+│                   └── TASK-001.md
 ```
 
 ## Priority System
