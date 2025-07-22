@@ -1,6 +1,6 @@
 # Task Creation Mandates
 
-**MANDATORY:** MUST use role-in-title + 3 subtasks. Auto-correct violations.
+**MANDATORY:** MUST use role-in-title + complexity-appropriate subtasks. Auto-correct violations.
 
 **PURPOSE:** Mandatory behavioral requirements for ALL task creation.
 
@@ -14,11 +14,34 @@
 - Format: "[Role] Task description"
 - Examples: "[Developer] Implement auth", "[AI-Architect] Design memory system"
 
-### Subtasks - ALWAYS
-**Every task MUST have minimum 3 subtasks**
-- Maximum granularity for parallel execution
-- Clear progress tracking
-- Each subtask clearly scoped
+### Subtasks - COMPLEXITY-BASED
+**Task breakdown based on complexity and nature of work**
+
+#### Simple Tasks (0-1 subtasks)
+- Single-file edits or small changes
+- Configuration updates
+- Documentation fixes
+- Version bumps
+- Examples: "Fix typo in README", "Update config value"
+
+#### Standard Tasks (2-3 subtasks)
+- Feature implementations spanning multiple files
+- Bug fixes requiring investigation
+- Refactoring operations
+- Examples: "Add new API endpoint", "Fix login validation bug"
+
+#### Complex Tasks (4+ subtasks)
+- System-wide changes
+- New feature modules
+- Performance optimizations
+- Security implementations
+- Examples: "Implement OAuth2 system", "Refactor entire data layer"
+
+**Subtask Guidelines:**
+- Each subtask should be independently executable
+- Clear progress tracking through subtask completion
+- Avoid artificial breakdown just to meet a count
+- Focus on logical work units
 
 ### Parallelization - WHERE APPLICABLE
 **Identify and mark parallel execution opportunities**
@@ -47,7 +70,19 @@
 
 ## ENFORCEMENT
 
-These mandates are NON-NEGOTIABLE and apply to ALL task creation: bug decomposition, story creation, epic planning, role assignments.
+**Role-in-Title:** NON-NEGOTIABLE for ALL tasks
+**Subtask Count:** Based on task complexity assessment
+- Simple tasks: May have 0-1 subtasks
+- Standard tasks: Typically 2-3 subtasks
+- Complex tasks: 4 or more subtasks as needed
+
+**Auto-Correction Patterns:**
+- Missing role in title → Add appropriate role
+- Over-decomposed simple task → Consolidate subtasks
+- Under-decomposed complex task → Expand breakdown
+- Artificial subtasks → Remove and simplify
+
+Apply to ALL task creation: bug decomposition, story creation, epic planning, role assignments.
 
 ## INTEGRATION
 
