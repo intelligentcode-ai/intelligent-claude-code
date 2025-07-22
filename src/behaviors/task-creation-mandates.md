@@ -4,6 +4,9 @@
 
 **PURPOSE:** Mandatory behavioral requirements for ALL task creation.
 
+## Imports
+@../workflow-templates/executable-workflow.md
+
 ## MANDATORY RULES
 
 ### Role in Title - ALWAYS

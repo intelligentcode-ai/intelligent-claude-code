@@ -44,15 +44,7 @@
 **Scope Detection:** Multi-task = outer workflow, single task = inner workflow
 
 ### Launch Pattern
-```xml
-<invoke name="Task">
-  <parameter name="description">[PM] Initialize workflow for [user request]</parameter>  
-  <parameter name="prompt">You are @PM. User requested: "[original request]"
-  Start [workflow type] from phase 1.
-  Context: [PROJECT-CONTEXT]
-  Settings: [All loaded settings]</parameter>
-</invoke>
-```
+**Task Tool Invocation:** Create PM task → Include user request → Pass context/settings → Select workflow type → Start from phase 1
 
 ## Enforcement Mechanisms  
 
@@ -62,12 +54,6 @@
 3. **Workflow Checker:** Validate workflow state  
 4. **Phase Validator:** Ensure correct phase for action
 5. **Auto-Corrector:** Launch workflow or redirect phase
-
-### Command Integration
-**Validation:** `/icc-enforce-validation` - Enforce phase restrictions
-**Triage:** `/icc-require-triage` - Require architect approval
-**Work Detection:** `/icc-detect-work-type` - Identify work category
-**Config Loading:** `/icc-load-project-context` - Load settings once
 
 ### Real-Time Interception
 **Monitor:** ALL text processing streams  
