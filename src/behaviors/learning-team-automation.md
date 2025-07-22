@@ -22,8 +22,8 @@
 - "To prevent repeat of" → +0.5Q
 
 ### Storage (Using Shared Patterns)
-- Use Entity Structure Pattern from memory-patterns.md
-- Apply Learning Storage Pattern for consistency
+- Use Learning Storage Pattern from learning-patterns.md
+- Apply Error Forgiveness Logic for consistency
 - Follow standard field definitions
 - Implement proper indexing and relationships
 

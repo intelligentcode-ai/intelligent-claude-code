@@ -9,6 +9,7 @@
 ## Imports
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/validation-enforcement-patterns.md
+@../workflow-templates/executable-workflow.md
 
 ## Role Activation System
 
@@ -77,13 +78,19 @@
 **Capability Verification:** Continuous monitoring of role performance
 **Auto-Improvement:** Learning capture and role enhancement
 
+### Workflow Integration
+**Task Tool Pattern:** Every @Role triggers Task tool invocation
+**Context Passing:** Parent loads context/settings once, passes to all roles
+**Phase Alignment:** Roles activate at correct workflow phases
+**SME Assignment:** Pre-assigned reviewers from task definitions
+
 ## Integration Commands
 
 ### Role Operations (Behavioral)
-- Activate role: `activateRole(roleName, context)`
-- Create specialist: `createSpecialist(requirements, domain)`
-- Switch context: `switchRoleContext(fromRole, toRole)`
-- Validate assignment: `validateRoleAssignment(role, task)`
+- **Activate role:** Load role definition → Adopt behavioral patterns → Update scoring
+- **Create specialist:** Analyze requirements → Generate 10+ years expertise → Inject knowledge
+- **Switch context:** Save current role state → Load new role → Transfer context
+- **Validate assignment:** Check capability match → Verify >70% threshold → Approve/reject
 
 ### Knowledge Integration
 **Context7 Integration:** Real-time documentation injection for specialists
