@@ -158,7 +158,6 @@ Examples:
 Pattern: icc-[action]-[target].md
 Examples:
 - icc-create-story.md
-- icc-detect-work-type.md
 - icc-archive-completed.md
 - icc-system-status.md
 ```
