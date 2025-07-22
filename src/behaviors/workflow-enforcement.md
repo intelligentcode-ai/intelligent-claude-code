@@ -21,12 +21,10 @@
 
 ## Phase Enforcement
 
-### Phase Gates
-**Phase 1 (Planning):** @PM only → Block implementation
-**Phase 2 (Validation):** @Architect only → Block execution without approval  
-**Phase 3 (Execution):** Implementation roles only → Block if no approval
-**Phase 4 (Review):** Pre-assigned SME only → Block new work
-**Phase 5 (Completion):** Git roles only → Block new changes
+### Phase References
+**Workflow Phases:** See executable-workflow.md for outer/inner workflow definitions
+**Phase Gates:** Enforce role restrictions per workflow phase
+**Auto-Correction:** Redirect violations to correct phase
 
 ### Auto-Correction Patterns
 **Implementation in Planning:** STOP → Return to planning → Apply after validation
@@ -64,6 +62,12 @@
 3. **Workflow Checker:** Validate workflow state  
 4. **Phase Validator:** Ensure correct phase for action
 5. **Auto-Corrector:** Launch workflow or redirect phase
+
+### Command Integration
+**Validation:** `/icc-enforce-validation` - Enforce phase restrictions
+**Triage:** `/icc-require-triage` - Require architect approval
+**Work Detection:** `/icc-detect-work-type` - Identify work category
+**Config Loading:** `/icc-load-project-context` - Load settings once
 
 ### Real-Time Interception
 **Monitor:** ALL text processing streams  
@@ -107,8 +111,9 @@
 **L3:** Autonomous correction and optimization
 
 ### With Workflow Templates
-**Outer Workflow:** Story/bug/epic level enforcement  
-**Inner Workflow:** Task level enforcement
+**Reference:** See executable-workflow.md for complete phase definitions
+**Outer Workflow:** Story/bug/epic level enforcement (7 phases)
+**Inner Workflow:** Task level enforcement (8 phases)
 **Phase Sync:** Maintain consistency across workflow types
 
 ---
