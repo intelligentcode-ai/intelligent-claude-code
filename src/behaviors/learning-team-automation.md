@@ -5,6 +5,7 @@
 **CORE:** First error forgiven • Second error penalized • Active learning bonus
 
 @./shared-patterns/learning-patterns.md
+@./shared-patterns/memory-operations.md
 
 ## Error Processing
 
@@ -23,6 +24,7 @@
 
 ### Storage (Using Shared Patterns)
 - Use Learning Storage Pattern from learning-patterns.md
+- Apply StoreInMemory Pattern from memory-operations.md
 - Apply Error Forgiveness Logic for consistency
 - Follow standard field definitions
 - Implement proper indexing and relationships
@@ -46,8 +48,8 @@
 
 ## Implementation
 
-**First Error:** Check memory → IF found: 2x penalty • ELSE: No penalty + store learning  
+**First Error:** Use SearchMemory → IF found: 2x penalty • ELSE: No penalty + StoreInMemory  
 **Learning Application:** Scan for "Based on previous learning" → +0.5P/Q bonus  
-**Pattern Storage:** Learning-[ErrorType]-[YYYY-MM-DD] format
+**Pattern Storage:** Learning-[ErrorType]-[YYYY-MM-DD] format (see memory-operations.md)
 
-**Integration:** Memory-first before actions → Apply learnings → Store new patterns
+**Integration:** SearchMemory before actions → Apply learnings → StoreInMemory for new patterns

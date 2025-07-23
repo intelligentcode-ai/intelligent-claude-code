@@ -53,10 +53,11 @@
 
 ### Memory Operations
 Memory search and storage are handled automatically by the workflow:
-- **Search**: Built into workflow steps (outer step 1, inner step 2)
-- **Storage**: Handled by retrospective phases (outer step 7, inner step 8)
+- **Search**: Built into workflow steps using SearchMemory pattern (outer step 1, inner step 2)
+- **Storage**: Handled by retrospective phases using StoreInMemory pattern (outer step 7, inner step 8)
 - **Learning Capture**: Automatic during task/story retrospectives
-- **Learning Storage**: Workflow creates learning entities directly
+- **Learning Storage**: Workflow creates learning entities directly via memory-operations.md
+- **Details**: See memory-operations.md for complete file-based memory patterns
 
 ### Learning Application
 **Memory-First Process:** Always search memory before action → Apply any relevant learnings found → Enhance action with learning context → Execute with learning awareness

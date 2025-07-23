@@ -82,11 +82,13 @@ project-root/
 6. **Merge Request Decision** - PARENT asks user directly (not subagent)
    - "Would you like me to create a merge request?"
 7. **Story Retrospective** - Capture learnings and patterns
+   - **Uses StoreInMemory pattern from memory-operations.md**
    - **Receives context AND settings from parent**
 
 ## Inner Workflow (Task Level)
 
 1. **Memory Search** - Find relevant patterns for task domain
+   - **Uses SearchMemory pattern from memory-operations.md**
    - **Uses context AND settings already passed from parent**
    - No need to load settings - parent already provided them
 2. **Generate Workflow Steps** - Based on task type, create specific steps
@@ -113,6 +115,7 @@ project-root/
    - Use default_branch setting (from parent settings)
 7. **Task Completion** - Update status to COMPLETED
 8. **Learning Capture** - Store patterns for future reference
+   - **Uses StoreInMemory pattern from memory-operations.md**
 
 ## Review Repetition Pattern
 - **Minor issues:** Fix in same task, re-review
