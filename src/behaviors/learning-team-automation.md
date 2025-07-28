@@ -13,7 +13,7 @@
 **Repeated Error:** Double penalty + Escalation  
 **Learning Application:** +0.5P/Q bonus for references
 
-**Learning Storage:** ~/.claude/memory/entities/Learning/[YYYY]/[MM]/
+**Learning Storage:** .claude/memory/entities/Learning/[YYYY]/[MM]/
 
 ## Reference Detection
 
