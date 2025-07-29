@@ -13,7 +13,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 ## Core Actions
 1. **Load Configuration**: Apply configuration hierarchy (embedded → project → user → system defaults)
-2. **Initialize Memory System**: Bootstrap MCP Memory connection and search capabilities
+2. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
 3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
 4. **Activate Lean Workflow**: Enable assignment-driven workflow executor
 5. **Initialize Scoring System**: Activate badges.md achievement tracking
