@@ -34,10 +34,7 @@
 - **Review Process:** Domain expert SMEs required for peer reviews
 
 ## Architecture Decisions
-1. **Hybrid Documentation** - Markdown with structured pseudo-code patterns
+1. **Hybrid Documentation** - Markdown only without pseudo-code
 2. **Import Chain** - Single-line activation via @imports
 3. **Behavioral Enforcement** - Patterns guide behavior, not code enforcement
 4. **Learning Integration** - First errors forgiven, patterns captured
-
-## Current Focus
-Working on BUG-087: Context knowledge not visible, implementing PROJECT-CONTEXT.md loader to ensure context is always loaded first in any work session.

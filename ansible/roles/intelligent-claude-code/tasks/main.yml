@@ -19,7 +19,6 @@
     - "{{ claude_install_path }}/behaviors"
     - "{{ claude_install_path }}/commands"
     - "{{ claude_install_path }}/roles"
-    - "{{ claude_install_path }}/planning"
     - "{{ claude_install_path }}/workflow-templates"
 
 - name: Check if CLAUDE.md exists
@@ -97,18 +96,6 @@
     msg: "Roles directory preserved: {{ claude_install_path }}/roles/ already exists - keeping user modifications"
   when: roles_copy_result.failed
 
-- name: Copy planning directory
-  copy:
-    src: "{{ playbook_dir }}/../src/planning/"
-    dest: "{{ claude_install_path }}/planning/"
-    mode: '0644'
-    force: yes
-  register: planning_copy_result
-
-- name: Display planning preservation notice
-  debug:
-    msg: "Planning directory preserved: {{ claude_install_path }}/planning/ already exists - keeping user modifications"
-  when: planning_copy_result.failed
 
 - name: Copy workflow-templates directory
   copy:
