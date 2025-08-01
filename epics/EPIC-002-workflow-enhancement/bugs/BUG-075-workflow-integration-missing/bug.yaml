@@ -1,0 +1,44 @@
+id: BUG-075
+title: "Inner and Outer Workflows Not Integrated"
+description: |
+  The inner and outer workflow templates exist but are NOT referenced or used
+  by any behaviors or commands. This breaks our entire execution model.
+  
+severity: HIGH
+priority: P1
+status: COMPLETED
+phase: DONE
+
+identified_issues:
+  - "Workflows not referenced in behaviors"
+  - "Commands don't follow workflow patterns"
+  - "icc-plan-tasks doesn't use workflow task ordering"
+  - "No workflow integration in execution"
+
+root_cause: |
+  Workflow templates were created but never integrated into the behavioral
+  system or command execution patterns.
+
+impact:
+  - Tasks not created in proper order
+  - Workflow benefits not realized
+  - Execution patterns inconsistent
+
+acceptance_criteria:
+  - Integrate workflows into behaviors
+  - Commands reference and use workflows
+  - Task planning follows workflow patterns
+  - Proper task ordering implemented
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@Architect"]
+approved_by: ["@PM", "@Architect"]
+
+estimated_effort: "2-3 hours"
+actual_effort: null
+
+tags: ["high", "workflow", "integration"]
+
+created_at: "2025-01-19T12:54:00-05:00"
+updated_at: "2025-01-19T12:54:00-05:00"
+completed_at: null

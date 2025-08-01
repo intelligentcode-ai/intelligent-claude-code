@@ -16,6 +16,11 @@
   loop:
     - "{{ claude_install_path }}"
     - "{{ claude_install_path }}/modes"
+    - "{{ claude_install_path }}/behaviors"
+    - "{{ claude_install_path }}/commands"
+    - "{{ claude_install_path }}/roles"
+    - "{{ claude_install_path }}/planning"
+    - "{{ claude_install_path }}/workflow-templates"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -40,13 +45,12 @@
     mode: '0644'
   when: not claude_md_exists.stat.exists
 
-- name: Copy virtual team mode files (force=no to preserve user modifications)
+- name: Copy virtual team mode files
   copy:
     src: "{{ playbook_dir }}/../src/modes/"
     dest: "{{ claude_install_path }}/modes/"
     mode: '0644'
-    force: no
-  ignore_errors: yes
+    force: yes
   register: modes_copy_result
 
 - name: Display modes preservation notice
@@ -54,13 +58,77 @@
     msg: "Mode files preserved: {{ claude_install_path }}/modes/ already exists - keeping user modifications"
   when: modes_copy_result.failed
 
-- name: Copy VERSION file (force=no to preserve user modifications)
+- name: Copy behavior files
+  copy:
+    src: "{{ playbook_dir }}/../src/behaviors/"
+    dest: "{{ claude_install_path }}/behaviors/"
+    mode: '0644'
+    force: yes
+  register: behaviors_copy_result
+
+- name: Display behaviors preservation notice
+  debug:
+    msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
+  when: behaviors_copy_result.failed
+
+- name: Copy commands directory
+  copy:
+    src: "{{ playbook_dir }}/../src/commands/"
+    dest: "{{ claude_install_path }}/commands/"
+    mode: '0644'
+    force: yes
+  register: commands_copy_result
+
+- name: Display commands preservation notice
+  debug:
+    msg: "Commands directory preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
+  when: commands_copy_result.failed
+
+- name: Copy roles directory
+  copy:
+    src: "{{ playbook_dir }}/../src/roles/"
+    dest: "{{ claude_install_path }}/roles/"
+    mode: '0644'
+    force: yes
+  register: roles_copy_result
+
+- name: Display roles preservation notice
+  debug:
+    msg: "Roles directory preserved: {{ claude_install_path }}/roles/ already exists - keeping user modifications"
+  when: roles_copy_result.failed
+
+- name: Copy planning directory
+  copy:
+    src: "{{ playbook_dir }}/../src/planning/"
+    dest: "{{ claude_install_path }}/planning/"
+    mode: '0644'
+    force: yes
+  register: planning_copy_result
+
+- name: Display planning preservation notice
+  debug:
+    msg: "Planning directory preserved: {{ claude_install_path }}/planning/ already exists - keeping user modifications"
+  when: planning_copy_result.failed
+
+- name: Copy workflow-templates directory
+  copy:
+    src: "{{ playbook_dir }}/../src/workflow-templates/"
+    dest: "{{ claude_install_path }}/workflow-templates/"
+    mode: '0644'
+    force: yes
+  register: workflow_templates_copy_result
+
+- name: Display workflow-templates preservation notice
+  debug:
+    msg: "Workflow templates directory preserved: {{ claude_install_path }}/workflow-templates/ already exists - keeping user modifications"
+  when: workflow_templates_copy_result.failed
+
+- name: Copy VERSION file
   copy:
     src: "{{ playbook_dir }}/../src/VERSION"
     dest: "{{ claude_install_path }}/VERSION"
     mode: '0644'
-    force: no
-  ignore_errors: yes
+    force: yes
   register: version_copy_result
 
 - name: Display VERSION preservation notice
@@ -85,64 +153,31 @@
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
   when: config_md_exists.stat.exists
 
-- name: Check if scores.md exists
+# scores.md file removed - integrated into badges.md system
+
+- name: Check if badges.md exists
   stat:
-    path: "{{ claude_install_path }}/scores.md"
-  register: scores_md_exists
+    path: "{{ claude_install_path }}/badges.md"
+  register: badges_md_exists
 
-- name: Create scores.md from template (ONLY if not exists)
+- name: Create badges.md from template (ONLY if not exists)
   copy:
-    src: "{{ playbook_dir }}/../src/scores.md"
-    dest: "{{ claude_install_path }}/scores.md"
+    src: "{{ playbook_dir }}/../src/modes/badges.md"
+    dest: "{{ claude_install_path }}/badges.md"
     mode: '0644'
-  when: not scores_md_exists.stat.exists
+  when: not badges_md_exists.stat.exists
 
-- name: Display scores preservation notice
+- name: Display badges preservation notice
   debug:
-    msg: "Scores file preserved: {{ claude_install_path }}/scores.md already exists - keeping user scoring data"
-  when: scores_md_exists.stat.exists
+    msg: "Badges file preserved: {{ claude_install_path }}/badges.md already exists - keeping user achievement data"
+  when: badges_md_exists.stat.exists
 
-- name: Check if learning-callouts.md exists
-  stat:
-    path: "{{ claude_install_path }}/learning-callouts.md"
-  register: learning_callouts_exists
-
-- name: Create learning-callouts.md from template (ONLY if not exists)
-  copy:
-    src: "{{ playbook_dir }}/../src/learning-callouts.md"
-    dest: "{{ claude_install_path }}/learning-callouts.md"
-    mode: '0644'
-  when: not learning_callouts_exists.stat.exists
-
-- name: Display learning-callouts preservation notice
-  debug:
-    msg: "Learning callouts preserved: {{ claude_install_path }}/learning-callouts.md already exists - keeping team learning data"
-  when: learning_callouts_exists.stat.exists
+# learning-callouts.md file removed - integrated into learning-team-automation.md system
 
 - name: Handle project-specific integration
   include_tasks: project_integration.yml
   when: claude_scope == "project"
 
-- name: Force update mode files if update_mode is enabled
-  copy:
-    src: "{{ playbook_dir }}/../src/modes/"
-    dest: "{{ claude_install_path }}/modes/"
-    mode: '0644'
-    force: yes
-  when: update_mode is defined and update_mode | bool
-
-- name: Force update VERSION file if update_mode is enabled
-  copy:
-    src: "{{ playbook_dir }}/../src/VERSION"
-    dest: "{{ claude_install_path }}/VERSION"
-    mode: '0644'
-    force: yes
-  when: update_mode is defined and update_mode | bool
-
-- name: Display update mode notice
-  debug:
-    msg: "Update mode: Force overriding user modifications to mode files and VERSION"
-  when: update_mode is defined and update_mode | bool
 
 - name: Display installation summary
   debug:

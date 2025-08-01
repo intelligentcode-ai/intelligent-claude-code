@@ -1,0 +1,35 @@
+id: BUG-117
+title: Remove System Redundancies While Keeping All Functionality
+description: The executable-workflow.md now defines most system behavior. Remove redundant behaviors and commands while preserving all functionality.
+priority: P0
+severity: critical
+owner: @PM
+epic: EPIC-002
+tasks:
+  - TASK-001
+  - TASK-002
+  - TASK-003
+  - TASK-004
+  - TASK-005
+  - TASK-006
+  - TASK-007
+  - TASK-008
+  - TASK-009
+  - TASK-010
+  - TASK-011
+  - TASK-012
+analysis_summary:
+  - 53 commands with 51% duplication (27 duplicates)
+  - 24 behaviors with 75% duplication (18 duplicates)
+  - 7 shared patterns with 60% cross-redundancy
+  - Total reduction potential from 84 to 35-40 files (50%+)
+acceptance_criteria:
+  - All current functionality preserved
+  - No breaking changes to external interfaces
+  - Token usage reduced by 35%+
+  - Clean import hierarchy maintained
+  - All tests pass after consolidation
+embedded_config:
+  autonomy_level: "L3"
+  git_privacy: true
+  blocking_enabled: false
