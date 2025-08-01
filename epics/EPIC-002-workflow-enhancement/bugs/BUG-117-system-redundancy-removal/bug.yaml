@@ -1,0 +1,40 @@
+---
+id: BUG-117
+title: "System Redundancy - Behaviors/Commands Duplicate Workflow Functionality"
+type: bug
+priority: P1
+epic: EPIC-002
+status: PLANNED
+created: 2025-07-21
+reporter: User
+assignee: TBD
+---
+
+# BUG-117: System Redundancy - Remove Duplicate Functionality
+
+## Problem Description
+The executable-workflow.md now defines 75%+ of system behavior, making many behaviors and commands redundant:
+- Multiple behaviors duplicate workflow steps
+- Commands exist for things the workflow handles
+- Shared patterns replicate workflow logic
+- System is bloated with overlapping functionality
+
+## Impact
+- Maintenance nightmare with duplicated logic
+- Confusion about which component handles what
+- Larger codebase than necessary
+- Harder to understand system flow
+
+## Requirements
+- CAREFULLY analyze EACH file against workflow
+- REMOVE redundancies
+- KEEP all functionality
+- Workflow should be at the CENTER
+- NO assumptions about reduction percentage
+
+## Acceptance Criteria
+- [ ] Each behavior justified against workflow
+- [ ] Each command necessary beyond workflow
+- [ ] Shared patterns consolidated
+- [ ] Zero functionality lost
+- [ ] Clear separation of concerns

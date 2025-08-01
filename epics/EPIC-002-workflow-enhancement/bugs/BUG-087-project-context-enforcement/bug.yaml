@@ -1,0 +1,80 @@
+id: BUG-087
+title: "PROJECT-CONTEXT.md Not Considered - Wrong Role Assignments"
+description: |
+  Teams are NOT reading PROJECT-CONTEXT.md before making role assignments.
+  This leads to fundamental misunderstandings about the project nature.
+  System is GENERIC for ANY project type, not limited to specific domains.
+  Specialist Architects NOT consulted before role assignments.
+  PROJECT-CONTEXT.md MUST be enforced as FIRST action in ANY work.
+  
+severity: CRITICAL
+priority: P0
+status: COMPLETED
+phase: DONE
+workflow_phase: knowledge_generation
+completed_at: "2025-01-20T15:30:00-05:00"
+
+identified_issues:
+  - "PROJECT-CONTEXT.md not loaded automatically"
+  - "Wrong role assignments due to missing context"
+  - "Project scope misunderstood (generic system for ANY project)"
+  - "Specialist architects NOT consulted before assignments"
+  - "Mandatory triage process ignored"
+  - "Role assignment validation bypassed"
+
+root_cause: |
+  No enforcement mechanism for PROJECT-CONTEXT.md loading.
+  Teams start work without understanding project nature.
+  Role assignment happens without context awareness.
+
+impact:
+  - Fundamental work done incorrectly
+  - Wrong specialists assigned to tasks
+  - Project nature violated repeatedly
+  - Time wasted on wrong approaches
+  - User frustration with repeated corrections
+
+acceptance_criteria:
+  - Enforce PROJECT-CONTEXT.md loading FIRST
+  - Add to system initialization
+  - Validate context understanding
+  - Block work without context
+  - Auto-correct role assignments
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@AI-Architect"]
+approved_by: ["@PM", "@AI-Architect"]
+tasks:
+  - id: TASK-001
+    title: "[AI-Engineer] Create PROJECT-CONTEXT.md loader behavior"
+    status: PLANNED
+    priority: blocking
+  - id: TASK-002
+    title: "[AI-Architect] Fix role assignment validation to use PROJECT-CONTEXT"
+    status: PLANNED
+    priority: critical_path
+  - id: TASK-003
+    title: "[AI-Engineer] Create commands for PROJECT-CONTEXT operations"
+    status: PLANNED
+    priority: critical_path
+  - id: TASK-004
+    title: "[AI-Engineer] Update icc-init-system to load PROJECT-CONTEXT first"
+    status: PLANNED
+    priority: critical_path
+  - id: TASK-005
+    title: "[AI-Architect] Peer review all context enforcement changes"
+    status: PLANNED
+    priority: parallel
+  - id: TASK-006
+    title: "[AI-Engineer] Commit and document PROJECT-CONTEXT enforcement"
+    status: PLANNED
+    priority: optional
+
+estimated_effort: "2-3 hours"
+actual_effort: null
+
+tags: ["critical", "enforcement", "context"]
+
+created_at: "2025-01-19T17:45:00-05:00"
+updated_at: "2025-01-19T17:45:00-05:00"
+completed_at: null

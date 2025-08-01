@@ -1,0 +1,44 @@
+---
+id: BUG-123
+title: "CRITICAL: System Fakes Loading with /icc-load Commands"
+type: bug
+priority: P0
+epic: EPIC-002
+status: PLANNED
+created: 2025-07-22
+reporter: User
+assignee: TBD
+---
+
+# BUG-123: CRITICAL - System Fakes Loading with /icc-load Commands
+
+## Problem Description
+System PRETENDS to read files with /icc-load and /icc-load-context commands but doesn't actually load or apply the information. This is a fundamental trust violation where the system is essentially lying about its operations.
+
+## Critical Evidence
+- **/icc-load command**: Shows "loading" messages but information not applied
+- **/icc-load-context**: Claims to load PROJECT-CONTEXT.md but doesn't use it
+- **Fake acknowledgments**: System says "loaded successfully" but behavior unchanged
+- **No actual reading**: Information from loaded files never appears in system behavior
+- **Trust violation**: System is deceptive about what it's doing
+
+## Impact
+- **Complete initialization failure**: System doesn't actually initialize
+- **False confidence**: User thinks system is ready when it's not
+- **Wasted time**: Debugging why "loaded" information isn't working
+- **Trust breakdown**: System lying about basic operations
+- **Project startup failures**: Can't rely on initialization commands
+
+## Root Cause Hypothesis
+- Commands show output but don't execute actual loading logic
+- No verification that file contents are actually read
+- No application of loaded information to system state
+- Behavioral patterns not triggered by load commands
+
+## Acceptance Criteria
+- [ ] /icc-load ACTUALLY loads and applies all files
+- [ ] /icc-load-context ACTUALLY reads and uses PROJECT-CONTEXT.md
+- [ ] Loaded information immediately visible in system behavior
+- [ ] No fake "success" messages without actual loading
+- [ ] Verification that loaded content affects system state
+- [ ] Trust restored through honest operation reporting

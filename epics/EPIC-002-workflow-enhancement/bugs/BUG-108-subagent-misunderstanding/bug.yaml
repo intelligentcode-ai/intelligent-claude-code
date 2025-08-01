@@ -1,0 +1,31 @@
+---
+id: BUG-108
+title: System misunderstands subagent deployment - creates per bug instead of per task
+epic: EPIC-002
+priority: P0
+severity: CRITICAL
+status: IN_PROGRESS
+phase: problem_identified
+assigned_to: [@PM, @AI-Architect]
+created_by: "@PM"
+created_at: 2025-07-20T23:20:00Z
+updated_at: 2025-07-20T23:20:00Z
+environment: Production
+
+description: |
+  CRITICAL: System misunderstands subagent deployment pattern!
+  
+  WRONG Understanding:
+  - Create parallel subagents for each BUG
+  - Spawn 5 subagents for 5 bugs
+  
+  CORRECT Pattern:
+  - Create subagent PER TASK within a bug
+  - Only when PARALLELIZATION is applicable
+  - Tasks marked as parallelizable get subagents
+  - Sequential tasks execute in order
+  
+  This violates the task-level parallelization architecture!
+
+impact: "Incorrect parallelization at wrong granularity level"
+---

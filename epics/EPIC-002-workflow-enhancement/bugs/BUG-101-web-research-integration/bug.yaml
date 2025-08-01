@@ -1,0 +1,65 @@
+id: BUG-101
+title: "Web Research Integration Missing from Workflows - Systemic Knowledge Gap"
+description: |
+  The system fails to integrate web research (WebSearch, Brave Search, Context7)
+  into workflows when internal knowledge is insufficient. This causes:
+  - Assumptions instead of fact-finding
+  - Trial-and-error instead of best practices research
+  - Framework knowledge gaps that could be filled via Context7
+  - Missing current documentation and API updates
+  
+  Web research MUST be part of workflows when system knowledge is insufficient.
+  
+severity: HIGH
+priority: P1
+status: PLANNED
+phase: PLAN
+workflow_phase: story_creation
+
+identified_issues:
+  - "No web research integration in behavioral workflows"
+  - "Missing Context7 framework knowledge integration"
+  - "WebSearch/Brave Search not used for best practices"
+  - "Assumptions made instead of researching facts"
+  - "Framework documentation not consulted dynamically"
+  - "API changes and updates not researched"
+  - "Trial-and-error approach instead of research-first"
+
+root_cause: |
+  Workflows designed without external knowledge acquisition patterns.
+  No behavioral triggers for research when internal knowledge insufficient.
+  Missing integration with available MCP research tools.
+  
+impact:
+  - Wasted time on trial-and-error approaches
+  - Outdated or incorrect implementation patterns
+  - Missing best practices from current documentation
+  - Framework integration issues that could be avoided
+  - Poor quality decisions due to knowledge gaps
+  - System assumptions instead of verified facts
+
+acceptance_criteria:
+  - Integrate web research triggers into workflows
+  - Add Context7 framework knowledge acquisition
+  - Include WebSearch/Brave Search for best practices
+  - Create research-first behavioral patterns
+  - Add automatic research triggers for unknowns
+  - Ensure current documentation is consulted
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@AI-Architect"]
+approved_by: []
+
+estimated_effort: "6-8 hours"
+actual_effort: null
+
+tags: ["high", "research", "integration", "knowledge"]
+
+created_at: "2025-01-20T16:35:00-05:00"
+updated_at: "2025-01-20T16:35:00-05:00"
+completed_at: null
+
+embedded_config:
+  autonomy_level: "L3"
+  pm_always_active: true
+  blocking_enabled: false

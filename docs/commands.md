@@ -1,5 +1,36 @@
 # Complete Command Reference
 
+## System Commands
+
+### Core System Operations
+```bash
+icc:init                        # Initialize virtual team system, verify all components
+icc:reset                       # Reset system to clean state, clear stuck issues  
+icc:refresh                     # Refresh capabilities, sync tools and configurations
+```
+
+### Claude Code Slash Commands
+```bash
+/icc:init-system                # Initialize intelligent-claude-code virtual team system
+/icc:system-status              # Display comprehensive system status and health
+/icc:activate-role @RoleName    # Activate specific role with behavioral switching
+/icc:memory-search "query"      # Search memory system for patterns and learnings
+/icc:create-story "title" --epic EPIC-XXX  # Create new story with validation
+/icc:plan-story STORY-XXX       # Plan story tasks with architect validation
+/icc:validate-work-type "description"  # Validate work type and specialist requirements
+/icc:archive-completed          # Archive completed work items with cascading
+```
+
+**System Command Usage:**
+- **`icc:init`** - First-time setup, new project activation, post-installation verification
+- **`icc:reset`** - System recovery when stuck, clear accumulated penalties, fresh restart
+- **`icc:refresh`** - Tool updates, configuration changes, capability synchronization
+
+**When to Use:**
+- `icc:init` → After installation, new project setup, configuration validation needed
+- `icc:reset` → System unresponsive, accumulated issues, need clean state
+- `icc:refresh` → Tool availability changed, want enhanced capabilities, optimization
+
 ## PM Commands
 
 ### Team Management
