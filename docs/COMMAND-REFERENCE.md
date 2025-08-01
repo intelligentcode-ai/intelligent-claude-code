@@ -1,114 +1,76 @@
-# Command Reference - icc- Slash Commands
+# Command Reference
 
-## Overview
+## Core System Commands
 
-The intelligent-claude-code system provides slash commands with the `icc-` prefix for reliable workflow execution. Commands are integrated into the executable workflow system and provide consistent, predictable behavior.
-
-## Command Syntax
-- **Filename**: `icc-command-name.md` (how Claude Code reads the command)
-- **Title**: `icc:command-name` (display title in the command description)
-- **Usage**: User types `icc-command-name` in Claude Code interface
-
-## System Management Commands
+### `icc-load`
+Force-load virtual team behavioral patterns.
+- **Usage**: `icc-load [--force] [--validate] [--verbose]`
+- **Purpose**: Initialize behavioral system
 
 ### `icc-init-system`
-**Purpose**: Initialize the virtual team system with full configuration and state restoration
-**Usage**: `icc-init-system`
-**Integration**: Called during system startup and recovery
-**Output**: Full system initialization confirmation
+Initialize the virtual team system.
+- **Usage**: `icc-init-system`
+- **Purpose**: Full system initialization
 
-### `icc-system-status`
-**Purpose**: Display current system status and configuration
-**Usage**: `icc-system-status`
-**Integration**: Available for system monitoring
-**Output**: Current roles, configuration, and system health
+### `icc-load-project-context`
+Load PROJECT-CONTEXT.md file.
+- **Usage**: `icc-load-project-context`
+- **Purpose**: Load project context
 
-### `icc-restore-state`
-**Purpose**: Restore behavioral patterns and system state
-**Usage**: `icc-restore-state`
-**Integration**: Called automatically during init or manually for recovery
-**Output**: State restoration confirmation
+### `icc-load-config`
+Load configuration hierarchy.
+- **Usage**: `icc-load-config`
+- **Purpose**: Load all configuration files
+
+### `icc-get-setting`
+Get specific configuration setting.
+- **Usage**: `icc-get-setting [key]`
+- **Purpose**: Retrieve configuration values
+
+## Utility Commands
+
+### `icc-think-sequential`
+Sequential thinking for complex problems.
+- **Usage**: `icc-think-sequential [problem]`
+- **Purpose**: Break down complex problems
+
+### `icc-create-specialist`
+Create dynamic specialist role.
+- **Usage**: `icc-create-specialist [role-name]`
+- **Purpose**: Create specialized roles when <70% match
+
+### `icc-detect-project-type`
+Detect project type for context generation.
+- **Usage**: `icc-detect-project-type [path]`
+- **Purpose**: Analyze project structure
+
+## Validation Commands
 
 ### `icc-verify-behaviors`
-**Purpose**: Validate all behavioral patterns are operational
-**Usage**: `icc-verify-behaviors`
-**Integration**: Called during init and for system validation
-**Output**: Behavioral pattern validation results
+Verify all behavioral patterns operational.
+- **Usage**: `icc-verify-behaviors`
+- **Purpose**: Validate system behaviors
 
-## Role Management Commands
+### `icc-validate-directory`
+Validate directory structure compliance.
+- **Usage**: `icc-validate-directory [path]`
+- **Purpose**: Check structure standards
 
-### `icc-activate-role`
-**Purpose**: Activate a specialist role with full behavioral switching
-**Usage**: `icc-activate-role @RoleName`
-**Parameters**:
-- `@RoleName`: Role to activate (e.g., @PM, @AI-Engineer, @React-Developer)
-**Integration**: Called during role assignment and switching
-**Output**: Role activation confirmation with scores
+## State Commands
 
-## Workflow Commands
+### `icc-system-status`
+Display current system status.
+- **Usage**: `icc-system-status`
+- **Purpose**: Show system health
 
-### `icc-create-story`
-**Purpose**: Create a new story with proper validation
-**Usage**: `icc-create-story "Story Title"`
-**Parameters**:
-- `title`: Story title and description
-**Integration**: Used in story creation workflow
-**Output**: Story creation confirmation with ID
+### `icc-restore-state`
+Restore system state from files.
+- **Usage**: `icc-restore-state`
+- **Purpose**: Recovery operations
 
-### `icc-plan-story`
-**Purpose**: Plan story tasks with specialist validation
-**Usage**: `icc-plan-story STORY-001`
-**Parameters**:
-- `story_id`: Story ID to plan
-**Integration**: Called during story planning phase
-**Output**: Task breakdown with role assignments
+### `icc-finalize-item`
+Finalize completed work items.
+- **Usage**: `icc-finalize-item [item-id]`
+- **Purpose**: Mark items complete
 
-
-## Memory Commands
-
-### `icc-memory-search`
-**Purpose**: Search memory for relevant knowledge and patterns
-**Usage**: `icc-memory-search "keyword"`
-**Parameters**:
-- `query`: Search terms
-**Integration**: Called during knowledge retrieval phases
-**Output**: Relevant memory entities and relationships
-
-### `icc-archive-completed`
-**Purpose**: Archive all completed work items
-**Usage**: `icc-archive-completed`
-**Integration**: Called during archival operations
-**Output**: Archival summary and confirmation
-
-## Command Integration
-
-Commands are integrated into the executable workflow system at key workflow points:
-
-- **System Initialization**: `icc-init-system` called on startup
-- **Role Assignment**: `icc-activate-role` called during role switching
-- **Work Validation**: Workflow-auto-trigger.md handles work detection automatically
-- **Story Planning**: `icc-create-story` and `icc-plan-story` used in planning
-- **Knowledge Operations**: `icc-memory-search` used in retrieval phases
-
-## Command Syntax Standards
-
-- **Prefix**: All commands use `icc-` prefix
-- **Parameters**: Space-separated, quoted when containing spaces
-- **Role References**: Use @-notation (e.g., @PM, @AI-Engineer)
-- **IDs**: Use standard format (STORY-001, TASK-042, etc.)
-
-## Error Handling
-
-Commands include built-in error handling:
-- Invalid parameters show usage help
-- Role validation ensures valid assignments
-- Work type validation prevents incorrect assignments
-- Memory operations handle missing data gracefully
-
-## Integration Testing
-
-All commands are tested through:
-- Individual command validation
-- Workflow integration testing
-- End-to-end process verification
-- Error condition handling
+## Total: 13 Active Commands
