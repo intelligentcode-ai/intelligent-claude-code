@@ -1,0 +1,34 @@
+---
+id: BUG-112
+title: "Work Item Creation Triggers Immediate Action Incorrectly"
+type: bug
+priority: P1
+epic: EPIC-002
+status: PLANNED
+created: 2025-07-21
+reporter: PM
+assignee: TBD
+---
+
+# BUG-112: Work Item Creation Triggers Immediate Action Incorrectly
+
+## Problem Description
+Creating Epic/Story/Bug files incorrectly triggers immediate action planning and execution instead of continuing current work.
+
+## Current Incorrect Behavior
+- Bug creation immediately starts task decomposition
+- Current work is abandoned for new work item
+- Violates assignment-driven execution principle
+
+## Expected Correct Behavior
+- Work item creation is logging only
+- Current work continues unless work item is utterly important
+- Current work continues unless user explicitly demands switch
+
+## Impact Assessment
+- **Priority:** P1 (High - affects workflow continuity)
+- **Impact:** High - disrupts work prioritization
+- **Complexity:** Medium - requires workflow logic correction
+
+## Root Cause
+Misunderstanding of outer workflow action triggers

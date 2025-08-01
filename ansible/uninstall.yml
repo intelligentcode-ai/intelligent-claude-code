@@ -1,0 +1,29 @@
+---
+# Intelligent Claude Code - Uninstall Playbook
+# Runs from control machine, uninstalls from targets via SSH
+# NO Ansible required on target machines!
+
+- name: Uninstall Intelligent Claude Code
+  hosts: all
+  gather_facts: yes
+  vars:
+    target_path: "{{ target_path | default('') }}"
+  
+  tasks:
+    - name: Determine uninstall scope and path
+      set_fact:
+        target_scope: "{{ 'project' if target_path else 'user' }}"
+        install_path: "{{ (target_path | realpath) + '/.claude' if target_path else ansible_env.HOME + '/.claude' }}"
+        project_path: "{{ target_path | realpath if target_path else '' }}"
+    
+    - name: Display uninstall target
+      debug:
+        msg: "Uninstalling from: {{ install_path }}"
+    
+    - name: Include intelligent-claude-code uninstall role
+      include_role:
+        name: intelligent-claude-code-uninstall
+      vars:
+        claude_install_path: "{{ install_path }}"
+        claude_project_path: "{{ project_path }}"
+        claude_scope: "{{ target_scope }}"

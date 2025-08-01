@@ -1,0 +1,47 @@
+id: BUG-089
+title: "Unnecessary Comments in Role Behavior Files"
+description: |
+  Three role behavior files contain unnecessary footer comments:
+  - src/behaviors/role-activation-system.md
+  - src/behaviors/role-assignment-validator.md  
+  - src/behaviors/role-detection-engine.md
+  All have: '*Role [X] system for intelligent-claude-code*'
+  These add no value and should be removed.
+  
+severity: MEDIUM
+priority: P2
+status: PLANNED
+phase: PLAN
+
+identified_issues:
+  - "Unnecessary footer comments in role files"
+  - "Adds no functional value"
+  - "Clutters clean behavioral files"
+  - "Inconsistent with other files"
+
+root_cause: |
+  Legacy comments from file creation that weren't cleaned up.
+  No pattern for consistent file endings.
+
+impact:
+  - Minor clutter in behavioral files
+  - Inconsistency across files
+  - Unnecessary tokens
+
+acceptance_criteria:
+  - Remove footer comments from all three files
+  - Ensure clean file endings
+  - Maintain consistency across behaviors
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@AI-Engineer"]
+approved_by: []
+
+estimated_effort: "15 minutes"
+actual_effort: null
+
+tags: ["medium", "cleanup", "consistency"]
+
+created_at: "2025-01-19T17:52:00-05:00"
+updated_at: "2025-01-19T17:52:00-05:00"
+completed_at: null

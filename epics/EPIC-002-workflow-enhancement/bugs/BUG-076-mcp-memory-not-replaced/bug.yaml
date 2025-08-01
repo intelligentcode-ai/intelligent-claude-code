@@ -1,0 +1,44 @@
+id: BUG-076
+title: "MCP Memory Still Used Instead of File-Based System"
+description: |
+  System still uses MCP Memory throughout instead of the file-based memory
+  system that was supposed to replace it entirely.
+  
+severity: HIGH
+priority: P1
+status: PLANNED
+phase: PLAN
+
+identified_issues:
+  - "MCP Memory calls throughout behaviors"
+  - "File-based memory system not implemented"
+  - "Memory operations dependent on MCP"
+  - "Architecture decision not followed"
+
+root_cause: |
+  File-based memory system was specified but never implemented to replace
+  MCP Memory integration.
+
+impact:
+  - Dependency on external MCP system
+  - Memory operations may fail
+  - Architecture inconsistency
+
+acceptance_criteria:
+  - Design file-based memory system
+  - Replace ALL MCP Memory calls
+  - Implement file-based storage
+  - Validate memory operations work
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@AI-Architect"]
+approved_by: ["@PM", "@AI-Architect"]
+
+estimated_effort: "4-5 hours"
+actual_effort: null
+
+tags: ["high", "memory", "architecture"]
+
+created_at: "2025-01-19T12:56:00-05:00"
+updated_at: "2025-01-19T12:56:00-05:00"
+completed_at: null
