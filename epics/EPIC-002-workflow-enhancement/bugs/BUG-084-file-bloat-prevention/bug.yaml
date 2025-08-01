@@ -1,0 +1,104 @@
+id: BUG-084
+title: "File Bloat from Reports/Status Files Without Value"
+description: |
+  Teams generate excessive report, fix, and status files that provide no value to users.
+  Files are created in root directory with UPPERCASE names.
+  Documentation is created new instead of enhancing existing docs.
+  This creates project mess and confusion.
+  
+severity: CRITICAL
+priority: P0
+status: COMPLETED
+phase: DONE
+workflow_type: "outer"
+workflow_phase: "task_execution"
+
+identified_issues:
+  - "Excessive report/status file generation"
+  - "UPPERCASE filenames everywhere"
+  - "Files in root directory instead of organized folders"
+  - "New docs created instead of enhancing existing"
+  - "No cleanup patterns"
+
+root_cause: |
+  No behavioral patterns for file organization and management.
+  Missing guidance on when files are truly needed.
+  No enforcement of lowercase/camelCase naming.
+
+impact:
+  - Project becomes cluttered and unusable
+  - Important files lost in noise
+  - Documentation becomes fragmented
+  - User frustration with mess
+
+acceptance_criteria:
+  - Create file management behavioral patterns
+  - Enforce lowercase/camelCase naming
+  - Require folder organization for reports
+  - Mandate enhancing existing docs first
+  - Add cleanup behaviors
+
+assigned_to: "@PM"
+triage_participants: ["@PM", "@AI-Architect"]
+approved_by: ["@PM", "@AI-Architect"]
+
+tasks:
+  - id: "TASK-001"
+    title: "[AI-Engineer] Load File Management Best Practices"
+    assigned_to: "@AI-Engineer"
+    priority: "blocking"
+    status: "PLANNED"
+  - id: "TASK-002"
+    title: "[AI-Engineer] Analyze Current File Creation Patterns"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-003"
+    title: "[AI-Architect] Design File Management Behaviors"
+    assigned_to: "@AI-Architect"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-004"
+    title: "[AI-Engineer] Implement File Management Behaviors"
+    assigned_to: "@AI-Engineer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-005"
+    title: "[AI-Engineer] Update Commands for File Management"
+    assigned_to: "@AI-Engineer"
+    priority: "parallel"
+    status: "PLANNED"
+  - id: "TASK-006"
+    title: "[AI-Architect] Peer Review File Management System"
+    assigned_to: "@AI-Architect"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-007"
+    title: "[AI-Engineer] Document File Management Standards"
+    assigned_to: "@AI-Engineer"
+    priority: "parallel"
+    status: "PLANNED"
+  - id: "TASK-008"
+    title: "[QA-Engineer] Validate File Management Enforcement"
+    assigned_to: "@QA-Engineer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-009"
+    title: "[Developer] Git Operations for File Management"
+    assigned_to: "@Developer"
+    priority: "critical_path"
+    status: "PLANNED"
+  - id: "TASK-010"
+    title: "[AI-Engineer] Create File Management Knowledge"
+    assigned_to: "@AI-Engineer"
+    priority: "optional"
+    status: "PLANNED"
+
+estimated_effort: "3-4 hours"
+actual_effort: null
+
+tags: ["critical", "organization", "quality"]
+
+created_at: "2025-01-19T16:47:00-05:00"
+updated_at: "2025-01-19T16:47:00-05:00"
+completed_at: null

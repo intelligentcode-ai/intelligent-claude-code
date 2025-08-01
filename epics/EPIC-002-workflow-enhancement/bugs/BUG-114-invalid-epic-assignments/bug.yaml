@@ -1,0 +1,33 @@
+---
+id: BUG-114
+title: "Invalid Epic Assignments to Non-Existent EPIC-001"
+type: bug
+priority: P0
+epic: EPIC-002
+status: PLANNED
+created: 2025-07-21
+reporter: PM
+assignee: TBD
+---
+
+# BUG-114: Invalid Epic Assignments to Non-Existent EPIC-001
+
+## Problem Description
+Multiple bugs (BUG-110, BUG-111, BUG-112, BUG-113) incorrectly assigned to EPIC-001 which does not exist in the project.
+
+## Current State
+- EPIC-001: **DOES NOT EXIST**
+- EPIC-002-workflow-enhancement: **EXISTS** (extensive structure)
+- EPIC-011: **EXISTS** (minimal structure)
+
+## Impact Assessment
+- **Priority:** P0 (Critical - invalid data structure)
+- **Impact:** High - corrupts work item hierarchy
+- **Immediate Action:** Correct epic assignments
+
+## Root Cause
+Assumption of EPIC-001 existence without verification against actual project structure
+
+## Required Corrections
+- Update BUG-110, BUG-111, BUG-112, BUG-113 epic assignments
+- Determine correct epic for each bug based on work domain

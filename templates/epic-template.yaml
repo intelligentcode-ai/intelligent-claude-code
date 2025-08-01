@@ -1,0 +1,44 @@
+# Epic Template - Example ID formatting
+epic:
+  id: "EPIC-001"  # Format: EPIC-XXX (three digits, padded with zeros)
+  title: "User Management System"
+  type: "enhancement"
+  created: "2025-01-18 16:30:00"
+  created_by: "@PM"
+  status: "PLANNED"
+  phase: "DEFINING"
+  priority: "P1"
+  
+description: |
+  Epic for implementing a comprehensive user management system.
+  This includes registration, authentication, and profile management.
+  
+project_scope: |
+  - User registration and onboarding
+  - Authentication (login/logout)
+  - Profile management
+  - Role-based access control
+  
+goals:
+  - Secure user authentication
+  - Smooth onboarding experience
+  - Flexible profile management
+  
+stories: []  # Will contain STORY-001, STORY-002, etc.
+bugs: []     # Will contain BUG-001, BUG-002, etc.
+
+success_criteria:
+  - All users can register and login
+  - Profile data is secure and editable
+  - Role permissions work correctly
+  
+principles:
+  - Security first
+  - User experience focused
+  - Performance optimized
+
+# ID Assignment Notes:
+# - Check existing epics: ls epics/*/epic.yaml
+# - Find highest ID: EPIC-002 exists
+# - Next ID: EPIC-003
+# - If uncertain, use a safe higher number: EPIC-010

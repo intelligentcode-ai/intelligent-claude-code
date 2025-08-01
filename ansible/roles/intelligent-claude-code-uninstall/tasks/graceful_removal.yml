@@ -1,0 +1,102 @@
+---
+# Graceful removal from existing CLAUDE.md
+
+- name: Check if CLAUDE.md exists
+  stat:
+    path: "{{ claude_install_path }}/CLAUDE.md"
+  register: claude_md_exists
+
+- name: Handle CLAUDE.md removal
+  block:
+    - name: Check if import line exists
+      lineinfile:
+        path: "{{ claude_install_path }}/CLAUDE.md"
+        line: "@~/.claude/modes/virtual-team.md"
+        state: present
+      check_mode: yes
+      register: import_exists
+      
+    - name: Process CLAUDE.md with import line
+      block:
+        - name: Read current CLAUDE.md content
+          slurp:
+            src: "{{ claude_install_path }}/CLAUDE.md"
+          register: current_content
+        
+        - name: Check if backup exists
+          stat:
+            path: "{{ claude_install_path }}/CLAUDE.md.backup"
+          register: backup_exists
+        
+        - name: Restore from backup if available
+          copy:
+            src: "{{ claude_install_path }}/CLAUDE.md.backup"
+            dest: "{{ claude_install_path }}/CLAUDE.md"
+            remote_src: yes
+          when: backup_exists.stat.exists
+          register: backup_restored
+        
+        - name: Remove backup file after restoration
+          file:
+            path: "{{ claude_install_path }}/CLAUDE.md.backup"
+            state: absent
+          ignore_errors: yes
+          when: backup_exists.stat.exists
+        
+        - name: Remove virtual team integration from CLAUDE.md (no backup case)
+          block:
+            - name: Remove import line
+              lineinfile:
+                path: "{{ claude_install_path }}/CLAUDE.md"
+                line: "@~/.claude/modes/virtual-team.md"
+                state: absent
+            
+            - name: Remove virtual team header line
+              lineinfile:
+                path: "{{ claude_install_path }}/CLAUDE.md"
+                line: "# Virtual Development Team"
+                state: absent
+            
+            - name: Remove empty preservation comment
+              lineinfile:
+                path: "{{ claude_install_path }}/CLAUDE.md"
+                line: "<!-- Existing project configuration preserved below -->"
+                state: absent
+            
+            - name: Check if CLAUDE.md is effectively empty
+              shell: |
+                # Remove empty lines and whitespace-only lines, check if anything remains
+                grep -v '^[[:space:]]*$' "{{ claude_install_path }}/CLAUDE.md" | wc -l
+              register: content_lines
+              changed_when: false
+            
+            - name: Remove empty CLAUDE.md file
+              file:
+                path: "{{ claude_install_path }}/CLAUDE.md"
+                state: absent
+              when: content_lines.stdout | int == 0
+              
+            - name: Report manual removal
+              debug:
+                msg: "Removed virtual team integration from CLAUDE.md - {{ 'file removed (was empty)' if content_lines.stdout | int == 0 else 'user content preserved' }}"
+          
+          when: not backup_exists.stat.exists
+        
+        - name: Report backup restoration
+          debug:
+            msg: "Restored CLAUDE.md from backup - original content recovered"
+          when: backup_exists.stat.exists
+      
+      when: import_exists.changed
+    
+    - name: Report no integration found
+      debug:
+        msg: "No virtual team integration found in CLAUDE.md"
+      when: not import_exists.changed
+  
+  when: claude_md_exists.stat.exists
+
+- name: Report no CLAUDE.md found
+  debug:
+    msg: "No CLAUDE.md found at {{ claude_install_path }}"
+  when: not claude_md_exists.stat.exists

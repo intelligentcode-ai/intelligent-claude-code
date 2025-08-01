@@ -1,0 +1,124 @@
+# Bug Assignment Template
+# Bugs are created by PM/Architect/RE/User and contain multiple tasks
+
+bug:
+  id: "BUG-XXX"
+  title: "Bug Title"
+  epic: "EPIC-XXX"  # Bugs belong to epics
+  created: "YYYY-MM-DD HH:MM:SS"
+  reported_by: "@User|@QA-Engineer|@Anyone"
+  created_by: "@PM|@Architect|@Requirements-Engineer"
+  assigned_to: "@PM"  # PM manages bug resolution
+  severity: "CRITICAL|HIGH|MEDIUM|LOW"
+  priority: "P0|P1|P2|P3"
+  status: "NEW|TRIAGED|IN_PROGRESS|RESOLVED|CLOSED"
+  phase: "INIT|PLAN|EXECUTE|ACCEPTANCE|DONE"
+  
+bug_description: |
+  # Clear description of the defect
+  # What is broken and how it impacts users
+  
+reproduction_steps:
+  - Step 1: Action taken
+  - Step 2: Next action
+  - Step 3: Observe issue
+  
+expected_behavior: |
+  What should happen
+  
+actual_behavior: |
+  What actually happens
+  
+environment:
+  - OS: "Windows/Mac/Linux"
+  - Browser: "Chrome/Firefox/Safari"
+  - Version: "X.X.X"
+  - Additional context
+  
+impact_analysis:
+  affected_users: "Number or percentage"
+  frequency: "Always|Sometimes|Rarely"
+  business_impact: "Revenue loss|User frustration|Data corruption"
+  workaround: "Available workaround if any"
+  
+root_cause_analysis: |
+  Initial investigation findings
+  Suspected causes
+  
+# Embedded config drives task creation
+embedded_config:
+  # From config.md
+  blocking_enabled: false
+  security_validation: true
+  testing_approach: "comprehensive"
+  
+# Tasks for bug resolution
+tasks:
+  - id: "TASK-001"
+    title: "Investigate and reproduce bug"
+    type: "research"
+    assigned_to: "@Developer-Specialist"
+    estimated_hours: X
+    status: "planned"
+    
+  - id: "TASK-002"
+    title: "Implement fix"
+    type: "implementation"
+    assigned_to: "@Developer-Specialist"
+    estimated_hours: X
+    status: "planned"
+    dependencies: ["TASK-001"]
+    
+  - id: "TASK-003"
+    title: "Write regression tests"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    estimated_hours: X
+    status: "planned"
+    
+  - id: "TASK-004"
+    title: "Security review if applicable"
+    type: "peer_review"
+    assigned_to: "@Security-Engineer"
+    estimated_hours: X
+    status: "planned"
+    condition: "security_related == true"
+    
+  - id: "TASK-005"
+    title: "Verify fix in test environment"
+    type: "testing"
+    assigned_to: "@QA-Engineer"
+    estimated_hours: X
+    status: "planned"
+    
+  - id: "TASK-006"
+    title: "Deploy fix"
+    type: "deployment"
+    assigned_to: "@DevOps-Engineer"
+    estimated_hours: X
+    status: "planned"
+    
+  - id: "TASK-007"
+    title: "Document root cause and prevention"
+    type: "knowledge_creation"
+    assigned_to: "@Lead-Developer"
+    estimated_hours: X
+    status: "planned"
+    
+resolution_criteria:
+  - "Bug no longer reproducible"
+  - "Regression tests passing"
+  - "No side effects introduced"
+  - "Root cause documented"
+  
+workflow:
+  current_phase: "PLAN"
+  fix_approach: "hotfix|regular_release"
+  
+git_operations:
+  branch: "bugfix/BUG-XXX-description"
+  commit_prefix: "fix:"
+  
+verification:
+  test_environments: ["dev", "staging", "production"]
+  rollback_plan: "Revert commit if issues"
