@@ -22,6 +22,14 @@ make install    # Installs to ~/.claude/
 icc:init          # Validates setup and activates virtual team
 ```
 
+**What happens during `make install`:**
+1. **Checks for Ansible** - Verifies ansible-playbook is available (searches common locations)
+2. **Creates directory structure** - Sets up `~/.claude/` and `~/.claude/modes/` directories
+3. **Installs core files** - Copies virtual team mode files to `~/.claude/modes/`
+4. **Creates CLAUDE.md** - Adds main configuration file with virtual team import
+5. **Preserves existing configs** - Never overwrites existing `config.md`, `scores.md`, or user modifications
+6. **Graceful integration** - Adds single import line to existing CLAUDE.md files without overwriting
+
 ### Start Building
 ```bash
 # Initialize the system (first time or new project)
