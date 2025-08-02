@@ -1,0 +1,179 @@
+# Self-Contained PRB Template
+# Based on GitHub PRP examples - Everything needed for single-pass execution
+
+id: "[AUTO-GENERATED]"
+title: "[Role] [Clear Description of What to Build]"
+confidence_score: "[0-10]"  # AI's confidence in understanding requirements
+
+# SECTION 1: GOAL - What we're building
+goal:
+  summary: "[One sentence describing the deliverable]"
+  success_criteria:
+    - "[Specific measurable outcome 1]"
+    - "[Specific measurable outcome 2]"
+    - "[User can do X after this is complete]"
+
+# SECTION 2: WHY - Business rationale  
+why:
+  business_value: "[Why this matters to the business]"
+  user_impact: "[How this helps users]"
+  priority_rationale: "[Why now, why this priority]"
+
+# SECTION 3: CONTEXT - Everything the AI needs
+context:
+  # Project configuration from CLAUDE.md
+  project_settings:
+    coding_style: "[FROM_CLAUDE_MD]"
+    architecture_pattern: "[FROM_CLAUDE_MD]"
+    testing_approach: "[FROM_CLAUDE_MD]"
+    
+  # Best practices and standards (embedded, not referenced)
+  embedded_standards:
+    coding_conventions: |
+      [PASTE RELEVANT CODING STANDARDS HERE]
+      - Use [STYLE] formatting
+      - Follow [NAMING] conventions
+      - Apply [PATTERN] for this type of component
+      
+    architecture_constraints: |
+      [PASTE RELEVANT CONSTRAINTS HERE]
+      - Must maintain [LAYER] separation
+      - API versioning required
+      - No direct database access in [LAYER]
+      
+  # Existing code patterns to follow
+  code_examples:
+    similar_implementation: |
+      ```javascript
+      // From src/components/auth/Login.js
+      [PASTE RELEVANT CODE EXAMPLE]
+      ```
+      
+    pattern_to_follow: |
+      ```javascript
+      // Standard pattern for [FEATURE TYPE]
+      [PASTE PATTERN CODE]
+      ```
+      
+  # External documentation (embedded, not linked)
+  reference_docs:
+    library_usage: |
+      From React docs - Hooks:
+      [PASTE RELEVANT DOCUMENTATION]
+      
+    api_specification: |
+      From internal API docs:
+      [PASTE API SPEC]
+      
+  # File paths and versions
+  technical_context:
+    key_files:
+      - path: "src/api/endpoints.js"
+        purpose: "Add new endpoint here"
+      - path: "src/models/User.js"
+        purpose: "Extend user model"
+    dependencies:
+      - name: "react"
+        version: "18.2.0"
+        usage: "UI components"
+    known_issues:
+      - "Watch for [SPECIFIC GOTCHA]"
+      - "Don't use [DEPRECATED METHOD]"
+
+# SECTION 4: IMPLEMENTATION BLUEPRINT
+implementation:
+  approach: "[High-level technical approach]"
+  
+  tasks:
+    - id: "task-1"
+      description: "[Specific implementation step]"
+      acceptance: "[How to verify this task is complete]"
+      
+    - id: "task-2"  
+      description: "[Next implementation step]"
+      acceptance: "[Verification criteria]"
+      dependencies: ["task-1"]
+      
+  pseudocode: |
+    // High-level implementation flow
+    function implementFeature() {
+      // 1. [First major step]
+      [PSEUDOCODE]
+      
+      // 2. [Second major step]
+      [PSEUDOCODE]
+      
+      // 3. [Integration step]
+      [PSEUDOCODE]
+    }
+    
+  error_handling:
+    - scenario: "[Error case 1]"
+      approach: "[How to handle]"
+    - scenario: "[Error case 2]"
+      approach: "[How to handle]"
+
+# SECTION 5: VALIDATION - How we know it works
+validation:
+  # Executable tests (not just descriptions)
+  unit_tests: |
+    ```javascript
+    describe('[Feature]', () => {
+      test('[specific behavior]', () => {
+        // Arrange
+        [SETUP CODE]
+        
+        // Act
+        [ACTION CODE]
+        
+        // Assert
+        [VERIFICATION CODE]
+      });
+    });
+    ```
+    
+  integration_tests: |
+    ```javascript
+    // Test [INTEGRATION POINT]
+    [INTEGRATION TEST CODE]
+    ```
+    
+  acceptance_criteria:
+    - criterion: "[User-facing requirement]"
+      test_steps:
+        - "[Step 1 to verify]"
+        - "[Step 2 to verify]"
+        - "[Expected result]"
+        
+  performance_requirements:
+    - metric: "Response time"
+      target: "< 200ms"
+      measurement: "[How to measure]"
+
+# SECTION 6: COMPLETION - Definition of done
+completion:
+  deliverables:
+    - "[Implemented feature in src/...]"
+    - "[Tests in tests/...]"
+    - "[Updated documentation]"
+    
+  checklist:
+    - [ ] Code implements all acceptance criteria
+    - [ ] All tests pass
+    - [ ] Code follows project standards
+    - [ ] No security vulnerabilities
+    - [ ] Performance targets met
+    - [ ] Documentation updated
+    
+  learning_capture:
+    - pattern: "[New pattern discovered]"
+      store_as: "Pattern"
+    - insight: "[Key learning]"
+      store_as: "Learning"
+
+# METADATA - For tracking and improvement
+metadata:
+  estimated_complexity: "[NANO|TINY|MEDIUM|LARGE|MEGA]"
+  requires_specialist: "[SPECIALIST_TYPE]"
+  parallelizable: [true|false]
+  external_dependencies: ["[SERVICE_1]", "[SERVICE_2]"]
