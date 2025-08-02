@@ -1,0 +1,75 @@
+# Medium PRB Template - Standard Features
+# Auto-selected for complexity score 6-15
+# Replaces Inner Workflow completely
+
+id: MEDIUM-[AUTO]
+type: medium-prb
+complexity: standard
+title: "[ROLE] [DESCRIPTION]"
+
+# All context passed from parent - no loading needed
+context:
+  project: "[CLAUDE.md]"      # Project context from CLAUDE.md
+  settings: "[ALL-SETTINGS]"
+  scope: "[FEATURE_SCOPE]"
+  
+requirements:
+  functional:
+    - "[REQUIREMENT_1]"
+    - "[REQUIREMENT_2]"
+    - "[REQUIREMENT_3]"
+  technical:
+    - "[TECH_REQUIREMENT_1]"
+    - "[TECH_REQUIREMENT_2]"
+    
+# Replaces Inner Workflow Step 1: Memory Search
+memory_consultation:
+  search_queries:
+    - "[DOMAIN_PATTERNS]"
+    - "[TECHNOLOGY_PATTERNS]"
+    - "[ERROR_PATTERNS]"
+  apply_learnings: "[LEARNING_IDS]"
+  
+# Replaces Inner Workflow Step 2: Generate Workflow
+execution_plan:
+  approach: "[TECHNICAL_APPROACH]"
+  steps:
+    - "[DESIGN_STEP]"
+    - "[IMPLEMENT_STEP]" 
+    - "[TEST_STEP]"
+    - "[INTEGRATE_STEP]"
+    
+# Replaces Inner Workflow Steps 3-4: Execute & Review  
+implementation:
+  files_to_modify:
+    - path: "[FILE_1]"
+      changes: "[CHANGES_1]"
+    - path: "[FILE_2]"
+      changes: "[CHANGES_2]"
+      
+validation_criteria:
+  technical:
+    - "[TECH_CHECK_1]"
+    - "[TECH_CHECK_2]"
+  functional:
+    - "[FUNC_CHECK_1]"
+    - "[FUNC_CHECK_2]"
+    
+# Pre-assigned SME (no runtime selection)
+sme_review:
+  reviewer: "[PRE_ASSIGNED_SME]"
+  focus_areas: ["[AREA_1]", "[AREA_2]"]
+  max_cycles: 3
+  
+# Replaces Inner Workflow Steps 5-6: Version & Git
+git_operations:
+  branch: "feature/[ID]-[DESCRIPTION]"
+  commit: "[ID]: [DESCRIPTION]"
+  version_bump: "[PATCH|MINOR]"
+  privacy: "[APPLY_GIT_PRIVACY_SETTING]"
+  
+# Replaces Inner Workflow Step 8: Learning
+learning_capture:
+  patterns: "[CAPTURE_PATTERNS]"
+  insights: "[CAPTURE_INSIGHTS]"
+  store_as: "[PATTERN|LEARNING|KNOWLEDGE]"

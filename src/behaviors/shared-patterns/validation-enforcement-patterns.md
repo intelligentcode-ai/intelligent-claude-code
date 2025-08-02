@@ -14,7 +14,7 @@
 ### Context-First Validation
 **Pattern:** Load context → Validate understanding → Apply rules → Proceed
 **Blocking:** No actions without validated context
-**Storage:** PROJECT-CONTEXT.md and memory entities
+**Storage:** CLAUDE.md and memory entities
 
 ### Work Type Detection
 **Common Types:**

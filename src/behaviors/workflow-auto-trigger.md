@@ -12,36 +12,39 @@ Every work detection triggers a Task tool invocation with appropriate workflow c
 
 | Trigger Type | Detection Pattern | Workflow | Auto-Action |
 |-------------|------------------|----------|-------------|
-| **File** | epic.yaml, story.yaml, bug.yaml, task.md | Outer/Inner | Create Task tool invocation with file context |
-| **Command** | /icc-create-task, /icc-start-story, /icc-fix-bug | Per command | Extract ID, launch appropriate workflow |
-| **Role** | @Role: or @Role (inline) | Inner | Convert to Task tool, block direct execution |
-| **Reference** | STORY-XXX, BUG-XXX, TASK-XXX | Outer/Inner | Search for file, launch with context |
-| **Context** | Implementation intent without ID | Inner | Assign appropriate role, launch workflow |
+| **PRB File** | *.prb.yaml, PRB-XXX | Direct PRB | Execute PRB directly, no workflow needed |
+| **PRB Command** | /icc-create-prb, /icc-analyze-complexity | PRB Generation | Analyze complexity, generate PRB, execute |
+| **File** | epic.yaml, story.yaml, bug.yaml | Outer | Create PRBs for tasks instead of Inner Workflow |
+| **Task** | task.md, TASK-XXX | Direct PRB | Convert to appropriate PRB, execute directly |
+| **Command** | /icc-create-task, /icc-start-story | Per command | Generate PRBs instead of workflow triggers |
+| **Role** | @Role: or @Role (inline) | PRB Generation | Create Tiny/Medium PRB, direct execution |
+| **Context** | Implementation intent without ID | PRB Generation | Analyze complexity, create appropriate PRB |
 
 **Task Tool Pattern:** See @workflow-templates/executable-workflow.md
 
-## Workflow Type Determination
+## PRB Type Determination
 
-### Workflow Selection Table
+### PRB Selection Table
 
-| Work Type | Trigger | Workflow | Context Loading |
+| Work Type | Trigger | PRB Type | Execution Mode |
 |-----------|---------|----------|----------------|
-| **Story/Bug** | STORY-XXX, BUG-XXX, story.yaml, bug.yaml | Outer | Parent loads once |
-| **Epic** | EPIC-XXX, epic.yaml | Outer | Parent loads once |
-| **Task** | TASK-XXX, task.md, single action | Inner | Passed from parent |
-| **Ambiguous** | No explicit ID | Inner (default) | Passed from parent |
+| **Trivial** | Single line, config change | Nano PRB | Direct execution |
+| **Simple** | Single file, <50 lines | Tiny PRB | Direct execution |
+| **Standard** | Multi-file feature | Medium PRB | Direct execution (replaces Inner) |
+| **Complex** | Story/Bug with subtasks | Large PRB | Generates sub-PRBs |
+| **System** | Epic, architecture change | Mega PRB | Phased execution |
 
-**Resolution:** ID match → File search → Scope check → Default to inner
+**Resolution:** Complexity analysis → Template selection → PRB generation → Direct execution
 
 ## Auto-Activation Flow
 
-1. **Detect** → File type, command, or intent
-2. **Load** → Assignment content and configuration
-3. **Create** → Task tool invocation with context
-4. **Launch** → Appropriate workflow (outer/inner)
-5. **Execute** → Through workflow phases
+1. **Detect** → Work requirement or PRB file
+2. **Analyze** → Calculate complexity score if needed
+3. **Generate** → Create appropriate PRB from template
+4. **Execute** → Direct PRB execution (no workflow needed)
+5. **Complete** → Single-pass execution with all context
 
-**Context:** Parent loads PROJECT-CONTEXT.md and settings ONCE, passes to all subagents
+**PRB Execution:** Each PRB contains complete context, no workflow phases needed
 
 ## Integration Points
 
@@ -56,22 +59,23 @@ Every work detection triggers a Task tool invocation with appropriate workflow c
 
 ## Trigger Priority Order
 
-1. **Assignment files** (epic.yaml, story.yaml, bug.yaml)
-2. **Commands** (/icc-start-story, /icc-execute-task)
-3. **ID references** (STORY-XXX, TASK-XXX)
-4. **@Role patterns**
-5. **Context inference**
+1. **PRB files** (*.prb.yaml, PRB-XXX references)
+2. **PRB commands** (/icc-create-prb, /icc-analyze-complexity)
+3. **Assignment files** (epic.yaml, story.yaml, bug.yaml → generate PRBs)
+4. **Work references** (TASK-XXX → convert to PRB)
+5. **@Role patterns** (→ generate appropriate PRB)
+6. **Context inference** (→ analyze and create PRB)
 
-**Conflict:** Use highest priority → Log all → Learn patterns
+**Conflict:** Use highest priority → Generate PRB → Execute directly
 
 ## Auto-Correction Patterns
 
 | Violation | Detection | Correction |
 |-----------|-----------|------------|
-| **Missing Workflow** | Direct @Role without Task tool | STOP → Create Task invocation → Launch workflow |
-| **Phase Skip** | Implementation before planning | STOP → Store work → Start from phase 1 |
-| **Bypass Attempt** | Direct edit without workflow | Block → Identify work type → Launch workflow |
-| **Wrong Workflow** | Inner when outer needed | Redirect → Load story/bug → Launch outer |
+| **Missing PRB** | Direct @Role without PRB | STOP → Analyze complexity → Generate PRB |
+| **Wrong Complexity** | Manual task too complex | STOP → Re-analyze → Generate larger PRB |
+| **No Context** | Execution without PRB | Block → Create appropriate PRB → Execute |
+| **Legacy Workflow** | Inner/Outer workflow attempt | Redirect → Convert to PRB → Direct execution |
 
 ## Configuration Integration
 
@@ -96,10 +100,11 @@ Every work detection triggers a Task tool invocation with appropriate workflow c
 ## Critical Trigger Points
 
 ### MUST Trigger
-- Any assignment file access (epic.yaml, story.yaml, bug.yaml, task.md)
-- Work-related command execution (/icc-start-story, /icc-execute-task)
-- Role mention patterns (@Role: or inline @Role)
-- Explicit work references (STORY-XXX, BUG-XXX, TASK-XXX)
+- PRB file access (*.prb.yaml, PRB-XXX)
+- PRB command execution (/icc-create-prb, /icc-analyze-complexity)
+- Assignment files (epic.yaml, story.yaml, bug.yaml → generate PRBs)
+- Work references (TASK-XXX → convert to PRB)
+- Role mention patterns (@Role → generate appropriate PRB)
 
 ### MUST NOT Trigger
 - Documentation reading (viewing .md files without work intent)
