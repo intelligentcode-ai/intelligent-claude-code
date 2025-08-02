@@ -1,0 +1,75 @@
+# Large PRB Template - Complex Features with Sub-PRBs
+# Auto-selected for complexity score 16-30
+# Manages multiple Medium/Tiny PRBs
+
+id: LARGE-[AUTO]
+type: large-prb
+complexity: complex
+title: "[EPIC_OR_STORY_TITLE]"
+requires_decomposition: true
+
+context:
+  project: "[CLAUDE.md]"        # Project context from CLAUDE.md
+  settings: "[ALL-SETTINGS]"
+  business_goal: "[BUSINESS_OBJECTIVE]"
+  technical_scope: "[SYSTEM_COMPONENTS]"
+  
+# Automatic sub-PRB generation
+sub_prbs:
+  - id: "[MEDIUM-001]"
+    title: "[ROLE] [COMPONENT_1]"
+    complexity: medium
+    dependencies: []
+    
+  - id: "[MEDIUM-002]"
+    title: "[ROLE] [COMPONENT_2]"
+    complexity: medium
+    dependencies: ["[MEDIUM-001]"]
+    
+  - id: "[TINY-001]"
+    title: "[ROLE] [CONFIG_TASK]"
+    complexity: tiny
+    dependencies: []
+    
+# Coordination strategy
+execution_strategy:
+  parallel_groups:
+    - ["[MEDIUM-001]", "[TINY-001]"] # Can run together
+    - ["[MEDIUM-002]"]               # Depends on group 1
+    
+  integration_points:
+    - between: ["[MEDIUM-001]", "[MEDIUM-002]"]
+      validate: "[API_CONTRACT]"
+      
+# Sequential thinking for complex decisions
+sequential_thinking:
+  required: true
+  command: "/icc-think-sequential"
+  focus_areas:
+    - "[ARCHITECTURE_DECISIONS]"
+    - "[INTEGRATION_APPROACH]"
+    - "[RISK_ASSESSMENT]"
+    
+# Multiple validation gates
+validation_gates:
+  - after: "[MEDIUM-001]"
+    check: "[SECURITY_REVIEW]"
+    reviewer: "@Security-Engineer"
+    
+  - after: "all_complete"
+    check: "[INTEGRATION_TEST]"
+    reviewer: "@QA-Engineer"
+    
+# Aggregated git operations
+git_strategy:
+  branch: "feature/[STORY-ID]-[DESCRIPTION]"
+  merge_request: true # Parent asks user
+  squash_commits: true
+  
+# Complex learning capture
+learning_strategy:
+  capture_points:
+    - "[ARCHITECTURE_PATTERNS]"
+    - "[INTEGRATION_APPROACHES]"
+    - "[COORDINATION_INSIGHTS]"
+  store_as: "ComplexPattern"

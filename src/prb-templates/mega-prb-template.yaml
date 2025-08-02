@@ -1,0 +1,90 @@
+# Mega PRB Template - System-Wide Changes
+# Auto-selected for complexity score > 30
+# Manages multiple Large PRBs
+
+id: MEGA-[AUTO]
+type: mega-prb
+complexity: system-wide
+title: "[MAJOR_INITIATIVE]"
+requires_epic_decomposition: true
+
+strategic_context:
+  business_driver: "[WHY_THIS_MATTERS]"
+  impact_scope: "[AFFECTED_SYSTEMS]"
+  risk_level: "[HIGH|CRITICAL]"
+  rollback_required: true
+  
+# Phases with Large PRBs
+phases:
+  - name: "Analysis & Planning"
+    prbs:
+      - type: large
+        title: "System architecture analysis"
+        focus: "[CURRENT_STATE_ANALYSIS]"
+        
+      - type: large
+        title: "Risk assessment and mitigation"
+        focus: "[RISK_PLANNING]"
+        
+  - name: "Implementation"
+    prbs:
+      - type: large
+        title: "[MAJOR_COMPONENT_1]"
+        parallel_safe: true
+        
+      - type: large  
+        title: "[MAJOR_COMPONENT_2]"
+        parallel_safe: true
+        
+  - name: "Migration & Validation"
+    prbs:
+      - type: large
+        title: "Data migration strategy"
+        critical_path: true
+        
+# Ultra thinking mandatory
+ultra_thinking:
+  mandatory: true
+  command: "/icc-think-sequential"
+  depth: "maximum"
+  considerations:
+    - "[SYSTEM_BOUNDARIES]"
+    - "[PERFORMANCE_IMPACT]"
+    - "[BACKWARDS_COMPATIBILITY]"
+    - "[FAILURE_SCENARIOS]"
+    
+# Multi-role collaboration
+collaboration_model:
+  leadership:
+    pm: "@PM"
+    architect: "@AI-Architect"
+    tech_lead: "@System-Engineer"
+    
+  specialist_pool:
+    - "[DYNAMIC_SPECIALIST_1]"
+    - "[DYNAMIC_SPECIALIST_2]"
+    - "[DYNAMIC_SPECIALIST_3]"
+    
+  coordination: "continuous"
+  
+# System-wide validation
+validation_framework:
+  checkpoints:
+    - "Architecture review after Phase 1"
+    - "Security audit after Phase 2"
+    - "Performance validation after Phase 3"
+    - "Full system test before deployment"
+    
+# Phased git strategy  
+git_orchestration:
+  strategy: "feature-branch-per-phase"
+  integration: "progressive-merge"
+  main_protection: "mandatory"
+  
+# Comprehensive learning
+knowledge_capture:
+  mandatory_documentation:
+    - "Architecture decisions"
+    - "Migration patterns"
+    - "Rollback procedures"
+  format: "ArchitecturalDecisionRecord"

@@ -8,7 +8,7 @@ Restore system state after context loss using $ARGUMENTS.
 ## Behavior
 - Parse restoration scope from $ARGUMENTS
 - Load preserved state from memory/files
-- Restore: role states/scores, task queue/progress, memory connections, ID sequences
+- Restore: role states/scores, PRB states, memory connections, ID sequences
 - Validate integrity and resolve conflicts
 - Test integrations (GitHub CLI, Context7)
 - Display restoration summary with active counts
