@@ -164,6 +164,8 @@ completion:
     - [ ] No security vulnerabilities
     - [ ] Performance targets met
     - [ ] Documentation updated
+    - [ ] No unnecessary files created
+    - [ ] Removed debug/temporary code
     
   learning_capture:
     - pattern: "[New pattern discovered]"
