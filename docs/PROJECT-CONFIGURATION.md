@@ -1,0 +1,146 @@
+# Project Configuration for PRB System
+
+The intelligent-claude-code system supports extensive project-level configuration to enforce coding standards, architecture patterns, and best practices.
+
+## Directory Structure
+
+```
+project-root/
+├── .claude/
+│   ├── CLAUDE.md              # Project context and configuration
+│   ├── best-practices/        # Domain-specific best practices
+│   │   ├── terraform.md       # IaC best practices
+│   │   ├── react.md          # React patterns and standards
+│   │   └── security.md       # Security guidelines
+│   ├── architecture/         # Architecture documentation
+│   │   ├── overview.md       # System architecture
+│   │   ├── patterns.md       # Design patterns to follow
+│   │   └── constraints.md    # Architecture constraints
+│   ├── standards/           # Coding standards
+│   │   ├── style-guide.md   # Code formatting rules
+│   │   ├── naming.md        # Naming conventions
+│   │   └── testing.md       # Testing requirements
+│   ├── code-samples/        # Example implementations
+│   │   ├── auth/           # Authentication examples
+│   │   └── api/            # API pattern examples
+│   ├── drafts/             # Draft specifications
+│   │   └── feature-x/      # Working drafts for new features
+│   └── prbs/               # Generated PRBs
+│       ├── ready/          # Ready to execute
+│       └── completed/      # Executed PRBs
+```
+
+## Configuration in CLAUDE.md
+
+```yaml
+# Project Configuration
+project:
+  name: "My Awesome Project"
+  type: "web-application"
+  
+# PRB Configuration
+prb_configuration:
+  # Include project best practices in all PRBs
+  include_best_practices: true
+  best_practices_paths:
+    - ".claude/best-practices/"
+    - "docs/standards/"
+  
+  # Search for code patterns
+  code_pattern_search:
+    enabled: true
+    paths: ["src/", "lib/"]
+    exclude: ["node_modules/", "dist/"]
+  
+  # External documentation
+  external_docs:
+    - name: "React Docs"
+      context7_id: "/facebook/react"
+    - name: "AWS Best Practices"
+      url: "https://aws.amazon.com/architecture/well-architected/"
+  
+  # Behavioral customization
+  behavioral_overrides:
+    error_handling: "defensive"  # defensive, fail-fast, resilient
+    testing_approach: "tdd"      # tdd, bdd, integration-first
+    review_style: "thorough"     # quick, balanced, thorough
+    
+# Coding Standards
+coding_standards:
+  style: "airbnb"              # or google, standard, custom
+  linting: true
+  formatting: "prettier"
+  
+# Architecture Enforcement
+architecture:
+  pattern: "microservices"     # monolith, microservices, serverless
+  constraints:
+    - "All APIs must be RESTful"
+    - "Use dependency injection"
+    - "Follow SOLID principles"
+```
+
+## Using Project Configuration
+
+### 1. Best Practices Inclusion
+When PRBs are generated, they automatically include:
+- Relevant best practices from your project
+- Architecture patterns and constraints
+- Coding standards and style guides
+
+### 2. Code Pattern Search
+The system searches your codebase for:
+- Similar implementations
+- Existing patterns to follow
+- Examples to reference
+
+### 3. External Documentation
+PRBs can reference:
+- Real-time library documentation via Context7
+- Project-specific documentation URLs
+- Architecture decision records (ADRs)
+
+### 4. Behavioral Customization
+Each project can override default behaviors:
+- How errors are handled
+- Testing methodology
+- Code review depth
+- Validation criteria
+
+## Draft-Based PRB Generation
+
+Place draft specifications in `.claude/drafts/`:
+
+```bash
+# Create draft directory
+mkdir -p .claude/drafts/new-feature/
+
+# Add specifications
+echo "User Authentication Requirements..." > .claude/drafts/new-feature/requirements.md
+
+# Generate PRBs from drafts
+/icc-generate-prb-from-draft .claude/drafts/new-feature/
+```
+
+The system will:
+1. @PM analyzes requirements
+2. @Architect designs approach
+3. Generate appropriate PRBs with all project context
+4. Include best practices and standards
+5. Reference existing code patterns
+
+## Dynamic Configuration
+
+PRBs adapt to your project:
+- **React Project**: Includes React best practices, component patterns
+- **Terraform Project**: Includes IaC standards, module patterns  
+- **API Project**: Includes RESTful patterns, OpenAPI specs
+- **Microservices**: Includes service boundaries, communication patterns
+
+## Benefits
+
+1. **Consistency**: All work follows project standards
+2. **Knowledge Reuse**: Leverages existing patterns
+3. **Quality**: Enforces best practices automatically
+4. **Flexibility**: Fully configurable per project
+5. **Autonomy**: PRBs contain everything needed for execution
