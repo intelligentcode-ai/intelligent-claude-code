@@ -48,37 +48,28 @@ The system implements a **14-role virtual development team** that operates throu
 
 1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for <70% capability matches
 2. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
-3. **Memory System**: File-based memory storage in `.claude/memory/` with exponential aging and pattern capture
+3. **Memory System**: File-based memory storage (system-managed in `.claude/memory/`) with exponential aging and pattern capture
 4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
 5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and penalty systems
 
-### Directory Structure
+### Your Project Structure
 ```
-project-root/
-├── .claude/                    # Project-specific configuration
-│   ├── PROJECT-CONTEXT.md      # Project context (loaded once by parent)
-│   ├── config.md              # Project settings
-│   └── memory/                # File-based memory storage
-│       └── entities/          # Learning, Pattern, Knowledge entities
-├── epics/                     # Epic/Story/Bug organization
-│   └── EPIC-XXX/
-│       ├── epic.yaml
-│       ├── stories/
-│       │   └── STORY-XXX/
-│       └── bugs/
-│           └── BUG-XXX/
-└── src/                       # System source files
-    ├── behaviors/             # Behavioral patterns
-    ├── commands/              # Slash commands
-    ├── modes/                 # Virtual team mode
-    ├── roles/                 # Role definitions
-    └── prb-templates/         # PRB execution templates
+your-project/                  # YOUR project (any structure you want!)
+├── CLAUDE.md                  # Config (root or .claude/CLAUDE.md)
+├── docs/                      # Your docs (or wherever you prefer)
+│   ├── best-practices/        # Your practices
+│   └── architecture/          # Your architecture
+├── src/                       # Your code
+└── .claude/                   # System internals ONLY
+    └── memory/               # Auto-managed learning storage
 ```
+
+The system adapts to YOUR structure via CLAUDE.md configuration!
 
 ### Key Architectural Patterns
 
 1. **Task Tool Pattern**: Every @Role mention triggers a Task tool invocation creating a subagent
-2. **Context Loading**: Parent loads PROJECT-CONTEXT.md and settings ONCE, passes to all subagents
+2. **Context Loading**: CLAUDE.md provides all context, PRBs are self-contained
 3. **Memory-First**: All operations check memory before action, store results after completion
 4. **Learning System**: First errors forgiven with pattern capture, repeated errors penalized
 5. **Autonomy Levels**: L1 (manual approval), L2 (architect approval), L3 (full autonomous)

@@ -6,28 +6,31 @@ The intelligent-claude-code system supports extensive project-level configuratio
 
 ```
 project-root/
-├── .claude/
-│   ├── CLAUDE.md              # Project context and configuration
+├── claude.md                  # Project context and configuration (root OR .claude/)
+├── docs/                      # Project documentation (user's natural location)
 │   ├── best-practices/        # Domain-specific best practices
 │   │   ├── terraform.md       # IaC best practices
 │   │   ├── react.md          # React patterns and standards
 │   │   └── security.md       # Security guidelines
-│   ├── architecture/         # Architecture documentation
-│   │   ├── overview.md       # System architecture
-│   │   ├── patterns.md       # Design patterns to follow
-│   │   └── constraints.md    # Architecture constraints
-│   ├── standards/           # Coding standards
-│   │   ├── style-guide.md   # Code formatting rules
-│   │   ├── naming.md        # Naming conventions
-│   │   └── testing.md       # Testing requirements
-│   ├── code-samples/        # Example implementations
-│   │   ├── auth/           # Authentication examples
-│   │   └── api/            # API pattern examples
-│   ├── drafts/             # Draft specifications
-│   │   └── feature-x/      # Working drafts for new features
-│   └── prbs/               # Generated PRBs
-│       ├── ready/          # Ready to execute
-│       └── completed/      # Executed PRBs
+│   ├── architecture/          # Architecture documentation
+│   │   ├── overview.md        # System architecture
+│   │   ├── patterns.md        # Design patterns to follow
+│   │   └── constraints.md     # Architecture constraints
+│   └── standards/             # Coding standards
+│       ├── style-guide.md     # Code formatting rules
+│       ├── naming.md          # Naming conventions
+│       └── testing.md         # Testing requirements
+├── examples/                  # Code examples (or wherever user keeps them)
+│   ├── auth/                  # Authentication examples
+│   └── api/                   # API pattern examples
+├── drafts/                    # Draft specifications (user's choice)
+│   └── feature-x/             # Working drafts for new features
+└── .claude/                   # ONLY for system internals
+    ├── memory/                # Learning storage (system-managed)
+    │   └── entities/          # Learnings, patterns, knowledge
+    └── prbs/                  # Generated PRBs (system-managed)
+        ├── ready/             # Ready to execute
+        └── completed/         # Executed PRBs
 ```
 
 ## Configuration in CLAUDE.md
@@ -43,8 +46,10 @@ prb_configuration:
   # Include project best practices in all PRBs
   include_best_practices: true
   best_practices_paths:
-    - ".claude/best-practices/"
-    - "docs/standards/"
+    - "docs/best-practices/"     # User's documentation
+    - "docs/standards/"          # User's standards
+    - "best-practices/"          # Alternative location
+    - "standards/"               # Alternative location
   
   # Search for code patterns
   code_pattern_search:
@@ -109,17 +114,21 @@ Each project can override default behaviors:
 
 ## Draft-Based PRB Generation
 
-Place draft specifications in `.claude/drafts/`:
+Place draft specifications wherever natural in your project:
 
 ```bash
-# Create draft directory
-mkdir -p .claude/drafts/new-feature/
+# Create draft directory in your preferred location
+mkdir -p drafts/new-feature/
+# OR
+mkdir -p docs/drafts/new-feature/
+# OR
+mkdir -p specs/new-feature/
 
 # Add specifications
-echo "User Authentication Requirements..." > .claude/drafts/new-feature/requirements.md
+echo "User Authentication Requirements..." > drafts/new-feature/requirements.md
 
 # Generate PRBs from drafts
-/icc-generate-prb-from-draft .claude/drafts/new-feature/
+/icc-generate-prb-from-draft drafts/new-feature/
 ```
 
 The system will:
