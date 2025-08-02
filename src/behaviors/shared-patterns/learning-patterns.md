@@ -7,9 +7,10 @@
 ## Core Learning Patterns
 
 ### Learning Storage Pattern
-**Naming:** Learning-[ErrorType]-[YYYY-MM-DD]
-**Location:** .claude/memory/entities/Learning/[YYYY]/[MM]/
-**Structure:** Learning entities include ID, type, creation timestamp, context information, observations array, prevention steps, and relevance score
+**Location:** memory/[topic]/[subtopic].md
+**Structure:** Topic-based files with dated entries (newest first)
+**Entry Format:** Date header, context, problem, solution, code examples
+**Topics:** Organized by domain (authentication, errors, performance, etc.)
 
 ### Error Forgiveness Logic
 **First Error:** No penalty + Learning created + Pattern stored
@@ -26,10 +27,10 @@
 
 ### Memory-First Pattern
 **Process:**
-1. Check memory before action (built into PRB execution)
-2. Apply existing learnings if found
-3. Execute work with learning context
-4. Store new patterns (handled by PRB retrospective)
+1. Embed relevant learnings directly in PRB during generation
+2. No runtime memory lookups needed (all in PRB)
+3. Execute work with embedded learning context
+4. Store new patterns in version control (PRB retrospective)
 
 ### Error Processing Pattern
 **First Error Detected:** Search memory for similar error → If not found: create learning entity, no penalty → If found: apply 2x penalty, reference existing learning
@@ -52,15 +53,16 @@
 ## Integration Patterns
 
 ### Memory Operations
-Memory search and storage are handled automatically by PRBs:
-- **Search**: Built into PRB initialization using SearchMemory pattern
-- **Storage**: Handled by PRB retrospective phase using StoreInMemory pattern
+Memory embedding and storage are handled during PRB lifecycle:
+- **Embedding**: Relevant learnings copied into PRB context during generation
+- **No Search**: All needed learnings are embedded, no runtime lookups
+- **Storage**: New learnings stored in version-controlled memory/
 - **Learning Capture**: Automatic during PRB completion
-- **Learning Storage**: PRB creates learning entities directly via memory-operations.md
-- **Details**: See memory-operations.md for complete file-based memory patterns
+- **Learning Format**: Markdown files with YAML frontmatter
+- **Details**: See memory-operations.md for version-controlled patterns
 
 ### Learning Application
-**Memory-First Process:** Always search memory before action → Apply any relevant learnings found → Enhance action with learning context → Execute with learning awareness
+**PRB-Embedded Process:** PRB already contains relevant learnings → No search needed during execution → Work with embedded context → Store new learnings post-execution
 
 ### Error Recovery
 **Recovery Decision:** Determine if error is auto-recoverable → If yes: execute recovery strategy → If no: create fix task and continue other work
