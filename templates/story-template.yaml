@@ -47,9 +47,9 @@ embedded_config:
   autonomy_level: "L2"
   pm_always_active: true
   
-workflow:
-  current_phase: "DEFINING"
-  approach: "iterative"
+execution:
+  prb_template: "auto"  # System will auto-select based on complexity
+  complexity_estimate: "medium"  # Initial estimate
   
 tasks: []  # Will be added during planning
 

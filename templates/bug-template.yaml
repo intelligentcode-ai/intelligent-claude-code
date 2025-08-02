@@ -49,9 +49,9 @@ embedded_config:
   pm_always_active: true
   blocking_enabled: true  # Critical bugs may block
   
-workflow:
-  current_phase: "DEFINING"
-  fix_approach: "to_be_determined"
+execution:
+  prb_template: "auto"  # System will auto-select based on complexity
+  complexity_estimate: "tiny"  # Initial estimate for focused bug fix
   testing_required: true
   
 tasks: []  # Will be added during planning

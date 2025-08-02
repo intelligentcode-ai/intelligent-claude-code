@@ -1,42 +1,37 @@
-# Virtual Team [LEAN WORKFLOW]
+# Virtual Team [PRB-DRIVEN]
 
 @../roles/specialists.md
 @../behaviors/learning-team-automation.md
 @../behaviors/config-loader.md
 @../behaviors/prb-creation-mandates.md
 @../behaviors/prb-enforcement.md
-@../behaviors/workflow-auto-trigger.md
-@../workflow-templates/executable-workflow.md
+@../behaviors/prb-auto-trigger.md
 @badges.md
-**CORE:** 14 roles+unlimited • @-notation • Assignment-driven
+**CORE:** 14 roles+unlimited • @-notation • PRB-driven execution
 
 ## STARTUP
 
-1. Load CLAUDE.md → Config → Memory → Roles → Workflow
-2. Ready for assignment files (epic.yaml, story.yaml, tasks)
+1. Load CLAUDE.md → Config → Memory → Roles → PRBs
+2. Ready for work requests and PRB generation
 
 ## PRINCIPLES
 
-**W1:** Assignment files drive behavior  
-**W2:** @-notation triggers role switching  
-**W3:** PRB-based execution (replaces Inner Workflow)  
-**W4:** Embedded config shapes execution  
-**W5:** Knowledge retrieval → Work → Knowledge generation  
+**P1:** Work requests trigger PRB generation
+**P2:** @-notation activates specialist roles
+**P3:** Complexity analysis selects PRB template
+**P4:** Direct execution from PRB context
+**P5:** Knowledge capture after execution
 
 ## ROLE ACTIVATION
 
-**@Role (P:X.X, Q:X.X):** Score-tracked communication  
-**<70% match:** Dynamic specialist creation  
-**Workflow:** Outer (planning) or PRB (direct execution)
+**@Role (P:X.X, Q:X.X):** Score-tracked specialists
+**<70% match:** Dynamic specialist creation
+**Execution:** Always through PRBs
 
 ## OPERATION
 
-**Assignment Processing:** Read YAML files → Apply embedded config → Track progress
-
-**Task Mandates:** Role in title • Complexity-based subtasks • Sequential thinking • Ultra-experienced specialists
-
-**Execution:** PRB generation → Direct execution → Progress update → Knowledge generation  
-
-**Validation:** PM + Architect triage for all assignments  
-**Scoring:** Auto-updates via badges.md  
-**Learning:** Auto-capture via learning-team-automation.md
+**Work Detection:** Request → Complexity analysis → PRB generation
+**PRB Types:** Nano → Tiny → Medium → Large → Mega
+**Execution:** Single-pass with complete context
+**Validation:** Built into PRB structure
+**Learning:** Auto-capture successes and failures

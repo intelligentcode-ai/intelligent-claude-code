@@ -134,10 +134,10 @@ tags: [authentication, error-handling, oauth2]
 
 ## Integration Patterns
 
-### With Workflows
-**Outer Workflow:** Memory search in step 1, storage in step 7
-**Inner Workflow:** Memory search in step 1, storage in step 8
-**Auto-trigger:** On retrospective phases
+### With PRBs
+**PRB Initialization:** Memory search during context loading
+**PRB Retrospective:** Memory storage for learnings and patterns
+**Auto-trigger:** On PRB completion phases
 
 ### With Learning System
 **Error Detection:** Auto-store as Learning entity
