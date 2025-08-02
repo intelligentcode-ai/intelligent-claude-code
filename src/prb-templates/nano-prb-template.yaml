@@ -1,0 +1,23 @@
+# Nano PRB Template - Trivial Single-Line Changes
+# Auto-selected for complexity score <= 2
+
+id: NANO-[AUTO]
+type: nano-prb
+complexity: trivial
+title: "[AUTO-ROLE] [DESCRIPTION]"
+
+# Direct execution - no workflow needed
+execution:
+  action: "[SPECIFIC_CHANGE]"
+  file: "[FILE_PATH]"
+  line: "[LINE_NUMBER]" # Optional
+  
+validation:
+  - "[SIMPLE_CHECK]"
+  
+git_operations:
+  commit: "[ID]: [DESCRIPTION]"
+  
+# No memory search needed for trivial changes
+# No SME review needed
+# No learning capture needed

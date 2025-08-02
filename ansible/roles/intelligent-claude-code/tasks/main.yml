@@ -20,6 +20,7 @@
     - "{{ claude_install_path }}/commands"
     - "{{ claude_install_path }}/roles"
     - "{{ claude_install_path }}/workflow-templates"
+    - "{{ claude_install_path }}/prb-templates"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -109,6 +110,19 @@
   debug:
     msg: "Workflow templates directory preserved: {{ claude_install_path }}/workflow-templates/ already exists - keeping user modifications"
   when: workflow_templates_copy_result.failed
+
+- name: Copy PRB templates directory
+  copy:
+    src: "{{ playbook_dir }}/../src/prb-templates/"
+    dest: "{{ claude_install_path }}/prb-templates/"
+    mode: '0644'
+    force: yes
+  register: prb_templates_copy_result
+
+- name: Display PRB templates preservation notice
+  debug:
+    msg: "PRB templates directory preserved: {{ claude_install_path }}/prb-templates/ already exists - keeping user modifications"
+  when: prb_templates_copy_result.failed
 
 - name: Copy VERSION file
   copy:

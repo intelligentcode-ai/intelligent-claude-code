@@ -27,11 +27,12 @@
 - All settings loaded dynamically, never hardcoded
 - System defaults used as fallback only
 
-### PROJECT-CONTEXT.md Loading
-- Check for PROJECT-CONTEXT.md in current working directory
-- Auto-load on system initialization if found
-- Cache project context for 15 minutes
-- Integrate project context with configuration hierarchy
+### CLAUDE.md Loading
+- CLAUDE.md serves as project context
+- Can be located in project root AND/OR .claude/CLAUDE.md
+- Both locations checked and loaded if present
+- Auto-loaded on system initialization
+- Integrated with configuration hierarchy
 
 ## Implementation Details
 
@@ -57,7 +58,7 @@
 **Cache Management:**
 - Standard configuration: 5-minute TTL
 - Embedded configuration: 1-hour TTL (more stable)
-- PROJECT-CONTEXT.md: 15-minute TTL (moderate stability)
+- CLAUDE.md: 15-minute TTL (moderate stability)
 - Invalidate cache on file changes
 - Key based on file timestamps and content hash
 
@@ -67,14 +68,14 @@
 - **Get Setting:** Load config → Check key exists → Return value or default
 - **Check Autonomy:** Get autonomy_level → Apply L1/L2/L3 behaviors
 - **Apply Embedded:** Check assignment config → Merge with current → Return merged
-- **Load Context:** Use /icc-load-project-context command
+- **Load Context:** Automatically loads CLAUDE.md from both locations
 - **Settings Access:** Follow configuration-patterns.md operations
 
-### PROJECT-CONTEXT.md Integration
-- Auto-execute /icc-load-project-context during system initialization
-- Merge project context with configuration hierarchy
-- Cache project-specific settings with appropriate TTL
-- Enable context-aware behavioral decisions
+### CLAUDE.md Integration
+- Automatically loads during system initialization
+- Checks both project root and .claude/ locations
+- Merges with configuration hierarchy
+- Enables context-aware behavioral decisions
 
 ---
 *Config loader for intelligent-claude-code system*

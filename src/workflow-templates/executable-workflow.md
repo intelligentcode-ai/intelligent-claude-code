@@ -1,197 +1,209 @@
-# Executable AI Workflow
+# Executable PRB-Based Workflow
 
-**MANDATORY:** Use unified workflow execution. PROJECT-CONTEXT.md AND ALL SETTINGS loaded ONCE by parent.
+**MANDATORY:** Use PRB (Product Requirement Blueprint) system for all task execution.
 
-**Purpose:** Complete workflow with Task tool invocations, dynamic roles, and coordination
+**Purpose:** Simplified workflow using self-contained PRBs that replace complex Inner Workflow with direct execution.
 
-## Core Principle: @Role = Task Tool Invocation
+## Core Principle: PRB = Complete Execution Context
 
-Every @Role triggers a Task tool invocation creating a subagent with that expertise.
+Every task becomes a PRB containing all context, validation, and execution instructions for single-pass success.
 
-**CRITICAL:** PROJECT-CONTEXT.md AND ALL SETTINGS are loaded ONCE by parent and passed to ALL subagents.
-
-**Task Tool XML Example:**
-```xml
-<invoke name="Task">
-  <parameter name="description">[PM] Plan STORY-XXX implementation</parameter>
-  <parameter name="prompt">You are @PM. Analyze requirements and define approach.
-  Context: [PROJECT-CONTEXT content passed from parent]
-  Settings: autonomy_level=L2, git_privacy=true, branch_protection=true, default_branch=main, pm_always_active=true, blocking_enabled=false</parameter>
-</invoke>
-```
+**CRITICAL:** PRBs eliminate workflow interruptions by providing everything upfront.
 
 ## Directory Structure
 ```
 project-root/
 ├── .claude/
-│   ├── PROJECT-CONTEXT.md    # Loaded ONCE by parent
-│   └── config.md
+│   ├── CLAUDE.md             # Project context loaded ONCE by parent
+│   ├── config.md
+│   └── prbs/                 # PRB storage
+│       ├── active/           # Current PRBs
+│       ├── completed/        # Finished PRBs
+│       └── archived/         # Historical PRBs
 ├── epics/
 │   └── EPIC-001/
 │       ├── epic.yaml
 │       ├── stories/
-│       │   └── STORY-001/
-│       │       ├── story.yaml
-│       │       └── tasks/
-│       │           └── TASK-001.md
 │       └── bugs/
-│           └── BUG-001/
-│               ├── bug.yaml
-│               └── tasks/
-│                   └── TASK-001.md
 ```
 
-## Priority System
-**Execution:** P0 → P1 → P2 → P3 (highest to lowest)
-**Escalation:** Security/critical → P0
-**Parallel:** Up to 5 non-conflicting tasks
+## PRB Complexity Tiers
 
-## Outer Workflow (Story/Bug Level)
+### Automatic Template Selection
+```
+Complexity Score → Template Selection:
+- 0-2 points    → Nano PRB (trivial changes)
+- 3-5 points    → Tiny PRB (simple tasks)
+- 6-15 points   → Medium PRB (standard features)
+- 16-30 points  → Large PRB (complex features)
+- 30+ points    → Mega PRB (system changes)
+```
 
-1. **PM Planning with ALL Configuration Loading**
-   - **PARENT LOADS EVERYTHING ONCE HERE:**
-     - Load PROJECT-CONTEXT.md via /icc-load-project-context
-     - Load ALL settings via /icc-get-setting for each:
-       - autonomy_level (L1/L2/L3)
-       - git_privacy (true/false)
-       - branch_protection (true/false)
-       - default_branch (main/master/develop)
-       - require_pr_for_main (true/false)
-       - pm_always_active (true/false)
-       - blocking_enabled (true/false)
-       - specialist_creation (true/false)
-       - role_validation (true/false)
-   - **PASS BOTH context AND settings to EVERY subagent in ALL steps**
-   - **No subagent ever needs to load these again - parent provides everything**
-2. **Architect Triage** - Review and approve technical approach  
-   - Validate role assignments for work type
-   - Ensure correct specialist selection
-   - **Receives context AND settings from parent**
-3. **Task Creation** - "[Role] Description" format, complexity-based subtasks
-   - **PRE-ASSIGN SME peer reviewer** during task creation
-   - Include SME assignment in task definition
-   - Format: "SME_Reviewer: @Security-Engineer" in task
-   - **Receives context AND settings from parent**
-4. **Git Branch Setup** - Create feature/STORY-XXX branch
-   - Uses git_privacy setting for AI mention stripping (passed from parent)
-   - Uses branch_protection and other git settings (passed from parent)
-   - **Receives context AND settings from parent**
-5. **Parallel Task Execution** - Execute up to 5 tasks simultaneously
-   - **Pass BOTH PROJECT-CONTEXT AND settings to each task subagent**
-   - Each subagent receives full configuration from parent
-6. **Merge Request Decision** - PARENT asks user directly (not subagent)
+## Simplified Workflow (PRB-Based)
+
+### Outer Workflow (Story/Bug Level) - UPDATED
+
+1. **PM Planning with Configuration Loading**
+   - Load CLAUDE.md and all settings ONCE
+   - Analyze story/bug requirements
+   - Pass context to all subsequent operations
+
+2. **Architect Triage**
+   - Review technical approach
+   - Validate complexity assessment
+   - Approve PRB generation strategy
+
+3. **PRB Generation** (Replaces Task Creation)
+   - Analyze each task's complexity
+   - Select appropriate PRB template
+   - Generate self-contained PRBs
+   - Pre-assign SME reviewers in PRBs
+   - **NO INNER WORKFLOW NEEDED**
+
+4. **Git Branch Setup**
+   - Create feature/STORY-XXX branch
+   - Apply git settings from parent
+
+5. **Parallel PRB Execution**
+   - Execute up to 5 PRBs simultaneously
+   - Each PRB contains complete context
+   - Direct execution, no workflow phases
+
+6. **Merge Request Decision**
+   - Parent asks user directly
    - "Would you like me to create a merge request?"
-7. **Story Retrospective** - Capture learnings and patterns
-   - **Uses StoreInMemory pattern from memory-operations.md**
-   - **Receives context AND settings from parent**
 
-## Inner Workflow (Task Level)
+7. **Story Retrospective**
+   - Capture patterns from PRB executions
+   - Store learnings for future use
 
-1. **Memory Search** - Find relevant patterns for task domain
-   - **Uses SearchMemory pattern from memory-operations.md**
-   - **Uses context AND settings already passed from parent**
-   - No need to load settings - parent already provided them
-2. **Generate Workflow Steps** - Based on task type, create specific steps
-   - Development task: Design → Implement → Test → Document
-   - Bug fix: Reproduce → Diagnose → Fix → Verify
-   - Feature: Requirements → Design → Build → Integrate
-   - MANDATORY: Generate explicit steps to prevent deviation
-3. **Execute Work** - Follow generated workflow steps exactly
-   - No interpretation or shortcuts allowed
-   - Complete each step fully before proceeding
-4. **SME Peer Review** - Review by PRE-ASSIGNED SME from task
-   - Use SME_Reviewer field from task definition
-   - Can repeat up to 3 times before escalation
-   - Minor issues: Fix and re-review
-   - Major issues: Back to step 2 (workflow generation)
-5. **Version Bump** - Update version files before commit
-   - Check if changes affect public API or behavior
-   - Bump patch version for bug fixes and internal changes
-   - Bump minor version for new features or API additions
-   - Update VERSION file and any package.json if applicable
-6. **Git Operations** - Commit with "TASK-XXX: Description"
-   - Apply git_privacy setting if true: strip AI mentions (from parent settings)
-   - Check branch_protection before commit (from parent settings)
-   - Use default_branch setting (from parent settings)
-7. **Task Completion** - Update status to COMPLETED
-8. **Learning Capture** - Store patterns for future reference
-   - **Uses StoreInMemory pattern from memory-operations.md**
+### Inner Workflow - DEPRECATED
 
-## Review Repetition Pattern
-- **Minor issues:** Fix in same task, re-review
-- **Major issues:** Back to workflow generation (inner step 2)
-- **Blocking issues:** Create follow-up task
-- **Maximum:** 3 review cycles before PM escalation
-- **SME is PRE-ASSIGNED:** Never select reviewer, use task's SME_Reviewer field
+**STATUS: REPLACED BY PRB DIRECT EXECUTION**
 
-## Task Creation Example (with SME Pre-Assignment)
+The 8-step Inner Workflow is now obsolete. PRBs contain:
+- Pre-searched memory patterns
+- Explicit execution steps
+- Validation criteria
+- SME reviewer assignment
+- Git operations
+- Learning capture instructions
 
-```yaml
-task_id: TASK-001
-title: "[Security-Engineer] Implement OAuth2 authentication"
-description: "Add OAuth2 authentication with JWT tokens"
-SME_Reviewer: "@AI-Architect"  # PRE-ASSIGNED during creation
-subtasks:
-  - Design OAuth2 flow with security considerations
-  - Implement JWT token generation and validation
-  - Add refresh token mechanism with rotation
-priority: P1
+## PRB Execution Pattern
+
+```xml
+<invoke name="Task">
+  <parameter name="description">[Role] Execute PRB-XXX</parameter>
+  <parameter name="prompt">Execute Product Requirement Blueprint PRB-XXX.
+  
+  PRB Content: [Complete PRB with all context, steps, validation]
+  
+  This PRB contains everything needed for single-pass execution:
+  - Memory patterns to apply
+  - Specific implementation steps
+  - Validation criteria
+  - Git operations to perform
+  - Learning to capture
+  
+  Execute directly without workflow phases.</parameter>
+</invoke>
 ```
 
-## Dynamic Specialists
+## Complexity Analysis
 
-When existing roles <70% capability match:
-- Create @GraphQL-Developer, @Kubernetes-Expert, etc.
-- Always specify "10+ years expertise"
-- Use for specialized domain work
+### Scoring Algorithm
+```python
+def calculate_complexity(work):
+    score = 0
+    score += file_impact_score(work.files_affected)
+    score += code_volume_score(work.estimated_lines)
+    score += integration_score(work.external_apis, work.database_changes)
+    score += security_score(work.security_implications)
+    score += coordination_score(work.roles_required)
+    return score
+```
 
-## Autonomy Control
+## PRB Templates Overview
 
-### Levels
-- **L1:** User approval required for ALL actions
-- **L2:** Architect approval for technical decisions
-- **L3:** Full autonomous execution
+### Nano PRB (Trivial)
+```yaml
+id: NANO-001
+action: "Fix typo in README"
+file: "README.md"
+validation: "Spell check passes"
+# Direct execution, no workflow
+```
 
-### L3 Continuous Execution
-- Auto-discover ready tasks
-- Execute up to 5 parallel
-- Continue while work exists
-- Stop only for critical issues
+### Tiny PRB (Simple)
+```yaml
+id: TINY-001
+title: "[Developer] Add validation"
+execution:
+  steps: ["Add regex", "Test validation"]
+validation: ["Input validated correctly"]
+# Bypasses workflow complexity
+```
 
-## Git Settings
-- **git_privacy:** Strip AI mentions from commits
-- **branch_protection:** Enforce feature branches
-- **require_pr_for_main:** Block direct pushes
+### Medium PRB (Standard)
+```yaml
+id: MEDIUM-001
+title: "[Backend-Developer] Create API endpoint"
+memory_consultation: {...}
+execution_plan: {...}
+validation_criteria: {...}
+sme_review: {...}
+git_operations: {...}
+# Replaces entire Inner Workflow
+```
 
-## Work Type Detection
-- **Behavioral/AI:** @AI-Engineer or @AI-Architect
-- **Security:** @Security-Engineer
-- **Infrastructure:** @System-Engineer or @DevOps
-- **General:** Domain-appropriate specialist
+### Large PRB (Complex)
+```yaml
+id: LARGE-001
+title: "Authentication System"
+sub_prbs: [MEDIUM-001, MEDIUM-002, TINY-001]
+execution_strategy: {...}
+validation_gates: {...}
+# Manages sub-PRB orchestration
+```
 
-## Critical Implementation Notes
+## Benefits Over Legacy Workflows
 
-1. **LOAD ONCE, PASS EVERYWHERE:** Parent loads PROJECT-CONTEXT AND ALL SETTINGS ONCE in step 1, passes to EVERY subagent
-2. **NO REDUNDANT LOADING:** Subagents NEVER load context or settings - parent provides everything
-3. **User Interaction:** Parent asks user about MR/PR (outer step 6) - NOT delegated
-4. **Review Pattern:** SME is PRE-ASSIGNED in task, up to 3 cycles
-5. **Role Selection:** Use @AI-Engineer for behavioral/AI work, not @Developer
-6. **Capability Match:** <70% triggers specialist creation
-7. **Version Bump:** ALWAYS bump version before Git operations (inner step 5)
-8. **Workflow Generation:** Inner step 2 generates explicit steps - NO deviation
-9. **Git Privacy:** Strip AI mentions when git_privacy=true before commits
+1. **No Workflow Interruptions**: Single-pass execution
+2. **Complete Context**: Everything in one place
+3. **Adaptive Complexity**: Right-sized process for each task
+4. **Direct Execution**: No 8-step Inner Workflow
+5. **Reliable Completion**: Self-contained success
 
-## Task Queue Management
-- Priority queue with P0-P3 ordering
-- Dependency tracking and resolution
-- Resource conflict prevention
-- Automatic work discovery in L3
+## Migration from Legacy
 
-## User Interruption Handling
-- Save state to task file
-- Document completed subtasks
-- Resume from interruption point
-- Maintain task continuity
+### Old Pattern (Inner Workflow)
+```
+Task → Memory Search → Generate Steps → Execute → Review → Version → Git → Complete → Learn
+        ↓ FAILS: Context lost between steps
+```
+
+### New Pattern (PRB)
+```
+Task → Generate PRB (contains everything) → Direct Execution → Done
+        ↓ SUCCESS: Complete context, single pass
+```
+
+## Commands
+
+- `/icc-create-prb` - Create PRB with auto-complexity analysis
+- `/icc-analyze-complexity` - Preview complexity before PRB creation
+- `/icc-execute-prb [PRB-ID]` - Direct PRB execution
+
+## L3 Autonomous Operation
+
+In L3 mode, system automatically:
+1. Detects work requirements
+2. Analyzes complexity
+3. Generates appropriate PRBs
+4. Executes PRBs in parallel
+5. Continues until all work complete
+
+No workflow interruptions or manual intervention needed.
 
 ---
-*Balanced executable workflow ~150 lines*
+*PRB-based execution - Replacing complex workflows with intelligent, self-contained blueprints*
