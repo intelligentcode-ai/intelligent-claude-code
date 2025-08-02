@@ -67,7 +67,7 @@ auto_correction: true
 
 ## Loading
 
-**Protocol:** READ .claude/config.md → PARSE → VALIDATE → CACHE → APPLY
+**Protocol:** READ config.md (or .claude/config.md if configured) → PARSE → VALIDATE → CACHE → APPLY
 
 **Enforcement:** Respects `blocking_enabled` setting
 - false: Team collaboration mode (defaults + warnings)

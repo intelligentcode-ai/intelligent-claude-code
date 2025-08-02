@@ -1,6 +1,6 @@
 # /icc-load-memory
 
-**Purpose:** Load a specific memory entity from the file-based memory system
+**Purpose:** Load a specific memory entity for PRB embedding
 
 **Usage:** `/icc-load-memory [entity-id]`
 
@@ -17,7 +17,7 @@
    - Check cache first (5 min TTL)
 
 2. **Construct File Path**
-   - Base: .claude/memory/entities/
+   - Base: memory/
    - Path: [Type]/[YYYY]/[MM]/[Type]-[ID]-[YYYY-MM-DD].md
    - Handle missing files gracefully
 
@@ -74,9 +74,10 @@ Last Accessed: 2025-01-23T15:45:00Z
 - Auto-refresh on file changes
 
 ## Integration
-- Used by workflows for context
-- Manual load for review
-- Batch loading supported
+- Used during PRB generation to embed full content
+- Manual load for review and exploration
+- Batch loading for related memories
+- Content embedded in PRBs, not referenced
 
 ---
 *Command template for loading memory entities*

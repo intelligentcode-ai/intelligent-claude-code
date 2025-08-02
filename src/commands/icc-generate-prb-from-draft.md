@@ -6,7 +6,7 @@ Generate PRBs from draft specifications in a directory.
 `/icc-generate-prb-from-draft [draft-directory]`
 
 ## Parameters
-- `draft-directory`: Path to directory containing draft files (default: .claude/drafts/)
+- `draft-directory`: Path to directory containing draft files (default: drafts/)
 
 ## Behavior
 1. **Scan draft directory** for specification files (.md, .txt, .yaml)
@@ -14,11 +14,11 @@ Generate PRBs from draft specifications in a directory.
 3. **@Architect review** - Technical approach and design
 4. **Generate PRBs** - Create appropriate complexity PRBs
 5. **Include project context**:
-   - Best practices from .claude/best-practices/
-   - Architecture patterns from .claude/architecture/
-   - Coding standards from .claude/standards/
+   - Best practices from configured paths (see CLAUDE.md)
+   - Architecture patterns from project docs
+   - Coding standards from project standards
    - Existing code patterns via search
-6. **Store PRBs** in .claude/prbs/ready/
+6. **Store PRBs** in prbs/ready/ (or configured output path)
 
 ## Draft Format Support
 - **Markdown**: Requirements, user stories, technical specs
@@ -27,7 +27,7 @@ Generate PRBs from draft specifications in a directory.
 
 ## Example
 ```bash
-/icc-generate-prb-from-draft .claude/drafts/new-feature/
+/icc-generate-prb-from-draft drafts/new-feature/
 ```
 
 ## Configuration

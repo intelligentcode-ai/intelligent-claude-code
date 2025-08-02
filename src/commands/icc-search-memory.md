@@ -1,6 +1,6 @@
 # /icc-search-memory
 
-**Purpose:** Search the project's file-based memory system for relevant entities
+**Purpose:** Search version-controlled memory for embedding into PRBs
 
 **Usage:** `/icc-search-memory [query]`
 
@@ -48,14 +48,17 @@
 Found 3 relevant memories:
 
 1. Learning-OAuth2Refresh-20250123-143000 (Score: 9.2)
+   Location: memory/Learning/2025/01/
    "OAuth2 token refresh requires specific error handling..."
    Tags: [oauth2, error-handling, authentication]
    
 2. Pattern-AuthFlow-20250122-093000 (Score: 7.8)
+   Location: memory/Pattern/2025/01/
    "Standard authentication flow with JWT tokens..."
    Tags: [authentication, jwt, patterns]
    
 3. Knowledge-ErrorCodes-20250120-110000 (Score: 6.5)
+   Location: memory/Knowledge/2025/01/
    "Common HTTP error codes and handling strategies..."
    Tags: [error-handling, http, best-practices]
 ```
@@ -67,9 +70,11 @@ Found 3 relevant memories:
 - Tag search: "tag:authentication"
 
 ## Integration
-- Auto-invoked at workflow start
+- Used during PRB generation to find relevant memories
+- Memories are embedded directly into PRBs
 - Manual search for exploration
-- Results feed into task execution
+- No runtime searches needed during execution
+- Auto-prunes large files during search (maintains 5-10 recent entries)
 
 ---
 *Command template for searching memory entities*

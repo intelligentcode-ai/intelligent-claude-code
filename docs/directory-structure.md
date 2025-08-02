@@ -8,9 +8,12 @@ Users work in their NATURAL project structure. The system adapts to YOUR project
 ```
 project-root/
 ├── CLAUDE.md                  # Project configuration (MUST be uppercase)
+├── memory/                    # Version-controlled learnings (shared with team)
+│   ├── Learning/             # Error patterns and solutions
+│   ├── Pattern/              # Reusable patterns
+│   └── Knowledge/            # Domain knowledge
 └── .claude/                   # System internals ONLY
-    └── memory/               # Auto-managed learning storage
-        └── entities/         # System stores learnings here
+    └── prbs/                 # Generated PRBs (auto-managed)
 ```
 
 That's it! Everything else is YOUR choice.
@@ -21,18 +24,20 @@ That's it! Everything else is YOUR choice.
 ```
 project-root/
 ├── CLAUDE.md
+├── memory/                  # Team-shared learnings
 ├── docs/
-│   ├── architecture/         # Your architecture docs
-│   ├── best-practices/       # Your best practices
-│   └── standards/           # Your coding standards
-├── src/                     # Your source code
-└── drafts/                  # Your draft specs
+│   ├── architecture/        # Your architecture docs
+│   ├── best-practices/      # Your best practices
+│   └── standards/          # Your coding standards
+├── src/                    # Your source code
+└── drafts/                 # Your draft specs
 ```
 
 ### Option 2: Standards at root
 ```
 project-root/
 ├── CLAUDE.md
+├── memory/                  # Team-shared learnings
 ├── best-practices/          # Your practices at root
 │   ├── security.md
 │   └── performance.md
@@ -45,6 +50,7 @@ project-root/
 ```
 project-root/
 ├── CLAUDE.md
+├── memory/                  # Shared across all packages
 ├── packages/
 │   ├── frontend/
 │   └── backend/
@@ -78,9 +84,10 @@ prb_configuration:
 
 ## What the System Auto-Creates
 
-Only in .claude/ (hidden from your work):
-- `.claude/memory/entities/` - Learning storage
-- `.claude/prbs/` - Generated PRBs
+The system stores everything in YOUR project (version-controlled):
+- `memory/` - Learning storage (version-controlled)
+- `prbs/` - Generated PRBs (version-controlled)
+- `config.md` - Project settings (default location, not .claude/)
 
 ## Key Points
 

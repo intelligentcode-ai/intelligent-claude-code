@@ -1,6 +1,12 @@
-# Project Configuration for PRB System
+# Project Configuration Guide
 
 The intelligent-claude-code system supports extensive project-level configuration to enforce coding standards, architecture patterns, and best practices.
+
+## Related Documentation
+- [Virtual Team Guide](virtual-team-guide.md) - Understanding the 14 roles
+- [Commands Reference](commands-reference.md) - All available commands
+- [PRB System Guide](prb-system-guide.md) - How PRBs work
+- [Directory Structure](directory-structure.md) - File organization
 
 ## Directory Structure
 
@@ -25,12 +31,12 @@ project-root/
 │   └── api/                   # API pattern examples
 ├── drafts/                    # Draft specifications (user's choice)
 │   └── feature-x/             # Working drafts for new features
-└── .claude/                   # ONLY for system internals
-    ├── memory/                # Learning storage (system-managed)
-    │   └── entities/          # Learnings, patterns, knowledge
-    └── prbs/                  # Generated PRBs (system-managed)
-        ├── ready/             # Ready to execute
-        └── completed/         # Executed PRBs
+├── memory/                    # Learning storage (version-controlled)
+│   └── [topic]/               # Organized by topic
+│       └── [subtopic].md      # Learnings and patterns
+└── prbs/                      # Generated PRBs (version-controlled)
+    ├── ready/                 # Ready to execute
+    └── completed/             # Executed PRBs
 ```
 
 ## Configuration in CLAUDE.md
