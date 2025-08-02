@@ -15,7 +15,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 1. **Load Configuration**: Apply configuration hierarchy (embedded → project → user → system defaults)
 2. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
 3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
-4. **Activate Lean Workflow**: Enable assignment-driven workflow executor
+4. **Activate PRB System**: Enable PRB-driven execution system
 5. **Initialize Scoring System**: Activate badges.md achievement tracking
 6. **Setup Learning System**: Enable error forgiveness and pattern capture
 7. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
@@ -33,7 +33,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 - ✅ Configuration loaded and applied
 - ✅ Memory system operational  
 - ✅ Role definitions loaded
-- ✅ Lean workflow executor active
+- ✅ PRB system active
 - ✅ Scoring system operational
 - ✅ Learning system active
 - ✅ Tool integrations configured
@@ -44,7 +44,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 - **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration. Check ~/.claude/config.md"
 - **MEMORY_INIT_FAILED**: "⚠️ Warning: Memory system unavailable. Using file-based fallback"
 - **ROLE_LOAD_FAILED**: "❌ Error: Failed to load role definitions. Check specialists.md"
-- **WORKFLOW_INIT_FAILED**: "❌ Error: Workflow executor failed to initialize"
+- **PRB_INIT_FAILED**: "❌ Error: PRB system failed to initialize"
 - **TOOL_INIT_FAILED**: "⚠️ Warning: Some tools unavailable. Using fallbacks"
 - **INVALID_AUTONOMY**: "❌ Error: Autonomy level must be L1, L2, or L3"
 - **SYSTEM_BUSY**: "⏳ System busy. Current operation must complete first"

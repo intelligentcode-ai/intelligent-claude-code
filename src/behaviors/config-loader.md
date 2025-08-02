@@ -9,7 +9,6 @@
 ## Imports
 
 @./shared-patterns/configuration-patterns.md
-@../workflow-templates/executable-workflow.md
 
 ## Operation
 
