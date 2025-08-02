@@ -7,11 +7,20 @@ type: medium-prb
 complexity: standard
 title: "[ROLE] [DESCRIPTION]"
 
-# All context passed from parent - no loading needed
+# Enhanced context with best practices and references
 context:
   project: "[CLAUDE.md]"      # Project context from CLAUDE.md
   settings: "[ALL-SETTINGS]"
   scope: "[FEATURE_SCOPE]"
+  best_practices:
+    - source: ".claude/best-practices/[DOMAIN].md"
+    - source: "[PROJECT_ARCHITECTURE_DOCS]"
+  code_samples:
+    - search: "[PATTERN_IN_CODEBASE]"
+    - reference: "[EXISTING_IMPLEMENTATION]"
+  external_docs:
+    - url: "[DOCUMENTATION_URL]"
+    - context7: "[LIBRARY_ID]"  # Real-time documentation
   
 requirements:
   functional:
@@ -21,6 +30,10 @@ requirements:
   technical:
     - "[TECH_REQUIREMENT_1]"
     - "[TECH_REQUIREMENT_2]"
+  constraints:
+    coding_style: "[PROJECT_CODING_STYLE]"
+    architecture: "[PROJECT_ARCHITECTURE_PATTERN]"
+    infrastructure: "[IAC_STANDARDS]"  # e.g., Terraform best practices
     
 # Replaces Inner Workflow Step 1: Memory Search
 memory_consultation:
@@ -30,9 +43,13 @@ memory_consultation:
     - "[ERROR_PATTERNS]"
   apply_learnings: "[LEARNING_IDS]"
   
-# Replaces Inner Workflow Step 2: Generate Workflow
+# Execution plan with configurable behaviors
 execution_plan:
   approach: "[TECHNICAL_APPROACH]"
+  behavioral_overrides:  # Project-specific behavior customization
+    error_handling: "[PROJECT_ERROR_PATTERN]"
+    testing_approach: "[PROJECT_TEST_STRATEGY]"
+    review_process: "[PROJECT_REVIEW_STYLE]"
   steps:
     - "[DESIGN_STEP]"
     - "[IMPLEMENT_STEP]" 
