@@ -48,20 +48,24 @@ The system implements a **14-role virtual development team** that operates throu
 
 1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for <70% capability matches
 2. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
-3. **Memory System**: File-based memory storage (system-managed in `.claude/memory/`) with exponential aging and pattern capture
+3. **Memory System**: File-based memory storage (version-controlled in `memory/`) with topic-based organization and pattern capture
 4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
 5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and penalty systems
 
 ### Your Project Structure
 ```
 your-project/                  # YOUR project (any structure you want!)
-├── CLAUDE.md                  # Config (root or .claude/CLAUDE.md)
+├── CLAUDE.md                  # Project context and config
+├── config.md                  # Project config (optional, default location)
 ├── docs/                      # Your docs (or wherever you prefer)
 │   ├── best-practices/        # Your practices
 │   └── architecture/          # Your architecture
 ├── src/                       # Your code
-└── .claude/                   # System internals ONLY
-    └── memory/               # Auto-managed learning storage
+├── memory/                    # Version-controlled learning storage
+│   └── [topic]/               # Organized by topic
+└── prbs/                      # Version-controlled PRBs
+    ├── ready/                 # Ready to execute
+    └── completed/             # Executed PRBs
 ```
 
 The system adapts to YOUR structure via CLAUDE.md configuration!

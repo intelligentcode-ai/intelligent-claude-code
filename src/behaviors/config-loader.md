@@ -9,22 +9,23 @@
 ## Imports
 
 @./shared-patterns/configuration-patterns.md
+@./shared-patterns/autonomy-patterns.md
 
 ## Operation
 
-### Configuration Management (Using Shared Patterns)
-- Apply Configuration Hierarchy from configuration-patterns.md
-- Use Loading Pattern for merging configs
-- Implement Cache Pattern with standard TTLs
-- Follow Settings Structure for available options  
+### Configuration Management
+- Apply configuration hierarchy: Embedded → Project → User → Defaults
+- Merge configs in priority order
+- Implement cache with 5-minute TTL
+- Support all setting types (git, autonomy, team)  
 
 ## Configuration Details
 
-### Dynamic Loading (Using Shared Patterns)
-- Configuration Hierarchy defined in configuration-patterns.md
+### Dynamic Loading
 - Priority: Embedded → Project → User → Defaults
 - All settings loaded dynamically, never hardcoded
 - System defaults used as fallback only
+- Check cache before loading (5 min TTL)
 
 ### CLAUDE.md Loading
 - CLAUDE.md serves as project context
@@ -35,11 +36,13 @@
 
 ## Implementation Details
 
-### Loading Process (Using Shared Patterns)
-- Apply Loading Pattern from configuration-patterns.md
-- Check cache validity before loading
-- Merge configs in priority order
-- Cache results with appropriate TTL
+### Loading Process
+1. Check cache validity (5 min TTL)
+2. Load system defaults
+3. Merge user global config (~/.claude/config.md - system-wide only)
+4. Merge project config (./config.md default, or .claude/config.md if user configured)
+5. Apply embedded overrides (from PRBs)
+6. Return merged settings
 
 **Configuration Parsing:**
 - Parse YAML front matter between `---` markers
@@ -63,12 +66,12 @@
 
 ## Integration Patterns
 
-### API Usage (Using Shared Patterns)
+### API Usage
 - **Get Setting:** Load config → Check key exists → Return value or default
-- **Check Autonomy:** Get autonomy_level → Apply L1/L2/L3 behaviors
-- **Apply Embedded:** Check assignment config → Merge with current → Return merged
+- **Check Autonomy:** Get autonomy_level → Apply L1/L2/L3 behaviors (see autonomy-patterns.md)
+- **Apply Embedded:** Check PRB config → Merge with current → Return merged
 - **Load Context:** Automatically loads CLAUDE.md from both locations
-- **Settings Access:** Follow configuration-patterns.md operations
+- **Settings Access:** Use /icc-get-setting command
 
 ### CLAUDE.md Integration
 - Automatically loads during system initialization
