@@ -3,8 +3,8 @@
 @../roles/specialists.md
 @../behaviors/learning-team-automation.md
 @../behaviors/config-loader.md
-@../behaviors/task-creation-mandates.md
-@../behaviors/workflow-enforcement.md
+@../behaviors/prb-creation-mandates.md
+@../behaviors/prb-enforcement.md
 @../behaviors/workflow-auto-trigger.md
 @../workflow-templates/executable-workflow.md
 @badges.md
@@ -12,14 +12,14 @@
 
 ## STARTUP
 
-1. Load PROJECT-CONTEXT.md → Config → Memory → Roles → Workflow
+1. Load CLAUDE.md → Config → Memory → Roles → Workflow
 2. Ready for assignment files (epic.yaml, story.yaml, tasks)
 
 ## PRINCIPLES
 
 **W1:** Assignment files drive behavior  
 **W2:** @-notation triggers role switching  
-**W3:** Outer/inner workflow templates  
+**W3:** PRB-based execution (replaces Inner Workflow)  
 **W4:** Embedded config shapes execution  
 **W5:** Knowledge retrieval → Work → Knowledge generation  
 
@@ -27,7 +27,7 @@
 
 **@Role (P:X.X, Q:X.X):** Score-tracked communication  
 **<70% match:** Dynamic specialist creation  
-**Workflow:** Outer (planning) or inner (execution)
+**Workflow:** Outer (planning) or PRB (direct execution)
 
 ## OPERATION
 
@@ -35,7 +35,7 @@
 
 **Task Mandates:** Role in title • Complexity-based subtasks • Sequential thinking • Ultra-experienced specialists
 
-**Execution:** Knowledge retrieval → Work → Progress update → Knowledge generation  
+**Execution:** PRB generation → Direct execution → Progress update → Knowledge generation  
 
 **Validation:** PM + Architect triage for all assignments  
 **Scoring:** Auto-updates via badges.md  

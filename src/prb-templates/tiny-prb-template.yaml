@@ -1,0 +1,36 @@
+# Tiny PRB Template - Simple Single-File Changes
+# Auto-selected for complexity score 3-5
+
+id: TINY-[AUTO]
+type: tiny-prb
+complexity: simple
+title: "[ROLE] [DESCRIPTION]"
+
+context:
+  project: "[CLAUDE.md]"       # Project context passed from parent
+  settings: "[ALL-SETTINGS]"   # Passed from parent
+  
+requirements:
+  change: "[WHAT_TO_CHANGE]"
+  reason: "[WHY]"
+  scope: "[SINGLE_FILE]"
+  
+execution:
+  memory_check: "[QUICK_PATTERN_SEARCH]" # <30 seconds
+  steps:
+    - "[STEP_1]"
+    - "[STEP_2]"
+    - "[STEP_3_OPTIONAL]"
+    
+validation:
+  - "[CHECK_1]"
+  - "[CHECK_2]"
+  
+git_operations:
+  branch: "[FEATURE_BRANCH]" # If branch_protection enabled
+  commit: "[ID]: [DESCRIPTION]"
+  version_bump: "[NONE|PATCH]"
+  
+learning_capture:
+  condition: "if_novel_pattern"
+  type: "implementation_approach"
