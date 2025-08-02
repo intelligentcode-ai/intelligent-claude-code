@@ -5,7 +5,7 @@
 **PURPOSE:** Mandatory behavioral requirements for ALL PRB creation.
 
 ## Imports
-@../workflow-templates/executable-workflow.md
+@./shared-patterns/learning-patterns.md
 
 ## MANDATORY RULES
 
@@ -73,6 +73,16 @@
 - Risk assessment and mitigation
 - Long-term maintenance considerations
 
+### Project Context Integration - ALWAYS
+**Include project-specific elements in EVERY PRB**
+- Best practices from .claude/best-practices/
+- Architecture patterns and constraints
+- Existing code patterns via search
+- External documentation references
+- Project coding standards and style guides
+- Infrastructure-as-Code standards
+- Security guidelines and compliance requirements
+
 ### Ultra-Experienced Specialists - ALWAYS
 **Create specialists with 10+ years expertise**
 - Never use generic roles for specialized work
@@ -99,5 +109,6 @@ Apply to ALL work: features, bugs, tasks, optimizations.
 Use these commands:
 - `/icc-analyze-complexity` - Preview complexity before creation
 - `/icc-create-prb` - Generate PRB with auto-template selection
+- `/icc-generate-prb-from-draft` - Create PRBs from draft specs
 - `/icc-think-sequential` - Complex problem analysis
 - `/icc-create-specialist` - Dynamic role creation
