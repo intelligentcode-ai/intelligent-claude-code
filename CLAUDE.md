@@ -85,7 +85,7 @@ project-root/
 
 ### PRB Execution
 
-The system uses Product Requirement Blueprints for single-pass execution:
+The system uses Product Requirement Blueprints for single-pass execution with full project context:
 
 **PRB Complexity Tiers**:
 - **Nano (0-2 points)**: Trivial one-line changes
@@ -94,12 +94,20 @@ The system uses Product Requirement Blueprints for single-pass execution:
 - **Large (16-30 points)**: Complex features with sub-PRBs
 - **Mega (30+ points)**: System-wide changes
 
-**PRB Structure**:
-1. Context loading (CLAUDE.md, memory search)
-2. Clear goal and rationale
-3. Detailed implementation blueprint
-4. Quality validation criteria
-5. Retrospective and learning capture
+**PRB Features**:
+1. **Context Integration**: CLAUDE.md, memory search, best practices
+2. **Project Standards**: Coding style, architecture patterns, IaC standards
+3. **Code Pattern Search**: Find and reuse existing implementations
+4. **External Documentation**: Context7 real-time docs, project wikis
+5. **Behavioral Customization**: Project-specific execution styles
+6. **Draft Support**: Generate PRBs from specifications in .claude/drafts/
+
+**Project Configuration** (in CLAUDE.md):
+- Best practices paths
+- Architecture constraints  
+- Coding standards
+- Behavioral overrides
+- External documentation sources
 
 ## Testing
 
