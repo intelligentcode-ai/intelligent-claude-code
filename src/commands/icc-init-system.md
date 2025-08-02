@@ -49,3 +49,12 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 - **INVALID_AUTONOMY**: "❌ Error: Autonomy level must be L1, L2, or L3"
 - **SYSTEM_BUSY**: "⏳ System busy. Current operation must complete first"
 - **ENFORCEMENT_FAILED**: "⚠️ Warning: Self-correcting enforcement inactive"
+
+## Memory System Details
+When initializing memory system:
+- Creates memory/Learning/[YYYY]/[MM]/ for error patterns and solutions
+- Creates memory/Pattern/[YYYY]/[MM]/ for reusable implementation patterns
+- Creates memory/Knowledge/[YYYY]/[MM]/ for domain knowledge and best practices
+- Creates memory/index.md for quick memory lookup
+- All memories are version-controlled (not in .gitignore)
+- Memories are embedded directly into PRBs during generation

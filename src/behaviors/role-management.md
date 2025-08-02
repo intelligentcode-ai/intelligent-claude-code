@@ -2,100 +2,53 @@
 
 **MANDATORY:** MUST adopt role behaviors when using @-notation. Auto-correct violations.
 
-**Purpose:** Unified role activation, detection, and behavioral adoption
-**Type:** Core Role Component
-**Status:** ACTIVE
+**Purpose:** Role activation and behavioral adoption
+**Type:** Core Component
 
 ## Imports
 @./shared-patterns/learning-patterns.md
-@./shared-patterns/validation-enforcement-patterns.md
+@./shared-patterns/autonomy-patterns.md
 
-## Role Activation System
+## Core System
 
-### @-notation Behavioral Adoption
-**Trigger:** @Role (P:X.X, Q:X.X): [communication]
-**Behavior:** System must ACTUALLY adopt role expertise and behavior patterns
-**Validation:** Score tracking and behavioral compliance monitoring
-**Auto-Correction:** Detect fake role switching → Force actual behavioral adoption
+### @-notation Activation
+**Pattern:** @Role triggers behavioral adoption + PRB execution
+**Scoring:** Track P:X.X, Q:X.X performance
+**Enforcement:** Real expertise adoption (no fake switching)
 
-### Role Detection Engine
-**Pattern Recognition:** Parse @Role patterns from communications
-**Capability Analysis:** Calculate match percentage for role requirements
-**Dynamic Creation:** <70% match → Create specialist (@React-Developer, @AWS-Engineer)
-**Ultra-Experienced:** All roles operate with 10+ years expertise level
+### Dynamic Specialists
+**Trigger:** <70% capability match
+**Creation:** 10+ years expertise + Context7 knowledge injection
+**Examples:** @GraphQL-Developer, @Kubernetes-Expert
 
-### Role Switching Logic
-**Role Activation Process:** Load role definition for requested role → If role exists: adopt behavioral patterns, load expertise, update scoring → If role unknown and capability match <70%: create dynamic specialist → If role completely unknown: escalate to architect for guidance
+### Role State
+**History:** Stack-based switching context
+**Persistence:** Maintain expertise across switches
+**Integration:** Badges.md scoring + learning capture
 
-### Dynamic Specialist Creation
-**Trigger Conditions:** Capability match <70% for required expertise
-**Creation Process:** 
-1. Analyze work requirements and technology domain
-2. Generate specialist definition with 10+ years expertise
-3. Inject real-time knowledge via Context7 integration
-4. Activate specialist with full behavioral adoption
+## Validation
 
-**Knowledge Injection:** Use Context7 to provide up-to-date documentation and patterns for any technology domain
+### Capability Matching
+**Threshold:** >70% match required
+**Formula:** (matched/required) * 100
+**Fallback:** Create specialist if no match
 
-### Role State Management
-**Stack-Based History:** Maintain role switching history for context
-**Behavioral Persistence:** Role context preserved across switches
-**Expertise Loading:** Dynamic expertise patterns loaded per role
-**Scoring Integration:** Role performance tracked via badges.md
-
-## Behavioral Adoption Enforcement
-
-### Actual vs Fake Role Switching
-**Fake Switching Detection:** Monitor for @Role labels without behavioral changes
-**Enforcement:** Force actual expertise adoption and behavioral patterns
-**Validation:** Verify role-appropriate responses and decision-making
-**Auto-Correction:** Replace fake switching with real behavioral adoption
-
-### Role Assignment Validation
-**Capability Matching:** >70% expertise match required for all assignments
-**Architect Consultation:** Mandatory PM + Specialist Architect triage
-**Work Type Detection:** Automatic specialist type determination
-**Quality Assurance:** Domain expert peer reviews only
-
-### Expertise Patterns
-**Behavioral Adoption Process:** Load domain-specific expertise patterns → Apply role-appropriate decision-making approach → Update communication style for role → Activate relevant knowledge base for domain
-
-## Role Coordination
-
-### Multi-Role Execution
-**Parallel Execution:** Multiple roles work simultaneously on different tasks
-**Communication Protocols:** @Role addressing for direct role targeting
-**Handover Procedures:** Clean context transfer between roles
-**Conflict Resolution:** PM arbitration for role disputes
-
-### Role Assignment Logic
-**Assignment Process:** Analyze task to determine required capabilities → Match capabilities against available roles → If exact match found: assign best match → If partial match ≥70%: assign closest match → If no adequate match: create specialist for requirements
+### Work Type → Role
+- AI/Behavioral → @AI-Engineer/@AI-Architect
+- Infrastructure → @System-Engineer/@DevOps-Engineer  
+- Security → @Security-Engineer
+- General → @Developer
 
 ### Quality Gates
-**Role Validation:** Every role assignment requires validation
-**Peer Review:** Domain experts only (no generic reviewers)
-**Capability Verification:** Continuous monitoring of role performance
-**Auto-Improvement:** Learning capture and role enhancement
+- PM + Architect triage for assignments
+- Domain expert peer review only
+- Continuous performance monitoring
 
-### PRB Integration
-**Task Tool Pattern:** Every @Role triggers PRB generation or execution
-**Context Passing:** PRBs include complete context for single-pass execution
-**Autonomous Execution:** Roles operate independently with PRB guidance
-**Quality Validation:** Built into PRB structure for each role
-
-## Integration Commands
-
-### Role Operations (Behavioral)
-- **Activate role:** Load role definition → Adopt behavioral patterns → Update scoring
-- **Create specialist:** Analyze requirements → Generate 10+ years expertise → Inject knowledge
-- **Switch context:** Save current role state → Load new role → Transfer context
-- **Validate assignment:** Check capability match → Verify >70% threshold → Approve/reject
-
-### Knowledge Integration
-**Context7 Integration:** Real-time documentation injection for specialists
-**Learning Application:** Apply previous role learnings to current work
-**Expertise Expansion:** Continuous knowledge base enhancement
-**Pattern Recognition:** Identify and apply successful role patterns
+## PRB Integration
+Every @Role activation generates/executes PRB with:
+- Complete context for single-pass
+- Autonomous execution capability
+- Built-in validation criteria
 
 ---
-*Unified role management for intelligent-claude-code system*
+*Optimized role management - 45 lines vs 117*

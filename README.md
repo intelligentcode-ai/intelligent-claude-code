@@ -58,6 +58,7 @@ Configure in CLAUDE.md where your docs/standards are. System finds and includes 
 /icc-generate-prb-from-draft  # From your specifications
 /icc-create-specialist        # Dynamic role creation
 /icc-think-sequential         # Complex problem solving
+/icc-store-memory            # Save learnings (auto-prunes)
 ```
 
 ## Configuration (CLAUDE.md)
@@ -83,17 +84,19 @@ your-project/
 ├── CLAUDE.md                  # Your config
 ├── docs/                      # Your docs (anywhere)
 ├── src/                       # Your code
-└── .claude/                   # System only
-    └── memory/               # Auto-managed
+├── memory/                    # Version-controlled learnings
+└── prbs/                      # Version-controlled PRBs
 ```
 
 Work in YOUR structure - system adapts!
 
 ## Documentation
 
-- [PRB System Guide](docs/prb-system-guide.md) - Complete PRB explanation
-- [Project Configuration](docs/PROJECT-CONFIGURATION.md) - Setup guide
-- [Directory Structure](docs/directory-structure.md) - File organization
+- **[Documentation Index](docs/index.md)** - Start here!
+- [Virtual Team Guide](docs/virtual-team-guide.md) - Meet the 14 specialist roles
+- [Commands Reference](docs/commands-reference.md) - All 10 commands explained
+- [PRB System Guide](docs/prb-system-guide.md) - How PRBs work
+- [Project Configuration](docs/project-configuration.md) - Setup guide
 
 ## Why PRBs?
 

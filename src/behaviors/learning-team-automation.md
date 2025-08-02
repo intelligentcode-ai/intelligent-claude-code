@@ -13,7 +13,7 @@
 **Repeated Error:** Double penalty + Escalation  
 **Learning Application:** +0.5P/Q bonus for references
 
-**Learning Storage:** .claude/memory/entities/Learning/[YYYY]/[MM]/
+**Learning Storage:** memory/Learning/[YYYY]/[MM]/
 
 ## Reference Detection
 
@@ -48,8 +48,8 @@
 
 ## Implementation
 
-**First Error:** Use SearchMemory → IF found: 2x penalty • ELSE: No penalty + StoreInMemory  
+**First Error:** Check embedded learnings in PRB → IF found: 2x penalty • ELSE: No penalty + Store in memory/  
 **Learning Application:** Scan for "Based on previous learning" → +0.5P/Q bonus  
-**Pattern Storage:** Learning-[ErrorType]-[YYYY-MM-DD] format (see memory-operations.md)
+**Pattern Storage:** Learning-[ErrorType]-[YYYY-MM-DD] format in version control
 
-**Integration:** SearchMemory before actions → Apply learnings → StoreInMemory for new patterns
+**Integration:** PRBs contain embedded learnings → Apply during execution → Store new patterns in memory/

@@ -16,7 +16,7 @@ Analyzes work requirements, calculates complexity score, selects optimal PRB tem
 3. **Select Template**: Choose optimal PRB template (or use override)
 4. **Generate PRB**: Create comprehensive blueprint with all context
 5. **Handle Decomposition**: For large/mega PRBs, auto-generate sub-PRBs
-6. **Store PRB**: Create directories if needed, save to .claude/prbs/active/
+6. **Store PRB**: Save to configured PRB path (default: prbs/active/)
 7. **Trigger Execution**: Launch appropriate execution pattern
 8. **Return ID**: Provide PRB ID for tracking
 

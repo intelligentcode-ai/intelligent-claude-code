@@ -11,6 +11,7 @@ The **Product Requirement Blueprint (PRB)** system replaces complex multi-step w
 3. **Autonomous Operation** - Specialists execute independently with full context
 4. **Token-Optimized** - Load only what's needed, when needed
 5. **Project-Adaptive** - Respects your structure and standards
+6. **Version-Controlled Memory** - Team learnings shared via git
 
 ## How It Works
 
@@ -45,6 +46,7 @@ PRB includes everything from your project:
 - Existing code examples
 - External documentation
 - Project standards
+- **Embedded learnings from memory/** - Past solutions and patterns
 
 ### 5. Specialist Execution
 Appropriate @Role executes with full context:
@@ -80,6 +82,11 @@ context:
     [Existing patterns HERE]
   reference_docs: |
     [Documentation HERE]
+  embedded_learnings: |
+    # From memory/Pattern/2025/01/Pattern-OAuth-20250122.md
+    [Complete pattern content embedded]
+    # From memory/Learning/2025/01/Learning-Error-20250123.md
+    [Complete learning content embedded]
 
 # IMPLEMENTATION - Blueprint
 implementation:
@@ -95,7 +102,10 @@ validation:
 # COMPLETION - Definition of done
 completion:
   deliverables: "What gets created"
-  learning_capture: "Patterns to store"
+  learning_capture: 
+    - "New patterns → memory/Pattern/"
+    - "Error solutions → memory/Learning/"
+    - "Domain knowledge → memory/Knowledge/"
 ```
 
 ## Configuration
@@ -125,16 +135,6 @@ prb_configuration:
 - `/icc-create-prb` - Generate PRB for work
 - `/icc-analyze-complexity` - Preview complexity score
 - `/icc-generate-prb-from-draft` - Create from your drafts
-
-## Key Differences from Workflows
-
-| Old Workflow System | New PRB System |
-|-------------------|----------------|
-| 8-step procedures | Single blueprint |
-| Context passed between steps | Everything embedded |
-| Workflow interruptions | Single-pass execution |
-| External references | Self-contained |
-| Rigid process | Adapts to project |
 
 ## Example
 

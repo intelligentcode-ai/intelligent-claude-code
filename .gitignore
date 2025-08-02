@@ -80,6 +80,9 @@ NOTES.md
 # Claude configuration (user-specific, not source code)
 .claude/
 
+# Memory is now version controlled - DO NOT IGNORE
+# memory/
+
 # Credentials
 *.pem
 *.key

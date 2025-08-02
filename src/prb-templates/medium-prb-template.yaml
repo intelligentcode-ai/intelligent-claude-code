@@ -13,7 +13,7 @@ context:
   settings: "[ALL-SETTINGS]"
   scope: "[FEATURE_SCOPE]"
   best_practices:
-    - source: ".claude/best-practices/[DOMAIN].md"
+    - source: "docs/best-practices/[DOMAIN].md"
     - source: "[PROJECT_ARCHITECTURE_DOCS]"
   code_samples:
     - search: "[PATTERN_IN_CODEBASE]"
@@ -35,13 +35,19 @@ requirements:
     architecture: "[PROJECT_ARCHITECTURE_PATTERN]"
     infrastructure: "[IAC_STANDARDS]"  # e.g., Terraform best practices
     
-# Replaces Inner Workflow Step 1: Memory Search
-memory_consultation:
-  search_queries:
-    - "[DOMAIN_PATTERNS]"
-    - "[TECHNOLOGY_PATTERNS]"
-    - "[ERROR_PATTERNS]"
-  apply_learnings: "[LEARNING_IDS]"
+# Embedded learnings (no runtime search needed)
+embedded_learnings:
+  # Only MOST RELEVANT 2-3 entries embedded (token-efficient)
+  # Selected based on topic match and recency
+  primary_pattern: |
+    From: memory/authentication/oauth2-patterns.md
+    ## 2025-01-23: OAuth2 Token Refresh
+    [ONLY THIS SPECIFIC ENTRY - max 500 tokens]
+    
+  related_learning: |
+    From: memory/error-handling/api-errors.md  
+    ## 2025-01-20: 401 Error Handling
+    [ONLY THIS SPECIFIC ENTRY - max 300 tokens]
   
 # Execution plan with configurable behaviors
 execution_plan:
@@ -85,8 +91,9 @@ git_operations:
   version_bump: "[PATCH|MINOR]"
   privacy: "[APPLY_GIT_PRIVACY_SETTING]"
   
-# Replaces Inner Workflow Step 8: Learning
+# Store new learnings in version control
 learning_capture:
   patterns: "[CAPTURE_PATTERNS]"
   insights: "[CAPTURE_INSIGHTS]"
-  store_as: "[PATTERN|LEARNING|KNOWLEDGE]"
+  store_location: "memory/[TYPE]/[YYYY]/[MM]/"
+  version_control: true
