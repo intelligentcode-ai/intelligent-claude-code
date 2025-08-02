@@ -14,7 +14,7 @@ Every memory entity in MCP must be:
 5. **Indexed** for discovery
 6. **Verified** post-migration
 
-## Migration Workflow Pattern
+## Migration Execution Pattern
 
 ### Phase 1: Discovery and Planning
 **Process:**

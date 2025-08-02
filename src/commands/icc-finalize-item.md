@@ -8,7 +8,7 @@ Complete work items for archival using $ARGUMENTS.
 ## Behavior
 - Verify @PM role required for finalization
 - Parse item ID from $ARGUMENTS, validate existence
-- Check completion: all children done, workflow phases complete, objectives met
+- Check completion: all children done, PRB objectives met
 - Update status to COMPLETED, phase to ARCHIVED
 - Generate summary: metrics, learnings, duration
 - Trigger archival readiness notification

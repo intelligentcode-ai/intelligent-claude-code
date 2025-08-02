@@ -9,7 +9,6 @@
 ## Imports
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/validation-enforcement-patterns.md
-@../workflow-templates/executable-workflow.md
 
 ## Role Activation System
 
@@ -63,7 +62,7 @@
 
 ## Role Coordination
 
-### Multi-Role Workflow
+### Multi-Role Execution
 **Parallel Execution:** Multiple roles work simultaneously on different tasks
 **Communication Protocols:** @Role addressing for direct role targeting
 **Handover Procedures:** Clean context transfer between roles
@@ -78,11 +77,11 @@
 **Capability Verification:** Continuous monitoring of role performance
 **Auto-Improvement:** Learning capture and role enhancement
 
-### Workflow Integration
-**Task Tool Pattern:** Every @Role triggers Task tool invocation
-**Context Passing:** Parent loads context/settings once, passes to all roles
-**Phase Alignment:** Roles activate at correct workflow phases
-**SME Assignment:** Pre-assigned reviewers from task definitions
+### PRB Integration
+**Task Tool Pattern:** Every @Role triggers PRB generation or execution
+**Context Passing:** PRBs include complete context for single-pass execution
+**Autonomous Execution:** Roles operate independently with PRB guidance
+**Quality Validation:** Built into PRB structure for each role
 
 ## Integration Commands
 

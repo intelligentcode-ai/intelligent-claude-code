@@ -26,10 +26,10 @@
 
 ### Memory-First Pattern
 **Process:**
-1. Check memory before action (built into workflow steps)
+1. Check memory before action (built into PRB execution)
 2. Apply existing learnings if found
 3. Execute work with learning context
-4. Store new patterns (handled by workflow retrospective)
+4. Store new patterns (handled by PRB retrospective)
 
 ### Error Processing Pattern
 **First Error Detected:** Search memory for similar error → If not found: create learning entity, no penalty → If found: apply 2x penalty, reference existing learning
@@ -52,11 +52,11 @@
 ## Integration Patterns
 
 ### Memory Operations
-Memory search and storage are handled automatically by the workflow:
-- **Search**: Built into workflow steps using SearchMemory pattern (outer step 1, inner step 2)
-- **Storage**: Handled by retrospective phases using StoreInMemory pattern (outer step 7, inner step 8)
-- **Learning Capture**: Automatic during task/story retrospectives
-- **Learning Storage**: Workflow creates learning entities directly via memory-operations.md
+Memory search and storage are handled automatically by PRBs:
+- **Search**: Built into PRB initialization using SearchMemory pattern
+- **Storage**: Handled by PRB retrospective phase using StoreInMemory pattern
+- **Learning Capture**: Automatic during PRB completion
+- **Learning Storage**: PRB creates learning entities directly via memory-operations.md
 - **Details**: See memory-operations.md for complete file-based memory patterns
 
 ### Learning Application

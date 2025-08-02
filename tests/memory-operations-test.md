@@ -43,11 +43,11 @@
 
 **Recommendation:** Update learning storage paths to use project-local `.claude/memory/`
 
-### 5. Workflow Integration Test ✅
+### 5. PRB Integration Test ✅
 **Verified:**
-- Outer workflow uses StoreInMemory in step 7 (retrospective)
-- Inner workflow uses SearchMemory in step 1
-- Inner workflow uses StoreInMemory in step 8 (learning capture)
+- PRBs use SearchMemory during initialization
+- PRBs use StoreInMemory in retrospective phase
+- Learning capture happens automatically on PRB completion
 - All references point to memory-operations.md patterns
 
 ### 6. Command Integration Test ✅
