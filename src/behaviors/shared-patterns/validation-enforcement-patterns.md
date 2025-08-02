@@ -59,10 +59,10 @@
 ## Validation Commands
 
 ### Validation Mechanisms
-- **Context Validation** - Handled by workflow phases
-- **Work Type Detection** - workflow-auto-trigger.md behavior
-- **Assignment Validation** - workflow-enforcement.md behavior
-- **Approval Requirements** - Enforced in workflow Architect Triage
+- **Context Validation** - Handled by PRB structure
+- **Work Type Detection** - prb-auto-trigger.md behavior
+- **Assignment Validation** - prb-enforcement.md behavior
+- **Approval Requirements** - Enforced in PRB validation phase
 - **Validation Chain** - Automatic through behavioral modules
 
 ### Validation Functions

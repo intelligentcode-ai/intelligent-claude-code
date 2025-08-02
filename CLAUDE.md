@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, command chain coordination, behavioral framework guidance, and Git workflow integration. This repository contains the configuration templates, behavioral patterns, and installation system for the virtual team enhancement.
+**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, command chain coordination, behavioral framework guidance, and PRB-driven execution. This repository contains the configuration templates, behavioral patterns, and installation system for the virtual team enhancement.
 
 ## Common Development Commands
 
@@ -23,7 +23,7 @@ make uninstall FORCE=true  # Complete removal including user data
 /icc-load-project-context  # Load PROJECT-CONTEXT.md for current project
 ```
 
-### Common Workflow Commands
+### Common Development Commands
 ```bash
 # Virtual Team Interaction
 @PM Build me a [project]     # Start any project with PM coordination
@@ -47,7 +47,7 @@ make uninstall FORCE=true  # Complete removal including user data
 The system implements a **14-role virtual development team** that operates through behavioral patterns and command chains:
 
 1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for <70% capability matches
-2. **Workflow Engine**: Two-level workflow system (Outer for story/bug planning, Inner for task execution) with Task tool invocations
+2. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
 3. **Memory System**: File-based memory storage in `.claude/memory/` with exponential aging and pattern capture
 4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
 5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and penalty systems
@@ -72,7 +72,7 @@ project-root/
     ├── commands/              # Slash commands
     ├── modes/                 # Virtual team mode
     ├── roles/                 # Role definitions
-    └── workflow-templates/    # Workflow execution patterns
+    └── prb-templates/         # PRB execution templates
 ```
 
 ### Key Architectural Patterns
@@ -83,28 +83,23 @@ project-root/
 4. **Learning System**: First errors forgiven with pattern capture, repeated errors penalized
 5. **Autonomy Levels**: L1 (manual approval), L2 (architect approval), L3 (full autonomous)
 
-### Workflow Execution
+### PRB Execution
 
-The system uses a simplified, AI-executable workflow with clear steps:
+The system uses Product Requirement Blueprints for single-pass execution:
 
-**Outer Workflow (Story/Bug Level)**:
-1. PM Planning (loads all context/settings)
-2. Architect Triage
-3. Task Creation with pre-assigned SME reviewers
-4. Git Branch Setup
-5. Parallel Task Execution
-6. Merge Request Decision
-7. Story Retrospective
+**PRB Complexity Tiers**:
+- **Nano (0-2 points)**: Trivial one-line changes
+- **Tiny (3-5 points)**: Simple single-file tasks
+- **Medium (6-15 points)**: Standard multi-file features
+- **Large (16-30 points)**: Complex features with sub-PRBs
+- **Mega (30+ points)**: System-wide changes
 
-**Inner Workflow (Task Level)**:
-1. Memory Search
-2. Generate Workflow Steps
-3. Execute Work
-4. SME Peer Review
-5. Version Bump
-6. Git Operations
-7. Task Completion
-8. Learning Capture
+**PRB Structure**:
+1. Context loading (CLAUDE.md, memory search)
+2. Clear goal and rationale
+3. Detailed implementation blueprint
+4. Quality validation criteria
+5. Retrospective and learning capture
 
 ## Testing
 
@@ -130,12 +125,12 @@ Tests verify:
 
 ### Key Implementation Notes
 
-1. **LOAD ONCE, PASS EVERYWHERE**: Parent loads PROJECT-CONTEXT AND ALL SETTINGS ONCE, passes to EVERY subagent
-2. **NO REDUNDANT LOADING**: Subagents NEVER load context or settings - parent provides everything
-3. **Pre-Assigned Reviews**: SME reviewers are assigned during task creation, not selected at runtime
-4. **Role in Title**: Every task MUST include role in square brackets: "[Role] Description"
-5. **Complexity-Based Subtasks**: Simple (0-1), Standard (2-3), Complex (4+) subtasks based on work nature
-6. **Version Bumping**: Always bump version before git operations in inner workflow step 5
+1. **CONTEXT LOADING**: PRBs include complete context - CLAUDE.md and memory search results upfront
+2. **SINGLE-PASS EXECUTION**: Each PRB contains everything needed for complete execution
+3. **COMPLEXITY-BASED SELECTION**: System auto-selects PRB template based on complexity score
+4. **Role in Title**: Every work item MUST include role in square brackets: "[Role] Description"
+5. **Autonomous Execution**: PRBs enable reliable autonomous work without workflow interruptions
+6. **Version Bumping**: Always bump version before git operations
 7. **Git Privacy**: Strip AI mentions when git_privacy=true before commits
 
 ### System Features
