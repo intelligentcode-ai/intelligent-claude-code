@@ -130,6 +130,41 @@ review_process:
     - "Functional requirements met"
     - "Technical constraints satisfied"
 
+# MANDATORY: Documentation Management Section
+documentation_management:
+  required_updates:
+    changelog:
+      file: "CHANGELOG.md"
+      entry_format: |
+        ## [VERSION] - DATE
+        ### Added/Fixed/Changed/Removed
+        - [MEDIUM_FEATURE_DESCRIPTION]
+      semantic_versioning: true
+      mandatory: true
+      
+    readme:
+      file: "README.md"  
+      update_required: "[YES_IF_USER_FACING_FEATURE]"
+      sections_affected: "[FEATURES/USAGE/API_IF_YES]"
+      user_impact: "[DESCRIBE_NEW_CAPABILITIES]"
+      
+    api_docs:
+      update_required: "[YES_IF_API_CHANGES]"
+      files_affected: "[docs/api/*.md_IF_YES]"
+      breaking_changes: "[YES/NO]"
+      
+  release_management:
+    github_release: "[YES_FOR_MINOR_BUMPS]"  # Create release for feature additions
+    release_notes: "[YES]"                   # Document new features
+    migration_guide: "[IF_BREAKING_CHANGES]"
+    
+  validation_checklist:
+    - "CHANGELOG.md updated with feature/fix description"
+    - "Version bumped appropriately (patch/minor)"
+    - "README.md updated if user-facing changes"
+    - "API docs updated if applicable"
+    - "GitHub release created if minor version bump"
+
 # MANDATORY: Implementation Samples Section
 # ⚠️ EXECUTION CHECKLIST: All 6 sections must be completed
 implementation_samples:
@@ -148,9 +183,10 @@ implementation_samples:
     ☐ Git Operations Section - Branch created, commits with privacy_filter
     ☐ Knowledge Management Section - Patterns captured + stored in memory/
     ☐ Review Process Section - SME review completed with max 3 cycles
+    ☐ Documentation Management Section - CHANGELOG, README, docs updated + release if minor
     ☐ Implementation Samples Section - Applied correctly with multi-file scope
     
-    SKIP NOTHING. EXECUTE EVERYTHING.
+    SKIP NOTHING. EXECUTE EVERYTHING. FULL LIFECYCLE DELIVERY.
 
 # Store new learnings in version control
 learning_capture:
