@@ -1,6 +1,9 @@
 # Nano PRB Template - Trivial Single-Line Changes
 # Auto-selected for complexity score <= 2
 
+# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
+# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
+
 id: NANO-[AUTO]
 type: nano-prb
 complexity: trivial
@@ -35,11 +38,12 @@ validation:
   - "[SIMPLE_CHECK]"
 
 # MANDATORY: Git Operations Section  
+# ⚠️ git_privacy: true = NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
 git_operations:
   branch_strategy: "[FROM_CONFIG]"     # Use configured branch strategy
   branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
   commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
 
 # MANDATORY: Knowledge Management Section
@@ -54,10 +58,19 @@ review_process:
   rationale: "trivial_change"
 
 # MANDATORY: Implementation Samples Section
+# ⚠️ EXECUTION CHECKLIST: All 6 sections must be completed
 implementation_samples:
   example_commit: "[NANO-001]: Fix typo in README.md"
   example_change: "Line 15: 'documnetation' → 'documentation'"
   
-# No memory search needed for trivial changes
-# No SME review needed  
-# No learning capture needed
+  execution_checklist: |
+    ☐ Complete Context Section - Settings loaded and applied
+    ☐ Requirements Section - All requirements met  
+    ☐ Git Operations Section - Commands executed with privacy_filter
+    ☐ Knowledge Management Section - Captured if needed
+    ☐ Review Process Section - Completed or justified skip
+    ☐ Implementation Samples Section - Applied correctly
+    
+    SKIP NOTHING. EXECUTE EVERYTHING.
+  
+# Minimal overhead for trivial changes but ALL sections still mandatory

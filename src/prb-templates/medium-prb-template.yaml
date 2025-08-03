@@ -2,6 +2,9 @@
 # Auto-selected for complexity score 6-15
 # Replaces Inner Workflow completely
 
+# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
+# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
+
 id: MEDIUM-[AUTO]
 type: medium-prb
 complexity: standard
@@ -96,12 +99,13 @@ sme_review:
   max_cycles: 3
   
 # MANDATORY: Git Operations Section
+# ⚠️ git_privacy: true = NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
 git_operations:
   branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
   branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
   branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
   commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
   version_bump: "[PATCH|MINOR]"
   
@@ -127,6 +131,7 @@ review_process:
     - "Technical constraints satisfied"
 
 # MANDATORY: Implementation Samples Section
+# ⚠️ EXECUTION CHECKLIST: All 6 sections must be completed
 implementation_samples:
   example_commit: "[MEDIUM-001]: Implement user authentication system"
   example_branch: "feature/MEDIUM-001-user-authentication"
@@ -136,6 +141,16 @@ implementation_samples:
     - Add middleware for route protection
     - Create user login/logout endpoints
     - Add password hashing utilities
+
+  execution_checklist: |
+    ☐ Complete Context Section - Settings, best practices, code samples loaded
+    ☐ Requirements Section - All functional/processual/technical requirements met
+    ☐ Git Operations Section - Branch created, commits with privacy_filter
+    ☐ Knowledge Management Section - Patterns captured + stored in memory/
+    ☐ Review Process Section - SME review completed with max 3 cycles
+    ☐ Implementation Samples Section - Applied correctly with multi-file scope
+    
+    SKIP NOTHING. EXECUTE EVERYTHING.
 
 # Store new learnings in version control
 learning_capture:

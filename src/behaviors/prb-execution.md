@@ -8,6 +8,49 @@
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/template-loading.md
 
+## MANDATORY EXECUTION CHECKLIST
+
+**CRITICAL:** Every PRB has 6 mandatory sections. ALL must be executed without exception.
+
+### Section-by-Section Execution Requirements
+```markdown
+MANDATORY PRB SECTION EXECUTION:
+☐ 1. Complete Context Section - ALL file references validated, settings loaded
+☐ 2. Requirements Section - EVERY functional/processual/technical requirement met
+☐ 3. Git Operations Section - EVERY command executed exactly as specified
+☐ 4. Knowledge Management Section - ALL learnings captured in specified paths
+☐ 5. Review Process Section - ALL reviewers complete their reviews
+☐ 6. Implementation Samples Section - Applied correctly with examples
+
+CRITICAL SETTINGS ENFORCEMENT:
+☐ git_privacy: true → NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
+☐ branch_protection: true → Follow branch protection rules exactly
+☐ autonomy_level → Apply L1/L2/L3 behaviors as configured
+☐ memory_integration: true → Store ALL learnings as specified
+
+EXECUTION TRACKING:
+☐ Each section read and understood
+☐ Each requirement executed exactly as specified (no interpretation)
+☐ Each completion verified against specification
+☐ Each result documented in execution log
+☐ Move to next section only after verification
+
+SKIP NOTHING. EXECUTE EVERYTHING.
+```
+
+### Settings Compliance Verification
+```markdown
+SETTINGS ENFORCEMENT CHECKLIST:
+☐ git_privacy setting verified and applied to ALL git operations
+☐ branch_protection rules followed for branch creation/merging
+☐ default_branch setting used for all git operations
+☐ autonomy_level behaviors applied throughout execution
+☐ memory_integration enabled and learnings stored
+☐ All other configuration settings from CLAUDE.md applied
+
+CRITICAL: Settings are NOT suggestions - they are MANDATORY requirements.
+```
+
 ## Execution State Tracking
 
 ### PRB Lifecycle States
