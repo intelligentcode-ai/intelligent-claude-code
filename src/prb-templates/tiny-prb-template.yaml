@@ -57,6 +57,13 @@ git_operations:
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
   version_bump: "[NONE|PATCH]"
 
+# MANDATORY: Documentation Updates Section
+documentation_updates:
+  - file: "CHANGELOG.md"
+    action: "Update with PR description"
+  - file: "[FROM_CONFIG]"
+    action: "Update if affected"
+
 # MANDATORY: Knowledge Management Section
 knowledge_management:
   structure: "memory/[topic]/[subtopic].md"
@@ -89,6 +96,7 @@ implementation_samples:
     ☐ Complete Context Section - Settings loaded and applied
     ☐ Requirements Section - All functional/processual/technical requirements met
     ☐ Git Operations Section - Commands executed with privacy_filter
+    ☐ Documentation Updates Section - CHANGELOG.md and affected files updated
     ☐ Knowledge Management Section - Pattern search + capture if novel
     ☐ Review Process Section - Self-review completed or escalated
     ☐ Implementation Samples Section - Applied correctly

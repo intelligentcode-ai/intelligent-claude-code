@@ -45,6 +45,14 @@ git_operations:
   commit_format: "[ID]: [DESCRIPTION]"
   privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
+  version_bump: "[NONE|PATCH]"        # PATCH for fixes, NONE for trivial
+
+# MANDATORY: Documentation Updates Section
+documentation_updates:
+  - file: "CHANGELOG.md"
+    action: "Update with change description"
+  - file: "[FROM_CONFIG]"
+    action: "Update if affected"
 
 # MANDATORY: Knowledge Management Section
 knowledge_management:
@@ -67,6 +75,7 @@ implementation_samples:
     ☐ Complete Context Section - Settings loaded and applied
     ☐ Requirements Section - All requirements met  
     ☐ Git Operations Section - Commands executed with privacy_filter
+    ☐ Documentation Updates Section - CHANGELOG.md and affected files updated
     ☐ Knowledge Management Section - Captured if needed
     ☐ Review Process Section - Completed or justified skip
     ☐ Implementation Samples Section - Applied correctly

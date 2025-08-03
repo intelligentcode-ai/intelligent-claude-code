@@ -108,6 +108,13 @@ git_operations:
   privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
   version_bump: "[PATCH|MINOR]"
+
+# MANDATORY: Documentation Updates Section
+documentation_updates:
+  - file: "CHANGELOG.md"
+    action: "Update with PR description"
+  - file: "[FROM_CONFIG]"
+    action: "Update if affected"
   
 # MANDATORY: Knowledge Management Section
 knowledge_management:
@@ -146,6 +153,7 @@ implementation_samples:
     ☐ Complete Context Section - Settings, best practices, code samples loaded
     ☐ Requirements Section - All functional/processual/technical requirements met
     ☐ Git Operations Section - Branch created, commits with privacy_filter
+    ☐ Documentation Updates Section - CHANGELOG.md and affected files updated
     ☐ Knowledge Management Section - Patterns captured + stored in memory/
     ☐ Review Process Section - SME review completed with max 3 cycles
     ☐ Implementation Samples Section - Applied correctly with multi-file scope

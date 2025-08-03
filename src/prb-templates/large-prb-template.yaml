@@ -185,8 +185,18 @@ git_operations:
   commit_coordination: "sub_prb_aware"
   privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all sub-PRBs - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
+  version_bump: "[MINOR|MAJOR]"       # MINOR for features, MAJOR for breaking changes
   merge_request: true # Parent asks user
   squash_commits: true
+
+# MANDATORY: Documentation Updates Section
+documentation_updates:
+  - file: "CHANGELOG.md"
+    action: "Update with PR description"
+  - file: "[FROM_CONFIG]"
+    action: "Update if affected"
+  - file: "docs/architecture/"
+    action: "Update architecture docs if system design changes"
   
 # MANDATORY: Knowledge Management Section
 knowledge_management:
@@ -230,6 +240,7 @@ implementation_samples:
     ☐ Complete Context Section - Settings and scope loaded for parent + all sub-PRBs
     ☐ Requirements Section - All functional/processual/technical requirements met
     ☐ Git Operations Section - Coordination strategy with privacy_filter for all
+    ☐ Documentation Updates Section - CHANGELOG.md and architecture docs updated
     ☐ Knowledge Management Section - Complex patterns captured + stored
     ☐ Review Process Section - Multi-gate reviews completed at each validation point
     ☐ Implementation Samples Section - Applied with proper sub-PRB coordination
