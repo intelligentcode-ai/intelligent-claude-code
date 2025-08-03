@@ -74,6 +74,31 @@ review_process:
     - "Functional requirements met"
   escalation: "if_validation_fails"
 
+# MANDATORY: Documentation Management Section
+documentation_management:
+  required_updates:
+    changelog:
+      file: "CHANGELOG.md"
+      entry_format: |
+        ### Added/Fixed/Changed
+        - [TINY_CHANGE_DESCRIPTION]
+      semantic_versioning: true
+      mandatory: true
+      
+    readme:
+      file: "README.md"  
+      update_required: "[YES_IF_USER_FACING]"
+      sections_affected: "[LIST_IF_YES]"
+      
+  release_management:
+    github_release: "NO"     # Patch bumps don't need releases
+    release_notes: "NO"      # Simple changes documented in CHANGELOG only
+    
+  validation_checklist:
+    - "CHANGELOG.md updated with appropriate entry"
+    - "Version bumped (patch) for accumulation of changes"
+    - "README updated if user-facing change"
+
 # MANDATORY: Implementation Samples Section
 # ⚠️ EXECUTION CHECKLIST: All 6 sections must be completed
 implementation_samples:
@@ -91,9 +116,10 @@ implementation_samples:
     ☐ Git Operations Section - Commands executed with privacy_filter
     ☐ Knowledge Management Section - Pattern search + capture if novel
     ☐ Review Process Section - Self-review completed or escalated
+    ☐ Documentation Management Section - CHANGELOG updated, version bumped if needed
     ☐ Implementation Samples Section - Applied correctly
     
-    SKIP NOTHING. EXECUTE EVERYTHING.
+    SKIP NOTHING. EXECUTE EVERYTHING. DOCUMENT ALL CHANGES.
   
 learning_capture:
   condition: "if_novel_pattern"

@@ -1,0 +1,257 @@
+---
+# Product Requirement Blueprint (PRB)
+prb_id: "PRB-README-UPDATE-001"
+title: "[Developer] Update README.md with Major System Changes"
+complexity: "Medium"
+template_version: "medium-prb-template.yaml"
+created_by: "@PM"
+architect_review: "@Architect"
+assigned_to: "@Developer"
+estimated_effort: "1-2 hours"
+priority: "High"
+
+# Context Integration
+project_context: |
+  Intelligent Claude Code virtual team system with PRB-driven execution.
+  Major system enhancements need to be reflected in main documentation.
+  
+  WORK LOCATION: This work is being conducted INSIDE the intelligent-claude-code project.
+
+# User Request
+original_request: |
+  Update the README.md to reflect major system changes including:
+  1. Memory-first pattern enforcement
+  2. Story management system  
+  3. Updated command count (12 commands, not 10)
+  4. Git push in execution checklist
+  5. PM + Architect collaboration for role assignments
+
+# PRB Specification
+
+## Problem Definition
+Current README.md is outdated and missing key system features that have been implemented:
+- Memory-first pattern enforcement is a core system feature but not documented
+- Story management system with @PM + Architect collaboration is missing
+- Command count is incorrect (shows 10, should be 12)
+- Git push workflow not mentioned in execution practices
+- Role assignment process needs PM + Architect collaboration details
+
+## Technical Requirements
+
+### Required Documentation Updates
+
+1. **Memory-First Pattern Section** (NEW)
+   - Add explanation of memory-first operations
+   - Explain automatic pattern capture and reuse
+   - Document learning bonus system
+   - Location: After "Self-Learning System" section
+
+2. **Story Management System** (NEW)
+   - Document @PM break down story functionality
+   - Explain @PM + Architect collaboration for story selection
+   - Add story directory structure (stories/, stories/drafts/)
+   - Location: New section after "How It Works"
+
+3. **Command Count Correction**
+   - Update "All 10 commands explained" to "All 12 commands explained"
+   - Location: Line 97 in Documentation section
+
+4. **Git Push Integration**
+   - Add git push to execution workflow
+   - Document automatic version bumping
+   - Location: "How It Works" section
+
+5. **PM + Architect Collaboration**
+   - Update role assignment process
+   - Explain joint analysis for complex work
+   - Document story selection criteria
+   - Location: Update existing role descriptions
+
+### Content Requirements
+
+#### Memory-First Pattern Content
+```markdown
+### 🧠 Memory-First Operations
+- All operations check memory before action
+- Automatic pattern capture and storage
+- Learning bonus system (+0.5P/Q for applied patterns)
+- Version-controlled in memory/ directory
+- Topic-based organization with auto-pruning
+```
+
+#### Story Management Content
+```markdown
+## Story Management
+
+Transform natural language stories into executable PRBs:
+
+1. **Story Creation** → Write stories in `stories/` directory
+2. **@PM Analysis** → "@PM break down authentication story"
+3. **Architect Collaboration** → Joint technical analysis
+4. **PRB Generation** → Ready-to-execute blueprints in `prbs/ready/`
+5. **Story Selection** → "@PM what story should we work on next?"
+
+### Story Directory Structure
+```
+stories/
+├── user-authentication.md    # Business requirements
+├── payment-system.md         # Feature specifications  
+└── drafts/                   # Work-in-progress stories
+    └── api-redesign.md
+```
+
+### PM + Architect Process
+- **Story Analysis**: @PM reads business goals, @Architect evaluates technical approach
+- **Priority Setting**: Joint evaluation of business value + technical complexity
+- **PRB Creation**: @PM generates appropriate complexity PRBs
+- **Next Selection**: Consider dependencies, risk, current application state
+```
+
+#### Updated Command List
+Update line 97: "All 12 commands explained"
+
+#### Updated How It Works Section
+```markdown
+## How It Works
+
+1. **Request Work** → "Implement OAuth2 login"
+2. **Memory Check** → Search for existing patterns/learnings
+3. **Analyze Complexity** → System scores complexity (with PM + Architect for Large/Mega)
+4. **Generate PRB** → Self-contained blueprint with embedded context
+5. **Specialist Executes** → Single-pass implementation
+6. **Git Integration** → Auto version bump + commit + push
+7. **Learn & Store** → Capture new patterns in memory/
+```
+
+## Success Criteria
+
+### Primary Success Metrics
+- [ ] Memory-first pattern section added with clear explanation
+- [ ] Story management system documented with examples
+- [ ] Command count corrected to 12
+- [ ] Git push workflow included in execution steps
+- [ ] PM + Architect collaboration explained for role assignments
+- [ ] All sections integrate smoothly with existing content
+- [ ] Documentation maintains current tone and style
+
+### Quality Requirements
+- Content accuracy verified against actual system behavior
+- Examples match real command usage
+- Directory structure matches actual implementation
+- Links and references remain valid
+- Formatting consistent with existing README
+
+### Validation Steps
+1. **Content Review**: Verify all 5 major changes implemented
+2. **Accuracy Check**: Confirm documentation matches system behavior  
+3. **Link Validation**: Ensure all internal links work
+4. **Style Consistency**: Maintain existing README tone and format
+5. **Example Verification**: Test that provided examples work
+
+## Implementation Approach
+
+### Development Strategy
+1. **Read Current README**: Analyze existing structure and style
+2. **Insert Memory-First Section**: Add after line 35 (Self-Learning System)
+3. **Add Story Management**: New section after "How It Works" (around line 52)
+4. **Update Command Count**: Simple text change on line 97
+5. **Enhance How It Works**: Add memory check and git push steps
+6. **Update Role Descriptions**: Add PM + Architect collaboration details
+
+### File Structure
+```
+Files to modify:
+- README.md (primary file)
+```
+
+### Integration Points
+- Maintain existing documentation links
+- Preserve current quick start flow
+- Keep configuration examples intact
+- Ensure directory structure section updated
+
+## Quality Assurance
+
+### Testing Approach
+- Manual review of all changes
+- Verify command count accuracy
+- Test example commands work
+- Check directory structure matches implementation
+- Validate story management examples
+
+### Code Standards
+- Maintain markdown formatting consistency
+- Use existing README style patterns
+- Keep section headers at appropriate levels
+- Preserve existing code block formatting
+
+## Additional Context
+
+### Learning Application
+Based on previous learning: Documentation updates should maintain existing user flow while adding new features incrementally.
+
+### Related Work
+- This updates documentation for PRB system enhancements
+- Complements story management system implementation
+- Supports memory-first pattern enforcement
+- Integrates with virtual team role system
+
+### Best Practices Integration
+- Follow existing README structure patterns
+- Maintain quick start accessibility
+- Keep technical details appropriately detailed
+- Ensure examples are actionable
+
+## Completion Checklist
+
+### Pre-execution
+- [ ] Current README.md read and analyzed
+- [ ] All 5 required changes identified in content
+- [ ] Content style and tone reviewed
+
+### During Execution  
+- [ ] Memory-first pattern section added
+- [ ] Story management system documented
+- [ ] Command count updated to 12
+- [ ] Git push workflow added to execution steps
+- [ ] PM + Architect collaboration details added
+- [ ] All content integrated smoothly
+
+### Post-execution
+- [ ] All changes verified against requirements
+- [ ] Documentation accuracy confirmed
+- [ ] Links and examples tested
+- [ ] Style consistency maintained
+- [ ] Version bumped if needed
+- [ ] Changes committed with descriptive message
+- [ ] Changes pushed to repository
+
+### Quality Gates
+- [ ] No broken internal links
+- [ ] All examples are actionable
+- [ ] Directory structure matches implementation
+- [ ] Command count is accurate (12 total)
+- [ ] Memory and story management clearly explained
+
+---
+# PRB Execution Notes
+
+## Memory Embeddings
+Previous learnings about documentation updates:
+- Maintain user experience flow during updates
+- Add features incrementally without disrupting existing structure
+- Use concrete examples that users can immediately try
+- Keep technical accuracy high while maintaining accessibility
+
+## Project Context
+- System has evolved significantly with memory-first patterns
+- Story management is a major new feature
+- Command count has increased from 10 to 12
+- Git integration has been enhanced
+- Role collaboration patterns have been refined
+
+## Behavioral Notes
+- Focus on accuracy and completeness
+- Maintain existing README tone and accessibility
+- Ensure all examples work as documented
+- Integrate new features without disrupting quick start flow

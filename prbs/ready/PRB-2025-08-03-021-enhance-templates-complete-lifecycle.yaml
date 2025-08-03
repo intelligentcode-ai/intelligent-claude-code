@@ -1,0 +1,351 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Enhance ALL PRB templates with complete software lifecycle management"
+prb_id: "PRB-2025-08-03-021"
+complexity: "Large"
+score: 18
+priority: "CRITICAL"
+created_by: "@PM + @Architect"
+created_at: "2025-08-03"
+tags: ["templates", "lifecycle", "changelog", "releases", "documentation", "git-operations"]
+
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "CRITICAL_ENHANCEMENT"
+  priority: "CRITICAL"
+  requester: "User - PRB templates missing complete lifecycle management"
+  project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+  
+  # Current critical gap analysis
+  problem_scope: |
+    EVERY PRB execution is currently incomplete because templates are missing:
+    1. CHANGELOG.md update requirements
+    2. GitHub release creation in git operations
+    3. README.md update requirements (when applicable)
+    4. Post-execution documentation requirements
+    5. Systematic version documentation requirements
+    
+    Critical PRBs in queue (PRB-011, PRB-012, PRB-014, PRB-016) are also affected.
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # ALL templates need enhancement
+  affected_templates:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/nano-prb-template.yaml"
+      current_gaps: "Missing documentation_management section, minimal version guidance"
+      enhancement_needed: "Add documentation_management, enhance git_operations with changelog requirements"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/tiny-prb-template.yaml"
+      current_gaps: "Has version_bump but missing documentation_management section"
+      enhancement_needed: "Add documentation_management section with changelog requirements"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/medium-prb-template.yaml"
+      current_gaps: "Has version_bump but missing documentation_management section"
+      enhancement_needed: "Add comprehensive documentation_management section"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/large-prb-template.yaml"
+      current_gaps: "Missing version_bump and documentation_management"
+      enhancement_needed: "Add both version_bump and documentation_management sections"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/mega-prb-template.yaml"
+      current_gaps: "Missing version_bump and documentation_management"
+      enhancement_needed: "Add both sections with major version and release management"
+
+  current_changelog_format: |
+    Based on Keep a Changelog format:
+    ## [Version] - Date
+    ### Added/Fixed/Changed/Removed
+    
+  project_versioning: "Semantic versioning (6.3.1 current)"
+
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "Add documentation_management section to ALL PRB templates"
+    - "Enhance git_operations section in ALL templates with CHANGELOG requirements"
+    - "Add version_bump section to Large and Mega templates (missing)"
+    - "Include GitHub release creation for Medium, Large, and Mega templates"
+    - "Add README.md update requirements when changes affect user documentation"
+    - "Include post-execution documentation validation"
+    - "Ensure consistent CHANGELOG.md format across all templates"
+    - "Add release notes generation guidance for significant changes"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous template management"
+    - "Version bump before merge for all significant changes"
+    - "Update CHANGELOG.md with proper semantic versioning entries"
+    - "Generate GitHub releases for Minor and Major version bumps"
+    - "Validate documentation completeness before PRB completion"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "YAML template structure enhancements"
+    - "Consistent section formatting across ALL templates"
+    - "Template inheritance patterns for sub-PRBs"
+    - "Integration with existing git_operations sections"
+
+# Sub-PRBs for systematic enhancement
+sub_prbs:
+  - id: "MEDIUM-001"
+    title: "[AI-Engineer] Add documentation_management section to Nano and Tiny templates"
+    complexity: medium
+    dependencies: []
+    scope: "Nano and Tiny templates enhancement"
+    files: ["nano-prb-template.yaml", "tiny-prb-template.yaml"]
+    
+  - id: "MEDIUM-002"
+    title: "[AI-Engineer] Enhance Medium template with complete documentation_management"
+    complexity: medium
+    dependencies: []
+    scope: "Medium template comprehensive enhancement"
+    files: ["medium-prb-template.yaml"]
+    
+  - id: "MEDIUM-003"
+    title: "[AI-Engineer] Add version_bump and documentation_management to Large template"
+    complexity: medium
+    dependencies: []
+    scope: "Large template missing sections"
+    files: ["large-prb-template.yaml"]
+    
+  - id: "MEDIUM-004"  
+    title: "[AI-Engineer] Add version_bump and documentation_management to Mega template"
+    complexity: medium
+    dependencies: []
+    scope: "Mega template missing sections"
+    files: ["mega-prb-template.yaml"]
+    
+  - id: "TINY-001"
+    title: "[Developer] Update VERSION file and create validation script"
+    complexity: tiny
+    dependencies: ["MEDIUM-001", "MEDIUM-002", "MEDIUM-003", "MEDIUM-004"]
+    scope: "Version bump and validation"
+    files: ["VERSION", "validation script"]
+
+# Standard documentation_management section for ALL templates
+documentation_management_standard: |
+  # MANDATORY: Documentation Management Section
+  documentation_management:
+    required_updates:
+      changelog:
+        file: "CHANGELOG.md"
+        entry_format: |
+          ## [VERSION] - DATE
+          ### Added/Fixed/Changed/Removed
+          - [SPECIFIC_CHANGE_DESCRIPTION]
+        semantic_versioning: true
+        mandatory: true
+      
+      readme:
+        file: "README.md"  
+        update_required: "[YES/NO]"
+        sections_affected: "[SECTION_LIST_IF_YES]"
+        user_impact: "[DESCRIBE_IF_APPLICABLE]"
+      
+      api_docs:
+        update_required: "[YES/NO]"
+        files_affected: "[API_DOC_FILES_IF_YES]"
+        breaking_changes: "[YES/NO]"
+      
+      user_guides:
+        update_required: "[YES/NO]"
+        guides_affected: "[GUIDE_LIST_IF_YES]"
+        new_features: "[FEATURE_LIST_IF_APPLICABLE]"
+    
+    release_management:
+      github_release: "[YES/NO]"    # YES for Minor/Major bumps
+      release_notes: "[YES/NO]"     # YES for user-facing changes
+      migration_guide: "[YES/NO]"   # YES for breaking changes
+      
+    validation_checklist:
+      - "CHANGELOG.md updated with semantic version entry"
+      - "README.md updated if user-facing changes"
+      - "API documentation updated if applicable"
+      - "Release created if Minor/Major version bump"
+      - "Migration guide created if breaking changes"
+
+# Execution strategy with coordination
+execution_strategy:
+  parallel_groups:
+    - ["MEDIUM-001", "MEDIUM-002"]  # Nano/Tiny and Medium templates
+    - ["MEDIUM-003", "MEDIUM-004"]  # Large and Mega templates  
+    - ["TINY-001"]                  # Final version bump and validation
+    
+  integration_points:
+    - between: ["all_medium_complete"]
+      validate: "Consistent documentation_management sections"
+      
+  final_validation:
+    - "ALL templates have documentation_management section"
+    - "ALL templates have consistent structure"
+    - "VERSION file updated to reflect template improvements"
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-021-enhance-templates-complete-lifecycle"
+  commit_format: "[PRB-021]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "minor"  # Template system improvements = minor version
+  merge_strategy: "squash"
+  
+  # Enhanced with release management
+  release_management:
+    github_release: true  # Minor version warrants release
+    release_title: "Enhanced PRB Templates with Complete Lifecycle Management"
+    release_notes: |
+      ## Template Enhancements
+      - Added documentation_management section to ALL PRB templates
+      - Enhanced git_operations with CHANGELOG requirements
+      - Added GitHub release creation for appropriate complexity tiers
+      - Systematic version bump guidance across all templates
+      - Complete software delivery lifecycle integration
+      
+      ## Impact
+      - ALL PRB executions now include complete documentation requirements
+      - Consistent changelog and release management
+      - No more incomplete PRB executions
+      
+      ## Breaking Changes
+      - None (backward compatible template enhancements)
+      
+  changelog_entry: |
+    ## [6.4.0] - 2025-08-03
+    ### Added
+    - Complete documentation_management section to ALL PRB templates
+    - GitHub release creation in git_operations for Medium/Large/Mega templates
+    - README.md update requirements when changes affect user documentation
+    - Systematic version bump guidance across all complexity tiers
+    - Post-execution documentation validation checklists
+    
+    ### Enhanced
+    - git_operations sections with comprehensive changelog requirements
+    - Template consistency across all complexity levels
+    - Software delivery lifecycle integration in templates
+    
+    ### Fixed
+    - CRITICAL: Every PRB execution was incomplete due to missing documentation requirements
+    - Missing version_bump sections in Large and Mega templates
+    - Inconsistent documentation management across templates
+
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  
+  capture_patterns:
+    - "Template enhancement methodologies"
+    - "Software lifecycle integration patterns" 
+    - "Documentation requirement standardization"
+    - "Version management across complexity tiers"
+    
+  store_locations:
+    - "memory/templates/lifecycle-management.md"
+    - "memory/documentation/changelog-patterns.md"
+    - "memory/git-operations/release-management.md"
+
+# MANDATORY: Review Process Section
+review_process:
+  type: "multi_gate_review"
+  
+  validation_gates:
+    - after: "MEDIUM-001"
+      check: "Nano and Tiny templates have documentation_management"
+      reviewer: "@Documentation-Specialist"
+    - after: "MEDIUM-002"  
+      check: "Medium template comprehensively enhanced"
+      reviewer: "@AI-Engineer"
+    - after: "MEDIUM-003"
+      check: "Large template has both missing sections"
+      reviewer: "@Documentation-Specialist"
+    - after: "MEDIUM-004"
+      check: "Mega template has both missing sections"  
+      reviewer: "@AI-Engineer"
+    - after: "all_complete"
+      check: "ALL templates consistent and complete"
+      reviewer: "@Architect"
+      
+  final_validation:
+    - "ALL 5 templates have documentation_management section"
+    - "ALL templates have version_bump (or explicit rationale)"
+    - "Consistent structure across all complexity levels"
+    - "Integration with existing mandatory sections"
+    - "CHANGELOG.md updated with template improvements"
+    - "GitHub release created for version 6.4.0"
+
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-021]: Enhance all PRB templates with complete lifecycle management"
+  example_branch: "feature/PRB-021-enhance-templates-complete-lifecycle"
+  example_scope: |
+    Files: ALL 5 PRB templates + VERSION + CHANGELOG.md
+    - Add documentation_management section to ALL templates
+    - Enhance git_operations with changelog requirements
+    - Add version_bump to Large and Mega templates
+    - Include GitHub release creation for appropriate tiers
+    - Systematic software delivery lifecycle integration
+  
+  template_documentation_management_example: |
+    # MANDATORY: Documentation Management Section
+    documentation_management:
+      required_updates:
+        changelog:
+          file: "CHANGELOG.md"
+          entry_format: |
+            ## [VERSION] - DATE
+            ### Added/Fixed/Changed/Removed
+            - [SPECIFIC_CHANGE_DESCRIPTION]
+          semantic_versioning: true
+          mandatory: true
+        
+        readme:
+          file: "README.md"  
+          update_required: "[YES/NO]"
+          sections_affected: "[SECTION_LIST_IF_YES]"
+          user_impact: "[DESCRIBE_IF_APPLICABLE]"
+        
+        api_docs:
+          update_required: "[YES/NO]"
+          files_affected: "[API_DOC_FILES_IF_YES]"
+          breaking_changes: "[YES/NO]"
+      
+      release_management:
+        github_release: "[YES/NO]"    # YES for Minor/Major bumps
+        release_notes: "[YES/NO]"     # YES for user-facing changes
+        migration_guide: "[YES/NO]"   # YES for breaking changes
+        
+      validation_checklist:
+        - "CHANGELOG.md updated with semantic version entry"
+        - "README.md updated if user-facing changes"
+        - "GitHub release created if Minor/Major version bump"
+  
+  execution_checklist: |
+    ☐ Complete Context Section - All templates and lifecycle gaps analyzed
+    ☐ Requirements Section - All functional/processual/technical requirements met
+    ☐ Git Operations Section - Enhanced with release management
+    ☐ Knowledge Management Section - Template patterns captured
+    ☐ Review Process Section - Multi-gate validation completed
+    ☐ Implementation Samples Section - Standard documentation_management applied
+    ☐ SUB-PRB EXECUTION - All 5 sub-PRBs completed with validation gates
+    ☐ FINAL VALIDATION - ALL templates consistent and complete
+    ☐ VERSION BUMP - Updated to 6.4.0 with changelog entry
+    ☐ GITHUB RELEASE - Created with comprehensive release notes
+    
+    SKIP NOTHING. EXECUTE EVERYTHING. VALIDATE ALL TEMPLATES.
+
+## Critical Impact
+This PRB fixes the fundamental gap that makes EVERY current PRB execution incomplete. After this enhancement, all future PRBs will include complete software delivery lifecycle requirements including proper changelog management, release creation, and documentation updates.
