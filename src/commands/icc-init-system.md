@@ -13,16 +13,17 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 ## Core Actions
 1. **Load Configuration**: Apply configuration hierarchy (embedded → project → user → system defaults)
-2. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
-3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
+2. **Initialize Memory System**: Bootstrap file-based memory system in .claude/memory/ (PROJECT SCOPE)
+3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities from ~/.claude/
 4. **Activate Lean Workflow**: Enable assignment-driven workflow executor
 5. **Initialize Scoring System**: Activate badges.md achievement tracking
 6. **Setup Learning System**: Enable error forgiveness and pattern capture
 7. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
-8. **Validate System**: Verify all components operational and ready
-9. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration
-10. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
-11. **Validate Enforcement**: Check self-correcting patterns are active
+8. **Create Project Directories**: Ensure .claude/, prbs/, stories/ exist in PROJECT ROOT
+9. **Validate System**: Verify all components operational and ready
+10. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration
+11. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
+12. **Validate Enforcement**: Check self-correcting patterns are active
 
 ## Autonomy Levels
 - **L1 (Manual)**: User approval required for ALL actions
@@ -42,10 +43,12 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 ## Error Handling
 - **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration. Check ~/.claude/config.md"
-- **MEMORY_INIT_FAILED**: "⚠️ Warning: Memory system unavailable. Using file-based fallback"
-- **ROLE_LOAD_FAILED**: "❌ Error: Failed to load role definitions. Check specialists.md"
+- **MEMORY_INIT_FAILED**: "⚠️ Warning: Memory system unavailable. Check .claude/memory/ directory"
+- **ROLE_LOAD_FAILED**: "❌ Error: Failed to load role definitions. Check ~/.claude/specialists.md"
 - **WORKFLOW_INIT_FAILED**: "❌ Error: Workflow executor failed to initialize"
 - **TOOL_INIT_FAILED**: "⚠️ Warning: Some tools unavailable. Using fallbacks"
 - **INVALID_AUTONOMY**: "❌ Error: Autonomy level must be L1, L2, or L3"
 - **SYSTEM_BUSY**: "⏳ System busy. Current operation must complete first"
 - **ENFORCEMENT_FAILED**: "⚠️ Warning: Self-correcting enforcement inactive"
+- **PROJECT_BOUNDARY_VIOLATION**: "❌ Error: Attempted to modify ~/.claude/ during execution"
+- **DIRECTORY_CREATION_FAILED**: "❌ Error: Cannot create project directories. Check permissions"

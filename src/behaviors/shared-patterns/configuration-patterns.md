@@ -9,9 +9,14 @@
 ### Configuration Hierarchy
 **Priority Order (Highest to Lowest):**
 1. Embedded config (in assignment files)
-2. Project config (.claude/config.md)
-3. User global (~/.claude/config.md)
+2. Project config (.claude/config.md - **within project scope**)
+3. User global (~/.claude/config.md - **read-only during execution**)
 4. System defaults
+
+**Scope Boundaries:**
+- **Installation**: System files placed in ~/.claude/ for global access
+- **Execution**: Operations confined to project directory (./ and .claude/)
+- **Configuration**: Read from ~/.claude/, execute within project boundaries
 
 ### Settings Structure
 **Git Settings:** git_privacy (true/false), branch_protection (true/false), default_branch (main/master/develop), require_pr_for_main (true/false)

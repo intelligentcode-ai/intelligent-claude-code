@@ -16,6 +16,12 @@
 **Blocking:** No actions without validated context
 **Storage:** PROJECT-CONTEXT.md and memory entities
 
+### Project Scope Validation
+**Scope Boundaries:** Ensure operations respect project boundaries
+**Installation Scope:** System files in ~/.claude/ (read-only during execution)
+**Project Scope:** All execution within ./ and .claude/ directories
+**Validation:** Verify no unauthorized modifications to ~/.claude/ during execution
+
 ### Work Type Detection
 **Common Types:**
 - Behavioral/AI work → @AI-Architect required
@@ -86,6 +92,8 @@
 - **Low Capability:** "❌ Capability match below 70%"
 - **No Approval:** "🚫 Architect approval required"
 - **Auto-Corrected:** "🔧 Auto-corrected: [violation]"
+- **Scope Violation:** "❌ Project boundary violation: Attempted to modify ~/.claude/ during execution"
+- **Directory Created:** "✅ Project directory created: .claude/[subdirectory]"
 
 ### Enforcement Monitoring
 **Compliance Monitoring:** Continuously scan for behavioral violations → For each violation found: determine if auto-correctable → If yes: apply correction automatically → If no: escalate to appropriate role for manual intervention

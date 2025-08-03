@@ -7,10 +7,15 @@
 ## Core Memory Patterns
 
 ### Memory Structure
-**Base Directory:** .claude/memory/ (within project root)
+**Base Directory:** .claude/memory/ (within project root - **PROJECT SCOPE ONLY**)
 **Entity Types:** Learning, Pattern, Knowledge
 **Organization:** .claude/memory/entities/[EntityType]/[YYYY]/[MM]/
 **File Format:** [EntityType]-[ID]-[YYYY-MM-DD].md
+
+**Scope Validation:**
+- **Project Memory**: All memory operations within .claude/memory/ (project scope)
+- **Installation Memory**: System templates in ~/.claude/ (installation scope)
+- **Boundary Enforcement**: Never write to ~/.claude/ during execution
 
 ### Entity Structure
 **Common Fields:**

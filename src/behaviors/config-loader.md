@@ -17,7 +17,9 @@
 - Apply Configuration Hierarchy from configuration-patterns.md
 - Use Loading Pattern for merging configs
 - Implement Cache Pattern with standard TTLs
-- Follow Settings Structure for available options  
+- Follow Settings Structure for available options
+- **Project Scope**: Execute within project boundaries (./ and .claude/ directories)
+- **Installation Scope**: System installation remains in ~/.claude/ for global access  
 
 ## Configuration Details
 
@@ -26,6 +28,8 @@
 - Priority: Embedded → Project → User → Defaults
 - All settings loaded dynamically, never hardcoded
 - System defaults used as fallback only
+- **Project Execution**: Read user config from ~/.claude/, execute in project ./
+- **Scope Validation**: Ensure operations respect project boundaries
 
 ### PROJECT-CONTEXT.md Loading
 - Check for PROJECT-CONTEXT.md in current working directory
