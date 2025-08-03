@@ -262,9 +262,9 @@ git_operations:
   integration_strategy: "progressive-merge"
   privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all phases - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
-  version_bump: "major"               # System-wide changes = major version
+  version_bump: "[MAJOR]"             # System-wide changes require MAJOR version bump
   main_protection: "mandatory"
-  
+
 # MANDATORY: Knowledge Management Section
 knowledge_management:
   structure: "memory/[topic]/[subtopic].md"
@@ -376,6 +376,7 @@ implementation_samples:
     ☐ Complete Context Section - Settings and scope loaded for parent + all phases
     ☐ Requirements Section - All system-wide functional/processual/technical requirements met
     ☐ Git Operations Section - Multi-phase coordination with privacy_filter for all
+    ☐ Documentation Updates Section - All system docs including migration procedures updated
     ☐ Knowledge Management Section - Architectural decisions + patterns captured
     ☐ Review Process Section - Multi-gate reviews completed across all phases
     ☐ Documentation Management Section - COMPREHENSIVE system documentation updated
