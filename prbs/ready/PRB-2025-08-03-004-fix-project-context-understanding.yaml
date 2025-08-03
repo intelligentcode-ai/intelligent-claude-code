@@ -9,12 +9,40 @@ created_by: "@PM"
 created_at: "2025-08-03"
 tags: ["context-understanding", "project-scope", "role-selection", "critical-fix"]
 
-## Context
-type: "BUG_FIX"
-priority: "HIGH"
-project: "intelligent-claude-code"
-requester: "User - System fails to understand project context"
-git_privacy: true
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "BUG_FIX"
+  priority: "HIGH"
+  requester: "User - System fails to understand project context"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/CLAUDE.md"
+      purpose: "Project context and instructions for this AI-agentic system"
+      sample: "Virtual team system with 14 specialized roles, PRB-driven execution"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-creation-mandates.md"
+      purpose: "PRB creation patterns needing context-first approach"
+      sample: "Role-in-title + complexity-based templates"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/roles/specialists.md"
+      purpose: "Role definitions needing 70% threshold removal"
+      sample: "14 core roles, dynamic specialist creation, ultra-experienced"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/config-loader.md"
+      purpose: "Config loading needing project context priority"
+      sample: "Configuration hierarchy, CLAUDE.md loading, project context"
 
 ## Problem Statement
 The system fundamentally misunderstands project context, leading to cascading failures:
@@ -35,19 +63,30 @@ The system fundamentally misunderstands project context, leading to cascading fa
 - **Other Projects**: Match roles to THEIR context (e.g., React project → @React-Developer)
 - **Always Specialists**: Create ultra-experienced specialists for EVERY task
 
-## Requirements
-
-### Functional Requirements
-1. **FR1**: System must read and understand PROJECT context first
-2. **FR2**: Role selection based on CURRENT project, not system internals
-3. **FR3**: ALWAYS create ultra-experienced dynamic specialists
-4. **FR4**: Remove 70% threshold - create specialists for everything
-5. **FR5**: Distinguish pattern creation (this project) from implementation (other projects)
-
-### Non-Functional Requirements
-1. **NFR1**: 100% context-appropriate role selection
-2. **NFR2**: All specialists have 10+ years experience
-3. **NFR3**: Clear project understanding before role assignment
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "System must read and understand PROJECT context first before any work"
+    - "Role selection based on CURRENT project context, not system internals"
+    - "ALWAYS create ultra-experienced dynamic specialists for any domain"
+    - "Remove 70% threshold - create specialists for everything"
+    - "Distinguish pattern creation (this project) from implementation (other projects)"
+    - "Load CLAUDE.md to understand what project is being worked on"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous context detection"
+    - "100% context-appropriate role selection before any task"
+    - "All specialists have 10+ years experience minimum"
+    - "Clear project understanding before role assignment"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "Project context detection from CLAUDE.md and file structure"
+    - "Dynamic specialist creation without capability thresholds"
+    - "Context separation logic for different project types"
 
 ## Implementation Details
 
@@ -115,6 +154,100 @@ The system fundamentally misunderstands project context, leading to cascading fa
 - **Mitigation**: Explicit context detection patterns
 - **Medium Risk**: Over-creating specialists
 - **Mitigation**: Specialist reuse patterns
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-004-fix-project-context-understanding"
+  commit_format: "[PRB-004]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "minor"  # Context understanding is significant change
+  merge_strategy: "squash"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory/ for project context detection patterns"
+    - "Embed role selection improvement learnings"
+    - "Include specialist creation best practices"
+  post_execution:
+    - "Store project context understanding patterns"
+    - "Capture context-first role selection techniques"
+    - "Document specialist creation without thresholds"
+  capture_location: "memory/Learning/2025/08/project-context-understanding.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@AI-System-Architect"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "System understands project context before role selection"
+    - "Roles match current project, not system project context"
+    - "Ultra-experienced specialists created for all work"
+    - "No 70% threshold - specialists for everything"
+    - "Context separation between pattern creation and implementation"
+  max_cycles: 3
+  context_tests:
+    - "intelligent-claude-code project → @AI-Engineer for patterns"
+    - "React project → @React-Developer for implementation"
+    - "API service → @Backend-Developer for implementation"
+    - "Any domain → Ultra-experienced specialist created"
+  checklist:
+    - "Project context detection implemented in prb-creation-mandates.md"
+    - "70% threshold removed from specialists.md"
+    - "Context-first approach in prb-auto-trigger.md"
+    - "CLAUDE.md loading prioritized in config-loader.md"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-004]: Implement context-first role selection and remove specialist thresholds"
+  example_branch: "feature/PRB-004-fix-project-context-understanding"
+  example_scope: |
+    Files: src/behaviors/prb-creation-mandates.md, src/roles/specialists.md, src/behaviors/prb-auto-trigger.md, src/behaviors/config-loader.md
+    - Add context detection before role selection
+    - Remove 70% threshold for specialist creation
+    - Implement project-appropriate role mapping
+    - Prioritize CLAUDE.md loading for context
+  
+  context_detection_logic: |
+    MANDATORY: Before ANY work:
+    1. Read CLAUDE.md for project description
+    2. Understand what's being BUILT in this project
+    3. Select roles appropriate for THAT context
+    
+    Examples:
+    - intelligent-claude-code → @AI-Engineer (creating patterns)
+    - React app → @React-Developer (implementing features)
+    - API service → @Backend-Developer (building endpoints)
+    - Blockchain → @Blockchain-Expert (smart contracts)
+    - ML project → @ML-Engineer (model development)
+  
+  specialist_creation_new: |
+    OLD Logic: <70% match → Create specialist
+    NEW Logic: ALWAYS create ultra-experienced specialist
+    
+    Examples:
+    - React work → @React-Specialist (10+ years React expertise)
+    - AWS work → @AWS-Solutions-Architect (10+ years cloud architecture)
+    - Database → @Database-Architect (10+ years DB design)
+    - Security → @Security-Expert (10+ years cybersecurity)
+    
+  context_separation: |
+    This Project (intelligent-claude-code):
+    - Creating behavioral patterns → @AI-Engineer
+    - Designing system architecture → @AI-Architect
+    - No implementation roles (we create patterns, not implementations)
+    
+    Other Projects:
+    - Read their CLAUDE.md for context
+    - Match roles to their actual needs
+    - Create appropriate domain specialists
 
 ## Notes
 CRITICAL: The system must understand WHAT project it's working on BEFORE selecting roles. This project creates patterns; other projects implement features. ALWAYS create ultra-experienced specialists.

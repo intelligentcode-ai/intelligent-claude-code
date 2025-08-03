@@ -10,16 +10,38 @@ created_by: "@PM"
 created_at: "2025-08-03"
 tags: ["prb-execution", "scope-management", "behavioral-fix"]
 
-## Context
-type: "BUG_FIX"
-priority: "HIGH"
-project: "intelligent-claude-code"
-requester: "User - System creates new PRBs instead of extending current one"
-git_privacy: true
-
-## Complete System Context
-system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
-project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "BUG_FIX"
+  priority: "HIGH"
+  requester: "User - System creates new PRBs instead of extending current one"
+  project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-enforcement.md"
+      purpose: "PRB enforcement patterns needing execution context"
+      sample: "Detection patterns, auto-correction patterns, execution tracking"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-auto-trigger.md"
+      purpose: "Auto-trigger patterns needing current PRB checks"
+      sample: "Work detection patterns, complexity analysis, context awareness"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/shared-patterns/prb-execution.md"
+      purpose: "New PRB execution patterns file to create"
+      sample: "Execution context, scope extension rules, feedback incorporation"
 
 ### Current Behavior (WRONG)
 - User comment during PRB execution → New PRB created
@@ -39,20 +61,31 @@ During PRB execution, user comments/observations are triggering new PRB creation
 - Fragmented execution
 - Incomplete original PRBs
 
-## Requirements
-
-### Functional Requirements
-1. **FR1**: Detect when executing within PRB context
-2. **FR2**: Incorporate feedback into current PRB scope
-3. **FR3**: Only create new PRB for unrelated issues
-4. **FR4**: Update PRB scope tracking in memory
-5. **FR5**: Medium+ PRBs can expand scope
-
-### Processual Requirements
-1. **PR1**: Track current PRB execution state
-2. **PR2**: Log scope extensions to memory
-3. **PR3**: Review expanded scope with SME
-4. **PR4**: Update PRB documentation
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "Detect when executing within PRB context automatically"
+    - "Incorporate user feedback into current PRB scope"
+    - "Only create new PRB for explicitly unrelated issues"
+    - "Update PRB scope tracking in memory with extensions"
+    - "Medium+ PRBs can expand scope to absorb related tasks"
+    - "Implement scope extension rules based on PRB complexity"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous scope management"
+    - "Track current PRB execution state in memory"
+    - "Log scope extensions to memory for future reference"
+    - "Review expanded scope with assigned SME"
+    - "Update PRB documentation with scope changes"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "Behavioral pattern implementation in markdown files"
+    - "Context tracking without external dependencies"
+    - "Memory-based execution state management"
 
 ## Implementation Details
 
@@ -91,25 +124,92 @@ When executing PRB:
 - **Lead**: @AI-Engineer (ultra-thinking)
 - **Reviewer**: @PRB-Execution-Specialist
 
-## Git Operations
-- Branch: feature/fix-prb-scope-creep
-- Commits: 
-  - "fix: Add PRB execution context tracking"
-  - "fix: Implement scope extension rules"
-- version_bump: PATCH
-
-## Knowledge Management
-- Pre: Search memory/execution/ for patterns
-- Post: Store in memory/execution/prb-scope-management.md
-
-## Documentation Updates
-- Update PRB execution guide
-- Add scope management section
-
-## Review Process
-- Reviewer: @PRB-Execution-Specialist
-- Focus: Scope extension logic
-- Gate: After implementation
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-015-fix-prb-scope-creep"
+  commit_format: "[PRB-015]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "patch"
+  merge_strategy: "squash"
+  commits:
+    - "[PRB-015]: Add PRB execution context tracking"
+    - "[PRB-015]: Implement scope extension rules"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory/execution/ for PRB scope patterns"
+    - "Embed execution context tracking learnings"
+    - "Include scope management best practices"
+  post_execution:
+    - "Store PRB scope extension patterns"
+    - "Capture execution context tracking techniques"
+    - "Document feedback incorporation strategies"
+  capture_location: "memory/Learning/2025/08/prb-scope-management.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@PRB-Execution-Specialist"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "PRB execution context properly tracked"
+    - "Scope extension rules work correctly"
+    - "Comments extend current PRB instead of creating new ones"
+    - "Feedback incorporation maintains PRB focus"
+    - "Only unrelated issues create new PRBs"
+  max_cycles: 3
+  validation_scenarios:
+    - "User comment during PRB execution → Scope extended"
+    - "Related feedback → Incorporated into current PRB"
+    - "Unrelated issue → Queued for separate PRB"
+    - "Critical unrelated → New PRB only if necessary"
+  checklist:
+    - "PRB execution context tracking implemented"
+    - "Scope extension rules based on complexity"
+    - "Feedback incorporation patterns defined"
+    - "Memory-based execution state management"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-015]: Add PRB execution context tracking and scope extension rules"
+  example_branch: "feature/PRB-015-fix-prb-scope-creep"
+  example_scope: |
+    Files: src/behaviors/prb-enforcement.md, src/behaviors/prb-auto-trigger.md, src/behaviors/shared-patterns/prb-execution.md
+    - Add execution context detection to prb-enforcement.md
+    - Enhance prb-auto-trigger.md with current PRB awareness
+    - Create prb-execution.md with scope extension patterns
+    - Implement feedback incorporation rules
+  
+  scope_extension_rules: |
+    # PRB Execution Context Pattern
+    When executing PRB:
+    1. Set CURRENT_PRB context in memory
+    2. User comments → Check relevance to current scope
+    3. If related → Extend current PRB scope
+    4. If unrelated → Queue for later PRB
+    5. Only create new PRB if:
+       - Explicitly different domain
+       - Critical and completely unrelated
+       - Current PRB marked complete
+    
+    # Scope Extension by Complexity:
+    - Tiny PRBs: No scope extension (too focused)
+    - Medium PRBs: Can absorb related tasks
+    - Large PRBs: Can absorb sub-domains  
+    - Mega PRBs: Can absorb most feedback
+  
+  validation_tests: |
+    1. During PRB execution + user comment → Scope extended, no new PRB
+    2. Related feedback → Incorporated into current PRB
+    3. Unrelated critical issue → New PRB created only if necessary
+    4. PRB completion + new request → New PRB appropriate
 
 ## Notes
 Critical: Comments during PRB execution should EXTEND scope, not create new PRBs. Only truly unrelated issues warrant new PRBs.

@@ -9,12 +9,43 @@ created_by: "@PM"
 created_at: "2025-08-03"
 tags: ["memory-system", "prb-templates", "ai-agentic", "critical-fix"]
 
-## Context
-type: "BUG_FIX"
-priority: "MEDIUM"
-project: "intelligent-claude-code"
-requester: "User - System using wrong memory implementation"
-git_privacy: true
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "BUG_FIX"
+  priority: "MEDIUM"
+  requester: "User - System using wrong memory implementation"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/shared-patterns/memory-operations.md"
+      purpose: "Memory operations using MCP instead of file system"
+      sample: "StoreInMemory pattern, SearchMemory pattern, LoadFromMemory pattern"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-auto-trigger.md"
+      purpose: "PRB auto-trigger not using templates properly"
+      sample: "Work detection patterns, complexity analysis, template selection"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/*.yaml"
+      purpose: "PRB templates that should be used based on complexity"
+      sample: "nano, tiny, medium, large, mega templates with proper structure"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/memory/"
+      purpose: "File-based memory storage directory"
+      sample: "Learning/, Pattern/, Knowledge/ subdirectories with markdown files"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/learning-team-automation.md"
+      purpose: "Learning automation using wrong memory approach"
+      sample: "Error processing, learning storage, memory operations"
 
 ## Problem Statement
 The system has multiple critical implementation failures:
@@ -34,19 +65,32 @@ The system has multiple critical implementation failures:
 - **Knowledge**: Store in markdown files in `memory/[Type]/[YYYY]/[MM]/`
 - **No MCP Memory**: This is a file-based system, not MCP-based
 
-## Requirements
-
-### Functional Requirements
-1. **FR1**: Update all memory operations to use file-based storage
-2. **FR2**: Remove all MCP memory tool usage from behaviors
-3. **FR3**: Implement proper PRB template usage based on complexity
-4. **FR4**: Fix knowledge read/write to use disk storage
-5. **FR5**: Update memory search to grep through memory/ directory
-
-### Non-Functional Requirements
-1. **NFR1**: All memory must be version-controlled
-2. **NFR2**: PRB generation must use templates
-3. **NFR3**: No external memory dependencies
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "Update all memory operations to use file-based storage exclusively"
+    - "Remove all MCP memory tool usage from behavioral patterns"
+    - "Implement proper PRB template usage based on complexity scoring"
+    - "Fix knowledge read/write to use disk storage in memory/ directory"
+    - "Update memory search to grep through memory/ directory structure"
+    - "Replace mcp__memory__search_nodes with file system grep"
+    - "Use PRB templates from src/prb-templates/ for all generation"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous memory management"
+    - "All memory must be version-controlled in project repository"
+    - "PRB generation must use templates, not ad-hoc creation"
+    - "No external memory dependencies or MCP servers"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "File system operations for memory storage and retrieval"
+    - "YAML template processing for PRB generation"
+    - "Markdown file parsing for memory content"
+    - "Git operations for memory version control"
 
 ## Implementation Details
 
@@ -102,6 +146,105 @@ The system has multiple critical implementation failures:
 - **Mitigation**: Complete removal of MCP memory references
 - **Medium Risk**: PRB generation regression
 - **Mitigation**: Strict template enforcement
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-003-fix-memory-and-templates"
+  commit_format: "[PRB-003]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "minor"  # Major system changes warrant minor bump
+  merge_strategy: "squash"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory/ for file-based memory patterns"
+    - "Embed PRB template usage learnings"
+    - "Include file system memory operation best practices"
+  post_execution:
+    - "Store file-based memory implementation patterns"
+    - "Capture PRB template selection algorithms"
+    - "Document MCP removal techniques"
+  capture_location: "memory/Learning/2025/08/file-based-memory-fix.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@System-Engineer"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "No MCP memory tool calls anywhere in system"
+    - "All memory operations use file system exclusively"
+    - "PRBs generated from templates based on complexity"
+    - "Knowledge stored in version-controlled markdown files"
+    - "Memory search works via file grep operations"
+  max_cycles: 3
+  validation_tests:
+    - "Memory write → Creates files in memory/ directory"
+    - "Memory search → Greps through memory/ files"
+    - "PRB generation → Uses templates from src/prb-templates/"
+    - "No mcp__memory calls found in any behavioral patterns"
+  checklist:
+    - "memory-operations.md updated for file-based storage"
+    - "prb-auto-trigger.md uses proper template selection"
+    - "learning-team-automation.md uses file system"
+    - "All command files updated for disk memory"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-003]: Replace MCP memory with file-based storage and fix PRB templates"
+  example_branch: "feature/PRB-003-fix-memory-and-templates"
+  example_scope: |
+    Files: src/behaviors/shared-patterns/memory-operations.md, src/behaviors/prb-auto-trigger.md, src/behaviors/prb-creation-mandates.md, src/behaviors/learning-team-automation.md
+    - Remove all MCP memory tool references
+    - Implement file-based memory operations
+    - Add proper PRB template usage based on complexity
+    - Update knowledge storage to use disk files
+  
+  memory_operations_fix: |
+    Before: mcp__memory__search_nodes, mcp__memory__create_entities
+    After: File system grep, markdown file writes
+    
+    SearchMemory Pattern:
+    - Use grep/find in memory/ directory
+    - Parse markdown files for content
+    - Return matches from disk-based storage
+    
+    StoreInMemory Pattern:
+    - Write to memory/[Type]/[YYYY]/[MM]/[topic].md
+    - Use markdown format with YAML frontmatter
+    - Git add for version control
+  
+  prb_template_usage: |
+    PRB Generation Process:
+    1. Calculate complexity score (files + lines + APIs + coordination)
+    2. Select template: nano(0-2), tiny(3-5), medium(6-15), large(16-30), mega(30+)
+    3. Load template from src/prb-templates/[complexity]-prb-template.yaml
+    4. Fill template with context and requirements
+    5. Save to prbs/ready/[PRB-ID].yaml
+    
+    Template Selection Examples:
+    - Simple config change → nano-prb-template.yaml
+    - Single file feature → tiny-prb-template.yaml  
+    - Multi-file feature → medium-prb-template.yaml
+    - System-wide change → large-prb-template.yaml
+  
+  validation_commands: |
+    # Verify no MCP memory calls
+    grep -r "mcp__memory" src/behaviors/ (should return empty)
+    
+    # Test memory operations
+    echo "test" > memory/Test/2025/08/test.md
+    grep -r "test" memory/ (should find the file)
+    
+    # Verify PRB templates exist
+    ls src/prb-templates/*.yaml (should show all 5 complexity templates)
 
 ## Notes
 CRITICAL: This system is FILE-BASED, not MCP-based. All memory and knowledge must be stored on disk in version-controlled markdown files. PRB templates exist and MUST be used.

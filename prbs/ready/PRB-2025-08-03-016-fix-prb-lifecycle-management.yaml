@@ -10,16 +10,44 @@ created_by: "@PM"
 created_at: "2025-08-03"
 tags: ["prb-lifecycle", "directory-management", "processual-fix"]
 
-## Context
-type: "BUG_FIX"  
-priority: "CRITICAL"
-project: "intelligent-claude-code"
-requester: "User - Executed PRBs not moved to completed"
-git_privacy: true
-
-## Complete System Context
-system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
-project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "BUG_FIX"
+  priority: "CRITICAL"
+  requester: "User - Executed PRBs not moved to completed"
+  project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-execution.md"
+      purpose: "PRB execution patterns needing lifecycle management"
+      sample: "Execution flow, completion tracking, state management"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/directory-structure.md"
+      purpose: "Directory structure needing prbs/completed/ support"
+      sample: "Default structure, path configuration, auto-creation"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/commands/icc-execute-prb.md"
+      purpose: "PRB execution command needing move step"
+      sample: "Execution flow, completion actions, lifecycle management"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/prbs/ready/*.yaml"
+      purpose: "Ready PRBs to be moved after execution"
+      sample: "Multiple PRBs awaiting lifecycle management"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/prbs/completed/"
+      purpose: "Completed PRBs archive directory"
+      sample: "Already has some completed PRBs"
 
 ### Directory Structure
 ```
@@ -36,20 +64,31 @@ Executed PRBs remain in ready/ directory instead of being moved to completed/. T
 - No execution history
 - Cluttered ready queue
 
-## Requirements
-
-### Functional Requirements
-1. **FR1**: Add PRB lifecycle management to behaviors
-2. **FR2**: Auto-move PRBs to completed/ after execution
-3. **FR3**: Update directory structure behavior
-4. **FR4**: Add execution timestamp to moved PRBs
-5. **FR5**: Prevent re-execution of completed PRBs
-
-### Processual Requirements
-1. **PR1**: Move PRB after all steps complete
-2. **PR2**: Add completion metadata
-3. **PR3**: Update any references
-4. **PR4**: Commit the move operation
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "Add PRB lifecycle management to behavioral patterns"
+    - "Auto-move PRBs to completed/ after successful execution"
+    - "Update directory structure behavior for prbs/completed/ support"
+    - "Add execution timestamp and metadata to moved PRBs"
+    - "Prevent re-execution of completed PRBs"
+    - "Maintain clean ready/ queue for pending PRBs only"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous lifecycle management"
+    - "Move PRB only after all execution steps complete"
+    - "Add completion metadata before moving"
+    - "Update any references to moved PRBs"
+    - "Commit the move operation with clear message"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "File system operations for PRB movement"
+    - "Metadata injection into YAML files"
+    - "Git operations for tracking PRB lifecycle"
 
 ## Implementation Details
 
@@ -94,24 +133,100 @@ execution:
 - **Lead**: @AI-Engineer
 - **Reviewer**: @Process-Automation-Specialist
 
-## Git Operations
-- Branch: feature/prb-lifecycle-management
-- Commits:
-  - "feat: Add PRB lifecycle management"
-  - "chore: Move already executed PRBs"
-- version_bump: PATCH
-
-## Knowledge Management
-- Pre: Search memory/execution/ for patterns
-- Post: Store in memory/execution/prb-lifecycle.md
-
-## Documentation Updates
-- Update PRB execution guide
-- Document lifecycle states
-
-## Review Process
-- Reviewer: @Process-Automation-Specialist
-- Focus: Automation reliability
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-016-prb-lifecycle-management"
+  commit_format: "[PRB-016]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "patch"
+  merge_strategy: "squash"
+  commits:
+    - "[PRB-016]: Add PRB lifecycle management to behaviors"
+    - "[PRB-016]: Move executed PRBs to completed directory"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory/execution/ for PRB lifecycle patterns"
+    - "Embed directory management learnings"
+    - "Include file system operation best practices"
+  post_execution:
+    - "Store PRB lifecycle management patterns"
+    - "Capture automated file movement techniques"
+    - "Document execution state tracking methods"
+  capture_location: "memory/Learning/2025/08/prb-lifecycle-management.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@Process-Automation-Specialist"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "PRB lifecycle automation reliability"
+    - "Completed PRBs properly moved and archived"
+    - "Execution metadata correctly added"
+    - "Ready queue maintained clean"
+    - "No re-execution of completed PRBs"
+  max_cycles: 3
+  automation_tests:
+    - "Execute PRB → Automatically moved to completed/"
+    - "Completion metadata added with timestamp"
+    - "Ready/ directory only contains pending PRBs"
+    - "Completed PRBs not re-executable"
+  checklist:
+    - "PRB lifecycle management added to behaviors"
+    - "Directory structure updated for completed/ support"
+    - "Execution command includes move step"
+    - "Metadata injection working correctly"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-016]: Add PRB lifecycle management with automatic completed archiving"
+  example_branch: "feature/PRB-016-prb-lifecycle-management"
+  example_scope: |
+    Files: src/behaviors/prb-execution.md, src/behaviors/directory-structure.md, src/commands/icc-execute-prb.md
+    - Add lifecycle management patterns to prb-execution.md
+    - Update directory-structure.md for prbs/completed/ support
+    - Enhance icc-execute-prb.md with move step
+    - Implement completion metadata injection
+  
+  lifecycle_pattern: |
+    # PRB Lifecycle Pattern
+    PRB Execution Complete:
+    1. Verify all execution steps completed successfully
+    2. Add completion metadata to PRB file
+    3. git mv prbs/ready/[PRB].yaml prbs/completed/
+    4. Commit with message "chore: Archive completed [PRB-ID]"
+    5. Update execution log and ready queue
+    
+    # Completion Metadata (added to PRB)
+    execution:
+      completed_at: "2025-08-03T15:30:00Z"
+      executed_by: "@AI-Engineer"
+      branch: "feature/PRB-016-prb-lifecycle-management"
+      commit: "abc123def"
+      status: "completed"
+  
+  directory_updates: |
+    prbs/
+    ├── ready/       # Queue for execution (cleaned after completion)
+    ├── completed/   # Execution archive with metadata
+    │   └── [YYYY]/  # Optional year grouping for organization
+    └── drafts/      # Work in progress PRBs
+  
+  automation_flow: |
+    1. PRB execution initiated from ready/
+    2. All execution steps completed
+    3. Completion metadata injected into PRB
+    4. File moved from ready/ to completed/
+    5. Git commit records the archival
+    6. Ready queue now clean for next PRBs
 
 ## Notes
 Critical: Every executed PRB must be moved to completed/ to maintain clean queue and execution history.

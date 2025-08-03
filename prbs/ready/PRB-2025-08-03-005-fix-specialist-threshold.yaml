@@ -9,12 +9,34 @@ created_by: "@PM"
 created_at: "2025-08-03"
 tags: ["specialist-creation", "role-system", "enhancement"]
 
-## Context
-type: "ENHANCEMENT"
-priority: "MEDIUM"
-project: "intelligent-claude-code"
-requester: "User - Always want ultra-experienced specialists"
-git_privacy: true
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "ENHANCEMENT"
+  priority: "MEDIUM"
+  requester: "User - Always want ultra-experienced specialists"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/roles/specialists.md"
+      purpose: "Role definitions with 70% threshold to remove"
+      sample: "14 core roles, <70% match: Create specialist, Assignment logic"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-creation-mandates.md"
+      purpose: "PRB creation mandates needing always-specialist policy"
+      sample: "Role-in-title + complexity-based templates, Quality requirements"
 
 ## Problem Statement
 Current system only creates specialists at <70% capability match. User wants ultra-experienced specialists for EVERY task, not just low matches.
@@ -32,21 +54,31 @@ Current system only creates specialists at <70% capability match. User wants ult
 - **NO** threshold checking
 - **ALWAYS** use sequential/ultra thinking
 
-## Requirements
-
-### Functional Requirements
-1. **FR1**: Remove 70% threshold check completely
-2. **FR2**: Create specialist for EVERY task type
-3. **FR3**: All specialists have 10+ years experience
-4. **FR4**: Specialist names reflect domain expertise
-5. **FR5**: Reuse existing specialists when applicable
-6. **FR6**: All specialists use sequential/ultra thinking
-
-### Non-Functional Requirements
-1. **NFR1**: Ultra-experienced expertise level
-2. **NFR2**: Clear specialist naming
-3. **NFR3**: Specialist persistence
-4. **NFR4**: Deep thinking on all tasks
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "Remove 70% threshold check completely from specialist creation logic"
+    - "Create ultra-experienced specialist for EVERY task type and domain"
+    - "All specialists have 10+ years experience minimum"
+    - "Specialist names reflect domain expertise clearly"
+    - "Reuse existing specialists when applicable to avoid duplication"
+    - "All specialists use sequential/ultra thinking patterns"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous specialist creation"
+    - "Ultra-experienced expertise level for all specialists"
+    - "Clear specialist naming conventions"
+    - "Specialist persistence and reuse patterns"
+    - "Deep thinking applied to all specialist tasks"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "Behavioral pattern updates for specialist creation"
+    - "Sequential thinking integration for specialists"
+    - "Domain expertise mapping and naming conventions"
 
 ## Sequential Thinking
 sequential_thinking:
@@ -97,6 +129,99 @@ NEW Logic:
 3. Check specialist reuse works
 4. No threshold logic remains
 5. Thinking patterns applied
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-005-fix-specialist-threshold"
+  commit_format: "[PRB-005]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "patch"
+  merge_strategy: "squash"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory/ for specialist creation patterns"
+    - "Embed ultra-experienced role definition learnings"
+    - "Include sequential thinking integration practices"
+  post_execution:
+    - "Store threshold removal patterns"
+    - "Capture always-specialist creation techniques"
+    - "Document ultra-experienced specialist design"
+  capture_location: "memory/Learning/2025/08/specialist-threshold-removal.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@Role-System-Architect"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "No 70% threshold checks remain in system"
+    - "Specialist created for every domain and task type"
+    - "All specialists have 10+ years experience"
+    - "Appropriate specialist naming conventions"
+    - "Sequential/ultra thinking applied to all specialists"
+  max_cycles: 3
+  specialist_tests:
+    - "Any domain work → Ultra-experienced specialist created"
+    - "React task → @React-Expert (10+ years)"
+    - "AWS task → @AWS-Solutions-Architect (10+ years)"
+    - "No threshold logic preventing specialist creation"
+  checklist:
+    - "70% threshold removed from specialists.md"
+    - "Always-specialist policy in prb-creation-mandates.md"
+    - "Ultra-experienced requirement enforced"
+    - "Sequential thinking integration completed"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-005]: Remove 70% threshold and always create ultra-experienced specialists"
+  example_branch: "feature/PRB-005-fix-specialist-threshold"
+  example_scope: |
+    Files: src/roles/specialists.md, src/behaviors/prb-creation-mandates.md
+    - Remove 70% threshold check from specialist creation logic
+    - Update to always create ultra-experienced specialists
+    - Add sequential/ultra thinking requirement for all specialists
+    - Implement clear domain expertise naming conventions
+  
+  threshold_removal: |
+    OLD Logic:
+    - Calculate capability match percentage
+    - If <70% → Create specialist
+    - If ≥蔋 → Use core role
+    
+    NEW Logic:
+    - Identify domain/task need
+    - ALWAYS create ultra-experienced specialist
+    - Apply sequential/ultra thinking
+    - Reuse existing specialists when applicable
+  
+  specialist_examples: |
+    Domain Examples:
+    - React work → @React-Expert (10+ years React expertise, ultra-thinking)
+    - AWS work → @AWS-Solutions-Architect (10+ years cloud architecture, sequential)
+    - Database → @Database-Architect (10+ years DB design, deep thinking)
+    - Security → @Security-Expert (10+ years cybersecurity, ultra-thinking)
+    - ML/AI → @ML-Architect (10+ years machine learning, sequential)
+    - Blockchain → @Blockchain-Expert (10+ years DeFi/smart contracts, ultra)
+  
+  thinking_integration: |
+    All specialists now include:
+    - Ultra-experienced: 10+ years domain expertise
+    - Deep thinking: Sequential/ultra thinking patterns
+    - Domain focus: Specialized knowledge and best practices
+    - Quality focus: Excellence and precision in their domain
+    
+    Example specialist definition:
+    @React-Expert (P:9.5, Q:9.5): Ultra-experienced React specialist with 10+ years
+    expertise in React ecosystem, state management, performance optimization, and
+    modern development patterns. Uses sequential thinking for complex implementations.
 
 ## Notes
 User preference: ALWAYS ultra-experienced specialists with deep thinking for quality and expertise.

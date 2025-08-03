@@ -10,16 +10,41 @@ created_by: "@PM"
 created_at: "2025-08-03"
 tags: ["templates", "version-bump", "documentation", "processual"]
 
-## Context
-type: "ENHANCEMENT"
-priority: "CRITICAL"
-project: "intelligent-claude-code"
-requester: "User - Version bumping and docs missing from templates"
-git_privacy: true
-
-## Complete System Context
-system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
-project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "ENHANCEMENT"
+  priority: "CRITICAL"
+  requester: "User - Version bumping and docs missing from templates"
+  project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/nano-prb-template.yaml"
+      purpose: "Nano template missing version_bump and documentation sections"
+      sample: "Basic structure, needs version_bump and documentation_updates"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/large-prb-template.yaml"
+      purpose: "Large template missing version_bump and documentation sections"
+      sample: "Complex structure, needs version_bump and documentation_updates"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/prb-templates/mega-prb-template.yaml"
+      purpose: "Mega template missing version_bump and documentation sections"
+      sample: "System-wide structure, needs version_bump and documentation_updates"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/CHANGELOG.md"
+      purpose: "Changelog needing update requirements in templates"
+      sample: "Version history, release notes, change documentation"
 
 ### Current State
 - Only Medium and Tiny templates have version_bump
@@ -32,19 +57,31 @@ PRB templates are missing critical processual requirements:
 - Documentation update requirements missing
 - Release process not defined
 
-## Requirements
-
-### Functional Requirements
-1. **FR1**: Add version_bump to ALL templates
-2. **FR2**: Add documentation_updates section
-3. **FR3**: Include CHANGELOG update requirements
-4. **FR4**: Add release notes generation
-
-### Processual Requirements
-1. **PR1**: Version bump before merge
-2. **PR2**: Update relevant documentation
-3. **PR3**: Update CHANGELOG.md
-4. **PR4**: Generate release notes if needed
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "Add version_bump to ALL PRB templates (nano, large, mega missing)"
+    - "Add documentation_updates section to every template"
+    - "Include CHANGELOG.md update requirements in all templates"
+    - "Add release notes generation guidance where appropriate"
+    - "Ensure consistent versioning guidance across all templates"
+    - "Include documentation impact assessment in templates"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous template management"
+    - "Version bump before merge for all significant changes"
+    - "Update relevant documentation for all template changes"
+    - "Update CHANGELOG.md with template improvements"
+    - "Generate release notes if template changes affect users"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "YAML template structure modifications"
+    - "Consistent section formatting across templates"
+    - "Version bump logic integration in git operations"
 
 ## Implementation Details
 
@@ -89,6 +126,106 @@ documentation_updates:
 
 ## Knowledge Management
 - Store in: memory/templates/version-documentation.md
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-014-add-version-docs-templates"
+  commit_format: "[PRB-014]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "patch"  # Template improvements warrant patch bump
+  merge_strategy: "squash"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory/ for template versioning patterns"
+    - "Embed documentation update learnings"
+    - "Include version bump best practices"
+  post_execution:
+    - "Store template versioning patterns"
+    - "Capture documentation requirement techniques"
+    - "Document version bump decision logic"
+  capture_location: "memory/Learning/2025/08/template-version-documentation.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@Documentation-Specialist"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "ALL templates have version_bump section"
+    - "ALL templates have documentation_updates section"
+    - "Clear guidance on when to bump versions"
+    - "Documentation requirements explicit and actionable"
+    - "Consistent structure across all templates"
+  max_cycles: 3
+  template_validation:
+    - "Nano template has version_bump and documentation_updates"
+    - "Large template has version_bump and documentation_updates"
+    - "Mega template has version_bump and documentation_updates"
+    - "All templates follow same section structure"
+  checklist:
+    - "version_bump added to nano, large, mega templates"
+    - "documentation_updates section added to all templates"
+    - "CHANGELOG update requirements included"
+    - "Version decision guidance provided"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-014]: Add version bump and documentation sections to all PRB templates"
+  example_branch: "feature/PRB-014-add-version-docs-templates"
+  example_scope: |
+    Files: src/prb-templates/nano-prb-template.yaml, src/prb-templates/large-prb-template.yaml, src/prb-templates/mega-prb-template.yaml
+    - Add version_bump section to nano, large, mega templates
+    - Add documentation_updates section to ALL templates
+    - Include CHANGELOG update requirements
+    - Add version decision guidance
+  
+  version_bump_addition: |
+    # Add to git_operations section in ALL templates
+    version_bump:
+      type: "[NONE|PATCH|MINOR|MAJOR]"  # Guide based on impact
+      rationale: "[EXPLAIN_WHY]"        # Justify version bump decision
+      before_merge: true                 # Always bump before merge
+      
+    # Version Decision Guide:
+    # NONE: Documentation only, typo fixes
+    # PATCH: Bug fixes, small improvements
+    # MINOR: New features, template changes
+    # MAJOR: Breaking changes, major system changes
+  
+  documentation_updates_section: |
+    # New section in ALL templates
+    documentation_updates:
+      required_docs:
+        - file: "README.md"
+          update: "[DESCRIBE_CHANGE_IF_NEEDED]"
+        - file: "CHANGELOG.md"
+          update: "[ADD_VERSION_ENTRY]"
+        - file: "docs/[RELEVANT].md"
+          update: "[UPDATE_IF_APPLICABLE]"
+      api_docs: "[YES/NO]"              # API documentation impact
+      user_guides: "[YES/NO]"           # User guide updates needed
+      templates: "[YES/NO]"             # Template documentation changes
+  
+  template_specific_additions: |
+    Nano Template:
+    - version_bump: Usually NONE or PATCH (small changes)
+    - documentation_updates: Minimal, usually just CHANGELOG
+    
+    Large Template:
+    - version_bump: Usually PATCH or MINOR (significant changes)
+    - documentation_updates: May include multiple docs
+    
+    Mega Template:
+    - version_bump: Usually MINOR or MAJOR (system-wide impact)
+    - documentation_updates: Comprehensive documentation review
 
 ## Notes
 Critical: Every change needs version consideration and documentation updates.

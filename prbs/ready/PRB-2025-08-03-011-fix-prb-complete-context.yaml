@@ -17,30 +17,40 @@ project: "intelligent-claude-code"
 requester: "User - PRBs missing complete context and file references"
 git_privacy: true
 
-## Complete System Context
-system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
-implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
-no_code_generation: true
-
-### Critical File References
-- CLAUDE.md: Project instructions and context
-- ~/.claude/CLAUDE.md: User global instructions
-- ~/.claude/config.md: System configuration
-- ~/.claude/modes/virtual-team.md: Virtual team mode
-- ~/.claude/roles/specialists.md: Role definitions
-- ~/.claude/behaviors/*.md: All behavioral patterns
-- ~/.claude/behaviors/shared-patterns/*.md: Shared patterns
-
-### Current Configuration
-```yaml
-# From ~/.claude/config.md
-team_maturity_level: "L3"
-pm_always_active: true
-git_privacy: true
-memory_integration: true
-blocking_enabled: true
-auto_correction: true
-```
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - Virtual team enhancement system"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/CLAUDE.md"
+      purpose: "Project instructions and context"
+      sample: "Virtual team system with 14 specialized roles"
+    - path: "~/.claude/CLAUDE.md"
+      purpose: "User global instructions"
+      sample: "Enhanced virtual team deployment"
+    - path: "~/.claude/config.md"
+      purpose: "System configuration"
+      sample: "autonomy_level: L3, git_privacy: true"
+    - path: "~/.claude/behaviors/prb-creation-mandates.md"
+      purpose: "PRB creation rules"
+      sample: "Role-in-title + complexity-based templates"
+    - path: "src/prb-templates/*.yaml"
+      purpose: "PRB templates needing updates"
+      sample: "nano, tiny, medium, large, mega templates"
 
 ## Problem Statement
 PRBs are being generated without complete context, causing execution failures:
@@ -61,19 +71,30 @@ PRBs are being generated without complete context, causing execution failures:
 - **INCLUDE** system nature in every section
 - **REFERENCE** all behavioral patterns needed
 
-## Requirements
-
-### Functional Requirements
-1. **FR1**: PRB templates must have complete context sections
-2. **FR2**: Auto-include all relevant file references
-3. **FR3**: Embed configuration values not just names
-4. **FR4**: System nature in EVERY agent instruction
-5. **FR5**: Behavioral pattern references with paths
-
-### Non-Functional Requirements
-1. **NFR1**: Zero context loss during execution
-2. **NFR2**: Complete self-contained PRBs
-3. **NFR3**: No external lookups needed
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "PRB templates must have complete context sections with actual config values"
+    - "Auto-include all relevant file references with absolute paths"
+    - "Embed configuration values not just placeholder names"
+    - "System nature emphasized in EVERY agent instruction"
+    - "Behavioral pattern references with complete file paths"
+    - "All 6 mandatory sections present in every PRB template"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous execution"
+    - "No external context lookups during PRB execution"
+    - "Complete self-contained PRBs with embedded learning"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "Behavioral patterns in markdown files only"
+    - "Template files in YAML format with embedded markdown"
+    - "Configuration placeholders replaced with actual values"
+    - "File samples included in context sections"
 
 ## Sequential Thinking
 sequential_thinking:
@@ -148,6 +169,76 @@ CRITICAL CONTEXT:
 ## Risk Assessment
 - **CRITICAL Risk**: Context loss causes wrong implementations
 - **Mitigation**: Complete context mandatory
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-011-fix-prb-complete-context"
+  commit_format: "[PRB-011]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "patch"
+  merge_strategy: "squash"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory for PRB template patterns"
+    - "Embed relevant context fixing learnings"
+    - "Include template structure best practices"
+  post_execution:
+    - "Store template update patterns"
+    - "Capture self-contained PRB design insights"
+    - "Document configuration embedding techniques"
+  capture_location: "memory/Learning/2025/08/prb-self-contained-updates.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@AI-PRB-Specialist"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "All 6 mandatory sections present in updated templates"
+    - "Configuration values properly embedded (not placeholders)"
+    - "File references complete with absolute paths"
+    - "System nature emphasized throughout"
+    - "Self-contained context completeness"
+  max_cycles: 3
+  checklist:
+    - "complete_context section with actual config values"
+    - "requirements section with functional and processual"
+    - "git_operations section respecting all settings"
+    - "knowledge_management section with memory structure"
+    - "review_process section with assigned reviewers"
+    - "implementation_samples section with concrete examples"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-011]: Add complete context sections to all PRB templates"
+  example_branch: "feature/PRB-011-fix-prb-complete-context"
+  example_scope: |
+    Files: src/prb-templates/*.yaml
+    - Add complete_context section with actual config values
+    - Add requirements section with functional/processual split
+    - Add git_operations section respecting all git settings
+    - Add knowledge_management section with memory structure
+    - Add review_process section with assigned reviewers
+    - Add implementation_samples section with concrete examples
+  
+  template_changes: |
+    Before: Missing mandatory sections, placeholder config values
+    After: All 6 mandatory sections, embedded actual config values
+    
+    Example addition:
+    complete_context:
+      configuration:
+        git_privacy: true        # Actual value, not [FROM_CONFIG]
+        branch_protection: true  # Actual value, not [FROM_CONFIG]
+        default_branch: "main"   # Actual value, not [FROM_CONFIG]
 
 ## Notes
 CRITICAL: Every PRB must be COMPLETELY self-contained with ALL context, file references, configuration values, and system nature embedded throughout.

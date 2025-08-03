@@ -8,13 +8,35 @@ complexity: complex
 title: "[AI-Engineer] Fix project-only execution scope for behavioral patterns"
 requires_decomposition: true
 
-context:
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
   project: "intelligent-claude-code - AI-agentic markdown virtual team system"
-  settings:
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
     autonomy_level: "L3"
     pm_always_active: true
-    git_privacy: true
     memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/*.md"
+      purpose: "Behavioral patterns needing project scope fixes"
+      sample: "config-loader.md, directory-structure.md, learning-team-automation.md"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/commands/*.md"
+      purpose: "Command files needing project-only execution"
+      sample: "icc-init-system.md, icc-create-prb.md"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/shared-patterns/memory-operations.md"
+      purpose: "Memory operations requiring project path updates"
+      sample: "StoreInMemory pattern, SearchMemory pattern"
+      
   business_goal: "Ensure system respects project boundaries during execution"
   technical_scope: "Behavioral patterns, command files, memory operations, directory structure"
   
@@ -24,31 +46,59 @@ embedded_knowledge:
   search_query: "path resolution AI agentic scope boundaries project execution"
   results: "No existing patterns found - first occurrence"
   
-# Automatic sub-PRB generation
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "Update behavioral patterns to respect project boundaries"
+    - "Fix command files for project-only execution"
+    - "Update memory operations for project paths"
+    - "Document scope boundaries in patterns"
+    - "Ensure /icc-init-system creates dirs in ./ not ~/.claude/"
+    - "Maintain installation to ~/.claude/ functionality"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous execution"
+    - "Coordinate sub-PRBs with complete context inheritance"
+    - "Validate installation vs execution scope distinction"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "Path resolution strategy for AI-agentic systems"
+    - "Backward compatibility with existing installations"
+    - "Clear error messages for boundary violations"
+
+# Automatic sub-PRB generation (with complete context inheritance)
 sub_prbs:
   - id: "MEDIUM-001"
     title: "[AI-Engineer] Update behavioral patterns for project scope"
     complexity: medium
     dependencies: []
     scope: "behaviors/*.md files"
+    inherit_all: true  # Inherits complete context from parent
     
   - id: "MEDIUM-002"
     title: "[AI-Engineer] Fix command files for project-only execution"
     complexity: medium
     dependencies: ["MEDIUM-001"]
     scope: "commands/*.md files"
+    inherit_all: true  # Inherits complete context from parent
     
   - id: "TINY-001"
     title: "[AI-Engineer] Update memory operations for project paths"
     complexity: tiny
     dependencies: []
     scope: "shared-patterns/memory-operations.md"
+    inherit_all: true  # Inherits complete context from parent
     
   - id: "TINY-002"
     title: "[AI-Engineer] Document scope boundaries in patterns"
     complexity: tiny
     dependencies: ["MEDIUM-001", "MEDIUM-002"]
     scope: "Documentation updates"
+    inherit_all: true  # Inherits complete context from parent
     
 # Coordination strategy
 execution_strategy:
@@ -119,6 +169,77 @@ success_criteria:
   - "No unauthorized system modifications"
   - "Clear error messages for boundary violations"
   
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-001-fix-project-scope"
+  commit_format: "[PRB-001]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "minor"  # System-wide changes warrant minor bump
+  merge_strategy: "squash"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory for path resolution patterns"
+    - "Embed AI-agentic scope boundary learnings"
+    - "Include installation vs execution distinction patterns"
+  post_execution:
+    - "Store project boundary enforcement patterns"
+    - "Capture path resolution strategies"
+    - "Document scope isolation techniques"
+  capture_location: "memory/Pattern/2025/08/project-scope-boundaries.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@AI-Architect"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "Installation vs execution scope distinction maintained"
+    - "Path resolution consistency across all files"
+    - "Backward compatibility with existing installations"
+    - "Sub-PRB coordination and context inheritance"
+    - "Clear boundary violation error messages"
+  max_cycles: 3
+  sub_prb_review:
+    - "Each sub-PRB inherits complete parent context"
+    - "Dependencies properly managed"
+    - "Integration points validated"
+  checklist:
+    - "All behavioral patterns respect project boundaries"
+    - "Commands execute in project only"
+    - "Memory operations use project paths"
+    - "Documentation reflects scope boundaries"
+    - "No unauthorized system modifications"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-001]: Update behavioral patterns for project-only execution"
+  example_branch: "feature/PRB-001-fix-project-scope"
+  example_scope: |
+    Files: src/behaviors/*.md, src/commands/*.md, src/behaviors/shared-patterns/memory-operations.md
+    - Update config-loader.md to distinguish install vs execute paths
+    - Fix icc-init-system.md to create dirs in ./ not ~/.claude/
+    - Update memory-operations.md for project path resolution
+    - Add scope boundary documentation to all patterns
+  
+  sub_prb_coordination: |
+    MEDIUM-001: Behavioral patterns (config-loader.md, directory-structure.md)
+    MEDIUM-002: Command files (icc-init-system.md, icc-create-prb.md) 
+    TINY-001: Memory operations (shared-patterns/memory-operations.md)
+    TINY-002: Documentation updates (scope boundary docs)
+    
+  integration_validation: |
+    Between MEDIUM-001 & MEDIUM-002: Path resolution consistency
+    All sub-PRBs: Project boundary enforcement
+    Final check: No unauthorized system modifications
+    
 # Knowledge generation post-execution
 post_execution_knowledge:
   generate: true

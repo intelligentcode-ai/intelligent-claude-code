@@ -9,12 +9,43 @@ created_by: "@PM"
 created_at: "2025-08-03"
 tags: ["memory-first", "prb-generation", "behavioral-fix", "critical"]
 
-## Context
-type: "BUG_FIX"
-priority: "CRITICAL"
-project: "intelligent-claude-code"
-requester: "User - Memory not consulted before PRB creation"
-git_privacy: true
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "BUG_FIX"
+  priority: "CRITICAL"
+  requester: "User - Memory not consulted before PRB creation"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-auto-trigger.md"
+      purpose: "PRB auto-trigger needing memory search step"
+      sample: "Work detection patterns, complexity analysis, template selection"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-creation-mandates.md"
+      purpose: "PRB creation mandates needing memory-first enforcement"
+      sample: "Role-in-title + complexity-based templates, Quality requirements"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/shared-patterns/memory-operations.md"
+      purpose: "Memory operations patterns (already correct structure)"
+      sample: "StoreInMemory pattern, SearchMemory pattern, memory/[topic]/[subtopic].md"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/memory/"
+      purpose: "File-based memory storage with existing learnings"
+      sample: "Learning/, Pattern/, Knowledge/ with markdown files"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/memory/index.md"
+      purpose: "Memory index needing updates after writes"
+      sample: "Topics, Learning/, Pattern/ organization"
 
 ## Problem Statement
 PRBs are being generated without first searching and embedding relevant memory, violating the memory-first principle. This leads to:
@@ -35,19 +66,30 @@ PRBs are being generated without first searching and embedding relevant memory, 
 - **ALWAYS** follow memory/[topic]/[subtopic].md structure
 - **ALWAYS** update index after writes
 
-## Requirements
-
-### Functional Requirements
-1. **FR1**: PRB generation MUST search memory first
-2. **FR2**: Embed 2-3 most relevant memory entries in PRB
-3. **FR3**: Follow correct memory structure (topic/subtopic)
-4. **FR4**: Update memory/index.md after all writes
-5. **FR5**: Store new learnings after PRB execution
-
-### Non-Functional Requirements
-1. **NFR1**: Memory search < 2 seconds
-2. **NFR2**: Max 1000 tokens embedded
-3. **NFR3**: Index always current
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "PRB generation MUST search memory first before any creation"
+    - "Embed 2-3 most relevant memory entries in every PRB"
+    - "Follow correct memory structure: memory/[topic]/[subtopic].md"
+    - "Update memory/index.md after all memory writes"
+    - "Store new learnings after PRB execution in version control"
+    - "Hard enforcement of memory-first pattern in all behaviors"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous memory integration"
+    - "Memory search completed in < 2 seconds"
+    - "Max 1000 tokens embedded from memory per PRB"
+    - "Memory index always kept current"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "File system memory search and retrieval"
+    - "Markdown parsing for memory content extraction"
+    - "Index management for memory organization"
 
 ## Implementation Details
 
@@ -105,6 +147,114 @@ PRBs are being generated without first searching and embedding relevant memory, 
 - **Mitigation**: Hard enforcement in PRB generation
 - **Medium Risk**: Memory search performance
 - **Mitigation**: Index optimization
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-006-fix-memory-first-prb-generation"
+  commit_format: "[PRB-006]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "minor"  # Memory integration is significant change
+  merge_strategy: "squash"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "pre-searched and embedded in PRB context"
+  pre_execution:
+    - "Search memory/ for PRB generation patterns"
+    - "Embed memory-first enforcement learnings"
+    - "Include execution context validation patterns"
+  post_execution:
+    - "Store memory-first PRB generation patterns"
+    - "Capture memory search integration techniques"
+    - "Document embedded learning selection algorithms"
+  capture_location: "memory/Learning/2025/08/memory-first-prb-generation.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@AI-Memory-Specialist"
+  secondary_reviewer: "@AI-Engineer"
+  focus_areas:
+    - "Every PRB contains memory search results"
+    - "Relevant learnings embedded in PRBs (2-3 entries max)"
+    - "Memory structure followed correctly (topic/subtopic)"
+    - "Index updated after all memory writes"
+    - "No repeated mistakes from missing memory"
+  max_cycles: 3
+  memory_tests:
+    - "Generate test PRB → Verify memory searched"
+    - "Check embedded knowledge section populated"
+    - "Verify memory structure: memory/[topic]/[subtopic].md"
+    - "Confirm index updated after writes"
+  checklist:
+    - "Memory search step added to prb-auto-trigger.md"
+    - "Memory-first enforcement in prb-creation-mandates.md"
+    - "Memory operations patterns validated"
+    - "Index update mechanism implemented"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-006]: Implement memory-first PRB generation with embedded learnings"
+  example_branch: "feature/PRB-006-fix-memory-first-prb-generation"
+  example_scope: |
+    Files: src/behaviors/prb-auto-trigger.md, src/behaviors/prb-creation-mandates.md, src/commands/icc-create-prb.md
+    - Add memory search step before PRB generation
+    - Enforce memory-first pattern in creation mandates
+    - Embed relevant learnings in all generated PRBs
+    - Update memory index management
+  
+  memory_first_flow: |
+    PRB Generation Flow (UPDATED):
+    1. Detect work request (existing)
+    2. SEARCH MEMORY for relevant patterns (NEW)
+    3. Extract keywords from work request
+    4. Search memory/[topic]/ files for matches
+    5. Score by relevance + recency + keyword match
+    6. Analyze complexity (existing)
+    7. Select appropriate template (existing)
+    8. EMBED top 2-3 memory entries in PRB (NEW)
+    9. Generate PRB with complete context (enhanced)
+  
+  memory_embedding_example: |
+    # Embedded learnings section in generated PRB
+    embedded_learnings:
+      primary_pattern: |
+        From: memory/validation/execution-context.md
+        ## 2025-08-03: Claude Code Validation Context
+        **Context:** PRB execution validation
+        **Problem:** Validation must be in-session, not external
+        **Solution:** All validation within Claude Code session
+        [Only this specific entry - max 500 tokens]
+        
+      related_learning: |
+        From: memory/Pattern/prb-structure.md  
+        ## 2025-08-02: PRB Template Structure
+        **Context:** Template organization
+        **Solution:** Use complexity-based template selection
+        [Only this specific entry - max 300 tokens]
+  
+  memory_search_integration: |
+    Memory Search Before PRB Creation:
+    - Extract keywords from user request/work description
+    - Search memory/ directory structure for relevant files
+    - Parse markdown files for matching content
+    - Score results by: keyword match + recency + context relevance
+    - Select top 2-3 entries (max 1000 tokens total)
+    - Embed directly in PRB's embedded_learnings section
+    - Ensure no external lookups needed during execution
+  
+  index_management: |
+    Memory Index Updates:
+    - After each memory write to memory/[topic]/[subtopic].md
+    - Update memory/index.md with new entries
+    - Maintain topic organization
+    - Include brief descriptions for quick reference
+    - Keep index current for efficient search
 
 ## Notes
 CRITICAL: Memory-first is MANDATORY. Every PRB must search and embed relevant memory. This prevents repeated mistakes and ensures continuous learning.
