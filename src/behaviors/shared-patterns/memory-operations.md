@@ -2,19 +2,20 @@
 
 **MANDATORY:** MUST use file-based memory operations. Auto-correct violations.
 
-**PURPOSE:** File-based memory storage, search, and retrieval patterns for the project
+**PURPOSE:** File-based memory storage, search, and retrieval patterns with MEMORY-FIRST enforcement for PRB generation
 
 ## Core Memory Patterns
 
 ### Memory Structure
-**Base Directory:** .claude/memory/ (within project root - **PROJECT SCOPE ONLY**)
-**Entity Types:** Learning, Pattern, Knowledge
-**Organization:** .claude/memory/entities/[EntityType]/[YYYY]/[MM]/
-**File Format:** [EntityType]-[ID]-[YYYY-MM-DD].md
+**Base Directory:** memory/ (within project root - **PROJECT SCOPE ONLY**)
+**Topic Organization:** memory/[topic]/[subtopic].md (e.g., memory/authentication/oauth2-patterns.md)
+**Entity Types:** Learning, Pattern, Knowledge  
+**Alternative Entity Organization:** memory/entities/[EntityType]/[YYYY]/[MM]/
+**File Format:** [EntityType]-[ID]-[YYYY-MM-DD].md or [subtopic].md
 
 **Scope Validation:**
-- **Project Memory**: All memory operations within .claude/memory/ (project scope)
-- **Installation Memory**: System templates in ~/.claude/ (installation scope)
+- **Project Memory**: All memory operations within memory/ (project scope)
+- **Installation Memory**: System templates in ~/.claude/ (installation scope)  
 - **Boundary Enforcement**: Never write to ~/.claude/ during execution
 
 ### Entity Structure
@@ -32,12 +33,12 @@
 
 ### StoreInMemory Pattern
 **Process:**
-1. Determine entity type (Learning/Pattern/Knowledge)
-2. Generate unique ID: [Type]-[Context]-[YYYYMMDD-HHMMSS]
-3. Create directory path: .claude/memory/entities/[Type]/[YYYY]/[MM]/
-4. Format content as markdown with YAML frontmatter
-5. Write to file: [Type]-[ID]-[YYYY-MM-DD].md
-6. Update index file: .claude/memory/index.md
+1. Determine storage approach: topic-based (memory/[topic]/[subtopic].md) or entity-based
+2. For topic-based: Create/append to memory/[topic]/[subtopic].md with dated entries
+3. For entity-based: Generate unique ID: [Type]-[Context]-[YYYYMMDD-HHMMSS]
+4. Create directory path: memory/entities/[Type]/[YYYY]/[MM]/ (if using entity approach)
+5. Format content as markdown with YAML frontmatter
+6. Write to appropriate file and update index file: memory/index.md
 
 **File Structure:**
 ```markdown
@@ -69,34 +70,37 @@ tags: [authentication, error-handling, oauth2]
 - Knowledge-AuthBestPractices-20250120
 ```
 
-### SearchMemory Pattern
+### SearchMemory Pattern (MEMORY-FIRST for PRBs)
 **Process:**
-1. Parse search query for keywords and context
+1. Parse search query for keywords, topics, and context
 2. Check index file for quick filtering
-3. Search in relevant time periods (recent first)
-4. Apply relevance scoring based on:
+3. Search topic-based files: memory/[topic]/[subtopic].md first (PRIMARY for PRB generation)
+4. Search entity-based files: memory/entities/[Type]/[YYYY]/[MM]/ as fallback  
+5. Apply relevance scoring based on:
    - Keyword matches in content
-   - Context similarity
+   - Topic/context similarity
    - Recency (exponential decay λ=0.1)
    - Application count
-5. Return sorted results (max 10)
+6. Return top 2-3 entries for PRB embedding
+7. CRITICAL: NO PRB generation without memory search first
 
 **Search Strategies:**
-- **By Type:** Filter .claude/memory/entities/[Type]/
-- **By Date:** Navigate year/month directories
+- **By Topic:** Search memory/[topic]/ directories first  
+- **By Type:** Filter memory/entities/[Type]/ as fallback
+- **By Date:** Navigate year/month directories in entity approach
 - **By Context:** Match TASK/STORY/BUG references
 - **By Tags:** Search YAML frontmatter tags
 - **Full Text:** Grep through content sections
 
 ### LoadFromMemory Pattern
 **Process:**
-1. Construct file path from entity ID
-2. Read file from .claude/memory/entities/
-3. Parse YAML frontmatter
+1. Construct file path from entity ID or topic/subtopic path
+2. Read file from memory/[topic]/[subtopic].md or memory/entities/
+3. Parse YAML frontmatter (if present)
 4. Extract structured content
 5. Update lastAccessed timestamp
 6. Increment applicationCount
-7. Return entity object
+7. Return memory object
 
 **Load Optimization:**
 - Cache recently accessed entities (5 min TTL)
@@ -106,7 +110,7 @@ tags: [authentication, error-handling, oauth2]
 ## Index Management
 
 ### Index Structure
-**Location:** .claude/memory/index.md
+**Location:** memory/index.md
 **Format:** Markdown table with key fields
 **Updates:** Real-time on store/delete operations
 
@@ -139,10 +143,11 @@ tags: [authentication, error-handling, oauth2]
 
 ## Integration Patterns
 
-### With Workflows
-**Outer Workflow:** Memory search in step 1, storage in step 7
-**Inner Workflow:** Memory search in step 1, storage in step 8
-**Auto-trigger:** On retrospective phases
+### With PRB Generation
+**PRB Auto-Trigger:** Memory search BEFORE complexity analysis and template selection
+**PRB Creation:** Embed top 2-3 memory entries directly in PRB context
+**PRB Enforcement:** Block any PRB generation without memory search first
+**Memory Structure:** Use memory/[topic]/[subtopic].md for optimal PRB integration
 
 ### With Learning System
 **Error Detection:** Auto-store as Learning entity

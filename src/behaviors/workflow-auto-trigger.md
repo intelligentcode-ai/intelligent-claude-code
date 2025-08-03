@@ -1,24 +1,23 @@
-# Workflow Auto-Trigger Behavior
+# PRB Auto-Trigger Behavior
 
-**MANDATORY:** MUST auto-detect work and trigger appropriate workflow. Auto-correct violations.
+**MANDATORY:** MUST auto-detect work and generate appropriate PRB. Auto-correct violations.
 
-**PURPOSE:** Automatically detect work initiation and trigger correct workflow (outer/inner)
+**PURPOSE:** Automatically detect work requests and generate PRBs for execution
 
-## Core Principle: Detection → Task Tool Invocation
+## Core Principle: Detection → Memory Search FIRST → PRB Generation → Direct Execution
 
-Every work detection triggers a Task tool invocation with appropriate workflow context.
+Every work detection triggers memory search first, then PRB generation with appropriate complexity template and embedded memory context.
 
 ## Work Detection Patterns
 
-| Trigger Type | Detection Pattern | Workflow | Auto-Action |
-|-------------|------------------|----------|-------------|
-| **File** | epic.yaml, story.yaml, bug.yaml, task.md | Outer/Inner | Create Task tool invocation with file context |
-| **Command** | /icc-create-task, /icc-start-story, /icc-fix-bug | Per command | Extract ID, launch appropriate workflow |
-| **Role** | @Role: or @Role (inline) | Inner | Convert to Task tool, block direct execution |
-| **Reference** | STORY-XXX, BUG-XXX, TASK-XXX | Outer/Inner | Search for file, launch with context |
-| **Context** | Implementation intent without ID | Inner | Assign appropriate role, launch workflow |
+| Trigger Type | Detection Pattern | Action |
+|-------------|------------------|--------|
+| **PRB File** | *.prb.yaml, PRB-XXX | Execute existing PRB |
+| **Work Request** | Any implementation request | Analyze → Generate PRB |
+| **@Role** | @Role mention | Generate appropriate PRB |
+| **Commands** | /icc-create-prb | Generate PRB with options |
 
-**Task Tool Pattern:** See @workflow-templates/executable-workflow.md
+**CRITICAL:** All work detection MUST search memory FIRST using memory/[topic]/[subtopic].md structure
 
 ## Workflow Type Determination
 
@@ -33,15 +32,18 @@ Every work detection triggers a Task tool invocation with appropriate workflow c
 
 **Resolution:** ID match → File search → Scope check → Default to inner
 
-## Auto-Activation Flow
+## Auto-Generation Flow
 
-1. **Detect** → File type, command, or intent
-2. **Load** → Assignment content and configuration
-3. **Create** → Task tool invocation with context
-4. **Launch** → Appropriate workflow (outer/inner)
-5. **Execute** → Through workflow phases
+1. **Detect** → Work requirement
+2. **Search Memory FIRST** → /icc-search-memory for relevant patterns in memory/[topic]/[subtopic].md
+3. **Analyze** → Calculate complexity score with memory context
+4. **Select** → Choose PRB template using hierarchy (project → .claude → ~/.claude)
+5. **Embed** → Include top 2-3 relevant memory entries in PRB context
+6. **Generate** → Create PRB with complete context
+7. **Execute** → Direct execution
 
-**Context:** Parent loads PROJECT-CONTEXT.md and settings ONCE, passes to all subagents
+**Memory-First Enforcement:** NO PRB generation without memory search first
+**Memory Embedding:** Top 2-3 entries embedded directly in PRB, no runtime lookups needed
 
 ## Integration Points
 
@@ -52,7 +54,8 @@ Every work detection triggers a Task tool invocation with appropriate workflow c
 **L3 Mode:** Continuous work detection → Auto-launch without prompts → Chain workflow executions → Discover new work patterns
 
 ### With Learning System
-**Learning:** Capture trigger patterns → Store successful launches → Learn from misdetections → Improve accuracy over time
+**Memory-First Learning:** Search memory/workflow/patterns before triggering → Apply existing trigger patterns → Store successful launches → Learn from misdetections → Improve accuracy over time
+**Memory Structure:** Store in memory/workflow/[subtopic].md following memory/[topic]/[subtopic].md format
 
 ## Trigger Priority Order
 
@@ -68,10 +71,11 @@ Every work detection triggers a Task tool invocation with appropriate workflow c
 
 | Violation | Detection | Correction |
 |-----------|-----------|------------|
-| **Missing Workflow** | Direct @Role without Task tool | STOP → Create Task invocation → Launch workflow |
-| **Phase Skip** | Implementation before planning | STOP → Store work → Start from phase 1 |
-| **Bypass Attempt** | Direct edit without workflow | Block → Identify work type → Launch workflow |
-| **Wrong Workflow** | Inner when outer needed | Redirect → Load story/bug → Launch outer |
+| **Missing Memory Search** | PRB generation without memory check | STOP → Search memory/[topic]/[subtopic].md first → Embed patterns → Generate PRB |
+| **Missing PRB** | Direct work without PRB | STOP → Search memory → Generate appropriate PRB → Execute |
+| **Wrong Template** | Incorrect complexity template | STOP → Re-analyze complexity → Select correct template → Regenerate |
+| **Bypass Attempt** | Direct execution without PRB | Block → Search memory → Generate PRB → Execute through PRB |
+| **Memory Skip** | PRB creation skipping memory patterns | STOP → Search memory/[topic]/ → Embed top 2-3 entries → Continue |
 
 ## Configuration Integration
 

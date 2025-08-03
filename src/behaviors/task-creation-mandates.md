@@ -1,47 +1,37 @@
-# Task Creation Mandates
+# PRB Creation Mandates
 
-**MANDATORY:** MUST use role-in-title + complexity-appropriate subtasks. Auto-correct violations.
+**MANDATORY:** MUST use memory-first + role-in-title + complexity-based templates. Auto-correct violations.
 
-**PURPOSE:** Mandatory behavioral requirements for ALL task creation.
+**PURPOSE:** Mandatory behavioral requirements for ALL PRB creation with memory-first enforcement.
 
 ## Imports
 @../workflow-templates/executable-workflow.md
 
 ## MANDATORY RULES
 
+### Memory Search First - ALWAYS
+**Every PRB creation MUST begin with memory search**
+- Search memory/[topic]/[subtopic].md for similar work patterns (e.g., memory/authentication/oauth2-patterns.md)
+- Apply existing learnings and patterns to current PRB
+- Embed top 2-3 relevant memory entries directly in PRB context
+- Use /icc-search-memory before any PRB generation
+- NO PRB generation without memory search first
+
 ### Role in Title - ALWAYS
-**Every task title MUST include role in square brackets**
-- Format: "[Role] Task description"
-- Examples: "[Developer] Implement auth", "[AI-Architect] Design memory system"
+**Every PRB title MUST include role in square brackets**
+- Format: "[Role] Description"
+- Examples: "[Developer] Fix auth", "[AI-Engineer] Add ML"
 
-### Subtasks - COMPLEXITY-BASED
-**Task breakdown based on complexity and nature of work**
+### Complexity-Based Templates
+**Auto-selected by score using template hierarchy:**
+- **Nano (0-2):** Trivial (typos, configs)
+- **Tiny (3-5):** Single-file (<50 lines)
+- **Medium (6-15):** Multi-file features
+- **Large (16-30):** Complex w/ coordination
+- **Mega (30+):** System-wide changes
 
-#### Simple Tasks (0-1 subtasks)
-- Single-file edits or small changes
-- Configuration updates
-- Documentation fixes
-- Version bumps
-- Examples: "Fix typo in README", "Update config value"
-
-#### Standard Tasks (2-3 subtasks)
-- Feature implementations spanning multiple files
-- Bug fixes requiring investigation
-- Refactoring operations
-- Examples: "Add new API endpoint", "Fix login validation bug"
-
-#### Complex Tasks (4+ subtasks)
-- System-wide changes
-- New feature modules
-- Performance optimizations
-- Security implementations
-- Examples: "Implement OAuth2 system", "Refactor entire data layer"
-
-**Subtask Guidelines:**
-- Each subtask should be independently executable
-- Clear progress tracking through subtask completion
-- Avoid artificial breakdown just to meet a count
-- Focus on logical work units
+**Scoring factors:** Files + Lines + External APIs + Security + Coordination
+**Template Loading:** Use hierarchy: project → .claude → ~/.claude
 
 ### Parallelization - WHERE APPLICABLE
 **Identify and mark parallel execution opportunities**
@@ -77,17 +67,19 @@
 - Complex tasks: 4 or more subtasks as needed
 
 **Auto-Correction Patterns:**
-- Missing role in title → Add appropriate role
-- Over-decomposed simple task → Consolidate subtasks
-- Under-decomposed complex task → Expand breakdown
-- Artificial subtasks → Remove and simplify
+- Missing memory search → STOP → Search memory/[topic]/[subtopic].md first → Embed patterns → Resume
+- Missing role in title → Add based on work type
+- Wrong template → Re-analyze complexity
+- No specialist → Create if <70% match
+- Missing SME → Pre-assign reviewer
 
-Apply to ALL task creation: bug decomposition, story creation, epic planning, role assignments.
+Apply to ALL PRB creation: work requests, role assignments, complexity analysis.
 
 ## INTEGRATION
 
 Use these commands:
-- `/icc-think-sequential` - Problem analysis
-- `/icc-create-specialist` - Dynamic role creation  
-- `/icc-plan-tasks` - With role-in-title enforcement
-- `/icc-parallelize-subtasks` - Execution planning
+- `/icc-search-memory` - MANDATORY memory search before PRB creation
+- `/icc-think-sequential` - Problem analysis with memory context
+- `/icc-create-specialist` - Dynamic role creation
+- `/icc-analyze-complexity` - Determine appropriate template
+- `/icc-create-prb` - Generate PRB with embedded memory

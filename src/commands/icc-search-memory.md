@@ -17,9 +17,10 @@
    - Detect context references (TASK-XXX, STORY-XXX)
 
 2. **Search Strategy**
+   - Search topic-based files first: memory/[topic]/[subtopic].md
+   - Check entity-based files: memory/entities/[Type]/[YYYY]/[MM]/
    - Check index for quick filtering
-   - Search recent memories first (current month)
-   - Apply relevance scoring
+   - Apply relevance scoring with emphasis on topic structure
 
 3. **Scoring Algorithm**
    - Keyword match: +3 points per match
