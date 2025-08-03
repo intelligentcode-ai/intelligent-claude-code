@@ -1,0 +1,110 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix PRB generation not using memory-first pattern"
+prb_id: "PRB-2025-08-03-006"
+complexity: "Large"
+score: 16
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["memory-first", "prb-generation", "behavioral-fix", "critical"]
+
+## Context
+type: "BUG_FIX"
+priority: "CRITICAL"
+project: "intelligent-claude-code"
+requester: "User - Memory not consulted before PRB creation"
+git_privacy: true
+
+## Problem Statement
+PRBs are being generated without first searching and embedding relevant memory, violating the memory-first principle. This leads to:
+- Repeated mistakes (validation context issues)
+- Missing critical context from past learnings
+- Ignoring established patterns
+- Not following memory structure guidelines
+
+### Current Issues:
+- PRB generation skips memory search
+- Memory structure not followed (wrong paths/format)
+- Index not updated after memory writes
+- Learnings not embedded in PRBs
+
+### Required Behavior:
+- **ALWAYS** search memory before PRB generation
+- **ALWAYS** embed relevant learnings in PRB
+- **ALWAYS** follow memory/[topic]/[subtopic].md structure
+- **ALWAYS** update index after writes
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: PRB generation MUST search memory first
+2. **FR2**: Embed 2-3 most relevant memory entries in PRB
+3. **FR3**: Follow correct memory structure (topic/subtopic)
+4. **FR4**: Update memory/index.md after all writes
+5. **FR5**: Store new learnings after PRB execution
+
+### Non-Functional Requirements
+1. **NFR1**: Memory search < 2 seconds
+2. **NFR2**: Max 1000 tokens embedded
+3. **NFR3**: Index always current
+
+## Implementation Details
+
+### Affected Files
+- `.claude/behaviors/prb-auto-trigger.md` - Add memory search step
+- `.claude/behaviors/prb-creation-mandates.md` - Enforce memory-first
+- `.claude/behaviors/shared-patterns/memory-operations.md` - Already correct
+- `.claude/commands/icc-create-prb.md` - Add memory search
+
+### Key Changes Needed
+1. **PRB Generation Flow**:
+   ```markdown
+   1. Detect work request
+   2. SEARCH MEMORY for relevant patterns
+   3. Analyze complexity
+   4. Select template
+   5. EMBED memory entries in PRB
+   6. Generate PRB with context
+   ```
+
+2. **Memory Search Integration**:
+   ```markdown
+   Before PRB creation:
+   - Extract keywords from work request
+   - Search memory/[topic]/ files
+   - Score by relevance + recency
+   - Embed top 2-3 entries
+   ```
+
+## Success Criteria
+1. Every PRB contains memory search results
+2. Relevant learnings embedded in PRBs
+3. Memory structure followed correctly
+4. Index updated after writes
+5. No repeated mistakes
+
+## Role Assignments
+- **Lead**: @AI-Engineer (memory system expertise)
+- **Reviewer**: @AI-Memory-Specialist (memory patterns)
+
+## Embedded Knowledge
+### From Memory Search
+- `validation/execution-context.md` - Claude Code validation must be in-session
+- Risk assessment for markdown = LOW not HIGH
+- Pattern vs implementation validation differs
+
+## Validation Steps
+1. Generate test PRB - verify memory searched
+2. Check embedded knowledge section populated
+3. Verify memory structure followed
+4. Confirm index updated
+
+## Risk Assessment
+- **High Risk**: Continued pattern violations
+- **Mitigation**: Hard enforcement in PRB generation
+- **Medium Risk**: Memory search performance
+- **Mitigation**: Index optimization
+
+## Notes
+CRITICAL: Memory-first is MANDATORY. Every PRB must search and embed relevant memory. This prevents repeated mistakes and ensures continuous learning.

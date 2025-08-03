@@ -5,31 +5,142 @@
 id: LARGE-[AUTO]
 type: large-prb
 complexity: complex
+priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
 title: "[EPIC_OR_STORY_TITLE]"
 requires_decomposition: true
 
-context:
+# MANDATORY: Complete Context Section
+complete_context:
   project: "[CLAUDE.md]"        # Project context from CLAUDE.md
-  settings: "[ALL-SETTINGS]"
+  settings: "[ALL-SETTINGS]"   # All configuration values
+  git_privacy: "[FROM_CONFIG]" # git_privacy setting from config
+  branch_protection: "[FROM_CONFIG]" # branch_protection from config
+  default_branch: "[FROM_CONFIG]"    # default_branch from config
+  branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
   business_goal: "[BUSINESS_OBJECTIVE]"
   technical_scope: "[SYSTEM_COMPONENTS]"
   
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "[COMPLEX_REQUIREMENT_1]"
+    - "[COMPLEX_REQUIREMENT_2]"
+    - "[COMPLEX_REQUIREMENT_3]"
+  processual:
+    - "Respect git_privacy setting for all sub-PRB commits"
+    - "Follow branch protection strategy across all components"
+    - "Use configured default branch for final integration"
+    - "Apply configured branch naming for feature branches"
+    - "Coordinate sub-PRB execution with proper sequencing"
+  technical:
+    - "Multi-component system integration"
+    - "Complex feature coordination"
+    - "16-30 complexity score management"
+
 # Automatic sub-PRB generation
 sub_prbs:
+  # ALL SUB-PRBS INHERIT COMPLETE CONTEXT AND MANDATORY SECTIONS
   - id: "[MEDIUM-001]"
     title: "[ROLE] [COMPONENT_1]"
     complexity: medium
     dependencies: []
+    complete_context:
+      inherit_all: true  # Inherits ALL parent context
+      project: "[CLAUDE.md]"
+      settings: "[ALL-SETTINGS]"
+      git_privacy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+      branch_strategy: "[FROM_CONFIG]"
+    requirements:
+      functional: ["[COMPONENT_1_REQUIREMENTS]"]
+      processual: 
+        - "Respect git_privacy setting for commit messages"
+        - "Follow branch protection strategy from config"
+        - "Use configured default branch for operations"
+        - "Apply configured branch naming strategy"
+      technical: ["[COMPONENT_1_TECH_SPECS]"]
+    git_operations:
+      branch_strategy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      privacy_filter: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+    knowledge_management:
+      structure: "memory/[topic]/[subtopic].md"
+      storage: "version-controlled"
+    review_process:
+      type: "sme_review"
+      inherit_from_parent: true
+    implementation_samples:
+      example_commit: "[MEDIUM-001]: [COMPONENT_1_DESCRIPTION]"
     
   - id: "[MEDIUM-002]"
     title: "[ROLE] [COMPONENT_2]"
     complexity: medium
     dependencies: ["[MEDIUM-001]"]
+    complete_context:
+      inherit_all: true  # Inherits ALL parent context
+      project: "[CLAUDE.md]"
+      settings: "[ALL-SETTINGS]"
+      git_privacy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+      branch_strategy: "[FROM_CONFIG]"
+    requirements:
+      functional: ["[COMPONENT_2_REQUIREMENTS]"]
+      processual:
+        - "Respect git_privacy setting for commit messages"
+        - "Follow branch protection strategy from config"
+        - "Use configured default branch for operations"
+        - "Apply configured branch naming strategy"
+      technical: ["[COMPONENT_2_TECH_SPECS]"]
+    git_operations:
+      branch_strategy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      privacy_filter: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+    knowledge_management:
+      structure: "memory/[topic]/[subtopic].md"
+      storage: "version-controlled"
+    review_process:
+      type: "sme_review"
+      inherit_from_parent: true
+    implementation_samples:
+      example_commit: "[MEDIUM-002]: [COMPONENT_2_DESCRIPTION]"
     
   - id: "[TINY-001]"
     title: "[ROLE] [CONFIG_TASK]"
     complexity: tiny
     dependencies: []
+    complete_context:
+      inherit_all: true  # Inherits ALL parent context
+      project: "[CLAUDE.md]"
+      settings: "[ALL-SETTINGS]"
+      git_privacy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+      branch_strategy: "[FROM_CONFIG]"
+    requirements:
+      functional: ["[CONFIG_REQUIREMENTS]"]
+      processual:
+        - "Respect git_privacy setting for commit messages"
+        - "Follow branch protection strategy from config"
+        - "Use configured default branch for operations"
+        - "Apply configured branch naming strategy"
+      technical: ["[CONFIG_TECH_SPECS]"]
+    git_operations:
+      branch_strategy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      privacy_filter: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+    knowledge_management:
+      structure: "memory/[topic]/[subtopic].md"
+      storage: "version-controlled"
+    review_process:
+      type: "minimal_self_review"
+      inherit_from_parent: true
+    implementation_samples:
+      example_commit: "[TINY-001]: [CONFIG_DESCRIPTION]"
     
 # Coordination strategy
 execution_strategy:
@@ -60,12 +171,54 @@ validation_gates:
     check: "[INTEGRATION_TEST]"
     reviewer: "@QA-Engineer"
     
-# Aggregated git operations
-git_strategy:
-  branch: "feature/[STORY-ID]-[DESCRIPTION]"
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
+  branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
+  branch_name: "[FROM_CONFIG_PREFIX]/[STORY-ID]-[DESCRIPTION]"
+  commit_coordination: "sub_prb_aware"
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all sub-PRBs
+  default_branch: "[FROM_CONFIG]"     # Target configured default branch
   merge_request: true # Parent asks user
   squash_commits: true
   
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled"
+  complex_pattern_capture: true
+  sub_prb_learning_aggregation: true
+  capture_points:
+    - "[ARCHITECTURE_PATTERNS]"
+    - "[INTEGRATION_APPROACHES]"
+    - "[COORDINATION_INSIGHTS]"
+  store_as: "ComplexPattern"
+
+# MANDATORY: Review Process Section
+review_process:
+  type: "multi_gate_review"
+  validation_gates:
+    - after: "[MEDIUM-001]"
+      check: "[SECURITY_REVIEW]"
+      reviewer: "@Security-Engineer"
+    - after: "all_complete"
+      check: "[INTEGRATION_TEST]"
+      reviewer: "@QA-Engineer"
+  coordination: "continuous"
+  escalation: "architect_consultation"
+
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[LARGE-001]: Implement complete user management system"
+  example_branch: "feature/LARGE-001-user-management"
+  example_scope: |
+    Sub-PRBs:
+    - MEDIUM-001: User authentication module
+    - MEDIUM-002: User profile management
+    - TINY-001: Configuration updates
+    Complex coordination across 15+ files
+    Multiple service integration points
+
 # Complex learning capture
 learning_strategy:
   capture_points:

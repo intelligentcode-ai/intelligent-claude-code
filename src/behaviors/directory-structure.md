@@ -21,7 +21,8 @@ project_root/
 │   └── guides/         # User guides
 ├── src/                 # Source code (configurable: src_path)
 ├── tests/               # Tests (configurable: test_path)
-└── config/              # Configuration (configurable: config_path)
+├── config/              # Configuration (configurable: config_path)
+└── prb-templates/       # PRB templates (configurable: prb_template_path)
 ```
 
 ## Configuration Override
@@ -37,6 +38,7 @@ directory_structure:
   src_path: "source"             # Default: "src"
   test_path: "test-suite"        # Default: "tests"
   config_path: "settings"        # Default: "config"
+  prb_template_path: "templates" # Default: "prb-templates"
   
   # Subdirectories
   story_drafts: "wip"            # Default: "drafts"
@@ -74,6 +76,11 @@ directory_structure:
 - Search includes all subdirectories
 - Respects configured structure
 
+#### With PRB Template System
+- Templates loaded from prb_template_path
+- Hierarchy: project → .claude → ~/.claude
+- Auto-create if missing
+
 ## Path Access Functions
 
 ### Get Configured Path
@@ -92,6 +99,7 @@ ensure_directory(path)  # Creates if missing, including parents
 - **PRBs**: `{prb_path}/{prb_ready}/` and `{prb_path}/{prb_completed}/`
 - **Memory**: `{memory_path}/[topic]/`
 - **Docs**: `{docs_path}/[category]/`
+- **Templates**: `{prb_template_path}/` with hierarchy fallback
 
 ## Error Handling
 - **PERMISSION_DENIED**: "❌ Cannot create directory: {path}"

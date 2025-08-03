@@ -1,0 +1,129 @@
+# Large PRB - Fix Project-Only Execution Scope
+# Auto-selected for complexity score 17
+# Manages multiple sub-PRBs for comprehensive fix
+
+id: LARGE-2025-08-03-001
+type: large-prb
+complexity: complex
+title: "[AI-Engineer] Fix project-only execution scope for behavioral patterns"
+requires_decomposition: true
+
+context:
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  settings:
+    autonomy_level: "L3"
+    pm_always_active: true
+    git_privacy: true
+    memory_integration: true
+  business_goal: "Ensure system respects project boundaries during execution"
+  technical_scope: "Behavioral patterns, command files, memory operations, directory structure"
+  
+# Knowledge retrieval (empty - no prior patterns found)
+embedded_knowledge:
+  memory_search_performed: true
+  search_query: "path resolution AI agentic scope boundaries project execution"
+  results: "No existing patterns found - first occurrence"
+  
+# Automatic sub-PRB generation
+sub_prbs:
+  - id: "MEDIUM-001"
+    title: "[AI-Engineer] Update behavioral patterns for project scope"
+    complexity: medium
+    dependencies: []
+    scope: "behaviors/*.md files"
+    
+  - id: "MEDIUM-002"
+    title: "[AI-Engineer] Fix command files for project-only execution"
+    complexity: medium
+    dependencies: ["MEDIUM-001"]
+    scope: "commands/*.md files"
+    
+  - id: "TINY-001"
+    title: "[AI-Engineer] Update memory operations for project paths"
+    complexity: tiny
+    dependencies: []
+    scope: "shared-patterns/memory-operations.md"
+    
+  - id: "TINY-002"
+    title: "[AI-Engineer] Document scope boundaries in patterns"
+    complexity: tiny
+    dependencies: ["MEDIUM-001", "MEDIUM-002"]
+    scope: "Documentation updates"
+    
+# Coordination strategy
+execution_strategy:
+  parallel_groups:
+    - ["MEDIUM-001", "TINY-001"] # Can run together
+    - ["MEDIUM-002"]              # Depends on behaviors update
+    - ["TINY-002"]                # Final documentation
+    
+  integration_points:
+    - between: ["MEDIUM-001", "MEDIUM-002"]
+      validate: "Path resolution consistency"
+      
+# Sequential thinking for complex decisions
+sequential_thinking:
+  required: true
+  command: "/icc-think-sequential"
+  focus_areas:
+    - "Installation vs Execution scope distinction"
+    - "Path resolution strategy"
+    - "Backward compatibility approach"
+    
+# Multiple validation gates
+validation_gates:
+  - after: "MEDIUM-001"
+    check: "Behavioral patterns respect boundaries"
+    reviewer: "@AI-Architect"
+    
+  - after: "all_complete"
+    check: "All commands execute in project only"
+    reviewer: "@AI-Engineer"
+    
+# Git operations
+git_strategy:
+  branch: "feature/fix-project-scope-boundaries"
+  commits:
+    - "fix: Update behavioral patterns for project-only execution"
+    - "fix: Update commands to respect project boundaries"
+    - "fix: Update memory operations for project paths"
+    - "docs: Document scope boundaries in patterns"
+  merge_request: true
+  squash_commits: true
+  review_required: true
+  
+# Learning capture
+learning_strategy:
+  capture_points:
+    - "Path resolution patterns for AI-agentic systems"
+    - "Installation vs execution scope separation"
+    - "Project boundary enforcement in markdown behaviors"
+  store_as: "Pattern"
+  memory_path: "memory/Pattern/2025/08/project-scope-boundaries.md"
+  
+# Risk mitigation
+risk_assessment:
+  identified_risks:
+    - risk: "Breaking existing installations"
+      severity: "medium"
+      mitigation: "Careful distinction between install/execute modes"
+    - risk: "Missing path references"
+      severity: "low"
+      mitigation: "Comprehensive grep for ~/.claude/ references"
+      
+# Success metrics
+success_criteria:
+  - "/icc-init-system creates dirs in ./ not ~/.claude/"
+  - "Installation to ~/.claude/ still works"
+  - "Config reading from ~/.claude/ works"
+  - "No unauthorized system modifications"
+  - "Clear error messages for boundary violations"
+  
+# Knowledge generation post-execution
+post_execution_knowledge:
+  generate: true
+  topics:
+    - "Project boundary patterns"
+    - "Path resolution strategies"
+    - "Scope isolation techniques"
+  format: "memory/Learning/2025/08/project-scope-fix.md"

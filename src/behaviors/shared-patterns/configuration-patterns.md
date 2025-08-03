@@ -27,6 +27,11 @@
 - specialist_creation (true/false)
 - role_validation (true/false)
 
+### PRB Settings
+- prb_template_path (prb-templates/.claude/prb-templates)
+- template_validation (true/false)
+- complexity_override (true/false)
+
 ## Loading Process
 1. Check cache (5 min TTL)
 2. Load system defaults

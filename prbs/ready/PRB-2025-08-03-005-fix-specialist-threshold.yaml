@@ -1,0 +1,102 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Remove 70% threshold - always create ultra-experienced specialists"
+prb_id: "PRB-2025-08-03-005"
+complexity: "Medium"
+score: 10
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["specialist-creation", "role-system", "enhancement"]
+
+## Context
+type: "ENHANCEMENT"
+priority: "MEDIUM"
+project: "intelligent-claude-code"
+requester: "User - Always want ultra-experienced specialists"
+git_privacy: true
+
+## Problem Statement
+Current system only creates specialists at <70% capability match. User wants ultra-experienced specialists for EVERY task, not just low matches.
+
+### Current Issues:
+- 70% threshold prevents specialist creation
+- Generic roles used when specialist would be better
+- Not all specialists are ultra-experienced
+- Threshold logic is limiting
+
+### Required Behavior:
+- **ALWAYS** create ultra-experienced specialists
+- **EVERY** task gets domain expert
+- **10+ years** experience minimum
+- **NO** threshold checking
+- **ALWAYS** use sequential/ultra thinking
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Remove 70% threshold check completely
+2. **FR2**: Create specialist for EVERY task type
+3. **FR3**: All specialists have 10+ years experience
+4. **FR4**: Specialist names reflect domain expertise
+5. **FR5**: Reuse existing specialists when applicable
+6. **FR6**: All specialists use sequential/ultra thinking
+
+### Non-Functional Requirements
+1. **NFR1**: Ultra-experienced expertise level
+2. **NFR2**: Clear specialist naming
+3. **NFR3**: Specialist persistence
+4. **NFR4**: Deep thinking on all tasks
+
+## Sequential Thinking
+sequential_thinking:
+  required: true
+  command: "/icc-think-sequential"
+  focus_areas:
+    - "Specialist creation logic"
+    - "Experience level implementation"
+    - "Thinking pattern integration"
+
+## Implementation Details
+
+### Affected Files
+- `.claude/roles/specialists.md` - Remove threshold
+- `.claude/behaviors/prb-creation-mandates.md` - Always specialist
+
+### Key Changes Needed
+```markdown
+OLD Logic:
+- Calculate match %
+- If <70% → Create specialist
+- If ≥70% → Use core role
+
+NEW Logic:
+- Identify domain need
+- Create/reuse ultra-experienced specialist
+- Apply sequential/ultra thinking
+- Examples:
+  - React work → @React-Expert (10+ years, ultra-thinking)
+  - AWS work → @AWS-Solutions-Architect (10+ years, sequential)
+  - Any domain → @[Domain]-Expert (10+ years, deep thinking)
+```
+
+## Success Criteria
+1. No 70% threshold checks
+2. Specialist for every domain
+3. All with 10+ years experience
+4. Appropriate specialist names
+5. Sequential/ultra thinking applied
+
+## Role Assignments
+- **Lead**: @AI-Engineer (ultra-thinking)
+- **Reviewer**: @Role-System-Architect (sequential thinking)
+
+## Validation Steps
+1. Test various domains → specialists created
+2. Verify 10+ years on all
+3. Check specialist reuse works
+4. No threshold logic remains
+5. Thinking patterns applied
+
+## Notes
+User preference: ALWAYS ultra-experienced specialists with deep thinking for quality and expertise.

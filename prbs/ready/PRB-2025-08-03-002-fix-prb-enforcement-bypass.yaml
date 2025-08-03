@@ -1,0 +1,91 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix PRB enforcement being bypassed with direct execution"
+prb_id: "PRB-2025-08-03-002"
+complexity: "Large"
+score: 18
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["prb-enforcement", "critical-fix", "behavioral-patterns"]
+
+## Context
+type: "BUG_FIX"
+priority: "HIGH"
+project: "intelligent-claude-code"
+requester: "User - System attempted 'I'll...' instead of PRB"
+git_privacy: true
+
+## Problem Statement
+PRB enforcement is being bypassed:
+- System said "I'll immediately update..." instead of generating PRB
+- Work detection patterns not catching all cases
+- @Role mentions not triggering PRB generation
+- Direct execution attempts not blocked
+
+### Current Issues:
+- Enforcement patterns too weak
+- "I'll" responses not blocked
+- Bug reports not detected as work
+- PRB generation not automatic
+
+### Required Behavior:
+- **100% Work Detection**: ALL work must trigger PRB
+- **Zero Bypass**: No "I'll" or direct execution
+- **Auto PRB**: Immediate PRB generation for work
+- **Hard Block**: Stop execution without PRB
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Block ALL "I'll/I will/Let me" responses
+2. **FR2**: Detect bug reports as work requiring PRB
+3. **FR3**: @Role mentions MUST generate PRB
+4. **FR4**: Auto-generate PRB for any work intent
+5. **FR5**: Hard stop on bypass attempts
+
+### Non-Functional Requirements
+1. **NFR1**: Zero tolerance enforcement
+2. **NFR2**: Clear blocking messages
+3. **NFR3**: Automatic PRB generation
+
+## Implementation Details
+
+### Affected Files
+- `.claude/behaviors/prb-enforcement.md` - Strengthen patterns
+- `.claude/behaviors/prb-auto-trigger.md` - Add detection
+- `.claude/behaviors/shared-patterns/enforcement-patterns.md` - Create
+
+### Key Changes Needed
+```markdown
+BLOCK Patterns:
+- "I'll*" → STOP + Generate PRB
+- "I will*" → STOP + Generate PRB  
+- "Let me*" → STOP + Generate PRB
+- Direct tool use for work → STOP + Generate PRB
+
+DETECT as Work:
+- "Fix*" → Work
+- "Update*" → Work
+- "The system is*" → Bug report → Work
+- "Observations:*" → Issue report → Work
+```
+
+## Success Criteria
+1. Zero "I'll" responses get through
+2. All bug reports generate PRBs
+3. 100% work detection rate
+4. No direct execution
+
+## Role Assignments
+- **Lead**: @AI-Engineer
+- **Reviewer**: @AI-Enforcement-Specialist
+
+## Validation Steps
+1. Test "I'll fix" → Blocked + PRB
+2. Test bug report → PRB generated
+3. Test @Role mention → PRB created
+4. Verify hard stops work
+
+## Notes
+CRITICAL: Zero tolerance for PRB bypass. Every work attempt must generate PRB.

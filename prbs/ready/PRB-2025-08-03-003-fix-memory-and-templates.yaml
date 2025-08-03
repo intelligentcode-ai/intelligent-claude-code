@@ -1,0 +1,107 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix memory system using MCP instead of disk and PRB template usage"
+prb_id: "PRB-2025-08-03-003"
+complexity: "Large"
+score: 20
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["memory-system", "prb-templates", "ai-agentic", "critical-fix"]
+
+## Context
+type: "BUG_FIX"
+priority: "MEDIUM"
+project: "intelligent-claude-code"
+requester: "User - System using wrong memory implementation"
+git_privacy: true
+
+## Problem Statement
+The system has multiple critical implementation failures:
+1. Using MCP memory server instead of file-based disk storage
+2. Not using PRB templates from src/prb-templates/
+3. Not reading/writing knowledge to disk as designed
+
+### Current Issues:
+- System calls `mcp__memory__search_nodes` instead of reading from `memory/` directory
+- PRBs created ad-hoc instead of using templates
+- Knowledge retrieval/storage not using file system
+- Templates exist but are ignored
+
+### Required Behavior:
+- **Memory**: Read/write to `memory/` directory on disk (version-controlled)
+- **PRB Templates**: Use templates from `src/prb-templates/` based on complexity
+- **Knowledge**: Store in markdown files in `memory/[Type]/[YYYY]/[MM]/`
+- **No MCP Memory**: This is a file-based system, not MCP-based
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Update all memory operations to use file-based storage
+2. **FR2**: Remove all MCP memory tool usage from behaviors
+3. **FR3**: Implement proper PRB template usage based on complexity
+4. **FR4**: Fix knowledge read/write to use disk storage
+5. **FR5**: Update memory search to grep through memory/ directory
+
+### Non-Functional Requirements
+1. **NFR1**: All memory must be version-controlled
+2. **NFR2**: PRB generation must use templates
+3. **NFR3**: No external memory dependencies
+
+## Implementation Details
+
+### Affected Files
+- `.claude/behaviors/shared-patterns/memory-operations.md` - Remove MCP, use file ops
+- `.claude/behaviors/prb-auto-trigger.md` - Use PRB templates properly
+- `.claude/behaviors/prb-creation-mandates.md` - Enforce template usage
+- `.claude/behaviors/learning-team-automation.md` - Fix memory storage
+- All command files that reference memory
+
+### Key Changes Needed
+1. **Memory Operations**:
+   ```markdown
+   SearchMemory Pattern:
+   - Use grep/find in memory/ directory
+   - Parse markdown files for content
+   - Return matches from disk
+   
+   StoreInMemory Pattern:
+   - Write to memory/[Type]/[YYYY]/[MM]/[topic].md
+   - Use markdown format with frontmatter
+   - Git add for version control
+   ```
+
+2. **PRB Template Usage**:
+   ```markdown
+   PRB Generation:
+   - Calculate complexity score
+   - Select template from src/prb-templates/
+   - Fill template with context
+   - Save to prbs/ready/
+   ```
+
+## Success Criteria
+1. No MCP memory tool calls anywhere
+2. All memory operations use file system
+3. PRBs generated from templates
+4. Knowledge stored in version-controlled files
+5. Memory search works via file grep
+
+## Role Assignments
+- **Lead**: @AI-Engineer (AI-agentic system expertise)
+- **Reviewer**: @System-Engineer (file system validation)
+
+## Validation Steps
+1. Verify no mcp__memory calls in any behaviors
+2. Test memory write creates files in memory/
+3. Test PRB generation uses templates
+4. Verify git tracks memory files
+
+## Risk Assessment
+- **High Risk**: System currently broken due to MCP dependency
+- **Mitigation**: Complete removal of MCP memory references
+- **Medium Risk**: PRB generation regression
+- **Mitigation**: Strict template enforcement
+
+## Notes
+CRITICAL: This system is FILE-BASED, not MCP-based. All memory and knowledge must be stored on disk in version-controlled markdown files. PRB templates exist and MUST be used.

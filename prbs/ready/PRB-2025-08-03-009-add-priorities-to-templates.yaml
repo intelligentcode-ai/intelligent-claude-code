@@ -1,0 +1,94 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Add priority field to all PRB templates"
+prb_id: "PRB-2025-08-03-009"
+complexity: "Medium"
+score: 12
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["prb-templates", "enhancement", "priorities"]
+
+## Context
+type: "ENHANCEMENT"
+priority: "CRITICAL"
+project: "intelligent-claude-code"
+requester: "User - Missing priorities in PRB templates"
+git_privacy: true
+
+## Problem Statement
+All PRB templates are missing priority field, making it impossible to properly prioritize work.
+
+### Current Issues:
+- No priority field in any template
+- PRBs created without priorities
+- Can't sort/filter by priority
+- No priority guidance
+
+### Required Behavior:
+- **ALL** templates have priority field
+- **Priority levels**: HIGHEST, HIGH, MEDIUM, LOW
+- **Placement**: In metadata section
+- **Mandatory**: Required field
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Add priority field to all 5 templates
+2. **FR2**: Make priority a required field
+3. **FR3**: Document priority levels
+4. **FR4**: Update PRB generation to include priority
+
+### Non-Functional Requirements
+1. **NFR1**: Consistent placement in templates
+2. **NFR2**: Clear priority definitions
+
+## Sequential Thinking
+sequential_thinking:
+  required: true
+  command: "/icc-think-sequential"
+  focus_areas:
+    - "Priority placement in templates"
+    - "Priority level definitions"
+    - "Integration with generation"
+
+## Implementation Details
+
+### Affected Files
+- `src/prb-templates/nano-prb-template.yaml`
+- `src/prb-templates/tiny-prb-template.yaml`
+- `src/prb-templates/medium-prb-template.yaml`
+- `src/prb-templates/large-prb-template.yaml`
+- `src/prb-templates/mega-prb-template.yaml`
+
+### Key Changes Needed
+```yaml
+# In metadata section of each template:
+priority: "[PRIORITY_LEVEL]"  # HIGHEST, HIGH, MEDIUM, LOW
+
+# Priority guidance:
+# HIGHEST: System broken, blocking all work
+# HIGH: Major feature/fix needed soon
+# MEDIUM: Standard work items
+# LOW: Nice to have, optimizations
+```
+
+## Success Criteria
+1. All templates have priority field
+2. Field is required
+3. Clear priority guidance
+4. PRB generation includes priority
+
+## Role Assignments
+- **Lead**: @AI-Engineer (ultra-thinking)
+- **Reviewer**: @AI-Template-Expert
+
+## Validation Steps
+1. Check all 5 templates updated
+2. Verify priority field present
+3. Test PRB generation includes priority
+4. Confirm priority levels documented
+
+## Notes
+Priority enables proper work sequencing and resource allocation. This is HIGH priority as it affects all future PRB generation.

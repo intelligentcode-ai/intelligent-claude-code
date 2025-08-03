@@ -1,0 +1,120 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix system not understanding project context and scope"
+prb_id: "PRB-2025-08-03-004"
+complexity: "Large"
+score: 18
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["context-understanding", "project-scope", "role-selection", "critical-fix"]
+
+## Context
+type: "BUG_FIX"
+priority: "HIGH"
+project: "intelligent-claude-code"
+requester: "User - System fails to understand project context"
+git_privacy: true
+
+## Problem Statement
+The system fundamentally misunderstands project context, leading to cascading failures:
+1. **This Project**: Creating AI-agentic behavioral patterns/commands (NOT implementing them)
+2. **Other Projects**: Could be ANYTHING - the system must adapt
+3. **Role Selection**: Must match PROJECT context, not system context
+4. **Specialist Creation**: Should ALWAYS create ultra-experienced specialists
+
+### Current Issues:
+- System thinks it's implementing features instead of creating patterns
+- Selects roles based on intelligent-claude-code context in OTHER projects
+- Only creates specialists at <70% match instead of always
+- Doesn't read project context to understand what's being built
+
+### Required Behavior:
+- **Context First**: ALWAYS understand what project is being worked on
+- **This Project**: AI-agentic markdown patterns → AI roles only
+- **Other Projects**: Match roles to THEIR context (e.g., React project → @React-Developer)
+- **Always Specialists**: Create ultra-experienced specialists for EVERY task
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: System must read and understand PROJECT context first
+2. **FR2**: Role selection based on CURRENT project, not system internals
+3. **FR3**: ALWAYS create ultra-experienced dynamic specialists
+4. **FR4**: Remove 70% threshold - create specialists for everything
+5. **FR5**: Distinguish pattern creation (this project) from implementation (other projects)
+
+### Non-Functional Requirements
+1. **NFR1**: 100% context-appropriate role selection
+2. **NFR2**: All specialists have 10+ years experience
+3. **NFR3**: Clear project understanding before role assignment
+
+## Implementation Details
+
+### Affected Files
+- `.claude/behaviors/prb-creation-mandates.md` - Context-first approach
+- `.claude/roles/specialists.md` - Remove 70% threshold
+- `.claude/behaviors/prb-auto-trigger.md` - Project detection logic
+- `.claude/behaviors/config-loader.md` - Load project context
+
+### Key Changes Needed
+1. **Project Context Detection**:
+   ```markdown
+   MANDATORY: Before ANY work:
+   1. Check CLAUDE.md for project description
+   2. Understand what's being BUILT
+   3. Select roles for THAT context
+   
+   Examples:
+   - intelligent-claude-code → AI-Engineer (patterns)
+   - React app → @React-Developer (implementation)
+   - API service → @Backend-Developer (implementation)
+   ```
+
+2. **Specialist Creation**:
+   ```markdown
+   OLD: <70% match → Create specialist
+   NEW: ALWAYS create ultra-experienced specialist
+   
+   Examples:
+   - React work → @React-Specialist (10+ years)
+   - AWS work → @AWS-Architect (10+ years)
+   - Blockchain → @Blockchain-Expert (10+ years)
+   ```
+
+3. **Context Separation**:
+   ```markdown
+   This Project (intelligent-claude-code):
+   - Creating patterns/behaviors → @AI-Engineer
+   - No implementation roles
+   
+   Other Projects:
+   - Read their context
+   - Match their needs
+   - Create appropriate specialists
+   ```
+
+## Success Criteria
+1. System understands project context before role selection
+2. Roles match current project, not system project
+3. Ultra-experienced specialists created for all work
+4. No 70% threshold - specialists for everything
+
+## Role Assignments
+- **Lead**: @AI-Engineer (behavioral pattern expertise)
+- **Reviewer**: @AI-System-Architect (system design validation)
+
+## Validation Steps
+1. Test role selection in different project contexts
+2. Verify specialists created for all tasks
+3. Confirm project understanding comes first
+4. Check 10+ years experience on all specialists
+
+## Risk Assessment
+- **Critical Risk**: Continued context confusion
+- **Mitigation**: Explicit context detection patterns
+- **Medium Risk**: Over-creating specialists
+- **Mitigation**: Specialist reuse patterns
+
+## Notes
+CRITICAL: The system must understand WHAT project it's working on BEFORE selecting roles. This project creates patterns; other projects implement features. ALWAYS create ultra-experienced specialists.

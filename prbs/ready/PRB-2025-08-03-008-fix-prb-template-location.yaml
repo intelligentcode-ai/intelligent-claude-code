@@ -1,0 +1,110 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix PRB template location hierarchy and loading"
+prb_id: "PRB-2025-08-03-008"
+complexity: "Large"
+score: 20
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["prb-templates", "critical-fix", "configuration", "hierarchy"]
+
+## Context
+type: "BUG_FIX"
+priority: "CRITICAL"
+project: "intelligent-claude-code"
+requester: "User - PRB templates in wrong location with wrong hierarchy"
+git_privacy: true
+
+## Problem Statement
+CRITICAL: System looking for PRB templates in src/prb-templates/ which is WRONG. Templates should follow a hierarchy with project overrides.
+
+### Current Issues:
+- Looking in src/prb-templates/ (project source)
+- Not checking proper hierarchy
+- Not respecting configuration for paths
+- Missing override capability
+
+### Required Behavior:
+**Template Hierarchy (highest to lowest priority):**
+1. `<project>/prb-templates/` (project override)
+2. `<project>/.claude/prb-templates/` (project claude override)
+3. `~/.claude/prb-templates/` (system default)
+
+**Configuration:** Path configurable in config.md
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Implement proper template location hierarchy
+2. **FR2**: Check locations in priority order
+3. **FR3**: Support configurable template path
+4. **FR4**: First found template wins (override pattern)
+5. **FR5**: src/prb-templates/ only for THIS project's distribution
+
+### Non-Functional Requirements
+1. **NFR1**: Clear hierarchy documentation
+2. **NFR2**: Fast template resolution
+3. **NFR3**: Configuration flexibility
+
+## Sequential Thinking
+sequential_thinking:
+  required: true
+  command: "/icc-think-sequential"
+  focus_areas:
+    - "Template hierarchy implementation"
+    - "Configuration integration"
+    - "Override logic"
+    - "Path resolution strategy"
+
+## Implementation Details
+
+### Affected Files
+- `.claude/behaviors/prb-auto-trigger.md` - Fix template loading
+- `.claude/behaviors/prb-creation-mandates.md` - Update hierarchy
+- `.claude/behaviors/directory-structure.md` - Add template paths
+- `.claude/behaviors/config-loader.md` - Support template path config
+
+### Key Changes Needed
+```markdown
+Template Loading Logic:
+1. Check config for custom prb_template_path
+2. Search hierarchy:
+   - {project_root}/{prb_template_path|"prb-templates"}/
+   - {project_root}/.claude/prb-templates/
+   - ~/.claude/prb-templates/
+3. Use first found template
+4. Error if no template found
+
+Configuration:
+directory_structure:
+  prb_template_path: "prb-templates"  # Default, configurable
+```
+
+## Success Criteria
+1. Templates load from correct hierarchy
+2. Project overrides work
+3. Configuration respected
+4. No src/ references
+5. Clear error messages
+
+## Role Assignments
+- **Lead**: @AI-Engineer (ultra-thinking)
+- **Reviewer**: @AI-Configuration-Expert (sequential thinking)
+
+## Validation Steps
+1. Test with template in project root
+2. Test with .claude/ override
+3. Test with system default only
+4. Test custom configuration path
+5. Verify hierarchy order
+
+## Risk Assessment
+- **HIGHEST Risk**: Current system completely broken
+- **Mitigation**: Immediate fix required
+- **Medium Risk**: Breaking existing setups
+- **Mitigation**: Support all paths during transition
+
+## Notes
+CRITICAL: This affects ALL PRB generation. The template location hierarchy enables project-specific customization while maintaining system defaults. THIS project's src/prb-templates/ are the SOURCE templates that get INSTALLED to ~/.claude/prb-templates/.
