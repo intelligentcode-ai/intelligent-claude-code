@@ -5,6 +5,7 @@
 ## Imports
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/template-loading.md
+@./shared-patterns/context-validation.md
 
 ## Mandatory Rules
 
@@ -27,7 +28,12 @@
 - Sequential thinking for Large/Mega
 - Pre-assigned SME reviewers
 - 10+ years specialist expertise
-- Project context integration
+- **COMPLETE CONTEXT MANDATORY**: Every PRB MUST include complete_context section with:
+  - system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM"
+  - configuration values (actual values, not placeholders)
+  - critical file references with samples
+  - project root path and structure
+  - user requirements clearly stated
 
 ### Role Assignment Enforcement
 **MANDATORY:** PM + Architect collaboration for ALL role assignments:
@@ -55,9 +61,46 @@
 - No specialist → PM+Architect decide on dynamic specialist creation
 - Missing SME → PM+Architect pre-assign domain-appropriate reviewer
 - Direct role assignment → Block and redirect to collaboration process
+- **MISSING COMPLETE CONTEXT → BLOCK PRB generation until context gathered**
+- **PLACEHOLDER VALUES → BLOCK execution until actual values populated**
+
+### Context Validation Requirements
+
+**MANDATORY PRE-GENERATION CONTEXT GATHERING:**
+1. **Load project configuration**: Read actual values from CLAUDE.md and config hierarchy
+2. **Determine project root**: Identify absolute path to project root
+3. **Gather system nature**: Identify if code or markdown-based system
+4. **Extract critical file references**: Find and sample relevant files
+5. **Load user requirements**: Capture exact user intent and specifications
+
+**VALIDATION BLOCKERS:**
+- **PLACEHOLDER_VALUES_DETECTED**: "[FROM_CONFIG]", "[ALL-SETTINGS]", "[PROJECT_ROOT]"
+- **MISSING_SYSTEM_NATURE**: No system type identification
+- **EMPTY_FILE_REFERENCES**: No actual file paths or samples
+- **VAGUE_REQUIREMENTS**: Generic or unclear user specifications
+
+**REQUIRED COMPLETE CONTEXT STRUCTURE:**
+```yaml
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM"  # OR "CODE-BASED SYSTEM"
+  project_root: "/absolute/path/to/project"
+  configuration:
+    git_privacy: true/false  # ACTUAL VALUE
+    branch_protection: true/false  # ACTUAL VALUE
+    default_branch: "main"  # ACTUAL VALUE
+    autonomy_level: "L3"  # ACTUAL VALUE
+  critical_files:
+    - path: "/absolute/path/to/file"
+      purpose: "specific purpose"
+      sample: "actual content sample"
+  user_requirements:
+    original_request: "exact user words"
+    clarifications: ["any clarifications needed"]
+    success_criteria: ["specific success criteria"]
+```
 
 ## Integration
-Commands: `/icc-analyze-complexity`, `/icc-create-prb`, `/icc-think-sequential`
+Commands: `/icc-analyze-complexity`, `/icc-create-prb`, `/icc-think-sequential`, `/icc-validate-context`
 
 ---
 *Optimized: 113→35 lines*
