@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.3.1] - 2025-08-03
+
+### Added
+- Version bump configuration to nano, large, and mega PRB templates
+- Memory-first enforcement in /icc-create-prb command
+
+### Fixed
+- Applied remaining changes from unmerged PRBs that were executed but not properly merged
+- Ensured all PRB templates have consistent version management configuration
+
 ## [6.3.0] - 2025-08-03
 
 ### Added
