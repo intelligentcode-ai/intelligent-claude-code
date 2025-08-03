@@ -1,7 +1,7 @@
 # Commands Reference
 
 ## Overview
-The intelligent-claude-code system provides 10 essential commands that cover initialization, PRB creation, specialist management, problem-solving, and memory operations.
+The intelligent-claude-code system provides 12 essential commands that cover initialization, PRB creation, story management, specialist management, problem-solving, and memory operations.
 
 ## System Commands
 
@@ -98,6 +98,37 @@ Creates PRBs from your specification documents.
 2. @Architect designs technical approach
 3. System generates appropriate PRBs
 4. Includes all project context and standards
+
+## Story Management Commands
+
+### `/icc-breakdown-story`
+Converts natural language stories into PRBs.
+
+**Usage:** `/icc-breakdown-story <story_filename> [options]`
+
+**Examples:**
+```bash
+/icc-breakdown-story auth-system.md
+/icc-breakdown-story user-dashboard.txt preview
+/icc-breakdown-story payment.md force
+```
+
+**Process:**
+1. @PM analyzes the story
+2. @Architect reviews technical approach
+3. System generates appropriate PRBs
+4. Story updated with PRB references
+
+### `/icc-story-status`
+Tracks story progress and PRB completion.
+
+**Usage:** `/icc-story-status <story_filename> [detail_level]`
+
+**Examples:**
+```bash
+/icc-story-status auth-system.md
+/icc-story-status payment.txt detailed
+```
 
 ## Specialist Commands
 

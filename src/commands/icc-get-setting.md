@@ -6,11 +6,19 @@ Retrieve configuration setting using $ARGUMENTS with hierarchy support.
 
 Gets setting value from configuration hierarchy with dot notation support.
 
-## Arguments
+## Usage
+`/icc-get-setting <setting_key> [default_value]`
 
-**Format:** "setting_key | default_value"
+**Arguments:**
+- `setting_key` - Configuration key to retrieve (required)
+- `default_value` - Optional: Default if not found
 
-**Example:** "git_privacy | false"
+**Examples:**
+```
+/icc-get-setting git_privacy
+/icc-get-setting autonomy_level L2
+/icc-get-setting team.default_reviewer @Architect
+```
 
 ## Core Actions
 

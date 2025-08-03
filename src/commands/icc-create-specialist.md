@@ -8,10 +8,20 @@ Create dynamic specialist role using $ARGUMENTS.
 
 Creates domain-specific specialist with ultra-experience.
 
-## Arguments
+## Usage
+`/icc-create-specialist <technology> <base_role> [expertise]`
 
-**Format:** "technology | base_role | expertise"
-**Example:** "React | Developer | Frontend architecture"
+**Arguments:**
+- `technology` - Technology domain (required)
+- `base_role` - Base role to extend (required)
+- `expertise` - Optional: Specific expertise area
+
+**Examples:**
+```
+/icc-create-specialist React Developer
+/icc-create-specialist AWS Engineer "Cloud architecture"
+/icc-create-specialist Kubernetes DevOps-Engineer
+```
 
 ## Core Actions
 

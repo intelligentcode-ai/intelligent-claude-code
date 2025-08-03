@@ -5,10 +5,21 @@ Generate a Product Requirement Blueprint with automatic complexity analysis and 
 ## Behavior
 Analyzes work requirements, calculates complexity score, selects optimal PRB template (nano/tiny/medium/large/mega), and generates a comprehensive execution blueprint that replaces traditional workflows.
 
-## Arguments
-**Format:** "type | description | override_template | priority"
-**Example:** "feature | OAuth2 authentication | auto | P1"
-**Defaults:** type=task, override_template=auto, priority=P2
+## Usage
+`/icc-create-prb <description> [type] [template] [priority]`
+
+**Arguments:**
+- `description` - Work description (required)
+- `type` - Optional: feature, bug, task, enhancement (default: task)
+- `template` - Optional: auto, nano, tiny, medium, large, mega (default: auto)
+- `priority` - Optional: P1, P2, P3 (default: P2)
+
+**Examples:**
+```
+/icc-create-prb "Add OAuth2 authentication"
+/icc-create-prb "Fix login bug" bug
+/icc-create-prb "Refactor auth service" task medium P1
+```
 
 ## Core Actions
 1. **Parse Requirements**: Extract work type and description
