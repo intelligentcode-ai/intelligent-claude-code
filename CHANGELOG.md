@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.4.0] - 2025-08-03
+
+### Added
+- Complete documentation_management section to ALL PRB templates
+- GitHub release creation in git_operations for Medium/Large/Mega templates
+- README.md update requirements when changes affect user documentation
+- Systematic version bump guidance across all complexity tiers
+- Post-execution documentation validation checklists
+
+### Enhanced
+- git_operations sections with comprehensive changelog requirements
+- Template consistency across all complexity levels
+- Software delivery lifecycle integration in templates
+
+### Fixed
+- CRITICAL: Every PRB execution was incomplete due to missing documentation requirements
+- Missing version_bump sections in Large and Mega templates
+- Inconsistent documentation management across templates
+
 ## [6.3.1] - 2025-08-03
 
 ### Added
