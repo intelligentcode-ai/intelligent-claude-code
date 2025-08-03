@@ -5,9 +5,16 @@ Analyze work to determine complexity score and PRB template.
 ## Behavior
 Pre-analyzes scope without creating PRB. Helps understand work before execution.
 
-## Arguments
-**Format:** "description"  
-**Example:** "Implement OAuth2 authentication with JWT tokens"
+## Usage
+`/icc-analyze-complexity <description>`
+
+**Arguments:**
+- `description` - Work description to analyze (required)
+
+**Example:**
+```
+/icc-analyze-complexity "Implement OAuth2 authentication with JWT tokens"
+```
 
 ## Core Actions
 1. Parse description for technical indicators
