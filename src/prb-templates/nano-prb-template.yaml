@@ -45,6 +45,7 @@ git_operations:
   commit_format: "[ID]: [DESCRIPTION]"
   privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
+  version_bump: "patch"               # Trivial changes = patch version
 
 # MANDATORY: Knowledge Management Section
 knowledge_management:
