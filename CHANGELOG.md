@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.1.0] - 2025-08-03
+
+### Added
+- Story management system - users can write natural language stories in `stories/` directory
+- `/icc-breakdown-story` command - @PM and architect collaborate to convert stories to PRBs  
+- `/icc-story-status` command - track story progress and PRB completion
+- Configurable directory structure behavior with defaults and overrides
+- Proper slash command parameter syntax for all commands
+
+### Changed
+- Updated all commands to use proper `<required> [optional]` parameter syntax
+- Enhanced virtual-team.md to import story-breakdown and directory-structure behaviors
+- Commands now show proper usage examples with parameters
+
+### Fixed
+- Commands now properly parse arguments using $ARGUMENTS
+- Story and PRB paths respect configured directory structure
+- Documentation updated to reflect 12 commands (was 10)
+
 ## [5.5.0] - 2025-01-18
 
 ### MAJOR RELEASE: Performance Optimization & Installation Simplification

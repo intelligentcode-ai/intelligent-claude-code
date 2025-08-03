@@ -6,10 +6,19 @@ Initialize the intelligent-claude-code virtual team system with configuration lo
 System bootstrap operation that loads configuration, initializes memory, activates roles,
 and prepares the virtual team for work. Can be run by any role or automatically on startup.
 
-## Arguments
-**Format:** "autonomy_level | pm_active" (optional parameters)
-**Example:** "L3 | true" or "" (empty for defaults)
-**Defaults:** Uses configuration hierarchy (embedded → project → user → system)
+## Usage
+`/icc-init-system [autonomy_level] [pm_active]`
+
+**Arguments:**
+- `autonomy_level` - Optional: L1, L2, L3 (default: from config)
+- `pm_active` - Optional: true/false for PM always active (default: from config)
+
+**Examples:**
+```
+/icc-init-system
+/icc-init-system L3
+/icc-init-system L2 true
+```
 
 ## Core Actions
 1. **Load Configuration**: Apply configuration hierarchy (embedded → project → user → system defaults)
