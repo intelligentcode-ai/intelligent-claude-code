@@ -5,9 +5,20 @@ Engage sequential thinking mode for complex problem analysis using $ARGUMENTS.
 ## Behavior
 Ultra-experienced cognitive pattern for breaking down complex problems into logical, revisable steps. Any role can use for deep analysis with evidence-based thinking, assumption questioning, and iterative refinement.
 
-## Arguments
-**Format:** "problem_description | complexity_level | analysis_depth"
-**Example:** "Design memory system architecture | high | maximum"
+## Usage
+`/icc-think-sequential <problem_description> [complexity_level] [analysis_depth]`
+
+**Arguments:**
+- `problem_description` - Problem to analyze (required)
+- `complexity_level` - Optional: low, medium, high (default: auto-detect)
+- `analysis_depth` - Optional: basic, detailed, maximum (default: detailed)
+
+**Examples:**
+```
+/icc-think-sequential "Design memory system architecture"
+/icc-think-sequential "Optimize database queries" high
+/icc-think-sequential "Fix authentication bug" low basic
+```
 
 ## Core Actions
 1. **Problem Decomposition**: Break complex issue into logical, manageable steps

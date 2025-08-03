@@ -1,0 +1,18 @@
+I need a user authentication system for my web application.
+
+Users should be able to:
+- Register with email and password
+- Log in with their credentials  
+- Stay logged in for 30 days
+- Reset their password via email
+- Update their profile information
+- Log out
+
+Technical requirements:
+- Use JWT tokens for authentication
+- Store user data in PostgreSQL
+- Implement proper password hashing
+- Add rate limiting to prevent brute force
+- Include email verification for new accounts
+
+The frontend is React and the backend is Node.js with Express.

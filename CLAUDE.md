@@ -31,6 +31,10 @@ make uninstall FORCE=true  # Complete removal including user data
 @Developer Implement auth    # Assign implementation task
 @Security-Engineer Review    # Request security review
 
+# Story Management (NEW!)
+@PM break down [story]       # Convert story to PRBs
+@PM what story next?         # Select next story with architect
+
 # Configuration and Settings
 /icc-get-setting [key]       # Get specific configuration value
 /icc-load-config            # Reload all configuration files
@@ -63,9 +67,11 @@ your-project/                  # YOUR project (any structure you want!)
 ├── src/                       # Your code
 ├── memory/                    # Version-controlled learning storage
 │   └── [topic]/               # Organized by topic
-└── prbs/                      # Version-controlled PRBs
-    ├── ready/                 # Ready to execute
-    └── completed/             # Executed PRBs
+├── prbs/                      # Version-controlled PRBs
+│   ├── ready/                 # Ready to execute
+│   └── completed/             # Executed PRBs
+└── stories/                   # User stories for PRB generation (NEW!)
+    └── drafts/                # Work-in-progress stories
 ```
 
 The system adapts to YOUR structure via CLAUDE.md configuration!
@@ -143,6 +149,7 @@ Tests verify:
 - **Parallel Execution**: Up to 5 non-conflicting tasks execute simultaneously
 - **Self-Correcting**: Automatic violation detection and correction with penalty systems
 - **Memory Integration**: File-based storage with search, relationships, and exponential aging
+- **Story Management**: Natural language stories converted to PRBs by @PM and architect collaboration
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
