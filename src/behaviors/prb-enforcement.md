@@ -4,6 +4,9 @@
 
 **PURPOSE:** Enforce PRB-based execution and prevent legacy workflow usage
 
+## Imports
+@./shared-patterns/template-loading.md
+
 ## Detection Patterns
 
 ### @Role Detection
@@ -89,7 +92,8 @@
 **L3:** Autonomous PRB generation and execution
 
 ### With PRB Templates
-**Reference:** See prb-templates/ for all template types
+**Reference:** Use template hierarchy (see shared-patterns/template-loading.md)
+**Loading:** Project → .claude → ~/.claude hierarchy
 **Nano/Tiny:** Direct execution, minimal overhead
 **Medium:** Replaces Inner Workflow completely
 **Large/Mega:** Orchestrates sub-PRBs

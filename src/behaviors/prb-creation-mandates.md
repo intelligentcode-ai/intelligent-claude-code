@@ -4,6 +4,7 @@
 
 ## Imports
 @./shared-patterns/learning-patterns.md
+@./shared-patterns/template-loading.md
 
 ## Mandatory Rules
 
@@ -12,7 +13,7 @@
 **Examples:** "[Developer] Fix auth", "[AI-Engineer] Add ML"
 
 ### Complexity-Based Templates
-**Auto-selected by score:**
+**Auto-selected by score using template hierarchy:**
 - **Nano (0-2):** Trivial (typos, configs)
 - **Tiny (3-5):** Single-file (<50 lines)
 - **Medium (6-15):** Multi-file features
@@ -20,6 +21,7 @@
 - **Mega (30+):** System-wide changes
 
 **Scoring factors:** Files + Lines + External APIs + Security + Coordination
+**Template Loading:** Use hierarchy: project → .claude → ~/.claude
 
 ### Quality Requirements
 - Sequential thinking for Large/Mega

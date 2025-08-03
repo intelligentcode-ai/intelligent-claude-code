@@ -5,12 +5,17 @@
 id: MEDIUM-[AUTO]
 type: medium-prb
 complexity: standard
+priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
 title: "[ROLE] [DESCRIPTION]"
 
-# Enhanced context with best practices and references
-context:
-  project: "[CLAUDE.md]"      # Project context from CLAUDE.md
-  settings: "[ALL-SETTINGS]"
+# MANDATORY: Complete Context Section
+complete_context:
+  project: "[CLAUDE.md]"        # Project context from CLAUDE.md
+  settings: "[ALL-SETTINGS]"   # All configuration values
+  git_privacy: "[FROM_CONFIG]" # git_privacy setting from config
+  branch_protection: "[FROM_CONFIG]" # branch_protection from config
+  default_branch: "[FROM_CONFIG]"    # default_branch from config
+  branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
   scope: "[FEATURE_SCOPE]"
   best_practices:
     - source: "docs/best-practices/[DOMAIN].md"
@@ -22,11 +27,17 @@ context:
     - url: "[DOCUMENTATION_URL]"
     - context7: "[LIBRARY_ID]"  # Real-time documentation
   
+# MANDATORY: Requirements Section
 requirements:
   functional:
     - "[REQUIREMENT_1]"
     - "[REQUIREMENT_2]"
     - "[REQUIREMENT_3]"
+  processual:
+    - "Respect git_privacy setting for commit messages"
+    - "Follow branch protection strategy from config"
+    - "Use configured default branch for operations"
+    - "Apply configured branch naming strategy"
   technical:
     - "[TECH_REQUIREMENT_1]"
     - "[TECH_REQUIREMENT_2]"
@@ -84,13 +95,48 @@ sme_review:
   focus_areas: ["[AREA_1]", "[AREA_2]"]
   max_cycles: 3
   
-# Replaces Inner Workflow Steps 5-6: Version & Git
+# MANDATORY: Git Operations Section
 git_operations:
-  branch: "feature/[ID]-[DESCRIPTION]"
-  commit: "[ID]: [DESCRIPTION]"
+  branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
+  branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
+  branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
+  commit_format: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled
+  default_branch: "[FROM_CONFIG]"     # Target configured default branch
   version_bump: "[PATCH|MINOR]"
-  privacy: "[APPLY_GIT_PRIVACY_SETTING]"
   
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled"
+  embedded_learnings: "pre_searched_patterns"
+  capture_patterns: "[CAPTURE_PATTERNS]"
+  capture_insights: "[CAPTURE_INSIGHTS]"
+  store_location: "memory/[TYPE]/[YYYY]/[MM]/"
+
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "[PRE_ASSIGNED_SME]"
+  focus_areas: ["[AREA_1]", "[AREA_2]"]
+  max_cycles: 3
+  checklist:
+    - "Configuration settings applied correctly"
+    - "Multi-file coordination successful"
+    - "Functional requirements met"
+    - "Technical constraints satisfied"
+
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[MEDIUM-001]: Implement user authentication system"
+  example_branch: "feature/MEDIUM-001-user-authentication"
+  example_scope: |
+    Files: src/auth/, src/middleware/, src/routes/auth.js
+    - Implement JWT authentication
+    - Add middleware for route protection
+    - Create user login/logout endpoints
+    - Add password hashing utilities
+
 # Store new learnings in version control
 learning_capture:
   patterns: "[CAPTURE_PATTERNS]"
