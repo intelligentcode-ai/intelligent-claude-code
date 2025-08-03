@@ -4,16 +4,33 @@
 id: TINY-[AUTO]
 type: tiny-prb
 complexity: simple
+priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
 title: "[ROLE] [DESCRIPTION]"
 
-context:
-  project: "[CLAUDE.md]"       # Project context passed from parent
-  settings: "[ALL-SETTINGS]"   # Passed from parent
-  
-requirements:
-  change: "[WHAT_TO_CHANGE]"
-  reason: "[WHY]"
+# MANDATORY: Complete Context Section
+complete_context:
+  project: "[CLAUDE.md]"        # Project context from CLAUDE.md
+  settings: "[ALL-SETTINGS]"   # All configuration values
+  git_privacy: "[FROM_CONFIG]" # git_privacy setting from config
+  branch_protection: "[FROM_CONFIG]" # branch_protection from config
+  default_branch: "[FROM_CONFIG]"    # default_branch from config
+  branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
   scope: "[SINGLE_FILE]"
+  
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "[WHAT_TO_CHANGE]"
+    - "[WHY_CHANGE_NEEDED]"
+    - "[EXPECTED_OUTCOME]"
+  processual:
+    - "Respect git_privacy setting for commit messages"
+    - "Follow branch protection strategy from config"
+    - "Use configured default branch for operations"
+    - "Apply configured branch naming strategy"
+  technical:
+    - "Single file modification only"
+    - "Under 50 lines of changes"
   
 execution:
   memory_check: "[QUICK_PATTERN_SEARCH]" # <30 seconds
@@ -25,12 +42,45 @@ execution:
 validation:
   - "[CHECK_1]"
   - "[CHECK_2]"
-  
+
+# MANDATORY: Git Operations Section
 git_operations:
-  branch: "[FEATURE_BRANCH]" # If branch_protection enabled
-  commit: "[ID]: [DESCRIPTION]"
+  branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
+  branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
+  branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
+  commit_format: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled
+  default_branch: "[FROM_CONFIG]"     # Target configured default branch
   version_bump: "[NONE|PATCH]"
+
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled"
+  quick_search: "pattern_based_30sec"
+  capture_condition: "if_novel_pattern"
+  capture_type: "implementation_approach"
+
+# MANDATORY: Review Process Section
+review_process:
+  type: "minimal_self_review"
+  checklist:
+    - "Configuration settings applied correctly"
+    - "Single file scope maintained"
+    - "Functional requirements met"
+  escalation: "if_validation_fails"
+
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[TINY-001]: Add input validation to user form"
+  example_branch: "feature/TINY-001-add-input-validation"
+  example_change: |
+    File: src/components/UserForm.js
+    - Add email validation regex
+    - Add required field checks
+    - Update error messaging
   
 learning_capture:
   condition: "if_novel_pattern"
   type: "implementation_approach"
+  storage: "memory/[topic]/[subtopic].md"
