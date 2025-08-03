@@ -2,6 +2,10 @@
 # Auto-selected for complexity score > 30
 # Manages multiple Large PRBs
 
+# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
+# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
+# ⚠️ CASCADING INHERITANCE: All Large sub-PRBs inherit ALL 6 mandatory sections
+
 id: MEGA-[AUTO]
 type: mega-prb
 complexity: system-wide
@@ -249,12 +253,14 @@ validation_framework:
     - "Full system test before deployment"
     
 # MANDATORY: Git Operations Section
+# ⚠️ git_privacy: true = NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
+# ⚠️ CASCADING PRIVACY: All Large sub-PRBs must follow same git privacy settings
 git_operations:
   branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
   branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
   branch_coordination: "feature-branch-per-phase"
   integration_strategy: "progressive-merge"
-  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all phases
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all phases - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
   main_protection: "mandatory"
   
@@ -285,6 +291,7 @@ review_process:
   escalation: "executive_review"
 
 # MANDATORY: Implementation Samples Section
+# ⚠️ EXECUTION CHECKLIST: All 6 sections + cascading phase coordination must be completed
 implementation_samples:
   example_scope: "[MEGA-001]: Complete system architecture overhaul"
   example_phases: |
@@ -293,6 +300,19 @@ implementation_samples:
     Phase 3: Migration & Validation (2 Large PRBs)
     Each Large PRB contains 2-4 Medium PRBs
     System-wide impact across 50+ files
+
+  execution_checklist: |
+    ☐ Complete Context Section - Settings and scope loaded for parent + all phases
+    ☐ Requirements Section - All system-wide functional/processual/technical requirements met
+    ☐ Git Operations Section - Multi-phase coordination with privacy_filter for all
+    ☐ Knowledge Management Section - Architectural decisions + patterns captured
+    ☐ Review Process Section - Multi-gate reviews completed across all phases
+    ☐ Implementation Samples Section - Applied with proper phase coordination
+    ☐ LARGE PRB INHERITANCE - All Large sub-PRBs have complete 6-section context
+    ☐ CASCADING EXECUTION - Each Large PRB follows its own mandatory checklist
+    ☐ PROGRESSIVE VALIDATION - Each phase validates before proceeding
+    
+    SKIP NOTHING. EXECUTE EVERYTHING. COORDINATE ALL PHASES AND SUB-PRBS.
 
 # Comprehensive learning
 knowledge_capture:
