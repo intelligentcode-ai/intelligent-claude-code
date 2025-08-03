@@ -1,0 +1,115 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix PRB scope creep - comments should extend current PRB not create new ones"
+prb_id: "PRB-2025-08-03-015"
+complexity: "Large"
+score: 16
+priority: "HIGH"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["prb-execution", "scope-management", "behavioral-fix"]
+
+## Context
+type: "BUG_FIX"
+priority: "HIGH"
+project: "intelligent-claude-code"
+requester: "User - System creates new PRBs instead of extending current one"
+git_privacy: true
+
+## Complete System Context
+system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
+project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+
+### Current Behavior (WRONG)
+- User comment during PRB execution → New PRB created
+- Every observation → New PRB
+- Scope constantly expanding with new PRBs
+
+### Required Behavior
+- Comments during PRB execution → Extend current PRB scope
+- Only create new PRB if explicitly unrelated
+- Medium+ PRBs can absorb related requirements
+- Maintain PRB focus while adapting to feedback
+
+## Problem Statement
+During PRB execution, user comments/observations are triggering new PRB creation instead of being incorporated into the current PRB's scope. This causes:
+- PRB proliferation
+- Loss of context
+- Fragmented execution
+- Incomplete original PRBs
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Detect when executing within PRB context
+2. **FR2**: Incorporate feedback into current PRB scope
+3. **FR3**: Only create new PRB for unrelated issues
+4. **FR4**: Update PRB scope tracking in memory
+5. **FR5**: Medium+ PRBs can expand scope
+
+### Processual Requirements
+1. **PR1**: Track current PRB execution state
+2. **PR2**: Log scope extensions to memory
+3. **PR3**: Review expanded scope with SME
+4. **PR4**: Update PRB documentation
+
+## Implementation Details
+
+### Affected Files
+- `.claude/behaviors/prb-enforcement.md` - Add execution context
+- `.claude/behaviors/prb-auto-trigger.md` - Check current PRB
+- `.claude/behaviors/shared-patterns/prb-execution.md` - Create
+
+### Key Changes Needed
+```markdown
+# PRB Execution Context Pattern
+When executing PRB:
+1. Set CURRENT_PRB context
+2. User comments → Check relevance
+3. If related → Extend current PRB
+4. If unrelated → Queue for later
+5. Only create new PRB if:
+   - Explicitly different domain
+   - Critical and unrelated
+   - Current PRB complete
+
+# Scope Extension Rules
+- Tiny PRBs: No scope extension
+- Medium PRBs: Can absorb related tasks
+- Large PRBs: Can absorb sub-domains
+- Mega PRBs: Can absorb most feedback
+```
+
+## Success Criteria
+1. Comments extend current PRB
+2. No unnecessary PRB creation
+3. PRB scope tracked properly
+4. Context maintained
+
+## Role Assignments
+- **Lead**: @AI-Engineer (ultra-thinking)
+- **Reviewer**: @PRB-Execution-Specialist
+
+## Git Operations
+- Branch: feature/fix-prb-scope-creep
+- Commits: 
+  - "fix: Add PRB execution context tracking"
+  - "fix: Implement scope extension rules"
+- version_bump: PATCH
+
+## Knowledge Management
+- Pre: Search memory/execution/ for patterns
+- Post: Store in memory/execution/prb-scope-management.md
+
+## Documentation Updates
+- Update PRB execution guide
+- Add scope management section
+
+## Review Process
+- Reviewer: @PRB-Execution-Specialist
+- Focus: Scope extension logic
+- Gate: After implementation
+
+## Notes
+Critical: Comments during PRB execution should EXTEND scope, not create new PRBs. Only truly unrelated issues warrant new PRBs.
