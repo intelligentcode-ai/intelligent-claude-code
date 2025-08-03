@@ -1,0 +1,165 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[PM] Fix role assignment process - PM and architect collaboration required"
+prb_id: "PRB-2025-08-03-020"
+complexity: "Large"
+score: 18
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["role-assignment", "pm-architect-collaboration", "process-fix"]
+
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  type: "PROCESS_FIX"
+  priority: "CRITICAL"
+  requester: "User - Roles being assigned without PM+Architect collaboration"
+  project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+  
+  # Actual configuration values
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    pm_always_active: true
+    
+  # Critical file references
+  critical_files:
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/story-breakdown.md"
+      purpose: "Story breakdown behavior needing role assignment process"
+      current: "PM breaks down stories, but role assignment unclear"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-creation-mandates.md"
+      purpose: "PRB creation mandates needing role assignment rules"
+      current: "Role in title mandatory but assignment process missing"
+    - path: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/role-management.md"
+      purpose: "Role management needing assignment process"
+      current: "May not enforce PM+Architect collaboration"
+
+## Problem Statement
+Roles are being assigned directly without the MANDATORY PM + Specialist Architect collaboration process.
+
+### Current Issues:
+- Direct role assignment (e.g., "[Developer] Task") without analysis
+- No PM + Architect collaboration enforcement
+- Missing role selection criteria documentation
+- No validation of role appropriateness
+
+### Required Behavior:
+- @PM MUST analyze every work request
+- @PM MUST collaborate with appropriate architect
+- Together they MUST determine correct role assignment
+- Role assignment MUST be justified and documented
+- System MUST block direct role assignments
+
+## Requirements
+functional:
+  - "Enforce PM + Architect collaboration for ALL role assignments"
+  - "Block any PRB creation without proper role analysis"
+  - "Document role selection criteria and reasoning"
+  - "Create role assignment validation process"
+  - "Add role assignment to PRB creation workflow"
+
+processual:
+  - "PM reads and understands work requirements"
+  - "PM identifies domain and selects appropriate architect"
+  - "PM + Architect analyze technical approach"
+  - "Together they select most qualified role"
+  - "Assignment reasoning documented in PRB"
+
+technical:
+  - "Update story-breakdown.md with explicit process"
+  - "Update prb-creation-mandates.md with enforcement"
+  - "Update role-management.md with assignment rules"
+  - "Add validation to block improper assignments"
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_name: "feature/PRB-020-fix-role-assignment"
+  commits:
+    - "[PRB-020]: Enforce PM + Architect role assignment collaboration"
+    - "[PRB-020]: Add role assignment validation and documentation"
+  privacy_filter: true
+
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  pre_execution:
+    - "Search memory/roles/ for assignment patterns"
+  post_execution:
+    - "Store role assignment process patterns"
+  capture_location: "memory/roles/assignment-process.md"
+
+# MANDATORY: Review Process Section
+review_process:
+  type: "architect_review"
+  reviewer: "@AI-Engineer"
+  focus: "Role assignment process completeness"
+
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  role_assignment_process: |
+    ## Role Assignment Process (MANDATORY)
+    
+    1. **PM Analysis Phase**
+       - @PM reads work requirements
+       - Identifies technical domain
+       - Determines complexity and skills needed
+    
+    2. **Architect Selection**
+       - For AI/behavioral: @AI-Engineer
+       - For system/infra: @System-Engineer
+       - For security: @Security-Engineer
+       - For data: @Database-Engineer
+    
+    3. **Collaborative Analysis**
+       - @PM presents requirements to architect
+       - Architect analyzes technical approach
+       - Together evaluate role options
+    
+    4. **Role Selection Criteria**
+       - Technical skills match (>70% or create specialist)
+       - Domain expertise alignment
+       - Workload and availability
+       - Past performance on similar tasks
+    
+    5. **Assignment Documentation**
+       ```yaml
+       role_assignment:
+         assigned_to: "@[Selected-Role]"
+         pm_analysis: "Requirements indicate..."
+         architect_consulted: "@[Architect-Role]"
+         selection_reasoning: "Selected because..."
+         alternatives_considered: ["@Role1", "@Role2"]
+       ```
+
+  enforcement_pattern: |
+    ## Role Assignment Enforcement
+    
+    DETECT: PRB creation attempt
+    CHECK: Role assignment process completed?
+    
+    IF NO:
+      BLOCK: "❌ Role assignment requires PM + Architect collaboration"
+      REQUIRE: 
+        - PM analysis documentation
+        - Architect consultation record
+        - Selection reasoning
+        - Assignment justification
+    
+    IF YES:
+      VALIDATE: Assignment matches analysis
+      PROCEED: Create PRB with justified role
+
+## Success Criteria
+1. No direct role assignments without PM+Architect collaboration
+2. All PRBs include role assignment documentation
+3. System blocks improper role assignments
+4. Clear audit trail of assignment decisions
+
+## Risk Assessment
+- **Risk**: Continued direct assignments
+- **Impact**: Wrong roles assigned to tasks
+- **Mitigation**: Hard enforcement in PRB creation
