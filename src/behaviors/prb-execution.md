@@ -14,8 +14,9 @@
 - **INITIALIZED**: PRB loaded, context gathered
 - **IN_PROGRESS**: Active execution of requirements
 - **PENDING_REVIEW**: Work complete, awaiting review
-- **PENDING_GIT**: Review passed, awaiting git operations
-- **PENDING_KNOWLEDGE**: Git complete, awaiting knowledge capture
+- **PENDING_VALIDATION**: Review passed, awaiting success criteria validation
+- **PENDING_KNOWLEDGE**: Validation complete, awaiting knowledge capture
+- **PENDING_GIT**: Knowledge captured, awaiting git operations
 - **COMPLETE**: All checklist items validated
 
 ### State Transition Guards
@@ -43,16 +44,6 @@ Each state transition MUST validate previous state completion before proceeding.
 [ ] Documentation updated if required
 ```
 
-### Git Operations Validation
-```markdown
-## Git Operations ✓
-[ ] All changes staged properly
-[ ] Commit messages follow privacy requirements
-[ ] Branch operations completed
-[ ] No uncommitted work remains
-[ ] Git status clean
-```
-
 ### Review Validation
 ```markdown
 ## Review Completion ✓
@@ -61,6 +52,16 @@ Each state transition MUST validate previous state completion before proceeding.
 [ ] All review feedback addressed
 [ ] Review approval received
 [ ] Quality gates passed
+```
+
+### Success Criteria Validation
+```markdown
+## Success Criteria ✓
+[ ] All acceptance criteria validated
+[ ] Performance requirements met
+[ ] Security requirements satisfied
+[ ] Integration tests pass
+[ ] System remains stable
 ```
 
 ### Knowledge Capture Validation
@@ -73,14 +74,14 @@ Each state transition MUST validate previous state completion before proceeding.
 [ ] Success metrics recorded
 ```
 
-### Success Criteria Validation
+### Git Operations Validation
 ```markdown
-## Success Criteria ✓
-[ ] All acceptance criteria validated
-[ ] Performance requirements met
-[ ] Security requirements satisfied
-[ ] Integration tests pass
-[ ] System remains stable
+## Git Operations ✓
+[ ] All changes staged properly
+[ ] Commit messages follow privacy requirements
+[ ] Branch operations completed
+[ ] No uncommitted work remains
+[ ] Git status clean
 ```
 
 ### PRB Lifecycle Validation

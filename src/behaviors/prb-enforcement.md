@@ -91,16 +91,16 @@
 **REQUIRED CHECKLIST:**
 - [ ] All functional requirements met
 - [ ] All processual requirements met  
-- [ ] Git operations executed (commit AND push)
 - [ ] Reviews completed and passed
-- [ ] Knowledge captured in memory/
 - [ ] Success criteria validated
+- [ ] Knowledge captured in memory/
+- [ ] Git operations executed (commit AND push)
 - [ ] PRB moved to completed/
 
 **NO SHORTCUTS:** Cannot skip any checklist item, even for "simple" work
 
 ### Completion State Tracking
-**STATES:** INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_GIT → PENDING_KNOWLEDGE → COMPLETE
+**STATES:** INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_VALIDATION → PENDING_KNOWLEDGE → PENDING_GIT → COMPLETE
 **VALIDATION:** Each state transition requires evidence of completion
 **BLOCKING:** Cannot claim completion without reaching COMPLETE state
 
