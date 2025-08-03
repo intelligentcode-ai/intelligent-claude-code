@@ -80,23 +80,52 @@
 **Learning:** Track patterns → Improve template selection
 **Prevention:** Make PRB path easier than bypass attempts
 
+## Completion Validation
+
+### False Completion Detection
+**MONITOR:** All completion claims ("PRB COMPLETE", "Task finished", "Work done")
+**VALIDATE:** Against mandatory completion checklist from prb-execution.md
+**BLOCK:** Any completion claim without full validation
+
+### Completion Enforcement
+**REQUIRED CHECKLIST:**
+- [ ] All functional requirements met
+- [ ] All processual requirements met  
+- [ ] Git operations executed (commit AND push)
+- [ ] Reviews completed and passed
+- [ ] Knowledge captured in memory/
+- [ ] Success criteria validated
+- [ ] PRB moved to completed/
+
+**NO SHORTCUTS:** Cannot skip any checklist item, even for "simple" work
+
+### Completion State Tracking
+**STATES:** INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_GIT → PENDING_KNOWLEDGE → COMPLETE
+**VALIDATION:** Each state transition requires evidence of completion
+**BLOCKING:** Cannot claim completion without reaching COMPLETE state
+
 ## Integration Points
 
+### With PRB Execution
+**Import:** @./prb-execution.md for completion checklist enforcement
+**Validate:** All completion claims against mandatory checklist
+**Block:** False completion attempts immediately
+
 ### With Learning System
-**Track:** PRB generation patterns → Template accuracy → Execution success
-**Apply:** Improve detection → Optimize template selection → Reduce overrides
+**Track:** PRB generation patterns → Template accuracy → Execution success → Completion enforcement
+**Apply:** Improve detection → Optimize template selection → Reduce overrides → Prevent false completions
 
 ### With Autonomy Levels  
 **L1:** User approval for PRB generation
 **L2:** Architect approval for Large/Mega PRBs
-**L3:** Autonomous PRB generation and execution
+**L3:** Autonomous PRB generation and execution with mandatory completion validation
 
 ### With PRB Templates
 **Reference:** Use template hierarchy (see shared-patterns/template-loading.md)
 **Loading:** Project → .claude → ~/.claude hierarchy
-**Nano/Tiny:** Direct execution, minimal overhead
-**Medium:** Replaces Inner Workflow completely
-**Large/Mega:** Orchestrates sub-PRBs
+**Nano/Tiny:** Direct execution, minimal overhead, full completion validation
+**Medium:** Replaces Inner Workflow completely, enforces completion checklist
+**Large/Mega:** Orchestrates sub-PRBs, validates all sub-PRB completions
 
 ---
 *PRB enforcement behavior for intelligent-claude-code system*
