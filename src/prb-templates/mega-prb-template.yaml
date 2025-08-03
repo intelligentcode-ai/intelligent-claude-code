@@ -5,42 +5,215 @@
 id: MEGA-[AUTO]
 type: mega-prb
 complexity: system-wide
+priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
 title: "[MAJOR_INITIATIVE]"
 requires_epic_decomposition: true
 
-strategic_context:
+# MANDATORY: Complete Context Section
+complete_context:
+  project: "[CLAUDE.md]"        # Project context from CLAUDE.md
+  settings: "[ALL-SETTINGS]"   # All configuration values
+  git_privacy: "[FROM_CONFIG]" # git_privacy setting from config
+  branch_protection: "[FROM_CONFIG]" # branch_protection from config
+  default_branch: "[FROM_CONFIG]"    # default_branch from config
+  branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
   business_driver: "[WHY_THIS_MATTERS]"
   impact_scope: "[AFFECTED_SYSTEMS]"
   risk_level: "[HIGH|CRITICAL]"
   rollback_required: true
   
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "[SYSTEM_WIDE_REQUIREMENT_1]"
+    - "[SYSTEM_WIDE_REQUIREMENT_2]"
+    - "[SYSTEM_WIDE_REQUIREMENT_3]"
+  processual:
+    - "Respect git_privacy setting across all phases and sub-PRBs"
+    - "Follow branch protection strategy for all components"
+    - "Use configured default branch for final system integration"
+    - "Apply configured branch naming across all phases"
+    - "Coordinate multi-phase execution with dependency management"
+    - "Ensure all Large sub-PRBs inherit complete context"
+  technical:
+    - "System-wide architectural changes"
+    - "Multi-phase coordination"
+    - "30+ complexity score management"
+    - "Backwards compatibility maintenance"
+
 # Phases with Large PRBs
 phases:
+  # ALL LARGE SUB-PRBS INHERIT COMPLETE CONTEXT AND MANDATORY SECTIONS
   - name: "Analysis & Planning"
     prbs:
       - type: large
         title: "System architecture analysis"
         focus: "[CURRENT_STATE_ANALYSIS]"
+        complete_context:
+          inherit_all: true  # Inherits ALL parent context
+          project: "[CLAUDE.md]"
+          settings: "[ALL-SETTINGS]"
+          git_privacy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+          branch_strategy: "[FROM_CONFIG]"
+        requirements:
+          functional: ["[ARCHITECTURE_ANALYSIS_REQUIREMENTS]"]
+          processual:
+            - "Respect git_privacy setting across all analysis outputs"
+            - "Follow branch protection strategy for analysis branches"
+            - "Use configured default branch for integration"
+            - "Apply configured branch naming for analysis work"
+          technical: ["[SYSTEM_ANALYSIS_TECH_SPECS]"]
+        git_operations:
+          branch_strategy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          privacy_filter: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+        knowledge_management:
+          structure: "memory/[topic]/[subtopic].md"
+          storage: "version-controlled"
+        review_process:
+          type: "architecture_review"
+          inherit_from_parent: true
+        implementation_samples:
+          example_scope: "System architecture analysis with 5+ Medium sub-PRBs"
         
       - type: large
         title: "Risk assessment and mitigation"
         focus: "[RISK_PLANNING]"
+        complete_context:
+          inherit_all: true  # Inherits ALL parent context
+          project: "[CLAUDE.md]"
+          settings: "[ALL-SETTINGS]"
+          git_privacy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+          branch_strategy: "[FROM_CONFIG]"
+        requirements:
+          functional: ["[RISK_ASSESSMENT_REQUIREMENTS]"]
+          processual:
+            - "Respect git_privacy setting for risk documentation"
+            - "Follow branch protection strategy for risk planning"
+            - "Use configured default branch for risk integration"
+            - "Apply configured branch naming for risk work"
+          technical: ["[RISK_MITIGATION_TECH_SPECS]"]
+        git_operations:
+          branch_strategy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          privacy_filter: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+        knowledge_management:
+          structure: "memory/[topic]/[subtopic].md"
+          storage: "version-controlled"
+        review_process:
+          type: "risk_review"
+          inherit_from_parent: true
+        implementation_samples:
+          example_scope: "Risk assessment with 3+ Medium sub-PRBs"
         
   - name: "Implementation"
     prbs:
       - type: large
         title: "[MAJOR_COMPONENT_1]"
         parallel_safe: true
+        complete_context:
+          inherit_all: true  # Inherits ALL parent context
+          project: "[CLAUDE.md]"
+          settings: "[ALL-SETTINGS]"
+          git_privacy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+          branch_strategy: "[FROM_CONFIG]"
+        requirements:
+          functional: ["[COMPONENT_1_REQUIREMENTS]"]
+          processual:
+            - "Respect git_privacy setting for implementation commits"
+            - "Follow branch protection strategy for component development"
+            - "Use configured default branch for component integration"
+            - "Apply configured branch naming for implementation work"
+          technical: ["[COMPONENT_1_TECH_SPECS]"]
+        git_operations:
+          branch_strategy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          privacy_filter: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+        knowledge_management:
+          structure: "memory/[topic]/[subtopic].md"
+          storage: "version-controlled"
+        review_process:
+          type: "implementation_review"
+          inherit_from_parent: true
+        implementation_samples:
+          example_scope: "Major component with 4+ Medium sub-PRBs"
         
       - type: large  
         title: "[MAJOR_COMPONENT_2]"
         parallel_safe: true
+        complete_context:
+          inherit_all: true  # Inherits ALL parent context
+          project: "[CLAUDE.md]"
+          settings: "[ALL-SETTINGS]"
+          git_privacy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+          branch_strategy: "[FROM_CONFIG]"
+        requirements:
+          functional: ["[COMPONENT_2_REQUIREMENTS]"]
+          processual:
+            - "Respect git_privacy setting for implementation commits"
+            - "Follow branch protection strategy for component development"
+            - "Use configured default branch for component integration"
+            - "Apply configured branch naming for implementation work"
+          technical: ["[COMPONENT_2_TECH_SPECS]"]
+        git_operations:
+          branch_strategy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          privacy_filter: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+        knowledge_management:
+          structure: "memory/[topic]/[subtopic].md"
+          storage: "version-controlled"
+        review_process:
+          type: "implementation_review"
+          inherit_from_parent: true
+        implementation_samples:
+          example_scope: "Major component with 4+ Medium sub-PRBs"
         
   - name: "Migration & Validation"
     prbs:
       - type: large
         title: "Data migration strategy"
         critical_path: true
+        complete_context:
+          inherit_all: true  # Inherits ALL parent context
+          project: "[CLAUDE.md]"
+          settings: "[ALL-SETTINGS]"
+          git_privacy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+          branch_strategy: "[FROM_CONFIG]"
+        requirements:
+          functional: ["[MIGRATION_REQUIREMENTS]"]
+          processual:
+            - "Respect git_privacy setting for migration scripts"
+            - "Follow branch protection strategy for migration work"
+            - "Use configured default branch for migration integration"
+            - "Apply configured branch naming for migration branches"
+          technical: ["[DATA_MIGRATION_TECH_SPECS]"]
+        git_operations:
+          branch_strategy: "[FROM_CONFIG]"
+          branch_protection: "[FROM_CONFIG]"
+          privacy_filter: "[FROM_CONFIG]"
+          default_branch: "[FROM_CONFIG]"
+        knowledge_management:
+          structure: "memory/[topic]/[subtopic].md"
+          storage: "version-controlled"
+        review_process:
+          type: "migration_review"
+          inherit_from_parent: true
+        implementation_samples:
+          example_scope: "Data migration with 3+ Medium sub-PRBs"
         
 # Ultra thinking mandatory
 ultra_thinking:
@@ -75,12 +248,52 @@ validation_framework:
     - "Performance validation after Phase 3"
     - "Full system test before deployment"
     
-# Phased git strategy  
-git_orchestration:
-  strategy: "feature-branch-per-phase"
-  integration: "progressive-merge"
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
+  branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
+  branch_coordination: "feature-branch-per-phase"
+  integration_strategy: "progressive-merge"
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all phases
+  default_branch: "[FROM_CONFIG]"     # Target configured default branch
   main_protection: "mandatory"
   
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled"
+  system_wide_capture: true
+  phase_learning_aggregation: true
+  mandatory_documentation:
+    - "Architecture decisions"
+    - "Migration patterns"
+    - "Rollback procedures"
+  format: "ArchitecturalDecisionRecord"
+
+# MANDATORY: Review Process Section
+review_process:
+  type: "multi_phase_governance"
+  checkpoints:
+    - "Architecture review after Phase 1"
+    - "Security audit after Phase 2"
+    - "Performance validation after Phase 3"
+    - "Full system test before deployment"
+  leadership:
+    pm: "@PM"
+    architect: "@AI-Architect"
+    tech_lead: "@System-Engineer"
+  escalation: "executive_review"
+
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_scope: "[MEGA-001]: Complete system architecture overhaul"
+  example_phases: |
+    Phase 1: Analysis & Planning (2 Large PRBs)
+    Phase 2: Core Implementation (3 Large PRBs)
+    Phase 3: Migration & Validation (2 Large PRBs)
+    Each Large PRB contains 2-4 Medium PRBs
+    System-wide impact across 50+ files
+
 # Comprehensive learning
 knowledge_capture:
   mandatory_documentation:

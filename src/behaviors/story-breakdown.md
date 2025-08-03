@@ -42,7 +42,7 @@ User simply says:
 When @PM breaks down a story:
 1. Creates PRBs in configured prb_path/prb_ready (default: `prbs/ready/`)
 2. Each PRB references the parent story
-3. Appropriate complexity and template selected
+3. Appropriate complexity and template selected using hierarchy
 4. Ready for immediate execution
 5. Uses directory structure from configuration
 
@@ -59,6 +59,7 @@ When asked "what's next?", @PM and Architect:
 
 Imports:
 @./directory-structure.md
+@./shared-patterns/template-loading.md
 
 Uses configured paths:
 - get_project_path("story_path") for stories

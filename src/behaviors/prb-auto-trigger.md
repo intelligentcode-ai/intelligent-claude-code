@@ -4,6 +4,9 @@
 
 **PURPOSE:** Automatically detect work requests and generate PRBs for execution
 
+## Imports
+@./shared-patterns/template-loading.md
+
 ## Core Principle: Detection → PRB Generation → Direct Execution
 
 Every work detection triggers PRB generation with appropriate complexity template.
@@ -36,11 +39,13 @@ Every work detection triggers PRB generation with appropriate complexity templat
 | 16-30 | Large | Complex with sub-PRBs |
 | 30+ | Mega | System-wide change |
 
+**Template Loading:** Uses hierarchy (project → .claude → ~/.claude)
+
 ## Auto-Generation Flow
 
 1. **Detect** → Work requirement
 2. **Analyze** → Calculate complexity score
-3. **Select** → Choose PRB template
+3. **Select** → Choose PRB template using hierarchy
 4. **Generate** → Create PRB with context
 5. **Execute** → Direct execution
 

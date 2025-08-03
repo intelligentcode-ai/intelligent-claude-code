@@ -4,7 +4,26 @@
 id: NANO-[AUTO]
 type: nano-prb
 complexity: trivial
+priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
 title: "[AUTO-ROLE] [DESCRIPTION]"
+
+# MANDATORY: Complete Context Section
+complete_context:
+  project: "[CLAUDE.md]"        # Project context from CLAUDE.md
+  settings: "[ALL-SETTINGS]"   # All configuration values
+  git_privacy: "[FROM_CONFIG]" # git_privacy setting from config
+  branch_protection: "[FROM_CONFIG]" # branch_protection from config
+  default_branch: "[FROM_CONFIG]"    # default_branch from config
+  branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
+
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "[SPECIFIC_CHANGE_NEEDED]"
+  processual:
+    - "Respect git_privacy setting for commit messages"
+    - "Follow branch protection if enabled"
+    - "Use configured default branch"
 
 # Direct execution - no workflow needed
 execution:
@@ -14,10 +33,31 @@ execution:
   
 validation:
   - "[SIMPLE_CHECK]"
-  
+
+# MANDATORY: Git Operations Section  
 git_operations:
-  commit: "[ID]: [DESCRIPTION]"
+  branch_strategy: "[FROM_CONFIG]"     # Use configured branch strategy
+  branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
+  commit_format: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled
+  default_branch: "[FROM_CONFIG]"     # Target configured default branch
+
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled"
+  capture: "not_needed_for_trivial"
+
+# MANDATORY: Review Process Section
+review_process:
+  type: "no_review_needed"
+  rationale: "trivial_change"
+
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[NANO-001]: Fix typo in README.md"
+  example_change: "Line 15: 'documnetation' → 'documentation'"
   
 # No memory search needed for trivial changes
-# No SME review needed
+# No SME review needed  
 # No learning capture needed
