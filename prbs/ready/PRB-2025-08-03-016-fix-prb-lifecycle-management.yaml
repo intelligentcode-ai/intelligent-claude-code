@@ -1,0 +1,117 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix PRB lifecycle - move executed PRBs to completed directory"
+prb_id: "PRB-2025-08-03-016"
+complexity: "Medium"
+score: 10
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["prb-lifecycle", "directory-management", "processual-fix"]
+
+## Context
+type: "BUG_FIX"  
+priority: "CRITICAL"
+project: "intelligent-claude-code"
+requester: "User - Executed PRBs not moved to completed"
+git_privacy: true
+
+## Complete System Context
+system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
+project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+
+### Directory Structure
+```
+prbs/
+├── ready/       # PRBs ready to execute
+├── completed/   # Executed PRBs (archive)
+└── drafts/      # WIP PRBs (if needed)
+```
+
+## Problem Statement
+Executed PRBs remain in ready/ directory instead of being moved to completed/. This causes:
+- Confusion about what's done
+- Risk of re-execution
+- No execution history
+- Cluttered ready queue
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Add PRB lifecycle management to behaviors
+2. **FR2**: Auto-move PRBs to completed/ after execution
+3. **FR3**: Update directory structure behavior
+4. **FR4**: Add execution timestamp to moved PRBs
+5. **FR5**: Prevent re-execution of completed PRBs
+
+### Processual Requirements
+1. **PR1**: Move PRB after all steps complete
+2. **PR2**: Add completion metadata
+3. **PR3**: Update any references
+4. **PR4**: Commit the move operation
+
+## Implementation Details
+
+### Affected Files
+- `.claude/behaviors/prb-execution.md` - Add lifecycle management
+- `.claude/behaviors/directory-structure.md` - Add prbs/completed/
+- `.claude/commands/icc-execute-prb.md` - Add move step
+
+### Key Changes Needed
+```markdown
+# PRB Lifecycle Pattern
+PRB Execution Complete:
+1. Verify all steps executed
+2. Add completion metadata to PRB
+3. git mv prbs/ready/[PRB].yaml prbs/completed/
+4. Commit with message "chore: Archive completed [PRB-ID]"
+5. Update execution log
+
+# Directory Structure
+prbs/
+├── ready/       # Queue for execution
+├── completed/   # Execution archive
+│   └── [YYYY]/  # Optional year grouping
+└── drafts/      # Work in progress
+
+# Completion Metadata
+Add to PRB after execution:
+execution:
+  completed_at: "[TIMESTAMP]"
+  executed_by: "@[Role]"
+  branch: "[BRANCH_NAME]"
+  commit: "[COMMIT_SHA]"
+```
+
+## Success Criteria
+1. Executed PRBs auto-moved
+2. Completion metadata added
+3. Clear ready vs completed
+4. No manual moves needed
+
+## Role Assignments
+- **Lead**: @AI-Engineer
+- **Reviewer**: @Process-Automation-Specialist
+
+## Git Operations
+- Branch: feature/prb-lifecycle-management
+- Commits:
+  - "feat: Add PRB lifecycle management"
+  - "chore: Move already executed PRBs"
+- version_bump: PATCH
+
+## Knowledge Management
+- Pre: Search memory/execution/ for patterns
+- Post: Store in memory/execution/prb-lifecycle.md
+
+## Documentation Updates
+- Update PRB execution guide
+- Document lifecycle states
+
+## Review Process
+- Reviewer: @Process-Automation-Specialist
+- Focus: Automation reliability
+
+## Notes
+Critical: Every executed PRB must be moved to completed/ to maintain clean queue and execution history.
