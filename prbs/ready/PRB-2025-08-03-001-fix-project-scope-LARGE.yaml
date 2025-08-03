@@ -149,7 +149,7 @@ learning_strategy:
     - "Installation vs execution scope separation"
     - "Project boundary enforcement in markdown behaviors"
   store_as: "Pattern"
-  memory_path: "memory/Pattern/2025/08/project-scope-boundaries.md"
+  memory_path: "memory/project/scope-boundaries.md"
   
 # Risk mitigation
 risk_assessment:
@@ -193,7 +193,7 @@ knowledge_management:
     - "Store project boundary enforcement patterns"
     - "Capture path resolution strategies"
     - "Document scope isolation techniques"
-  capture_location: "memory/Pattern/2025/08/project-scope-boundaries.md"
+  capture_location: "memory/project/scope-boundaries.md"
   
 # MANDATORY: Review Process Section
 review_process:
@@ -247,4 +247,4 @@ post_execution_knowledge:
     - "Project boundary patterns"
     - "Path resolution strategies"
     - "Scope isolation techniques"
-  format: "memory/Learning/2025/08/project-scope-fix.md"
+  format: "memory/project/scope-fixes.md"

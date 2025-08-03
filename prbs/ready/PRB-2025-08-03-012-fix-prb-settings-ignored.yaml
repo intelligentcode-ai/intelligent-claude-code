@@ -165,7 +165,7 @@ For EACH PRB section:
 - NO AI mentions (git_privacy: true)
 
 ## Knowledge Capture (MUST EXECUTE)
-- Store in: memory/Pattern/2025/08/prb-execution-compliance.md
+- Store in: memory/prb-execution/settings-compliance.md
 - Topics: PRB enforcement, settings compliance
 
 ## Validation Steps
@@ -202,7 +202,7 @@ knowledge_management:
     - "Store PRB enforcement patterns"
     - "Capture settings compliance techniques"
     - "Document execution tracking methods"
-  capture_location: "memory/Pattern/2025/08/prb-execution-compliance.md"
+  capture_location: "memory/prb-execution/settings-compliance.md"
   
 # MANDATORY: Review Process Section
 review_process:
@@ -273,7 +273,7 @@ implementation_samples:
     Example Tracking:
     - Git Operations: "Executed 3/3 commands, privacy_filter applied"
     - Review Process: "@AI-Compliance-Specialist completed review"
-    - Knowledge Management: "Stored in memory/Pattern/2025/08/..."
+    - Knowledge Management: "Stored in memory/prb-execution/settings-compliance.md"
 
 ## Notes
 CRITICAL: Every PRB section is MANDATORY. No exceptions. Execute EVERYTHING specified in the PRB.

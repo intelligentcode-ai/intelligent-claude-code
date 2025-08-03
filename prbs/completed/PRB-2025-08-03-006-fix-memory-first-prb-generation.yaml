@@ -172,7 +172,7 @@ knowledge_management:
     - "Store memory-first PRB generation patterns"
     - "Capture memory search integration techniques"
     - "Document embedded learning selection algorithms"
-  capture_location: "memory/Learning/2025/08/memory-first-prb-generation.md"
+  capture_location: "memory/prb-execution/memory-first-generation.md"
   
 # MANDATORY: Review Process Section
 review_process:

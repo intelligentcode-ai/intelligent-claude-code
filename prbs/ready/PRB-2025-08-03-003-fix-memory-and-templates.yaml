@@ -62,7 +62,7 @@ The system has multiple critical implementation failures:
 ### Required Behavior:
 - **Memory**: Read/write to `memory/` directory on disk (version-controlled)
 - **PRB Templates**: Use templates from `src/prb-templates/` based on complexity
-- **Knowledge**: Store in markdown files in `memory/[Type]/[YYYY]/[MM]/`
+- **Knowledge**: Store in markdown files in `memory/[topic]/[subtopic].md`
 - **No MCP Memory**: This is a file-based system, not MCP-based
 
 # MANDATORY: Requirements Section
@@ -110,7 +110,7 @@ requirements:
    - Return matches from disk
    
    StoreInMemory Pattern:
-   - Write to memory/[Type]/[YYYY]/[MM]/[topic].md
+   - Write to memory/[topic]/[subtopic].md
    - Use markdown format with frontmatter
    - Git add for version control
    ```
@@ -171,7 +171,7 @@ knowledge_management:
     - "Store file-based memory implementation patterns"
     - "Capture PRB template selection algorithms"
     - "Document MCP removal techniques"
-  capture_location: "memory/Learning/2025/08/file-based-memory-fix.md"
+  capture_location: "memory/system/file-based-memory-fix.md"
   
 # MANDATORY: Review Process Section
 review_process:
@@ -217,7 +217,7 @@ implementation_samples:
     - Return matches from disk-based storage
     
     StoreInMemory Pattern:
-    - Write to memory/[Type]/[YYYY]/[MM]/[topic].md
+    - Write to memory/[topic]/[subtopic].md
     - Use markdown format with YAML frontmatter
     - Git add for version control
   
@@ -240,7 +240,7 @@ implementation_samples:
     grep -r "mcp__memory" src/behaviors/ (should return empty)
     
     # Test memory operations
-    echo "test" > memory/Test/2025/08/test.md
+    echo "test" > memory/system/test.md
     grep -r "test" memory/ (should find the file)
     
     # Verify PRB templates exist

@@ -160,7 +160,7 @@ knowledge_management:
     - "Store PRB lifecycle management patterns"
     - "Capture automated file movement techniques"
     - "Document execution state tracking methods"
-  capture_location: "memory/Learning/2025/08/prb-lifecycle-management.md"
+  capture_location: "memory/prb-execution/lifecycle-management.md"
   
 # MANDATORY: Review Process Section
 review_process:

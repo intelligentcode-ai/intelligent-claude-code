@@ -194,7 +194,7 @@ knowledge_management:
     - "Store template update patterns"
     - "Capture self-contained PRB design insights"
     - "Document configuration embedding techniques"
-  capture_location: "memory/Learning/2025/08/prb-self-contained-updates.md"
+  capture_location: "memory/prb-execution/self-contained-updates.md"
   
 # MANDATORY: Review Process Section
 review_process:

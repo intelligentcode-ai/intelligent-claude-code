@@ -18,7 +18,7 @@
 
 2. **Construct File Path**
    - Base: memory/
-   - Path: [Type]/[YYYY]/[MM]/[Type]-[ID]-[YYYY-MM-DD].md
+   - Path: [topic]/[subtopic].md
    - Handle missing files gracefully
 
 3. **Load Entity**

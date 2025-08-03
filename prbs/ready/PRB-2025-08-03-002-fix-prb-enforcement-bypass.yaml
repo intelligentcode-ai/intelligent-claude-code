@@ -146,7 +146,7 @@ knowledge_management:
     - "Store enforcement strengthening patterns"
     - "Capture bypass prevention techniques"
     - "Document auto-trigger improvements"
-  capture_location: "memory/Learning/2025/08/prb-enforcement-bypass-fix.md"
+  capture_location: "memory/prb-execution/enforcement-bypass-fixes.md"
   
 # MANDATORY: Review Process Section
 review_process:

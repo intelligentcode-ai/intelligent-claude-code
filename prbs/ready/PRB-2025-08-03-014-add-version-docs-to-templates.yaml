@@ -151,7 +151,7 @@ knowledge_management:
     - "Store template versioning patterns"
     - "Capture documentation requirement techniques"
     - "Document version bump decision logic"
-  capture_location: "memory/Learning/2025/08/template-version-documentation.md"
+  capture_location: "memory/templates/version-documentation.md"
   
 # MANDATORY: Review Process Section
 review_process:

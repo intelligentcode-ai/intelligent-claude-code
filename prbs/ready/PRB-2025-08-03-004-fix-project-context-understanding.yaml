@@ -179,7 +179,7 @@ knowledge_management:
     - "Store project context understanding patterns"
     - "Capture context-first role selection techniques"
     - "Document specialist creation without thresholds"
-  capture_location: "memory/Learning/2025/08/project-context-understanding.md"
+  capture_location: "memory/project/context-understanding.md"
   
 # MANDATORY: Review Process Section
 review_process:

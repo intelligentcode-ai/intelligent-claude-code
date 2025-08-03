@@ -26,9 +26,9 @@ complete_context:
     - memory/prb-execution/memory-first.md
     
   wrong_structures_used: |
-    memory/Learning/2025/08/  # WRONG - date-based
-    memory/Pattern/2025/01/   # WRONG - date-based
-    memory/Knowledge/[date]/  # WRONG - date-based
+    memory/Learning/[YYYY]/[MM]/  # WRONG - date-based
+    memory/Pattern/[YYYY]/[MM]/   # WRONG - date-based
+    memory/Knowledge/[YYYY]/[MM]/ # WRONG - date-based
     
   files_to_modify:
     - path: "src/behaviors/shared-patterns/memory-operations.md"
@@ -104,8 +104,8 @@ correct_usage: |
 
 wrong_usage: |
   # NEVER do this:
-  memory/Learning/2025/08/topic.md  # NO!
-  memory/Pattern/2025/01/           # NO!
+  memory/Learning/[YYYY]/[MM]/topic.md  # NO!
+  memory/Pattern/[YYYY]/[MM]/           # NO!
 
 ## Success Criteria
 1. Zero date-based paths remain

@@ -151,7 +151,7 @@ knowledge_management:
     - "Store PRB scope extension patterns"
     - "Capture execution context tracking techniques"
     - "Document feedback incorporation strategies"
-  capture_location: "memory/Learning/2025/08/prb-scope-management.md"
+  capture_location: "memory/prb-execution/scope-management.md"
   
 # MANDATORY: Review Process Section
 review_process:
