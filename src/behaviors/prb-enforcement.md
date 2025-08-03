@@ -80,6 +80,36 @@
 **Learning:** Track patterns → Improve template selection
 **Prevention:** Make PRB path easier than bypass attempts
 
+## Settings Compliance Verification
+
+### Critical Settings Enforcement
+**MONITOR:** All execution for settings compliance
+**ENFORCE:** Every setting specified in PRB/configuration
+**BLOCK:** Any operation that violates settings
+
+### Settings Validation Checklist
+```markdown
+MANDATORY SETTINGS COMPLIANCE:
+☐ git_privacy: true → Strip ALL AI mentions from commits
+☐ branch_protection: true → Follow protection strategy exactly
+☐ default_branch setting → Use for all git operations
+☐ autonomy_level → Apply appropriate behavior patterns
+☐ memory_integration: true → Store learnings in memory/
+☐ All CLAUDE.md settings → Applied throughout execution
+
+CRITICAL: Settings violations AUTO-BLOCK execution.
+```
+
+### Git Privacy Enforcement
+**git_privacy: true MEANS:**
+- NO "Generated with Claude Code" in any commit
+- NO "Co-Authored-By: Claude" in any commit
+- NO AI mentions anywhere in git operations
+- Clean professional commits only
+- Strip all AI references before git commands
+
+**ENFORCEMENT:** Auto-detect and block commits with AI mentions
+
 ## Completion Validation
 
 ### False Completion Detection
@@ -89,20 +119,22 @@
 
 ### Completion Enforcement
 **REQUIRED CHECKLIST:**
+- [ ] All 6 PRB sections executed completely
+- [ ] All settings compliance verified
 - [ ] All functional requirements met
 - [ ] All processual requirements met  
 - [ ] Reviews completed and passed
 - [ ] Success criteria validated
 - [ ] Knowledge captured in memory/
-- [ ] Git operations executed (commit AND push)
+- [ ] Git operations executed exactly as specified
 - [ ] PRB moved to completed/
 
-**NO SHORTCUTS:** Cannot skip any checklist item, even for "simple" work
+**NO SHORTCUTS:** Cannot skip any checklist item or PRB section, even for "simple" work
 
 ### Completion State Tracking
 **STATES:** INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_VALIDATION → PENDING_KNOWLEDGE → PENDING_GIT → COMPLETE
-**VALIDATION:** Each state transition requires evidence of completion
-**BLOCKING:** Cannot claim completion without reaching COMPLETE state
+**VALIDATION:** Each state transition requires evidence of completion AND settings compliance
+**BLOCKING:** Cannot claim completion without reaching COMPLETE state with full settings compliance
 
 ## Integration Points
 
