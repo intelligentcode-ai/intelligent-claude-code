@@ -13,7 +13,7 @@
 **Repeated Error:** Double penalty + Escalation  
 **Learning Application:** +0.5P/Q bonus for references
 
-**Learning Storage:** memory/Learning/[YYYY]/[MM]/
+**Learning Storage:** memory/[topic]/[subtopic].md
 
 ## Reference Detection
 

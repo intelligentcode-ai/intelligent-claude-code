@@ -47,18 +47,18 @@
 ```
 Found 3 relevant memories:
 
-1. Learning-OAuth2Refresh-20250123-143000 (Score: 9.2)
-   Location: memory/Learning/2025/01/
+1. OAuth2 Token Refresh (Score: 9.2)
+   Location: memory/authentication/oauth2-patterns.md
    "OAuth2 token refresh requires specific error handling..."
    Tags: [oauth2, error-handling, authentication]
    
-2. Pattern-AuthFlow-20250122-093000 (Score: 7.8)
-   Location: memory/Pattern/2025/01/
+2. Authentication Flow Pattern (Score: 7.8)
+   Location: memory/authentication/jwt-handling.md
    "Standard authentication flow with JWT tokens..."
    Tags: [authentication, jwt, patterns]
    
-3. Knowledge-ErrorCodes-20250120-110000 (Score: 6.5)
-   Location: memory/Knowledge/2025/01/
+3. HTTP Error Handling (Score: 6.5)
+   Location: memory/errors/http-status-codes.md
    "Common HTTP error codes and handling strategies..."
    Tags: [error-handling, http, best-practices]
 ```
