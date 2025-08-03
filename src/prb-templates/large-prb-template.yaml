@@ -185,6 +185,7 @@ git_operations:
   commit_coordination: "sub_prb_aware"
   privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all sub-PRBs - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
+  version_bump: "minor"               # Complex features = minor version
   merge_request: true # Parent asks user
   squash_commits: true
   
