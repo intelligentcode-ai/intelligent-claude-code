@@ -60,7 +60,8 @@ CRITICAL: Settings are NOT suggestions - they are MANDATORY requirements.
 - **PENDING_VALIDATION**: Review passed, awaiting success criteria validation
 - **PENDING_KNOWLEDGE**: Validation complete, awaiting knowledge capture
 - **PENDING_GIT**: Knowledge captured, awaiting git operations
-- **COMPLETE**: All checklist items validated
+- **PENDING_LIFECYCLE**: Git operations complete, awaiting PRB file move
+- **COMPLETE**: All checklist items validated, PRB moved to completed/
 
 ### State Transition Guards
 Each state transition MUST validate previous state completion before proceeding.
@@ -130,12 +131,15 @@ Each state transition MUST validate previous state completion before proceeding.
 ### PRB Lifecycle Validation
 ```markdown
 ## PRB Lifecycle ✓
-[ ] PRB file moved to completed/
-[ ] Execution log updated
-[ ] Dependencies notified
+[ ] All git operations completed and pushed
+[ ] Execution log updated with final status
+[ ] Dependencies notified of completion
 [ ] Follow-up tasks created if needed
-[ ] System state clean
+[ ] System state clean and validated
+[ ] PRB file moved to completed/ (FINAL STEP)
 ```
+
+**CRITICAL:** PRB file move MUST be the absolute final step after all other operations complete successfully. This prevents PRBs from remaining in ready/ after execution and ensures clean lifecycle management.
 
 ## Completion Enforcement Mechanisms
 
@@ -252,6 +256,11 @@ EnforceQualityGates(prb_id):
   success_complete = ValidateSuccessCriteria(prb_id)
   lifecycle_complete = ValidatePRBLifecycle(prb_id)
   
+  # PRB file move MUST be the absolute final step
+  if ALL([functional_complete, processual_complete, git_complete, 
+         review_complete, knowledge_complete, success_complete]):
+    lifecycle_complete = MovePRBToCompleted(prb_id)
+  
   return ALL([
     functional_complete,
     processual_complete,
@@ -262,6 +271,40 @@ EnforceQualityGates(prb_id):
     lifecycle_complete
   ])
 ```
+
+## PRB Lifecycle Management
+
+### PRB File Movement Protocol
+**MANDATORY SEQUENCE:**
+1. Complete all functional requirements
+2. Complete all processual requirements  
+3. Complete all git operations and push
+4. Complete review process
+5. Complete knowledge capture
+6. Validate success criteria
+7. **FINAL STEP:** Move PRB file from prbs/ready/ to prbs/completed/
+
+**CRITICAL RULE:** PRB file movement is the absolute final operation. If ANY prior step fails, PRB remains in ready/ for retry.
+
+### Lifecycle State Management
+```
+PRB_READY: File in prbs/ready/, available for execution
+PRB_IN_PROGRESS: File in prbs/ready/, currently being executed
+PRB_COMPLETED: File in prbs/completed/, execution finished
+```
+
+**State Validation:**
+- Only PRBs in READY state can begin execution
+- PRBs remain in ready/ throughout entire execution
+- Move to completed/ only occurs after ALL validation passes
+- Failed executions leave PRB in ready/ for retry
+
+### Automatic Cleanup Prevention
+**PREVENTS:**
+- PRBs stuck in ready/ after successful execution
+- Lost PRBs due to premature file moves
+- Incomplete executions marked as complete
+- State inconsistencies in PRB management
 
 ## Error Recovery
 
