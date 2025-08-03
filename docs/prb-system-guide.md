@@ -83,9 +83,9 @@ context:
   reference_docs: |
     [Documentation HERE]
   embedded_learnings: |
-    # From memory/Pattern/2025/01/Pattern-OAuth-20250122.md
+    # From memory/authentication/oauth2-patterns.md
     [Complete pattern content embedded]
-    # From memory/Learning/2025/01/Learning-Error-20250123.md
+    # From memory/errors/api-failures.md
     [Complete learning content embedded]
 
 # IMPLEMENTATION - Blueprint
