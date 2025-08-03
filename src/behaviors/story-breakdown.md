@@ -9,8 +9,41 @@
 When user says "@PM break down story X" or similar:
 1. **@PM reads story**: Understands business goals and requirements
 2. **@PM + Architect collaborate**: Jointly analyze technical approach
-3. **@PM creates PRBs**: Generates appropriate PRBs based on analysis
-4. **Story selection**: @PM + Architect select next story based on priorities/complexity
+3. **@PM + Architect assign roles**: Determine correct specialist roles for each PRB
+4. **@PM creates PRBs**: Generates appropriate PRBs with role assignments
+5. **Story selection**: @PM + Architect select next story based on priorities/complexity
+
+## Role Assignment Process
+
+### Mandatory PM + Architect Collaboration
+**CRITICAL:** PM MUST collaborate with appropriate architect for ALL role assignments:
+
+1. **PM Analysis Phase**:
+   - Analyze work requirements and complexity
+   - Identify technical domains involved
+   - Determine coordination needs
+
+2. **Architect Selection**:
+   - @AI-Engineer: AI/ML, behavioral systems, agentic workflows
+   - @System-Engineer: Infrastructure, deployment, system operations
+   - @Security-Engineer: Security reviews, compliance, vulnerability analysis
+   - @Architect: General architecture, complex multi-domain projects
+
+3. **Collaborative Analysis**:
+   - PM + Selected Architect jointly evaluate requirements
+   - Assess specialist expertise needed (>70% capability match)
+   - Consider coordination complexity and dependencies
+
+4. **Role Selection Criteria**:
+   - **Domain Expertise**: Match specialist to technical domain
+   - **Complexity Level**: Simple tasks → core roles, complex → dynamic specialists
+   - **Coordination Needs**: Multi-role projects require senior specialists
+   - **Project Context**: Consider existing architecture and patterns
+
+5. **Assignment Documentation**:
+   - Document role selection rationale in PRB
+   - Include capability match score and justification
+   - Reference architect collaboration in PRB context
 
 ## Story Selection Criteria
 
