@@ -6,10 +6,11 @@
 
 ## Imports
 @./shared-patterns/template-loading.md
+@./shared-patterns/memory-operations.md
 
-## Core Principle: Detection → PRB Generation → Direct Execution
+## Core Principle: Detection → Memory Search → PRB Generation → Direct Execution
 
-Every work detection triggers PRB generation with appropriate complexity template.
+Every work detection triggers memory search first, then PRB generation with embedded learnings.
 
 ## Work Detection Patterns
 
@@ -44,10 +45,11 @@ Every work detection triggers PRB generation with appropriate complexity templat
 ## Auto-Generation Flow
 
 1. **Detect** → Work requirement
-2. **Analyze** → Calculate complexity score
-3. **Select** → Choose PRB template using hierarchy
-4. **Generate** → Create PRB with context
-5. **Execute** → Direct execution
+2. **Search Memory** → Query memory/[topic]/ for relevant patterns (MANDATORY)
+3. **Analyze** → Calculate complexity score
+4. **Select** → Choose PRB template using hierarchy
+5. **Generate** → Create PRB with embedded memory entries (top 2-3)
+6. **Execute** → Direct execution
 
 ## Integration Points
 
@@ -56,6 +58,9 @@ Ensures all work goes through PRBs, blocks direct execution attempts.
 
 ### With Learning System
 Captures patterns for better template selection over time.
+
+### With Memory System
+MANDATORY memory search before PRB generation. Embeds top 2-3 relevant entries.
 
 ### With L3 Autonomy
 In L3 mode, continuously detects work and generates PRBs autonomously.

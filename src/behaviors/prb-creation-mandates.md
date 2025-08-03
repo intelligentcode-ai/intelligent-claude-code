@@ -5,6 +5,7 @@
 ## Imports
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/template-loading.md
+@./shared-patterns/memory-operations.md
 
 ## Mandatory Rules
 
@@ -23,11 +24,20 @@
 **Scoring factors:** Files + Lines + External APIs + Security + Coordination
 **Template Loading:** Use hierarchy: project → .claude → ~/.claude
 
+### Memory-First Requirements
+**MANDATORY:** Search memory BEFORE PRB generation:
+- Query memory/[topic]/ for relevant patterns
+- Extract keywords from work request
+- Score by relevance + recency
+- Embed top 2-3 entries (max 1000 tokens)
+- NO PRB generation without memory search
+
 ### Quality Requirements
 - Sequential thinking for Large/Mega
 - Pre-assigned SME reviewers
 - 10+ years specialist expertise
 - Project context integration
+- Memory entries embedded in context
 
 ### Role Assignment Enforcement
 **MANDATORY:** PM + Architect collaboration for ALL role assignments:
