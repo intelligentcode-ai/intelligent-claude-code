@@ -112,7 +112,7 @@ knowledge_management:
   embedded_learnings: "pre_searched_patterns"
   capture_patterns: "[CAPTURE_PATTERNS]"
   capture_insights: "[CAPTURE_INSIGHTS]"
-  store_location: "memory/[TYPE]/[YYYY]/[MM]/"
+  store_location: "memory/[topic]/[subtopic].md"
 
 # MANDATORY: Review Process Section
 review_process:
@@ -141,5 +141,5 @@ implementation_samples:
 learning_capture:
   patterns: "[CAPTURE_PATTERNS]"
   insights: "[CAPTURE_INSIGHTS]"
-  store_location: "memory/[TYPE]/[YYYY]/[MM]/"
+  store_location: "memory/[topic]/[subtopic].md"
   version_control: true

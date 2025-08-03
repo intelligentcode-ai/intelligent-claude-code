@@ -61,9 +61,10 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 ## Memory System Details
 When initializing memory system:
-- Creates memory/Learning/[YYYY]/[MM]/ for error patterns and solutions
-- Creates memory/Pattern/[YYYY]/[MM]/ for reusable implementation patterns
-- Creates memory/Knowledge/[YYYY]/[MM]/ for domain knowledge and best practices
+- Creates memory/[topic]/[subtopic].md structure for organized knowledge storage
+- Creates memory/errors/ for error patterns and solutions
+- Creates memory/patterns/ for reusable implementation patterns
+- Creates memory/domain/ for domain knowledge and best practices
 - Creates memory/index.md for quick memory lookup
 - All memories are version-controlled (not in .gitignore)
 - Memories are embedded directly into PRBs during generation
