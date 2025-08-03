@@ -262,6 +262,7 @@ git_operations:
   integration_strategy: "progressive-merge"
   privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all phases - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
+  version_bump: "major"               # System-wide changes = major version
   main_protection: "mandatory"
   
 # MANDATORY: Knowledge Management Section

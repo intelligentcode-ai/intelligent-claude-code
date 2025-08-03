@@ -23,13 +23,14 @@ Analyzes work requirements, calculates complexity score, selects optimal PRB tem
 
 ## Core Actions
 1. **Parse Requirements**: Extract work type and description
-2. **Analyze Complexity**: Calculate score based on scope, files, integration
-3. **Select Template**: Choose optimal PRB template (or use override)
-4. **Generate PRB**: Create comprehensive blueprint with all context
-5. **Handle Decomposition**: For large/mega PRBs, auto-generate sub-PRBs
-6. **Store PRB**: Save to configured PRB path (default: prbs/active/)
-7. **Trigger Execution**: Launch appropriate execution pattern
-8. **Return ID**: Provide PRB ID for tracking
+2. **Search Memory**: MANDATORY - Query memory/[topic]/ for relevant patterns
+3. **Analyze Complexity**: Calculate score based on scope, files, integration
+4. **Select Template**: Choose optimal PRB template (or use override)
+5. **Generate PRB**: Create comprehensive blueprint with embedded memory entries
+6. **Handle Decomposition**: For large/mega PRBs, auto-generate sub-PRBs
+7. **Store PRB**: Save to configured PRB path (default: prbs/active/)
+8. **Trigger Execution**: Launch appropriate execution pattern
+9. **Return ID**: Provide PRB ID for tracking
 
 ## Complexity Analysis
 **Scoring Factors:**
@@ -59,7 +60,8 @@ Analyzes work requirements, calculates complexity score, selects optimal PRB tem
 ## Integration Points
 - **Replaces Inner Workflow**: PRBs contain all context for direct execution
 - **Works with Outer Workflow**: Large PRBs integrate with story/epic flow
-- **Memory Integration**: Pre-searches patterns, captures learnings
+- **Memory-First Enforcement**: MANDATORY memory search before PRB generation
+- **Memory Integration**: Embeds top 2-3 relevant entries in PRB context
 - **Git Integration**: Includes all git operations in blueprint
 
 ## Examples
