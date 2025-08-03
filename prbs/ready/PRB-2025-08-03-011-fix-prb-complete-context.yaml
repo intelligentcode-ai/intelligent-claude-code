@@ -1,0 +1,153 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix PRBs missing complete context and file references"
+prb_id: "PRB-2025-08-03-011"
+complexity: "Large"
+score: 20
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["prb-generation", "context-completeness", "critical-bug"]
+
+## Context
+type: "BUG_FIX"
+priority: "CRITICAL"
+project: "intelligent-claude-code"
+requester: "User - PRBs missing complete context and file references"
+git_privacy: true
+
+## Complete System Context
+system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
+implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+no_code_generation: true
+
+### Critical File References
+- CLAUDE.md: Project instructions and context
+- ~/.claude/CLAUDE.md: User global instructions
+- ~/.claude/config.md: System configuration
+- ~/.claude/modes/virtual-team.md: Virtual team mode
+- ~/.claude/roles/specialists.md: Role definitions
+- ~/.claude/behaviors/*.md: All behavioral patterns
+- ~/.claude/behaviors/shared-patterns/*.md: Shared patterns
+
+### Current Configuration
+```yaml
+# From ~/.claude/config.md
+team_maturity_level: "L3"
+pm_always_active: true
+git_privacy: true
+memory_integration: true
+blocking_enabled: true
+auto_correction: true
+```
+
+## Problem Statement
+PRBs are being generated without complete context, causing execution failures:
+- Missing file references to behaviors/patterns
+- Missing configuration values
+- Missing system nature reminders
+- Incomplete context leads to wrong implementations
+
+### Current Issues:
+- PRBs don't include behavior file references
+- Configuration not embedded
+- System nature not emphasized
+- Agents lose context during execution
+
+### Required Behavior:
+- **EVERY** PRB must include ALL relevant file paths
+- **EMBED** complete configuration
+- **INCLUDE** system nature in every section
+- **REFERENCE** all behavioral patterns needed
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: PRB templates must have complete context sections
+2. **FR2**: Auto-include all relevant file references
+3. **FR3**: Embed configuration values not just names
+4. **FR4**: System nature in EVERY agent instruction
+5. **FR5**: Behavioral pattern references with paths
+
+### Non-Functional Requirements
+1. **NFR1**: Zero context loss during execution
+2. **NFR2**: Complete self-contained PRBs
+3. **NFR3**: No external lookups needed
+
+## Sequential Thinking
+sequential_thinking:
+  required: true
+  command: "/icc-think-sequential"
+  focus_areas:
+    - "Complete context structure"
+    - "File reference completeness"
+    - "Configuration embedding"
+    - "System nature enforcement"
+
+## Implementation Details
+
+### Affected Files
+- ALL PRB templates in src/prb-templates/
+- `.claude/behaviors/prb-creation-mandates.md`
+- `.claude/behaviors/prb-auto-trigger.md`
+
+### Key Changes Needed
+
+1. **PRB Template Context Section**:
+```yaml
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM"
+  no_code: "ONLY BEHAVIORAL PATTERNS IN MARKDOWN"
+  
+  critical_files:
+    - path: "~/.claude/CLAUDE.md"
+      purpose: "User global instructions"
+    - path: "~/.claude/behaviors/[specific].md"
+      purpose: "Behavioral pattern being modified"
+      
+  configuration:
+    # FULL CONFIG VALUES, not just names
+    autonomy_level: "L3"
+    git_privacy: true
+    # ... all relevant settings
+    
+  behavioral_patterns:
+    - "~/.claude/behaviors/prb-enforcement.md"
+    - "~/.claude/behaviors/shared-patterns/memory-operations.md"
+    # ... all patterns needed for this PRB
+```
+
+2. **Every Agent Instruction**:
+```markdown
+CRITICAL CONTEXT:
+- System: MARKDOWN-BASED AI-AGENTIC SYSTEM
+- Implementation: BEHAVIORAL PATTERNS ONLY
+- NO CODE/FUNCTIONS/CLASSES
+- Files: [list all files being modified]
+- Configuration: [embed all settings]
+```
+
+## Success Criteria
+1. PRBs are completely self-contained
+2. No context lookups needed during execution
+3. All file paths included
+4. Configuration values embedded
+5. System nature in every instruction
+
+## Role Assignments
+- **Lead**: @AI-Engineer (ultra-thinking)
+- **Reviewer**: @AI-PRB-Specialist
+
+## Validation Steps
+1. Check PRB has all file references
+2. Verify configuration embedded
+3. Test execution needs no lookups
+4. Confirm system nature throughout
+
+## Risk Assessment
+- **CRITICAL Risk**: Context loss causes wrong implementations
+- **Mitigation**: Complete context mandatory
+
+## Notes
+CRITICAL: Every PRB must be COMPLETELY self-contained with ALL context, file references, configuration values, and system nature embedded throughout.

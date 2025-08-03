@@ -1,0 +1,242 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Make PRB templates fully self-contained with complete context"
+prb_id: "PRB-2025-08-03-013"
+complexity: "Mega"
+score: 35
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["prb-templates", "self-contained", "critical-fix", "end-to-end"]
+
+## Context
+type: "BUG_FIX"
+priority: "CRITICAL"
+project: "intelligent-claude-code"
+requester: "User - PRBs must be completely self-contained for end-to-end execution"
+git_privacy: true
+
+## Complete System Context
+system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
+implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY - NO CODE"
+project_location: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+
+### Critical Understanding
+PRBs must contain EVERYTHING needed for execution without ANY external lookups:
+- Complete file paths with content samples
+- All configuration values (not just names)
+- Full behavioral patterns (not just references)
+- Complete examples and templates
+- All URLs, documentation links
+- System nature reminders throughout
+- Execution environment details
+
+## Problem Statement
+Current PRB templates are NOT self-contained, causing execution failures:
+- Templates have placeholders without guidance
+- No sections for complete context embedding
+- Missing file content samples
+- No configuration value embedding
+- Agents lose context and create code instead of patterns
+
+### Current Issues:
+- Templates too minimal
+- Context sections inadequate
+- No enforcement of completeness
+- Missing content samples
+- No end-to-end information
+
+### Required Behavior:
+- **EVERY** PRB completely self-contained
+- **ALL** context embedded, not referenced
+- **COMPLETE** file samples included
+- **FULL** configuration values present
+- **END-TO-END** execution possible
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Redesign ALL templates with complete context sections
+2. **FR2**: Add mandatory fields for file contents/samples
+3. **FR3**: Enforce complete configuration embedding
+4. **FR4**: Include system reminders in every section
+5. **FR5**: Add validation that PRB is self-contained
+
+### Non-Functional Requirements
+1. **NFR1**: Zero external lookups needed
+2. **NFR2**: Complete end-to-end execution
+3. **NFR3**: Context persistence guaranteed
+
+## Sequential Thinking
+sequential_thinking:
+  required: true
+  command: "/icc-think-sequential"
+  focus_areas:
+    - "Self-contained template structure"
+    - "Context completeness validation"
+    - "File content embedding approach"
+    - "Configuration value inclusion"
+    - "End-to-end execution flow"
+
+## Implementation Details
+
+### Affected Files
+- ALL templates in `src/prb-templates/`
+- `.claude/behaviors/prb-creation-mandates.md`
+- `.claude/behaviors/prb-auto-trigger.md`
+- `.claude/behaviors/shared-patterns/prb-patterns.md` (create)
+
+### New Template Structure Required
+```yaml
+# COMPLETE CONTEXT SECTION (MANDATORY)
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM - NO CODE GENERATION"
+  project_root: "[FULL_PATH]"
+  
+  # Configuration with VALUES not names
+  configuration_values:
+    autonomy_level: "L3"  # Actual value
+    git_privacy: true     # Actual value
+    branch_protection: true
+    # ALL relevant settings with values
+    
+  # Files with SAMPLES
+  files_to_modify:
+    - path: "~/.claude/behaviors/example.md"
+      current_content: |
+        ```markdown
+        # Current content sample
+        [Include relevant section]
+        ```
+      modification_needed: "Add new pattern X"
+      
+  # Behavioral patterns with CONTENT
+  required_patterns:
+    - pattern: "memory-operations"
+      location: "~/.claude/behaviors/shared-patterns/memory-operations.md"
+      relevant_section: |
+        ```markdown
+        [Include the actual pattern content needed]
+        ```
+        
+  # System reminders
+  critical_reminders:
+    - "This is a MARKDOWN-BASED system"
+    - "Create ONLY behavioral patterns"
+    - "NO functions, code, or classes"
+    - "All implementations in markdown"
+    
+  # External resources
+  documentation:
+    - url: "https://docs.anthropic.com/claude-code"
+      relevant_info: "[What's needed from docs]"
+      
+# REQUIREMENTS WITH FULL DETAILS
+requirements:
+  functional:
+    - id: "FR1"
+      description: "[COMPLETE DESCRIPTION]"
+      implementation_approach: "[HOW IN MARKDOWN]"
+      
+  processual:
+    - id: "PR1"
+      description: "Memory search before implementation"
+      execution: "Search memory/[topic]/ for patterns"
+    - id: "PR2"
+      description: "Knowledge capture after completion"
+      execution: "Store in memory/[topic]/[subtopic].md"
+    - id: "PR3"
+      description: "Review by specified SME"
+      execution: "@Role reviews implementation"
+    - id: "PR4"
+      description: "Git operations per specification"
+      execution: "Branch, commit (respecting git_privacy), PR"
+      
+# IMPLEMENTATION WITH SAMPLES
+implementation:
+  example_patterns:
+    - description: "Example of correct pattern"
+      sample: |
+        ```markdown
+        [Show exact format expected]
+        ```
+
+# GIT OPERATIONS (MANDATORY SECTION)
+git_operations:
+  branch: "[BRANCH_NAME]"
+  commits:
+    - message: "[COMMIT_MESSAGE]"
+      files: "[FILES_TO_COMMIT]"
+  git_privacy_reminder: "If true, NO AI mentions in commits"
+  pr_required: true/false
+  
+# KNOWLEDGE MANAGEMENT (MANDATORY SECTION)  
+knowledge_management:
+  pre_execution:
+    - action: "Search memory"
+    - query: "[SEARCH_TERMS]"
+    - embed_results: true
+  post_execution:
+    - action: "Capture learnings"
+    - storage_path: "memory/[topic]/[subtopic].md"
+    - format: "Dated entries at TOP of file (newest first)"
+    
+# REVIEW PROCESS (MANDATORY SECTION)
+review_process:
+  required_reviews:
+    - reviewer: "@[SPECIALIST_ROLE]"
+      focus: "[WHAT_TO_REVIEW]"
+      must_pass: true
+  review_gates:
+    - after: "[MILESTONE]"
+      check: "[VALIDATION]"
+```
+
+### Enforcement in Behaviors
+```markdown
+PRB Generation MUST:
+1. Fill ALL context sections
+2. Include file content samples
+3. Embed configuration values
+4. Add system reminders throughout
+5. Include ALL processual requirements
+6. Fill git_operations section completely
+7. Define knowledge_management steps
+8. Specify review_process with reviewers
+9. Validate self-containment before saving
+
+MANDATORY SECTIONS:
+- complete_context (with all subsections)
+- requirements (functional AND processual)
+- git_operations (with privacy reminder)
+- knowledge_management (pre and post)
+- review_process (reviewers and gates)
+- implementation (with samples)
+```
+
+## Success Criteria
+1. PRBs need zero external lookups
+2. Agents never lose context
+3. No code generation attempts
+4. End-to-end execution works
+5. All information embedded
+
+## Role Assignments
+- **Lead**: @AI-Engineer (ultra-thinking)
+- **Reviewer**: @AI-Template-Architect (mega-thinking)
+
+## Validation Steps
+1. Test PRB has everything needed
+2. Verify no lookups required
+3. Check context maintained
+4. Confirm markdown-only output
+
+## Risk Assessment
+- **CRITICAL Risk**: Current templates cause failures
+- **Mitigation**: Complete template redesign
+- **CRITICAL Risk**: Incomplete PRBs break system
+- **Mitigation**: Mandatory validation
+
+## Notes
+CRITICAL: PRBs must be COMPLETELY self-contained. No external lookups. All context embedded. End-to-end execution must be possible with ONLY the PRB content.
