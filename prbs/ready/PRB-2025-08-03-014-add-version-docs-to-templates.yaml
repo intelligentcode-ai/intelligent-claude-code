@@ -1,0 +1,94 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Add version bumping and documentation to ALL PRB templates"
+prb_id: "PRB-2025-08-03-014"
+complexity: "Medium"
+score: 12
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["templates", "version-bump", "documentation", "processual"]
+
+## Context
+type: "ENHANCEMENT"
+priority: "CRITICAL"
+project: "intelligent-claude-code"
+requester: "User - Version bumping and docs missing from templates"
+git_privacy: true
+
+## Complete System Context
+system_type: "MARKDOWN-BASED AI-AGENTIC VIRTUAL TEAM SYSTEM"
+project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+
+### Current State
+- Only Medium and Tiny templates have version_bump
+- Documentation updates not clearly specified
+- Missing from Nano, Large, Mega templates
+
+## Problem Statement
+PRB templates are missing critical processual requirements:
+- Version bumping not in all templates
+- Documentation update requirements missing
+- Release process not defined
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Add version_bump to ALL templates
+2. **FR2**: Add documentation_updates section
+3. **FR3**: Include CHANGELOG update requirements
+4. **FR4**: Add release notes generation
+
+### Processual Requirements
+1. **PR1**: Version bump before merge
+2. **PR2**: Update relevant documentation
+3. **PR3**: Update CHANGELOG.md
+4. **PR4**: Generate release notes if needed
+
+## Implementation Details
+
+### Affected Files
+- `src/prb-templates/nano-prb-template.yaml` - Add version_bump
+- `src/prb-templates/large-prb-template.yaml` - Add version_bump
+- `src/prb-templates/mega-prb-template.yaml` - Add version_bump
+- ALL templates - Add documentation_updates section
+
+### Required Additions
+```yaml
+# In git_operations section
+version_bump:
+  type: "[NONE|PATCH|MINOR|MAJOR]"
+  before_merge: true
+  
+# New section in ALL templates  
+documentation_updates:
+  required_docs:
+    - file: "README.md"
+      update: "[DESCRIBE_UPDATE]"
+    - file: "CHANGELOG.md"
+      update: "[ADD_ENTRY]"
+  api_docs: "[YES/NO]"
+  user_guides: "[YES/NO]"
+```
+
+## Success Criteria
+1. ALL templates have version_bump
+2. ALL templates have documentation_updates
+3. Clear guidance on when to bump versions
+4. Documentation requirements explicit
+
+## Role Assignments
+- **Lead**: @AI-Engineer
+- **Reviewer**: @Documentation-Specialist
+
+## Git Operations
+- Branch: feature/add-version-docs-templates
+- Commits: "feat: Add version bump and docs to all templates"
+- version_bump: PATCH
+
+## Knowledge Management
+- Store in: memory/templates/version-documentation.md
+
+## Notes
+Critical: Every change needs version consideration and documentation updates.
