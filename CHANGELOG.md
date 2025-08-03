@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.3.0] - 2025-08-03
+
+### Added
+- Memory-first enforcement in PRB generation - MANDATORY memory search before creating PRBs
+- Git push operation added to mandatory PRB execution checklist
+- PRB completion enforcement to prevent false completion claims
+- Settings compliance verification in PRB execution
+- Role assignment enforcement requiring PM + Architect collaboration
+- Learning capture for all critical fixes
+
+### Fixed
+- **CRITICAL**: PRBs were being created on feature branches but not pushed to remote
+- **CRITICAL**: System falsely claiming PRB completion without executing all steps
+- **CRITICAL**: Settings (like git_privacy) were being ignored during PRB execution
+- **CRITICAL**: Memory path violations - system was using date-based paths instead of topic-based
+- **CRITICAL**: Role assignments were bypassing mandatory PM + Architect collaboration
+- **CRITICAL**: PRBs missing complete context and embedded learnings
+- **CRITICAL**: Lifecycle management not moving completed PRBs properly
+
+### Changed
+- PRB execution now includes mandatory git push after commits
+- PRB templates updated with enforcement reminders and checklists
+- Memory system enforces topic-based structure: memory/[topic]/[subtopic].md
+- All behavioral patterns updated for memory-first pattern
+- Documentation files must use lowercase naming (not UPPERCASE)
+
 ## [6.1.0] - 2025-08-03
 
 ### Added
