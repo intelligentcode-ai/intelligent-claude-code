@@ -291,6 +291,76 @@ review_process:
     tech_lead: "@System-Engineer"
   escalation: "executive_review"
 
+# MANDATORY: Documentation Management Section
+documentation_management:
+  required_updates:
+    changelog:
+      file: "CHANGELOG.md"
+      entry_format: |
+        ## [MAJOR_VERSION] - DATE
+        ### BREAKING CHANGES
+        - [SYSTEM_WIDE_BREAKING_CHANGES]
+        - [MIGRATION_REQUIREMENTS]
+        ### Added
+        - [MAJOR_SYSTEM_CAPABILITIES]
+        - [NEW_ARCHITECTURAL_COMPONENTS]
+        ### Changed
+        - [FUNDAMENTAL_SYSTEM_CHANGES]
+        - [PERFORMANCE_IMPROVEMENTS]
+        ### Removed
+        - [DEPRECATED_FEATURES_REMOVED]
+        ### Migration Guide
+        - [STEP_BY_STEP_MIGRATION_INSTRUCTIONS]
+      semantic_versioning: true
+      breaking_changes: true
+      mandatory: true
+      
+    readme:
+      file: "README.md"  
+      update_required: "YES" # Always for system-wide changes
+      sections_affected: "[ALL_MAJOR_SECTIONS]"
+      user_impact: "[COMPREHENSIVE_SYSTEM_OVERHAUL_DESCRIPTION]"
+      breaking_changes_notice: "YES"
+      
+    api_docs:
+      update_required: "YES" # System-wide changes always affect APIs
+      files_affected: "[ALL_API_DOCUMENTATION]"
+      breaking_changes: "YES" # Major versions typically have breaking changes
+      new_endpoints: "[NEW_API_SURFACES]"
+      deprecated_endpoints: "[DEPRECATED_API_LIST]"
+      
+    user_guides:
+      update_required: "YES" # System overhaul requires new guides
+      guides_affected: "[ALL_USER_DOCUMENTATION]"
+      new_workflows: "[COMPREHENSIVE_WORKFLOW_CHANGES]"
+      migration_tutorials: "YES"
+    
+    architecture_docs:
+      update_required: "YES" # System-wide changes = architecture changes
+      files_affected: "[docs/architecture/*.md]"
+      decision_records: "YES" # ADRs required for major changes
+      system_diagrams: "YES" # Visual updates required
+      
+  release_management:
+    github_release: "YES"                    # Always for major versions
+    release_notes: "COMPREHENSIVE"           # Detailed system change documentation
+    migration_guide: "YES"                   # Always required for major versions
+    announcement: "YES"                      # Major system changes need announcement
+    blog_post: "RECOMMENDED"                 # Consider detailed blog post
+    user_communication: "MULTI_CHANNEL"      # Email, docs, social media
+    
+  validation_checklist:
+    - "CHANGELOG.md updated with comprehensive breaking changes and migration info"
+    - "Version bumped (major) for system-wide breaking changes"
+    - "README.md completely updated reflecting new system architecture"
+    - "All API documentation updated with breaking changes clearly marked"
+    - "User guides rewritten for new system workflows"
+    - "Architecture documentation updated with decision records"
+    - "GitHub release created with comprehensive release notes"
+    - "Migration guide provided with step-by-step instructions"
+    - "User communication plan executed across all channels"
+    - "System diagrams updated to reflect new architecture"
+
 # MANDATORY: Implementation Samples Section
 # ⚠️ EXECUTION CHECKLIST: All 6 sections + cascading phase coordination must be completed
 implementation_samples:
@@ -308,12 +378,13 @@ implementation_samples:
     ☐ Git Operations Section - Multi-phase coordination with privacy_filter for all
     ☐ Knowledge Management Section - Architectural decisions + patterns captured
     ☐ Review Process Section - Multi-gate reviews completed across all phases
+    ☐ Documentation Management Section - COMPREHENSIVE system documentation updated
     ☐ Implementation Samples Section - Applied with proper phase coordination
     ☐ LARGE PRB INHERITANCE - All Large sub-PRBs have complete 6-section context
     ☐ CASCADING EXECUTION - Each Large PRB follows its own mandatory checklist
     ☐ PROGRESSIVE VALIDATION - Each phase validates before proceeding
     
-    SKIP NOTHING. EXECUTE EVERYTHING. COORDINATE ALL PHASES AND SUB-PRBS.
+    SKIP NOTHING. EXECUTE EVERYTHING. COORDINATE ALL PHASES AND SUB-PRBS. COMPLETE SYSTEM LIFECYCLE.
 
 # Comprehensive learning
 knowledge_capture:
