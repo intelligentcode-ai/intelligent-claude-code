@@ -1,0 +1,118 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix system ignoring memory path definitions"
+prb_id: "PRB-2025-08-03-018"
+complexity: "Large"
+score: 18
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["memory-system", "path-violations", "critical-bug"]
+
+## Complete Context
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM - NO CODE GENERATION"
+  project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+  
+  configuration_values:
+    memory_integration: true
+    
+  correct_memory_structure: |
+    memory/[topic]/[subtopic].md
+    Examples:
+    - memory/validation/execution-context.md
+    - memory/templates/prb-self-contained.md
+    - memory/prb-execution/memory-first.md
+    
+  wrong_structures_used: |
+    memory/Learning/2025/08/  # WRONG - date-based
+    memory/Pattern/2025/01/   # WRONG - date-based
+    memory/Knowledge/[date]/  # WRONG - date-based
+    
+  files_to_modify:
+    - path: "src/behaviors/shared-patterns/memory-operations.md"
+      issue: "May have conflicting patterns"
+    - path: "src/behaviors/learning-team-automation.md"
+      issue: "May reference old structure"
+    - path: "ALL PRB templates"
+      issue: "May have wrong examples"
+
+## Problem Statement
+System consistently violates memory path definitions, using date-based structures instead of topic-based.
+
+### Current Issues:
+- Creates memory/Learning/[YYYY]/[MM]/ directories
+- Ignores memory/[topic]/[subtopic].md pattern
+- Templates may have wrong examples
+- Behavioral patterns conflicting
+
+### Required Behavior:
+- ALWAYS use memory/[topic]/[subtopic].md
+- NO date-based directory structures
+- Dates go IN the file as entries
+- Topic-based organization only
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Remove ALL date-based path references
+2. **FR2**: Enforce topic/subtopic structure everywhere
+3. **FR3**: Update all templates with correct examples
+4. **FR4**: Add path validation
+5. **FR5**: Block wrong path creation
+
+### Processual Requirements
+1. **PR1**: Search all files for wrong patterns
+2. **PR2**: Update with correct structure
+3. **PR3**: Test path enforcement
+4. **PR4**: Document correct usage
+
+## Git Operations
+branch: "feature/PRB-018-fix-memory-paths"
+commits:
+  - message: "fix: Remove date-based memory path references"
+  - message: "fix: Enforce topic/subtopic memory structure"
+git_privacy: true
+version_bump: PATCH
+
+## Knowledge Management
+pre_execution:
+  - action: "Search memory/system/"
+  - query: "memory path structure"
+post_execution:
+  - action: "Store learnings"
+  - path: "memory/system/memory-path-enforcement.md"
+
+## Review Process
+required_reviews:
+  - reviewer: "@AI-Memory-Architect"
+    focus: "Path structure consistency"
+    must_pass: true
+
+## Implementation Samples
+correct_usage: |
+  # Store learning
+  Write to: memory/prb-execution/false-completion.md
+  
+  # Entry format (dates IN file)
+  ## 2025-08-03: Title
+  **Context:** PRB-XXX
+  **Problem:** Description
+  **Solution:** Fix
+  ---
+
+wrong_usage: |
+  # NEVER do this:
+  memory/Learning/2025/08/topic.md  # NO!
+  memory/Pattern/2025/01/           # NO!
+
+## Success Criteria
+1. Zero date-based paths remain
+2. All memory uses topic/subtopic
+3. Templates show correct examples
+4. Path violations blocked
+
+## Risk Assessment
+- **HIGH Risk**: Continued path violations
+- **Mitigation**: Hard enforcement in all patterns

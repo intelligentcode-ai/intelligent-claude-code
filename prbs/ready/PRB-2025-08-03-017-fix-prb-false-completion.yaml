@@ -1,0 +1,112 @@
+# Product Requirement Blueprint (PRB)
+
+## Metadata
+title: "[AI-Engineer] Fix system falsely claiming PRB completion without all steps"
+prb_id: "PRB-2025-08-03-017"
+complexity: "Large"
+score: 20
+priority: "CRITICAL"
+created_by: "@PM"
+created_at: "2025-08-03"
+tags: ["prb-execution", "false-completion", "critical-bug"]
+
+## Complete Context
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM - NO CODE GENERATION"
+  project_root: "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+  
+  configuration_values:
+    autonomy_level: "L3"
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    
+  critical_observation: |
+    System claims PRBs complete when critical steps missing:
+    - Says "COMPLETE" without reviews
+    - Says "COMPLETE" without git operations
+    - Says "COMPLETE" without knowledge capture
+    - Ignores mandatory processual requirements
+    
+  files_to_modify:
+    - path: "src/behaviors/prb-execution.md"
+      current_issue: "May not exist or not enforce completion criteria"
+    - path: "src/behaviors/prb-enforcement.md"
+      current_issue: "Not blocking false completions"
+    - path: "src/prb-templates/*.yaml"
+      current_issue: "Completion criteria may be unclear"
+
+## Problem Statement
+System falsely claims PRB completion when mandatory steps are NOT done. This violates the fundamental PRB contract.
+
+### Current Issues:
+- Agent says "PRB COMPLETE" without executing all steps
+- Templates may not clearly define completion criteria
+- No enforcement of processual requirements
+- System ignores mandatory sections
+
+### Required Behavior:
+- PRB is ONLY complete when ALL requirements met
+- HARD block on claiming completion early
+- Clear completion checklist enforcement
+- System must track execution state
+
+## Requirements
+
+### Functional Requirements
+1. **FR1**: Create mandatory completion checklist
+2. **FR2**: Block "COMPLETE" claims without all steps
+3. **FR3**: Track execution state throughout PRB
+4. **FR4**: Enforce processual requirements
+5. **FR5**: Add completion validation
+
+### Processual Requirements
+1. **PR1**: Must execute ALL git operations
+2. **PR2**: Must complete ALL reviews
+3. **PR3**: Must store ALL knowledge
+4. **PR4**: Must validate ALL success criteria
+
+## Git Operations
+branch: "feature/PRB-017-fix-false-completion"
+commits:
+  - message: "fix: Add mandatory PRB completion checklist"
+  - message: "fix: Block false completion claims"
+git_privacy: true
+version_bump: PATCH
+
+## Knowledge Management
+pre_execution:
+  - action: "Search memory/prb-execution/"
+  - query: "completion criteria validation"
+post_execution:
+  - action: "Store learnings"
+  - path: "memory/prb-execution/completion-enforcement.md"
+
+## Review Process
+required_reviews:
+  - reviewer: "@AI-PRB-Specialist"
+    focus: "Completion criteria enforcement"
+    must_pass: true
+
+## Implementation Samples
+completion_checklist: |
+  ## PRB Completion Checklist
+  [ ] All functional requirements met
+  [ ] All processual requirements met
+  [ ] Git operations executed
+  [ ] Reviews completed and passed
+  [ ] Knowledge captured
+  [ ] Success criteria validated
+  [ ] PRB moved to completed/
+  
+  ONLY when ALL checked → PRB COMPLETE
+
+## Success Criteria
+1. No false completion claims
+2. Clear execution tracking
+3. Mandatory checklist enforcement
+4. System respects all requirements
+
+## Risk Assessment
+- **CRITICAL Risk**: False completions break trust
+- **Mitigation**: Hard enforcement of checklist
