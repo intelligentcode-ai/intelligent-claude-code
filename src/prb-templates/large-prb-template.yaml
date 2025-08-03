@@ -214,6 +214,52 @@ review_process:
   coordination: "continuous"
   escalation: "architect_consultation"
 
+# MANDATORY: Documentation Management Section
+documentation_management:
+  required_updates:
+    changelog:
+      file: "CHANGELOG.md"
+      entry_format: |
+        ## [VERSION] - DATE
+        ### Added
+        - [LARGE_FEATURE_DESCRIPTION]
+        - [KEY_CAPABILITIES_ADDED]
+        ### Changed
+        - [ARCHITECTURAL_CHANGES_IF_ANY]
+      semantic_versioning: true
+      mandatory: true
+      
+    readme:
+      file: "README.md"  
+      update_required: "[YES_FOR_MAJOR_FEATURES]"
+      sections_affected: "[FEATURES/INSTALLATION/USAGE/ARCHITECTURE]"
+      user_impact: "[COMPREHENSIVE_DESCRIPTION]"
+      
+    api_docs:
+      update_required: "[YES_IF_API_CHANGES]"
+      files_affected: "[docs/api/*.md_LIST]"
+      breaking_changes: "[YES/NO_WITH_DETAILS]"
+      
+    user_guides:
+      update_required: "[YES_FOR_NEW_WORKFLOWS]"
+      guides_affected: "[docs/guides/*.md_LIST]"
+      new_features: "[FEATURE_DOCUMENTATION_NEEDS]"
+    
+  release_management:
+    github_release: "YES"                    # Always for minor versions
+    release_notes: "YES"                     # Comprehensive feature documentation
+    migration_guide: "[YES_IF_BREAKING]"     # Required for breaking changes
+    announcement: "[YES_FOR_MAJOR_FEATURES]" # Blog/announcement consideration
+    
+  validation_checklist:
+    - "CHANGELOG.md updated with comprehensive feature description"
+    - "Version bumped (minor) for feature additions"
+    - "README.md updated with new capabilities and usage"
+    - "API documentation updated for all new endpoints"
+    - "User guides created/updated for new workflows"
+    - "GitHub release created with detailed release notes"
+    - "Migration guide provided if breaking changes"
+
 # MANDATORY: Implementation Samples Section
 # ⚠️ EXECUTION CHECKLIST: All 6 sections + sub-PRB coordination must be completed
 implementation_samples:
@@ -233,11 +279,12 @@ implementation_samples:
     ☐ Git Operations Section - Coordination strategy with privacy_filter for all
     ☐ Knowledge Management Section - Complex patterns captured + stored
     ☐ Review Process Section - Multi-gate reviews completed at each validation point
+    ☐ Documentation Management Section - CHANGELOG, README, and release docs updated
     ☐ Implementation Samples Section - Applied with proper sub-PRB coordination
     ☐ SUB-PRB INHERITANCE - All sub-PRBs have complete 6-section context
     ☐ SUB-PRB EXECUTION - Each sub-PRB follows its own mandatory checklist
     
-    SKIP NOTHING. EXECUTE EVERYTHING. COORDINATE ALL SUB-PRBS.
+    SKIP NOTHING. EXECUTE EVERYTHING. COORDINATE ALL SUB-PRBS. FULL LIFECYCLE DELIVERY.
 
 # Complex learning capture
 learning_strategy:

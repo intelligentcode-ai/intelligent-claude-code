@@ -58,6 +58,30 @@ review_process:
   type: "no_review_needed"
   rationale: "trivial_change"
 
+# MANDATORY: Documentation Management Section
+documentation_management:
+  required_updates:
+    changelog:
+      file: "CHANGELOG.md"
+      entry_format: |
+        ### Fixed
+        - [NANO_CHANGE_DESCRIPTION]
+      semantic_versioning: true
+      mandatory: true
+      
+    readme:
+      file: "README.md"  
+      update_required: "[YES_IF_DOCS_CHANGED]"
+      sections_affected: "[NONE_USUALLY]"
+      
+  release_management:
+    github_release: "NO"     # Patch bumps don't need releases
+    release_notes: "NO"      # Trivial changes documented in CHANGELOG only
+    
+  validation_checklist:
+    - "CHANGELOG.md updated with fix entry"
+    - "Version bumped (patch) if applicable"
+
 # MANDATORY: Implementation Samples Section
 # ⚠️ EXECUTION CHECKLIST: All 6 sections must be completed
 implementation_samples:
@@ -70,8 +94,9 @@ implementation_samples:
     ☐ Git Operations Section - Commands executed with privacy_filter
     ☐ Knowledge Management Section - Captured if needed
     ☐ Review Process Section - Completed or justified skip
+    ☐ Documentation Management Section - CHANGELOG updated, version bumped
     ☐ Implementation Samples Section - Applied correctly
     
-    SKIP NOTHING. EXECUTE EVERYTHING.
+    SKIP NOTHING. EXECUTE EVERYTHING. DOCUMENT ALL CHANGES.
   
 # Minimal overhead for trivial changes but ALL sections still mandatory
