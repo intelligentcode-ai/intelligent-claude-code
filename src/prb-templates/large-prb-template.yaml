@@ -2,6 +2,10 @@
 # Auto-selected for complexity score 16-30
 # Manages multiple Medium/Tiny PRBs
 
+# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
+# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
+# ⚠️ SUB-PRB INHERITANCE: All sub-PRBs inherit ALL 6 mandatory sections
+
 id: LARGE-[AUTO]
 type: large-prb
 complexity: complex
@@ -172,12 +176,14 @@ validation_gates:
     reviewer: "@QA-Engineer"
     
 # MANDATORY: Git Operations Section
+# ⚠️ git_privacy: true = NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
+# ⚠️ SUB-PRB COORDINATION: All sub-PRBs must follow same git privacy settings
 git_operations:
   branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
   branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
   branch_name: "[FROM_CONFIG_PREFIX]/[STORY-ID]-[DESCRIPTION]"
   commit_coordination: "sub_prb_aware"
-  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all sub-PRBs
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all sub-PRBs - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
   merge_request: true # Parent asks user
   squash_commits: true
@@ -208,6 +214,7 @@ review_process:
   escalation: "architect_consultation"
 
 # MANDATORY: Implementation Samples Section
+# ⚠️ EXECUTION CHECKLIST: All 6 sections + sub-PRB coordination must be completed
 implementation_samples:
   example_commit: "[LARGE-001]: Implement complete user management system"
   example_branch: "feature/LARGE-001-user-management"
@@ -218,6 +225,18 @@ implementation_samples:
     - TINY-001: Configuration updates
     Complex coordination across 15+ files
     Multiple service integration points
+
+  execution_checklist: |
+    ☐ Complete Context Section - Settings and scope loaded for parent + all sub-PRBs
+    ☐ Requirements Section - All functional/processual/technical requirements met
+    ☐ Git Operations Section - Coordination strategy with privacy_filter for all
+    ☐ Knowledge Management Section - Complex patterns captured + stored
+    ☐ Review Process Section - Multi-gate reviews completed at each validation point
+    ☐ Implementation Samples Section - Applied with proper sub-PRB coordination
+    ☐ SUB-PRB INHERITANCE - All sub-PRBs have complete 6-section context
+    ☐ SUB-PRB EXECUTION - Each sub-PRB follows its own mandatory checklist
+    
+    SKIP NOTHING. EXECUTE EVERYTHING. COORDINATE ALL SUB-PRBS.
 
 # Complex learning capture
 learning_strategy:

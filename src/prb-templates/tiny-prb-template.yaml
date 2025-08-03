@@ -1,6 +1,9 @@
 # Tiny PRB Template - Simple Single-File Changes
 # Auto-selected for complexity score 3-5
 
+# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
+# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
+
 id: TINY-[AUTO]
 type: tiny-prb
 complexity: simple
@@ -44,12 +47,13 @@ validation:
   - "[CHECK_2]"
 
 # MANDATORY: Git Operations Section
+# ⚠️ git_privacy: true = NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
 git_operations:
   branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
   branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
   branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
   commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled
+  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled - CRITICAL!
   default_branch: "[FROM_CONFIG]"     # Target configured default branch
   version_bump: "[NONE|PATCH]"
 
@@ -71,6 +75,7 @@ review_process:
   escalation: "if_validation_fails"
 
 # MANDATORY: Implementation Samples Section
+# ⚠️ EXECUTION CHECKLIST: All 6 sections must be completed
 implementation_samples:
   example_commit: "[TINY-001]: Add input validation to user form"
   example_branch: "feature/TINY-001-add-input-validation"
@@ -79,6 +84,16 @@ implementation_samples:
     - Add email validation regex
     - Add required field checks
     - Update error messaging
+  
+  execution_checklist: |
+    ☐ Complete Context Section - Settings loaded and applied
+    ☐ Requirements Section - All functional/processual/technical requirements met
+    ☐ Git Operations Section - Commands executed with privacy_filter
+    ☐ Knowledge Management Section - Pattern search + capture if novel
+    ☐ Review Process Section - Self-review completed or escalated
+    ☐ Implementation Samples Section - Applied correctly
+    
+    SKIP NOTHING. EXECUTE EVERYTHING.
   
 learning_capture:
   condition: "if_novel_pattern"
