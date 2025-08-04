@@ -204,6 +204,77 @@ Action: Deferred to future PRB
 **VALIDATION:** Each state transition requires evidence of completion AND settings compliance
 **BLOCKING:** Cannot claim completion without reaching COMPLETE state with full settings compliance
 
+## Project Scope Enforcement
+
+**MANDATORY:** MUST enforce strict project boundaries. Auto-correct scope violations.
+
+### Core Scope Rules
+
+**PROJECT BOUNDARY:** All work MUST remain within current project directory
+- **ALLOWED:** Only work within project root and subdirectories
+- **BLOCKED:** Work in ~/.claude/, other projects, or external directories
+- **ENFORCEMENT:** Block Task tool invocations attempting external work
+
+### Scope Violation Detection
+
+**MONITOR Patterns:**
+- Task tool subagent_context containing paths outside project root
+- File operations attempting to access ~/.claude/ or other projects
+- @Role delegations with external directory references
+- Work requests mentioning files outside current project
+
+**BLOCKING Triggers:**
+- Any path starting with ~/.claude/
+- Paths containing ../[project-name]/ patterns
+- References to /home/*/other-projects/
+- Task tool invocations with external working directories
+
+### Enforcement Mechanisms
+
+**PRE-EXECUTION VALIDATION:**
+- Scan all file paths before operation execution
+- Block Task tool calls with external directory context
+- Validate all work remains within project scope
+
+**REAL-TIME MONITORING:**
+- Monitor file operations for scope violations
+- Block external directory access attempts
+- Redirect scope violations back to project boundaries
+
+**ERROR MESSAGES:**
+- "❌ SCOPE VIOLATION: Work must remain within current project directory"
+- "❌ BLOCKED: Access to ~/.claude/ not permitted during project work"
+- "❌ PROJECT BOUNDARY: Cannot work outside /data/Engineering/intelligent-claude-code/"
+
+### Task Tool Scope Control
+
+**MANDATORY:** All Task tool invocations must respect project boundaries
+
+**VALIDATION RULES:**
+- Verify subagent_context paths are within project root
+- Block Task assignments with external directory references
+- Ensure all delegated work remains within project scope
+
+**SCOPE VIOLATION BLOCKING:**
+```
+IF task_path NOT starts_with(project_root):
+  BLOCK_TASK()
+  ERROR("❌ Task scope violation: {task_path} outside project boundary")
+  REDIRECT_TO_PROJECT_SCOPE()
+```
+
+### Integration with Role System
+
+**@Role ENFORCEMENT:**
+- All @Role delegations must specify project-local work only
+- Block @Role tasks attempting external directory access
+- Ensure subagents operate within project boundaries
+
+**DYNAMIC SPECIALIST CREATION:**
+- New specialists created with project scope restrictions
+- All specialist expertise scoped to current project context
+- Block specialist work outside project boundaries
+
 ## Integration Points
 
 ### With PRB Execution
