@@ -41,6 +41,13 @@ Self-contained blueprints replace complex workflows. Each PRB includes everythin
 - Version-controlled in memory/ directory
 - Topic-based organization with auto-pruning
 
+### 📋 Dynamic Best-Practices Injection
+- Add methodological approaches to `best-practices/` directory
+- Auto-discovery during PRB generation
+- Support for ANY methodology (GitOps, DevSecOps, TDD, Clean Architecture, etc.)
+- Template placeholders replaced with your project's practices
+- Zero system modification required
+
 ### ⚡ Autonomous Operation
 - **L1**: Manual approval required
 - **L2**: Architect approval (default)
@@ -53,11 +60,12 @@ Configure in CLAUDE.md where your docs/standards are. System finds and includes 
 
 1. **Request Work** → "Implement OAuth2 login"
 2. **Memory Check** → Search for existing patterns/learnings
-3. **Analyze Complexity** → System scores complexity (with PM + Architect for Large/Mega)
-4. **Generate PRB** → Self-contained blueprint with embedded context
-5. **Specialist Executes** → Single-pass implementation
-6. **Git Integration** → Auto version bump + commit + push
-7. **Learn & Store** → Capture new patterns in memory/
+3. **Best-Practices Discovery** → Find relevant methodological approaches
+4. **Analyze Complexity** → System scores complexity (with PM + Architect for Large/Mega)
+5. **Generate PRB** → Self-contained blueprint with embedded context + practices
+6. **Specialist Executes** → Single-pass implementation
+7. **Git Integration** → Auto version bump + commit + push
+8. **Learn & Store** → Capture new patterns in memory/
 
 ## Story Management
 

@@ -4,6 +4,7 @@
 
 # ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
 # ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
+# ⚠️ DYNAMIC INJECTION: [DYNAMIC_*_PRACTICES] placeholders replaced with actual content during PRB generation
 
 id: MEDIUM-[AUTO]
 type: medium-prb
@@ -21,8 +22,12 @@ complete_context:
   branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
   scope: "[FEATURE_SCOPE]"
   best_practices:
-    - source: "docs/best-practices/[DOMAIN].md"
-    - source: "[PROJECT_ARCHITECTURE_DOCS]"
+    # Auto-discovered practices from best-practices/ directory
+    # Top 2-3 relevant practices injected based on work type and complexity
+    # No manual configuration needed - system handles discovery
+    - "[DYNAMIC_BEST_PRACTICES_1]"
+    - "[DYNAMIC_BEST_PRACTICES_2]"
+    - "[DYNAMIC_BEST_PRACTICES_3]"
   code_samples:
     - search: "[PATTERN_IN_CODEBASE]"
     - reference: "[EXISTING_IMPLEMENTATION]"
@@ -45,13 +50,21 @@ requirements:
     - "[TECH_REQUIREMENT_1]"
     - "[TECH_REQUIREMENT_2]"
   constraints:
-    coding_style: "[PROJECT_CODING_STYLE]"
-    architecture: "[PROJECT_ARCHITECTURE_PATTERN]"
-    infrastructure: "[IAC_STANDARDS]"  # e.g., Terraform best practices
+    coding_style: "[DYNAMIC_CODING_PRACTICES]"        # From best-practices/development/
+    architecture: "[DYNAMIC_ARCHITECTURE_PRACTICES]"   # From best-practices/architecture/
+    infrastructure: "[DYNAMIC_OPERATIONS_PRACTICES]"   # From best-practices/operations/
+    security: "[DYNAMIC_SECURITY_PRACTICES]"          # From best-practices/security/
+    quality: "[DYNAMIC_QUALITY_PRACTICES]"            # From best-practices/quality/
     
-# Embedded learnings (no runtime search needed)
+# Embedded learnings and best-practices (no runtime search needed)
 embedded_learnings:
   # Only MOST RELEVANT 2-3 entries embedded (token-efficient)
+  # Auto-discovered from memory/ during PRB generation
+
+embedded_best_practices:
+  # Only MOST RELEVANT 2-3 practices embedded (token-efficient)
+  # Auto-discovered from best-practices/ during PRB generation
+  # Replaces [DYNAMIC_*_PRACTICES] placeholders with actual content
   # Selected based on topic match and recency
   primary_pattern: |
     From: memory/authentication/oauth2-patterns.md

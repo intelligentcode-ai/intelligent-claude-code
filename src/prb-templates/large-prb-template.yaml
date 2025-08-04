@@ -23,6 +23,12 @@ complete_context:
   branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
   business_goal: "[BUSINESS_OBJECTIVE]"
   technical_scope: "[SYSTEM_COMPONENTS]"
+  best_practices:
+    # Auto-discovered practices from best-practices/ directory
+    # Top 3 relevant practices for complex features
+    - "[DYNAMIC_BEST_PRACTICES_1]"
+    - "[DYNAMIC_BEST_PRACTICES_2]"
+    - "[DYNAMIC_BEST_PRACTICES_3]"
   
 # MANDATORY: Requirements Section
 requirements:
