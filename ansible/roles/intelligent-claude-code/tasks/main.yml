@@ -141,24 +141,7 @@
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
   when: config_md_exists.stat.exists
 
-# scores.md file removed - integrated into badges.md system
-
-- name: Check if badges.md exists
-  stat:
-    path: "{{ claude_install_path }}/badges.md"
-  register: badges_md_exists
-
-- name: Create badges.md from template (ONLY if not exists)
-  copy:
-    src: "{{ playbook_dir }}/../src/modes/badges.md"
-    dest: "{{ claude_install_path }}/badges.md"
-    mode: '0644'
-  when: not badges_md_exists.stat.exists
-
-- name: Display badges preservation notice
-  debug:
-    msg: "Badges file preserved: {{ claude_install_path }}/badges.md already exists - keeping user achievement data"
-  when: badges_md_exists.stat.exists
+# badges.md file removed - scoring system simplified to clean progress reporting
 
 # learning-callouts.md file removed - integrated into learning-team-automation.md system
 

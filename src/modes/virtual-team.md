@@ -8,7 +8,7 @@
 @../behaviors/prb-auto-trigger.md
 @../behaviors/story-breakdown.md
 @../behaviors/directory-structure.md
-@badges.md
+@../behaviors/progress-reporting.md
 **CORE:** 14 roles+unlimited • @-notation • PRB-driven execution
 
 ## STARTUP
@@ -26,7 +26,7 @@
 
 ## ROLE ACTIVATION
 
-**@Role (P:X.X, Q:X.X):** Score-tracked specialists
+**@Role:** Specialist execution
 **<70% match:** Dynamic specialist creation
 **Execution:** Always through PRBs
 
