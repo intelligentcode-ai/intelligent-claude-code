@@ -1,0 +1,131 @@
+---
+id: "{{ PRB_ID }}"
+type: TINY
+complexity: "{{ COMPLEXITY_SCORE }}"
+created: "{{ TIMESTAMP }}"
+assignedRole: "{{ ASSIGNED_ROLE }}"
+status: READY
+subagent_required: true
+model_requirement: claude-3-sonnet
+coordinator_only: true
+review_required: false
+reviewer: null
+---
+
+# [{{ ASSIGNED_ROLE }}] {{ WORK_DESCRIPTION }}
+
+## MANDATORY SUBAGENT EXECUTION
+**CRITICAL:** Parent is COORDINATOR ONLY. ALL work must be executed by subagent.
+
+### Subagent Creation Required
+**PARENT MUST EXECUTE:**
+```xml
+<invoke name="Task">
+<parameter name="taskDescription">{{ WORK_DESCRIPTION }}
+
+Complete this tiny-level task involving single-file modifications or simple features. Follow all project standards and ensure clean implementation.</parameter>
+<parameter name="projectContext">{{ COMPLETE_CONTEXT }}</parameter>
+</invoke>
+```
+
+**PARENT COORDINATION RESPONSIBILITIES:**
+- Load complete project context once
+- Create subagent via Task tool with model: claude-3-sonnet
+- Monitor subagent execution progress
+- Validate task completion against all success criteria
+- Ensure code quality standards are met
+- Update PRB status to COMPLETE
+- Capture learnings and patterns for memory storage
+
+**DIRECT EXECUTION ABSOLUTELY BLOCKED:** Parent cannot execute work directly under any circumstances
+
+## Complete Context
+
+### System Nature
+{{ SYSTEM_NATURE }}
+
+### Project Root
+{{ PROJECT_ROOT }}
+
+### Configuration Values
+{{ CONFIGURATION_VALUES }}
+
+### Critical Files
+{{ CRITICAL_FILES }}
+
+### User Requirements
+{{ USER_REQUIREMENTS }}
+
+### Embedded Memory Learnings
+{{ EMBEDDED_MEMORY_LEARNINGS }}
+
+## Requirements
+
+### Functional Requirements
+{{ FUNCTIONAL_REQUIREMENTS }}
+
+### Processual Requirements
+- PRB template: TINY complexity level
+- Single-file modifications or simple features
+- Code quality standards must be maintained
+- No formal review process required
+- Self-validation by subagent mandatory
+
+### Technical Requirements
+{{ TECHNICAL_REQUIREMENTS }}
+
+## Git Operations
+
+### Required Git Actions
+{{ GIT_OPERATIONS }}
+
+**Git Privacy Enforcement:** All commits must follow git_privacy: true setting with no AI mentions
+
+### Branch Management
+- Work performed on current branch or feature branch as specified
+- Clean commit messages following project standards
+- No merge conflicts or uncommitted changes
+
+## Knowledge Management
+
+### Learning Capture Requirements
+- Document implementation patterns used
+- Store single-file modification techniques in memory/tiny-tasks/
+- Capture any code quality insights
+- Record successful completion metrics
+
+### Memory Storage
+{{ MEMORY_STORAGE_INSTRUCTIONS }}
+
+## Review Process
+
+**Review Required:** No (tiny complexity)
+**Quality Validation:** Subagent must perform self-validation including:
+- Code quality check
+- Functional requirement verification
+- Integration testing (if applicable)  
+- Clean git state confirmation
+
+## Implementation Details
+
+### Task Scope
+- Single-file modifications or simple features
+- Clear functional requirements
+- Measurable success criteria
+- Minimal external dependencies
+
+### Quality Standards
+- Follow project coding standards
+- Maintain existing patterns and conventions
+- Ensure backward compatibility
+- No breaking changes without explicit approval
+
+### Completion Validation
+- All functional requirements met
+- Code quality standards maintained
+- Git operations completed successfully
+- System remains in clean state
+- No errors or warnings introduced
+
+**SUCCESS DEFINITION:**
+Task completed successfully through subagent execution with high code quality, meeting all functional requirements, and maintaining parent coordinator-only role throughout the process.

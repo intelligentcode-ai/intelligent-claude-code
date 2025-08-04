@@ -1,0 +1,197 @@
+---
+id: "{{ PRB_ID }}"
+type: LARGE
+complexity: "{{ COMPLEXITY_SCORE }}"
+created: "{{ TIMESTAMP }}"
+assignedRole: "{{ ASSIGNED_ROLE }}"
+status: READY
+subagent_required: true
+model_requirement: claude-3-sonnet
+coordinator_only: true
+review_required: true
+reviewer: "{{ ASSIGNED_REVIEWER }}"
+sub_prbs_enabled: true
+orchestration_required: true
+---
+
+# [{{ ASSIGNED_ROLE }}] {{ WORK_DESCRIPTION }}
+
+## MANDATORY SUBAGENT EXECUTION
+**CRITICAL:** Parent is COORDINATOR ONLY. ALL work must be executed by subagent with mandatory review and potential sub-PRB orchestration.
+
+### Subagent Creation Required
+**PARENT MUST EXECUTE:**
+```xml
+<invoke name="Task">
+<parameter name="taskDescription">{{ WORK_DESCRIPTION }}
+
+Complete this large-complexity task involving significant system changes, potential sub-PRB orchestration, and comprehensive feature development. This requires careful architectural planning, coordinated implementation across multiple components, thorough testing, and extensive validation. May require breaking down into sub-PRBs for coordinated execution.</parameter>
+<parameter name="projectContext">{{ COMPLETE_CONTEXT }}</parameter>
+</invoke>
+```
+
+**PARENT COORDINATION RESPONSIBILITIES:**
+- Load complete project context once
+- Create primary subagent via Task tool with model: claude-3-sonnet
+- Monitor subagent execution and sub-PRB orchestration
+- Coordinate between multiple subagents if sub-PRBs are created
+- Facilitate communication between subagents and reviewer
+- Validate comprehensive task completion against all success criteria
+- Ensure system-wide consistency and integration
+- Update PRB status to COMPLETE only after full review approval
+- Capture extensive learnings and architectural insights for memory storage
+
+**DIRECT EXECUTION ABSOLUTELY BLOCKED:** Parent cannot execute work directly under any circumstances
+
+## Complete Context
+
+### System Nature
+{{ SYSTEM_NATURE }}
+
+### Project Root
+{{ PROJECT_ROOT }}
+
+### Configuration Values
+{{ CONFIGURATION_VALUES }}
+
+### Critical Files
+{{ CRITICAL_FILES }}
+
+### User Requirements
+{{ USER_REQUIREMENTS }}
+
+### Embedded Memory Learnings
+{{ EMBEDDED_MEMORY_LEARNINGS }}
+
+## Requirements
+
+### Functional Requirements
+{{ FUNCTIONAL_REQUIREMENTS }}
+
+### Processual Requirements
+- PRB template: LARGE complexity level
+- Significant system modifications or complex features
+- Architectural impact assessment required
+- Sub-PRB orchestration may be necessary
+- Comprehensive code quality standards enforcement
+- Mandatory review process by assigned reviewer
+- System-wide integration testing required
+- Extensive documentation updates
+- Potential coordination with multiple system components
+
+### Technical Requirements
+{{ TECHNICAL_REQUIREMENTS }}
+
+## Sub-PRB Orchestration
+
+### Sub-PRB Creation Criteria
+If task complexity requires decomposition, subagent may create sub-PRBs for:
+- Independent components that can be developed in parallel
+- Logical feature boundaries requiring specialized expertise
+- Complex integrations requiring focused attention
+- Testing phases requiring dedicated resources
+
+### Sub-PRB Coordination Protocol
+1. **Assessment:** Subagent evaluates if sub-PRBs are needed
+2. **Decomposition:** Break down into logical, executable sub-PRBs
+3. **Creation:** Generate sub-PRBs with appropriate complexity levels
+4. **Orchestration:** Coordinate execution of sub-PRBs
+5. **Integration:** Ensure sub-PRB results integrate correctly
+6. **Validation:** Comprehensive testing of integrated solution
+
+## Git Operations
+
+### Required Git Actions
+{{ GIT_OPERATIONS }}
+
+**Git Privacy Enforcement:** All commits must follow git_privacy: true setting with no AI mentions
+
+### Branch Management
+- Feature branch strategy mandatory for large changes
+- Multiple logical commits with clear separation
+- Detailed commit messages documenting changes
+- No merge conflicts or uncommitted changes
+- Pull request creation and review workflow
+- Integration branch testing if required
+
+## Knowledge Management
+
+### Learning Capture Requirements
+- Document major architectural decisions and rationale
+- Store complex feature implementation patterns in memory/large-tasks/
+- Capture sub-PRB orchestration techniques and lessons
+- Record reviewer feedback and architectural improvements
+- Document system integration patterns and solutions
+- Store performance and scalability insights
+
+### Memory Storage
+{{ MEMORY_STORAGE_INSTRUCTIONS }}
+
+## Review Process
+
+**Review Required:** Yes (large complexity)
+**Assigned Reviewer:** {{ ASSIGNED_REVIEWER }}
+
+### Review Scope
+- Comprehensive architectural impact assessment
+- System-wide integration validation
+- Performance and scalability evaluation
+- Security implications review
+- Code quality and standards compliance across all changes
+- Documentation completeness and accuracy
+- Sub-PRB coordination effectiveness (if applicable)
+
+### Review Criteria
+- [ ] All functional requirements fully implemented
+- [ ] Architectural consistency maintained across system
+- [ ] Integration points function correctly under load
+- [ ] No performance regressions or scalability issues
+- [ ] Security best practices followed throughout
+- [ ] Comprehensive testing completed and passed
+- [ ] Documentation updated and comprehensive
+- [ ] Sub-PRB orchestration effective (if used)
+- [ ] Git operations completed cleanly
+- [ ] System remains stable and maintainable
+
+**Review Approval Required:** Subagent execution may complete, but PRB cannot be marked COMPLETE until comprehensive reviewer approval
+
+## Implementation Details
+
+### Task Scope
+- Significant system modifications or complex features
+- Multiple component coordination required
+- System-wide impact considerations
+- Integration with existing architecture
+- Potential performance and scalability implications
+
+### Quality Standards
+- Highest adherence to project coding standards
+- Architectural excellence and consistency
+- Comprehensive testing strategy implementation
+- Performance optimization considerations
+- Advanced security best practices
+- Maintainability and extensibility focus
+
+### Implementation Phases
+1. **Architectural Planning:** Comprehensive design and impact assessment
+2. **Sub-PRB Assessment:** Determine if decomposition is beneficial
+3. **Implementation Strategy:** Coordinate execution approach
+4. **Development:** Execute changes with careful integration
+5. **System Integration:** Ensure seamless system-wide operation
+6. **Comprehensive Testing:** Validate all functionality and integration
+7. **Performance Validation:** Ensure scalability and performance
+8. **Documentation:** Create comprehensive documentation
+9. **Review Preparation:** Prepare extensive materials for reviewer
+
+### Completion Validation
+- All functional requirements comprehensively implemented
+- System architecture enhanced and consistent
+- Integration testing passed across all system components
+- Performance benchmarks met or exceeded
+- Git operations completed with excellent history
+- System remains highly stable, performant, and maintainable
+- Documentation comprehensive and up-to-date
+- Reviewer approval obtained with high confidence
+
+**SUCCESS DEFINITION:**
+Large-complexity task completed successfully through expert subagent execution with architectural excellence, comprehensive system integration, potential sub-PRB orchestration, mandatory reviewer approval, and parent maintaining coordinator-only role throughout the entire complex process.

@@ -1,0 +1,215 @@
+---
+id: "{{ PRB_ID }}"
+type: MEGA
+complexity: "{{ COMPLEXITY_SCORE }}"
+created: "{{ TIMESTAMP }}"
+assignedRole: "{{ ASSIGNED_ROLE }}"
+status: READY
+subagent_required: true
+model_requirement: claude-3-sonnet
+coordinator_only: true
+review_required: true
+reviewer: "{{ ASSIGNED_REVIEWER }}"
+sub_prbs_enabled: true
+orchestration_required: true
+architectural_approval_required: true
+---
+
+# [{{ ASSIGNED_ROLE }}] {{ WORK_DESCRIPTION }}
+
+## MANDATORY SUBAGENT EXECUTION
+**CRITICAL:** Parent is COORDINATOR ONLY. ALL work must be executed by subagent with mandatory architectural review and comprehensive sub-PRB orchestration.
+
+### Subagent Creation Required
+**PARENT MUST EXECUTE:**
+```xml
+<invoke name="Task">
+<parameter name="taskDescription">{{ WORK_DESCRIPTION }}
+
+Complete this mega-complexity task involving system-wide changes, comprehensive architectural modifications, and large-scale feature development. This requires strategic architectural planning, coordinated sub-PRB orchestration across multiple specialized teams, extensive testing and validation, and comprehensive system-wide integration. This is the highest complexity level requiring expert coordination and execution.</parameter>
+<parameter name="projectContext">{{ COMPLETE_CONTEXT }}</parameter>
+</invoke>
+```
+
+**PARENT COORDINATION RESPONSIBILITIES:**
+- Load complete project context once with comprehensive system understanding
+- Create primary subagent via Task tool with model: claude-3-sonnet
+- Orchestrate complex sub-PRB execution across multiple specialized domains
+- Coordinate between numerous subagents and specialized roles
+- Facilitate complex communication between subagents, reviewers, and stakeholders
+- Monitor system-wide impact and integration throughout execution
+- Validate comprehensive task completion against all success criteria and architectural requirements
+- Ensure system-wide consistency, performance, and maintainability
+- Update PRB status to COMPLETE only after full architectural and reviewer approval
+- Capture extensive learnings, architectural insights, and system evolution patterns for memory storage
+
+**DIRECT EXECUTION ABSOLUTELY BLOCKED:** Parent cannot execute work directly under any circumstances, even for coordination tasks
+
+## Complete Context
+
+### System Nature
+{{ SYSTEM_NATURE }}
+
+### Project Root
+{{ PROJECT_ROOT }}
+
+### Configuration Values
+{{ CONFIGURATION_VALUES }}
+
+### Critical Files
+{{ CRITICAL_FILES }}
+
+### User Requirements
+{{ USER_REQUIREMENTS }}
+
+### Embedded Memory Learnings
+{{ EMBEDDED_MEMORY_LEARNINGS }}
+
+## Requirements
+
+### Functional Requirements
+{{ FUNCTIONAL_REQUIREMENTS }}
+
+### Processual Requirements
+- PRB template: MEGA complexity level (highest complexity)
+- System-wide modifications or transformational features
+- Comprehensive architectural impact assessment mandatory
+- Complex sub-PRB orchestration required across multiple domains
+- Highest code quality standards and architectural excellence enforcement
+- Mandatory review process by assigned senior reviewer
+- System-wide integration and performance testing required
+- Comprehensive documentation and architectural documentation updates
+- Coordination with multiple system components and potential external systems
+- Risk assessment and mitigation planning required
+
+### Technical Requirements
+{{ TECHNICAL_REQUIREMENTS }}
+
+## Sub-PRB Orchestration Strategy
+
+### Sub-PRB Decomposition Framework
+Mega-level tasks MUST be decomposed into coordinated sub-PRBs:
+- **Domain Separation:** Split by technical domains (frontend, backend, database, infrastructure)
+- **Feature Boundaries:** Separate by logical feature components
+- **Dependency Management:** Order sub-PRBs based on dependencies
+- **Parallel Execution:** Identify sub-PRBs that can execute in parallel
+- **Integration Points:** Plan coordination between sub-PRBs
+
+### Sub-PRB Coordination Protocol
+1. **Strategic Assessment:** Comprehensive analysis of decomposition strategy
+2. **Architecture Planning:** System-wide architectural impact analysis
+3. **Decomposition:** Break down into logical, specialized sub-PRBs
+4. **Dependency Mapping:** Establish execution order and dependencies
+5. **Parallel Orchestration:** Execute independent sub-PRBs simultaneously
+6. **Integration Coordination:** Manage complex integration between sub-PRB results
+7. **System Validation:** Comprehensive testing of entire integrated solution
+8. **Performance Optimization:** System-wide performance tuning and validation
+
+## Git Operations
+
+### Required Git Actions
+{{ GIT_OPERATIONS }}
+
+**Git Privacy Enforcement:** All commits must follow git_privacy: true setting with no AI mentions
+
+### Branch Management Strategy
+- Complex feature branch strategy with multiple coordinated branches
+- Integration branch for coordinating sub-PRB results
+- Multiple logical commits with comprehensive documentation
+- Detailed commit messages documenting architectural decisions
+- No merge conflicts across any coordinated branches
+- Comprehensive pull request workflow with architectural review
+- Integration testing across all branches before final merge
+
+## Knowledge Management
+
+### Learning Capture Requirements
+- Document comprehensive architectural evolution and decisions
+- Store system-wide transformation patterns in memory/mega-tasks/
+- Capture complex sub-PRB orchestration strategies and outcomes
+- Record architectural reviewer feedback and system improvements
+- Document advanced system integration patterns and solutions
+- Store performance optimization techniques and scalability insights
+- Capture risk mitigation strategies and their effectiveness
+- Document stakeholder coordination and communication patterns
+
+### Memory Storage
+{{ MEMORY_STORAGE_INSTRUCTIONS }}
+
+## Review Process
+
+**Review Required:** Yes (mega complexity - highest level)
+**Assigned Reviewer:** {{ ASSIGNED_REVIEWER }}
+**Architectural Approval Required:** Yes
+
+### Review Scope
+- Comprehensive system-wide architectural impact assessment
+- Strategic system evolution validation
+- Performance and scalability evaluation across entire system
+- Security architecture review for system-wide implications
+- Code quality and standards compliance across all system changes
+- Comprehensive documentation and architectural documentation review
+- Sub-PRB orchestration effectiveness and coordination assessment
+- Risk assessment and mitigation strategy validation
+
+### Review Criteria
+- [ ] All functional requirements comprehensively implemented
+- [ ] System architecture evolved appropriately and consistently
+- [ ] Integration points function correctly under maximum expected load
+- [ ] No performance regressions across any system components
+- [ ] Security architecture enhanced and validated throughout
+- [ ] Comprehensive testing completed across all system levels
+- [ ] Documentation comprehensive, accurate, and architecturally sound
+- [ ] Sub-PRB orchestration highly effective and well-coordinated
+- [ ] Git operations completed with excellent historical documentation
+- [ ] System remains highly stable, performant, and maintainable
+- [ ] Risk mitigation strategies implemented and validated
+- [ ] Stakeholder requirements fully addressed
+
+**Review Approval Required:** Subagent execution may complete, but PRB cannot be marked COMPLETE until comprehensive architectural and reviewer approval
+
+## Implementation Details
+
+### Task Scope
+- System-wide modifications or transformational features
+- Multiple system component coordination required
+- Enterprise-level architectural considerations
+- Integration with complex existing architecture
+- Significant performance and scalability implications
+- Potential external system integration requirements
+
+### Quality Standards
+- Highest possible adherence to project coding standards
+- Architectural excellence and forward-thinking design
+- Enterprise-level testing strategy implementation
+- Advanced performance optimization and scalability planning
+- Comprehensive security best practices implementation
+- Maximum maintainability and extensibility focus
+- Risk-aware development and deployment strategies
+
+### Implementation Phases
+1. **Strategic Architectural Planning:** Comprehensive system evolution design
+2. **Sub-PRB Strategic Decomposition:** Determine optimal decomposition strategy
+3. **Dependency and Risk Analysis:** Comprehensive dependency mapping and risk assessment
+4. **Coordinated Implementation Strategy:** Plan complex execution coordination
+5. **Multi-Domain Development:** Execute changes across system domains
+6. **Complex System Integration:** Ensure seamless system-wide operation
+7. **Comprehensive System Testing:** Validate all functionality across entire system
+8. **Performance and Scalability Validation:** Ensure enterprise-level performance
+9. **Comprehensive Documentation:** Create extensive architectural and user documentation
+10. **Architectural Review Preparation:** Prepare comprehensive materials for architectural review
+
+### Completion Validation
+- All functional requirements comprehensively implemented with excellence
+- System architecture significantly enhanced and strategically evolved
+- Integration testing passed across all system components under maximum load
+- Performance benchmarks significantly exceeded across all metrics
+- Git operations completed with exceptional historical documentation
+- System demonstrates enhanced stability, performance, and maintainability
+- Documentation comprehensive, accurate, and provides strategic guidance
+- Architectural reviewer approval obtained with high confidence
+- Risk mitigation strategies proven effective
+- Stakeholder satisfaction validated
+
+**SUCCESS DEFINITION:**
+Mega-complexity task completed successfully through expert subagent execution with strategic architectural excellence, comprehensive system-wide transformation, complex sub-PRB orchestration mastery, mandatory architectural approval, and parent maintaining coordinator-only role throughout the entire transformational process.

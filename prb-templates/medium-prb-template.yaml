@@ -1,0 +1,161 @@
+---
+id: "{{ PRB_ID }}"
+type: MEDIUM
+complexity: "{{ COMPLEXITY_SCORE }}"
+created: "{{ TIMESTAMP }}"
+assignedRole: "{{ ASSIGNED_ROLE }}"
+status: READY
+subagent_required: true
+model_requirement: claude-3-haiku-plus
+coordinator_only: true
+review_required: true
+reviewer: "{{ ASSIGNED_REVIEWER }}"
+---
+
+# [{{ ASSIGNED_ROLE }}] {{ WORK_DESCRIPTION }}
+
+## MANDATORY SUBAGENT EXECUTION
+**CRITICAL:** Parent is COORDINATOR ONLY. ALL work must be executed by subagent with mandatory review.
+
+### Subagent Creation Required
+**PARENT MUST EXECUTE:**
+```xml
+<invoke name="Task">
+<parameter name="taskDescription">{{ WORK_DESCRIPTION }}
+
+Complete this medium-complexity task involving multi-file features or significant functionality. Ensure thorough implementation following all project standards, architectural patterns, and quality requirements. This task requires careful planning, implementation, and validation.</parameter>
+<parameter name="projectContext">{{ COMPLETE_CONTEXT }}</parameter>
+</invoke>
+```
+
+**PARENT COORDINATION RESPONSIBILITIES:**
+- Load complete project context once
+- Create subagent via Task tool with model: claude-3-haiku-plus
+- Monitor subagent execution progress through all phases
+- Coordinate with assigned reviewer for approval
+- Validate task completion against all success criteria
+- Ensure architectural consistency is maintained
+- Update PRB status to COMPLETE only after review approval
+- Capture comprehensive learnings for memory storage
+
+**DIRECT EXECUTION ABSOLUTELY BLOCKED:** Parent cannot execute work directly under any circumstances
+
+## Complete Context
+
+### System Nature
+{{ SYSTEM_NATURE }}
+
+### Project Root
+{{ PROJECT_ROOT }}
+
+### Configuration Values
+{{ CONFIGURATION_VALUES }}
+
+### Critical Files
+{{ CRITICAL_FILES }}
+
+### User Requirements
+{{ USER_REQUIREMENTS }}
+
+### Embedded Memory Learnings
+{{ EMBEDDED_MEMORY_LEARNINGS }}
+
+## Requirements
+
+### Functional Requirements
+{{ FUNCTIONAL_REQUIREMENTS }}
+
+### Processual Requirements
+- PRB template: MEDIUM complexity level
+- Multi-file modifications or significant features
+- Architectural consistency must be maintained
+- Code quality standards strictly enforced
+- Mandatory review process by assigned reviewer
+- Integration testing required
+- Documentation updates as needed
+
+### Technical Requirements
+{{ TECHNICAL_REQUIREMENTS }}
+
+## Git Operations
+
+### Required Git Actions
+{{ GIT_OPERATIONS }}
+
+**Git Privacy Enforcement:** All commits must follow git_privacy: true setting with no AI mentions
+
+### Branch Management
+- Feature branch strategy recommended for larger changes
+- Multiple commits allowed with logical separation
+- Clean commit messages following project standards
+- No merge conflicts or uncommitted changes
+- Pull request creation if required by project settings
+
+## Knowledge Management
+
+### Learning Capture Requirements
+- Document architectural decisions made
+- Store multi-file coordination patterns in memory/medium-tasks/
+- Capture integration patterns and techniques
+- Record reviewer feedback and improvements
+- Document any new patterns or approaches
+
+### Memory Storage
+{{ MEMORY_STORAGE_INSTRUCTIONS }}
+
+## Review Process
+
+**Review Required:** Yes (medium complexity)
+**Assigned Reviewer:** {{ ASSIGNED_REVIEWER }}
+
+### Review Scope
+- Architectural consistency validation
+- Code quality and standards compliance
+- Integration testing verification
+- Documentation completeness check
+- Security considerations review (if applicable)
+
+### Review Criteria
+- [ ] All functional requirements implemented
+- [ ] Code follows project standards and patterns
+- [ ] Integration points work correctly
+- [ ] No breaking changes or regressions
+- [ ] Documentation updated appropriately
+- [ ] Git operations completed cleanly
+
+**Review Approval Required:** Subagent execution may complete, but PRB cannot be marked COMPLETE until reviewer approval
+
+## Implementation Details
+
+### Task Scope
+- Multi-file modifications or significant features
+- Clear functional and non-functional requirements
+- Integration with existing system components
+- Potential coordination with other system parts
+
+### Quality Standards
+- Strict adherence to project coding standards
+- Architectural pattern consistency
+- Comprehensive testing approach
+- Performance considerations
+- Security best practices (where applicable)
+
+### Implementation Phases
+1. **Planning:** Understand requirements and plan approach
+2. **Implementation:** Execute changes across multiple files
+3. **Integration:** Ensure seamless integration with existing code
+4. **Testing:** Validate functionality and integration points
+5. **Documentation:** Update relevant documentation
+6. **Review Preparation:** Prepare for reviewer evaluation
+
+### Completion Validation
+- All functional requirements fully implemented
+- Code quality standards exceeded
+- Integration testing passed
+- Git operations completed successfully
+- System remains stable and performant
+- Documentation updated and accurate
+- Reviewer approval obtained
+
+**SUCCESS DEFINITION:**
+Medium-complexity task completed successfully through subagent execution with high quality implementation, full integration, mandatory reviewer approval, and parent maintaining coordinator-only role throughout the entire process.

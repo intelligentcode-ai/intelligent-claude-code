@@ -1,0 +1,112 @@
+---
+id: "{{ PRB_ID }}"
+type: NANO
+complexity: "{{ COMPLEXITY_SCORE }}"
+created: "{{ TIMESTAMP }}"
+assignedRole: "{{ ASSIGNED_ROLE }}"
+status: READY
+subagent_required: true
+model_requirement: claude-3-sonnet
+coordinator_only: true
+review_required: false
+reviewer: null
+---
+
+# [{{ ASSIGNED_ROLE }}] {{ WORK_DESCRIPTION }}
+
+## MANDATORY SUBAGENT EXECUTION
+**CRITICAL:** Parent is COORDINATOR ONLY. ALL work must be executed by subagent.
+
+### Subagent Creation Required
+**PARENT MUST EXECUTE:**
+```xml
+<invoke name="Task">
+<parameter name="taskDescription">{{ WORK_DESCRIPTION }}
+
+Complete this nano-level task with the provided context. This is a simple, single-action task requiring minimal complexity.</parameter>
+<parameter name="projectContext">{{ COMPLETE_CONTEXT }}</parameter>
+</invoke>
+```
+
+**PARENT COORDINATION RESPONSIBILITIES:**
+- Load complete project context once
+- Create subagent via Task tool with model: claude-3-sonnet
+- Monitor subagent execution progress
+- Validate task completion against success criteria
+- Update PRB status to COMPLETE
+- Capture any learnings for memory storage
+
+**DIRECT EXECUTION ABSOLUTELY BLOCKED:** Parent cannot execute work directly under any circumstances
+
+## Complete Context
+
+### System Nature
+{{ SYSTEM_NATURE }}
+
+### Project Root
+{{ PROJECT_ROOT }}
+
+### Configuration Values
+{{ CONFIGURATION_VALUES }}
+
+### Critical Files
+{{ CRITICAL_FILES }}
+
+### User Requirements
+{{ USER_REQUIREMENTS }}
+
+### Embedded Memory Learnings
+{{ EMBEDDED_MEMORY_LEARNINGS }}
+
+## Requirements
+
+### Functional Requirements
+{{ FUNCTIONAL_REQUIREMENTS }}
+
+### Processual Requirements
+- PRB template: NANO complexity level
+- Single action or minimal change required
+- No review process needed
+- Direct execution via subagent only
+
+### Technical Requirements
+{{ TECHNICAL_REQUIREMENTS }}
+
+## Git Operations
+
+### Required Git Actions
+{{ GIT_OPERATIONS }}
+
+**Git Privacy Enforcement:** All commits must follow git_privacy: true setting with no AI mentions
+
+## Knowledge Management
+
+### Learning Capture Requirements
+- Document any new patterns discovered during execution
+- Store simple task execution learnings in memory/nano-tasks/
+- Update task completion metrics
+
+### Memory Storage
+{{ MEMORY_STORAGE_INSTRUCTIONS }}
+
+## Review Process
+
+**Review Required:** No (nano complexity)
+**Self-Validation:** Subagent must validate completion against success criteria
+
+## Implementation Details
+
+### Task Scope
+- Single action or minimal modification
+- Clear success criteria
+- Measurable outcome
+- No dependencies or coordination required
+
+### Completion Validation
+- Functional requirement met
+- Git operations completed (if required)
+- No errors or warnings
+- Clean system state maintained
+
+**SUCCESS DEFINITION:**
+Task completed successfully through subagent execution with parent maintaining coordinator-only role throughout the process.
