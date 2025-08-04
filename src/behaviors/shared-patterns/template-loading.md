@@ -60,6 +60,10 @@ Projects can override any template by placing it in their configured template di
 - Required fields check
 - Complexity level match
 - Role assignment validation
+- **COMPLETE CONTEXT VALIDATION**: Block templates with placeholder values
+- **SYSTEM NATURE VALIDATION**: Ensure system_nature is specified
+- **PROJECT ROOT VALIDATION**: Ensure project_root is absolute path
+- **FILE REFERENCES VALIDATION**: Ensure critical_files have actual paths and samples
 
 ## Auto-Creation
 
@@ -97,6 +101,12 @@ Projects can override any template by placing it in their configured template di
 - **Template Loading**: Use hierarchy to load appropriate template
 - **Context Injection**: Inject project context into loaded template
 - **Validation**: Ensure template matches complexity requirements
+- **CONTEXT VALIDATION**: Block templates with incomplete context:
+  - Detect "[FROM_CONFIG]", "[ALL-SETTINGS]", "[PROJECT_ROOT]" placeholders
+  - Validate system_nature is not placeholder
+  - Ensure project_root is absolute path
+  - Verify critical_files have actual content samples
+  - Check user_requirements are specific and clear
 
 ### With Directory Structure
 - Respect configured `prb_template_path` setting
@@ -124,6 +134,9 @@ Projects can customize templates by:
 - `/icc-validate-template [name]` - Validate template structure
 - `/icc-load-template [complexity]` - Load template for complexity level
 - `/icc-template-hierarchy` - Show template search paths
+- `/icc-validate-context [template]` - Validate complete context in template
+- `/icc-check-placeholders [template]` - Check for placeholder values
+- `/icc-gather-context [work_request]` - Gather complete context before PRB generation
 
 ---
 *Template loading patterns for intelligent-claude-code system*
