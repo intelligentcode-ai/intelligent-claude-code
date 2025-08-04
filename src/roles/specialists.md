@@ -23,5 +23,5 @@
 
 **Assignment Logic:** Analyze requirements → Calculate match → ≥70%=existing, <70%=create specialist
 
-**Communication:** @Role (P:X.X, Q:X.X): [action/communication]  
+**Communication:** @Role: [action/communication]  
 **Integration:** Assignment-driven • Knowledge-first • Evidence-based

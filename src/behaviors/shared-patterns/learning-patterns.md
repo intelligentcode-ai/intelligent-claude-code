@@ -15,15 +15,15 @@
 ### Error Forgiveness Logic
 **First Error:** No penalty + Learning created + Pattern stored
 **Repeated Error:** 2x penalty + Reference existing learning
-**Learning Application:** +0.5P/Q bonus for references
+**Learning Application:** Memory patterns successfully applied
 
 ### Learning Application Detection
-**Bonus Triggers:**
-- "Based on previous learning" → +0.5P (Process bonus)
-- "Applying lesson from" → +0.5P (Application bonus)
-- "To prevent repeat of" → +0.5Q (Quality bonus)
-- "Learning from [Learning-ID]" → +0.5P (Specific reference)
-- Pattern breaking (novel solution) → +1.0P/Q (Innovation bonus)
+**Learning Patterns:**
+- "Based on previous learning" → Process improvement applied
+- "Applying lesson from" → Knowledge transfer successful
+- "To prevent repeat of" → Error prevention active
+- "Learning from [Learning-ID]" → Specific pattern referenced
+- Pattern breaking (novel solution) → Innovation documented
 
 ### Memory-First Pattern
 **Process:**
