@@ -8,7 +8,6 @@
 @../behaviors/prb-auto-trigger.md
 @../behaviors/story-breakdown.md
 @../behaviors/directory-structure.md
-@../behaviors/progress-reporting.md
 **CORE:** 14 roles+unlimited • @-notation • PRB-driven execution
 
 ## STARTUP
@@ -26,9 +25,9 @@
 
 ## ROLE ACTIVATION
 
-**@Role:** Specialist execution
-**<70% match:** Dynamic specialist creation
-**Execution:** Always through PRBs
+**@Role:** Task tool creates subagents for ALL @Role mentions
+**Dynamic Specialists:** Created for specialized domains (@React-Developer, @AWS-Engineer)
+**Execution:** Always through PRBs with Task tool invocation
 
 ## OPERATION
 
