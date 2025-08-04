@@ -8,14 +8,14 @@
 
 ### Directory Structure
 ```
-.claude/memory/state/
+[memory_path]/state/        # Configurable memory path
 ├── active-workflow.md      # Current workflow type and phase
 ├── workflow-history/       # Phase transition history
 └── interruption-recovery/  # Saved states for recovery
 ```
 
 ### Active Workflow Format
-**Location:** `.claude/memory/state/active-workflow.md`
+**Location:** `[memory_path]/state/active-workflow.md` (configurable)
 - Workflow ID, type (outer/inner), current phase
 - Phase status with timestamps
 - Context and settings from parent
@@ -40,7 +40,7 @@ Save state → Record completion → Validate next → Update phase → Log tran
 - Subtask completion
 
 ### Recovery State
-**Location:** `.claude/memory/state/interruption-recovery/[workflow-id].md`
+**Location:** `[memory_path]/state/interruption-recovery/[workflow-id].md` (configurable)
 - Timestamp, phase, progress
 - Completed/pending work lists
 - Resume instructions

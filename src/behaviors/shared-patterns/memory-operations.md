@@ -7,13 +7,18 @@
 ## Core Memory Patterns
 
 ### Memory Structure
-**Base Directory:** .claude/memory/ (within project root - **PROJECT SCOPE ONLY**)
+**Base Directory:** Configurable via `memory_path` setting (default: `memory/`)
 **Entity Types:** Learning, Pattern, Knowledge
-**Organization:** .claude/memory/entities/[EntityType]/[YYYY]/[MM]/
+**Organization:** [memory_path]/entities/[EntityType]/[YYYY]/[MM]/
 **File Format:** [EntityType]-[ID]-[YYYY-MM-DD].md
 
+**Path Resolution:**
+1. Check config for `memory_path` setting
+2. If not set, use default: `memory/`
+3. All paths relative to project root
+
 **Scope Validation:**
-- **Project Memory**: All memory operations within .claude/memory/ (project scope)
+- **Project Memory**: All memory operations within project scope
 - **Installation Memory**: System templates in ~/.claude/ (installation scope)
 - **Boundary Enforcement**: Never write to ~/.claude/ during execution
 
@@ -32,12 +37,13 @@
 
 ### StoreInMemory Pattern
 **Process:**
-1. Determine entity type (Learning/Pattern/Knowledge)
-2. Generate unique ID: [Type]-[Context]-[YYYYMMDD-HHMMSS]
-3. Create directory path: .claude/memory/entities/[Type]/[YYYY]/[MM]/
-4. Format content as markdown with YAML frontmatter
-5. Write to file: [Type]-[ID]-[YYYY-MM-DD].md
-6. Update index file: .claude/memory/index.md
+1. Get memory_path from config (default: `memory/`)
+2. Determine entity type (Learning/Pattern/Knowledge)
+3. Generate unique ID: [Type]-[Context]-[YYYYMMDD-HHMMSS]
+4. Create directory path: [memory_path]/entities/[Type]/[YYYY]/[MM]/
+5. Format content as markdown with YAML frontmatter
+6. Write to file: [Type]-[ID]-[YYYY-MM-DD].md
+7. Update index file: [memory_path]/index.md
 
 **File Structure:**
 ```markdown
@@ -71,18 +77,19 @@ tags: [authentication, error-handling, oauth2]
 
 ### SearchMemory Pattern
 **Process:**
-1. Parse search query for keywords and context
-2. Check index file for quick filtering
-3. Search in relevant time periods (recent first)
-4. Apply relevance scoring based on:
+1. Get memory_path from config (default: `memory/`)
+2. Parse search query for keywords and context
+3. Check index file for quick filtering
+4. Search in relevant time periods (recent first)
+5. Apply relevance scoring based on:
    - Keyword matches in content
    - Context similarity
    - Recency (exponential decay λ=0.1)
    - Application count
-5. Return sorted results (max 10)
+6. Return sorted results (max 10)
 
 **Search Strategies:**
-- **By Type:** Filter .claude/memory/entities/[Type]/
+- **By Type:** Filter [memory_path]/entities/[Type]/
 - **By Date:** Navigate year/month directories
 - **By Context:** Match TASK/STORY/BUG references
 - **By Tags:** Search YAML frontmatter tags
@@ -90,13 +97,14 @@ tags: [authentication, error-handling, oauth2]
 
 ### LoadFromMemory Pattern
 **Process:**
-1. Construct file path from entity ID
-2. Read file from .claude/memory/entities/
-3. Parse YAML frontmatter
-4. Extract structured content
-5. Update lastAccessed timestamp
-6. Increment applicationCount
-7. Return entity object
+1. Get memory_path from config (default: `memory/`)
+2. Construct file path from entity ID
+3. Read file from [memory_path]/entities/
+4. Parse YAML frontmatter
+5. Extract structured content
+6. Update lastAccessed timestamp
+7. Increment applicationCount
+8. Return entity object
 
 **Load Optimization:**
 - Cache recently accessed entities (5 min TTL)
@@ -106,7 +114,7 @@ tags: [authentication, error-handling, oauth2]
 ## Index Management
 
 ### Index Structure
-**Location:** .claude/memory/index.md
+**Location:** [memory_path]/index.md (configurable)
 **Format:** Markdown table with key fields
 **Updates:** Real-time on store/delete operations
 

@@ -7,7 +7,7 @@ Load configuration from embedded config (assignment files), project config, user
 
 ## Arguments
 **Format:** "scope:embedded|project|user|system | source:file_path | refresh:true|false"
-**Example:** "scope:project | source:.claude/config.md | refresh:false"
+**Example:** "scope:project | source:config.md | refresh:false"
 **Example:** "scope:embedded | source:story.yaml | refresh:true"
 **Example:** "scope:user | source:~/.claude/config.md | refresh:false"
 
@@ -15,8 +15,8 @@ Load configuration from embedded config (assignment files), project config, user
 1. **Parse Configuration Scope**: Extract scope, source file, and refresh flag from $ARGUMENTS
 2. **Load Configuration Hierarchy**: 
    - Embedded config (highest priority) - from assignment files
-   - Project config - .claude/config.md in project root
-   - User global config - ~/.claude/config.md
+   - Project config - config.md in project root (configurable location)
+   - User global config - ~/.claude/config.md (read-only)
    - System defaults (lowest priority)
 3. **Merge Configuration**: Apply hierarchy with proper precedence
 4. **Cache Management**: Cache for 5 minutes (1 hour for embedded configs)
@@ -25,8 +25,8 @@ Load configuration from embedded config (assignment files), project config, user
 
 ## Configuration Hierarchy (Highest to Lowest Priority)
 1. **Embedded Config** - Settings within assignment files (epic.yaml, story.yaml)
-2. **Project Config** - .claude/config.md in project root  
-3. **User Global** - ~/.claude/config.md for user preferences
+2. **Project Config** - config.md in project root (configurable location)
+3. **User Global** - ~/.claude/config.md for user preferences (read-only)
 4. **System Defaults** - Built-in fallback values
 
 ## Supported Settings

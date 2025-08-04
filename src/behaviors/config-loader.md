@@ -58,6 +58,12 @@
 - Apply type conversion and validation
 - Return defaults only when setting not found in hierarchy
 
+**Directory Configuration:**
+- memory_path: Where to store memory files (default: "memory/")
+- prb_path: Where to store PRBs (default: "prbs/")
+- story_path: Where to store stories (default: "stories/")
+- All paths relative to project root
+
 **Cache Management:**
 - Standard configuration: 5-minute TTL
 - Embedded configuration: 1-hour TTL (more stable)

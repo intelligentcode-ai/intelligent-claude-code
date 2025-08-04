@@ -13,13 +13,13 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 ## Core Actions
 1. **Load Configuration**: Apply configuration hierarchy (embedded → project → user → system defaults)
-2. **Initialize Memory System**: Bootstrap file-based memory system in .claude/memory/ (PROJECT SCOPE)
+2. **Initialize Memory System**: Bootstrap file-based memory system in configured memory_path (default: memory/)
 3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities from ~/.claude/
 4. **Activate Lean Workflow**: Enable assignment-driven workflow executor
 5. **Initialize Scoring System**: Activate badges.md achievement tracking
 6. **Setup Learning System**: Enable error forgiveness and pattern capture
 7. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
-8. **Create Project Directories**: Ensure .claude/, prbs/, stories/ exist in PROJECT ROOT
+8. **Create Project Directories**: Ensure memory/, prbs/, stories/ exist in PROJECT ROOT (configurable paths)
 9. **Validate System**: Verify all components operational and ready
 10. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration
 11. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
@@ -43,7 +43,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 ## Error Handling
 - **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration. Check ~/.claude/config.md"
-- **MEMORY_INIT_FAILED**: "⚠️ Warning: Memory system unavailable. Check .claude/memory/ directory"
+- **MEMORY_INIT_FAILED**: "⚠️ Warning: Memory system unavailable. Check memory/ directory (or configured memory_path)"
 - **ROLE_LOAD_FAILED**: "❌ Error: Failed to load role definitions. Check ~/.claude/specialists.md"
 - **WORKFLOW_INIT_FAILED**: "❌ Error: Workflow executor failed to initialize"
 - **TOOL_INIT_FAILED**: "⚠️ Warning: Some tools unavailable. Using fallbacks"

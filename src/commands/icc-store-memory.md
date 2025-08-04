@@ -22,7 +22,8 @@
    - Example: Learning-AuthError-20250123-142530
 
 3. **Create File Structure**
-   - Directory: .claude/memory/entities/[Type]/[YYYY]/[MM]/
+   - Get memory_path from config (default: memory/)
+   - Directory: [memory_path]/entities/[Type]/[YYYY]/[MM]/
    - Filename: [Type]-[ID]-[YYYY-MM-DD].md
    - Create directories if they don't exist
 
@@ -32,7 +33,7 @@
    - Related entities references
 
 5. **Update Index**
-   - Append to .claude/memory/index.md
+   - Append to [memory_path]/index.md
    - Sort by creation date
 
 ## Example
@@ -44,7 +45,7 @@
 **Output:**
 ```
 ✓ Stored Learning-OAuth2Refresh-20250123-143000
-  Location: .claude/memory/entities/Learning/2025/01/
+  Location: memory/entities/Learning/2025/01/
   Relevance: 8/10
   Tags: [oauth2, error-handling, authentication]
 ```

@@ -8,7 +8,7 @@
 
 ### Learning Storage Pattern
 **Naming:** Learning-[ErrorType]-[YYYY-MM-DD]
-**Location:** .claude/memory/entities/Learning/[YYYY]/[MM]/
+**Location:** [memory_path]/entities/Learning/[YYYY]/[MM]/ (configurable)
 **Structure:** Learning entities include ID, type, creation timestamp, context information, observations array, prevention steps, and relevance score
 
 ### Error Forgiveness Logic

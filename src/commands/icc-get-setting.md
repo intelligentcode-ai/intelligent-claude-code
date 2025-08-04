@@ -17,8 +17,8 @@ Gets setting value from configuration hierarchy with dot notation support.
 1. Parse setting key and optional default from $ARGUMENTS
 2. Search configuration hierarchy:
    - Embedded configs (highest priority)
-   - Project config (.claude/config.md)
-   - User config (~/.claude/config.md)
+   - Project config (config.md in project root)
+   - User config (~/.claude/config.md - read-only)
    - System defaults
 3. Support dot notation for nested values
 4. Return first found value or default

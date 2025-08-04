@@ -9,14 +9,15 @@
 ### Configuration Hierarchy
 **Priority Order (Highest to Lowest):**
 1. Embedded config (in assignment files)
-2. Project config (.claude/config.md - **within project scope**)
+2. Project config (config.md in project root - configurable location)
 3. User global (~/.claude/config.md - **read-only during execution**)
 4. System defaults
 
 **Scope Boundaries:**
 - **Installation**: System files placed in ~/.claude/ for global access
-- **Execution**: Operations confined to project directory (./ and .claude/)
+- **Execution**: Operations confined to project directory only
 - **Configuration**: Read from ~/.claude/, execute within project boundaries
+- **Details**: See scope-boundaries.md for complete boundary definitions
 
 ### Settings Structure
 **Git Settings:** git_privacy (true/false), branch_protection (true/false), default_branch (main/master/develop), require_pr_for_main (true/false)
@@ -24,6 +25,8 @@
 **Autonomy Settings:** autonomy_level (L1/L2/L3), pm_always_active (true/false), blocking_enabled (true/false)
 
 **Team Settings:** default_reviewer (@Role), specialist_creation (true/false), role_validation (true/false)
+
+**Directory Settings:** memory_path (default: "memory/"), prb_path (default: "prbs/"), story_path (default: "stories/")
 
 ### Loading Pattern
 **Process:**

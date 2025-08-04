@@ -17,7 +17,8 @@
    - Check cache first (5 min TTL)
 
 2. **Construct File Path**
-   - Base: .claude/memory/entities/
+   - Get memory_path from config (default: memory/)
+   - Base: [memory_path]/entities/
    - Path: [Type]/[YYYY]/[MM]/[Type]-[ID]-[YYYY-MM-DD].md
    - Handle missing files gracefully
 
