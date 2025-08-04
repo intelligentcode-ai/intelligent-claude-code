@@ -1,0 +1,29 @@
+# PRB-003 Investigation Note
+
+## Investigation Summary
+PRB-2025-08-03-003 claims the system is using MCP memory tools instead of file-based storage, but investigation reveals:
+
+### Findings:
+1. **memory-operations.md** - Already correctly specifies file-based storage
+   - Uses memory/ directory structure
+   - Markdown files with dated entries
+   - No MCP references found
+
+2. **Template System** - Already correctly implemented
+   - Templates exist in src/prb-templates/
+   - Template loading hierarchy properly defined
+   - Complexity-based selection documented
+
+3. **No MCP References** - grep search found zero MCP memory calls in:
+   - src/behaviors/
+   - src/commands/
+   - Any project source files
+
+### Conclusion:
+This appears to be a misunderstanding. The system is already designed and documented for file-based memory storage. The issue may be:
+- User misinterpreting system behavior
+- Confusion between design and runtime behavior
+- Issue exists outside project scope (in ~/.claude)
+
+### Recommendation:
+This PRB should be closed as "Not Applicable" - the system is already correctly designed for file-based memory.

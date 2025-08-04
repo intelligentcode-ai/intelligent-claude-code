@@ -1,0 +1,10 @@
+# Duplicate PRB Note
+
+PRB-2025-08-03-004 "Fix project context understanding" is a duplicate of PRB-2025-08-03-011 "Fix PRBs missing complete context and file references" which was completed in commit 7a30c77.
+
+Both PRBs addressed the same issue:
+- Missing complete context in PRB generation
+- Placeholder values instead of actual configuration
+- Missing critical file references
+
+PRB-011 was executed and resolved these issues.

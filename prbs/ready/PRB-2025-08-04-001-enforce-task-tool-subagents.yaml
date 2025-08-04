@@ -1,0 +1,154 @@
+# Medium PRB - Enforce Task Tool Usage in Existing Behaviors
+# Auto-selected for complexity score 8
+# Updates existing patterns for Task tool enforcement
+
+id: MEDIUM-2025-08-04-001
+type: medium-prb
+complexity: standard
+priority: "CRITICAL"
+title: "[AI-Engineer] Add Task tool enforcement to existing role patterns"
+
+# MANDATORY: Complete Context Section
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM (NO CODE)"
+  implementation: "BEHAVIORAL PATTERNS IN MARKDOWN ONLY"
+  project: "intelligent-claude-code - AI-agentic markdown virtual team system"
+  project_root: "/data/Engineering/intelligent-claude-code"
+  
+  # Actual configuration values (not placeholders)
+  configuration:
+    git_privacy: true
+    branch_protection: true
+    default_branch: "main"
+    autonomy_level: "L3"
+    pm_always_active: true
+    memory_integration: true
+    blocking_enabled: true
+    auto_correction: true
+    subagent_model: "sonnet"
+    max_concurrent_subagents: 5
+    
+  # Critical file references with samples
+  critical_files:
+    - path: "/data/Engineering/intelligent-claude-code/src/behaviors/prb-enforcement.md"
+      purpose: "Add Task tool requirement to @Role detection"
+      sample: "**Action:** Generate appropriate PRB → Block direct execution"
+    - path: "/data/Engineering/intelligent-claude-code/src/behaviors/prb-auto-trigger.md"
+      purpose: "Add Task tool wrapper for @Role mentions"
+      sample: "**@Role** | @Role mention | Generate appropriate PRB |"
+      
+  business_goal: "Ensure reliable parallel execution and proper delegation through subagents"
+  technical_scope: "Update existing enforcement patterns only"
+  
+  # User requirements
+  user_requirements:
+    original_request: "Other systems don't properly use subagents. Even this system does not reliably. This has to be changed!"
+    work_type: "architectural_enforcement"
+    success_criteria: 
+      - "100% of @Role mentions trigger Task tool"
+      - "No direct role invocation without subagent"
+      - "Parallel execution capability restored"
+    clarifications:
+      - "User observed inconsistent subagent usage"
+      - "Critical architectural pattern not enforced"
+      - "Affects system reliability and scalability"
+      
+# Knowledge retrieval
+embedded_knowledge:
+  memory_search_performed: true
+  search_query: "task tool subagent delegation role management"
+  results: |
+    From memory/roles/task-tool-pattern.md:
+    - "MANDATORY task notation format: @Role - P: xpts, Q: ypts - Level - Task Name"
+    - "Task Tool Pattern: Every @Role mention triggers a Task tool invocation"
+    From memory/system/virtual-team-system.md:
+    - "Dynamic Specialists: Auto-create domain experts with Task tool"
+    - "Parallel Execution: Up to 5 non-conflicting tasks via subagents"
+  
+# MANDATORY: Requirements Section
+requirements:
+  functional:
+    - "Update @Role detection in prb-enforcement.md to require Task tool"
+    - "Add Task tool wrapper generation to prb-auto-trigger.md"
+    - "Enhance detection patterns to block direct execution"
+    - "Add error message when Task tool missing"
+  
+  processual:
+    - "Respect git_privacy=true for commit messages (strip AI mentions)"
+    - "Follow branch_protection=true strategy from config"
+    - "Use default_branch=main for all git operations"
+    - "Apply autonomy_level=L3 for autonomous enforcement"
+    - "Use subagent_model=sonnet for all Task tool invocations"
+    - "Enforce max_concurrent_subagents=5 limit"
+    - "Coordinate sub-PRBs with dependency management"
+  
+  technical:
+    - "MARKDOWN-BASED system only - no code/functions/classes"
+    - "Pattern matching enhancements in existing files"
+    - "Error message additions for enforcement"
+
+# MANDATORY: Git Operations Section
+git_operations:
+  branch_strategy: "feature/[prb-id]-[description]"
+  branch_protection: true
+  branch_name: "feature/PRB-001-enforce-task-tool"
+  commit_format: "[PRB-001]: [description]"
+  privacy_filter: true  # Strip AI mentions from commits
+  default_branch: "main"
+  version_bump: "patch"  # Minor enforcement update
+  merge_strategy: "squash"
+  
+# MANDATORY: Knowledge Management Section
+knowledge_management:
+  structure: "memory/[topic]/[subtopic].md"
+  storage: "version-controlled in project repository"
+  embedded_learnings: "Task tool pattern already documented"
+  post_execution:
+    - "Update memory/system/task-tool-enforcement.md with enforcement patterns"
+  capture_location: "memory/system/task-tool-enforcement.md"
+  
+# MANDATORY: Review Process Section
+review_process:
+  type: "sme_review"
+  reviewer: "@System-Engineer"
+  focus_areas:
+    - "@Role detection requires Task tool"
+    - "Error messages clear and actionable"
+    - "Enforcement patterns comprehensive"
+  validation_tests:
+    - "@Role mention → Task tool requirement enforced"
+    - "Missing Task tool → Clear error message"
+  checklist:
+    - "prb-enforcement.md updated with Task tool requirement"
+    - "prb-auto-trigger.md includes Task tool wrapper"
+    
+# MANDATORY: Implementation Samples Section
+implementation_samples:
+  example_commit: "[PRB-001]: Add Task tool enforcement to role patterns"
+  example_branch: "feature/PRB-001-enforce-task-tool"
+  
+  prb_enforcement_update: |
+    ### @Role Detection (Updated)
+    **All Formats:** "@Role:", "@Role", "Ask @Role", "@Role\n", "[@Role]", "@Role-Name"
+    **Action:** Generate appropriate PRB → Block direct execution → REQUIRE Task tool
+    **Error:** "❌ @Role delegation requires Task tool usage. Use Task tool with subagent_type='general-purpose'"
+    
+  prb_auto_trigger_update: |
+    ### Work Detection Patterns (Updated)
+    | Trigger Type | Detection Pattern | Action |
+    |-------------|------------------|--------|
+    | **@Role** | @Role mention | Generate PRB with Task tool wrapper |
+    
+    **Enforcement:** All @Role mentions MUST be wrapped in Task tool invocation
+    
+  validation_commands: |
+    # Verify Task tool requirement added
+    grep -r "Task tool" src/behaviors/prb-enforcement.md
+    
+    # Check error messages exist
+    grep -r "requires Task tool usage" src/behaviors/
+
+## Success Criteria
+- @Role mentions trigger error if Task tool missing
+- Clear error messages guide correct usage
+- Existing patterns enhanced, not replaced
