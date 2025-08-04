@@ -6,7 +6,7 @@ Transform Claude Code into an intelligent development team using Product Require
 
 ```bash
 # Install
-git clone https://github.com/Wirasm/intelligent-claude-code
+git clone https://github.com/ksamaschke/intelligent-claude-code
 cd intelligent-claude-code
 make install
 
