@@ -34,6 +34,13 @@ Self-contained blueprints replace complex workflows. Each PRB includes everythin
 - Applies previous learnings (+0.5 bonus)
 - Continuous improvement
 
+### 🧠 Memory-First Operations
+- All operations check memory before action
+- Automatic pattern capture and storage
+- Learning bonus system (+0.5P/Q for applied patterns)
+- Version-controlled in memory/ directory
+- Topic-based organization with auto-pruning
+
 ### ⚡ Autonomous Operation
 - **L1**: Manual approval required
 - **L2**: Architect approval (default)
@@ -45,10 +52,37 @@ Configure in CLAUDE.md where your docs/standards are. System finds and includes 
 ## How It Works
 
 1. **Request Work** → "Implement OAuth2 login"
-2. **Analyze Complexity** → System scores complexity
-3. **Generate PRB** → Self-contained blueprint created
-4. **Specialist Executes** → Single-pass implementation
-5. **Learn & Improve** → Capture patterns for reuse
+2. **Memory Check** → Search for existing patterns/learnings
+3. **Analyze Complexity** → System scores complexity (with PM + Architect for Large/Mega)
+4. **Generate PRB** → Self-contained blueprint with embedded context
+5. **Specialist Executes** → Single-pass implementation
+6. **Git Integration** → Auto version bump + commit + push
+7. **Learn & Store** → Capture new patterns in memory/
+
+## Story Management
+
+Transform natural language stories into executable PRBs:
+
+1. **Story Creation** → Write stories in `stories/` directory
+2. **@PM Analysis** → "@PM break down authentication story"
+3. **Architect Collaboration** → Joint technical analysis
+4. **PRB Generation** → Ready-to-execute blueprints in `prbs/ready/`
+5. **Story Selection** → "@PM what story should we work on next?"
+
+### Story Directory Structure
+```
+stories/
+├── user-authentication.md    # Business requirements
+├── payment-system.md         # Feature specifications  
+└── drafts/                   # Work-in-progress stories
+    └── api-redesign.md
+```
+
+### PM + Architect Process
+- **Story Analysis**: @PM reads business goals, @Architect evaluates technical approach
+- **Priority Setting**: Joint evaluation of business value + technical complexity
+- **PRB Creation**: @PM generates appropriate complexity PRBs
+- **Next Selection**: Consider dependencies, risk, current application state
 
 ## Key Commands
 
@@ -84,8 +118,12 @@ your-project/
 ├── CLAUDE.md                  # Your config
 ├── docs/                      # Your docs (anywhere)
 ├── src/                       # Your code
+├── stories/                   # User stories for PRB generation
+│   └── drafts/                # Work-in-progress stories
 ├── memory/                    # Version-controlled learnings
 └── prbs/                      # Version-controlled PRBs
+    ├── ready/                 # Ready to execute
+    └── completed/             # Executed PRBs
 ```
 
 Work in YOUR structure - system adapts!
@@ -94,7 +132,7 @@ Work in YOUR structure - system adapts!
 
 - **[Documentation Index](docs/index.md)** - Start here!
 - [Virtual Team Guide](docs/virtual-team-guide.md) - Meet the 14 specialist roles
-- [Commands Reference](docs/commands-reference.md) - All 10 commands explained
+- [Commands Reference](docs/commands-reference.md) - All 12 commands explained
 - [PRB System Guide](docs/prb-system-guide.md) - How PRBs work
 - [Project Configuration](docs/project-configuration.md) - Setup guide
 
