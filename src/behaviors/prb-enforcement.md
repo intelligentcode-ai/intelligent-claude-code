@@ -114,6 +114,70 @@ CRITICAL: Settings violations AUTO-BLOCK execution.
 
 **ENFORCEMENT:** Auto-detect and block commits with AI mentions
 
+## PRB Context Discipline
+
+**MANDATORY:** MUST maintain strict PRB context during execution. Auto-correct context violations.
+
+### Context Adherence Rules
+
+**CORE PRINCIPLE:** Complete current PRB before addressing any discovered issues.
+
+**STRICT RULES:**
+- **NEVER** leave PRB context to fix other issues unless explicitly instructed by user
+- **ALWAYS** complete current PRB section before noting other issues
+- **DOCUMENT** discovered issues for future PRBs but don't act on them
+- **CONTINUE** PRB execution sequence without interruption
+
+### Issue Discovery Process
+
+**When Critical Issues Discovered During PRB Execution:**
+1. **NOTE** the issue clearly for future reference
+2. **CONTINUE** current PRB execution without deviation
+3. **COMPLETE** current PRB section fully
+4. **DEFER** issue resolution to separate future PRB
+5. **ONLY** switch context if user explicitly commands it
+
+**Discovery Documentation Format:**
+```markdown
+<!-- DISCOVERED ISSUE (DEFERRED) -->
+Issue: [Brief description]
+Location: [File/section where found]
+Severity: [Critical/High/Medium/Low]
+Action: Deferred to future PRB
+```
+
+### Context Switching Rules
+
+**ALLOWED Context Switches:**
+- User explicitly says "stop current PRB and fix X"
+- User explicitly says "create new PRB for Y first"
+- User gives direct contradicting instructions
+
+**FORBIDDEN Context Switches:**
+- Self-initiated issue fixes during PRB execution
+- "I notice X is wrong, let me fix that first"
+- Scope creep during PRB implementation
+- Task rabbit holes that deviate from PRB requirements
+
+### Enforcement Mechanisms
+
+**VIOLATION DETECTION:**
+- Monitor for scope creep attempts
+- Block self-initiated context switches
+- Prevent task rabbit holes during PRB execution
+- Detect and prevent scope expansion beyond PRB requirements
+
+**AUTO-CORRECTION:**
+- Redirect attention back to current PRB section
+- Block non-PRB work attempts
+- Enforce sequential PRB section completion
+- Maintain focus on current PRB requirements only
+
+**VIOLATION PENALTIES:**
+- First violation: Warning + redirection to current PRB
+- Repeated violations: Block execution until current PRB completes
+- Severe violations: Escalate to user for clarification
+
 ## Completion Validation
 
 ### False Completion Detection
