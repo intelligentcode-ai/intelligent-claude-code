@@ -1,0 +1,323 @@
+---
+id: PRB-001-mandatory-subagent-execution
+type: LARGE
+created: 2025-08-04T12:00:00Z
+priority: HIGH
+assignedRole: AI-Engineer
+complexity: 18
+status: READY
+reviewer: Architect
+---
+
+# [AI-Engineer] Implement Mandatory Subagent Execution for ALL PRBs
+
+## Complete Context
+
+### System Nature
+**MARKDOWN-BASED AI-AGENTIC SYSTEM** - The intelligent-claude-code system operates primarily through markdown-based behavioral patterns, configuration files, and template systems rather than traditional code execution.
+
+### Project Root
+**Absolute Path:** /Users/ksamaschke/Work/Engineering/intelligent-claude-code
+
+### Configuration Values
+- **git_privacy:** true (strip AI mentions from commits)
+- **branch_protection:** true (follow protection rules)
+- **default_branch:** main
+- **autonomy_level:** L3 (autonomous execution)
+- **memory_integration:** true (store learnings in memory/)
+
+### Critical Files to Modify
+1. **PRB Templates (TO BE CREATED):**
+   - `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/prb-templates/nano-prb-template.yaml`
+   - `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/prb-templates/tiny-prb-template.yaml`
+   - `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/prb-templates/medium-prb-template.yaml`
+   - `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/prb-templates/large-prb-template.yaml`
+   - `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/prb-templates/mega-prb-template.yaml`
+
+2. **Behavior Files (TO BE CREATED):**
+   - `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-enforcement.md`
+   - `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/prb-execution.md`
+
+3. **Existing Templates to Update:**
+   - Current templates in `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/templates/` for reference patterns
+
+### User Requirements
+**Original Request:** "Create a PRB that implements mandatory subagent execution for ALL PRBs in the intelligent-claude-code system"
+
+**Success Criteria:**
+- ALL PRB templates include mandatory subagent execution instructions
+- PRB enforcement behaviors completely BLOCK direct execution attempts  
+- PRB execution behaviors FORCE subagent creation for all work
+- Parent agent is COORDINATOR ONLY, never executes work directly
+- Clear "PARENT IS COORDINATOR ONLY" rules enforced throughout
+
+**Work Type:** Implementation of new enforcement system
+
+**Scope Limits:** 
+- Focus only on PRB system implementation
+- Do not modify existing workflow templates unless necessary for integration
+- Maintain compatibility with existing behavioral patterns
+
+### Embedded Memory Learnings
+
+**Relevant Learning: Project Scope Boundaries**
+From `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/memory/project/scope-boundaries.md`:
+- Clear separation between installation scope (read-only ~/.claude/) and execution scope (project directory)
+- All operations during execution must stay within project boundaries
+- Configuration read from ~/.claude/, but execution within project
+
+**Key Pattern:**
+```yaml
+# ✅ CORRECT - Project scope execution
+memory_path: "memory/"         # Within project
+prb_path: "prbs/"             # Within project
+story_path: "stories/"        # Within project
+
+# ❌ WRONG - Installation scope during execution
+~/.claude/memory/             # Read-only during execution
+```
+
+## Problem Statement
+
+The intelligent-claude-code system has repeatedly failed to enforce proper subagent execution patterns for PRBs. The current system allows:
+
+1. **Direct Parent Execution:** Parent agent directly executes work instead of coordinating subagents
+2. **Missing Subagent Creation:** Work proceeds without proper Task tool subagent invocation
+3. **Coordinator Role Violations:** Parent acts as executor rather than coordinator
+4. **Template Inconsistency:** No standardized subagent execution requirements across complexity levels
+
+**Root Cause:** The PRB template system and enforcement behaviors do not exist, allowing direct execution patterns to persist.
+
+**Impact:** 
+- Inconsistent execution patterns
+- Failed coordination between roles
+- Loss of proper review processes
+- Violation of virtual team architecture principles
+
+## Requirements
+
+### Functional Requirements
+
+#### FR1: PRB Template System Creation
+- Create 5 PRB templates corresponding to complexity levels:
+  - **Nano (0-2 points):** Simple one-line changes with sonnet subagent
+  - **Tiny (3-5 points):** Single-file tasks with sonnet subagent  
+  - **Medium (6-15 points):** Multi-file features with haiku+ subagent + mandatory review
+  - **Large (16-30 points):** Complex features with sonnet subagent + mandatory review + sub-PRBs
+  - **Mega (30+ points):** System-wide changes with sonnet subagent + mandatory review + orchestration
+
+#### FR2: Mandatory Subagent Execution Instructions
+Each template MUST include:
+- **SUBAGENT_REQUIRED: true** field
+- **MODEL_REQUIREMENT** specification (sonnet for nano/tiny, haiku+ for medium+)
+- **COORDINATOR_ONLY** enforcement rules for parent
+- **TASK_TOOL_INVOCATION** requirements with proper XML format
+- **REVIEW_REQUIRED** field (false for nano/tiny, true for medium+)
+
+#### FR3: PRB Enforcement Behavior Implementation
+Create comprehensive enforcement that:
+- **BLOCKS** any direct execution attempt by parent
+- **DETECTS** @Role mentions and forces PRB creation
+- **VALIDATES** proper subagent creation before work proceeds
+- **AUTO-CORRECTS** direct execution attempts with PRB generation
+
+#### FR4: PRB Execution Behavior Implementation  
+Create execution behavior that:
+- **MANDATES** Task tool subagent creation for ALL PRBs
+- **VALIDATES** subagent model requirements match PRB specifications
+- **ENFORCES** coordinator-only role for parent throughout execution
+- **TRACKS** completion through subagent coordination, not direct execution
+
+### Processual Requirements
+
+#### PR1: Template Hierarchy Implementation
+- Templates stored in `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/prb-templates/`
+- Follow naming convention: `{complexity}-prb-template.yaml`
+- Include complete context loading patterns
+- Embed memory search results in templates
+
+#### PR2: Behavioral Integration
+- Behaviors stored in `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/src/behaviors/`
+- Follow existing behavioral pattern structure from CLAUDE.md references
+- Import shared patterns for consistency
+- Include auto-correction mechanisms
+
+#### PR3: Enforcement Integration Points
+- Integration with existing workflow system
+- Compatibility with L3 autonomy level
+- Memory system integration for pattern storage
+- Configuration hierarchy respect
+
+### Technical Requirements
+
+#### TR1: YAML Template Structure
+Templates must include standardized sections:  
+- Metadata (id, type, complexity, etc.)
+- Complete context loading
+- Subagent execution requirements
+- Review specifications
+- Git operation templates
+- Knowledge capture sections
+
+#### TR2: Markdown Behavior Structure
+Behaviors must follow established patterns:
+- MANDATORY enforcement statements
+- Auto-correction logic
+- Integration point specifications  
+- Import statements for shared patterns
+- Clear violation detection patterns
+
+#### TR3: Subagent Coordination Protocol
+Establish clear protocol:
+- Parent loads context once, passes to all subagents
+- Parent coordinates but never executes work directly
+- Subagents report completion back to parent
+- Parent validates completion and manages lifecycle
+
+## Git Operations
+
+### Branch Strategy
+1. **Create Feature Branch:**
+   ```bash
+   git checkout -b feature/PRB-001-mandatory-subagent-execution
+   ```
+
+2. **Directory Creation:**
+   ```bash
+   mkdir -p prb-templates
+   mkdir -p src/behaviors
+   ```
+
+3. **Commit Strategy:**
+   - Commit 1: Create PRB template structure and nano/tiny templates
+   - Commit 2: Create medium/large/mega templates  
+   - Commit 3: Implement PRB enforcement behavior
+   - Commit 4: Implement PRB execution behavior
+   - Commit 5: Update CLAUDE.md integration documentation
+
+4. **Final Operations:**
+   ```bash
+   git add .
+   git commit -m "Implement mandatory subagent execution for all PRBs
+
+   - Create 5 PRB templates (nano through mega complexity)
+   - Add mandatory subagent execution requirements
+   - Implement PRB enforcement behavior blocking direct execution
+   - Add PRB execution behavior forcing Task tool subagent creation
+   - Establish COORDINATOR ONLY role for parent agent
+   - Integrate with memory system for pattern storage"
+   
+   git push -u origin feature/PRB-001-mandatory-subagent-execution
+   ```
+
+## Knowledge Management
+
+### Learning Capture
+Store the following learnings in `/Users/ksamaschke/Work/Engineering/intelligent-claude-code/memory/`:
+
+1. **PRB Template Patterns** in `memory/prb-system/template-design.md`
+   - Template structure decisions
+   - Subagent requirement specifications
+   - Complexity level mapping
+
+2. **Subagent Coordination Patterns** in `memory/subagent/coordination-protocols.md`
+   - Parent coordinator role definition
+   - Task tool invocation patterns  
+   - Completion validation methods
+
+3. **Enforcement Mechanisms** in `memory/enforcement/prb-enforcement.md`
+   - Direct execution blocking techniques
+   - Auto-correction patterns
+   - Violation detection methods
+
+### Memory Entities to Create
+- **PRB System:** Entity for PRB template system knowledge
+- **Subagent Coordination:** Entity for coordination pattern knowledge  
+- **Enforcement Patterns:** Entity for behavioral enforcement techniques
+
+## Review Process
+
+### Pre-Assigned SME Reviewer: @Architect
+
+**Review Scope:**
+1. **Architecture Validation:** Ensure PRB system integrates properly with existing virtual team architecture
+2. **Template Completeness:** Validate all 5 templates include required subagent execution elements
+3. **Behavior Integration:** Confirm enforcement and execution behaviors work together cohesively
+4. **Scalability Assessment:** Ensure system can handle increasing PRB complexity without performance degradation
+
+**Review Criteria:**
+- [ ] All templates include mandatory subagent execution requirements
+- [ ] Enforcement behavior completely blocks direct execution attempts
+- [ ] Execution behavior properly coordinates subagent creation
+- [ ] Integration points with existing system are clean and functional
+- [ ] Documentation is clear and complete
+
+**Approval Required:** Yes - Architecture approval required before merge
+
+## Implementation Samples
+
+### Nano PRB Template Sample
+```yaml
+---
+id: "{{ PRB_ID }}"
+type: NANO
+complexity: "{{ COMPLEXITY_SCORE }}"  
+assignedRole: "{{ ASSIGNED_ROLE }}"
+status: READY
+subagent_required: true
+model_requirement: claude-3-sonnet
+coordinator_only: true
+review_required: false
+---
+
+# [{{ ASSIGNED_ROLE }}] {{ WORK_DESCRIPTION }}
+
+## MANDATORY SUBAGENT EXECUTION
+**CRITICAL:** Parent is COORDINATOR ONLY. ALL work must be executed by subagent.
+
+### Subagent Creation Required
+```xml
+<invoke name="Task">
+<parameter name="taskDescription">{{ WORK_DESCRIPTION }}</parameter>
+<parameter name="projectContext">{{ COMPLETE_CONTEXT }}</parameter>
+</invoke>
+```
+
+**PARENT COORDINATION ONLY:**
+- Load complete context once
+- Create subagent via Task tool
+- Monitor subagent execution  
+- Validate completion
+- Update PRB status
+
+**DIRECT EXECUTION BLOCKED:** Parent cannot execute work directly
+```
+
+### PRB Enforcement Behavior Sample
+```markdown
+# PRB Enforcement Behavior
+
+**MANDATORY:** ALL work MUST use PRB system. Auto-correct violations.
+
+## Detection Patterns
+- @Role mentions → Generate PRB → Create subagent
+- Direct execution attempts → BLOCK → Force PRB creation
+- Work requests → Complexity analysis → PRB template selection
+
+## Enforcement Rules
+1. **NO DIRECT EXECUTION:** Parent cannot execute work directly
+2. **MANDATORY SUBAGENTS:** ALL PRBs require Task tool subagent creation
+3. **COORDINATOR ONLY:** Parent role limited to coordination and validation
+
+## Auto-Correction
+**VIOLATION DETECTED:** Direct execution attempt
+**ACTION:** BLOCK execution → Generate appropriate PRB → Create subagent → Execute via subagent
+```
+
+**SUCCESS DEFINITION:**
+PRB system successfully prevents direct execution failures through:
+1. Complete template system with mandatory subagent requirements
+2. Enforcement behavior that blocks direct execution attempts
+3. Execution behavior that forces proper subagent coordination
+4. Clear coordinator-only role definition for parent agent
+5. Integration with existing memory and configuration systems
