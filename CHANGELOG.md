@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.4.2] - 2025-08-04
+
+### Fixed
+- Added Task tool enforcement to @Role detection patterns
+- All @Role mentions now require Task tool invocation
+- Added clear error messages for missing Task tool usage
+
+### Enhanced
+- prb-enforcement.md with Task tool requirement and multi-layer detection
+- prb-auto-trigger.md with Task tool wrapper for @Role mentions
+
 ## [6.4.0] - 2025-08-03
 
 ### Added

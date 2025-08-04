@@ -19,8 +19,11 @@ Every work detection triggers memory search first, then PRB generation with embe
 |-------------|------------------|--------|
 | **PRB File** | *.prb.yaml, PRB-XXX | Execute existing PRB |
 | **Work Request** | Any implementation request | Analyze → Generate PRB |
-| **@Role** | @Role mention | Generate appropriate PRB |
+| **@Role** | @Role mention | Generate PRB with Task tool wrapper |
 | **Commands** | /icc-create-prb | Generate PRB with options |
+
+**Task Tool Enforcement:** All @Role mentions MUST be wrapped in Task tool invocation
+**Error if Missing:** "❌ @Role delegation requires Task tool usage"
 
 ## Complexity Analysis
 
@@ -46,13 +49,14 @@ Every work detection triggers memory search first, then PRB generation with embe
 ## Auto-Generation Flow
 
 1. **Detect** → Work requirement
-2. **Gather Context** → Load complete project context (MANDATORY)
-3. **Search Memory** → Query memory/[topic]/ for relevant patterns (MANDATORY)
-4. **Analyze** → Calculate complexity score
-5. **Select** → Choose PRB template using hierarchy
-6. **Validate Context** → Ensure no placeholder values
-7. **Generate** → Create PRB with complete context and embedded memory entries (top 2-3)
-8. **Execute** → Direct execution
+2. **Task Tool Check** → If @Role mentioned, ensure Task tool wrapper
+3. **Gather Context** → Load complete project context (MANDATORY)
+4. **Search Memory** → Query memory/[topic]/ for relevant patterns (MANDATORY)
+5. **Analyze** → Calculate complexity score
+6. **Select** → Choose PRB template using hierarchy
+7. **Validate Context** → Ensure no placeholder values
+8. **Generate** → Create PRB with complete context and embedded memory entries (top 2-3)
+9. **Execute** → Direct execution via Task tool if @Role involved
 
 ### Context Gathering Phase (MANDATORY)
 
