@@ -42,12 +42,20 @@ Appropriate template selected based on complexity:
 
 ### 4. Context Integration
 PRB includes everything from your project:
-- Best practices from your docs/
+- **Best practices from best-practices/** - Methodological approaches (GitOps, TDD, DevSecOps, etc.)
 - Architecture patterns
 - Existing code examples
 - External documentation
 - Project standards
 - **Embedded learnings from memory/** - Past solutions and patterns
+
+### 4a. Best-Practices Auto-Discovery
+The system automatically discovers and injects relevant methodological approaches:
+- **Scans best-practices/** directory during PRB generation
+- **Matches practices** to work type and complexity
+- **Injects top 2-3 practices** into PRB context (max 800 tokens)
+- **Replaces template placeholders** with dynamic content
+- **No template modification needed** - system handles injection automatically
 
 ### 5. Specialist Execution
 Appropriate @Role executes with full context:
@@ -115,10 +123,9 @@ In your CLAUDE.md:
 
 ```yaml
 prb_configuration:
-  # Tell system where YOUR files are
-  best_practices_paths:
-    - "docs/best-practices/"     # Your location
-    - "engineering/standards/"   # Your location
+  # Directory structure configuration
+  directory_structure:
+    best_practices_path: "best-practices"    # Auto-discovered practices location
     
   # Code search configuration
   code_pattern_search:
@@ -129,6 +136,14 @@ prb_configuration:
   behavioral_overrides:
     error_handling: "defensive"
     testing_approach: "tdd"
+
+# Best-practices system automatically discovers practices from:
+# best-practices/development/     - Coding practices (TDD, Clean Code)
+# best-practices/architecture/    - Design patterns and principles
+# best-practices/operations/      - GitOps, DevOps, Infrastructure
+# best-practices/security/        - DevSecOps, security practices
+# best-practices/quality/         - Quality assurance methodologies
+# best-practices/collaboration/   - Team practices and coordination
 ```
 
 ## Commands

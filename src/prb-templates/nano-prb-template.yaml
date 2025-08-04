@@ -18,6 +18,9 @@ complete_context:
   branch_protection: "[FROM_CONFIG]" # branch_protection from config
   default_branch: "[FROM_CONFIG]"    # default_branch from config
   branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
+  best_practices:
+    # Minimal best-practices for trivial changes (optional)
+    - "[DYNAMIC_BEST_PRACTICES_1]"
 
 # MANDATORY: Requirements Section
 requirements:
