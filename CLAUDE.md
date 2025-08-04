@@ -15,62 +15,67 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - No external work or context switching is permitted
 - All tasks must be focused on the intelligent-claude-code repository and its enhancement
 
-### Workflow Execution System (BUG-115 Improvements)
+### PRB Execution System (Mandatory Subagent Architecture)
 
-The virtual team operates with an **AI-executable workflow** that ensures consistent execution and optimal performance:
+The virtual team operates with a **Product Requirement Blueprint (PRB)** system that enforces mandatory subagent execution and prevents direct parent execution:
 
-#### Key Workflow Improvements
+#### Critical PRB Enforcement Rules
 
-1. **Simplified AI-Executable Workflow**
-   - Workflow steps are now simple and directly executable by AI
-   - Clear XML-based Task tool invocations for each role
-   - Removed complex pseudo-code patterns that confused execution
-   - Each step has a single, clear purpose
+1. **PARENT IS COORDINATOR ONLY**
+   - Parent agent CANNOT execute work directly under any circumstances
+   - ALL work must be performed by subagents created via Task tool
+   - Parent role limited to coordination, monitoring, and validation
+   - Direct execution attempts are immediately blocked and auto-corrected
 
-2. **Optimized Context Loading**
-   - Parent workflow loads PROJECT-CONTEXT.md **ONCE** at initialization
-   - Settings are loaded **ONCE** alongside context
-   - Both are passed to all subagents via context parameters
-   - Eliminates redundant file reads and improves performance
-   - Reduces token usage by ~70% for multi-task operations
+2. **Mandatory Subagent Creation**
+   - Every PRB requires Task tool subagent invocation
+   - Subagents receive complete project context from parent
+   - Parent monitors progress but never executes work directly
+   - Model requirements: sonnet for nano/tiny, haiku+ for medium+
 
-3. **Pre-Assigned SME Reviewers**
-   - Subject Matter Expert (SME) reviewers are assigned during task creation
-   - Each task specifies its required reviewer role based on work type
-   - Eliminates runtime reviewer selection complexity
-   - Ensures appropriate expertise for each review
+3. **5-Tier PRB Template System**
+   - **Nano (0-2 points):** Trivial one-line changes
+   - **Tiny (3-5 points):** Single-file modifications  
+   - **Medium (6-15 points):** Multi-file features with mandatory review
+   - **Large (16-30 points):** Complex features with sub-PRB orchestration
+   - **Mega (30+ points):** System-wide transformational changes
 
-4. **Dynamic Workflow Generation**
-   - Workflows are generated based on task type (bug, story, epic, task)
-   - Each type has its own optimized workflow pattern
-   - Automatic selection of outer (planning) vs inner (execution) workflows
-   - Context-aware workflow steps based on work requirements
+4. **Auto-Correction Enforcement**
+   - @Role mentions → Generate PRB → Create subagent
+   - Direct execution attempts → Block → Force subagent creation
+   - Work requests → Complexity analysis → PRB template selection → Subagent execution
 
-#### Workflow Structure
+#### PRB Execution Structure
 
-**Outer Workflow (Story/Bug Level)**
-1. PM Planning with PROJECT-CONTEXT
-2. Architect Triage and Approval
-3. Task Creation with Role Assignments
-4. Git Branch Setup
-5. Parallel Task Execution (up to 5 tasks)
-6. Merge Request Decision (Parent asks user)
-7. Story Retrospective and Learning
+**Required Task Tool Invocation:**
+```xml
+<invoke name="Task">
+<parameter name="taskDescription">[Complete work description]</parameter>
+<parameter name="projectContext">[Full project context]</parameter>
+</invoke>
+```
 
-**Inner Workflow (Task Level)**
-1. Memory Search for Patterns
-2. Plan Approach
-3. Execute Work
-4. Peer Review (Pre-assigned SME)
-5. Git Operations
-6. Task Completion
-7. Learning Capture
+**Parent Coordination Responsibilities (ONLY):**
+1. Load complete project context once
+2. Create subagent via Task tool with appropriate model
+3. Monitor subagent execution progress
+4. Validate completion against success criteria
+5. Update PRB status and capture learnings
+6. Coordinate with reviewers if required
 
-#### Benefits
-- **Performance**: 70% reduction in redundant operations
-- **Reliability**: Consistent execution with clear steps
-- **Scalability**: Parallel execution of non-conflicting tasks
-- **Quality**: Pre-assigned expert reviews ensure standards
-- **Learning**: Automatic capture and application of patterns
+**Subagent Execution Phases:**
+1. Context validation and requirement understanding
+2. Implementation execution with quality standards
+3. Git operations and branch management
+4. Review coordination (for medium+ complexity)
+5. Knowledge capture and learning storage
+6. Completion validation and PRB lifecycle management
+
+#### Enforcement Benefits
+- **Consistency**: Mandatory subagent execution prevents execution pattern failures
+- **Quality**: Proper coordination ensures expert execution with oversight
+- **Scalability**: Subagent orchestration enables complex feature development
+- **Learning**: Consistent patterns captured through coordinator role
+- **Reliability**: Auto-correction prevents direct execution violations
 
 [... rest of the existing content remains unchanged ...]
