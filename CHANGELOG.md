@@ -7,7 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.7.0] - 2025-08-04
+
 ### Added
+- Dynamic best-practices injection system for PRB generation
+- best-practices/ directory structure with organized methodological approaches
+- Auto-discovery mechanism that searches best-practices during PRB generation
+- Template placeholder replacement with dynamic practice content
+- Support for unlimited methodological approaches (GitOps, DevSecOps, TDD, Clean Architecture, etc.)
+- Integration with existing PRB generation pipeline
+- Shared patterns for best-practices integration
 - Project scope enforcement to prevent work outside current project directory
 
 ## [6.5.2] - 2025-08-04

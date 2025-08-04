@@ -25,6 +25,14 @@ complete_context:
   impact_scope: "[AFFECTED_SYSTEMS]"
   risk_level: "[HIGH|CRITICAL]"
   rollback_required: true
+  best_practices:
+    # Auto-discovered practices from best-practices/ directory
+    # Top 5 relevant practices for system-wide changes
+    - "[DYNAMIC_BEST_PRACTICES_1]"
+    - "[DYNAMIC_BEST_PRACTICES_2]"
+    - "[DYNAMIC_BEST_PRACTICES_3]"
+    - "[DYNAMIC_BEST_PRACTICES_4]"
+    - "[DYNAMIC_BEST_PRACTICES_5]"
   
 # MANDATORY: Requirements Section
 requirements:

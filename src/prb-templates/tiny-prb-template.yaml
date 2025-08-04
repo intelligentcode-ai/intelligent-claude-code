@@ -19,6 +19,11 @@ complete_context:
   default_branch: "[FROM_CONFIG]"    # default_branch from config
   branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
   scope: "[SINGLE_FILE]"
+  best_practices:
+    # Auto-discovered practices from best-practices/ directory
+    # Top 1-2 relevant practices for simple changes
+    - "[DYNAMIC_BEST_PRACTICES_1]"
+    - "[DYNAMIC_BEST_PRACTICES_2]"
   
 # MANDATORY: Requirements Section
 requirements:

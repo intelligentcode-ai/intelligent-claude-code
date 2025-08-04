@@ -52,11 +52,12 @@ Every work detection triggers memory search first, then PRB generation with embe
 2. **Task Tool Check** → If @Role mentioned, ensure Task tool wrapper
 3. **Gather Context** → Load complete project context (MANDATORY)
 4. **Search Memory** → Query memory/[topic]/ for relevant patterns (MANDATORY)
-5. **Analyze** → Calculate complexity score
-6. **Select** → Choose PRB template using hierarchy
-7. **Validate Context** → Ensure no placeholder values
-8. **Generate** → Create PRB with complete context and embedded memory entries (top 2-3)
-9. **Execute** → Direct execution via Task tool if @Role involved
+5. **Search Best-Practices** → Query best-practices/ directory for relevant methodological approaches (MANDATORY)
+6. **Analyze** → Calculate complexity score
+7. **Select** → Choose PRB template using hierarchy
+8. **Validate Context** → Ensure no placeholder values
+9. **Generate** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
+10. **Execute** → Direct execution via Task tool if @Role involved
 
 ### Context Gathering Phase (MANDATORY)
 
@@ -124,6 +125,9 @@ Captures patterns for better template selection over time.
 
 ### With Memory System
 MANDATORY memory search before PRB generation. Embeds top 2-3 relevant entries.
+
+### With Best-Practices System
+MANDATORY best-practices search before PRB generation. Discovers and embeds top 2-3 relevant methodological approaches from best-practices/ directory. Replaces template placeholders with dynamic practice content.
 
 ### With L3 Autonomy
 In L3 mode, continuously detects work and generates PRBs autonomously.
