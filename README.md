@@ -31,13 +31,13 @@ Self-contained blueprints replace complex workflows. Each PRB includes everythin
 ### 🧠 Self-Learning System
 - First errors create learnings (no penalty)
 - Repeated errors get penalties  
-- Applies previous learnings (+0.5 bonus)
-- Continuous improvement
+- Applies previous learnings automatically
+- Continuous improvement through memory patterns
 
 ### 🧠 Memory-First Operations
 - All operations check memory before action
 - Automatic pattern capture and storage
-- Learning bonus system (+0.5P/Q for applied patterns)
+- Memory pattern application tracking
 - Version-controlled in memory/ directory
 - Topic-based organization with auto-pruning
 
