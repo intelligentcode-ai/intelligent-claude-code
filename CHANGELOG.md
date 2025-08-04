@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.5.1] - 2025-08-04
+
+### Added
+- Systematic end-to-end PRB validation process
+- Comprehensive project search validation
+- Evidence-based deliverable verification system
+- Documentation completeness validation with scoring
+- Validation evidence collection and audit trails
+
+### Enhanced
+- PRB execution behavior with mandatory systematic validation
+- Completion enforcement mechanisms with evidence requirements
+- Quality gate enforcement with comprehensive checks
+
+## [6.5.0] - 2025-08-04
+
+### Removed
+- Obsolete badges and role scoring system (P:X.X, Q:X.X)
+- Badge-based gamification from virtual team system
+- Scoring bonuses from learning behaviors
+
+### Added
+- Clean professional progress reporting system
+- Simple completion tracking focused on delivery
+
+### Changed
+- Virtual team system focuses on reliable execution over gamification
+- Learning system emphasizes memory patterns over scoring
+- Progress reporting uses clear completion states
+
 ## [6.4.2] - 2025-08-04
 
 ### Fixed
