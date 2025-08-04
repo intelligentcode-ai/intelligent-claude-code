@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.5.2] - 2025-08-04
+
+### Added
+- PRB context discipline enforcement to prevent scope creep during PRB execution
+- Strict context adherence rules for maintaining PRB focus
+- Issue discovery and deferral process for critical issues found during execution
+- Context switching rules with clear allowed/forbidden patterns
+- Violation detection and auto-correction mechanisms
+
+### Enhanced
+- PRB enforcement behavior with comprehensive context discipline controls
+
 ## [6.5.1] - 2025-08-04
 
 ### Added
