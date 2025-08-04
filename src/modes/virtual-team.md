@@ -8,6 +8,7 @@
 @../behaviors/prb-auto-trigger.md
 @../behaviors/story-breakdown.md
 @../behaviors/directory-structure.md
+@../behaviors/progress-reporting.md
 **CORE:** 14 roles+unlimited • @-notation • PRB-driven execution
 
 ## STARTUP
