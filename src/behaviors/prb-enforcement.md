@@ -11,7 +11,9 @@
 
 ### @Role Detection
 **All Formats:** "@Role:", "@Role", "Ask @Role", "@Role\n", "[@Role]", "@Role-Name"
-**Action:** Generate appropriate PRB → Block direct execution
+**Action:** Generate appropriate PRB → Block direct execution → REQUIRE Task tool
+**Task Tool Required:** ALL @Role mentions MUST use Task tool invocation
+**Error:** "❌ @Role delegation requires Task tool usage. Use Task tool with subagent_type='general-purpose'"
 
 ### Work Item Detection  
 **Patterns:** TASK-XXX, STORY-XXX, BUG-XXX, EPIC-XXX, PRB-XXX mentions
@@ -34,6 +36,7 @@
 **Wrong Template:** STOP → Re-analyze → Generate correct PRB
 **Direct Execution:** STOP → Create PRB → Execute through PRB
 **Legacy Workflow:** STOP → Convert to PRB → Direct execution
+**Missing Task Tool:** STOP → Error message → Require Task tool wrapper
 
 ## Execution Enforcement
 
@@ -51,9 +54,10 @@
 ## Multi-Layer Detection
 1. **Input Scanner:** Pre-process ALL text before execution
 2. **Pattern Matcher:** Detect @Role and work patterns
-3. **PRB Checker:** Validate PRB exists for work
-4. **Template Validator:** Ensure correct complexity template
-5. **Auto-Generator:** Create PRB if missing
+3. **Task Tool Checker:** Validate Task tool usage for @Role mentions
+4. **PRB Checker:** Validate PRB exists for work
+5. **Template Validator:** Ensure correct complexity template
+6. **Auto-Generator:** Create PRB if missing
 
 ## Real-Time Interception
 **Monitor:** ALL execution attempts
