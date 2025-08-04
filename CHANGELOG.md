@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.7.0] - 2025-08-04
+
 ### Added
 - Dynamic best-practices injection system for PRB generation
 - best-practices/ directory structure with organized methodological approaches
