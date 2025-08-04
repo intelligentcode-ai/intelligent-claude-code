@@ -13,7 +13,7 @@
 
 ### @-notation Activation
 **Pattern:** @Role triggers behavioral adoption + PRB execution
-**Scoring:** Track P:X.X, Q:X.X performance
+**Execution:** Professional task completion
 **Enforcement:** Real expertise adoption (no fake switching)
 
 ### Dynamic Specialists
@@ -24,7 +24,7 @@
 ### Role State
 **History:** Stack-based switching context
 **Persistence:** Maintain expertise across switches
-**Integration:** Badges.md scoring + learning capture
+**Integration:** Memory-based learning capture
 
 ## Validation
 

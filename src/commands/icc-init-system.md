@@ -25,7 +25,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 2. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
 3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
 4. **Activate PRB System**: Enable PRB-driven execution system
-5. **Initialize Scoring System**: Activate badges.md achievement tracking
+5. **Initialize Progress Reporting**: Activate clean completion tracking
 6. **Setup Learning System**: Enable error forgiveness and pattern capture
 7. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
 8. **Validate System**: Verify all components operational and ready
@@ -43,7 +43,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 - ✅ Memory system operational  
 - ✅ Role definitions loaded
 - ✅ PRB system active
-- ✅ Scoring system operational
+- ✅ Progress reporting operational
 - ✅ Learning system active
 - ✅ Tool integrations configured
 - ✅ Assignment file processing ready
