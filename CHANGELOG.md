@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.8.3] - 2025-08-09
+
+### Security
+- Added SECURITY.md documenting memory file exposure in git history
+- Enhanced .gitignore with stronger memory file exclusion patterns
+- Added GitHub Action to automatically block PRs containing memory files
+- Removed remaining memory files from version control
+
+### Fixed
+- Memory files are now properly excluded from version control
+- Previous releases (6.8.1, 6.8.2) contained memory files that shouldn't have been included
+- No sensitive credentials were exposed, only system learning patterns
+
 ## [6.8.2] - 2025-08-09
 
 ### Fixed
