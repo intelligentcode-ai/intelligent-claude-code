@@ -41,7 +41,7 @@ TASK TOOL VALIDATION (MANDATORY FIRST CHECK):
 MANDATORY PRB SECTION EXECUTION:
 ☐ 1. Complete Context Section - ALL file references validated, settings loaded
 ☐ 2. Requirements Section - EVERY functional/processual/technical requirement met
-☐ 3. Git Operations Section - EVERY command executed exactly as specified
+☐ 3. Git Operations Section - EVERY command executed exactly as specified (CHANGELOG before PR creation)
 ☐ 4. Knowledge Management Section - ALL learnings captured in specified paths
 ☐ 5. Review Process Section - ALL reviewers complete their reviews
 ☐ 6. Implementation Samples Section - Applied correctly with examples
@@ -283,6 +283,8 @@ ExecuteProjectScopeValidation(prb_context):
 ### Git Operations Validation
 ```markdown
 ## Git Operations ✓
+[ ] CHANGELOG updated before PR creation (if release changes)
+[ ] Version bumped in same commit as CHANGELOG (if applicable)
 [ ] All changes staged properly
 [ ] Commit messages follow privacy requirements
 [ ] Branch operations completed
