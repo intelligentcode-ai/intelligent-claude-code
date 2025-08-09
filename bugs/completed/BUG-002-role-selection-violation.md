@@ -1,6 +1,8 @@
 # BUG-002: Critical Role Selection Violation - Ignoring Project Scope and Architect Collaboration
 
-**Status:** Open  
+**Status:** Completed  
+**Completion Date:** 2025-01-09
+**Fixed In:** PR #52  
 **Priority:** CRITICAL  
 **Reported:** 2025-01-09  
 **Reporter:** User  
