@@ -9,6 +9,18 @@
 
 ## Detection Patterns
 
+### CRITICAL: Direct PRB Execution Detection
+**HIGHEST PRIORITY:** Block ALL direct PRB execution attempts immediately
+**Detection Pattern:** Any attempt to execute PRB without Task tool subagent
+**Action:** IMMEDIATE BLOCK → Display Task tool requirement → Prevent execution
+**Error:** "❌ PRB execution REQUIRES Task tool subagent - NO EXCEPTIONS"
+
+**BLOCKING TRIGGERS:**
+- PRB execution without Task tool context
+- Direct file access to *.prb.yaml files for execution
+- Any PRB workflow initiation outside Task tool
+- Attempts to bypass Task tool requirement
+
 ### @Role Detection
 **All Formats:** "@Role:", "@Role", "Ask @Role", "@Role\n", "[@Role]", "@Role-Name"
 **Action:** Generate appropriate PRB → Block direct execution → REQUIRE Task tool
@@ -77,20 +89,70 @@
 **Validation:** Success criteria embedded
 
 ## Multi-Layer Detection
-1. **Input Scanner:** Pre-process ALL text before execution
-2. **Pattern Matcher:** Detect @Role and work patterns
-3. **Task Tool Checker:** Validate Task tool usage for @Role mentions
-4. **PRB Checker:** Validate PRB exists for work
-5. **Template Validator:** Ensure correct complexity template
-6. **System Nature Validator:** Check role assignments align with system nature
-7. **PM+Architect Validator:** Ensure collaboration process documented
-8. **Auto-Generator:** Create PRB if missing
+1. **Task Tool Validator:** FIRST CHECK - Validate ALL PRB executions use Task tool (MANDATORY)
+2. **Input Scanner:** Pre-process ALL text before execution
+3. **Pattern Matcher:** Detect @Role and work patterns
+4. **Task Tool Checker:** Validate Task tool usage for @Role mentions
+5. **PRB Checker:** Validate PRB exists for work
+6. **Template Validator:** Ensure correct complexity template
+7. **System Nature Validator:** Check role assignments align with system nature
+8. **PM+Architect Validator:** Ensure collaboration process documented
+9. **Auto-Generator:** Create PRB if missing
 
 ## Real-Time Interception
-**Monitor:** ALL execution attempts
-**Interrupt:** IMMEDIATELY on non-PRB execution
+**Monitor:** ALL execution attempts (Task tool check FIRST)
+**Interrupt:** IMMEDIATELY on direct PRB execution (highest priority)
+**Block:** No PRB execution without Task tool subagent
 **Block:** No direct work without PRB
-**Correct:** Generate appropriate PRB
+**Correct:** Generate appropriate PRB with Task tool enforcement
+
+## Task Tool Enforcement (ABSOLUTE PRIORITY)
+
+**CRITICAL RULE:** EVERY PRB execution MUST use Task tool subagent - NO EXCEPTIONS EVER.
+
+### Task Tool Detection Logic
+```
+DetectTaskToolViolation(execution_context):
+  # Check if executing within Task tool subagent
+  IF NOT execution_context.is_task_tool_subagent:
+    RETURN CRITICAL_VIOLATION("Direct PRB execution forbidden")
+  
+  # Validate Task tool pattern
+  IF NOT execution_context.task_tool_pattern_valid:
+    RETURN PATTERN_VIOLATION("Invalid Task tool invocation")
+  
+  RETURN VALIDATION_PASSED
+```
+
+### Task Tool Blocking Mechanisms
+**ABSOLUTE BLOCKS:**
+- Any PRB execution outside Task tool context
+- Direct access to PRB files for execution
+- Bypassing Task tool requirement
+- Attempting to override Task tool mandate
+
+**IMMEDIATE ACTIONS:**
+1. **BLOCK EXECUTION** at first detection
+2. **DISPLAY CLEAR ERROR:** "❌ PRB execution REQUIRES Task tool subagent"
+3. **SHOW CORRECT PATTERN:** Provide Task tool invocation example
+4. **LOG VIOLATION:** Track attempts for monitoring
+5. **NO BYPASS:** This rule cannot be overridden by ANY configuration
+
+### Required Task Tool Pattern
+```
+MANDATORY PATTERN FOR ALL PRB EXECUTION:
+Task(
+  subagent_type='general-purpose',
+  description='Execute [PRB-ID] for [description]',
+  prompt='[Complete PRB context and instructions]'
+)
+```
+
+**PATTERN VALIDATION:**
+- Must include 'subagent_type' parameter
+- Must reference specific PRB being executed
+- Must contain complete context for subagent
+- No shortcuts or abbreviated patterns allowed
 
 ## Advanced Patterns
 
