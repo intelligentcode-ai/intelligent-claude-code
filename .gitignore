@@ -80,8 +80,14 @@ NOTES.md
 # Claude configuration (user-specific, not source code)
 .claude/
 
-# Memory and PRBs directories (remove from version control)
+# CRITICAL: Memory must NEVER be committed - local learning only!
+# If you see memory/ files in git status, DO NOT COMMIT THEM
 memory/
+memory/**/*
+*.memory
+*.learning
+
+# PRBs should also remain local
 prbs/
 
 # Credentials
