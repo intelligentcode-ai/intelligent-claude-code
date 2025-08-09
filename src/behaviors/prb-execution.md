@@ -8,12 +8,36 @@
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/template-loading.md
 
+## CRITICAL: TASK TOOL MANDATORY
+
+**ABSOLUTE REQUIREMENT:** EVERY PRB execution MUST use Task tool subagent - NO EXCEPTIONS.
+
+```markdown
+CRITICAL TASK TOOL VALIDATION (FIRST CHECK):
+☐ PRB execution MUST be via Task tool subagent - VALIDATE IMMEDIATELY
+☐ Block ALL direct PRB execution attempts
+☐ Error: "❌ PRB execution REQUIRES Task tool subagent"
+☐ NO bypass possible - highest priority enforcement
+
+TASK TOOL PATTERN REQUIRED:
+Task(
+  subagent_type='general-purpose',
+  description='Execute [PRB-ID] for [brief description]',
+  prompt='[Full PRB context and execution instructions]'
+)
+
+IF TASK TOOL NOT DETECTED: BLOCK EXECUTION IMMEDIATELY
+```
+
 ## MANDATORY EXECUTION CHECKLIST
 
 **CRITICAL:** Every PRB has 6 mandatory sections. ALL must be executed without exception.
 
 ### Section-by-Section Execution Requirements
 ```markdown
+TASK TOOL VALIDATION (MANDATORY FIRST CHECK):
+☐ 0. Task Tool Check - VERIFY Task tool subagent is executing PRB (BLOCKING)
+
 MANDATORY PRB SECTION EXECUTION:
 ☐ 1. Complete Context Section - ALL file references validated, settings loaded
 ☐ 2. Requirements Section - EVERY functional/processual/technical requirement met
@@ -81,6 +105,57 @@ CRITICAL: Settings are NOT suggestions - they are MANDATORY requirements.
 ### State Transition Guards
 Each state transition MUST validate previous state completion before proceeding.
 
+**CRITICAL:** Task tool validation MUST be FIRST check before ANY state transitions.
+
+## Task Tool Validation (MANDATORY FIRST)
+
+**ABSOLUTE PRIORITY:** Task tool check MUST happen BEFORE any other validation.
+
+### Pre-Execution Task Tool Validation
+
+```markdown
+TASK TOOL VALIDATION CHECKLIST (HIGHEST PRIORITY):
+☐ Verify current execution is within Task tool subagent context
+☐ Confirm Task tool invocation pattern was used
+☐ Block ANY attempt at direct PRB execution
+☐ Display clear error if Task tool not detected
+```
+
+### Task Tool Detection Function
+
+```
+ValidateTaskToolExecution(prb_context):
+  # Check if executing within Task tool context
+  IF NOT executing_within_task_tool():
+    BLOCK_PRB_EXECUTION()
+    RETURN TASK_TOOL_REQUIRED_ERROR("❌ PRB execution REQUIRES Task tool subagent")
+  
+  # Verify Task tool pattern
+  IF NOT valid_task_tool_pattern():
+    BLOCK_PRB_EXECUTION()
+    RETURN INVALID_PATTERN_ERROR("❌ Invalid Task tool pattern for PRB execution")
+  
+  RETURN VALIDATION_PASSED
+```
+
+### Task Tool Enforcement Actions
+
+**WHEN TASK TOOL NOT DETECTED:**
+1. **BLOCK PRB EXECUTION** immediately (highest priority)
+2. **DISPLAY CLEAR ERROR MESSAGE:** "❌ PRB execution REQUIRES Task tool subagent"
+3. **PROVIDE CORRECT PATTERN:** Show required Task tool invocation
+4. **NO BYPASS ALLOWED:** This check cannot be skipped or overridden
+5. **LOG VIOLATION ATTEMPT** for monitoring and prevention
+
+**CORRECT TASK TOOL PATTERN:**
+```
+Task(
+  subagent_type='general-purpose', 
+  description='Execute PRB-ID for brief description',
+  prompt='Complete PRB context and execution instructions'
+)
+```
+
 ## Project Scope Validation
 
 **MANDATORY:** All PRB execution MUST validate project scope boundaries before any file operations.
@@ -109,6 +184,11 @@ PROJECT SCOPE VALIDATION CHECKLIST:
 **VALIDATION FUNCTION:**
 ```
 ExecuteProjectScopeValidation(prb_context):
+  # FIRST: Mandatory Task tool validation (HIGHEST PRIORITY)
+  task_tool_validation = ValidateTaskToolExecution(prb_context)
+  IF task_tool_validation != VALIDATION_PASSED:
+    RETURN task_tool_validation  # Block immediately
+  
   project_root = prb_context.complete_context.project_root
   
   # Validate all planned file operations
@@ -141,6 +221,8 @@ ExecuteProjectScopeValidation(prb_context):
 5. **REQUIRE SCOPE CORRECTION** before proceeding
 
 **ERROR MESSAGES:**
+- "❌ PRB BLOCKED: Task tool subagent required for ALL PRB execution"
+- "❌ PRB BLOCKED: Direct PRB execution forbidden - use Task tool"
 - "❌ PRB BLOCKED: Scope violation detected - write operations to ~/.claude/ forbidden"
 - "❌ PRB BLOCKED: File operations must remain within project root {project_root}"
 - "❌ PRB BLOCKED: Task tool cannot use ~/.claude/ as working directory"
@@ -387,6 +469,13 @@ Status: PRB remains IN_PROGRESS until validation passes
 ### State Validation Function
 ```
 ValidatePRBState(prb_id, target_state):
+  # FIRST: Critical Task tool validation (HIGHEST PRIORITY)
+  task_tool_validation = ValidateTaskToolExecution(prb_id)
+  IF task_tool_validation != VALIDATION_PASSED:
+    BLOCK_TRANSITION()
+    DISPLAY_TASK_TOOL_ERROR()
+    RETURN VALIDATION_FAILED
+  
   current_state = GetPRBState(prb_id)
   checklist = LoadCompletionChecklist(prb_id)
   
