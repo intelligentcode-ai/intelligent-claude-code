@@ -10,21 +10,24 @@
 @./shared-patterns/context-validation.md
 @./naming-enforcement-behavior.md
 
-## Core Principle: Detection → Memory Search → PRB Generation → Direct Execution
+## Core Principle: Detection → Memory Search → PRB Generation → Task Tool Execution
 
-Every work detection triggers memory search first, then PRB generation with embedded learnings.
+Every work detection triggers memory search first, then PRB generation with embedded learnings, then MANDATORY Task tool execution.
 
 ## Work Detection Patterns
 
 | Trigger Type | Detection Pattern | Action |
 |-------------|------------------|--------|
-| **PRB File** | *.prb.yaml, PRB-XXX | Execute existing PRB |
-| **Work Request** | Any implementation request | Analyze → Generate PRB |
+| **PRB File** | *.prb.yaml, PRB-XXX | BLOCK direct execution → Require Task tool |
+| **Work Request** | Any implementation request | Analyze → Generate PRB → Execute via Task tool |
 | **@Role** | @Role mention | Generate PRB with Task tool wrapper |
-| **Commands** | /icc-create-prb | Generate PRB with options |
+| **Commands** | /icc-create-prb | Generate PRB with options → Execute via Task tool |
 
-**Task Tool Enforcement:** All @Role mentions MUST be wrapped in Task tool invocation
-**Error if Missing:** "❌ @Role delegation requires Task tool usage"
+**CRITICAL TASK TOOL ENFORCEMENT:** 
+- ALL PRB executions MUST use Task tool subagent
+- NO direct PRB execution allowed EVER
+- **Error for direct execution:** "❌ PRB execution REQUIRES Task tool subagent"
+- **Error for @Role without Task tool:** "❌ @Role delegation requires Task tool usage"
 
 ## Complexity Analysis
 
@@ -50,17 +53,18 @@ Every work detection triggers memory search first, then PRB generation with embe
 ## Auto-Generation Flow
 
 1. **Detect** → Work requirement
-2. **Task Tool Check** → If @Role mentioned, ensure Task tool wrapper
-3. **Gather Context** → Load complete project context (MANDATORY)
-4. **Search Memory** → Query memory/[topic]/ for relevant patterns (MANDATORY)
-5. **Search Best-Practices** → Query best-practices/ directory for relevant methodological approaches (MANDATORY)
-6. **Analyze** → Calculate complexity score
-7. **Select** → Choose PRB template using hierarchy
-8. **Validate Context** → Ensure no placeholder values
-9. **Generate PRB Name** → Create compliant name by finding next available number (MANDATORY)
-10. **Validate Name** → Ensure generated name follows format and parent exists
-11. **Generate PRB** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
-12. **Execute** → Direct execution via Task tool if @Role involved
+2. **CRITICAL: Task Tool Validation** → Ensure execution happens within Task tool context
+3. **Task Tool Check** → If @Role mentioned, ensure Task tool wrapper
+4. **Gather Context** → Load complete project context (MANDATORY)
+5. **Search Memory** → Query memory/[topic]/ for relevant patterns (MANDATORY)
+6. **Search Best-Practices** → Query best-practices/ directory for relevant methodological approaches (MANDATORY)
+7. **Analyze** → Calculate complexity score
+8. **Select** → Choose PRB template using hierarchy
+9. **Validate Context** → Ensure no placeholder values
+10. **Generate PRB Name** → Create compliant name by finding next available number (MANDATORY)
+11. **Validate Name** → Ensure generated name follows format and parent exists
+12. **Generate PRB** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
+13. **MANDATORY: Execute via Task Tool** → ALL PRB execution MUST use Task tool subagent
 
 ### Context Gathering Phase (MANDATORY)
 
@@ -208,5 +212,37 @@ In L3 mode, continuously detects work and generates PRBs autonomously.
 - Documentation reading
 - Non-work discussions
 
+## CRITICAL: Task Tool Enforcement
+
+**ABSOLUTE REQUIREMENT:** Every PRB execution MUST use Task tool subagent - NO EXCEPTIONS.
+
+### Task Tool Validation During Auto-Generation
+**MANDATORY CHECKS:**
+1. **Pre-Execution Check:** Validate current context is within Task tool subagent
+2. **Pattern Validation:** Ensure proper Task tool invocation pattern used
+3. **Blocking Logic:** Immediately block ANY direct PRB execution attempts
+4. **Error Display:** Show clear error message for violations
+
+### Required Pattern for Auto-Generated PRBs
+```
+MANDATORY TASK TOOL PATTERN:
+Task(
+  subagent_type='general-purpose',
+  description='Execute auto-generated PRB [PRB-ID] for [work description]',
+  prompt='[Complete PRB context and execution instructions]'
+)
+```
+
+### Enforcement Rules
+- **NO BYPASS:** Task tool requirement cannot be disabled by configuration
+- **NO OVERRIDE:** This rule applies to ALL complexity levels (nano through mega)
+- **NO EXCEPTIONS:** Even autonomous L3 operations must use Task tool
+- **IMMEDIATE BLOCK:** Direct PRB execution attempts blocked immediately
+
+**CRITICAL ERROR MESSAGES:**
+- "❌ PRB execution REQUIRES Task tool subagent"
+- "❌ Direct PRB execution forbidden - use Task tool"
+- "❌ Auto-generated PRBs MUST execute via Task tool"
+
 ---
-*PRB auto-trigger for lean autonomous execution*
+*PRB auto-trigger with MANDATORY Task tool enforcement*
