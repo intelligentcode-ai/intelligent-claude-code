@@ -8,14 +8,41 @@
 
 When user says "@PM break down story X" or similar:
 1. **@PM reads story**: Understands business goals and requirements
-2. **@PM + Architect collaborate**: Jointly analyze technical approach
-3. **@PM + Architect assign roles**: Determine correct specialist roles for each PRB
-4. **@PM creates PRBs**: Generates appropriate PRBs with role assignments
-5. **Story selection**: @PM + Architect select next story based on priorities/complexity
+2. **@PM analyzes domain**: Detects technology stack and project context
+3. **@PM selects specialist architect**: Chooses domain-specific architect
+4. **@PM + Specialist Architect collaborate**: Jointly analyze technical approach
+5. **@PM + Architect assign roles**: Determine correct specialist roles for each PRB
+6. **@PM creates PRBs**: Generates appropriate PRBs with role assignments
+7. **Story selection**: @PM + Architect select next story based on priorities/complexity
+
+## Domain Detection Process
+
+### PM Domain Analysis
+**MANDATORY:** PM MUST detect project domain before selecting architect:
+
+**Detection Patterns:**
+1. **Project Context Analysis**:
+   - Check CLAUDE.md for system nature and technology references
+   - Analyze existing file structure and dependencies
+   - Review story requirements for technology mentions
+
+2. **Technology Stack Detection**:
+   - **AI/Behavioral Systems:** .md files, behavioral patterns, agentic frameworks
+   - **React Applications:** .jsx, .tsx files, package.json with React dependencies
+   - **Database Systems:** .sql files, migration folders, database config
+   - **Infrastructure:** Dockerfile, k8s manifests, terraform files
+   - **Security:** Security policies, compliance docs, vulnerability assessments
+   - **APIs:** OpenAPI specs, REST/GraphQL schemas, microservice patterns
+   - **Mobile:** .swift, .kt files, mobile-specific frameworks
+
+3. **Requirement Keywords Matching**:
+   - Look for domain-specific terms in story descriptions
+   - Match technical requirements to specialist expertise
+   - Consider integration and deployment patterns
 
 ## Role Assignment Process
 
-### Mandatory PM + Architect Collaboration
+### Mandatory PM + Specialist Architect Collaboration
 **CRITICAL:** PM MUST collaborate with appropriate architect for ALL role assignments:
 
 1. **PM Analysis Phase**:
@@ -23,11 +50,19 @@ When user says "@PM break down story X" or similar:
    - Identify technical domains involved
    - Determine coordination needs
 
-2. **Architect Selection**:
-   - @AI-Engineer: AI/ML, behavioral systems, agentic workflows
-   - @System-Engineer: Infrastructure, deployment, system operations
-   - @Security-Engineer: Security reviews, compliance, vulnerability analysis
-   - @Architect: General architecture, complex multi-domain projects
+2. **Domain Detection and Specialist Architect Selection**:
+   - **Analyze Project Context:** Check CLAUDE.md, file structure, and requirements
+   - **Detect Technology Stack:** Identify primary technologies and frameworks
+   - **Match to Specialist Architect:**
+     - **AI/ML/Behavioral Systems:** @AI-Architect
+     - **React/Frontend Applications:** @React-Architect
+     - **Database/Data Systems:** @Database-Architect
+     - **Infrastructure/Cloud/DevOps:** @Infrastructure-Architect
+     - **Security/Compliance:** @Security-Architect
+     - **APIs/Microservices:** @API-Architect
+     - **Mobile Applications:** @Mobile-Architect
+     - **Multi-domain/Complex:** @Architect (general)
+   - **Fallback Logic:** Create @[Domain]-Architect if <70% match with existing specialists
 
 3. **Collaborative Analysis**:
    - PM + Selected Architect jointly evaluate requirements
