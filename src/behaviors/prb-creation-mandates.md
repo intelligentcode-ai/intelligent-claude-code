@@ -47,6 +47,19 @@
   - user requirements clearly stated
   - embedded memory entries from search
 
+### Bug/Story Validation
+**MANDATORY:** Bugs and Stories MUST NOT contain role assignments:
+
+1. **Validation Before Creation**:
+   - Scan bug/story content for role assignments
+   - Block if contains "Assigned:", "@Role", or role references
+   - Error: "❌ Role assignments not allowed in bugs/stories. Roles determined during PRB creation"
+
+2. **Separation of Concerns**:
+   - Bugs/Stories = WHAT (problem/requirement description)
+   - PRBs = WHO (role assignment via PM+Architect) + HOW (implementation)
+   - No predetermined roles allowed in work items
+
 ### Role Assignment Enforcement
 **MANDATORY:** PM + Architect collaboration for ALL role assignments:
 
