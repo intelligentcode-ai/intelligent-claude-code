@@ -1,8 +1,8 @@
-# Nano PRB Template - Trivial Single-Line Changes
-# Auto-selected for complexity score <= 2
+# Nano PRB Template - Simple One-Line Changes
+# For very simple work (2 points or less)
 
-# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
-# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
+# ⚠️ CRITICAL: FOLLOW ALL SECTIONS - SKIP NOTHING
+# ⚠️ SETTINGS: git_privacy: true = NO AI mentions in commits
 
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: nano-prb
@@ -31,13 +31,13 @@ requirements:
     - "Follow branch protection if enabled"
     - "Use configured default branch"
 
-# Direct execution - no workflow needed
-execution:
+# What to do - simple and direct
+what_to_do:
   action: "[SPECIFIC_CHANGE]"
   file: "[FILE_PATH]"
   line: "[LINE_NUMBER]" # Optional
   
-validation:
+how_to_check:
   - "[SIMPLE_CHECK]"
 
 # MANDATORY: Git Operations Section  
