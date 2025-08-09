@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.12.0] - 2025-08-09
+
+### Fixed
+- BUG-007: Init system now shows visual feedback when reloading behaviors and templates
+- BUG-008: PM now selects specialist architects based on project domain
+- Init system displays project scope from CLAUDE.md or prompts if not found
+- Fixed role assignment to match actual project requirements
+
+### Added
+- Specialist architect roles (@AI-Architect, @React-Architect, @Database-Architect, etc.)
+- Domain detection logic for automatic architect selection
+- Project scope prompting in init system when CLAUDE.md lacks context
+- Visual reloading indicators for behaviors and templates
+
 ## [6.8.3] - 2025-08-09
 
 ### Security
