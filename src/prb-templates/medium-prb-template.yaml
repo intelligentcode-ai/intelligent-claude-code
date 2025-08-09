@@ -6,7 +6,7 @@
 # ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
 # ⚠️ DYNAMIC INJECTION: [DYNAMIC_*_PRACTICES] placeholders replaced with actual content during PRB generation
 
-id: MEDIUM-[AUTO]
+id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: medium-prb
 complexity: standard
 priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
