@@ -50,19 +50,15 @@ When user says "@PM break down story X" or similar:
    - Identify technical domains involved
    - Determine coordination needs
 
-2. **Domain Detection and Specialist Architect Selection**:
+2. **Dynamic Architect Creation**:
    - **Analyze Project Context:** Check CLAUDE.md, file structure, and requirements
    - **Detect Technology Stack:** Identify primary technologies and frameworks
-   - **Match to Specialist Architect:**
-     - **AI/ML/Behavioral Systems:** @AI-Architect
-     - **React/Frontend Applications:** @React-Architect
-     - **Database/Data Systems:** @Database-Architect
-     - **Infrastructure/Cloud/DevOps:** @Infrastructure-Architect
-     - **Security/Compliance:** @Security-Architect
-     - **APIs/Microservices:** @API-Architect
-     - **Mobile Applications:** @Mobile-Architect
-     - **Multi-domain/Complex:** @Architect (general)
-   - **Fallback Logic:** Create @[Domain]-Architect if <70% match with existing specialists
+   - **Dynamic Specialist Creation:**
+     - Assess if work requires >70% match with general @Architect capabilities
+     - If <70% match, create @[Domain]-Architect based on actual project needs
+     - Examples: @React-Architect, @Database-Architect, @Security-Architect
+   - **No Predefined Lists:** Architects created dynamically from project context
+   - **Generic System:** Works for ANY technology domain or project type
 
 3. **Collaborative Analysis**:
    - PM + Selected Architect jointly evaluate requirements
