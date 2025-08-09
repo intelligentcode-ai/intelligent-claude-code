@@ -4,7 +4,7 @@
 # ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
 # ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
 
-id: NANO-[AUTO]
+id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: nano-prb
 complexity: trivial
 priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
