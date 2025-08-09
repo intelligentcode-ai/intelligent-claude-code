@@ -1,6 +1,6 @@
 # Mega PRB Template - System-Wide Changes
-# Auto-selected for complexity score > 30
-# Manages multiple Large PRBs
+# Auto-selected for highly sophisticated instruction complexity (30+ points) - AI executes instantly
+# Manages multiple Large PRBs with system-wide coordination
 
 # ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
 # ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
@@ -50,7 +50,7 @@ requirements:
   technical:
     - "System-wide architectural changes"
     - "Multi-phase coordination"
-    - "30+ complexity score management"
+    - "30+ instruction sophistication management"
     - "Backwards compatibility maintenance"
 
 # Phases with Large PRBs

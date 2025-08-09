@@ -1,6 +1,6 @@
 # Large PRB Template - Complex Features with Sub-PRBs
-# Auto-selected for complexity score 16-30
-# Manages multiple Medium/Tiny PRBs
+# Auto-selected for sophisticated instruction complexity (16-30 points) - AI executes instantly  
+# Manages multiple Medium/Tiny PRBs with advanced coordination
 
 # ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
 # ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
@@ -45,7 +45,7 @@ requirements:
   technical:
     - "Multi-component system integration"
     - "Complex feature coordination"
-    - "16-30 complexity score management"
+    - "16-30 instruction sophistication management"
 
 # Automatic sub-PRB generation
 sub_prbs:
