@@ -1,5 +1,5 @@
-# Tiny PRB Template - Simple Single-File Changes
-# Auto-selected for complexity score 3-5
+# Tiny PRB Template - Simple Single-File Changes  
+# Auto-selected for simple instruction complexity (3-5 points) - AI executes instantly
 
 # ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
 # ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
@@ -41,7 +41,7 @@ requirements:
     - "Under 50 lines of changes"
   
 execution:
-  memory_check: "[QUICK_PATTERN_SEARCH]" # <30 seconds
+  memory_check: "[QUICK_PATTERN_SEARCH]" # instant AI execution
   steps:
     - "[STEP_1]"
     - "[STEP_2]"
@@ -73,7 +73,7 @@ documentation_updates:
 knowledge_management:
   structure: "memory/[topic]/[subtopic].md"
   storage: "version-controlled"
-  quick_search: "pattern_based_30sec"
+  quick_search: "pattern_based_instant"
   capture_condition: "if_novel_pattern"
   capture_type: "implementation_approach"
 
