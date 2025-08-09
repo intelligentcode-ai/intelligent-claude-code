@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.8.0] - 2025-01-09
+
+### Fixed
+- BUG-002: Fixed role selection enforcement to require PM + Architect collaboration
+- Added system nature awareness to role assignment validation
+- Strengthened behavioral pattern enforcement mechanisms to prevent inappropriate role assignments
+- Enhanced prb-creation-mandates.md with mandatory system nature validation
+- Added role appropriateness validation to context-validation.md
+- Updated prb-enforcement.md with multi-layer system nature checking
+- Created comprehensive error messages and auto-correction patterns
+- Stored complex enforcement patterns in memory for future reference
+
 ## [6.7.1] - 2025-01-09
 
 ### Fixed
