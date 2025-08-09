@@ -1,6 +1,6 @@
-# PRB Creation Mandates
+# PRB Creation Instructions
 
-**MANDATORY:** Role-in-title + complexity-based templates. Auto-correct violations.
+**MANDATORY:** When creating PRBs, include role in title and select appropriate template complexity.
 
 ## Imports
 @./shared-patterns/learning-patterns.md
@@ -9,22 +9,22 @@
 @./shared-patterns/context-validation.md
 @./naming-enforcement-behavior.md
 
-## Mandatory Rules
+## How to Create PRBs
 
-### Role in Title
+### Include Role in Title
 **Format:** "[Role] Description"
 **Examples:** "[Developer] Fix auth", "[AI-Engineer] Add ML"
 
-### Complexity-Based Templates
-**Auto-selected by score using template hierarchy:**
-- **Nano (0-2):** Trivial (typos, configs)
-- **Tiny (3-5):** Single-file (<50 lines)
-- **Medium (6-15):** Multi-file features
-- **Large (16-30):** Complex w/ coordination
-- **Mega (30+):** System-wide changes
+### Choose Template Based on Complexity
+**Select template by evaluating work complexity:**
+- **Nano (0-2 points):** Simple changes (typos, configs)
+- **Tiny (3-5 points):** Single-file work (<50 lines)
+- **Medium (6-15 points):** Multi-file features
+- **Large (16-30 points):** Complex work requiring coordination
+- **Mega (30+ points):** System-wide changes
 
-**Scoring factors:** Files + Lines + External APIs + Security + Coordination
-**Template Loading:** Use hierarchy: project → .claude → ~/.claude
+**Consider these factors:** Files affected + Lines to change + External APIs + Security impact + Coordination needed
+**Find templates in:** project folder → .claude folder → ~/.claude folder
 
 ### Naming Format Requirements
 **MANDATORY:** All generated PRBs MUST follow standard naming format:
@@ -43,17 +43,17 @@ CURRENT_DATE=$(date +%Y-%m-%d)
 
 **Validation Requirements:**
 - Parent ID must reference existing work item (STORY-001, BUG-005, etc.)
-- Number must be sequential within parent scope using NumberingService
+- Number must be sequential within parent scope (check existing files to find next number)
 - Title must be lowercase, hyphen-separated, descriptive
 - Date must be current date in YYYY-MM-DD format
 
-### Memory-First Requirements
-**MANDATORY:** Search memory BEFORE PRB generation:
-- Query memory/[topic]/ for relevant patterns
-- Extract keywords from work request
-- Score by relevance + recency
-- Embed top 2-3 entries (max 1000 tokens)
-- NO PRB generation without memory search
+### Search Memory Before Creating PRBs
+**MANDATORY:** Always check memory before creating PRBs:
+- Look in memory/[topic]/ folders for relevant patterns
+- Find keywords from the work request
+- Choose the best 2-3 entries based on relevance and how recent they are
+- Include them in the PRB (up to 1000 tokens)
+- Never create a PRB without checking memory first
 
 ### Quality Requirements
 - Sequential thinking for Large/Mega
@@ -171,23 +171,23 @@ complete_context:
 **Validation Requirements:**
 - **Format:** `<PARENT_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
 - **Parent ID:** Must reference existing work item (STORY-001, BUG-005, etc.)
-- **Number:** Sequential within parent scope using NumberingService
+- **Number:** Sequential within parent scope (find next available number by checking directories)
 - **Title:** Lowercase, hyphen-separated, descriptive
 - **Date:** Current date in YYYY-MM-DD format
 
-**Validation Process:**
-1. **Before PRB Creation:** Validate parent reference exists
-2. **Generate Number:** Use NumberingService.GetNextNumber("PRB", parent_id)
-3. **Validate Format:** Ensure all components follow naming rules
-4. **Check Uniqueness:** Verify generated name doesn't exist
-5. **Auto-Correct:** Apply corrections if format issues detected
+**How to Validate:**
+1. **Before PRB Creation:** Check that parent reference exists
+2. **Get Next Number:** Find the next available PRB number for the parent
+3. **Check Format:** Make sure all components follow naming rules
+4. **Verify Uniqueness:** Confirm the generated name doesn't already exist
+5. **Fix Issues:** Correct any format problems automatically
 
-**Integration with Template System:**
-- Template placeholders automatically replaced with compliant values
-- `[PARENT_ID]` → Validated parent work item ID
-- `[NEXT_NUMBER]` → Next sequential PRB number for parent
-- `[TITLE]` → Cleaned, compliant title format
-- `[CURRENT_DATE]` → Current date in YYYY-MM-DD format
+**How Templates Work:**
+- Template placeholders get replaced with actual values automatically
+- `[PARENT_ID]` becomes the validated parent work item ID
+- `[NEXT_NUMBER]` becomes the next sequential PRB number for parent
+- `[TITLE]` becomes the cleaned, compliant title format
+- `[CURRENT_DATE]` becomes current date in YYYY-MM-DD format
 
 **Error Handling:**
 - **PARENT_NOT_FOUND:** "❌ Parent work item not found: {parent_id}"
@@ -195,8 +195,8 @@ complete_context:
 - **NAME_EXISTS:** "❌ PRB name already exists: {name}"
 - **NUMBERING_CONFLICT:** "❌ Cannot generate unique number for parent: {parent_id}"
 
-## Integration
-Commands: `/icc-analyze-complexity`, `/icc-create-prb`, `/icc-think-sequential`, `/icc-validate-context`, `/icc-validate-prb-name`
+## Available Tools
+Use these commands: `/icc-analyze-complexity`, `/icc-create-prb`, `/icc-think-sequential`, `/icc-validate-context`, `/icc-validate-prb-name`
 
 ---
 *Optimized: 113→35 lines*

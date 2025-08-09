@@ -3,7 +3,7 @@
 **Date Created:** 2025-01-09
 **Severity:** CRITICAL
 **Category:** System Understanding
-**Status:** Open
+**Status:** Completed
 
 ## Problem Description
 
@@ -59,8 +59,23 @@ The system needs to understand it's writing instructions for AI agents to follow
 
 ## Acceptance Criteria
 
-- [ ] PRBs for behavioral updates focus on AI instructions only
-- [ ] No more "services" or "commands" in markdown behaviors
-- [ ] Templates reflect AI-agentic nature, not software development
-- [ ] Task tool subagents understand they're writing instructions
-- [ ] System treats behavioral patterns as AI guidance, not code
+- [x] PRBs for behavioral updates focus on AI instructions only
+- [x] No more "services" or "commands" in markdown behaviors
+- [x] Templates reflect AI-agentic nature, not software development
+- [x] Task tool subagents understand they're writing instructions
+- [x] System treats behavioral patterns as AI guidance, not code
+
+## Resolution
+
+Fixed in PRB BUG-006-PRB-001-clarify-ai-instruction-nature-2025-08-09:
+
+1. **Updated behavioral patterns** to use clear AI instruction language
+2. **Removed service/command terminology** from key behaviors:
+   - `prb-creation-mandates.md` → `PRB Creation Instructions`
+   - `naming-enforcement-behavior.md` → Clear naming instructions
+   - `numbering-service-behavior.md` → Simple numbering instructions
+3. **Created system-nature-clarification.md** to prevent future confusion
+4. **Updated PRB templates** to focus on AI guidance rather than software architecture
+5. **Simplified language** throughout to be direct instructions for AI agents
+
+The system now properly understands it writes instructions for AI agents, not executable code or software services.

@@ -1,10 +1,10 @@
 # Medium PRB Template - Standard Features
-# Auto-selected for complexity score 6-15
-# Replaces Inner Workflow completely
+# For medium complexity work (6-15 points)
+# Provides complete instructions for multi-file features
 
-# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
-# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
-# ⚠️ DYNAMIC INJECTION: [DYNAMIC_*_PRACTICES] placeholders replaced with actual content during PRB generation
+# ⚠️ CRITICAL: FOLLOW ALL SECTIONS - SKIP NOTHING
+# ⚠️ SETTINGS: git_privacy: true = NO AI mentions in commits
+# ⚠️ TEMPLATES: [DYNAMIC_*_PRACTICES] placeholders get filled with actual content
 
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: medium-prb
@@ -47,7 +47,7 @@ requirements:
     - "Use configured default branch for operations"
     - "Apply configured branch naming strategy"
   technical:
-    - "[TECH_REQUIREMENT_1]"
+    - "Write AI instructions in clear, simple language"
     - "[TECH_REQUIREMENT_2]"
   constraints:
     coding_style: "[DYNAMIC_CODING_PRACTICES]"        # From best-practices/development/
@@ -89,15 +89,15 @@ execution_plan:
     - "[TEST_STEP]"
     - "[INTEGRATE_STEP]"
     
-# Replaces Inner Workflow Steps 3-4: Execute & Review  
-implementation:
+# Instructions for what to create/modify  
+what_to_do:
   files_to_modify:
     - path: "[FILE_1]"
       changes: "[CHANGES_1]"
     - path: "[FILE_2]"
       changes: "[CHANGES_2]"
       
-validation_criteria:
+how_to_validate:
   technical:
     - "[TECH_CHECK_1]"
     - "[TECH_CHECK_2]"
@@ -105,8 +105,8 @@ validation_criteria:
     - "[FUNC_CHECK_1]"
     - "[FUNC_CHECK_2]"
     
-# Pre-assigned SME (no runtime selection)
-sme_review:
+# Expert to review the work
+expert_review:
   reviewer: "[PRE_ASSIGNED_SME]"
   focus_areas: ["[AREA_1]", "[AREA_2]"]
   max_cycles: 3
