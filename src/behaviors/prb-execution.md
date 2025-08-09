@@ -35,6 +35,13 @@ EXECUTION TRACKING:
 ☐ Each result documented in execution log
 ☐ Move to next section only after verification
 
+PROJECT SCOPE VALIDATION (MANDATORY BEFORE EXECUTION):
+☐ All file operations validated within project root
+☐ No write operations to ~/.claude/ during normal execution
+☐ Task tool invocations constrained to project boundaries
+☐ Memory operations restricted to ./memory/ directory
+☐ Configuration changes limited to project-local only
+
 SYSTEMATIC VALIDATION (MANDATORY BEFORE COMPLETION):
 ☐ Comprehensive project search executed and documented
 ☐ All deliverables verified with evidence
@@ -73,6 +80,71 @@ CRITICAL: Settings are NOT suggestions - they are MANDATORY requirements.
 
 ### State Transition Guards
 Each state transition MUST validate previous state completion before proceeding.
+
+## Project Scope Validation
+
+**MANDATORY:** All PRB execution MUST validate project scope boundaries before any file operations.
+
+### Pre-Execution Scope Validation
+
+```markdown
+PROJECT SCOPE VALIDATION CHECKLIST:
+☐ Current project root identified and validated
+☐ All file operations constrained to project directory
+☐ No write operations to ~/.claude/ (except installation/explicit global config)
+☐ Memory operations directed to ./memory/ not ~/.claude/memory/
+☐ Task tool working directories within project boundaries
+☐ Configuration changes limited to project-local scope
+```
+
+### Scope Violation Detection
+
+**CRITICAL VIOLATIONS:**
+- Write operations to ~/.claude/ during normal execution
+- Memory storage outside project ./memory/ directory
+- Task tool invocations with external working directories
+- File operations outside current project root
+- Global configuration modifications without explicit user request
+
+**VALIDATION FUNCTION:**
+```
+ExecuteProjectScopeValidation(prb_context):
+  project_root = prb_context.complete_context.project_root
+  
+  # Validate all planned file operations
+  FOR each operation IN prb_context.file_operations:
+    IF operation.type == "write" AND operation.path.startswith("~/.claude/"):
+      IF NOT operation.context == "installation" AND NOT operation.context == "explicit_global_config":
+        BLOCK_PRB_EXECUTION()
+        RETURN SCOPE_VIOLATION_ERROR("Write to ~/.claude/ forbidden during normal execution")
+    
+    IF NOT operation.path.startswith(project_root):
+      BLOCK_PRB_EXECUTION()
+      RETURN PROJECT_BOUNDARY_ERROR("Operation outside project boundaries")
+  
+  # Validate Task tool invocations
+  FOR each task IN prb_context.task_invocations:
+    IF task.working_directory AND task.working_directory.startswith("~/.claude/"):
+      BLOCK_PRB_EXECUTION() 
+      RETURN TASK_SCOPE_ERROR("Task working directory cannot be ~/.claude/")
+  
+  RETURN VALIDATION_PASSED
+```
+
+### Scope Enforcement Actions
+
+**WHEN SCOPE VIOLATIONS DETECTED:**
+1. **BLOCK PRB EXECUTION** immediately
+2. **DISPLAY CLEAR ERROR MESSAGE** explaining the violation
+3. **REDIRECT TO PROJECT BOUNDARIES** with guidance
+4. **LOG VIOLATION ATTEMPT** for monitoring
+5. **REQUIRE SCOPE CORRECTION** before proceeding
+
+**ERROR MESSAGES:**
+- "❌ PRB BLOCKED: Scope violation detected - write operations to ~/.claude/ forbidden"
+- "❌ PRB BLOCKED: File operations must remain within project root {project_root}"
+- "❌ PRB BLOCKED: Task tool cannot use ~/.claude/ as working directory"
+- "❌ PRB BLOCKED: Memory operations must use ./memory/ directory"
 
 ## Mandatory Completion Checklist
 
