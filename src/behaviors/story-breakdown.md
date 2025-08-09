@@ -86,11 +86,20 @@ User simply says:
 ## PRB Generation
 
 When @PM breaks down a story:
-1. Creates PRBs in configured prb_path/prb_ready (default: `prbs/ready/`)
-2. Each PRB references the parent story
-3. Appropriate complexity and template selected using hierarchy
-4. Ready for immediate execution
-5. Uses directory structure from configuration
+1. **Validates Parent Story:** Ensures story follows naming format (STORY-###-title-date.md)
+2. **Generates Compliant PRB Names:** Using format `<STORY_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
+3. **Sequential Numbering:** Uses NumberingService for parent-scoped PRB numbers
+4. **Creates PRBs:** In configured prb_path/prb_ready (default: `prbs/ready/`)
+5. **Template Selection:** Appropriate complexity and template selected using hierarchy
+6. **Validation:** Each PRB name validated before creation
+7. **Ready for Execution:** Uses directory structure from configuration
+
+### Naming Validation Integration
+- **Parent Reference:** All PRBs must reference valid parent story ID
+- **Sequential Numbers:** STORY-001-PRB-001, STORY-001-PRB-002, etc.
+- **Format Compliance:** Auto-validate generated names follow standard format
+- **Uniqueness Check:** Verify generated PRB names don't conflict with existing files
+- **Error Handling:** Clear error messages if naming validation fails
 
 ## Story Selection Process
 
@@ -106,6 +115,7 @@ When asked "what's next?", @PM and Architect:
 Imports:
 @./directory-structure.md
 @./shared-patterns/template-loading.md
+@./naming-enforcement-behavior.md
 
 Uses configured paths:
 - get_project_path("story_path") for stories

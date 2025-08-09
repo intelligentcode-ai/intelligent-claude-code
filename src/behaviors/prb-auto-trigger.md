@@ -8,6 +8,7 @@
 @./shared-patterns/template-loading.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
+@./naming-enforcement-behavior.md
 
 ## Core Principle: Detection → Memory Search → PRB Generation → Direct Execution
 
@@ -56,8 +57,10 @@ Every work detection triggers memory search first, then PRB generation with embe
 6. **Analyze** → Calculate complexity score
 7. **Select** → Choose PRB template using hierarchy
 8. **Validate Context** → Ensure no placeholder values
-9. **Generate** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
-10. **Execute** → Direct execution via Task tool if @Role involved
+9. **Generate PRB Name** → Create compliant name using NamingService (MANDATORY)
+10. **Validate Name** → Ensure generated name follows format and parent exists
+11. **Generate PRB** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
+12. **Execute** → Direct execution via Task tool if @Role involved
 
 ### Context Gathering Phase (MANDATORY)
 
