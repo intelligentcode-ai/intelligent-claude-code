@@ -249,45 +249,116 @@ Action: Deferred to future PRB
 - File operations attempting to access ~/.claude/ or other projects
 - @Role delegations with external directory references
 - Work requests mentioning files outside current project
+- Write operations targeting ~/.claude during normal execution
+- Memory storage attempts outside project boundaries
+- Configuration updates that modify global system files
 
 **BLOCKING Triggers:**
-- Any path starting with ~/.claude/
+- Any write path starting with ~/.claude/ (except installation/explicit global config)
 - Paths containing ../[project-name]/ patterns
 - References to /home/*/other-projects/
 - Task tool invocations with external working directories
+- File creation/modification outside current project root
+- Memory operations targeting ~/.claude/memory/ instead of ./memory/
+
+**CRITICAL SCOPE VIOLATIONS:**
+- ~/.claude/ write operations during normal execution
+- Installing/modifying system behavioral patterns during work execution
+- Creating global configuration outside of explicit user requests
+- Memory storage in global location instead of project-local
 
 ### Enforcement Mechanisms
 
 **PRE-EXECUTION VALIDATION:**
-- Scan all file paths before operation execution
-- Block Task tool calls with external directory context
-- Validate all work remains within project scope
+```markdown
+MANDATORY PRE-EXECUTION CHECKS:
+☐ All file paths validated within project root
+☐ Task tool working directories verified as project-local
+☐ Memory operations constrained to project ./memory/ directory
+☐ Write operations blocked for ~/.claude/ except installation context
+☐ Configuration changes verified as project-local only
+```
+
+**SCOPE VALIDATION FUNCTION:**
+```
+ValidateProjectScope(operation_context):
+  project_root = get_project_root()
+  
+  FOR each file_operation IN operation_context:
+    IF file_operation.path.startswith("~/.claude/") AND 
+       operation_context.type != "installation" AND 
+       operation_context.type != "explicit_global_config":
+      BLOCK_OPERATION()
+      RETURN SCOPE_VIOLATION_ERROR
+    
+    IF NOT file_operation.path.startswith(project_root):
+      BLOCK_OPERATION() 
+      RETURN PROJECT_BOUNDARY_ERROR
+  
+  RETURN VALIDATION_PASSED
+```
 
 **REAL-TIME MONITORING:**
 - Monitor file operations for scope violations
 - Block external directory access attempts
 - Redirect scope violations back to project boundaries
+- Pre-validate Task tool invocations before execution
+- Check memory storage location before write operations
 
-**ERROR MESSAGES:**
-- "❌ SCOPE VIOLATION: Work must remain within current project directory"
-- "❌ BLOCKED: Access to ~/.claude/ not permitted during project work"
-- "❌ PROJECT BOUNDARY: Cannot work outside /data/Engineering/intelligent-claude-code/"
+**ENHANCED ERROR MESSAGES:**
+- "❌ SCOPE VIOLATION: Write operations to ~/.claude/ forbidden during normal execution"
+- "❌ BLOCKED: Access to ~/.claude/ only permitted during installation or explicit global config changes"
+- "❌ PROJECT BOUNDARY: Cannot work outside {current_project_root}"
+- "❌ MEMORY VIOLATION: Use ./memory/ directory, not ~/.claude/memory/"
+- "❌ TASK VIOLATION: Task tool working directory must be within project scope"
 
 ### Task Tool Scope Control
 
 **MANDATORY:** All Task tool invocations must respect project boundaries
 
-**VALIDATION RULES:**
+**ENHANCED VALIDATION RULES:**
 - Verify subagent_context paths are within project root
 - Block Task assignments with external directory references
 - Ensure all delegated work remains within project scope
+- Pre-validate working directory before Task tool execution
+- Block any Task invocation with ~/.claude in working_directory parameter
+- Validate file operation paths in Task descriptions
 
 **SCOPE VIOLATION BLOCKING:**
 ```
-IF task_path NOT starts_with(project_root):
-  BLOCK_TASK()
-  ERROR("❌ Task scope violation: {task_path} outside project boundary")
-  REDIRECT_TO_PROJECT_SCOPE()
+ValidateTaskScope(task_context):
+  project_root = get_project_root()
+  
+  # Check working directory
+  IF task_context.working_directory:
+    IF task_context.working_directory.startswith("~/.claude/"):
+      BLOCK_TASK()
+      ERROR("❌ TASK VIOLATION: Cannot set ~/.claude/ as working directory")
+      RETURN BLOCKED
+    
+    IF NOT task_context.working_directory.startswith(project_root):
+      BLOCK_TASK() 
+      ERROR("❌ Task scope violation: {task_path} outside project boundary")
+      RETURN BLOCKED
+  
+  # Check file operations in task description
+  FOR each file_path IN extract_file_paths(task_context.description):
+    IF file_path.startswith("~/.claude/") AND NOT task_context.type == "installation":
+      BLOCK_TASK()
+      ERROR("❌ SCOPE VIOLATION: Task references forbidden ~/.claude/ path")
+      RETURN BLOCKED
+  
+  RETURN VALIDATION_PASSED
+```
+
+**TASK TOOL INTEGRATION:**
+```markdown
+TASK TOOL PRE-EXECUTION CHECKLIST:
+☐ Working directory validated as within project root
+☐ No ~/.claude/ paths in file operations (except installation)
+☐ Subagent context constrained to project boundaries
+☐ Task description validated for scope compliance
+☐ All file references within project directory
 ```
 
 ### Integration with Role System
