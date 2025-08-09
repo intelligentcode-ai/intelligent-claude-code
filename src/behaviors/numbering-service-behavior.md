@@ -24,6 +24,33 @@ Numbering Directories by Category:
 - PRB: prbs/ready/ and prbs/completed/ directories (scan for *-PRB-* files)
 ```
 
+### Bash Command Examples for Directory Scanning
+**MANDATORY:** Use these bash commands to get next available numbers:
+
+**For Stories:**
+```bash
+# Get highest STORY number
+HIGHEST=$(ls stories/ | grep "^STORY-" | sed 's/STORY-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
+echo "STORY-${NEXT}-title-$(date +%Y-%m-%d).md"
+```
+
+**For Bugs:**
+```bash
+# Get highest BUG number
+HIGHEST=$(ls bugs/ | grep "^BUG-" | sed 's/BUG-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
+echo "BUG-${NEXT}-title-$(date +%Y-%m-%d).md"
+```
+
+**For PRBs under parent:**
+```bash
+# Get highest PRB number under STORY-001
+HIGHEST=$(ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
+echo "STORY-001-PRB-${NEXT}-title-$(date +%Y-%m-%d).prb.yaml"
+```
+
 ## Number Generation Logic
 
 ### GetNextNumber Function

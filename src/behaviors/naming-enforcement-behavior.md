@@ -18,6 +18,13 @@
 - **Titles:** Lowercase, hyphen-separated, descriptive
 - **Dates:** YYYY-MM-DD (current date for new items)
 
+### Critical Date Retrieval Rule
+**MANDATORY:** When creating new work items, MUST retrieve current date using system command:
+```bash
+CURRENT_DATE=$(date +%Y-%m-%d)
+```
+**NEVER** hardcode dates like "2025-01-09" - always use system date for accuracy.
+
 ### Valid Examples
 - `EPIC-001-virtual-team-enhancement-2025-01-09.md`
 - `STORY-001-mcp-installation-2025-01-09.md`
@@ -90,7 +97,7 @@ AutoCorrectWorkItemName(invalid_name, category, parent_id=null):
      - Ensure length >3 characters
   
   4. **Date Assignment:**
-     - Use current date (YYYY-MM-DD) if missing
+     - Use current date (YYYY-MM-DD) if missing: `CURRENT_DATE=$(date +%Y-%m-%d)`
      - Validate existing date format
   
   5. **Generate Corrected Name:**

@@ -26,6 +26,27 @@
 **Scoring factors:** Files + Lines + External APIs + Security + Coordination
 **Template Loading:** Use hierarchy: project → .claude → ~/.claude
 
+### Naming Format Requirements
+**MANDATORY:** All generated PRBs MUST follow standard naming format:
+
+**Format:** `<PARENT_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
+
+**Critical Date Rule:** MUST use system date command for current date:
+```bash
+CURRENT_DATE=$(date +%Y-%m-%d)
+```
+**NEVER** hardcode dates - always retrieve from system for accuracy.
+
+**Examples:**
+- `STORY-001-PRB-001-implement-auth-$(date +%Y-%m-%d).prb.yaml`
+- `BUG-005-PRB-001-fix-validation-$(date +%Y-%m-%d).prb.yaml`
+
+**Validation Requirements:**
+- Parent ID must reference existing work item (STORY-001, BUG-005, etc.)
+- Number must be sequential within parent scope using NumberingService
+- Title must be lowercase, hyphen-separated, descriptive
+- Date must be current date in YYYY-MM-DD format
+
 ### Memory-First Requirements
 **MANDATORY:** Search memory BEFORE PRB generation:
 - Query memory/[topic]/ for relevant patterns
