@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.8.1] - 2025-01-09
+
+### Fixed
+- BUG-001: Enforced strict project scope boundaries to prevent unauthorized ~/.claude access
+- Enhanced prb-enforcement.md with comprehensive scope violation detection and blocking
+- Added pre-execution scope validation in prb-execution.md with mandatory validation checklist
+- Implemented project boundary validation in context-validation.md
+- Added Task tool working directory constraints and validation functions
+- Created clear error messages and violation blocking mechanisms
+- Enhanced monitoring for scope violations with real-time detection
+
 ## [6.8.0] - 2025-01-09
 
 ### Fixed

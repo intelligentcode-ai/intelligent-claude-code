@@ -24,6 +24,46 @@
 - Must exist and be accessible
 - Should contain CLAUDE.md or .git directory
 - Used for all relative path resolution
+- **Project Boundary Enforcement**: All operations constrained to project root and subdirectories
+
+### Project Boundary Validation
+**REQUIRED**: All file operations must respect project boundaries
+- **ALLOWED SCOPE**: Only operations within project root directory and subdirectories
+- **BLOCKED SCOPE**: Write operations to ~/.claude/ during normal execution
+- **EXCEPTION SCOPE**: ~/.claude/ read operations for configuration loading
+- **INSTALLATION SCOPE**: ~/.claude/ write operations only during installation or explicit global config changes
+
+**Project Boundary Rules:**
+```markdown
+ALLOWED OPERATIONS:
+☐ Read operations from ~/.claude/ for configuration loading
+☐ All operations within project_root/ directory
+☐ Memory operations within ./memory/ subdirectory
+☐ Configuration updates within project scope
+
+BLOCKED OPERATIONS:  
+☐ Write operations to ~/.claude/ during normal execution
+☐ File operations outside project root directory
+☐ Memory storage in ~/.claude/memory/ instead of ./memory/
+☐ Global configuration changes without explicit user request
+☐ Task tool working directories outside project boundaries
+```
+
+**Boundary Validation Function:**
+```
+ValidateProjectBoundaries(operation_context, project_root):
+  FOR each operation IN operation_context.file_operations:
+    # Block unauthorized ~/.claude/ writes
+    IF operation.type == "write" AND operation.path.startswith("~/.claude/"):
+      IF NOT operation.context IN ["installation", "explicit_global_config"]:
+        RETURN BOUNDARY_VIOLATION_ERROR("Write to ~/.claude/ forbidden")
+    
+    # Block external directory operations  
+    IF NOT operation.path.startswith(project_root) AND NOT operation.path.startswith("~/.claude/"):
+      RETURN PROJECT_BOUNDARY_ERROR("Operation outside project scope")
+  
+  RETURN VALIDATION_PASSED
+```
 
 ### Configuration Value Loading
 **REQUIRED**: All configuration values must be actual, not placeholders
