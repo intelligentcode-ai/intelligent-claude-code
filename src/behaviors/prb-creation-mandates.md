@@ -103,11 +103,16 @@ CURRENT_DATE=$(date +%Y-%m-%d)
    - **HYBRID SYSTEMS:** Joint assessment by appropriate domain architects
    - **BLOCK:** Role assignments that conflict with system nature
 
-4. **Architect Domain Expert Selection**:
-   - **AI/ML/Behavioral Systems/Agentic Workflows:** @AI-Engineer
-   - **Infrastructure/Deployment/System Operations:** @System-Engineer
-   - **Security Reviews/Compliance/Vulnerability Analysis:** @Security-Engineer
-   - **General Architecture/Complex Multi-Domain:** @Architect
+4. **Specialist Architect Selection**:
+   - **AI/ML/Behavioral Systems:** @AI-Architect (NOT @AI-Engineer for architecture decisions)
+   - **React/Frontend Applications:** @React-Architect
+   - **Database/Data Systems:** @Database-Architect
+   - **Infrastructure/Cloud/DevOps:** @Infrastructure-Architect
+   - **Security/Compliance:** @Security-Architect
+   - **APIs/Microservices:** @API-Architect
+   - **Mobile Applications:** @Mobile-Architect
+   - **Multi-domain/Complex:** @Architect (general)
+   - **CRITICAL:** PM MUST detect domain and select SPECIALIST architect
    - **VALIDATION:** Selected architect MUST match work domain (>70% capability match)
 
 5. **Validation Requirements**:
@@ -125,7 +130,8 @@ CURRENT_DATE=$(date +%Y-%m-%d)
 - Missing SME → PM+Architect pre-assign domain-appropriate reviewer
 - Direct role assignment → Block and redirect to collaboration process
 - **System nature mismatch → Block role assignment, require PM+Architect re-evaluation**
-- **Wrong architect domain → Force selection of appropriate domain expert**
+- **Wrong architect domain → Force selection of appropriate specialist architect**
+- **Generic architect used → Block and require specialist architect selection**
 - **MISSING COMPLETE CONTEXT → BLOCK PRB generation until context gathered**
 - **PLACEHOLDER VALUES → BLOCK execution until actual values populated**
 - **Role-system conflict → Auto-correct based on system_nature validation**
