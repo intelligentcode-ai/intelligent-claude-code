@@ -1,31 +1,29 @@
-# Numbering Service Behavior
+# Numbering Instructions
 
-**MANDATORY:** Generate sequential numbers for work item categories. Prevent collisions.
+**MANDATORY:** Use sequential numbers for work items in each category.
 
-**PURPOSE:** Manage sequential numbering across all work item categories with proper scoping
+**PURPOSE:** Keep numbers organized and sequential for all work item categories
 
 ## Imports
 @./shared-patterns/configuration-patterns.md
 
-## Numbering Scopes
+## How Numbers Work
 
-### Category Scopes
-- **EPIC:** Global sequence across entire project (EPIC-001, EPIC-002, ...)
-- **STORY:** Global sequence across entire project (STORY-001, STORY-002, ...)  
-- **BUG:** Global sequence across entire project (BUG-001, BUG-002, ...)
-- **PRB:** Scoped to parent work item (STORY-001-PRB-001, STORY-001-PRB-002, ...)
+### Number Sequences for Each Category
+- **EPIC:** Numbers go across the whole project (EPIC-001, EPIC-002, ...)
+- **STORY:** Numbers go across the whole project (STORY-001, STORY-002, ...)  
+- **BUG:** Numbers go across the whole project (BUG-001, BUG-002, ...)
+- **PRB:** Numbers are separate for each parent work item (STORY-001-PRB-001, STORY-001-PRB-002, ...)
 
-### Directory Scanning Strategy
-```
-Numbering Directories by Category:
-- EPIC: stories/ directory (scan for EPIC-* files)
-- STORY: stories/ directory (scan for STORY-* files)
-- BUG: bugs/ directory (scan for BUG-* files) 
-- PRB: prbs/ready/ and prbs/completed/ directories (scan for *-PRB-* files)
-```
+### Where to Look for Existing Numbers
+To find what numbers are already used:
+- **EPIC:** Check stories/ directory for EPIC-* files
+- **STORY:** Check stories/ directory for STORY-* files
+- **BUG:** Check bugs/ directory for BUG-* files
+- **PRB:** Check prbs/ready/ and prbs/completed/ directories for *-PRB-* files
 
-### Bash Command Examples for Directory Scanning
-**MANDATORY:** Use these bash commands to get next available numbers:
+### Commands to Find Next Available Numbers
+**MANDATORY:** Use these bash commands to get the next number to use:
 
 **For Stories:**
 ```bash
@@ -51,121 +49,98 @@ NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
 echo "STORY-001-PRB-${NEXT}-title-$(date +%Y-%m-%d).prb.yaml"
 ```
 
-## Number Generation Logic
+## How to Get the Next Number
 
-### GetNextNumber Function
-```
-GetNextNumber(category, parent_id=null, target_directory=null):
-  1. **Determine Scope:**
-     - If category == "PRB" AND parent_id:
-         scope = parent_id + "-PRB-*"
-         directories = [prbs/ready/, prbs/completed/]
-     - Else:
-         scope = category + "-*"
-         directories = GetCategoryDirectories(category)
-  
-  2. **Scan Existing Numbers:**
-     - Search directories for files matching scope pattern
-     - Extract number from filename (position depends on scope)
-     - Parse numbers and find maximum
-     - Handle zero-padding in extraction
-  
-  3. **Generate Next Number:**
-     - next_number = max_found_number + 1
-     - Apply zero-padding (001 format)
-     - Return formatted number
-  
-  4. **Collision Check:**
-     - Verify generated number doesn't exist
-     - Handle edge cases and concurrent access
-```
+### Steps to Find Next Available Number
+To get the next number for any category, follow these steps:
 
-### Number Extraction Logic
-```
-ExtractNumberFromName(filename, category, parent_id=null):
-  Examples:
-  - STORY-001-title-2025-01-09.md → extract "001"
-  - EPIC-025-title-2025-01-09.md → extract "025" 
-  - STORY-001-PRB-003-title-2025-01-09.prb.yaml → extract "003" (PRB number)
-  
-  Pattern Matching:
-  - Global scope: {category}-(\d{3})-.*
-  - Parent scope: {parent_id}-{category}-(\d{3})-.*
-  
-  Return: integer value for comparison
-```
+1. **Decide what to look for:**
+   - If category is "PRB" and has a parent:
+     Look for pattern: parent_id + "-PRB-*" 
+     Search in: prbs/ready/ and prbs/completed/ directories
+   - For other categories:
+     Look for pattern: category + "-*"
+     Search in the category's main directory
 
-## Directory Resolution
+2. **Find existing numbers:**
+   - Search directories for files matching the pattern
+   - Extract the number from each filename
+   - Convert numbers and find the highest one
+   - Handle zero-padding correctly when extracting
 
-### GetCategoryDirectories Function
-```
-GetCategoryDirectories(category):
-  Based on project configuration and standard layout:
-  
-  EPIC: 
-    - get_project_path("story_path", "stories")
-  
-  STORY:
-    - get_project_path("story_path", "stories") 
-    - get_project_path("story_path", "stories") + "/drafts"
-  
-  BUG:
-    - get_project_path("bug_path", "bugs")
-    - "bugs/" (fallback if not configured)
-  
-  PRB:
-    - get_project_path("prb_path", "prbs") + "/ready"
-    - get_project_path("prb_path", "prbs") + "/completed"
-  
-  Return: List of directories to scan
-```
+3. **Calculate next number:**
+   - Take the highest found number and add 1
+   - Format with zero-padding (001 format)
+   - Return the formatted number
 
-## Zero-Padding Management
+4. **Double-check:**
+   - Make sure the generated number doesn't already exist
+   - Handle any edge cases
 
-### Padding Rules
-- **Standard:** 3-digit zero-padding (001, 002, 003, ...)
-- **Transition:** Maintains padding when crossing boundaries (099 → 100)
-- **Consistency:** All numbers in same category use same padding
-- **Format:** Zero-pad to 3 digits minimum, expand as needed
+### Examples of Getting Numbers from Filenames
+Here's how to extract numbers from different filename patterns:
 
-### FormatNumber Function
-```
-FormatNumber(number):
-  if number < 100:
-    return sprintf("%03d", number)  # 001, 002, ..., 099
-  else:
-    return sprintf("%d", number)    # 100, 101, 102, ...
-```
+**Examples:**
+- `STORY-001-title-2025-01-09.md` → get "001"
+- `EPIC-025-title-2025-01-09.md` → get "025" 
+- `STORY-001-PRB-003-title-2025-01-09.prb.yaml` → get "003" (the PRB number)
 
-## Collision Prevention
+**Patterns to match:**
+- For global categories: {category}-(\d{3})-.*
+- For parent-child: {parent_id}-{category}-(\d{3})-.*
 
-### Concurrent Access Handling
-```
-GenerateUniqueNumber(category, parent_id=null):
-  max_attempts = 10
-  for attempt in 1..max_attempts:
-    1. **Get Next Number:** 
-       number = GetNextNumber(category, parent_id)
-    
-    2. **Generate Full Name:**
-       proposed_name = BuildWorkItemName(category, number, "temp", current_date, parent_id)
-    
-    3. **Check Existence:**
-       if !FileExists(proposed_name):
-         return number
-    
-    4. **Handle Conflict:**
-       Log collision attempt
-       Continue to next iteration
-  
-  ERROR: "Unable to generate unique number after {max_attempts} attempts"
-```
+Convert the extracted text to a number for comparison.
 
-### Conflict Resolution
-- **Retry Logic:** Up to 10 attempts with incremented numbers
-- **Lock-Free:** Use filesystem existence checks instead of locks  
-- **Error Handling:** Clear error messages for unresolvable conflicts
-- **Logging:** Track collision patterns for system improvement
+## Finding the Right Directories
+
+### Where to Look for Each Category
+Based on project configuration, look in these directories:
+
+**EPIC:** 
+- Use the configured story_path (or "stories" if not configured)
+
+**STORY:**
+- Use the configured story_path (or "stories" if not configured)
+- Also check story_path + "/drafts"
+
+**BUG:**
+- Use the configured bug_path (or "bugs" if not configured)
+
+**PRB:**
+- Use the configured prb_path + "/ready" (or "prbs/ready" if not configured)  
+- Use the configured prb_path + "/completed" (or "prbs/completed" if not configured)
+
+## Number Formatting Rules
+
+### How to Format Numbers
+- **Standard:** Always use 3-digit zero-padding (001, 002, 003, ...)
+- **After 99:** Keep regular format when going past 099 (becomes 100, 101, 102, ...)
+- **Consistency:** All numbers in the same category should use the same format
+- **Rule:** Zero-pad to 3 digits minimum, use more digits if needed
+
+### How to Format a Number
+- If the number is less than 100: use `printf "%03d"` to get format like 001, 002, 099
+- If the number is 100 or more: use regular format like 100, 101, 102
+
+## Avoiding Number Conflicts
+
+### How to Make Sure Numbers Are Unique
+When generating a number, follow these steps to avoid conflicts:
+
+**Try up to 10 times:**
+1. **Get the next number:** Find the next available number for the category
+2. **Build the full filename:** Create the complete work item name with the number
+3. **Check if it exists:** Use file system tools to see if this name is already used
+4. **If it doesn't exist:** Use this number
+5. **If it does exist:** Note the collision and try the next number
+
+**If you can't find a unique number after 10 tries:** Show error "Unable to generate unique number after 10 attempts"
+
+### How to Handle Conflicts
+- **Try again:** Up to 10 attempts with the next available numbers
+- **No locks needed:** Just check if files exist in the filesystem
+- **Clear errors:** Give helpful error messages if something goes wrong
+- **Keep track:** Record collision patterns to improve the system
 
 ## Parent-Child Relationships
 

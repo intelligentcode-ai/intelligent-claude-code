@@ -1,8 +1,8 @@
-# Naming Format Enforcement Behavior
+# Naming Format Instructions
 
-**MANDATORY:** All work items MUST follow standard naming format. Auto-correct violations.
+**MANDATORY:** All work items MUST follow standard naming format.
 
-**PURPOSE:** Enforce consistent naming format across all work items (EPICs, STORYs, BUGs, PRBs)
+**PURPOSE:** Keep naming consistent across all work items (EPICs, STORYs, BUGs, PRBs)
 
 ## Imports
 @./shared-patterns/configuration-patterns.md
@@ -18,12 +18,12 @@
 - **Titles:** Lowercase, hyphen-separated, descriptive
 - **Dates:** YYYY-MM-DD (current date for new items)
 
-### Critical Date Retrieval Rule
-**MANDATORY:** When creating new work items, MUST retrieve current date using system command:
+### How to Get Current Date
+**MANDATORY:** When creating new work items, always get current date using:
 ```bash
 CURRENT_DATE=$(date +%Y-%m-%d)
 ```
-**NEVER** hardcode dates like "2025-01-09" - always use system date for accuracy.
+**NEVER** hardcode dates like "2025-01-09" - always get date from system for accuracy.
 
 ### Valid Examples
 - `EPIC-001-virtual-team-enhancement-2025-01-09.md`
@@ -38,96 +38,92 @@ CURRENT_DATE=$(date +%Y-%m-%d)
 - `STORY-1-Example_Title-2025-01-09.md` (no zero-padding, spaces/underscores)
 - `STORY-001-title-25-01-09.md` (invalid date format)
 
-## Validation Process
+## How to Validate Names
 
-### Name Validation Function
-```
-ValidateWorkItemName(proposed_name, category, parent_id=null):
-  1. **Parse Components:**
-     - Extract category, number, title, date from name
-     - Check for parent reference if applicable
-  
-  2. **Category Validation:**
-     - Must be one of: EPIC, STORY, BUG, PRB
-     - Case sensitive validation
-     - Error: "❌ Invalid category: {category}. Must be EPIC|STORY|BUG|PRB"
-  
-  3. **Number Validation:**
-     - Must be zero-padded (001, 002, etc.)
-     - Must be sequential within category/parent scope
-     - Use NumberingService to get next available number
-     - Error: "❌ Invalid number format. Use zero-padded: 001, 002, etc."
-  
-  4. **Title Validation:**
-     - Must be lowercase
-     - Must use hyphens only (no spaces, underscores, special chars)
-     - Must be descriptive (>3 characters)
-     - Error: "❌ Invalid title format. Use lowercase-with-hyphens"
-  
-  5. **Date Validation:**
-     - Must be YYYY-MM-DD format
-     - Must be reasonable (not future date >30 days, not before 2024)
-     - Use current date for new items
-     - Error: "❌ Invalid date format. Use YYYY-MM-DD"
-  
-  6. **Parent Reference Validation (for PRBs):**
-     - Parent must exist if specified
-     - Parent format must be valid
-     - Error: "❌ Parent reference invalid or not found: {parent_id}"
-  
-  RETURN VALIDATION_RESULT
-```
+### Steps to Check Work Item Names
+To validate a work item name, follow these steps:
 
-### Auto-Correction Logic
-```
-AutoCorrectWorkItemName(invalid_name, category, parent_id=null):
-  1. **Category Correction:**
-     - Convert lowercase to uppercase
-     - Map common aliases (task→STORY, requirement→PRB)
-  
-  2. **Number Generation:**
-     - Use NumberingService.GetNextNumber(category, parent_id)
-     - Apply zero-padding automatically
-  
-  3. **Title Correction:**
-     - Convert to lowercase
-     - Replace spaces with hyphens
-     - Replace underscores with hyphens
-     - Remove special characters except hyphens
-     - Ensure length >3 characters
-  
-  4. **Date Assignment:**
-     - Use current date (YYYY-MM-DD) if missing: `CURRENT_DATE=$(date +%Y-%m-%d)`
-     - Validate existing date format
-  
-  5. **Generate Corrected Name:**
-     - Combine corrected components
-     - Validate final name doesn't exist
-     - Return corrected name
-```
+1. **Break down the name:**
+   - Extract category, number, title, date from name
+   - Check for parent reference if applicable
 
-## Integration Points
+2. **Check category:**
+   - Must be one of: EPIC, STORY, BUG, PRB
+   - Case sensitive - must be uppercase
+   - Show error: "❌ Invalid category: {category}. Must be EPIC|STORY|BUG|PRB"
 
-### With PRB Creation
-**Hook Point:** Before PRB file creation
-**Validation:** 
-- Validate generated PRB name follows format
-- Ensure parent reference exists and is valid
-- Auto-correct if needed, log corrections
+3. **Check number:**
+   - Must be zero-padded (001, 002, etc.)
+   - Must be sequential within category/parent scope
+   - Find next available number by looking at existing files
+   - Show error: "❌ Invalid number format. Use zero-padded: 001, 002, etc."
 
-### With Story Breakdown
-**Hook Point:** When @PM creates PRBs from stories
-**Validation:**
-- Generated PRB names follow parent-child format
-- Sequential numbering within story scope
-- Date consistency across related PRBs
+4. **Check title:**
+   - Must be lowercase
+   - Must use hyphens only (no spaces, underscores, special chars)
+   - Must be descriptive (>3 characters)
+   - Show error: "❌ Invalid title format. Use lowercase-with-hyphens"
 
-### With Work Item Creation
-**Hook Point:** Any work item file creation
-**Validation:**
-- Block creation of non-compliant names
-- Offer auto-correction suggestion
-- Log validation patterns for learning
+5. **Check date:**
+   - Must be YYYY-MM-DD format
+   - Must be reasonable (not future date >30 days, not before 2024)
+   - Use current date for new items
+   - Show error: "❌ Invalid date format. Use YYYY-MM-DD"
+
+6. **Check parent reference (for PRBs):**
+   - Parent must exist if specified
+   - Parent format must be valid
+   - Show error: "❌ Parent reference invalid or not found: {parent_id}"
+
+### How to Fix Invalid Names
+When you find an invalid name, fix it by following these steps:
+
+1. **Fix category:**
+   - Convert lowercase to uppercase
+   - Map common aliases (task→STORY, requirement→PRB)
+
+2. **Generate number:**
+   - Find the next available number for the category
+   - Apply zero-padding automatically
+
+3. **Fix title:**
+   - Convert to lowercase
+   - Replace spaces with hyphens
+   - Replace underscores with hyphens
+   - Remove special characters except hyphens
+   - Make sure it's longer than 3 characters
+
+4. **Set date:**
+   - Use current date (YYYY-MM-DD) if missing: `CURRENT_DATE=$(date +%Y-%m-%d)`
+   - Check existing date format is valid
+
+5. **Create corrected name:**
+   - Combine all the corrected parts
+   - Check that the final name doesn't already exist
+   - Return the corrected name
+
+## When to Apply These Instructions
+
+### Before Creating PRBs
+**When:** Before creating PRB files
+**What to do:**
+- Check that generated PRB name follows format
+- Make sure parent reference exists and is valid
+- Fix automatically if needed, record corrections
+
+### When @PM Creates PRBs from Stories
+**When:** When @PM breaks down stories into PRBs
+**What to do:**
+- Make sure generated PRB names follow parent-child format
+- Use sequential numbering within story scope
+- Keep date consistent across related PRBs
+
+### Before Creating Any Work Item
+**When:** Creating any work item file
+**What to do:**
+- Block creation of names that don't follow rules
+- Suggest corrections
+- Record patterns for learning
 
 ## Error Handling
 
