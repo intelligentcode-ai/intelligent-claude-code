@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.12.1] - 2025-08-09
+
+### Fixed
+- BUG-011: Removed hardcoded specialist architects - now created dynamically
+- Specialist architects are DISCOVERED based on project needs, not predefined
+- System truly generic for ANY project type without assumptions
+
 ## [6.12.0] - 2025-08-09
 
 ### Fixed
