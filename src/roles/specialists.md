@@ -16,17 +16,6 @@
 **@Requirements-Engineer:** Requirements analysis • Documentation • Specification
 **@User-Role:** End-to-end testing • Browser automation • Puppeteer
 
-## SPECIALIST ARCHITECT TYPES
-
-**Domain-Specific Architects** (for precise expertise matching):
-**@AI-Architect:** AI/ML systems • Behavioral patterns • Agentic frameworks • Neural architectures
-**@React-Architect:** React applications • Frontend architecture • Component design • State management  
-**@Database-Architect:** Data systems • Schema design • Performance optimization • Migration strategies
-**@Infrastructure-Architect:** Cloud architecture • Deployment strategies • System scalability • DevOps patterns
-**@Security-Architect:** Security architecture • Threat modeling • Compliance frameworks • Risk assessment
-**@API-Architect:** API design • Microservices • Integration patterns • Service mesh architecture
-**@Mobile-Architect:** Mobile platforms • Native/hybrid apps • Performance optimization • Platform patterns
-
 ## DYNAMIC SPECIALIST CREATION
 
 **<70% match:** Create specialist (@React-Developer, @AWS-Engineer)  
@@ -34,11 +23,14 @@
 
 **Assignment Logic:** Analyze requirements → Calculate match → ≥70%=existing, <70%=create specialist
 
-**Architect Selection Logic:**
+**Dynamic Creation Process:**
 1. **Domain Analysis:** Extract technology stack and requirements from work context
-2. **Expertise Matching:** Match to specialist architect (>70% domain overlap)
-3. **Fallback to General:** Use @Architect only for multi-domain or undefined contexts
-4. **Dynamic Creation:** Create @[Domain]-Architect if no existing match
+2. **Expertise Matching:** Match to 14 core roles (>70% capability overlap)
+3. **Create Dynamic Specialist:** If <70% match, create @[Domain]-Developer, @[Technology]-Engineer, or @[Domain]-Architect
+4. **No Predefined Lists:** All specialists created based on actual project needs
+
+**Examples:** @React-Developer, @AWS-Engineer, @Blockchain-Architect, @ML-Specialist
+**Principle:** Specialists are DISCOVERED from project context, not PREDEFINED
 
 **Communication:** @Role: [action/communication]  
 **Integration:** Assignment-driven • Knowledge-first • Evidence-based
