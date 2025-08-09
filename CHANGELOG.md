@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.14.0] - 2025-08-09
+
+### Fixed
+- BUG-012: Strengthened memory protection with multi-layer defense
+- Added pre-commit hook to block memory files locally
+- Enhanced GitHub workflow to run on all branches
+- Added PR-specific memory file checks
+
+### Added
+- Local git hooks for memory protection (.githooks/pre-commit)
+- Comprehensive memory protection documentation
+- Multi-layer security approach for memory privacy
+
+### Security
+- Memory files now protected at multiple levels
+- Clear remediation instructions at each protection layer
+- Defense-in-depth implementation for privacy
+
 ## [6.13.0] - 2025-08-09
 
 ### Fixed
