@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.7.1] - 2025-01-09
+
+### Fixed
+- BUG-003: Eliminated role assignments from bug/story templates to enforce proper PM+Architect collaboration
+- Updated story-breakdown.md to explicitly prevent role assignments in bugs/stories
+- Added validation in prb-creation-mandates.md to block role assignments in work items
+- Created memory pattern documenting role assignment enforcement in AI-agentic systems
+
 ## [6.7.0] - 2025-08-04
 
 ### Added
