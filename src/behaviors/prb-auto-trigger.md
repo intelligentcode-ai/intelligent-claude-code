@@ -8,6 +8,7 @@
 @./shared-patterns/template-loading.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
+@./naming-enforcement-behavior.md
 
 ## Core Principle: Detection → Memory Search → PRB Generation → Direct Execution
 
@@ -56,8 +57,10 @@ Every work detection triggers memory search first, then PRB generation with embe
 6. **Analyze** → Calculate complexity score
 7. **Select** → Choose PRB template using hierarchy
 8. **Validate Context** → Ensure no placeholder values
-9. **Generate** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
-10. **Execute** → Direct execution via Task tool if @Role involved
+9. **Generate PRB Name** → Create compliant name using NamingService (MANDATORY)
+10. **Validate Name** → Ensure generated name follows format and parent exists
+11. **Generate PRB** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
+12. **Execute** → Direct execution via Task tool if @Role involved
 
 ### Context Gathering Phase (MANDATORY)
 
@@ -112,6 +115,64 @@ Every work detection triggers memory search first, then PRB generation with embe
 - "❌ Cannot generate PRB: Project root path required"
 - "❌ Cannot generate PRB: Critical files not identified"
 - "❌ Cannot generate PRB: User requirements unclear"
+
+## PRB Naming During Auto-Generation
+
+### Naming Process During Auto-Generation
+**MANDATORY:** When auto-generating PRBs, MUST follow these naming steps:
+
+1. **Get Current Date from System:**
+   ```bash
+   CURRENT_DATE=$(date +%Y-%m-%d)
+   ```
+
+2. **Identify Parent Work Item:**
+   - Extract parent ID from work context (STORY-001, BUG-005, etc.)
+   - Validate parent exists in appropriate directory
+   - Error if parent not found: "❌ Parent work item not found: {parent_id}"
+
+3. **Get Next PRB Number:**
+   ```bash
+   # Example for STORY-001 parent
+   HIGHEST=$(ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+   NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
+   ```
+
+4. **Generate Compliant PRB Name:**
+   ```bash
+   PRB_NAME="${PARENT_ID}-PRB-${NEXT}-${TITLE}-${CURRENT_DATE}.prb.yaml"
+   ```
+
+5. **Validate Generated Name:**
+   - Check format compliance: `<PARENT>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
+   - Ensure name doesn't exist in prbs/ready/ or prbs/completed/
+   - Auto-correct if format violations detected
+
+### Auto-Generation Examples
+**From Bug Fix Request:**
+```bash
+# Auto-detected: BUG-005 needs PRB
+CURRENT_DATE=$(date +%Y-%m-%d)
+HIGHEST=$(ls prbs/ready/ prbs/completed/ | grep "^BUG-005-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
+PRB_NAME="BUG-005-PRB-${NEXT}-fix-naming-enforcement-${CURRENT_DATE}.prb.yaml"
+```
+
+**From Story Implementation:**
+```bash
+# Auto-detected: STORY-002 needs PRB
+CURRENT_DATE=$(date +%Y-%m-%d)
+HIGHEST=$(ls prbs/ready/ prbs/completed/ | grep "^STORY-002-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
+PRB_NAME="STORY-002-PRB-${NEXT}-implement-feature-${CURRENT_DATE}.prb.yaml"
+```
+
+### Critical Requirements
+- **ALWAYS** use system date command - NEVER hardcode dates
+- **ALWAYS** scan directories for existing PRB numbers
+- **ALWAYS** validate parent work item exists
+- **ALWAYS** apply zero-padding to numbers (001, 002, etc.)
+- **ALWAYS** use lowercase, hyphen-separated titles
 
 ## Integration Points
 

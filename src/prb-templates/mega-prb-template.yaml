@@ -6,7 +6,7 @@
 # ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
 # ⚠️ CASCADING INHERITANCE: All Large sub-PRBs inherit ALL 6 mandatory sections
 
-id: MEGA-[AUTO]
+id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: mega-prb
 complexity: system-wide
 priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW

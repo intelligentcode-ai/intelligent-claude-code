@@ -101,6 +101,31 @@ ensure_directory(path)  # Creates if missing, including parents
 - **Docs**: `{docs_path}/[category]/`
 - **Templates**: `{prb_template_path}/` with hierarchy fallback
 
+## Naming Standards
+
+### Work Item Naming Format
+All work items MUST follow consistent naming format:
+
+**Standard Format:** `<CATEGORY>-<NUMBER>-<TITLE>-<DATE>.md`
+**With Parent:** `<PARENT>-<CATEGORY>-<NUMBER>-<TITLE>-<DATE>.md`
+
+**Categories:**
+- **EPIC:** Large initiatives spanning multiple stories
+- **STORY:** User stories and feature requirements  
+- **BUG:** Bug reports and defect tracking
+- **PRB:** Product Requirement Blueprints (implementation plans)
+
+**Examples:**
+- `STORY-001-user-authentication-2025-01-09.md`
+- `BUG-005-login-timeout-issue-2025-01-09.md`
+- `STORY-001-PRB-001-auth-backend-2025-01-09.prb.yaml`
+
+**Validation Rules:**
+- Numbers: Zero-padded (001, 002, etc.), sequential within category
+- Titles: Lowercase, hyphen-separated, descriptive
+- Dates: YYYY-MM-DD format (current date for new items)
+- Parents: Must reference existing work item for PRBs
+
 ## Error Handling
 - **PERMISSION_DENIED**: "❌ Cannot create directory: {path}"
 - **INVALID_PATH**: "❌ Invalid path configuration: {key}"

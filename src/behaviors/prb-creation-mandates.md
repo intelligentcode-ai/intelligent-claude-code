@@ -7,6 +7,7 @@
 @./shared-patterns/template-loading.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
+@./naming-enforcement-behavior.md
 
 ## Mandatory Rules
 
@@ -24,6 +25,27 @@
 
 **Scoring factors:** Files + Lines + External APIs + Security + Coordination
 **Template Loading:** Use hierarchy: project → .claude → ~/.claude
+
+### Naming Format Requirements
+**MANDATORY:** All generated PRBs MUST follow standard naming format:
+
+**Format:** `<PARENT_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
+
+**Critical Date Rule:** MUST use system date command for current date:
+```bash
+CURRENT_DATE=$(date +%Y-%m-%d)
+```
+**NEVER** hardcode dates - always retrieve from system for accuracy.
+
+**Examples:**
+- `STORY-001-PRB-001-implement-auth-$(date +%Y-%m-%d).prb.yaml`
+- `BUG-005-PRB-001-fix-validation-$(date +%Y-%m-%d).prb.yaml`
+
+**Validation Requirements:**
+- Parent ID must reference existing work item (STORY-001, BUG-005, etc.)
+- Number must be sequential within parent scope using NumberingService
+- Title must be lowercase, hyphen-separated, descriptive
+- Date must be current date in YYYY-MM-DD format
 
 ### Memory-First Requirements
 **MANDATORY:** Search memory BEFORE PRB generation:
@@ -143,8 +165,38 @@ complete_context:
     success_criteria: ["specific success criteria"]
 ```
 
+### Naming Format Validation
+**MANDATORY:** All generated PRBs MUST follow standard naming format:
+
+**Validation Requirements:**
+- **Format:** `<PARENT_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
+- **Parent ID:** Must reference existing work item (STORY-001, BUG-005, etc.)
+- **Number:** Sequential within parent scope using NumberingService
+- **Title:** Lowercase, hyphen-separated, descriptive
+- **Date:** Current date in YYYY-MM-DD format
+
+**Validation Process:**
+1. **Before PRB Creation:** Validate parent reference exists
+2. **Generate Number:** Use NumberingService.GetNextNumber("PRB", parent_id)
+3. **Validate Format:** Ensure all components follow naming rules
+4. **Check Uniqueness:** Verify generated name doesn't exist
+5. **Auto-Correct:** Apply corrections if format issues detected
+
+**Integration with Template System:**
+- Template placeholders automatically replaced with compliant values
+- `[PARENT_ID]` → Validated parent work item ID
+- `[NEXT_NUMBER]` → Next sequential PRB number for parent
+- `[TITLE]` → Cleaned, compliant title format
+- `[CURRENT_DATE]` → Current date in YYYY-MM-DD format
+
+**Error Handling:**
+- **PARENT_NOT_FOUND:** "❌ Parent work item not found: {parent_id}"
+- **INVALID_FORMAT:** "❌ Generated name violates format: {name}"
+- **NAME_EXISTS:** "❌ PRB name already exists: {name}"
+- **NUMBERING_CONFLICT:** "❌ Cannot generate unique number for parent: {parent_id}"
+
 ## Integration
-Commands: `/icc-analyze-complexity`, `/icc-create-prb`, `/icc-think-sequential`, `/icc-validate-context`
+Commands: `/icc-analyze-complexity`, `/icc-create-prb`, `/icc-think-sequential`, `/icc-validate-context`, `/icc-validate-prb-name`
 
 ---
 *Optimized: 113→35 lines*
