@@ -70,15 +70,31 @@
 
 2. **Enforce Collaboration Process**:
    - PM MUST analyze work requirements first
-   - PM MUST select appropriate architect domain expert
+   - PM MUST select appropriate architect domain expert based on system nature
    - Together they MUST determine correct role assignment
    - Document collaboration and rationale in PRB
 
-3. **Validation Requirements**:
+3. **System Nature Validation**:
+   - **MANDATORY:** Check system_nature before role assignment
+   - **AI-AGENTIC SYSTEMS:** @AI-Engineer for behavioral patterns, memory operations, PRB enforcement
+   - **CODE-BASED SYSTEMS:** @Developer, @Backend-Tester, @Database-Engineer as appropriate
+   - **HYBRID SYSTEMS:** Joint assessment by appropriate domain architects
+   - **BLOCK:** Role assignments that conflict with system nature
+
+4. **Architect Domain Expert Selection**:
+   - **AI/ML/Behavioral Systems/Agentic Workflows:** @AI-Engineer
+   - **Infrastructure/Deployment/System Operations:** @System-Engineer
+   - **Security Reviews/Compliance/Vulnerability Analysis:** @Security-Engineer
+   - **General Architecture/Complex Multi-Domain:** @Architect
+   - **VALIDATION:** Selected architect MUST match work domain (>70% capability match)
+
+5. **Validation Requirements**:
    - PRB MUST include role assignment rationale
    - PRB MUST reference PM+Architect collaboration
    - PRB MUST include capability match justification (>70%)
    - PRB MUST document domain expert selection process
+   - PRB MUST validate role aligns with system nature
+   - PRB MUST show architect domain expertise match
 
 ### Auto-Correction
 - Missing role → Trigger PM+Architect collaboration process
@@ -86,8 +102,11 @@
 - No specialist → PM+Architect decide on dynamic specialist creation
 - Missing SME → PM+Architect pre-assign domain-appropriate reviewer
 - Direct role assignment → Block and redirect to collaboration process
+- **System nature mismatch → Block role assignment, require PM+Architect re-evaluation**
+- **Wrong architect domain → Force selection of appropriate domain expert**
 - **MISSING COMPLETE CONTEXT → BLOCK PRB generation until context gathered**
 - **PLACEHOLDER VALUES → BLOCK execution until actual values populated**
+- **Role-system conflict → Auto-correct based on system_nature validation**
 
 ### Context Validation Requirements
 

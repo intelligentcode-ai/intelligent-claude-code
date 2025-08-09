@@ -24,6 +24,29 @@
 **Check:** Work has PRB? Correct template? Complexity accurate?
 **Block:** Direct execution without PRB → Auto-generate PRB first
 
+### System Nature Role Validation
+**MANDATORY:** Validate role assignments against system nature before PRB execution:
+
+**AI-AGENTIC SYSTEM ENFORCEMENT:**
+- **Behavioral Patterns:** @AI-Engineer (NOT @Security-Engineer, @Database-Engineer)
+- **Memory Operations:** @AI-Engineer (NOT @Database-Engineer)
+- **PRB Enforcement:** @AI-Engineer (NOT @DevOps-Engineer)
+- **Virtual Team Coordination:** @AI-Engineer + @PM
+- **Markdown Processing:** @AI-Engineer (NOT @Developer)
+
+**CODE-BASED SYSTEM ENFORCEMENT:**
+- **Implementation Tasks:** @Developer, @Backend-Tester as appropriate
+- **Database Operations:** @Database-Engineer for data layer
+- **Deployment:** @DevOps-Engineer for infrastructure
+- **Security Reviews:** @Security-Engineer for vulnerabilities
+
+**VALIDATION PROCESS:**
+1. **Extract system_nature** from PRB complete_context
+2. **Check role alignment** with system nature requirements
+3. **Block inappropriate assignments** with clear error messages
+4. **Enforce PM + Architect collaboration** for role selection
+5. **Validate architect domain expertise** matches work requirements
+
 ## PRB Enforcement
 
 ### Template Selection
@@ -37,6 +60,8 @@
 **Direct Execution:** STOP → Create PRB → Execute through PRB
 **Legacy Workflow:** STOP → Convert to PRB → Direct execution
 **Missing Task Tool:** STOP → Error message → Require Task tool wrapper
+**System Nature Mismatch:** STOP → Block inappropriate role → Enforce PM+Architect collaboration → Re-assign correct role
+**Wrong Domain Architect:** STOP → Force correct architect selection → Re-validate role assignment
 
 ## Execution Enforcement
 
@@ -57,7 +82,9 @@
 3. **Task Tool Checker:** Validate Task tool usage for @Role mentions
 4. **PRB Checker:** Validate PRB exists for work
 5. **Template Validator:** Ensure correct complexity template
-6. **Auto-Generator:** Create PRB if missing
+6. **System Nature Validator:** Check role assignments align with system nature
+7. **PM+Architect Validator:** Ensure collaboration process documented
+8. **Auto-Generator:** Create PRB if missing
 
 ## Real-Time Interception
 **Monitor:** ALL execution attempts
