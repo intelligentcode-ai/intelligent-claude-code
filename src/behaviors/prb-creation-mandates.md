@@ -96,12 +96,21 @@ CURRENT_DATE=$(date +%Y-%m-%d)
    - Together they MUST determine correct role assignment
    - Document collaboration and rationale in PRB
 
-3. **System Nature Validation**:
-   - **MANDATORY:** Check system_nature before role assignment
-   - **AI-AGENTIC SYSTEMS:** @AI-Engineer for behavioral patterns, memory operations, PRB enforcement
-   - **CODE-BASED SYSTEMS:** @Developer, @Backend-Tester, @Database-Engineer as appropriate
-   - **HYBRID SYSTEMS:** Joint assessment by appropriate domain architects
-   - **BLOCK:** Role assignments that conflict with system nature
+3. **Two-Factor Analysis Enforcement**:
+   - **MANDATORY:** Role assignment MUST consider BOTH project scope AND work type
+   - **Factor 1 - Project Scope:** Extract from complete_context.system_nature field
+     - **AI-AGENTIC SYSTEM:** Behavioral patterns, memory operations, PRB frameworks
+     - **CODE-BASED SYSTEM:** Implementation, databases, APIs, infrastructure  
+     - **HYBRID SYSTEM:** Mixed domains requiring joint assessment
+   - **Factor 2 - Work Type:** Parse requirements for specific work patterns
+     - **DevOps Work:** Deployment, CI/CD, containers, scaling → @DevOps-Engineer
+     - **Security Work:** Vulnerabilities, compliance, auth → @Security-Engineer  
+     - **Database Work:** Schema, queries, performance → @Database-Engineer
+     - **Implementation:** Features, bugs, refactoring → @Developer/@AI-Engineer (scope dependent)
+     - **AI/Behavioral:** Patterns, memory, agents → @AI-Engineer
+     - **Architecture:** Design, patterns, structure → @Architect
+     - **Testing:** QA, validation, automation → @QA-Engineer/@Backend-Tester
+   - **BLOCK:** Single-factor role assignments (blind assignments)
 
 4. **Dynamic Architect Creation**:
    - **Domain Analysis:** PM analyzes work requirements to identify technology domain
@@ -113,12 +122,15 @@ CURRENT_DATE=$(date +%Y-%m-%d)
    - **VALIDATION:** Created architect MUST match work domain (>70% capability match)
 
 5. **Validation Requirements**:
-   - PRB MUST include role assignment rationale
+   - PRB MUST include two-factor analysis rationale
+   - PRB MUST document project scope identification
+   - PRB MUST document work type analysis
    - PRB MUST reference PM+Architect collaboration
    - PRB MUST include capability match justification (>70%)
    - PRB MUST document domain expert selection process
-   - PRB MUST validate role aligns with system nature
+   - PRB MUST validate role aligns with BOTH factors
    - PRB MUST show architect domain expertise match
+   - PRB MUST include decision matrix application
 
 ### Auto-Correction
 - Missing role → Trigger PM+Architect collaboration process
@@ -126,12 +138,16 @@ CURRENT_DATE=$(date +%Y-%m-%d)
 - No specialist → PM+Architect decide on dynamic specialist creation
 - Missing SME → PM+Architect pre-assign domain-appropriate reviewer
 - Direct role assignment → Block and redirect to collaboration process
+- **Single-factor analysis → BLOCK and require two-factor analysis**
+- **Missing work type analysis → BLOCK PRB generation until work type identified**
+- **Project scope not identified → BLOCK until system_nature verified**
+- **Blind role assignment → BLOCK and enforce decision matrix application**
 - **System nature mismatch → Block role assignment, require PM+Architect re-evaluation**
 - **Wrong architect domain → Force dynamic creation of appropriate @[Domain]-Architect**
 - **Generic architect overused → Block and require domain-specific architect creation**
 - **MISSING COMPLETE CONTEXT → BLOCK PRB generation until context gathered**
 - **PLACEHOLDER VALUES → BLOCK execution until actual values populated**
-- **Role-system conflict → Auto-correct based on system_nature validation**
+- **Role-system conflict → Auto-correct based on two-factor analysis validation**
 
 ### Context Validation Requirements
 

@@ -8,23 +8,25 @@
 
 When user says "@PM break down story X" or similar:
 1. **@PM reads story**: Understands business goals and requirements
-2. **@PM analyzes domain**: Detects technology stack and project context
-3. **@PM selects specialist architect**: Chooses domain-specific architect
-4. **@PM + Specialist Architect collaborate**: Jointly analyze technical approach
-5. **@PM + Architect assign roles**: Determine correct specialist roles for each PRB
-6. **@PM creates PRBs**: Generates appropriate PRBs with role assignments
-7. **Story selection**: @PM + Architect select next story based on priorities/complexity
+2. **@PM analyzes project scope**: Detects system nature and technology context
+3. **@PM analyzes work type**: Identifies specific work patterns and requirements
+4. **@PM selects specialist architect**: Chooses domain-specific architect based on two-factor analysis
+5. **@PM + Specialist Architect collaborate**: Apply decision matrix for role selection
+6. **@PM + Architect assign roles**: Use two-factor analysis to determine correct specialist roles
+7. **@PM creates PRBs**: Generates PRBs with documented role assignment rationale
+8. **Story selection**: @PM + Architect select next story based on priorities/complexity
 
-## Domain Detection Process
+## Two-Factor Analysis Process
 
-### PM Domain Analysis
-**MANDATORY:** PM MUST detect project domain before selecting architect:
+### Factor 1: Project Scope Analysis
+**MANDATORY:** PM MUST detect project scope/system nature:
 
-**Detection Patterns:**
-1. **Project Context Analysis**:
-   - Check CLAUDE.md for system nature and technology references
-   - Analyze existing file structure and dependencies
-   - Review story requirements for technology mentions
+**Scope Detection Patterns:**
+1. **System Nature Analysis**:
+   - Check CLAUDE.md complete_context.system_nature field
+   - **AI-AGENTIC SYSTEM**: Behavioral patterns, memory operations, PRB frameworks
+   - **CODE-BASED SYSTEM**: Implementation, databases, APIs, infrastructure
+   - **HYBRID SYSTEM**: Both code and behavioral patterns
 
 2. **Technology Stack Detection**:
    - **AI/Behavioral Systems:** .md files, behavioral patterns, agentic frameworks
@@ -35,10 +37,38 @@ When user says "@PM break down story X" or similar:
    - **APIs:** OpenAPI specs, REST/GraphQL schemas, microservice patterns
    - **Mobile:** .swift, .kt files, mobile-specific frameworks
 
-3. **Requirement Keywords Matching**:
-   - Look for domain-specific terms in story descriptions
-   - Match technical requirements to specialist expertise
-   - Consider integration and deployment patterns
+### Factor 2: Work Type Analysis
+**MANDATORY:** PM MUST analyze specific work type patterns:
+
+**Work Type Detection Patterns:**
+1. **Infrastructure/DevOps Keywords**:
+   - "deploy", "CI/CD", "container", "docker", "kubernetes", "scaling", "build pipeline"
+   
+2. **Security Work Keywords**:
+   - "security", "vulnerability", "compliance", "authentication", "authorization", "encrypt"
+   
+3. **Database Work Keywords**:
+   - "database", "schema", "migration", "query", "SQL", "performance", "index"
+   
+4. **Implementation Keywords**:
+   - "implement", "feature", "bug fix", "refactor", "code", "function", "API endpoint"
+   
+5. **AI/Behavioral Keywords**:
+   - "behavioral", "memory", "learning", "agent", "PRB", "pattern", "decision"
+   
+6. **Architecture Keywords**:
+   - "design", "architecture", "pattern", "structure", "framework", "system"
+   
+7. **Testing Keywords**:
+   - "test", "QA", "validation", "quality", "coverage", "automation"
+   
+8. **Documentation Keywords**:
+   - "documentation", "docs", "README", "guide", "manual", "API docs"
+
+**Combined Analysis Logic:**
+- Parse story requirements for work type keywords
+- Match work type to specialist domain expertise  
+- Cross-reference with project scope for final role selection
 
 ## Role Assignment Process
 
@@ -65,11 +95,42 @@ When user says "@PM break down story X" or similar:
    - Assess specialist expertise needed (>70% capability match)
    - Consider coordination complexity and dependencies
 
-4. **Role Selection Criteria**:
-   - **Domain Expertise**: Match specialist to technical domain
-   - **Complexity Level**: Simple tasks → core roles, complex → dynamic specialists
-   - **Coordination Needs**: Multi-role projects require senior specialists
-   - **Project Context**: Consider existing architecture and patterns
+4. **Two-Factor Analysis for Role Selection**:
+   **CRITICAL:** Role assignment MUST consider both project scope AND specific work type:
+   
+   **Factor 1: Project Scope/Context**
+   - **AI-AGENTIC SYSTEM**: Behavioral patterns, memory operations, PRB frameworks
+   - **CODE-BASED SYSTEM**: Implementation, databases, APIs, infrastructure
+   - **HYBRID SYSTEM**: Mixed domain requiring joint assessment
+   
+   **Factor 2: Work Type Analysis**
+   - **Infrastructure/DevOps**: Deployment, CI/CD, containerization, scaling
+   - **Security Work**: Vulnerability assessment, compliance, access control
+   - **Database Work**: Schema design, queries, performance, migrations  
+   - **Implementation**: Feature development, bug fixes, refactoring
+   - **AI/Behavioral**: Agentic patterns, memory systems, behavioral frameworks
+   - **Architecture**: System design, patterns, technical direction
+   - **Testing**: Quality assurance, test frameworks, validation
+   - **Documentation**: Technical writing, API docs, user guides
+   
+   **Decision Matrix Logic** (See role-assignment-matrix.md):
+   ```
+   Role = f(ProjectScope, WorkType)
+   
+   Examples:
+   - AI-AGENTIC + DevOps work → @DevOps-Engineer
+   - AI-AGENTIC + AI patterns → @AI-Engineer  
+   - AI-AGENTIC + Security → @Security-Engineer
+   - CODE-BASED + Implementation → @Developer
+   - Any scope + Database → @Database-Engineer
+   ```
+   
+   **Selection Process**:
+   1. **Identify Project Scope**: Check system_nature in complete_context
+   2. **Analyze Work Type**: Parse requirements for specific work patterns
+   3. **Apply Decision Matrix**: Use matrix logic for role selection
+   4. **Document Rationale**: Include analysis in PRB context
+   5. **Validate Assignment**: Ensure >70% capability match
 
 5. **Assignment Documentation**:
    - Document role selection rationale in PRB
