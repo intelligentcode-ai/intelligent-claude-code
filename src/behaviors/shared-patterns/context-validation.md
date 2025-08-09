@@ -113,6 +113,15 @@ user_requirements:
 - success_criteria are measurable
 - work_type is identified
 
+### Role Appropriateness Validation
+**CHECK FOR SYSTEM NATURE ALIGNMENT**:
+- Validate role assignments align with system_nature
+- **AI-AGENTIC SYSTEMS**: Behavioral patterns, memory operations, PRB enforcement → @AI-Engineer (NOT @Security-Engineer, @Database-Engineer, @DevOps-Engineer)
+- **CODE-BASED SYSTEMS**: Implementation, testing, deployment → @Developer, @Backend-Tester, @DevOps-Engineer
+- **HYBRID SYSTEMS**: Mixed assignments with joint architect assessment
+- **BLOCK**: Role assignments that conflict with detected system nature
+- **ENFORCE**: PM + Architect collaboration for role selection
+
 ## Error Handling
 
 ### Validation Errors
@@ -121,11 +130,16 @@ user_requirements:
 - **PROJECT_ROOT_INVALID**: "❌ Project root path invalid: {path}"
 - **CRITICAL_FILES_MISSING**: "❌ No critical files identified for work"
 - **REQUIREMENTS_VAGUE**: "❌ User requirements too vague or generic"
+- **ROLE_SYSTEM_MISMATCH**: "❌ Role assignment conflicts with system nature: {role} inappropriate for {system_nature}"
+- **PM_ARCHITECT_MISSING**: "❌ Role assignment requires PM + Architect collaboration documentation"
+- **WRONG_DOMAIN_ARCHITECT**: "❌ Selected architect does not match work domain: {selected} vs required {domain}"
 
 ### Recovery Actions
 - **AUTO-CORRECTABLE**: Gather missing context automatically
 - **USER-INPUT-NEEDED**: Request clarification from user
 - **SYSTEM-ERROR**: Configuration or file access issues
+- **ROLE-CORRECTION**: Redirect to PM + Architect collaboration process
+- **DOMAIN-REALIGNMENT**: Force selection of appropriate domain architect
 
 ## Integration Points
 
