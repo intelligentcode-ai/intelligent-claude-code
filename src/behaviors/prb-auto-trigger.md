@@ -53,18 +53,17 @@ Every work detection triggers memory search first, then PRB generation with embe
 ## Auto-Generation Flow
 
 1. **Detect** → Work requirement
-2. **CRITICAL: Task Tool Validation** → Ensure execution happens within Task tool context
-3. **Task Tool Check** → If @Role mentioned, ensure Task tool wrapper
-4. **Gather Context** → Load complete project context (MANDATORY)
-5. **Search Memory** → Query memory/[topic]/ for relevant patterns (MANDATORY)
-6. **Search Best-Practices** → Query best-practices/ directory for relevant methodological approaches (MANDATORY)
-7. **Analyze** → Calculate complexity score
-8. **Select** → Choose PRB template using hierarchy
-9. **Validate Context** → Ensure no placeholder values
-10. **Generate PRB Name** → Create compliant name by finding next available number (MANDATORY)
-11. **Validate Name** → Ensure generated name follows format and parent exists
-12. **Generate PRB** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
-13. **MANDATORY: Execute via Task Tool** → ALL PRB execution MUST use Task tool subagent
+2. **Task Tool Check** → If @Role mentioned, ensure Task tool wrapper
+3. **Gather Context** → Load complete project context (MANDATORY)
+4. **Search Memory** → Query memory/[topic]/ for relevant patterns (MANDATORY)
+5. **Search Best-Practices** → Query best-practices/ directory for relevant methodological approaches (MANDATORY)
+6. **Analyze** → Calculate complexity score
+7. **Select** → Choose PRB template using hierarchy
+8. **Validate Context** → Ensure no placeholder values
+9. **Generate PRB Name** → Create compliant name by finding next available number (MANDATORY)
+10. **Validate Name** → Ensure generated name follows format and parent exists
+11. **Generate PRB** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
+12. **MANDATORY: Execute via Task Tool** → ALL PRB execution MUST use Task tool subagent
 
 ### Context Gathering Phase (MANDATORY)
 
