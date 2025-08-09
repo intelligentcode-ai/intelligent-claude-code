@@ -9,10 +9,12 @@
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./naming-enforcement-behavior.md
+@./best-practice-recognition.md
+@./best-practice-generation.md
 
-## Core Principle: Detection → Memory Search → PRB Generation → Task Tool Execution
+## Core Principle: Detection → Memory Search → Best Practice Search → PRB Generation → Task Tool Execution
 
-Every work detection triggers memory search first, then PRB generation with embedded learnings, then MANDATORY Task tool execution.
+Every work detection triggers memory search first, then best practice search and embedding, then PRB generation with embedded learnings and practices, then MANDATORY Task tool execution.
 
 ## Work Detection Patterns
 
@@ -64,6 +66,8 @@ Every work detection triggers memory search first, then PRB generation with embe
 10. **Validate Name** → Ensure generated name follows format and parent exists
 11. **Generate PRB** → Create PRB with complete context, embedded memory entries (top 2-3), and best-practices (top 2-3)
 12. **MANDATORY: Execute via Task Tool** → ALL PRB execution MUST use Task tool subagent
+13. **Post-Execution Recognition** → Identify successful patterns for best practice candidates (MANDATORY)
+14. **Generate Best Practices** → Create documentation from recognized patterns with user approval (OPTIONAL)
 
 ### Context Gathering Phase (MANDATORY)
 
@@ -193,6 +197,12 @@ MANDATORY memory search before PRB generation. Embeds top 2-3 relevant entries.
 ### With Best-Practices System
 MANDATORY best-practices search before PRB generation. Discovers and embeds top 2-3 relevant methodological approaches from best-practices/ directory. Replaces template placeholders with dynamic practice content.
 
+**NEW: Best Practice Generation Integration**
+- Post-execution pattern recognition for successful operations
+- Automatic identification of best practice candidates
+- User approval workflow for best practice creation
+- Storage of approved practices in best-practices/ directory
+
 ### With L3 Autonomy
 In L3 mode, continuously detects work and generates PRBs autonomously.
 **NEW**: Must still gather complete context even in autonomous mode.
@@ -210,6 +220,85 @@ In L3 mode, continuously detects work and generates PRBs autonomously.
 - System status checks
 - Documentation reading
 - Non-work discussions
+
+## Best Practice Operations
+
+### Post-Execution Pattern Recognition
+**MANDATORY:** After successful PRB execution, MUST analyze for best practice candidates.
+
+**Recognition Process:**
+1. **Success Validation:** Confirm PRB completed with all success criteria met
+2. **Pattern Analysis:** Identify successful approaches, techniques, and solutions
+3. **Quality Assessment:** Evaluate pattern against effectiveness criteria
+4. **Context Extraction:** Capture complete operational context and environment
+5. **Candidate Presentation:** Present identified patterns to user for approval
+
+**Automatic Recognition Triggers:**
+- Complex operations completed without errors
+- Innovative solutions to challenging problems
+- Effective error recovery and resolution strategies
+- Successful coordination between multiple roles
+- Quality outcomes exceeding standard expectations
+
+### Best Practice Generation Workflow
+**OPTIONAL:** User-approved patterns generate structured best practice documents.
+
+**Generation Process:**
+1. **User Approval:** Present pattern candidate with clear value proposition
+2. **Document Creation:** Generate structured documentation using template
+3. **Content Enhancement:** Include examples, context, and guidance
+4. **Review and Refinement:** Allow user modification and improvement
+5. **Storage and Integration:** Store approved practice in best-practices/ directory
+
+**User Interaction Pattern:**
+```markdown
+## 🎯 BEST PRACTICE IDENTIFIED
+Pattern: [Effective Git Conflict Resolution]
+Category: git
+Value: Systematic approach to complex merge conflicts
+
+Summary: Multi-step conflict resolution with validation checkpoints
+that resulted in clean merge without data loss or regression.
+
+Options:
+1. ✅ Generate best practice document
+2. ✏️ Refine pattern first
+3. ❌ Skip documentation
+
+What would you like to do?
+```
+
+### Best Practice Search Enhancement
+**IMPROVED:** Enhanced search capabilities for PRB embedding.
+
+**Search Process:**
+1. **Query Analysis:** Extract keywords and context from work request
+2. **Relevance Scoring:** Score practices by topic match and context similarity
+3. **Practice Selection:** Select top 2-3 most relevant practices
+4. **Content Embedding:** Extract actionable guidance and examples
+5. **Template Integration:** Replace practice placeholders in PRB template
+
+**Search Scope:**
+- All categories: git/, implementation/, collaboration/, problem-resolution/
+- Metadata matching: tags, categories, source operations
+- Content matching: problem statements, solutions, examples
+- Context matching: system nature, complexity level, role requirements
+
+### Practice Application Tracking
+**NEW:** Track effectiveness of embedded best practices.
+
+**Tracking Elements:**
+- Which practices were embedded in PRBs
+- How practices influenced execution approaches
+- Success outcomes when practices were applied
+- User feedback on practice usefulness
+- Areas where practices need improvement
+
+**Integration with Learning System:**
+- Store application patterns in memory/best-practices/
+- Link practice usage to operation success rates
+- Identify most effective practices for different contexts
+- Refine practice recommendations based on application data
 
 ## CRITICAL: Task Tool Enforcement
 
