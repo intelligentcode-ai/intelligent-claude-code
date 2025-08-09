@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.13.0] - 2025-08-09
+
+### Fixed
+- BUG-009: Removed time estimations from all PRB templates - AI agents execute instantly
+- BUG-010: CHANGELOG now updated before PR creation in release workflow
+- PRB templates now correctly reflect AI-agentic instant execution model
+- Complexity scores now represent instruction sophistication, not time
+
+### Changed
+- PRB execution behavior now enforces CHANGELOG update before PR creation
+- All PRB templates updated to acknowledge instant AI execution
+- Removed meaningless time references from complexity descriptions
+
 ## [6.12.1] - 2025-08-09
 
 ### Fixed
