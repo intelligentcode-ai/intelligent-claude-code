@@ -1,0 +1,23 @@
+name: Memory File Check
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  check-memory:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Check for memory files
+      run: |
+        if git ls-files | grep -E "^memory/|\.memory$|\.learning$"; then
+          echo "❌ ERROR: Memory files detected in commit!"
+          echo "Memory files must remain local-only and never be committed."
+          echo "Please remove these files from your commit."
+          exit 1
+        fi
+        echo "✅ No memory files detected"
