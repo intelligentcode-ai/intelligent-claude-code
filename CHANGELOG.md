@@ -7,14 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.8.2] - 2025-08-09
+
 ### Fixed
-- BUG-005: Implemented complete naming format enforcement across all behavioral patterns
-- Added system date retrieval instructions to all naming behaviors using date +%Y-%m-%d
-- Enhanced numbering service with bash command examples for directory scanning
-- Added naming format requirements to PRB creation mandates
-- Updated story breakdown with comprehensive PRB naming instructions
-- Implemented auto-generation naming process in PRB auto-trigger behavior
-- Ensured consistent system date usage prevents hardcoded dates across all behaviors
+- BUG-005: Complete naming format enforcement across all behavioral patterns
+- Implemented mandatory system date retrieval using `date +%Y-%m-%d`
+- Completed naming-enforcement-behavior.md and numbering-service-behavior.md
+- Added proper naming instructions to all PRB generation behaviors
+- Removed incorrectly tracked memory files from version control
+
+### Improved
+- Multi-layer validation prevents naming format violations
+- Sequential numbering with comprehensive bash examples
+- Clear error messages and auto-correction logic
+- System date enforcement (never hardcoded dates)
 
 ## [6.8.1] - 2025-01-09
 
