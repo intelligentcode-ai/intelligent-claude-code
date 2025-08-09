@@ -61,6 +61,19 @@ User simply says:
 - "@PM what story should we work on next?"
 - "@PM analyze the stories and create PRBs"
 
+## Story and Bug Creation Rules
+
+**CRITICAL:** Stories and Bugs MUST NOT contain role assignments:
+- **NO "Assigned:" fields** in bug reports
+- **NO "@Role" assignments** in stories
+- **NO predetermined roles** - WHO is decided during PRB creation
+- Stories/Bugs define **WHAT** needs to be done
+- PRBs define **WHO** does it and **HOW**
+
+### Validation
+- System MUST block creation of bugs/stories with role assignments
+- Error message: "❌ Role assignments not allowed in bugs/stories. Roles are determined during PRB creation via PM + Architect collaboration"
+
 ## Story Location
 
 - Stories live in configured story_path (default: `stories/`)
