@@ -517,9 +517,15 @@ EnforceQualityGates(prb_id):
   success_complete = ValidateSuccessCriteria(prb_id)
   lifecycle_complete = ValidatePRBLifecycle(prb_id)
   
-  # PRB file move MUST be the absolute final step
+  # Bug lifecycle integration - complete bugs before PRB move
   if ALL([functional_complete, processual_complete, git_complete, 
          review_complete, knowledge_complete, success_complete]):
+    # Check for bug references and complete bug lifecycle
+    if prb_references_bug(prb_id):
+      bug_id = extract_bug_reference(prb_id)
+      complete_bug_lifecycle(bug_id)
+    
+    # PRB file move MUST be the absolute final step
     lifecycle_complete = MovePRBToCompleted(prb_id)
   
   return ALL([
@@ -601,5 +607,49 @@ PRB_COMPLETED: File in prbs/completed/, execution finished
 - Reduced rework incidents
 - Enhanced delivery quality
 
+## Bug Lifecycle Integration Functions
+
+### Bug Reference Detection
+```
+prb_references_bug(prb_id):
+  # Check PRB filename for BUG-XXX pattern
+  pattern = r"BUG-(\d{3})"
+  return regex.search(pattern, prb_id) is not None
+
+extract_bug_reference(prb_id):
+  pattern = r"BUG-(\d{3})"
+  match = regex.search(pattern, prb_id)
+  return match.group(0) if match else None
+```
+
+### Bug Lifecycle Completion
+```
+complete_bug_lifecycle(bug_id):
+  1. bug_open_path = get_project_path("bug_path", "bugs") + "/" + get_project_path("bug_open", "open")
+  2. bug_completed_path = get_project_path("bug_path", "bugs") + "/" + get_project_path("bug_completed", "completed")
+  3. bug_file = locate_bug_file(bug_open_path, bug_id)
+  4. if bug_file:
+     - update_bug_status(bug_file, "COMPLETED")
+     - move_file(bug_file, bug_completed_path)
+     - log_bug_transition(bug_id, "OPEN", "COMPLETED")
+  5. else:
+     - log_warning("Bug not found for completion: " + bug_id)
+```
+
+### Bug Status Management
+```
+update_bug_status(bug_file, new_status):
+  1. Read bug file content
+  2. Update YAML front matter:
+     - status: new_status
+     - updated: current_date
+     - resolution_date: current_date (if COMPLETED)
+  3. Write updated content back to file
+
+locate_bug_file(search_path, bug_id):
+  pattern = bug_id + "-*.md"
+  return find_file_matching_pattern(search_path, pattern)
+```
+
 ---
-*PRB execution behavior with mandatory completion enforcement*
+*PRB execution behavior with mandatory completion enforcement and bug lifecycle integration*
