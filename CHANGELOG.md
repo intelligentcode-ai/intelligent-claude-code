@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.15.0] - 2025-08-09
+
+### Fixed
+- BUG-013: Implemented two-factor role assignment (project scope + work type)
+- Role assignment no longer blindly assigns @AI-Engineer to all AI-AGENTIC work
+- Correct specialists now selected based on actual work requirements
+
+### Added
+- Two-factor decision matrix for role selection
+- Work type detection patterns for intelligent assignment
+- Comprehensive role-assignment-matrix.md documentation
+
+### Changed
+- PM + Architect collaboration now analyzes both project context and work type
+- PRB creation enforces two-factor role selection with rationale
+- Auto-correction blocks single-factor assignments
+
 ## [6.14.0] - 2025-08-09
 
 ### Fixed
