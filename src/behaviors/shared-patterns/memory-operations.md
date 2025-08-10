@@ -1,75 +1,22 @@
 # Memory Operations
 
-**MANDATORY:** Use version-controlled memory. Auto-correct violations. NEVER store sensitive values.
+**MANDATORY:** Version-controlled memory in project.
 
 ## Structure
-**Base:** memory/ (version controlled)
-**Organization:** memory/[topic]/[subtopic].md
-**Format:** Topic files with dated entries (newest first)
-
-## Security-First Storage Patterns
-
-**CRITICAL:** All memory storage MUST pass security validation before persistence.
-
-### Security Validation Checklist
-```markdown
-BEFORE STORING ANY MEMORY:
-☐ Contains no passwords, tokens, API keys, or credentials
-☐ Contains no sensitive configuration values
-☐ References locations/methods, not actual values
-☐ Describes access patterns safely
-☐ Does not expose private project information
-☐ Safe for version control and team sharing
+```
+memory/
+├── [topic]/
+│   └── [subtopic].md  # Dated entries (newest first)
+└── index.md           # Topic index
 ```
 
-### Safe Storage Examples
-
-**CORRECT - Location and Method:**
+## Entry Format
 ```markdown
-## 2025-08-09: GitHub PAT Access Pattern
-**Context:** GitHub CLI operations
-**Location:** ~/.config/git/common.conf contains GITHUB_PAT variable
-**Access Method:** source ~/.config/git/common.conf && GH_TOKEN=$GITHUB_PAT
-**Usage:** Export before gh commands for authentication
-**Security:** Token location stored, never actual token value
-```
-
-**CORRECT - Configuration Pattern:**
-```markdown
-## 2025-08-09: AWS Profile Configuration
-**Context:** AWS CLI operations requiring specific profile
-**Pattern:** AWS profiles stored in ~/.aws/config and ~/.aws/credentials
-**Access Method:** export AWS_PROFILE=desired_profile or use --profile flag
-**Discovery:** Found via aws configure list-profiles
-**Security:** Profile names stored, credentials reference file locations
-```
-
-**INCORRECT - Direct Value Storage:**
-```markdown
-## 2025-08-09: GitHub Authentication [SECURITY VIOLATION]
-**Token:** ghp_xxxxxxxxxxxxxxxxxxxx [NEVER DO THIS]
-**API Key:** ak_xxxxxxxxxxxxxxxxxxxxxxx [NEVER DO THIS]
-```
-
-### Security-Aware Entry Format
-```markdown
-## 2025-08-09: [Descriptive Title]
-**Context:** [Task/Operation context]
-**Problem/Need:** [What was needed]
-**Location/Method:** [WHERE to find or HOW to access - not actual values]
-**Access Pattern:** [Safe method to retrieve/use]
-**Validation:** [How to verify it works]
-**Security Note:** [Confirmation no sensitive data stored]
----
-```
-
-## Standard Entry Format
-```markdown
-## 2025-01-23: OAuth2 Token Refresh
-**Context:** TASK-001
-**Problem:** Tokens expiring without refresh
-**Solution:** Auto-refresh on 401 with exponential backoff
-**Code:** [example if applicable]
+## YYYY-MM-DD: Title
+**Context:** Task/PRB reference
+**Problem:** What went wrong
+**Solution:** How fixed
+**Code:** [if applicable]
 ---
 ```
 
@@ -77,64 +24,65 @@ BEFORE STORING ANY MEMORY:
 
 ### StoreInMemory Pattern
 1. **Security Validation**: Apply security checklist - BLOCK if sensitive data detected
-2. Determine topic/subtopic path
-3. Add entry at TOP of file (newest first for precedence)
-4. Auto-prune if >10 entries or >5KB
-5. Archive old entries to memory/archive/[topic]/[year].md
-6. Update memory/index.md
+2. **Path Resolution**: Check for external_path configuration, use configured path or default to ./memory/
+3. Determine topic/subtopic path within memory base directory
+4. Add entry at TOP of file (newest first for precedence)
+5. Auto-prune if >10 entries or >5KB
+6. Archive old entries to [memory_base]/archive/[topic]/[year].md
+7. Update [memory_base]/index.md
 
-### Security Validation Pattern
-```markdown
-ValidateMemoryForSensitiveData(content):
-  BLOCK_PATTERNS = [
-    "password", "token", "key", "secret", "credential",
-    "ghp_", "sk-", "ak_", "-----BEGIN", "api_key",
-    "@gmail.com", "amazonaws.com/key", "bearer "
-  ]
-  
-  FOR each pattern IN BLOCK_PATTERNS:
-    IF content.lower().contains(pattern):
-      REJECT_STORAGE()
-      ERROR("Security violation: Cannot store sensitive data")
-      SUGGEST("Store location/method instead of actual value")
-  
-  ALLOW_STORAGE()
-```
+### Memory Base Path Resolution
+
+**Steps to Determine Memory Base Path:**
+1. **Check External Path Configuration:** Look for memory_configuration.external_path setting
+2. **If External Path Exists:**
+   - **Expand Home Directory:** If path starts with ~, expand to full home directory path
+   - **Use Path Directly:** If path is absolute, use as specified
+   - **Ensure Directory Exists:** Create directory if it doesn't exist
+   - **Return External Path:** Use the configured external path
+3. **If No External Path:** Use default backward-compatible behavior with get_project_path("memory_path", "memory")
+
+### Security Validation Process
+
+**Steps to Validate Memory Content for Sensitive Data:**
+
+**Blocked Patterns:** Check content for these sensitive patterns:
+- General secrets: "password", "token", "key", "secret", "credential"
+- Specific tokens: "ghp_", "sk-", "ak_", "-----BEGIN", "api_key"
+- Service credentials: "@gmail.com", "amazonaws.com/key", "bearer "
+
+**Validation Steps:**
+1. **Scan Content:** Check if content contains any blocked patterns (case-insensitive)
+2. **If Sensitive Data Found:**
+   - **Reject Storage:** Block the memory storage operation
+   - **Show Error:** Display "Security violation: Cannot store sensitive data"
+   - **Suggest Alternative:** Recommend storing location/method instead of actual value
+3. **If Clean:** Allow storage to proceed normally
 
 ### SearchMemory Pattern
-1. Parse query for keywords/context
-2. Check index for quick filtering
-3. Search within topic files
-4. Score by: keyword match + recency + context match
-5. Return top matches for PRB embedding
+1. **Path Resolution**: Determine memory base path using ResolveMemoryBasePath()
+2. Parse query for keywords/context
+3. Check index for quick filtering
+4. Search within topic files in [memory_base]/[topic]/
+5. Score by: keyword match + recency + context match
+6. Return top matches for PRB embedding
 
 ### LoadFromMemory Pattern
-1. Read topic file from memory/[topic]/
-2. Parse markdown entries
-3. Update access stats
-4. Cache 5 min TTL
+1. **Path Resolution**: Determine memory base path using ResolveMemoryBasePath()
+2. Read topic file from [memory_base]/[topic]/
+3. Parse markdown entries
+4. Update access stats
+5. Store for efficient retrieval
 
 ## Pruning
-**Threshold:** 10 entries or 5KB
-**Action:** Archive to memory/archive/[topic]/[year].md
-**Keep:** Most recent 5-10 entries
+- Threshold: 10 entries or 5KB
+- Archive: memory/archive/[topic]/[year].md
+- Keep: Most recent 5-10
 
 ## PRB Integration
-- Embed only 2-3 most relevant entries (max 1000 tokens)
-- Selection: topic match + recency + brevity
+- Embed 2-3 most relevant (max 1000 tokens)
+- Selection: topic match + recency
 - No runtime lookups needed
 
-## Index Format
-```markdown
-# Memory Index
-## Topics
-### Authentication
-- `oauth2-patterns.md` - OAuth2 implementations
-- `jwt-handling.md` - JWT patterns
-
-### Error Handling
-- `api-errors.md` - API error patterns
-```
-
 ---
-*Optimized: 234→60 lines*
+*Optimized: 179→~35 lines*

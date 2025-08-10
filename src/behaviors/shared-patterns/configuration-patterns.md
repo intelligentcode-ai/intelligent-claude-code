@@ -33,7 +33,7 @@
 - complexity_override (true/false)
 
 ## Loading Process
-1. Check cache (5 min TTL)
+1. Load configuration from hierarchy
 2. Load system defaults
 3. Merge user global (~/.claude/config.md - system-wide only)
 4. Merge project (./config.md or .claude/config.md if explicitly configured)
@@ -44,10 +44,10 @@
 - `/icc-get-setting [key]` - Get setting value
 - `/icc-load-config` - Load all configs
 
-## Cache Management
-- Standard: 5-minute TTL
-- Embedded: 1-hour TTL
-- CLAUDE.md: 15-minute TTL
+## Configuration Management
+- Standard: Dynamic loading from configuration hierarchy
+- Embedded: Project-specific configuration overrides
+- CLAUDE.md: Project context and behavioral settings
 
 ---
 *Configuration patterns for consistent settings*
