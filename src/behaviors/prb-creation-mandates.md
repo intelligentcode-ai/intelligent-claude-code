@@ -114,22 +114,22 @@ CURRENT_DATE=$(date +%Y-%m-%d)
 
 4. **Dynamic Architect Creation**:
    - **Domain Analysis:** PM analyzes work requirements to identify technology domain
-   - **Dynamic Creation Process:** If work requires >70% domain expertise beyond general @Architect
+   - **Dynamic Creation Process:** ALWAYS create domain-specific specialists
    - **Create @[Domain]-Architect:** Based on actual project needs (not predefined lists)
    - **Examples:** @React-Architect, @Database-Architect, @Security-Architect, @API-Architect
-   - **Generic Fallback:** Use general @Architect only for multi-domain or undefined contexts
-   - **CRITICAL:** Architects are DISCOVERED from project context, not PREDEFINED
-   - **VALIDATION:** Created architect MUST match work domain (>70% capability match)
+   - **No Generic Fallbacks:** ALWAYS create domain-specific specialist architects
+   - **CRITICAL:** Specialists are DISCOVERED from project context, not PREDEFINED
+   - **VALIDATION:** Created specialist MUST match work domain precisely
 
 5. **Validation Requirements**:
    - PRB MUST include two-factor analysis rationale
    - PRB MUST document project scope identification
    - PRB MUST document work type analysis
-   - PRB MUST reference PM+Architect collaboration
-   - PRB MUST include capability match justification (>70%)
-   - PRB MUST document domain expert selection process
+   - PRB MUST reference PM + Specialist Architect collaboration
+   - PRB MUST include specialist creation justification
+   - PRB MUST document domain expert creation process
    - PRB MUST validate role aligns with BOTH factors
-   - PRB MUST show architect domain expertise match
+   - PRB MUST show specialist architect domain expertise
    - PRB MUST include decision matrix application
 
 ### Auto-Correction
@@ -143,8 +143,8 @@ CURRENT_DATE=$(date +%Y-%m-%d)
 - **Project scope not identified → BLOCK until system_nature verified**
 - **Blind role assignment → BLOCK and enforce decision matrix application**
 - **System nature mismatch → Block role assignment, require PM+Architect re-evaluation**
-- **Wrong architect domain → Force dynamic creation of appropriate @[Domain]-Architect**
-- **Generic architect overused → Block and require domain-specific architect creation**
+- **Wrong specialist domain → Force dynamic creation of appropriate @[Domain]-Architect**
+- **Generic specialist attempted → Block and require domain-specific specialist creation**
 - **MISSING COMPLETE CONTEXT → BLOCK PRB generation until context gathered**
 - **PLACEHOLDER VALUES → BLOCK execution until actual values populated**
 - **Role-system conflict → Auto-correct based on two-factor analysis validation**
