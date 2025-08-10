@@ -468,76 +468,47 @@ Status: PRB remains IN_PROGRESS until validation passes
 
 ## Implementation Patterns
 
-### State Validation Function
-```
-ValidatePRBState(prb_id, target_state):
-  # FIRST: Critical Task tool validation (HIGHEST PRIORITY)
-  task_tool_validation = ValidateTaskToolExecution(prb_id)
-  IF task_tool_validation != VALIDATION_PASSED:
-    BLOCK_TRANSITION()
-    DISPLAY_TASK_TOOL_ERROR()
-    RETURN VALIDATION_FAILED
-  
-  current_state = GetPRBState(prb_id)
-  checklist = LoadCompletionChecklist(prb_id)
-  
-  for required_state in StateTransitionPath(current_state, target_state):
-    items = GetChecklistItems(required_state)
-    for item in items:
-      if not ValidateItem(item):
-        BLOCK_TRANSITION()
-        DISPLAY_MISSING_ITEMS()
-        return VALIDATION_FAILED
-  
-  return VALIDATION_PASSED
-```
+### State Validation Process
 
-### Completion Claim Interceptor
-```
-InterceptCompletionClaim(claim_text):
-  if DetectCompletionPattern(claim_text):
-    prb_id = ExtractPRBId(claim_text)
-    validation = ValidatePRBState(prb_id, "COMPLETE")
-    if validation == VALIDATION_FAILED:
-      BLOCK_COMPLETION()
-      DISPLAY_CHECKLIST()
-      RESET_TO_APPROPRIATE_STATE()
-    else:
-      ALLOW_COMPLETION()
-```
+**Steps to Validate PRB State Transition:**
+1. **Critical Task Tool Validation (HIGHEST PRIORITY):** Validate that Task tool was used for all @Role delegations in PRB
+   - If Task tool validation fails: Block transition, display Task tool error, return validation failed
+2. **Get Current State:** Determine current PRB state and target state
+3. **Load Completion Checklist:** Get the mandatory checklist items for this PRB
+4. **Check State Transition Path:** For each required state between current and target:
+   - Get checklist items for that state
+   - Validate each item is completed
+   - If any item not validated: Block transition, display missing items, return validation failed
+5. **Allow Transition:** If all validations pass, allow state transition to proceed
 
-### Quality Gate Enforcement
-```
-EnforceQualityGates(prb_id):
-  functional_complete = ValidateFunctionalRequirements(prb_id)
-  processual_complete = ValidateProcessualRequirements(prb_id)
-  git_complete = ValidateGitOperations(prb_id)
-  review_complete = ValidateReviewCompletion(prb_id)
-  knowledge_complete = ValidateKnowledgeCapture(prb_id)
-  success_complete = ValidateSuccessCriteria(prb_id)
-  lifecycle_complete = ValidatePRBLifecycle(prb_id)
-  
-  # Bug lifecycle integration - complete bugs before PRB move
-  if ALL([functional_complete, processual_complete, git_complete, 
-         review_complete, knowledge_complete, success_complete]):
-    # Check for bug references and complete bug lifecycle
-    if prb_references_bug(prb_id):
-      bug_id = extract_bug_reference(prb_id)
-      complete_bug_lifecycle(bug_id)
-    
-    # PRB file move MUST be the absolute final step
-    lifecycle_complete = MovePRBToCompleted(prb_id)
-  
-  return ALL([
-    functional_complete,
-    processual_complete,
-    git_complete,
-    review_complete,
-    knowledge_complete,
-    success_complete,
-    lifecycle_complete
-  ])
-```
+### Completion Claim Interception Process
+
+**Steps to Intercept and Validate Completion Claims:**
+1. **Detect Completion Pattern:** Check if text contains completion claims like "PRB COMPLETE", "Task finished", "Work done"
+2. **If Completion Detected:**
+   - **Extract PRB ID:** Get the PRB identifier from the claim
+   - **Validate PRB State:** Check if PRB actually meets "COMPLETE" state requirements
+   - **If Validation Fails:** Block completion, display missing checklist items, reset to appropriate state
+   - **If Validation Passes:** Allow completion to proceed
+
+### Quality Gate Enforcement Process
+
+**Steps to Enforce Quality Gates for PRB Completion:**
+1. **Validate All Quality Areas:** Check completion status for each required area:
+   - **Functional Requirements:** All functional acceptance criteria met
+   - **Processual Requirements:** All process requirements followed
+   - **Git Operations:** All git operations completed and pushed
+   - **Review Process:** All reviews completed and approved
+   - **Knowledge Capture:** All learnings captured and stored
+   - **Success Criteria:** All success criteria validated
+   - **PRB Lifecycle:** PRB lifecycle management completed
+
+2. **Bug Lifecycle Integration:** If all quality areas pass:
+   - **Check Bug References:** If PRB references a bug, extract bug ID
+   - **Complete Bug Lifecycle:** Mark referenced bug as complete
+   - **Final PRB Move:** Move PRB file from ready/ to completed/ (absolute final step)
+
+3. **Return Final Status:** Only return complete if ALL quality areas pass including lifecycle
 
 ## PRB Lifecycle Management
 
