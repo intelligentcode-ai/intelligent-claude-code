@@ -20,21 +20,18 @@
 - `large-prb-template.yaml` - Complex features with sub-PRBs (16-30 points)
 - `mega-prb-template.yaml` - System-wide changes (30+ points)
 
-### Template Loading Logic
+### Template Loading Process
 
-```
-LoadTemplate(complexity_level):
-  1. template_name = "{complexity_level}-prb-template.yaml"
-  2. search_paths = [
-       get_project_path("prb_template_path", "prb-templates"),
-       project_root + "/.claude/prb-templates",
-       "~/.claude/prb-templates"
-     ]
-  3. For each path in search_paths:
-       if file_exists(path + "/" + template_name):
-         return load_template(path + "/" + template_name)
-  4. Error: "Template not found: {template_name}"
-```
+**Steps to Load Template by Complexity Level:**
+1. **Determine Template Name:** Build template filename as "{complexity_level}-prb-template.yaml"
+2. **Create Search Path List:** Build hierarchy of paths to search:
+   - Project configured template path (via get_project_path)
+   - Project .claude/prb-templates directory  
+   - User global ~/.claude/prb-templates directory
+3. **Search Each Path:** Check each path in hierarchy order:
+   - If template file exists at current path, load and return that template
+   - If not found, continue to next path in hierarchy
+4. **Handle Not Found:** If template not found in any path, show error: "Template not found: {template_name}"
 
 ## Configuration Integration
 

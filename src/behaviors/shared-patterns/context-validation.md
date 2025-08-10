@@ -49,21 +49,18 @@ BLOCKED OPERATIONS:
 ☐ Task tool working directories outside project boundaries
 ```
 
-**Boundary Validation Function:**
-```
-ValidateProjectBoundaries(operation_context, project_root):
-  FOR each operation IN operation_context.file_operations:
-    # Block unauthorized ~/.claude/ writes
-    IF operation.type == "write" AND operation.path.startswith("~/.claude/"):
-      IF NOT operation.context IN ["installation", "explicit_global_config"]:
-        RETURN BOUNDARY_VIOLATION_ERROR("Write to ~/.claude/ forbidden")
-    
-    # Block external directory operations  
-    IF NOT operation.path.startswith(project_root) AND NOT operation.path.startswith("~/.claude/"):
-      RETURN PROJECT_BOUNDARY_ERROR("Operation outside project scope")
-  
-  RETURN VALIDATION_PASSED
-```
+**Boundary Validation Process:**
+
+**Steps to Validate Project Boundaries:**
+1. **Check Each File Operation:** Review all planned file operations in the work context
+2. **Block Unauthorized ~/.claude/ Writes:** 
+   - If operation is writing to ~/.claude/ directory
+   - AND operation is not installation or explicit global config
+   - THEN block the operation and show error: "Write to ~/.claude/ forbidden"
+3. **Block External Directory Operations:**
+   - If operation path is outside project root AND not ~/.claude/ directory
+   - THEN block the operation and show error: "Operation outside project scope"
+4. **Allow Valid Operations:** Operations within project boundaries or authorized ~/.claude/ access proceed normally
 
 ### Configuration Value Loading
 **REQUIRED**: All configuration values must be actual, not placeholders

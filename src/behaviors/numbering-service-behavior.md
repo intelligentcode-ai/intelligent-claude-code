@@ -157,62 +157,54 @@ Scoping Rules:
 - STORY-001-PRB-001 and STORY-002-PRB-001 can coexist
 ```
 
-### Parent Validation
-```
-ValidateParentExists(parent_id):
-  1. **Parse Parent ID:**
-     category = ExtractCategoryFromID(parent_id)
-     number = ExtractNumberFromID(parent_id)
-  
-  2. **Search for Parent:**
-     directories = GetCategoryDirectories(category)
-     pattern = parent_id + "-*"
-     matches = ScanDirectoriesForPattern(directories, pattern)
-  
-  3. **Validation:**
-     if matches.length == 0:
-       ERROR: "Parent not found: {parent_id}"
-     if matches.length > 1:
-       ERROR: "Ambiguous parent reference: {parent_id}"
-     return VALIDATION_PASSED
-```
+### Parent Validation Process
+
+**Purpose:** Verify that parent work item exists before creating child PRB
+
+**Steps to Validate Parent Reference:**
+1. **Parse Parent ID:** Extract the category and number from the parent work item ID
+2. **Search for Parent:** Look in appropriate directories for files matching the parent pattern
+3. **Verify Existence:** Confirm exactly one matching parent file exists
+
+**Validation Rules:**
+- Parent must exist in the correct directory for its category
+- Parent ID must be unambiguous (only one file should match)
+- Error if no parent found: "Parent not found: {parent_id}"
+- Error if multiple matches: "Ambiguous parent reference: {parent_id}"
+- Success when exactly one valid parent is found
 
 ## Performance Optimization
 
-### Caching Strategy
-```
-Cache Structure:
-- category_max_numbers: {category: max_number} (TTL: 5 minutes)
-- parent_max_numbers: {parent_id: max_number} (TTL: 5 minutes)  
-- directory_scans: {directory: file_list} (TTL: 1 minute)
-```
+### Efficient Number Tracking
+**Track Current Numbers:**
+- Keep track of highest number for each category
+- Store highest number for each parent work item
+- Remember recent directory scans for faster lookups
 
-### Incremental Updates
-- **On File Creation:** Update cached max number for category/parent
-- **On File Deletion:** Invalidate cache to force rescan
-- **On Directory Change:** Invalidate directory scan cache
+### Smart Updates
+- **When Creating Files:** Update the stored highest number for that category/parent
+- **When Deleting Files:** Refresh stored numbers to ensure accuracy
+- **When Directory Changes:** Re-scan directories to get current state
 
 ## Error Handling
 
 ### Common Error Scenarios
-```
-Error Types:
-- INVALID_CATEGORY: Unknown work item category
-- PARENT_NOT_FOUND: Referenced parent doesn't exist
-- DIRECTORY_ACCESS_ERROR: Cannot read work item directories
-- NUMBER_COLLISION: Cannot generate unique number
-- FORMAT_ERROR: Cannot parse number from existing filename
-```
+
+**Types of Errors You Might Encounter:**
+- **INVALID_CATEGORY:** Work item category not recognized (must be EPIC, STORY, BUG, or PRB)
+- **PARENT_NOT_FOUND:** Referenced parent work item doesn't exist in the system
+- **DIRECTORY_ACCESS_ERROR:** Cannot read work item directories (permission or path issues)
+- **NUMBER_COLLISION:** Cannot generate a unique number after multiple attempts
+- **FORMAT_ERROR:** Cannot parse number from existing filename format
 
 ### Error Recovery
-```
-Recovery Actions:
-- INVALID_CATEGORY: Validate against allowed categories list
-- PARENT_NOT_FOUND: Search with fuzzy matching, suggest corrections
-- DIRECTORY_ACCESS: Create missing directories, check permissions
-- NUMBER_COLLISION: Retry with incremented attempts
-- FORMAT_ERROR: Log malformed filename, continue scan
-```
+
+**How to Handle Different Error Types:**
+- **INVALID_CATEGORY:** Check against the allowed categories list (EPIC, STORY, BUG, PRB)
+- **PARENT_NOT_FOUND:** Search with similar names to suggest corrections
+- **DIRECTORY_ACCESS:** Create missing directories and check file permissions
+- **NUMBER_COLLISION:** Try again with the next available numbers (up to 10 attempts)
+- **FORMAT_ERROR:** Log the malformed filename and continue scanning other files
 
 ## Integration Points
 

@@ -102,42 +102,32 @@ BEFORE STORING ANY MEMORY:
 7. Update [memory_base]/index.md
 
 ### Memory Base Path Resolution
-```markdown
-ResolveMemoryBasePath():
-  external_path = get_setting("memory_configuration.external_path")
-  
-  IF external_path:
-    # Expand ~ to home directory if present
-    IF external_path.startswith("~"):
-      expanded_path = expand_home_directory(external_path)
-    ELSE:
-      expanded_path = external_path
-    
-    # Ensure directory exists
-    ensure_directory_exists(expanded_path)
-    RETURN expanded_path
-  ELSE:
-    # Default backward-compatible behavior
-    RETURN get_project_path("memory_path", "memory")
-```
 
-### Security Validation Pattern
-```markdown
-ValidateMemoryForSensitiveData(content):
-  BLOCK_PATTERNS = [
-    "password", "token", "key", "secret", "credential",
-    "ghp_", "sk-", "ak_", "-----BEGIN", "api_key",
-    "@gmail.com", "amazonaws.com/key", "bearer "
-  ]
-  
-  FOR each pattern IN BLOCK_PATTERNS:
-    IF content.lower().contains(pattern):
-      REJECT_STORAGE()
-      ERROR("Security violation: Cannot store sensitive data")
-      SUGGEST("Store location/method instead of actual value")
-  
-  ALLOW_STORAGE()
-```
+**Steps to Determine Memory Base Path:**
+1. **Check External Path Configuration:** Look for memory_configuration.external_path setting
+2. **If External Path Exists:**
+   - **Expand Home Directory:** If path starts with ~, expand to full home directory path
+   - **Use Path Directly:** If path is absolute, use as specified
+   - **Ensure Directory Exists:** Create directory if it doesn't exist
+   - **Return External Path:** Use the configured external path
+3. **If No External Path:** Use default backward-compatible behavior with get_project_path("memory_path", "memory")
+
+### Security Validation Process
+
+**Steps to Validate Memory Content for Sensitive Data:**
+
+**Blocked Patterns:** Check content for these sensitive patterns:
+- General secrets: "password", "token", "key", "secret", "credential"
+- Specific tokens: "ghp_", "sk-", "ak_", "-----BEGIN", "api_key"
+- Service credentials: "@gmail.com", "amazonaws.com/key", "bearer "
+
+**Validation Steps:**
+1. **Scan Content:** Check if content contains any blocked patterns (case-insensitive)
+2. **If Sensitive Data Found:**
+   - **Reject Storage:** Block the memory storage operation
+   - **Show Error:** Display "Security violation: Cannot store sensitive data"
+   - **Suggest Alternative:** Recommend storing location/method instead of actual value
+3. **If Clean:** Allow storage to proceed normally
 
 ### SearchMemory Pattern
 1. **Path Resolution**: Determine memory base path using ResolveMemoryBasePath()
