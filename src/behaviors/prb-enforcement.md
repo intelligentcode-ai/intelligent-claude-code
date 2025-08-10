@@ -1,9 +1,10 @@
 # PRB Enforcement
 
-**MANDATORY:** Use PRB system for all work. Auto-correct violations.
+**MANDATORY:** Use PRB system with MANDATORY templates for all work. Block manual creation and unresolved placeholders.
 
 ## Imports
 @./shared-patterns/template-loading.md
+@./shared-patterns/template-enforcement.md
 @./shared-patterns/enforcement-rules.md
 @./work-item-creation.md
 @./placeholder-resolution.md
@@ -18,6 +19,15 @@
 **Enforcement**: BLOCK wrong context → Redirect to correct context
 
 ## Detection & Blocking
+
+### Priority 0: Template Enforcement (HIGHEST PRIORITY - ZERO TOLERANCE)
+- **Manual PRB creation** → IMMEDIATE BLOCK → "❌ PRB creation without template FORBIDDEN - use src/prb-templates/"
+- **Missing template sections** → IMMEDIATE BLOCK → "❌ PRB missing mandatory template sections from src/prb-templates/"
+- **Unresolved placeholders** → IMMEDIATE BLOCK → "❌ All template placeholders must be resolved at generation time"
+- **Runtime config lookup** → IMMEDIATE BLOCK → "❌ Config values must be embedded in PRB, no runtime lookups"
+- **Wrong template complexity** → IMMEDIATE BLOCK → "❌ Use complexity-appropriate template from src/prb-templates/"
+- **Invalid template source** → IMMEDIATE BLOCK → "❌ Must use templates from src/prb-templates/ hierarchy ONLY"
+- **Config not embedded** → IMMEDIATE BLOCK → "❌ Configuration must be embedded at generation time"
 
 ### Priority 1: Task Tool Enforcement
 - **Direct PRB execution** → BLOCK → "❌ PRB requires Task tool subagent"
@@ -37,11 +47,18 @@
 
 ## Auto-Correction Patterns
 
-| Violation | Correction |
-|-----------|------------|
-| Missing PRB | Analyze → Generate → Execute |
-| Wrong template | Re-analyze complexity → Correct template |
-| Direct execution | Create PRB → Use Task tool |
+| Violation | Immediate Blocking Correction |
+|-----------|-------------------------------|
+| **Manual PRB creation** | **IMMEDIATE BLOCK → Force src/prb-templates/ usage** |
+| **Missing template sections** | **IMMEDIATE BLOCK → Load complete template from src/prb-templates/** |
+| **Template bypass** | **IMMEDIATE BLOCK → Redirect to src/prb-templates/ ONLY** |
+| **Unresolved placeholders** | **IMMEDIATE BLOCK → Resolve ALL placeholders at generation time** |
+| **Runtime config lookup** | **IMMEDIATE BLOCK → Embed config values in PRB** |
+| **Invalid template source** | **IMMEDIATE BLOCK → Must use src/prb-templates/ hierarchy** |
+| **Config not embedded** | **IMMEDIATE BLOCK → Embed complete configuration at generation** |
+| Missing PRB | Analyze → Generate from src/prb-templates/ → Execute |
+| Wrong template | Re-analyze complexity → Correct template from src/prb-templates/ |
+| Direct execution | Create PRB from src/prb-templates/ → Use Task tool |
 | Wrong role | PM+Architect collaboration → Reassign |
 | Task creation | Redirect to main agent |
 

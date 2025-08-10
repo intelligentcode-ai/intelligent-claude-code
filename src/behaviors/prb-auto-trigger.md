@@ -1,9 +1,10 @@
 # PRB Auto-Trigger
 
-**MANDATORY:** Auto-detect work and generate appropriate PRB.
+**MANDATORY:** Auto-detect work and generate PRB using MANDATORY templates from src/prb-templates/ with COMPLETE placeholder resolution.
 
 ## Imports
 @./shared-patterns/template-loading.md
+@./shared-patterns/template-enforcement.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./naming-enforcement-behavior.md
@@ -25,16 +26,22 @@
 - External APIs: 3pts each
 - Database/Security: 4-5pts
 
-**Template Selection**:
-| Score | Template | Use Case |
-|-------|----------|----------|
-| 0-2 | Nano | Trivial changes |
-| 3-5 | Tiny | Single file |
-| 6-15 | Medium | Multi-file |
-| 16-30 | Large | Complex |
-| 30+ | Mega | System-wide |
+**MANDATORY Template Selection from src/prb-templates/ with Placeholder Resolution**:
+| Score | Template | Source File | Resolution Required |
+|-------|----------|-------------|--------------------|
+| 0-2 | Nano | nano-prb-template.yaml | ALL placeholders → actual values |
+| 3-5 | Tiny | tiny-prb-template.yaml | ALL placeholders → actual values |
+| 6-15 | Medium | medium-prb-template.yaml | ALL placeholders → actual values |
+| 16-30 | Large | large-prb-template.yaml | ALL placeholders → actual values |
+| 30+ | Mega | mega-prb-template.yaml | ALL placeholders → actual values |
 
-## Generation Flow
+**ABSOLUTE ENFORCEMENT:**
+- ❌ Every PRB MUST use these templates - NO manual creation
+- ❌ ALL placeholders MUST be resolved at generation time
+- ❌ NO runtime config lookups allowed
+- ❌ Complete configuration MUST be embedded in PRB
+
+## MANDATORY Template-First Generation Flow (ZERO EXCEPTIONS)
 
 1. **Detect** work requirement
 2. **Validate** Task tool if @Role
@@ -42,11 +49,23 @@
 4. **Search** memory/[topic]/ (MANDATORY)
 5. **Search** best-practices/ (MANDATORY)
 6. **Score** complexity
-7. **Select** template via hierarchy
-8. **Validate** no placeholders
-9. **Generate** compliant name
-10. **Create** PRB with full context
-11. **Execute** via Task tool if needed
+7. **MANDATORY: Load Template** from src/prb-templates/ hierarchy ONLY
+8. **MANDATORY: Load Complete Configuration** at generation time
+9. **MANDATORY: Resolve ALL Placeholders** with actual config values
+   - [FROM_CONFIG] → git_privacy: true (not "[FROM_CONFIG]")
+   - [PROJECT_ROOT] → /absolute/path/to/project
+   - [CURRENT_DATE] → 2025-08-10 (actual date)
+   - [ALL-SETTINGS] → complete configuration object
+10. **MANDATORY: Embed Complete Context** - all config in PRB
+11. **MANDATORY: Validate NO Placeholders** - ZERO unresolved values
+12. **MANDATORY: Validate Template Completeness** - ALL sections required
+13. **Generate** compliant name from template
+14. **Create** PRB using complete resolved template structure
+15. **Validate** NO runtime config dependencies
+16. **Document** template source in metadata
+17. **Execute** via Task tool if needed
+
+**ABSOLUTE ENFORCEMENT:** Steps 7-16 are MANDATORY - NO bypassing, NO exceptions, NO runtime config lookups.
 
 ## Context Requirements
 
@@ -57,7 +76,13 @@
 - Critical files (with samples)
 - User requirements (clear)
 
-**BLOCK if missing**: Context incomplete → Cannot generate
+**IMMEDIATE BLOCKING:**
+- Context incomplete → Cannot generate PRB
+- Manual creation attempt → Must use src/prb-templates/
+- Unresolved placeholders → Must resolve at generation time
+- Runtime config dependencies → Must embed all config values
+- Template source invalid → Must use src/prb-templates/ hierarchy
+- Missing template sections → Must use complete templates
 
 ## Naming
 

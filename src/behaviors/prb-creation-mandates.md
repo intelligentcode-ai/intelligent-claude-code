@@ -1,10 +1,11 @@
 # PRB Creation Instructions
 
-**MANDATORY:** When creating PRBs, include role in title and select appropriate template complexity.
+**MANDATORY:** ALL PRB creation MUST use templates from src/prb-templates/ with COMPLETE placeholder resolution. NO manual PRB creation allowed. NO runtime config lookups.
 
 ## Imports
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/template-loading.md
+@./shared-patterns/template-enforcement.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./naming-enforcement-behavior.md
@@ -25,22 +26,54 @@
 
 **BLOCKED:** Task tool CANNOT create PRBs due to isolated context limitations.
 
-## How to Create PRBs
+## MANDATORY TEMPLATE USAGE WITH PLACEHOLDER RESOLUTION
+
+### Templates Are MANDATORY - NO Exceptions, ALL Placeholders MUST be Resolved
+**CRITICAL:** Every PRB MUST use appropriate template from `src/prb-templates/` with ALL placeholders resolved at generation time - NO manual creation, NO runtime config lookups.
+
+**TEMPLATE SOURCE (ONLY VALID SOURCE):**
+- **nano-prb-template.yaml** (0-2 points): Simple changes (typos, configs)
+- **tiny-prb-template.yaml** (3-5 points): Single-file work (<50 lines)  
+- **medium-prb-template.yaml** (6-15 points): Multi-file features
+- **large-prb-template.yaml** (16-30 points): Complex work requiring coordination
+- **mega-prb-template.yaml** (30+ points): System-wide changes
+
+**ABSOLUTE BLOCKING:**
+- ❌ Manual PRB creation without templates
+- ❌ PRBs with unresolved placeholders (like [FROM_CONFIG])
+- ❌ Runtime config lookups during execution
+- ❌ Missing mandatory template sections
+- ❌ Template sources outside src/prb-templates/
+
+### MANDATORY Template-First Generation Process
+**CRITICAL STEPS (NO EXCEPTIONS):**
+1. **Calculate Complexity**: Files + Lines + APIs + Security + Coordination
+2. **Select Template**: Use complexity score to pick appropriate template from src/prb-templates/
+3. **Load Template**: From src/prb-templates/ hierarchy ONLY - NO other sources
+4. **Load Configuration**: Read complete config hierarchy at generation time
+5. **Resolve ALL Placeholders**: Replace EVERY [PLACEHOLDER] with actual values
+   - [FROM_CONFIG] → actual config values (git_privacy: true, not "[FROM_CONFIG]")
+   - [PROJECT_ROOT] → actual project root path
+   - [CURRENT_DATE] → actual system date
+   - [ALL-SETTINGS] → actual configuration object
+6. **Embed Complete Context**: All config values embedded in PRB complete_context
+7. **Validate NO Placeholders**: Ensure ZERO unresolved placeholders remain
+8. **Validate All Sections**: Ensure ALL mandatory template sections present
+9. **Document Template Source**: Record template used in PRB metadata
+10. **Block Runtime Config**: Ensure NO config lookups needed during execution
+
+**ABSOLUTE BLOCKING (ZERO TOLERANCE):**
+- ❌ Manual PRB structure creation
+- ❌ Creating PRBs without templates  
+- ❌ Any unresolved placeholders in final PRB
+- ❌ Missing mandatory template sections
+- ❌ Using templates outside src/prb-templates/ hierarchy
+- ❌ Runtime config dependencies in PRB execution
+- ❌ PRBs requiring config file access during work
 
 ### Include Role in Title  
-**Format:** "[Role] Description"
+**Format:** "[Role] Description" (from template)
 **Examples:** "[Developer] Fix auth", "[AI-Engineer] Add ML"
-
-### Choose Template Based on Complexity
-**Select template by evaluating work complexity:**
-- **Nano (0-2 points):** Simple changes (typos, configs)
-- **Tiny (3-5 points):** Single-file work (<50 lines)
-- **Medium (6-15 points):** Multi-file features
-- **Large (16-30 points):** Complex work requiring coordination
-- **Mega (30+ points):** System-wide changes
-
-**Consider these factors:** Files affected + Lines to change + External APIs + Security impact + Coordination needed
-**Find templates in:** project folder → .claude folder → ~/.claude folder
 
 ### Naming Format Requirements
 **MANDATORY:** All generated PRBs MUST follow standard naming format:
@@ -148,7 +181,13 @@ CURRENT_DATE=$(date +%Y-%m-%d)
    - PRB MUST show architect domain expertise match
    - PRB MUST include decision matrix application
 
-### Auto-Correction
+### ENHANCED Auto-Correction with Template Enforcement
+- **MANUAL PRB CREATION → BLOCK immediately - redirect to src/prb-templates/ usage**
+- **MISSING TEMPLATE SECTIONS → BLOCK - force complete template loading from src/prb-templates/**  
+- **UNRESOLVED PLACEHOLDERS → BLOCK - require complete placeholder resolution at generation time**
+- **RUNTIME CONFIG DEPENDENCIES → BLOCK - embed all config values in PRB**
+- **WRONG TEMPLATE COMPLEXITY → BLOCK - recalculate and use correct template from src/prb-templates/**
+- **TEMPLATE SOURCE INVALID → BLOCK - must use src/prb-templates/ hierarchy only**
 - Missing role → Trigger PM+Architect collaboration process
 - Wrong template → Re-analyze complexity with architect input
 - No specialist → PM+Architect decide on dynamic specialist creation
@@ -162,7 +201,8 @@ CURRENT_DATE=$(date +%Y-%m-%d)
 - **Wrong architect domain → Force dynamic creation of appropriate @[Domain]-Architect**
 - **Generic architect overused → Block and require domain-specific architect creation**
 - **MISSING COMPLETE CONTEXT → BLOCK PRB generation until context gathered**
-- **PLACEHOLDER VALUES → BLOCK execution until actual values populated**
+- **PLACEHOLDER VALUES IN FINAL PRB → BLOCK execution until actual values embedded**
+- **CONFIG LOOKUP DURING EXECUTION → BLOCK - all values must be pre-embedded**
 - **Role-system conflict → Auto-correct based on two-factor analysis validation**
 
 ### Context Validation Requirements
