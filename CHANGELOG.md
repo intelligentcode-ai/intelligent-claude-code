@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enforced specialist architect selection over generic engineers
 - Eliminated role assignments from story/bug validation
 - Aligned all behavioral patterns with dynamic specialist creation
+- PRB-007: Removed hardcoded values from behavioral patterns
+- Eliminated TTL references and cache management concepts inappropriate for AI instructions
+- Replaced fixed configuration values with dynamic configuration loading
+- Enhanced system flexibility through configuration-driven approach
 
 ## [6.15.0] - 2025-08-09
 

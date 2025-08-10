@@ -118,7 +118,7 @@ ResolveMemoryBasePath():
     RETURN expanded_path
   ELSE:
     # Default backward-compatible behavior
-    RETURN "./memory/"
+    RETURN get_project_path("memory_path", "memory")
 ```
 
 ### Security Validation Pattern
@@ -152,7 +152,7 @@ ValidateMemoryForSensitiveData(content):
 2. Read topic file from [memory_base]/[topic]/
 3. Parse markdown entries
 4. Update access stats
-5. Cache 5 min TTL
+5. Store for efficient retrieval
 
 ## Pruning
 **Threshold:** 10 entries or 5KB

@@ -77,24 +77,24 @@ Projects can override any template by placing it in their configured template di
 - Projects can override by copying to local template directory
 - Modifications preserved during system updates
 
-## Cache Management
+## Template Management
 
-### Template Caching
-- **Template Files**: 15-minute TTL (moderate change frequency)
-- **Directory Checks**: 5-minute TTL (path existence)
-- **Template Validation**: 1-hour TTL (stable structure)
+### Template Loading
+- **Template Files**: Loaded from configuration hierarchy as needed
+- **Directory Checks**: Validate path existence during access
+- **Template Validation**: Validate structure during loading
 
-### Cache Invalidation
-- File modification timestamp changes
-- Directory structure changes
-- Configuration updates affecting template paths
+### Template Updates
+- File modification triggers reload during next access
+- Directory structure changes detected during path validation
+- Configuration updates affecting template paths handled dynamically
 
 ## Integration Points
 
 ### With Configuration System
 - Use `get_project_path("prb_template_path", "prb-templates")` for configured path
 - Apply configuration hierarchy for template path settings
-- Cache configuration with appropriate TTL
+- Dynamic configuration loading enables template path flexibility
 
 ### With PRB Generation
 - **Complexity Analysis**: Determine template complexity level

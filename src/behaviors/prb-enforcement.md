@@ -183,7 +183,7 @@ Task(
 ### Settings Validation Checklist
 ```markdown
 MANDATORY SETTINGS COMPLIANCE:
-☐ git_privacy: true → Strip ALL AI mentions from commits
+☐ git_privacy setting → Strip ALL AI mentions from commits
 ☐ branch_protection: true → Follow protection strategy exactly
 ☐ default_branch setting → Use for all git operations
 ☐ autonomy_level → Apply appropriate behavior patterns
@@ -194,7 +194,7 @@ CRITICAL: Settings violations AUTO-BLOCK execution.
 ```
 
 ### Git Privacy Enforcement
-**git_privacy: true MEANS:**
+**git_privacy setting enabled MEANS:**
 - NO "Generated with Claude Code" in any commit
 - NO "Co-Authored-By: Claude" in any commit
 - NO AI mentions anywhere in git operations

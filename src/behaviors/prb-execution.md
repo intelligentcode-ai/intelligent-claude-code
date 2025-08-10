@@ -47,7 +47,7 @@ MANDATORY PRB SECTION EXECUTION:
 ☐ 6. Implementation Samples Section - Applied correctly with examples
 
 CRITICAL SETTINGS ENFORCEMENT:
-☐ git_privacy: true → NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
+☐ git_privacy setting → NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
 ☐ branch_protection: true → Follow branch protection rules exactly
 ☐ autonomy_level → Apply L1/L2/L3 behaviors as configured
 ☐ memory_integration: true → Store ALL learnings as specified
