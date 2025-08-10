@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- PRB-005: Fixed critical role assignment errors and contradictions across behavioral patterns
+- Removed hardcoded role assignments from role-assignment-matrix.md
+- Enforced specialist architect selection over generic engineers
+- Eliminated role assignments from story/bug validation
+- Aligned all behavioral patterns with dynamic specialist creation
+
 ## [6.15.0] - 2025-08-09
 
 ### Fixed
