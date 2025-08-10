@@ -64,12 +64,147 @@
 
 ## Settings Compliance
 
-**MANDATORY ENFORCEMENT**:
-- `git_privacy: true` → Strip ALL AI mentions
-- `branch_protection` → Enforce strategy
-- `default_branch` → Use for all git ops
-- `autonomy_level` → Apply L1/L2/L3
-- `memory_integration` → Store in memory/
+### Template Selection
+**Automatic:** Complexity analysis determines template
+**Override:** Allowed with justification
+**Learning:** System improves selection accuracy
+
+### Auto-Correction Patterns
+**Missing PRB:** STOP → Analyze complexity → Generate PRB → Execute
+**Wrong Template:** STOP → Re-analyze → Generate correct PRB
+**Direct Execution:** STOP → Create PRB → Execute through PRB
+**Legacy Workflow:** STOP → Convert to PRB → Direct execution
+**Missing Task Tool:** STOP → Error message → Require Task tool wrapper
+**System Nature Mismatch:** STOP → Block inappropriate role → Enforce PM+Architect collaboration → Re-assign correct role
+**Wrong Domain Architect:** STOP → Force correct architect selection → Re-validate role assignment
+
+## Execution Enforcement
+
+### PRB Launch Pattern
+**Detection:** Work requirement → Complexity analysis → PRB generation → Direct execution
+**No Workflows:** PRBs execute directly without Inner Workflow phases
+**Complete Context:** Each PRB contains everything needed
+
+### Context Preservation
+**User Intent:** Include original request in PRB
+**Settings:** All configuration passed to PRB
+**Memory:** Pre-searched patterns included
+**Validation:** Success criteria embedded
+
+## Multi-Layer Detection
+1. **Task Tool Validator:** FIRST CHECK - Validate ALL PRB executions use Task tool (MANDATORY)
+2. **Input Scanner:** Pre-process ALL text before execution
+3. **Pattern Matcher:** Detect @Role and work patterns
+4. **Task Tool Checker:** Validate Task tool usage for @Role mentions
+5. **PRB Checker:** Validate PRB exists for work
+6. **Template Validator:** Ensure correct complexity template
+7. **System Nature Validator:** Check role assignments align with system nature
+8. **PM+Architect Validator:** Ensure collaboration process documented
+9. **Auto-Generator:** Create PRB if missing
+
+## Real-Time Interception
+**Monitor:** ALL execution attempts (Task tool check FIRST)
+**Interrupt:** IMMEDIATELY on direct PRB execution (highest priority)
+**Block:** No PRB execution without Task tool subagent
+**Block:** No direct work without PRB
+**Correct:** Generate appropriate PRB with Task tool enforcement
+
+## Task Tool Enforcement (ABSOLUTE PRIORITY)
+
+**CRITICAL RULE:** EVERY PRB execution MUST use Task tool subagent - NO EXCEPTIONS EVER.
+
+### Task Tool Detection Logic
+```
+DetectTaskToolViolation(execution_context):
+  # Check if executing within Task tool subagent
+  IF NOT execution_context.is_task_tool_subagent:
+    RETURN CRITICAL_VIOLATION("Direct PRB execution forbidden")
+  
+  # Validate Task tool pattern
+  IF NOT execution_context.task_tool_pattern_valid:
+    RETURN PATTERN_VIOLATION("Invalid Task tool invocation")
+  
+  RETURN VALIDATION_PASSED
+```
+
+### Task Tool Blocking Mechanisms
+**ABSOLUTE BLOCKS:**
+- Any PRB execution outside Task tool context
+- Direct access to PRB files for execution
+- Bypassing Task tool requirement
+- Attempting to override Task tool mandate
+
+**IMMEDIATE ACTIONS:**
+1. **BLOCK EXECUTION** at first detection
+2. **DISPLAY CLEAR ERROR:** "❌ PRB execution REQUIRES Task tool subagent"
+3. **SHOW CORRECT PATTERN:** Provide Task tool invocation example
+4. **LOG VIOLATION:** Track attempts for monitoring
+5. **NO BYPASS:** This rule cannot be overridden by ANY configuration
+
+### Required Task Tool Pattern
+```
+MANDATORY PATTERN FOR ALL PRB EXECUTION:
+Task(
+  subagent_type='general-purpose',
+  description='Execute [PRB-ID] for [description]',
+  prompt='[Complete PRB context and instructions]'
+)
+```
+
+**PATTERN VALIDATION:**
+- Must include 'subagent_type' parameter
+- Must reference specific PRB being executed
+- Must contain complete context for subagent
+- No shortcuts or abbreviated patterns allowed
+
+## Advanced Patterns
+
+### Complex Detection Cases
+**Natural Language:** "Can you ask @Security-Engineer to review?"
+**Multiple Roles:** "@PM and @Developer should coordinate"  
+**Dynamic Roles:** "Let's have @[Dynamic-Role] handle this"
+**Work Items:** "Fix TASK-123" or "Implement STORY-456"
+
+### Edge Case Prevention  
+**Escaped Patterns:** \@Role → Do not trigger
+**Code Blocks:** @Role in code → Do not trigger
+**Documentation:** About @Role → Do not trigger  
+**Actual Work:** @Role for work → ALWAYS generate PRB
+
+### L3 Autonomous Behavior
+**Detection:** Work attempt → Auto-generate PRB
+**Learning:** Track patterns → Improve template selection
+**Prevention:** Make PRB path easier than bypass attempts
+
+## Settings Compliance Verification
+
+### Critical Settings Enforcement
+**MONITOR:** All execution for settings compliance
+**ENFORCE:** Every setting specified in PRB/configuration
+**BLOCK:** Any operation that violates settings
+
+### Settings Validation Checklist
+```markdown
+MANDATORY SETTINGS COMPLIANCE:
+☐ git_privacy setting → Strip ALL AI mentions from commits
+☐ branch_protection: true → Follow protection strategy exactly
+☐ default_branch setting → Use for all git operations
+☐ autonomy_level → Apply appropriate behavior patterns
+☐ memory_integration: true → Store learnings in memory/
+☐ All CLAUDE.md settings → Applied throughout execution
+
+CRITICAL: Settings violations AUTO-BLOCK execution.
+```
+
+### Git Privacy Enforcement
+**git_privacy setting enabled MEANS:**
+- NO "Generated with Claude Code" in any commit
+- NO "Co-Authored-By: Claude" in any commit
+- NO AI mentions anywhere in git operations
+- Clean professional commits only
+- Strip all AI references before git commands
+
+**ENFORCEMENT:** Auto-detect and block commits with AI mentions
 
 ## PRB Context Discipline
 

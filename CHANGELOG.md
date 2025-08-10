@@ -7,34 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [6.17.0] - 2025-08-10
+## [6.9.0] - 2025-08-10
 
 ### Fixed
-- Regenerated PRBs 005-010 with proper template structure
-- Resolved all configuration placeholders in PRB templates
-- Ensured all mandatory sections present in regenerated PRBs
-- Git operations, knowledge management, and review processes properly specified
-- Template compliance and placeholder resolution
-
-## [6.16.0] - 2025-08-10
-
-### Fixed
-- BUG-014: Fixed work item creation process to enforce main agent only
-- Task tool now blocked from creating Stories, Bugs, EPICs, and PRBs
-- Clear separation between creation (main agent) and execution (Task tool)
-- Placeholder resolution now requires main agent context
-
-### Added
-- work-item-creation.md behavioral pattern for proper creation workflow
-- placeholder-resolution.md pattern for template context requirements  
-- Detection mechanisms for Task tool creation violations
-- Enhanced error messages for creation vs execution separation
-
-### Changed
-- PRB enforcement now validates creation context before execution context
-- Template resolution must happen in main agent before Task tool delegation
-- Memory searches for creation must occur in main agent context
-- Configuration hierarchy access restricted to main agent for creation
+- PRB-005: Fixed critical role assignment errors and contradictions across behavioral patterns
+- Removed hardcoded role assignments from role-assignment-matrix.md
+- Enforced specialist architect selection over generic engineers
+- Eliminated role assignments from story/bug validation
+- Aligned all behavioral patterns with dynamic specialist creation
+- PRB-007: Removed hardcoded values from behavioral patterns
+- Eliminated TTL references and cache management concepts inappropriate for AI instructions
+- Replaced fixed configuration values with dynamic configuration loading
+- Enhanced system flexibility through configuration-driven approach
+- PRB-006: Removed all pseudo-code from markdown behavioral system
+- Converted programming constructs to natural language behavioral descriptions
+- Replaced function definitions and algorithms with process descriptions
+- Ensured AI instruction format consistency across entire system
+- Transformed YAML loops and conditionals to behavioral guidance
 
 ## [6.15.0] - 2025-08-09
 

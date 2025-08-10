@@ -35,24 +35,18 @@ Specific guidance for this practice
 Code or configuration examples
 ```
 
-### Discovery Algorithm
-```
-SearchBestPractices(work_request, complexity, work_type):
-  1. keywords = ExtractKeywords(work_request)
-  2. practices = ScanDirectory("best-practices/")
-  3. scored_practices = []
-  
-  4. For each practice in practices:
-       score = 0
-       if MatchKeywords(practice.keywords, keywords): score += 3
-       if MatchWorkType(practice.applies_to, work_type): score += 2
-       if MatchComplexity(practice.applies_to, complexity): score += 1
-       if RecentlyUsed(practice): score += 0.5
-       scored_practices.append((practice, score))
-  
-  5. top_practices = SortByScore(scored_practices)[:3]
-  6. return FormatForInjection(top_practices)
-```
+### Discovery Process
+
+**Steps to Find Relevant Best Practices:**
+1. **Extract Keywords:** Pull key terms from the work request
+2. **Scan Best Practices:** Look through all files in best-practices/ directory
+3. **Score Each Practice:** Calculate relevance score for each practice:
+   - **Keyword Match:** If practice keywords match request terms, add 3 points
+   - **Work Type Match:** If practice applies to this work type, add 2 points
+   - **Complexity Match:** If practice applies to this complexity level, add 1 point
+   - **Recent Usage:** If practice was used recently, add 0.5 points
+4. **Select Top Practices:** Sort by score and select the top 3 most relevant practices
+5. **Format for Use:** Prepare selected practices for injection into PRB template
 
 ## Template Placeholder Replacement
 
