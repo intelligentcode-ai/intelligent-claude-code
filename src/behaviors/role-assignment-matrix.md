@@ -16,42 +16,42 @@ Role assignment MUST consider both factors:
 
 ### AI-AGENTIC SYSTEM Projects
 
-| Work Type | Keywords | Assigned Role | Rationale |
-|-----------|----------|---------------|-----------|
-| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | @DevOps-Engineer | Infrastructure expertise regardless of project type |
-| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | @Security-Engineer | Security expertise transcends project boundaries |
-| **Database** | database, schema, migration, query, SQL, performance, index | @Database-Engineer | Data layer expertise independent of system type |
-| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern, decision | @AI-Engineer | Core AI-agentic system expertise |
-| **Architecture** | design, architecture, pattern, structure, framework, system | @Architect | System design independent of implementation |
-| **Testing** | test, QA, validation, quality, coverage, automation | @QA-Engineer | Quality expertise for behavioral systems |
-| **Documentation** | documentation, docs, README, guide, manual, API docs | @Requirements-Engineer | Documentation specialist |
-| **Implementation** | implement, feature, bug fix, refactor, code | @AI-Engineer | AI-agentic implementation patterns |
+| Work Type | Keywords | Role Selection Pattern | PM + Specialist Architect Collaboration |
+|-----------|----------|------------------------|-------------------------------------------|
+| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | Universal: Always @DevOps-Engineer | PM + @DevOps-Architect → Domain-specific infrastructure specialist |
+| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | Universal: Always @Security-Engineer | PM + @Security-Architect → Domain-specific security specialist |
+| **Database** | database, schema, migration, query, SQL, performance, index | Universal: Always @Database-Engineer | PM + @Database-Architect → Domain-specific data specialist |
+| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern, decision | Dynamic: Create specialist for domain | PM + @AI-Architect → @[Domain]-AI-Engineer (e.g., @Memory-AI-Engineer, @Behavioral-AI-Engineer) |
+| **Architecture** | design, architecture, pattern, structure, framework, system | Dynamic: Create domain architect | PM + @System-Architect → @[Domain]-Architect (e.g., @Behavioral-Architect, @AI-System-Architect) |
+| **Testing** | test, QA, validation, quality, coverage, automation | Dynamic: Create testing specialist | PM + @Testing-Architect → @[Domain]-Tester (e.g., @Behavioral-Tester, @AI-System-Tester) |
+| **Documentation** | documentation, docs, README, guide, manual, API docs | Universal: Always @Requirements-Engineer | PM + @Documentation-Architect → Domain-specific documentation specialist |
+| **Implementation** | implement, feature, bug fix, refactor, code | Dynamic: Create implementation specialist | PM + @AI-Architect → @[Domain]-Developer (e.g., @Behavioral-Developer, @AI-System-Developer) |
 
 ### CODE-BASED SYSTEM Projects
 
-| Work Type | Keywords | Assigned Role | Rationale |
-|-----------|----------|---------------|-----------|
-| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | @DevOps-Engineer | Infrastructure expertise regardless of project type |
-| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | @Security-Engineer | Security expertise transcends project boundaries |
-| **Database** | database, schema, migration, query, SQL, performance, index | @Database-Engineer | Data layer expertise independent of system type |
-| **AI/Behavioral** | AI, ML, machine learning, neural, model, prediction | @AI-Engineer | AI implementation in code systems |
-| **Architecture** | design, architecture, pattern, structure, framework, system | @Architect | System design independent of implementation |
-| **Testing** | test, QA, validation, quality, coverage, automation, unit, integration | @Backend-Tester | Code-specific testing expertise |
-| **Documentation** | documentation, docs, README, guide, manual, API docs | @Requirements-Engineer | Documentation specialist |
-| **Implementation** | implement, feature, bug fix, refactor, code, function, API | @Developer | Traditional code implementation |
+| Work Type | Keywords | Role Selection Pattern | PM + Specialist Architect Collaboration |
+|-----------|----------|------------------------|-------------------------------------------|
+| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | Universal: Always @DevOps-Engineer | PM + @DevOps-Architect → Domain-specific infrastructure specialist |
+| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | Universal: Always @Security-Engineer | PM + @Security-Architect → Domain-specific security specialist |
+| **Database** | database, schema, migration, query, SQL, performance, index | Universal: Always @Database-Engineer | PM + @Database-Architect → Domain-specific data specialist |
+| **AI/Behavioral** | AI, ML, machine learning, neural, model, prediction | Dynamic: Create AI implementation specialist | PM + @AI-Architect → @[Technology]-AI-Engineer (e.g., @TensorFlow-AI-Engineer, @PyTorch-AI-Engineer) |
+| **Architecture** | design, architecture, pattern, structure, framework, system | Dynamic: Create domain architect | PM + @System-Architect → @[Domain]-Architect (e.g., @Microservice-Architect, @API-Architect) |
+| **Testing** | test, QA, validation, quality, coverage, automation, unit, integration | Dynamic: Create testing specialist | PM + @Testing-Architect → @[Stack]-Tester (e.g., @Backend-Tester, @API-Tester) |
+| **Documentation** | documentation, docs, README, guide, manual, API docs | Universal: Always @Requirements-Engineer | PM + @Documentation-Architect → Domain-specific documentation specialist |
+| **Implementation** | implement, feature, bug fix, refactor, code, function, API | Dynamic: Create implementation specialist | PM + @Code-Architect → @[Technology]-Developer (e.g., @React-Developer, @Node-Developer) |
 
 ### HYBRID SYSTEM Projects
 
-| Work Type | Keywords | Assigned Role | Rationale |
-|-----------|----------|---------------|-----------|
-| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | @DevOps-Engineer | Infrastructure expertise regardless of project type |
-| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | @Security-Engineer | Security expertise transcends project boundaries |
-| **Database** | database, schema, migration, query, SQL, performance, index | @Database-Engineer | Data layer expertise independent of system type |
-| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern | @AI-Engineer | AI-agentic portions |
-| **Code Implementation** | implement, feature, bug fix, refactor, code, function, API | @Developer | Traditional code portions |
-| **Architecture** | design, architecture, pattern, structure, framework, system | @Architect + @AI-Engineer | Joint architectural assessment |
-| **Testing** | test, QA, validation, quality, coverage | @QA-Engineer + @Backend-Tester | Hybrid testing approach |
-| **Documentation** | documentation, docs, README, guide, manual | @Requirements-Engineer | Documentation specialist |
+| Work Type | Keywords | Role Selection Pattern | PM + Specialist Architect Collaboration |
+|-----------|----------|------------------------|-------------------------------------------|
+| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | Universal: Always @DevOps-Engineer | PM + @DevOps-Architect → Domain-specific infrastructure specialist |
+| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | Universal: Always @Security-Engineer | PM + @Security-Architect → Domain-specific security specialist |
+| **Database** | database, schema, migration, query, SQL, performance, index | Universal: Always @Database-Engineer | PM + @Database-Architect → Domain-specific data specialist |
+| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern | Dynamic: Create AI-behavioral specialist | PM + @AI-Architect → @[Domain]-AI-Engineer (AI-agentic portions) |
+| **Code Implementation** | implement, feature, bug fix, refactor, code, function, API | Dynamic: Create code implementation specialist | PM + @Code-Architect → @[Technology]-Developer (traditional code portions) |
+| **Architecture** | design, architecture, pattern, structure, framework, system | Joint: Multiple specialist architects | PM + @System-Architect + @AI-Architect → Joint architectural assessment |
+| **Testing** | test, QA, validation, quality, coverage | Joint: Multiple testing specialists | PM + @Testing-Architect → @[Domain]-Tester + @[Stack]-Tester (hybrid testing approach) |
+| **Documentation** | documentation, docs, README, guide, manual | Universal: Always @Requirements-Engineer | PM + @Documentation-Architect → Domain-specific documentation specialist |
 
 ## Universal Role Assignments
 
@@ -191,17 +191,18 @@ PRB must include:
 
 ### Unclear Work Type
 **When work type cannot be clearly determined:**
-1. Default to project scope-appropriate general role
-2. AI-AGENTIC → @AI-Engineer
-3. CODE-BASED → @Developer
-4. HYBRID → @Architect (for analysis)
+1. PM + Specialist Architect collaboration to analyze requirements
+2. AI-AGENTIC → PM + @AI-Architect → Create appropriate specialist
+3. CODE-BASED → PM + @Code-Architect → Create appropriate specialist
+4. HYBRID → PM + @System-Architect + @AI-Architect → Joint analysis and specialist creation
 
 ### Domain-Specific Work
-**When work requires >70% specialized domain expertise:**
-1. Create dynamic specialist: @[Domain]-Engineer
-2. Examples: @React-Developer, @AWS-Engineer, @GraphQL-Specialist
-3. Document domain expertise requirement
-4. Validate capability match for dynamic specialist
+**ALWAYS create dynamic specialists for precise expertise matching:**
+1. Create specialist for specific domain: @[Domain]-Engineer
+2. Examples: @React-Developer, @AWS-Engineer, @GraphQL-Specialist, @Memory-AI-Engineer
+3. Document domain expertise and specialist creation rationale
+4. PM + Specialist Architect must collaborate to define specialist role
+5. No generic fallbacks - precision is mandatory
 
 ## Validation and Enforcement
 
@@ -210,23 +211,26 @@ PRB must include:
 ValidateTwoFactorAnalysis(requirements, context):
   1. project_scope = ExtractSystemNature(context.complete_context)
   2. work_type = AnalyzeWorkTypeKeywords(requirements)
-  3. role = ApplyDecisionMatrix(project_scope, work_type)
-  4. ValidateCapabilityMatch(role, requirements)
-  5. DocumentRationale(project_scope, work_type, role)
+  3. specialist_architect = SelectSpecialistArchitect(project_scope, work_type)
+  4. role = PMArchitectCollaboration(project_scope, work_type, specialist_architect)
+  5. DocumentSpecialistCreation(project_scope, work_type, role, rationale)
 ```
 
 ### Enforcement Rules
 - **BLOCK**: Single-factor role assignments
-- **BLOCK**: Role assignments without rationale documentation
-- **BLOCK**: Assignments that ignore decision matrix
-- **REQUIRE**: PM + Architect collaboration evidence
+- **BLOCK**: Role assignments without PM + Specialist Architect collaboration
+- **BLOCK**: Use of generic engineers when specialists should be created
+- **BLOCK**: Hardcoded role assignments ignoring dynamic creation patterns
+- **REQUIRE**: PM + Specialist Architect collaboration evidence
 - **REQUIRE**: Two-factor analysis documentation
+- **REQUIRE**: Specialist creation rationale
 
 ### Error Messages
 - "❌ Single-factor analysis detected - work type analysis missing"
 - "❌ Project scope not identified - check complete_context.system_nature"  
-- "❌ Decision matrix not applied - role assignment lacks rationale"
-- "❌ Capability match not validated - provide >70% justification"
+- "❌ Generic role assigned - create domain-specific specialist instead"
+- "❌ PM + Specialist Architect collaboration missing - enforce collaboration process"
+- "❌ Specialist creation not documented - provide creation rationale"
 
 ## Integration Points
 
