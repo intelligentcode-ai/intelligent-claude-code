@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.9.0] - 2025-08-10
+
 ### Fixed
 - PRB-005: Fixed critical role assignment errors and contradictions across behavioral patterns
 - Removed hardcoded role assignments from role-assignment-matrix.md
@@ -17,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Eliminated TTL references and cache management concepts inappropriate for AI instructions
 - Replaced fixed configuration values with dynamic configuration loading
 - Enhanced system flexibility through configuration-driven approach
+- PRB-006: Removed all pseudo-code from markdown behavioral system
+- Converted programming constructs to natural language behavioral descriptions
+- Replaced function definitions and algorithms with process descriptions
+- Ensured AI instruction format consistency across entire system
+- Transformed YAML loops and conditionals to behavioral guidance
 
 ## [6.15.0] - 2025-08-09
 
