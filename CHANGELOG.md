@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.17.0] - 2025-08-10
+
+### Fixed
+- Regenerated PRBs 005-010 with proper template structure
+- Resolved all configuration placeholders in PRB templates
+- Ensured all mandatory sections present in regenerated PRBs
+- Git operations, knowledge management, and review processes properly specified
+- Template compliance and placeholder resolution
+
 ## [6.16.0] - 2025-08-10
 
 ### Fixed
