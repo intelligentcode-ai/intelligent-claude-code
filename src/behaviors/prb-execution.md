@@ -1,655 +1,100 @@
 # PRB Execution Behavior
 
-**MANDATORY:** MUST enforce completion checklist. Auto-correct false completion claims.
-
-**PURPOSE:** Enforce proper PRB execution lifecycle with mandatory completion validation
+**MANDATORY:** Enforce completion checklist. Auto-correct false completion claims.
 
 ## Imports
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/template-loading.md
+@./shared-patterns/execution-validation.md
 
-## CRITICAL: TASK TOOL MANDATORY
+## Task Tool Requirement
 
-**ABSOLUTE REQUIREMENT:** EVERY PRB execution MUST use Task tool subagent - NO EXCEPTIONS.
+**CRITICAL:** ALL PRB execution via Task tool subagent ONLY.
+- Block direct execution → Error: "❌ PRB requires Task tool subagent"
+- Pattern: `Task(subagent_type='general-purpose', prompt='[PRB context]')`
 
-```markdown
-CRITICAL TASK TOOL VALIDATION (FIRST CHECK):
-☐ PRB execution MUST be via Task tool subagent - VALIDATE IMMEDIATELY
-☐ Block ALL direct PRB execution attempts
-☐ Error: "❌ PRB execution REQUIRES Task tool subagent"
-☐ NO bypass possible - highest priority enforcement
+## Mandatory Execution Checklist
 
-TASK TOOL PATTERN REQUIRED:
-Task(
-  subagent_type='general-purpose',
-  description='Execute [PRB-ID] for [brief description]',
-  prompt='[Full PRB context and execution instructions]'
-)
+### 6 Sections (ALL MANDATORY)
+| Section | Requirements | Validation |
+|---------|-------------|------------|
+| 0. Task Tool | Verify subagent execution | BLOCKING if missing |
+| 1. Context | Load settings, validate files | All values resolved |
+| 2. Requirements | Execute functional/processual/technical | Every item complete |
+| 3. Git Ops | Branch→Commit→PR→Merge | CHANGELOG before PR |
+| 4. Knowledge | Capture learnings | Store in memory/ |
+| 5. Review | SME review complete | Approval received |
+| 6. Implementation | Apply samples | Patterns verified |
 
-IF TASK TOOL NOT DETECTED: BLOCK EXECUTION IMMEDIATELY
-```
+### Critical Settings
+- **git_privacy: true** → NO AI mentions in commits
+- **branch_protection** → Follow protection strategy
+- **Project scope** → Operations within project root only
+- **Memory** → Store in ./memory/ not ~/.claude/
 
-## MANDATORY EXECUTION CHECKLIST
-
-**CRITICAL:** Every PRB has 6 mandatory sections. ALL must be executed without exception.
-
-### Section-by-Section Execution Requirements
-```markdown
-TASK TOOL VALIDATION (MANDATORY FIRST CHECK):
-☐ 0. Task Tool Check - VERIFY Task tool subagent is executing PRB (BLOCKING)
-
-MANDATORY PRB SECTION EXECUTION:
-☐ 1. Complete Context Section - ALL file references validated, settings loaded
-☐ 2. Requirements Section - EVERY functional/processual/technical requirement met
-☐ 3. Git Operations Section - EVERY command executed exactly as specified (CHANGELOG before PR creation)
-☐ 4. Knowledge Management Section - ALL learnings captured in specified paths
-☐ 5. Review Process Section - ALL reviewers complete their reviews
-☐ 6. Implementation Samples Section - Applied correctly with examples
-
-CRITICAL SETTINGS ENFORCEMENT:
-☐ git_privacy: true → NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
-☐ branch_protection: true → Follow branch protection rules exactly
-☐ autonomy_level → Apply L1/L2/L3 behaviors as configured
-☐ memory_integration: true → Store ALL learnings as specified
-
-EXECUTION TRACKING:
-☐ Each section read and understood
-☐ Each requirement executed exactly as specified (no interpretation)
-☐ Each completion verified against specification
-☐ Each result documented in execution log
-☐ Move to next section only after verification
-
-PROJECT SCOPE VALIDATION (MANDATORY BEFORE EXECUTION):
-☐ All file operations validated within project root
-☐ No write operations to ~/.claude/ during normal execution
-☐ Task tool invocations constrained to project boundaries
-☐ Memory operations restricted to ./memory/ directory
-☐ Configuration changes limited to project-local only
-
-SYSTEMATIC VALIDATION (MANDATORY BEFORE COMPLETION):
-☐ Comprehensive project search executed and documented
-☐ All deliverables verified with evidence
-☐ Documentation completeness validated
-☐ Zero remaining references confirmed
-☐ Validation log complete with all evidence
-☐ All validation functions executed successfully
-
-SKIP NOTHING. EXECUTE EVERYTHING. VALIDATE SYSTEMATICALLY.
-```
-
-### Settings Compliance Verification
-```markdown
-SETTINGS ENFORCEMENT CHECKLIST:
-☐ git_privacy setting verified and applied to ALL git operations
-☐ branch_protection rules followed for branch creation/merging
-☐ default_branch setting used for all git operations
-☐ autonomy_level behaviors applied throughout execution
-☐ memory_integration enabled and learnings stored
-☐ All other configuration settings from CLAUDE.md applied
-
-CRITICAL: Settings are NOT suggestions - they are MANDATORY requirements.
-```
-
-## Execution State Tracking
-
-### PRB Lifecycle States
-- **INITIALIZED**: PRB loaded, context gathered
-- **IN_PROGRESS**: Active execution of requirements
-- **PENDING_REVIEW**: Work complete, awaiting review
-- **PENDING_VALIDATION**: Review passed, awaiting success criteria validation
-- **PENDING_KNOWLEDGE**: Validation complete, awaiting knowledge capture
-- **PENDING_GIT**: Knowledge captured, awaiting git operations
-- **PENDING_LIFECYCLE**: Git operations complete, awaiting PRB file move
-- **COMPLETE**: All checklist items validated, PRB moved to completed/
-
-### State Transition Guards
-Each state transition MUST validate previous state completion before proceeding.
-
-**CRITICAL:** Task tool validation MUST be FIRST check before ANY state transitions.
-
-## Task Tool Validation (MANDATORY FIRST)
-
-**ABSOLUTE PRIORITY:** Task tool check MUST happen BEFORE any other validation.
-
-### Pre-Execution Task Tool Validation
-
-```markdown
-TASK TOOL VALIDATION CHECKLIST (HIGHEST PRIORITY):
-☐ Verify current execution is within Task tool subagent context
-☐ Confirm Task tool invocation pattern was used
-☐ Block ANY attempt at direct PRB execution
-☐ Display clear error if Task tool not detected
-```
-
-### Task Tool Detection Function
+## State Tracking
 
 ```
-ValidateTaskToolExecution(prb_context):
-  # Check if executing within Task tool context
-  IF NOT executing_within_task_tool():
-    BLOCK_PRB_EXECUTION()
-    RETURN TASK_TOOL_REQUIRED_ERROR("❌ PRB execution REQUIRES Task tool subagent")
-  
-  # Verify Task tool pattern
-  IF NOT valid_task_tool_pattern():
-    BLOCK_PRB_EXECUTION()
-    RETURN INVALID_PATTERN_ERROR("❌ Invalid Task tool pattern for PRB execution")
-  
-  RETURN VALIDATION_PASSED
+INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_VALIDATION 
+→ PENDING_KNOWLEDGE → PENDING_GIT → PENDING_LIFECYCLE → COMPLETE
 ```
 
-### Task Tool Enforcement Actions
+State transitions require validation of previous state completion.
 
-**WHEN TASK TOOL NOT DETECTED:**
-1. **BLOCK PRB EXECUTION** immediately (highest priority)
-2. **DISPLAY CLEAR ERROR MESSAGE:** "❌ PRB execution REQUIRES Task tool subagent"
-3. **PROVIDE CORRECT PATTERN:** Show required Task tool invocation
-4. **NO BYPASS ALLOWED:** This check cannot be skipped or overridden
-5. **LOG VIOLATION ATTEMPT** for monitoring and prevention
+## Completion Validation
 
-**CORRECT TASK TOOL PATTERN:**
-```
-Task(
-  subagent_type='general-purpose', 
-  description='Execute PRB-ID for brief description',
-  prompt='Complete PRB context and execution instructions'
-)
-```
+### Mandatory Before Completion
+- [ ] All 6 sections executed completely
+- [ ] Settings compliance verified
+- [ ] Functional requirements met
+- [ ] Process requirements followed
+- [ ] Review approved by SME
+- [ ] Success criteria validated
+- [ ] Knowledge captured
+- [ ] Git operations clean
+- [ ] PRB moved to completed/ (FINAL STEP)
 
-## Project Scope Validation
+### Systematic Validation Protocol
+1. **Search**: `grep -r "TERMS" .` for all changes
+2. **Verify**: Each deliverable exists and works
+3. **Document**: Evidence in validation log
+4. **Confirm**: Zero remaining issues
 
-**MANDATORY:** All PRB execution MUST validate project scope boundaries before any file operations.
+## False Completion Detection
 
-### Pre-Execution Scope Validation
+**Triggers**: "PRB COMPLETE" without checklist validation
+**Action**: BLOCK → Display missing items → Reset state
 
-```markdown
-PROJECT SCOPE VALIDATION CHECKLIST:
-☐ Current project root identified and validated
-☐ All file operations constrained to project directory
-☐ No write operations to ~/.claude/ (except installation/explicit global config)
-☐ Memory operations directed to ./memory/ not ~/.claude/memory/
-☐ Task tool working directories within project boundaries
-☐ Configuration changes limited to project-local scope
-```
-
-### Scope Violation Detection
-
-**CRITICAL VIOLATIONS:**
-- Write operations to ~/.claude/ during normal execution
-- Memory storage outside project ./memory/ directory
-- Task tool invocations with external working directories
-- File operations outside current project root
-- Global configuration modifications without explicit user request
-
-**VALIDATION FUNCTION:**
-```
-ExecuteProjectScopeValidation(prb_context):
-  # FIRST: Mandatory Task tool validation (HIGHEST PRIORITY)
-  task_tool_validation = ValidateTaskToolExecution(prb_context)
-  IF task_tool_validation != VALIDATION_PASSED:
-    RETURN task_tool_validation  # Block immediately
-  
-  project_root = prb_context.complete_context.project_root
-  
-  # Validate all planned file operations
-  FOR each operation IN prb_context.file_operations:
-    IF operation.type == "write" AND operation.path.startswith("~/.claude/"):
-      IF NOT operation.context == "installation" AND NOT operation.context == "explicit_global_config":
-        BLOCK_PRB_EXECUTION()
-        RETURN SCOPE_VIOLATION_ERROR("Write to ~/.claude/ forbidden during normal execution")
-    
-    IF NOT operation.path.startswith(project_root):
-      BLOCK_PRB_EXECUTION()
-      RETURN PROJECT_BOUNDARY_ERROR("Operation outside project boundaries")
-  
-  # Validate Task tool invocations
-  FOR each task IN prb_context.task_invocations:
-    IF task.working_directory AND task.working_directory.startswith("~/.claude/"):
-      BLOCK_PRB_EXECUTION() 
-      RETURN TASK_SCOPE_ERROR("Task working directory cannot be ~/.claude/")
-  
-  RETURN VALIDATION_PASSED
-```
-
-### Scope Enforcement Actions
-
-**WHEN SCOPE VIOLATIONS DETECTED:**
-1. **BLOCK PRB EXECUTION** immediately
-2. **DISPLAY CLEAR ERROR MESSAGE** explaining the violation
-3. **REDIRECT TO PROJECT BOUNDARIES** with guidance
-4. **LOG VIOLATION ATTEMPT** for monitoring
-5. **REQUIRE SCOPE CORRECTION** before proceeding
-
-**ERROR MESSAGES:**
-- "❌ PRB BLOCKED: Task tool subagent required for ALL PRB execution"
-- "❌ PRB BLOCKED: Direct PRB execution forbidden - use Task tool"
-- "❌ PRB BLOCKED: Scope violation detected - write operations to ~/.claude/ forbidden"
-- "❌ PRB BLOCKED: File operations must remain within project root {project_root}"
-- "❌ PRB BLOCKED: Task tool cannot use ~/.claude/ as working directory"
-- "❌ PRB BLOCKED: Memory operations must use ./memory/ directory"
-
-## Mandatory Completion Checklist
-
-### Functional Requirements Validation
-```markdown
-## Functional Requirements ✓
-[ ] All specified deliverables created/modified
-[ ] All functional acceptance criteria met
-[ ] All code changes implement requirements correctly
-[ ] All dependencies properly handled
-[ ] All edge cases addressed
-```
-
-### Processual Requirements Validation
-```markdown
-## Processual Requirements ✓
-[ ] PRB template requirements followed
-[ ] Role assignments completed
-[ ] Complexity level appropriate
-[ ] Quality standards met
-[ ] Documentation updated if required
-```
-
-### Review Validation
-```markdown
-## Review Completion ✓
-[ ] Assigned reviewer identified
-[ ] Review executed by qualified specialist
-[ ] All review feedback addressed
-[ ] Review approval received
-[ ] Quality gates passed
-```
-
-### Success Criteria Validation
-```markdown
-## Success Criteria ✓
-[ ] All acceptance criteria validated
-[ ] Performance requirements met
-[ ] Security requirements satisfied
-[ ] Integration tests pass
-[ ] System remains stable
-```
-
-### Knowledge Capture Validation
-```markdown
-## Knowledge Capture ✓
-[ ] Learnings identified and documented
-[ ] Memory entities created/updated
-[ ] Patterns captured for future use
-[ ] Error handling improved
-[ ] Success metrics recorded
-```
-
-### Git Operations Validation
-```markdown
-## Git Operations ✓
-[ ] CHANGELOG updated before PR creation (if release changes)
-[ ] Version bumped in same commit as CHANGELOG (if applicable)
-[ ] All changes staged properly
-[ ] Commit messages follow privacy requirements
-[ ] Branch operations completed
-[ ] Changes pushed to remote repository
-[ ] No uncommitted work remains
-[ ] Git status clean
-```
-
-### PRB Lifecycle Validation
-```markdown
-## PRB Lifecycle ✓
-[ ] All git operations completed and pushed
-[ ] Execution log updated with final status
-[ ] Dependencies notified of completion
-[ ] Follow-up tasks created if needed
-[ ] System state clean and validated
-[ ] PRB file moved to completed/ (FINAL STEP)
-```
-
-**CRITICAL:** PRB file move MUST be the absolute final step after all other operations complete successfully. This prevents PRBs from remaining in ready/ after execution and ensures clean lifecycle management.
-
-## Completion Enforcement Mechanisms
-
-### False Completion Detection
-**TRIGGERS:**
-- "PRB COMPLETE" without all checklist items
-- "Task finished" without validation
-- "Work done" without review
-- Status change without state verification
-
-**ACTIONS:**
-- BLOCK completion claim immediately
-- Display missing checklist items
-- Reset to appropriate execution state
-- Require explicit validation of each item
-
-### Validation Requirements
-**EACH CHECKLIST ITEM:**
-- Must be explicitly verified
-- Cannot be assumed or skipped
-- Requires evidence of completion
-- Must pass quality gates
-
-**NO SHORTCUTS:**
-- Cannot mark complete without all items
-- Cannot skip reviews for "simple" work
-- Cannot bypass git operations
-- Cannot avoid knowledge capture
-
-### Auto-Correction Patterns
-**INCOMPLETE CLAIM DETECTED:**
+**Auto-correction**:
 ```
 ❌ PRB COMPLETION BLOCKED
-Reason: Missing required validation items
-Missing: [list of unchecked items]
-Action: Complete missing items before claiming PRB complete
-Current State: [current_state]
-Required State: COMPLETE
+Missing: [unchecked items]
+Action: Complete missing items
+State: [current] → Required: COMPLETE
 ```
 
-**ENFORCED VALIDATION:**
-- Each checklist item must be explicitly marked ✓
-- Evidence must be provided for each item
-- Quality gates must pass before proceeding
-- No assumptions or shortcuts allowed
+## Project Scope Enforcement
 
-## SYSTEMATIC END-TO-END VALIDATION
+**BLOCKED Operations**:
+- Write to ~/.claude/ (except installation)
+- Access outside project root
+- Memory in ~/.claude/memory/
+- Global config changes
 
-**MANDATORY:** Before marking ANY PRB complete, MUST execute systematic validation with evidence collection.
-
-### Pre-Completion Validation Protocol
-
-**STEP 1: Comprehensive Project Search**
-```bash
-# Search for ALL terms being removed/changed
-grep -r "SEARCH_TERMS" /project/root/
-rg "PATTERN" --type-add 'docs:*.md' --type docs .
-find . -name "*.md" -exec grep -l "TERMS" {} \;
-```
-
-**STEP 2: Deliverable Verification**
-- Check EVERY deliverable listed in functional_requirements
-- Validate EVERY specification is implemented  
-- Confirm ALL quality gates pass
-- Document verification commands and results
-
-**STEP 3: Documentation Completeness**
-- Verify ALL files requiring updates are updated
-- Check README.md, docs/, and ALL project documentation
-- Search entire project for outdated references
-- Ensure consistency across entire codebase
-
-### Evidence Collection Requirements
-
-**MANDATORY EVIDENCE FOR EACH PRB:**
-```markdown
-## SYSTEMATIC VALIDATION LOG
-### Search Validation
-- Command: grep -r "badges\|P:X\.X\|Q:X\.X" .
-- Results: [DOCUMENTED RESULTS]
-- Zero remaining references: ✓/❌
-
-### Deliverable Verification  
-- Functional requirements check: ✓/❌
-- All specifications implemented: ✓/❌
-- Quality gates passed: ✓/❌
-
-### Documentation Validation
-- README.md updated: ✓/❌
-- All docs/ files checked: ✓/❌
-- Project-wide consistency: ✓/❌
-
-### Evidence Summary
-- Total files searched: [NUMBER]
-- References found and addressed: [NUMBER]
-- Validation commands executed: [LIST]
-```
-
-### Validation Enforcement
-
-**BLOCKING CONDITIONS:**
-- Cannot mark PRB complete without validation log
-- Cannot claim completion with remaining references found
-- Cannot skip systematic search documentation
-- Cannot assume scope without explicit verification
-
-**VALIDATION FAILURE RECOVERY:**
-```
-❌ SYSTEMATIC VALIDATION FAILED
-Missing Evidence: [specific items]
-Remaining References: [found items]
-Required Actions: [specific fixes needed]
-Status: PRB remains IN_PROGRESS until validation passes
-```
-
-### Automated Validation Functions
-
-**Search Validation Function:**
-1. Execute comprehensive project search for specified terms
-2. Document all findings with file locations and line numbers
-3. Verify zero remaining references or document why exceptions are valid
-4. Store results in PRB execution log
-
-**Deliverable Verification Function:**
-1. Parse PRB functional_requirements section
-2. Check each deliverable exists and meets specifications
-3. Validate all quality gates with concrete evidence
-4. Document verification results with proof
-
-**Documentation Completeness Function:**
-1. Identify all documentation files in project
-2. Search each file for terms being updated/removed
-3. Verify consistency across all documentation
-4. Confirm README.md and primary docs are updated
+**Validation**: See shared-patterns/execution-validation.md
 
 ## Integration Points
 
-### With PRB Enforcement
-- Blocks direct work without PRB
-- Validates PRB state throughout execution
-- Prevents premature completion claims
-- Enforces sequential state transitions
-
-### With Learning System
-- Captures completion enforcement patterns
-- Learns from false completion attempts
-- Improves validation accuracy over time
-- Stores enforcement effectiveness data
-
-### With Git Operations
-- Validates git operations completion
-- Ensures commit message compliance
-- Verifies clean working state
-- Enforces branch management requirements
-
-### With Review System
-- Mandates review completion
-- Validates reviewer qualifications
-- Ensures feedback incorporation
-- Blocks completion without review approval
-
-## Implementation Patterns
-
-### State Validation Function
-```
-ValidatePRBState(prb_id, target_state):
-  # FIRST: Critical Task tool validation (HIGHEST PRIORITY)
-  task_tool_validation = ValidateTaskToolExecution(prb_id)
-  IF task_tool_validation != VALIDATION_PASSED:
-    BLOCK_TRANSITION()
-    DISPLAY_TASK_TOOL_ERROR()
-    RETURN VALIDATION_FAILED
-  
-  current_state = GetPRBState(prb_id)
-  checklist = LoadCompletionChecklist(prb_id)
-  
-  for required_state in StateTransitionPath(current_state, target_state):
-    items = GetChecklistItems(required_state)
-    for item in items:
-      if not ValidateItem(item):
-        BLOCK_TRANSITION()
-        DISPLAY_MISSING_ITEMS()
-        return VALIDATION_FAILED
-  
-  return VALIDATION_PASSED
-```
-
-### Completion Claim Interceptor
-```
-InterceptCompletionClaim(claim_text):
-  if DetectCompletionPattern(claim_text):
-    prb_id = ExtractPRBId(claim_text)
-    validation = ValidatePRBState(prb_id, "COMPLETE")
-    if validation == VALIDATION_FAILED:
-      BLOCK_COMPLETION()
-      DISPLAY_CHECKLIST()
-      RESET_TO_APPROPRIATE_STATE()
-    else:
-      ALLOW_COMPLETION()
-```
-
-### Quality Gate Enforcement
-```
-EnforceQualityGates(prb_id):
-  functional_complete = ValidateFunctionalRequirements(prb_id)
-  processual_complete = ValidateProcessualRequirements(prb_id)
-  git_complete = ValidateGitOperations(prb_id)
-  review_complete = ValidateReviewCompletion(prb_id)
-  knowledge_complete = ValidateKnowledgeCapture(prb_id)
-  success_complete = ValidateSuccessCriteria(prb_id)
-  lifecycle_complete = ValidatePRBLifecycle(prb_id)
-  
-  # Bug lifecycle integration - complete bugs before PRB move
-  if ALL([functional_complete, processual_complete, git_complete, 
-         review_complete, knowledge_complete, success_complete]):
-    # Check for bug references and complete bug lifecycle
-    if prb_references_bug(prb_id):
-      bug_id = extract_bug_reference(prb_id)
-      complete_bug_lifecycle(bug_id)
-    
-    # PRB file move MUST be the absolute final step
-    lifecycle_complete = MovePRBToCompleted(prb_id)
-  
-  return ALL([
-    functional_complete,
-    processual_complete,
-    git_complete,
-    review_complete,
-    knowledge_complete,
-    success_complete,
-    lifecycle_complete
-  ])
-```
-
-## PRB Lifecycle Management
-
-### PRB File Movement Protocol
-**MANDATORY SEQUENCE:**
-1. Complete all functional requirements
-2. Complete all processual requirements  
-3. Complete all git operations and push
-4. Complete review process
-5. Complete knowledge capture
-6. Validate success criteria
-7. **FINAL STEP:** Move PRB file from prbs/ready/ to prbs/completed/
-
-**CRITICAL RULE:** PRB file movement is the absolute final operation. If ANY prior step fails, PRB remains in ready/ for retry.
-
-### Lifecycle State Management
-```
-PRB_READY: File in prbs/ready/, available for execution
-PRB_IN_PROGRESS: File in prbs/ready/, currently being executed
-PRB_COMPLETED: File in prbs/completed/, execution finished
-```
-
-**State Validation:**
-- Only PRBs in READY state can begin execution
-- PRBs remain in ready/ throughout entire execution
-- Move to completed/ only occurs after ALL validation passes
-- Failed executions leave PRB in ready/ for retry
-
-### Automatic Cleanup Prevention
-**PREVENTS:**
-- PRBs stuck in ready/ after successful execution
-- Lost PRBs due to premature file moves
-- Incomplete executions marked as complete
-- State inconsistencies in PRB management
+- **PRB Enforcement**: Blocks direct work without PRB
+- **Learning System**: Captures completion patterns
+- **Git Operations**: Validates git compliance
+- **Review System**: Mandates SME approval
 
 ## Error Recovery
 
-### Incomplete Execution Recovery
-- Identify missing checklist items
-- Reset to appropriate execution state
-- Provide clear guidance for completion
-- Track patterns for prevention
-
-### False Completion Recovery
-- Immediately block completion claim
-- Display validation requirements
-- Guide through missing steps
-- Ensure proper completion
-
-### State Corruption Recovery
-- Detect inconsistent PRB states
-- Reset to last known good state
-- Rebuild state from execution evidence
-- Prevent future corruption
-
-## Monitoring and Metrics
-
-### Completion Quality Metrics
-- Checklist compliance rate
-- False completion detection rate
-- Average time to proper completion
-- Quality gate pass rates
-
-### Enforcement Effectiveness
-- Blocked false completions
-- Improved completion accuracy
-- Reduced rework incidents
-- Enhanced delivery quality
-
-## Bug Lifecycle Integration Functions
-
-### Bug Reference Detection
-```
-prb_references_bug(prb_id):
-  # Check PRB filename for BUG-XXX pattern
-  pattern = r"BUG-(\d{3})"
-  return regex.search(pattern, prb_id) is not None
-
-extract_bug_reference(prb_id):
-  pattern = r"BUG-(\d{3})"
-  match = regex.search(pattern, prb_id)
-  return match.group(0) if match else None
-```
-
-### Bug Lifecycle Completion
-```
-complete_bug_lifecycle(bug_id):
-  1. bug_open_path = get_project_path("bug_path", "bugs") + "/" + get_project_path("bug_open", "open")
-  2. bug_completed_path = get_project_path("bug_path", "bugs") + "/" + get_project_path("bug_completed", "completed")
-  3. bug_file = locate_bug_file(bug_open_path, bug_id)
-  4. if bug_file:
-     - update_bug_status(bug_file, "COMPLETED")
-     - move_file(bug_file, bug_completed_path)
-     - log_bug_transition(bug_id, "OPEN", "COMPLETED")
-  5. else:
-     - log_warning("Bug not found for completion: " + bug_id)
-```
-
-### Bug Status Management
-```
-update_bug_status(bug_file, new_status):
-  1. Read bug file content
-  2. Update YAML front matter:
-     - status: new_status
-     - updated: current_date
-     - resolution_date: current_date (if COMPLETED)
-  3. Write updated content back to file
-
-locate_bug_file(search_path, bug_id):
-  pattern = bug_id + "-*.md"
-  return find_file_matching_pattern(search_path, pattern)
-```
+- **Incomplete**: Identify missing → Reset state → Guide completion
+- **False claim**: Block → Display validation → Ensure proper completion
+- **State corruption**: Detect → Reset to last good → Rebuild from evidence
 
 ---
-*PRB execution behavior with mandatory completion enforcement and bug lifecycle integration*
+*Optimized: 654→~120 lines*
