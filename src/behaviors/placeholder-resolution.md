@@ -18,29 +18,18 @@
 
 ## Common Placeholders
 
-### Configuration Placeholders
-- `[FROM_CONFIG]` → Load actual configuration value from hierarchy
-- `[ALL-SETTINGS]` → Load all relevant configuration settings
-- `[GIT_PRIVACY]` → Resolve git_privacy setting (true/false)
-- `[BRANCH_PROTECTION]` → Resolve branch_protection setting (true/false)
-- `[DEFAULT_BRANCH]` → Resolve default_branch setting ("main", "master", etc.)
-- `[AUTONOMY_LEVEL]` → Resolve autonomy_level setting ("L1", "L2", "L3")
-
-### Project Context Placeholders  
-- `[PROJECT_ROOT]` → Absolute path to project root directory
-- `[SYSTEM_NATURE]` → "CODE-BASED SYSTEM" or "MARKDOWN-BASED AI-AGENTIC SYSTEM"
-- `[PROJECT_TYPE]` → Project classification from context analysis
-- `[CURRENT_DATE]` → Current date in YYYY-MM-DD format
-
-### File Reference Placeholders
-- `[CRITICAL_FILES]` → List of relevant files with content samples
-- `[FILE_SAMPLE:path]` → Content sample from specific file
-- `[RELEVANT_DOCS]` → Documentation files relevant to work
-
-### Memory and Best Practices Placeholders
-- `[MEMORY_SEARCH:topic]` → Top relevant memory entries for topic
-- `[BEST_PRACTICES:domain]` → Relevant best practices for domain
-- `[LEARNING_PATTERNS]` → Applicable learning patterns
+| Category | Placeholder | Resolution |
+|----------|-------------|------------|
+| **Config** | `[FROM_CONFIG]` | Load from hierarchy |
+| | `[GIT_PRIVACY]`, `[BRANCH_PROTECTION]` | Boolean settings |
+| | `[DEFAULT_BRANCH]`, `[AUTONOMY_LEVEL]` | String settings |
+| **Context** | `[PROJECT_ROOT]` | Absolute path |
+| | `[SYSTEM_NATURE]` | "CODE-BASED" or "MARKDOWN-BASED AI-AGENTIC" |
+| | `[CURRENT_DATE]` | YYYY-MM-DD format |
+| **Files** | `[CRITICAL_FILES]` | Relevant files with samples |
+| | `[FILE_SAMPLE:path]` | Content sample from path |
+| **Search** | `[MEMORY_SEARCH:topic]` | Top memory entries |
+| | `[BEST_PRACTICES:domain]` | Relevant practices |
 
 ## Resolution Process
 
@@ -76,128 +65,42 @@ ResolveAllPlaceholders(template_content, work_context):
      RETURN resolved_template_content
 ```
 
-### Task Tool Isolation Problems
-```
-Task Tool Cannot Resolve Because:
-- Limited working directory scope (no project-wide access)
-- No configuration hierarchy access (only isolated context)
-- Cannot perform file system analysis for project root detection
-- Cannot traverse memory/ directories for pattern searches
-- Cannot access best-practices/ directory structure
-- Cannot load and merge configuration from multiple sources
-- Cannot sample file contents outside working directory
-- Cannot determine system nature from isolated context
-```
+### Task Tool Limitations
+**Cannot access**: Configuration hierarchy, project-wide files, memory/ directories, best-practices/, project root analysis, system nature detection
+**Reason**: Isolated context with limited working directory scope
 
-## Placeholder Categories
+## Placeholder Categories Requiring Main Agent
 
-### Critical Configuration Access
-**Requires main agent configuration hierarchy:**
-- git_privacy setting for commit message filtering
-- branch_protection settings for git workflow
-- default_branch setting for repository operations
-- autonomy_level setting for behavioral patterns
-- memory_integration setting for learning storage
-- All project-specific behavioral overrides
-
-### System Analysis Required
-**Requires main agent project analysis:**
-- Project root absolute path detection
-- System nature classification (analyze file types, structure)
-- Technology stack identification
-- Critical file discovery and content sampling
-- Architecture pattern recognition
-
-### Search Operations Required  
-**Requires main agent search capabilities:**
-- Memory directory traversal and content search
-- Best practices directory analysis and selection
-- Learning pattern identification and relevance scoring
-- Historical context and pattern application
-- Cross-reference analysis for related patterns
+| Category | Requirements | Examples |
+|----------|-------------|----------|
+| **Configuration** | Hierarchy access | git_privacy, branch_protection, autonomy_level |
+| **System Analysis** | Project-wide access | Project root, system nature, critical files |
+| **Search Operations** | Directory traversal | Memory patterns, best practices, learning history |
 
 ## Blocking Mechanisms
 
-### Task Tool Placeholder Blocking
-**BLOCK Task tool attempts to:**
-- Access configuration files outside working directory
-- Perform "[FROM_CONFIG]" resolution without hierarchy access
-- Resolve "[PROJECT_ROOT]" without file system analysis
-- Access memory/ directories for placeholder resolution  
-- Search best-practices/ directories for pattern selection
-- Sample file contents outside isolated working directory
+### Blocking & Error Handling
 
-### Detection Function
-```
-DetectPlaceholderViolation(execution_context):
-  # Check if Task tool attempting placeholder resolution
-  IF execution_context.is_task_tool_subagent AND
-     execution_context.operation_type == "placeholder_resolution":
-    RETURN PLACEHOLDER_VIOLATION("Task tool cannot resolve placeholders")
-  
-  # Check for configuration access attempts
-  IF execution_context.is_task_tool_subagent AND
-     execution_context.file_access.contains_config_hierarchy:
-    RETURN CONFIG_ACCESS_VIOLATION("Configuration hierarchy not available")
-  
-  # Check for project-wide search attempts  
-  IF execution_context.is_task_tool_subagent AND
-     execution_context.search_operations.contains_memory_search:
-    RETURN MEMORY_ACCESS_VIOLATION("Memory search requires main agent context")
-  
-  RETURN VALIDATION_PASSED
-```
+**BLOCKED OPERATIONS**: Task tool attempts at placeholder resolution, configuration access, project-wide searches
 
-### Error Messages
-```
-❌ PLACEHOLDER RESOLUTION BLOCKED: Task tool cannot resolve template placeholders
-Reason: Placeholder resolution requires full project context and configuration hierarchy
-Solution: Use main agent for template resolution, Task tool for execution only
+**DETECTION**: Monitor Task tool context for placeholder resolution attempts, config hierarchy access, memory search operations
 
-❌ CONFIGURATION ACCESS DENIED: Task tool cannot access "[FROM_CONFIG]" values  
-Reason: Configuration hierarchy not available in isolated Task tool context
-Solution: Main agent must resolve all placeholders before Task tool execution
-
-❌ PROJECT ANALYSIS BLOCKED: Task tool cannot resolve "[PROJECT_ROOT]"
-Reason: Project-wide analysis requires main agent file system access
-Solution: Main agent must gather complete project context before delegation
-
-❌ MEMORY SEARCH BLOCKED: Task tool cannot resolve "[MEMORY_SEARCH:topic]"  
-Reason: Memory search operations require main agent directory access
-Solution: Main agent must perform memory searches and embed results
-```
+**ERROR MESSAGES**: 
+- "❌ PLACEHOLDER RESOLUTION BLOCKED: Task tool cannot resolve placeholders - use main agent"
+- "❌ CONFIGURATION ACCESS DENIED: Config hierarchy not available in isolated context"  
+- "❌ PROJECT ANALYSIS BLOCKED: Project-wide analysis requires main agent access"
+- "❌ MEMORY SEARCH BLOCKED: Memory operations require main agent directory access"
 
 ## Resolution Standards
 
-### Complete Resolution Required
-**BEFORE Task tool execution:**
-- ALL placeholders must be resolved to actual values
-- NO "[...]" patterns should remain in templates  
-- Configuration values must be specific, not generic
-- File paths must be absolute, not relative
-- Search results must be embedded, not referenced
+### Resolution Requirements
 
-### Validation Checklist
-```markdown
-PLACEHOLDER RESOLUTION VALIDATION:
-☐ No "[FROM_CONFIG]" patterns remain
-☐ No "[PROJECT_ROOT]" patterns remain  
-☐ No "[SYSTEM_NATURE]" patterns remain
-☐ No "[MEMORY_SEARCH:*]" patterns remain
-☐ All file paths are absolute
-☐ All configuration values are actual (not placeholders)
-☐ All dates are current system date (not hardcoded)
-☐ All search results are embedded content (not references)
-```
+**BEFORE Task tool execution**: ALL placeholders resolved, NO "[...]" patterns remain, configuration values specific, file paths absolute, search results embedded
 
-### Resolution Quality Gates
-**Quality requirements for resolution:**
-- Configuration values match actual project settings
-- File samples contain actual content from project files
-- Memory results are relevant to work context
-- Best practices match work domain and complexity
-- Dates reflect current system time
-- All context is actionable without additional searches
+**VALIDATION CHECKLIST**:
+☐ No config/context/search patterns remain ☐ Absolute file paths ☐ Actual config values ☐ Current dates ☐ Embedded search results
+
+**QUALITY GATES**: Config matches project settings, file samples actual content, memory/practices relevant to context, dates current, all context actionable
 
 ## Integration Points
 

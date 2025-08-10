@@ -8,10 +8,26 @@
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./naming-enforcement-behavior.md
+@./work-item-creation.md
+@./placeholder-resolution.md
+
+## MANDATORY: Main Agent Creation Only
+
+**CRITICAL:** PRB creation MUST happen in main agent context only.
+
+**WHY MAIN AGENT REQUIRED:**
+- Full configuration hierarchy access (embedded → project → user → system)
+- Template hierarchy access (project → .claude → ~/.claude)
+- Memory search capabilities across memory/ directories
+- Best practices integration from best-practices/ directory
+- Complete project context gathering and analysis
+- Placeholder resolution with actual configuration values
+
+**BLOCKED:** Task tool CANNOT create PRBs due to isolated context limitations.
 
 ## How to Create PRBs
 
-### Include Role in Title
+### Include Role in Title  
 **Format:** "[Role] Description"
 **Examples:** "[Developer] Fix auth", "[AI-Engineer] Add ML"
 

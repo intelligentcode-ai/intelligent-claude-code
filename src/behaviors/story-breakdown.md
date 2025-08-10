@@ -6,6 +6,8 @@
 
 ## Core Process
 
+**CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT Task tool).
+
 When user says "@PM break down story X" or similar:
 1. **@PM reads story**: Understands business goals and requirements
 2. **@PM analyzes project scope**: Detects system nature and technology context
@@ -13,8 +15,12 @@ When user says "@PM break down story X" or similar:
 4. **@PM selects specialist architect**: Chooses domain-specific architect based on two-factor analysis
 5. **@PM + Specialist Architect collaborate**: Apply decision matrix for role selection
 6. **@PM + Architect assign roles**: Use two-factor analysis to determine correct specialist roles
-7. **@PM creates PRBs**: Generates PRBs with documented role assignment rationale
+7. **@PM creates PRBs**: Generates PRBs with documented role assignment rationale (MAIN AGENT ONLY)
 8. **Story selection**: @PM + Architect select next story based on priorities/complexity
+
+**SEPARATION ENFORCEMENT:** 
+- **CREATION**: @PM + Architect work in main agent context with full project access
+- **EXECUTION**: Created PRBs are executed via Task tool with resolved context
 
 ## Two-Factor Analysis Process
 
@@ -230,6 +236,8 @@ Imports:
 @./directory-structure.md
 @./shared-patterns/template-loading.md
 @./naming-enforcement-behavior.md
+@./work-item-creation.md
+@./placeholder-resolution.md
 
 Uses configured paths:
 - get_project_path("story_path") for stories

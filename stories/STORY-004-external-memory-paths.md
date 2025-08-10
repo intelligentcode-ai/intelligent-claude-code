@@ -1,13 +1,14 @@
-# STORY-004: Allow Definition of Memory Paths Outside Project Scope
+# STORY-004: Allow Memory Storage Outside Project Directory
 
 **Status:** Ready  
 **Priority:** Medium  
 **Created:** 2025-01-09  
 **Requestor:** User  
-**Epic:** Configuration & Memory Management  
+**Epic:** Behavioral Enhancement  
+**System Context:** MARKDOWN-BASED AI-AGENTIC SYSTEM
 
 ## Story
-As a developer using intelligent-claude-code, I want the ability to configure memory storage outside the project directory (such as in a private Git repository), so that I can maintain clear separation between project code and system learnings while enabling memory sharing across projects if desired.
+As a developer using intelligent-claude-code, I want AI agents to be able to store memory in a directory outside the project (optionally in a separate Git repo), so that memory remains private and separate from the project code.
 
 ## Background
 Currently, the memory system stores all learnings within the project directory at `memory/`. While this works for single projects, it creates challenges:
@@ -25,7 +26,11 @@ Currently, the memory system stores all learnings within the project directory a
    - Allow memory path configuration outside project scope
    - Support absolute paths to external directories
    - Support paths to Git repositories
-   - Default remains `{project_root}/memory/` for backward compatibility
+   - Local path is `{project_root}/memory/`, alternative paths can be defined by the user
+   - During system-initialization (`/icc-init-system` command), the memory storage is prompted if not present
+   - Memory storage can be adjusted by the user at any time, current memory is then moved to the new location
+   - If used with external GIT, system assumes the GIT repo already having been initialized or offers to initialize
+   - System does NOT store ANY sensitive information (ie. GIT credentials), these are to be part of the external directory's configuration! System will offer to store MEMORY about GIT-credential-file though
 
 2. **Configuration Settings**
    ```yaml
@@ -34,8 +39,7 @@ Currently, the memory system stores all learnings within the project directory a
      external_memory_enabled: false  # Default: false
      memory_path: "/path/to/external/memory"  # When enabled
      memory_type: "git_repo"  # Options: local_dir, git_repo
-     git_remote: "git@github.com:user/private-memory.git"  # If git_repo
-     sync_strategy: "manual"  # Options: manual, auto_commit, auto_push
+     sync_strategy: "auto_push"  # Options: manual, auto_commit, auto_push
    ```
 
 3. **Initialization Process**
@@ -48,9 +52,8 @@ Currently, the memory system stores all learnings within the project directory a
 
 4. **Runtime Adjustment**
    - Command to reconfigure memory path: `/icc-configure-memory`
-   - Migration tool to move existing memory to new location
+   - Allows to move existing memory to new location
    - Validation of new path accessibility
-   - Option to copy or move existing memories
 
 5. **Git Repository Support**
    - Clone private memory repo if specified

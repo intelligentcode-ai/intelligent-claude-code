@@ -23,124 +23,55 @@ To find what numbers are already used:
 - **PRB:** Check prbs/ready/ and prbs/completed/ directories for *-PRB-* files
 
 ### Commands to Find Next Available Numbers
-**MANDATORY:** Use these bash commands to get the next number to use:
-
-**For Stories:**
+**Template for all categories:**
 ```bash
-# Get highest STORY number
-HIGHEST=$(ls stories/ | grep "^STORY-" | sed 's/STORY-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+# General pattern: CATEGORY-NUMBER-title-date.extension
+HIGHEST=$(ls [directory] | grep "^[PATTERN]-" | sed 's/[PATTERN]-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
 NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
-echo "STORY-${NEXT}-title-$(date +%Y-%m-%d).md"
-```
+echo "[PATTERN]-${NEXT}-title-$(date +%Y-%m-%d).[ext]"
 
-**For Bugs:**
-```bash
-# Get highest BUG number
-HIGHEST=$(ls bugs/ | grep "^BUG-" | sed 's/BUG-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
-NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
-echo "BUG-${NEXT}-title-$(date +%Y-%m-%d).md"
-```
-
-**For PRBs under parent:**
-```bash
-# Get highest PRB number under STORY-001
-HIGHEST=$(ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
-NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
-echo "STORY-001-PRB-${NEXT}-title-$(date +%Y-%m-%d).prb.yaml"
+# Examples:
+# STORY: ls stories/ | grep "^STORY-" | sed 's/STORY-\([0-9]*\)-.*/\1/' | sort -n | tail -1
+# BUG: ls bugs/ | grep "^BUG-" | sed 's/BUG-\([0-9]*\)-.*/\1/' | sort -n | tail -1  
+# PRB: ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1
 ```
 
 ## How to Get the Next Number
 
-### Steps to Find Next Available Number
-To get the next number for any category, follow these steps:
+### Number Generation Process
+1. **Scope determination**: PRB with parent → search parent scope; otherwise global scope
+2. **Directory scan**: Search configured directories for pattern matches  
+3. **Number extraction**: Extract highest number using regex patterns
+4. **Next calculation**: Add 1, apply zero-padding (001 format)
+5. **Conflict check**: Verify generated number doesn't exist
 
-1. **Decide what to look for:**
-   - If category is "PRB" and has a parent:
-     Look for pattern: parent_id + "-PRB-*" 
-     Search in: prbs/ready/ and prbs/completed/ directories
-   - For other categories:
-     Look for pattern: category + "-*"
-     Search in the category's main directory
-
-2. **Find existing numbers:**
-   - Search directories for files matching the pattern
-   - Extract the number from each filename
-   - Convert numbers and find the highest one
-   - Handle zero-padding correctly when extracting
-
-3. **Calculate next number:**
-   - Take the highest found number and add 1
-   - Format with zero-padding (001 format)
-   - Return the formatted number
-
-4. **Double-check:**
-   - Make sure the generated number doesn't already exist
-   - Handle any edge cases
-
-### Examples of Getting Numbers from Filenames
-Here's how to extract numbers from different filename patterns:
-
-**Examples:**
-- `STORY-001-title-2025-01-09.md` → get "001"
-- `EPIC-025-title-2025-01-09.md` → get "025" 
-- `STORY-001-PRB-003-title-2025-01-09.prb.yaml` → get "003" (the PRB number)
-
-**Patterns to match:**
-- For global categories: {category}-(\d{3})-.*
-- For parent-child: {parent_id}-{category}-(\d{3})-.*
-
-Convert the extracted text to a number for comparison.
+**Filename patterns:**
+- Global: `{category}-(\d{3})-.*` (STORY-001-title.md → "001")
+- Parent-child: `{parent_id}-{category}-(\d{3})-.*` (STORY-001-PRB-003-title.prb.yaml → "003")
 
 ## Finding the Right Directories
 
-### Where to Look for Each Category
-Based on project configuration, look in these directories:
+### Directory Configuration
 
-**EPIC:** 
-- Use the configured story_path (or "stories" if not configured)
-
-**STORY:**
-- Use the configured story_path (or "stories" if not configured)
-- Also check story_path + "/drafts"
-
-**BUG:**
-- Use the configured bug_path (or "bugs" if not configured)
-
-**PRB:**
-- Use the configured prb_path + "/ready" (or "prbs/ready" if not configured)  
-- Use the configured prb_path + "/completed" (or "prbs/completed" if not configured)
+| Category | Directories | Configuration |
+|----------|-------------|---------------|
+| **EPIC** | story_path | "stories" (default) |
+| **STORY** | story_path, story_path/drafts | "stories" (default) |
+| **BUG** | bug_path | "bugs" (default) |
+| **PRB** | prb_path/ready, prb_path/completed | "prbs" (default) |
 
 ## Number Formatting Rules
 
-### How to Format Numbers
-- **Standard:** Always use 3-digit zero-padding (001, 002, 003, ...)
-- **After 99:** Keep regular format when going past 099 (becomes 100, 101, 102, ...)
-- **Consistency:** All numbers in the same category should use the same format
-- **Rule:** Zero-pad to 3 digits minimum, use more digits if needed
-
-### How to Format a Number
-- If the number is less than 100: use `printf "%03d"` to get format like 001, 002, 099
-- If the number is 100 or more: use regular format like 100, 101, 102
+### Number Formatting
+- **Standard**: 3-digit zero-padding (001, 002, 003)
+- **Beyond 99**: Regular format (100, 101, 102)
+- **Format function**: `printf "%03d"` for <100, regular for ≥100
 
 ## Avoiding Number Conflicts
 
-### How to Make Sure Numbers Are Unique
-When generating a number, follow these steps to avoid conflicts:
-
-**Try up to 10 times:**
-1. **Get the next number:** Find the next available number for the category
-2. **Build the full filename:** Create the complete work item name with the number
-3. **Check if it exists:** Use file system tools to see if this name is already used
-4. **If it doesn't exist:** Use this number
-5. **If it does exist:** Note the collision and try the next number
-
-**If you can't find a unique number after 10 tries:** Show error "Unable to generate unique number after 10 attempts"
-
-### How to Handle Conflicts
-- **Try again:** Up to 10 attempts with the next available numbers
-- **No locks needed:** Just check if files exist in the filesystem
-- **Clear errors:** Give helpful error messages if something goes wrong
-- **Keep track:** Record collision patterns to improve the system
+### Collision Prevention
+**Process**: Try up to 10 attempts → Generate number → Build filename → Check existence → Use if unique or retry
+**Recovery**: Filesystem-based checks, no locks needed, helpful error messages after 10 failed attempts
 
 ## Parent-Child Relationships
 
@@ -177,42 +108,20 @@ ValidateParentExists(parent_id):
      return VALIDATION_PASSED
 ```
 
-## Performance Optimization
+## Performance & Error Handling
 
-### Caching Strategy
-```
-Cache Structure:
-- category_max_numbers: {category: max_number} (TTL: 5 minutes)
-- parent_max_numbers: {parent_id: max_number} (TTL: 5 minutes)  
-- directory_scans: {directory: file_list} (TTL: 1 minute)
-```
+### Caching (TTL: 5min category/parent, 1min directory scans)
+- Cache max numbers per category/parent for performance
+- Invalidate on file creation/deletion/directory changes
 
-### Incremental Updates
-- **On File Creation:** Update cached max number for category/parent
-- **On File Deletion:** Invalidate cache to force rescan
-- **On Directory Change:** Invalidate directory scan cache
-
-## Error Handling
-
-### Common Error Scenarios
-```
-Error Types:
-- INVALID_CATEGORY: Unknown work item category
-- PARENT_NOT_FOUND: Referenced parent doesn't exist
-- DIRECTORY_ACCESS_ERROR: Cannot read work item directories
-- NUMBER_COLLISION: Cannot generate unique number
-- FORMAT_ERROR: Cannot parse number from existing filename
-```
-
-### Error Recovery
-```
-Recovery Actions:
-- INVALID_CATEGORY: Validate against allowed categories list
-- PARENT_NOT_FOUND: Search with fuzzy matching, suggest corrections
-- DIRECTORY_ACCESS: Create missing directories, check permissions
-- NUMBER_COLLISION: Retry with incremented attempts
-- FORMAT_ERROR: Log malformed filename, continue scan
-```
+### Error Types & Recovery
+| Error | Description | Recovery |
+|-------|-------------|----------|
+| INVALID_CATEGORY | Unknown work item type | Validate against allowed list |
+| PARENT_NOT_FOUND | Referenced parent missing | Fuzzy search, suggest corrections |
+| DIRECTORY_ACCESS | Cannot read directories | Create missing, check permissions |
+| NUMBER_COLLISION | Cannot generate unique | Retry with incremented attempts |
+| FORMAT_ERROR | Cannot parse filename number | Log malformed, continue scan |
 
 ## Integration Points
 

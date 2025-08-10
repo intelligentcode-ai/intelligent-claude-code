@@ -14,44 +14,16 @@ Role assignment MUST consider both factors:
 
 ## Two-Factor Decision Matrix
 
-### AI-AGENTIC SYSTEM Projects
-
-| Work Type | Keywords | Assigned Role | Rationale |
-|-----------|----------|---------------|-----------|
-| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | @DevOps-Engineer | Infrastructure expertise regardless of project type |
-| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | @Security-Engineer | Security expertise transcends project boundaries |
-| **Database** | database, schema, migration, query, SQL, performance, index | @Database-Engineer | Data layer expertise independent of system type |
-| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern, decision | @AI-Engineer | Core AI-agentic system expertise |
-| **Architecture** | design, architecture, pattern, structure, framework, system | @Architect | System design independent of implementation |
-| **Testing** | test, QA, validation, quality, coverage, automation | @QA-Engineer | Quality expertise for behavioral systems |
-| **Documentation** | documentation, docs, README, guide, manual, API docs | @Requirements-Engineer | Documentation specialist |
-| **Implementation** | implement, feature, bug fix, refactor, code | @AI-Engineer | AI-agentic implementation patterns |
-
-### CODE-BASED SYSTEM Projects
-
-| Work Type | Keywords | Assigned Role | Rationale |
-|-----------|----------|---------------|-----------|
-| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | @DevOps-Engineer | Infrastructure expertise regardless of project type |
-| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | @Security-Engineer | Security expertise transcends project boundaries |
-| **Database** | database, schema, migration, query, SQL, performance, index | @Database-Engineer | Data layer expertise independent of system type |
-| **AI/Behavioral** | AI, ML, machine learning, neural, model, prediction | @AI-Engineer | AI implementation in code systems |
-| **Architecture** | design, architecture, pattern, structure, framework, system | @Architect | System design independent of implementation |
-| **Testing** | test, QA, validation, quality, coverage, automation, unit, integration | @Backend-Tester | Code-specific testing expertise |
-| **Documentation** | documentation, docs, README, guide, manual, API docs | @Requirements-Engineer | Documentation specialist |
-| **Implementation** | implement, feature, bug fix, refactor, code, function, API | @Developer | Traditional code implementation |
-
-### HYBRID SYSTEM Projects
-
-| Work Type | Keywords | Assigned Role | Rationale |
-|-----------|----------|---------------|-----------|
-| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | @DevOps-Engineer | Infrastructure expertise regardless of project type |
-| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | @Security-Engineer | Security expertise transcends project boundaries |
-| **Database** | database, schema, migration, query, SQL, performance, index | @Database-Engineer | Data layer expertise independent of system type |
-| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern | @AI-Engineer | AI-agentic portions |
-| **Code Implementation** | implement, feature, bug fix, refactor, code, function, API | @Developer | Traditional code portions |
-| **Architecture** | design, architecture, pattern, structure, framework, system | @Architect + @AI-Engineer | Joint architectural assessment |
-| **Testing** | test, QA, validation, quality, coverage | @QA-Engineer + @Backend-Tester | Hybrid testing approach |
-| **Documentation** | documentation, docs, README, guide, manual | @Requirements-Engineer | Documentation specialist |
+| Work Type | Keywords | AI-AGENTIC SYSTEM | CODE-BASED SYSTEM | HYBRID SYSTEM | Rationale |
+|-----------|----------|-------------------|-------------------|---------------|-----------|
+| **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | @DevOps-Engineer | @DevOps-Engineer | @DevOps-Engineer | Infrastructure expertise transcends project type |
+| **Security** | security, vulnerability, compliance, auth, authorization, encrypt | @Security-Engineer | @Security-Engineer | @Security-Engineer | Security expertise transcends project boundaries |
+| **Database** | database, schema, migration, query, SQL, performance, index | @Database-Engineer | @Database-Engineer | @Database-Engineer | Data layer expertise independent of system type |
+| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern, decision, AI, ML, neural | @AI-Engineer | @AI-Engineer | @AI-Engineer | AI implementation across all system types |
+| **Architecture** | design, architecture, pattern, structure, framework, system | @Architect | @Architect | @Architect + @AI-Engineer | System design (joint for hybrid) |
+| **Testing** | test, QA, validation, quality, coverage, automation | @QA-Engineer | @Backend-Tester | @QA-Engineer + @Backend-Tester | Testing expertise by system type |
+| **Documentation** | documentation, docs, README, guide, manual, API docs | @Requirements-Engineer | @Requirements-Engineer | @Requirements-Engineer | Documentation specialist across systems |
+| **Implementation** | implement, feature, bug fix, refactor, code, function, API | @AI-Engineer | @Developer | @Developer (code) @AI-Engineer (behavioral) | Implementation by system type |
 
 ## Universal Role Assignments
 
@@ -103,82 +75,26 @@ PRB must include:
 
 ## Example Scenarios
 
-### Scenario 1: AI-AGENTIC + DevOps
-**Input:** "Deploy the behavioral framework to production with CI/CD pipeline"
-**Factor 1:** AI-AGENTIC SYSTEM (from complete_context.system_nature)
-**Factor 2:** DevOps (keywords: deploy, CI/CD, pipeline)
-**Result:** @DevOps-Engineer (universal DevOps expertise)
-**Rationale:** DevOps expertise transcends project boundaries
-
-### Scenario 2: AI-AGENTIC + AI Patterns  
-**Input:** "Implement memory aging algorithm for learning system"
-**Factor 1:** AI-AGENTIC SYSTEM (from complete_context.system_nature)
-**Factor 2:** AI/Behavioral (keywords: memory, learning, algorithm)
-**Result:** @AI-Engineer (AI-agentic expertise)
-**Rationale:** Core AI-agentic system work requires AI-Engineer
-
-### Scenario 3: CODE-BASED + Implementation
-**Input:** "Fix authentication bug in user service API"  
-**Factor 1:** CODE-BASED SYSTEM (from complete_context.system_nature)
-**Factor 2:** Implementation (keywords: fix, bug, API)
-**Result:** @Developer (traditional code implementation)
-**Rationale:** Code-based bug fixes require Developer expertise
-
-### Scenario 4: AI-AGENTIC + Security
-**Input:** "Review PRB system for security vulnerabilities"
-**Factor 1:** AI-AGENTIC SYSTEM (from complete_context.system_nature) 
-**Factor 2:** Security (keywords: security, vulnerabilities, review)
-**Result:** @Security-Engineer (universal security expertise)
-**Rationale:** Security expertise transcends project type
-
-### Scenario 5: HYBRID + Architecture
-**Input:** "Design integration between code API and behavioral agents"
-**Factor 1:** HYBRID SYSTEM (from complete_context.system_nature)
-**Factor 2:** Architecture (keywords: design, integration, system)
-**Result:** @Architect + @AI-Engineer (joint assessment)
-**Rationale:** Hybrid architecture requires both perspectives
+| Input | System Type | Work Type | Assigned Role | Rationale |
+|--------|-------------|-----------|---------------|-----------|
+| "Deploy behavioral framework with CI/CD" | AI-AGENTIC | DevOps | @DevOps-Engineer | Universal infrastructure expertise |
+| "Implement memory aging algorithm" | AI-AGENTIC | AI/Behavioral | @AI-Engineer | Core AI-agentic system work |
+| "Fix authentication bug in API" | CODE-BASED | Implementation | @Developer | Traditional code implementation |
+| "Review PRB system for vulnerabilities" | AI-AGENTIC | Security | @Security-Engineer | Universal security expertise |
+| "Design API-agent integration" | HYBRID | Architecture | @Architect + @AI-Engineer | Joint hybrid assessment |
 
 ## Work Type Detection Patterns
 
-### Infrastructure/DevOps Keywords
-- Primary: deploy, deployment, CI/CD, container, docker, kubernetes, scaling
-- Secondary: pipeline, build, infrastructure, orchestration, monitoring
-- Tertiary: production, staging, environment, automation, provisioning
-
-### Security Keywords  
-- Primary: security, vulnerability, compliance, authentication, authorization
-- Secondary: encrypt, decrypt, access, permissions, audit, risk
-- Tertiary: threat, attack, secure, protection, privacy, GDPR
-
-### Database Keywords
-- Primary: database, schema, migration, query, SQL, performance
-- Secondary: index, table, relationship, transaction, backup
-- Tertiary: optimization, data, storage, persistence, CRUD
-
-### Implementation Keywords
-- Primary: implement, feature, bug fix, refactor, code, function
-- Secondary: API, endpoint, service, method, class, module
-- Tertiary: development, programming, logic, algorithm, fix
-
-### AI/Behavioral Keywords
-- Primary: behavioral, memory, learning, agent, PRB, pattern
-- Secondary: decision, intelligence, automation, adaptive, cognitive
-- Tertiary: ML, AI, neural, model, training, prediction
-
-### Architecture Keywords
-- Primary: design, architecture, pattern, structure, framework
-- Secondary: system, component, integration, interface, protocol
-- Tertiary: scalability, maintainability, extensibility, modularity
-
-### Testing Keywords
-- Primary: test, QA, validation, quality, coverage, automation
-- Secondary: unit, integration, system, acceptance, regression
-- Tertiary: testing, verification, specification, scenario, case
-
-### Documentation Keywords
-- Primary: documentation, docs, README, guide, manual
-- Secondary: specification, requirements, tutorial, help
-- Tertiary: wiki, knowledge, instruction, reference, API docs
+| Work Type | Primary Keywords | Secondary Keywords |
+|-----------|------------------|-------------------|
+| **DevOps** | deploy, CI/CD, container, docker, kubernetes | pipeline, build, infrastructure, monitoring |
+| **Security** | security, vulnerability, compliance, auth | encrypt, access, permissions, audit, threat |
+| **Database** | database, schema, migration, query, SQL | index, table, transaction, backup, CRUD |
+| **Implementation** | implement, feature, bug fix, refactor, code | API, endpoint, service, method, function |
+| **AI/Behavioral** | behavioral, memory, learning, agent, PRB | decision, intelligence, automation, ML, AI |
+| **Architecture** | design, architecture, pattern, structure | system, component, integration, framework |
+| **Testing** | test, QA, validation, quality, coverage | unit, integration, automation, scenario |
+| **Documentation** | documentation, docs, README, guide | specification, tutorial, wiki, reference |
 
 ## Edge Cases and Overrides
 
@@ -205,28 +121,17 @@ PRB must include:
 
 ## Validation and Enforcement
 
-### Pre-Assignment Validation
-```
-ValidateTwoFactorAnalysis(requirements, context):
-  1. project_scope = ExtractSystemNature(context.complete_context)
-  2. work_type = AnalyzeWorkTypeKeywords(requirements)
-  3. role = ApplyDecisionMatrix(project_scope, work_type)
-  4. ValidateCapabilityMatch(role, requirements)
-  5. DocumentRationale(project_scope, work_type, role)
-```
+### Validation Process
+1. Extract system_nature from complete_context
+2. Analyze work type keywords from requirements
+3. Apply decision matrix (project_scope × work_type)
+4. Validate >70% capability match
+5. Document PM + Architect collaboration
 
-### Enforcement Rules
-- **BLOCK**: Single-factor role assignments
-- **BLOCK**: Role assignments without rationale documentation
-- **BLOCK**: Assignments that ignore decision matrix
-- **REQUIRE**: PM + Architect collaboration evidence
-- **REQUIRE**: Two-factor analysis documentation
-
-### Error Messages
-- "❌ Single-factor analysis detected - work type analysis missing"
-- "❌ Project scope not identified - check complete_context.system_nature"  
-- "❌ Decision matrix not applied - role assignment lacks rationale"
-- "❌ Capability match not validated - provide >70% justification"
+### Enforcement & Errors
+**BLOCKED**: Single-factor assignments, missing rationale, ignored matrix
+**REQUIRED**: Two-factor analysis, PM + Architect collaboration
+**ERRORS**: "❌ Missing work type analysis", "❌ System nature not identified", "❌ Decision matrix ignored"
 
 ## Integration Points
 
