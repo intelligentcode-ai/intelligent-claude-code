@@ -1,147 +1,85 @@
-# File Renaming Command - icc-rename-work-items
+# /icc-rename-work-items
 
-**MANDATORY:** Batch rename work items to comply with standard naming format. Preserve data and relationships.
+**PURPOSE:** Rename work items to standard format
 
-**PURPOSE:** Rename existing non-compliant work items to follow standard format with backup and cross-reference updates
-
-## Command Syntax
-
-```bash
+## Syntax
+```
 /icc-rename-work-items [options]
-
-Options:
-  --scan-only          Show non-compliant files without renaming
-  --category <cat>     Only process specific category (EPIC|STORY|BUG|PRB)
-  --directory <dir>    Only process specific directory
-  --backup             Create backup before renaming (default: true)
-  --update-refs        Update cross-references after renaming (default: true)
-  --dry-run            Show what would be renamed without executing
-  --force              Skip confirmation prompts
 ```
 
-## Imports
-@../behaviors/naming-enforcement-behavior.md
-@../behaviors/numbering-service-behavior.md
+## Options
+| Option | Description |
+|--------|-------------|
+| --dry-run | Preview changes only |
+| --category CATEGORY | Specific category only |
+| --directory DIR | Target directory |
+| --force | Skip confirmation |
 
-## Scanning Logic
+## Naming Format
+`<CATEGORY>-<NUMBER>-<TITLE>-<DATE>.md`
 
-### Non-Compliant File Detection
-```
-ScanForNonCompliantFiles(target_directories):
-  non_compliant = []
-  
-  for directory in target_directories:
-    files = ListFiles(directory, ["*.md", "*.yaml", "*.yml"])
-    
-    for file in files:
-      filename = GetBasename(file.path)
-      
-      # Skip already compliant files
-      if ValidateWorkItemName(filename):
-        continue
-      
-      # Detect work item type from content or location
-      category = DetectWorkItemCategory(file)
-      if !category:
-        continue  # Skip non-work-item files
-      
-      # Generate compliant name suggestion
-      suggested_name = GenerateCompliantName(file, category)
-      
-      non_compliant.append({
-        original: file.path,
-        suggested: suggested_name,
-        category: category,
-        confidence: CalculateRenameConfidence(file, suggested_name)
-      })
-  
-  return non_compliant
-```
+### Non-Compliant File Detection Process
 
-### Category Detection
-```
-DetectWorkItemCategory(file):
-  # Check filename patterns
-  filename = GetBasename(file.path)
-  
-  if MatchesPattern(filename, "story|STORY"):
-    return "STORY"
-  if MatchesPattern(filename, "bug|BUG|issue"):
-    return "BUG"  
-  if MatchesPattern(filename, "epic|EPIC"):
-    return "EPIC"
-  if MatchesPattern(filename, "prb|PRB") or file.extension == ".prb.yaml":
-    return "PRB"
-  
-  # Check file location
-  directory = GetDirectoryName(file.path)
-  if MatchesPattern(directory, "stories"):
-    return DetectStoryType(file.content)  # STORY or EPIC
-  if MatchesPattern(directory, "bugs"):
-    return "BUG"
-  if MatchesPattern(directory, "prbs"):
-    return "PRB"
-  
-  # Check file content
-  content_sample = ReadFirstLines(file.path, 10)
-  if ContainsKeywords(content_sample, ["epic", "large initiative"]):
-    return "EPIC"
-  if ContainsKeywords(content_sample, ["story", "user story", "feature"]):
-    return "STORY"
-  if ContainsKeywords(content_sample, ["bug", "issue", "defect"]):
-    return "BUG"
-  if ContainsKeywords(content_sample, ["PRB", "requirement blueprint"]):
-    return "PRB"
-    
-  return null  # Cannot determine category
-```
+**Steps to Scan for Files Needing Renaming:**
+1. **Initialize Collection:** Create empty list for non-compliant files
+2. **For Each Target Directory:**
+   - **List Files:** Get all .md, .yaml, and .yml files in directory
+   - **Check Each File:**
+     - Get the base filename (without path)
+     - **Skip Already Compliant:** If filename already follows naming standard, continue to next file
+     - **Detect Category:** Determine work item type from content or location
+     - **Skip Non-Work Items:** If not a work item, continue to next file
+     - **Generate Suggestion:** Create compliant name suggestion
+     - **Record for Renaming:** Add to non-compliant list with original path, suggested name, category, and confidence score
+3. **Return Results:** Return list of files needing renaming
+
+### Category Detection Process
+
+**Steps to Detect Work Item Category:**
+1. **Check Filename Patterns:** Look for category indicators in filename:
+   - If filename contains "story" or "STORY" → Return "STORY"
+   - If filename contains "bug", "BUG", or "issue" → Return "BUG"  
+   - If filename contains "epic" or "EPIC" → Return "EPIC"
+   - If filename contains "prb", "PRB", or has ".prb.yaml" extension → Return "PRB"
+
+2. **Check File Location:** If filename didn't indicate category, check directory:
+   - If in "stories" directory → Detect specific story type (STORY or EPIC)
+   - If in "bugs" directory → Return "BUG"
+   - If in "prbs" directory → Return "PRB"
+
+3. **Check File Content:** If location didn't help, read first 10 lines and check for keywords:
+   - If contains "epic" or "large initiative" → Return "EPIC"
+   - If contains "story", "user story", or "feature" → Return "STORY"
+   - If contains "bug", "issue", or "defect" → Return "BUG"
+   - If contains "PRB" or "requirement blueprint" → Return "PRB"
+
+4. **Return Result:** If no category detected, return null (cannot determine category)
 
 ## Name Generation Logic
 
-### GenerateCompliantName Function
-```
-GenerateCompliantName(file, category):
-  # Extract title from existing filename or content
-  title = ExtractTitleFromFile(file)
-  
-  # Generate number using numbering service
-  parent_id = DetectParentReference(file)
-  number = NumberingService.GetNextNumber(category, parent_id)
-  
-  # Use file creation date or current date
-  date = GetFileDate(file) || GetCurrentDate()
-  
-  # Build compliant name
-  if parent_id:
-    name = "{parent_id}-{category}-{number}-{title}-{date}"
-  else:
-    name = "{category}-{number}-{title}-{date}"
-  
-  # Add appropriate extension
-  extension = DetermineExtension(file, category)
-  return name + extension
-```
+### Compliant Name Generation Process
 
-### Title Extraction
-```
-ExtractTitleFromFile(file):
-  # Try filename first
-  filename = GetBasename(file.path)
-  title_from_name = ExtractTitleFromFilename(filename)
-  
-  if IsValidTitle(title_from_name):
-    return CleanTitle(title_from_name)
-  
-  # Try file content
-  content = ReadFirstLines(file.path, 20)
-  title_from_content = ExtractTitleFromContent(content)
-  
-  if IsValidTitle(title_from_content):
-    return CleanTitle(title_from_content)
-  
-  # Fallback to generic title
-  return "untitled-work-item"
-```
+**Steps to Generate Compliant Name:**
+1. **Extract Title:** Get descriptive title from existing filename or file content
+2. **Generate Number:** Use numbering service to get next available number for category
+3. **Detect Parent Reference:** Check if file references parent work item (for PRBs)
+4. **Determine Date:** Use file creation date or current date (YYYY-MM-DD format)
+5. **Build Name Format:**
+   - **With Parent:** {parent_id}-{category}-{number}-{title}-{date}
+   - **Without Parent:** {category}-{number}-{title}-{date}
+6. **Add Extension:** Determine appropriate extension (.md, .prb.yaml, etc.)
+7. **Return Complete Name:** Return fully formatted compliant filename
+
+### Title Extraction Process
+
+**Steps to Extract Title from File:**
+1. **Try Filename First:** Extract potential title from current filename
+   - If filename yields valid title: Clean and return it
+2. **Try File Content:** If filename didn't work, read first 20 lines of file
+   - Extract potential title from content (headers, first line, etc.)
+   - If content yields valid title: Clean and return it  
+3. **Fallback to Generic:** If neither filename nor content provided good title:
+   - Return "untitled-work-item" as fallback
 
 ## Backup Strategy
 
@@ -361,4 +299,4 @@ Error Types:
 - **Number Sequence:** Validate numbering remains consistent
 
 ---
-*File renaming command for intelligent-claude-code work item compliance*
+*Command reference*

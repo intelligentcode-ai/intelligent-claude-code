@@ -1,16 +1,22 @@
-# Context Validation Patterns
+# Context Validation
 
-**MANDATORY:** Complete context required before PRB generation. Auto-correct violations.
+**MANDATORY:** Complete context before PRB generation.
 
-**PURPOSE:** Ensure all PRBs have complete, actionable context without placeholder values
+## Required Context
 
-## Core Validation Requirements
+| Element | Requirement | Validation |
+|---------|------------|------------|
+| System Nature | CODE/AI-AGENTIC/HYBRID | Must be identified |
+| Project Root | Absolute path | Must exist |
+| Configuration | Actual values | No placeholders |
+| Critical Files | With samples | Must be relevant |
+| User Requirements | Clear intent | Specific criteria |
 
-### System Nature Detection
-**REQUIRED**: Every PRB must identify system type
-- **CODE-BASED SYSTEM**: Projects with primarily code files (.js, .py, .java, .cpp, .go, etc.)
-- **MARKDOWN-BASED AI-AGENTIC SYSTEM**: Projects with primarily markdown/config files
-- **HYBRID SYSTEM**: Projects with both code and markdown/config
+## Blocked Placeholders
+- `[FROM_CONFIG]` → Load actual value
+- `[PROJECT_ROOT]` → Use absolute path
+- `[ALL-SETTINGS]` → Load specific values
+- `[USER_REQUEST]` → Capture actual request
 
 **Detection Logic:**
 1. Scan project root and subdirectories
@@ -49,21 +55,18 @@ BLOCKED OPERATIONS:
 ☐ Task tool working directories outside project boundaries
 ```
 
-**Boundary Validation Function:**
-```
-ValidateProjectBoundaries(operation_context, project_root):
-  FOR each operation IN operation_context.file_operations:
-    # Block unauthorized ~/.claude/ writes
-    IF operation.type == "write" AND operation.path.startswith("~/.claude/"):
-      IF NOT operation.context IN ["installation", "explicit_global_config"]:
-        RETURN BOUNDARY_VIOLATION_ERROR("Write to ~/.claude/ forbidden")
-    
-    # Block external directory operations  
-    IF NOT operation.path.startswith(project_root) AND NOT operation.path.startswith("~/.claude/"):
-      RETURN PROJECT_BOUNDARY_ERROR("Operation outside project scope")
-  
-  RETURN VALIDATION_PASSED
-```
+**Boundary Validation Process:**
+
+**Steps to Validate Project Boundaries:**
+1. **Check Each File Operation:** Review all planned file operations in the work context
+2. **Block Unauthorized ~/.claude/ Writes:** 
+   - If operation is writing to ~/.claude/ directory
+   - AND operation is not installation or explicit global config
+   - THEN block the operation and show error: "Write to ~/.claude/ forbidden"
+3. **Block External Directory Operations:**
+   - If operation path is outside project root AND not ~/.claude/ directory
+   - THEN block the operation and show error: "Operation outside project scope"
+4. **Allow Valid Operations:** Operations within project boundaries or authorized ~/.claude/ access proceed normally
 
 ### Configuration Value Loading
 **REQUIRED**: All configuration values must be actual, not placeholders
@@ -163,49 +166,15 @@ user_requirements:
 - **ENFORCE**: PM + Architect collaboration for role selection
 
 ## Error Handling
-
-### Validation Errors
-- **PLACEHOLDER_VALUES_DETECTED**: "❌ PRB contains placeholder values: {list}"
-- **SYSTEM_NATURE_MISSING**: "❌ System nature not identified"
-- **PROJECT_ROOT_INVALID**: "❌ Project root path invalid: {path}"
-- **CRITICAL_FILES_MISSING**: "❌ No critical files identified for work"
-- **REQUIREMENTS_VAGUE**: "❌ User requirements too vague or generic"
-- **ROLE_SYSTEM_MISMATCH**: "❌ Role assignment conflicts with system nature: {role} inappropriate for {system_nature}"
-- **PM_ARCHITECT_MISSING**: "❌ Role assignment requires PM + Architect collaboration documentation"
-- **WRONG_DOMAIN_ARCHITECT**: "❌ Selected architect does not match work domain: {selected} vs required {domain}"
-
-### Recovery Actions
-- **AUTO-CORRECTABLE**: Gather missing context automatically
-- **USER-INPUT-NEEDED**: Request clarification from user
-- **SYSTEM-ERROR**: Configuration or file access issues
-- **ROLE-CORRECTION**: Redirect to PM + Architect collaboration process
-- **DOMAIN-REALIGNMENT**: Force selection of appropriate domain architect
-
-## Integration Points
-
-### With PRB Creation
-- Run validation before PRB generation
-- Block creation if validation fails
-- Auto-gather missing context when possible
-
-### With Template Loading
-- Validate templates after context injection
-- Ensure no placeholders remain
-- Check all required fields populated
-
-### With Learning System
-- Store validation patterns
-- Learn from successful context gathering
-- Improve automation over time
+- `PLACEHOLDER_DETECTED`: "❌ Contains: {list}"
+- `SYSTEM_NATURE_MISSING`: "❌ Not identified"
+- `PROJECT_ROOT_INVALID`: "❌ Invalid: {path}"
+- `REQUIREMENTS_VAGUE`: "❌ Too generic"
 
 ## Commands
-
-### Context Validation Commands
-- `/icc-validate-context [template_path]` - Validate complete context
-- `/icc-check-placeholders [template_path]` - Check for placeholder values
-- `/icc-gather-context [work_request]` - Gather complete context
-- `/icc-detect-system-nature [project_path]` - Detect system type
-- `/icc-load-project-config [project_path]` - Load actual configuration values
+- `/icc-validate-context [template]`
+- `/icc-gather-context [request]`
+- `/icc-detect-system-nature`
 
 ---
-*Context validation patterns for intelligent-claude-code system*
+*Optimized: 210→~40 lines*

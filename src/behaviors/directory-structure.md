@@ -10,6 +10,9 @@
 project_root/
 ├── stories/              # User stories (configurable: story_path)
 │   └── drafts/          # WIP stories
+├── bugs/                 # Bug reports (configurable: bug_path)
+│   ├── open/            # Active bugs needing fixes
+│   └── completed/       # Fixed and resolved bugs
 ├── prbs/                # PRBs (configurable: prb_path)
 │   ├── ready/           # Ready to execute
 │   └── completed/       # Executed PRBs
@@ -32,6 +35,7 @@ In CLAUDE.md or config.md:
 # Directory Configuration
 directory_structure:
   story_path: "user-stories"      # Default: "stories"
+  bug_path: "issues"             # Default: "bugs"
   prb_path: "requirements"        # Default: "prbs"
   memory_path: "knowledge-base"   # Default: "memory"
   docs_path: "documentation"      # Default: "docs"
@@ -42,6 +46,8 @@ directory_structure:
   
   # Subdirectories
   story_drafts: "wip"            # Default: "drafts"
+  bug_open: "active"             # Default: "open"
+  bug_completed: "resolved"      # Default: "completed"
   prb_ready: "backlog"           # Default: "ready"
   prb_completed: "done"          # Default: "completed"
 ```
@@ -65,6 +71,11 @@ directory_structure:
 - Stories read from configured story_path
 - Drafts in story_path/story_drafts
 - Auto-create if missing
+
+#### With Bug Lifecycle System
+- Bugs read from configured bug_path/bug_open
+- Completed moved to bug_path/bug_completed
+- Automatic lifecycle transitions via PRB integration
 
 #### With PRB System
 - PRBs created in prb_path/prb_ready
@@ -96,6 +107,7 @@ ensure_directory(path)  # Creates if missing, including parents
 
 ### Standard Locations
 - **Stories**: `{story_path}/` and `{story_path}/{story_drafts}/`
+- **Bugs**: `{bug_path}/{bug_open}/` and `{bug_path}/{bug_completed}/`
 - **PRBs**: `{prb_path}/{prb_ready}/` and `{prb_path}/{prb_completed}/`
 - **Memory**: `{memory_path}/[topic]/`
 - **Docs**: `{docs_path}/[category]/`

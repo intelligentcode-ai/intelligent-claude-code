@@ -6,6 +6,8 @@
 
 ## Core Process
 
+**CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT Task tool).
+
 When user says "@PM break down story X" or similar:
 1. **@PM reads story**: Understands business goals and requirements
 2. **@PM analyzes project scope**: Detects system nature and technology context
@@ -13,8 +15,12 @@ When user says "@PM break down story X" or similar:
 4. **@PM selects specialist architect**: Chooses domain-specific architect based on two-factor analysis
 5. **@PM + Specialist Architect collaborate**: Apply decision matrix for role selection
 6. **@PM + Architect assign roles**: Use two-factor analysis to determine correct specialist roles
-7. **@PM creates PRBs**: Generates PRBs with documented role assignment rationale
+7. **@PM creates PRBs**: Generates PRBs with documented role assignment rationale (MAIN AGENT ONLY)
 8. **Story selection**: @PM + Architect select next story based on priorities/complexity
+
+**SEPARATION ENFORCEMENT:** 
+- **CREATION**: @PM + Architect work in main agent context with full project access
+- **EXECUTION**: Created PRBs are executed via Task tool with resolved context
 
 ## Two-Factor Analysis Process
 
@@ -80,19 +86,19 @@ When user says "@PM break down story X" or similar:
    - Identify technical domains involved
    - Determine coordination needs
 
-2. **Dynamic Architect Creation**:
+2. **Dynamic Specialist Architect Creation**:
    - **Analyze Project Context:** Check CLAUDE.md, file structure, and requirements
    - **Detect Technology Stack:** Identify primary technologies and frameworks
-   - **Dynamic Specialist Creation:**
-     - Assess if work requires >70% match with general @Architect capabilities
-     - If <70% match, create @[Domain]-Architect based on actual project needs
-     - Examples: @React-Architect, @Database-Architect, @Security-Architect
-   - **No Predefined Lists:** Architects created dynamically from project context
-   - **Generic System:** Works for ANY technology domain or project type
+   - **ALWAYS Create Specialist Architects:**
+     - Create @[Domain]-Architect based on actual project needs
+     - Examples: @React-Architect, @Database-Architect, @Security-Architect, @AI-Architect, @Behavioral-Architect
+     - NEVER use generic @Architect - precision is mandatory
+   - **No Predefined Lists:** Specialists created dynamically from project context
+   - **Universal System:** Works for ANY technology domain or project type
 
 3. **Collaborative Analysis**:
-   - PM + Selected Architect jointly evaluate requirements
-   - Assess specialist expertise needed (>70% capability match)
+   - PM + Selected Specialist Architect jointly evaluate requirements
+   - Create appropriate domain specialists based on precise needs
    - Consider coordination complexity and dependencies
 
 4. **Two-Factor Analysis for Role Selection**:
@@ -115,27 +121,28 @@ When user says "@PM break down story X" or similar:
    
    **Decision Matrix Logic** (See role-assignment-matrix.md):
    ```
-   Role = f(ProjectScope, WorkType)
+   Role = f(ProjectScope, WorkType) → Dynamic Specialist Creation
    
    Examples:
-   - AI-AGENTIC + DevOps work → @DevOps-Engineer
-   - AI-AGENTIC + AI patterns → @AI-Engineer  
-   - AI-AGENTIC + Security → @Security-Engineer
-   - CODE-BASED + Implementation → @Developer
-   - Any scope + Database → @Database-Engineer
+   - AI-AGENTIC + DevOps work → Create @DevOps-Engineer via PM + @DevOps-Architect
+   - AI-AGENTIC + AI patterns → Create @[Domain]-AI-Engineer via PM + @AI-Architect  
+   - AI-AGENTIC + Security → Create @Security-Engineer via PM + @Security-Architect
+   - CODE-BASED + Implementation → Create @[Technology]-Developer via PM + @Code-Architect
+   - Any scope + Database → Create @Database-Engineer via PM + @Database-Architect
    ```
    
    **Selection Process**:
    1. **Identify Project Scope**: Check system_nature in complete_context
    2. **Analyze Work Type**: Parse requirements for specific work patterns
-   3. **Apply Decision Matrix**: Use matrix logic for role selection
-   4. **Document Rationale**: Include analysis in PRB context
-   5. **Validate Assignment**: Ensure >70% capability match
+   3. **Create Specialist Architect**: Generate appropriate domain architect
+   4. **Apply Decision Matrix**: Use matrix logic for specialist creation
+   5. **Document Rationale**: Include analysis and specialist creation in PRB context
+   6. **Validate Specialist**: Ensure specialist matches precise domain needs
 
 5. **Assignment Documentation**:
-   - Document role selection rationale in PRB
-   - Include capability match score and justification
-   - Reference architect collaboration in PRB context
+   - Document specialist creation rationale in PRB
+   - Include domain matching and specialist definition
+   - Reference PM + Specialist Architect collaboration in PRB context
 
 ## Story Selection Criteria
 
@@ -230,6 +237,8 @@ Imports:
 @./directory-structure.md
 @./shared-patterns/template-loading.md
 @./naming-enforcement-behavior.md
+@./work-item-creation.md
+@./placeholder-resolution.md
 
 Uses configured paths:
 - get_project_path("story_path") for stories

@@ -1,16 +1,18 @@
-# STORY-005: Bug Lifecycle Management System
+# STORY-005: Work-Item Lifecycle Management System
 
 **Created:** 2025-08-09
+**Completed:** 2025-08-10
+**Status:** Ready
 **Priority:** High
 **Category:** System Organization
 
 ## Story
 
-As a virtual team system, I need automated bug lifecycle management that moves bugs through their lifecycle stages (open → in-progress → completed) similar to how PRBs are managed (ready → completed), so that the bug tracking remains organized and current.
+As a virtual team system, I need automated bug and story lifecycle management that moves work-items through their lifecycle stages (open → in-progress → completed) similar to how PRBs are managed (ready → completed), so that the work-item tracking remains organized and current.
 
 ## Background
 
-Currently, bugs remain in the bugs/ directory even after being fixed. They're marked as "Open" despite having completed PRBs and merged fixes. This creates confusion about which bugs are actually active versus completed.
+Currently, bugs remain in the bugs/ directory even after being fixed, and stories remain in their base directories. They're marked as "Open" despite having completed PRBs and merged fixes. This creates confusion about which work-items are actually active versus completed.
 
 The system already has a good pattern with PRBs:
 - `prbs/ready/` - PRBs ready for execution
@@ -19,9 +21,10 @@ The system already has a good pattern with PRBs:
 ## Requirements
 
 ### Functional Requirements
-1. Create `bugs/open/` and `bugs/completed/` directory structure
-2. Bugs should move from open → completed when their PRB is completed
-3. Bug status should automatically update when fix is merged
+1a. Create `bugs/open/` and `bugs/completed/` directory structure
+1b. Create `stories/open/` and `stories/completed/` directory structure
+2. Work-Items should move from open → completed when their PRB is completed
+3. Work-Item status should automatically update when implementation is merged
 4. Behavioral pattern to enforce lifecycle management
 
 ### Technical Requirements  
@@ -32,25 +35,21 @@ The system already has a good pattern with PRBs:
 
 ## Acceptance Criteria
 
-- [ ] Bugs have clear lifecycle stages: open → in-progress → completed
-- [ ] Completed bugs automatically move to bugs/completed/
-- [ ] Bug status updates when PRB completes
+- [ ] Work-Items have clear lifecycle stages: open → in-progress → completed
+- [ ] Completed work-items are moved to bugs/completed/
+- [ ] Work-Item status updates when PRB completes
 - [ ] Behavioral pattern documented for AI agents
 - [ ] Works consistently with existing PRB lifecycle
 
 ## Success Metrics
 
-- All fixed bugs properly archived in bugs/completed/
-- No confusion about which bugs are active
-- Clear audit trail of bug fixes
+- All fixed work-items properly archived in <base-directory>/completed/
+- No confusion about which work-items are active
+- Clear audit trail of fixes and implementations
 - Consistent with PRB management pattern
 
 ## Out of Scope
 
-- External bug tracking systems
+- External work-item tracking systems
 - Complex workflow states beyond open/in-progress/completed
 - Integration with GitHub issues
-
-## Notes
-
-This story addresses the issue discovered when BUG-001, BUG-002, BUG-003, and BUG-005 were fixed but remained in the bugs/ directory marked as "Open". The system should handle bug lifecycle automatically, just like it handles PRB lifecycle.

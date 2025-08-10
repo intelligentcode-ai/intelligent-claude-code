@@ -20,14 +20,13 @@
 - Stop only for critical issues
 
 ## L3 Continuous Mode
-```yaml
-while work_exists:
-  - discover_task
-  - generate_prb
-  - execute
-  - learn
-  - next
-```
+
+**L3 Continuous Work Pattern:**
+- **Discover Tasks:** Find PLANNED/IN_PROGRESS tasks, uncommitted changes, memory improvement opportunities
+- **Generate PRB:** Create appropriate PRB for discovered work
+- **Execute Work:** Complete the work using PRB framework
+- **Learn from Results:** Capture learnings and patterns
+- **Continue to Next:** Repeat cycle with next available work
 
 **Auto-discover:**
 - PLANNED/IN_PROGRESS tasks
