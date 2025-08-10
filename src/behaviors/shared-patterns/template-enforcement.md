@@ -32,8 +32,8 @@ git_privacy: "[FROM_CONFIG]"
 branch_protection: "[FROM_CONFIG]"
 
 # MUST become in final PRB:
-git_privacy: true
-branch_protection: true
+git_privacy: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
 ```
 
 **PLACEHOLDER PATTERNS TO RESOLVE:**
@@ -103,9 +103,9 @@ ValidateTemplateEnforcement(prb_content, creation_context):
 complete_context:
   project_root: "/absolute/path"  # NOT "[PROJECT_ROOT]"
   configuration:
-    git_privacy: true             # NOT "[FROM_CONFIG]"
-    branch_protection: true       # NOT "[FROM_CONFIG]"
-    default_branch: "main"        # NOT "[FROM_CONFIG]"
+    git_privacy: <ACTUAL_VALUE>   # NOT "[FROM_CONFIG]"
+    branch_protection: <ACTUAL_VALUE>  # NOT "[FROM_CONFIG]"
+    default_branch: <ACTUAL_VALUE>     # NOT "[FROM_CONFIG]"
 
 requirements:
   functional: [...]               # NOT "[REQUIREMENT_1]"
@@ -262,10 +262,10 @@ complete_context:
 # Template AFTER resolution:
 complete_context:
   configuration:
-    git_privacy: true
-    branch_protection: true
-    default_branch: "main"
-    autonomy_level: "L3"
+    git_privacy: <ACTUAL_VALUE_FROM_CONFIG>
+    branch_protection: <ACTUAL_VALUE_FROM_CONFIG>
+    default_branch: <ACTUAL_VALUE_FROM_CONFIG>
+    autonomy_level: <ACTUAL_VALUE_FROM_CONFIG>
 ```
 
 **BLOCK if any "[FROM_CONFIG]" remains after resolution**

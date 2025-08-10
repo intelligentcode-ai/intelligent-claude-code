@@ -52,9 +52,9 @@
 7. **MANDATORY: Load Template** from src/prb-templates/ hierarchy ONLY
 8. **MANDATORY: Load Complete Configuration** at generation time
 9. **MANDATORY: Resolve ALL Placeholders** with actual config values
-   - [FROM_CONFIG] → git_privacy: true (not "[FROM_CONFIG]")
-   - [PROJECT_ROOT] → /absolute/path/to/project
-   - [CURRENT_DATE] → 2025-08-10 (actual date)
+   - [FROM_CONFIG] → git_privacy: <ACTUAL_VALUE> (not "[FROM_CONFIG]")
+   - [PROJECT_ROOT] → <ACTUAL_PROJECT_ROOT_PATH>
+   - [CURRENT_DATE] → <ACTUAL_SYSTEM_DATE>
    - [ALL-SETTINGS] → complete configuration object
 10. **MANDATORY: Embed Complete Context** - all config in PRB
 11. **MANDATORY: Validate NO Placeholders** - ZERO unresolved values

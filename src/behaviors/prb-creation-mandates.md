@@ -52,7 +52,7 @@
 3. **Load Template**: From src/prb-templates/ hierarchy ONLY - NO other sources
 4. **Load Configuration**: Read complete config hierarchy at generation time
 5. **Resolve ALL Placeholders**: Replace EVERY [PLACEHOLDER] with actual values
-   - [FROM_CONFIG] → actual config values (git_privacy: true, not "[FROM_CONFIG]")
+   - [FROM_CONFIG] → actual config values (git_privacy: <ACTUAL_VALUE>, not "[FROM_CONFIG]")
    - [PROJECT_ROOT] → actual project root path
    - [CURRENT_DATE] → actual system date
    - [ALL-SETTINGS] → actual configuration object
@@ -226,10 +226,10 @@ complete_context:
   system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM"  # OR "CODE-BASED SYSTEM"
   project_root: "/absolute/path/to/project"
   configuration:
-    git_privacy: true/false  # ACTUAL VALUE
-    branch_protection: true/false  # ACTUAL VALUE
-    default_branch: "main"  # ACTUAL VALUE
-    autonomy_level: "L3"  # ACTUAL VALUE
+    git_privacy: <ACTUAL_VALUE>  # NOT hardcoded
+    branch_protection: <ACTUAL_VALUE>  # NOT hardcoded
+    default_branch: <ACTUAL_VALUE>  # NOT hardcoded
+    autonomy_level: <ACTUAL_VALUE>  # NOT hardcoded
   critical_files:
     - path: "/absolute/path/to/file"
       purpose: "specific purpose"
