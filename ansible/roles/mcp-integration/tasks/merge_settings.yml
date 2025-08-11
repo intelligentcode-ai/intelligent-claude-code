@@ -1,0 +1,34 @@
+---
+# Merge processed MCP servers into existing settings.json
+
+- name: Initialize mcpServers in current settings if not exists
+  set_fact:
+    current_settings: "{{ current_settings | combine({'mcpServers': {}}) }}"
+  when: "'mcpServers' not in current_settings"
+
+- name: Create merged MCP servers configuration
+  set_fact:
+    merged_mcp_servers: "{{ current_settings.mcpServers | combine(processed_mcp_servers) }}"
+
+- name: Check for duplicate MCP servers
+  debug:
+    msg: "MCP server '{{ item }}' already exists and will be updated"
+  when: item in current_settings.mcpServers
+  loop: "{{ processed_mcp_servers.keys() | list }}"
+
+- name: Update settings with merged MCP servers
+  set_fact:
+    final_settings: "{{ current_settings | combine({'mcpServers': merged_mcp_servers}) }}"
+
+- name: Validate final settings structure
+  fail:
+    msg: "Final settings structure is invalid"
+  when: "'mcpServers' not in final_settings"
+
+- name: Log merge results
+  debug:
+    msg:
+      - "Merged MCP configuration successfully"
+      - "Total MCP servers: {{ merged_mcp_servers | length }}"
+      - "New servers added: {{ (processed_mcp_servers.keys() | list) | difference(current_settings.mcpServers.keys() | list) | length }}"
+      - "Existing servers updated: {{ (processed_mcp_servers.keys() | list) | intersect(current_settings.mcpServers.keys() | list) | length }}"

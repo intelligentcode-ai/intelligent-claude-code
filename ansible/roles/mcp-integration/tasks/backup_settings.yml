@@ -1,0 +1,75 @@
+---
+# Create backup of existing settings.json before making changes
+
+- name: Set default settings path
+  set_fact:
+    settings_json_path: "{{ ansible_env.HOME }}/.config/claude/settings.json"
+  when: settings_json_path is not defined
+
+- name: Check if settings.json exists
+  stat:
+    path: "{{ settings_json_path }}"
+  register: settings_file_stat
+
+- name: Create backup filename with timestamp
+  set_fact:
+    settings_backup_file: "{{ settings_json_path }}.backup.{{ ansible_date_time.epoch }}"
+
+- name: Create backup of existing settings.json
+  copy:
+    src: "{{ settings_json_path }}"
+    dest: "{{ settings_backup_file }}"
+    mode: "0600"
+    backup: no
+  when: settings_file_stat.stat.exists
+  register: backup_result
+  failed_when: false
+
+- name: Handle backup creation failure
+  set_fact:
+    mcp_integration_error: "Failed to create backup of settings.json"
+  when: backup_result.failed and settings_file_stat.stat.exists
+
+- name: Initialize empty settings if file doesn't exist
+  set_fact:
+    current_settings: {}
+  when: not settings_file_stat.stat.exists
+
+- name: Read current settings.json if exists
+  slurp:
+    src: "{{ settings_json_path }}"
+  register: current_settings_raw
+  when: settings_file_stat.stat.exists
+  failed_when: false
+
+- name: Parse existing settings.json
+  set_fact:
+    current_settings: "{{ current_settings_raw.content | b64decode | from_json }}"
+  when: 
+    - settings_file_stat.stat.exists
+    - not current_settings_raw.failed
+  failed_when: false
+  register: settings_parse_result
+
+- name: Handle corrupted settings.json
+  block:
+    - name: Log corrupted settings warning
+      debug:
+        msg: "Warning: Existing settings.json is corrupted. Using backup and creating fresh settings."
+    
+    - name: Initialize empty settings for corrupted file
+      set_fact:
+        current_settings: {}
+  when: 
+    - settings_file_stat.stat.exists
+    - settings_parse_result.failed
+
+- name: Ensure settings directory exists
+  file:
+    path: "{{ settings_json_path | dirname }}"
+    state: directory
+    mode: "0755"
+
+- name: Log backup status
+  debug:
+    msg: "Settings backup created: {{ settings_backup_file if settings_file_stat.stat.exists else 'No existing settings to backup' }}"
