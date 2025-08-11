@@ -1,0 +1,54 @@
+---
+# Validate MCP configuration JSON syntax and structure
+
+- name: Check if MCP config file exists
+  stat:
+    path: "{{ mcp_config_file }}"
+  register: config_file_stat
+  failed_when: false
+
+- name: Fail if MCP config file does not exist
+  fail:
+    msg: "MCP configuration file not found: {{ mcp_config_file }}"
+  when: not config_file_stat.stat.exists
+
+- name: Read MCP configuration file
+  slurp:
+    src: "{{ mcp_config_file }}"
+  register: mcp_config_raw
+  failed_when: false
+
+- name: Handle file read errors
+  fail:
+    msg: "Failed to read MCP configuration file: {{ mcp_config_file }}. Check file permissions."
+  when: mcp_config_raw.failed
+
+- name: Decode and validate JSON syntax
+  set_fact:
+    mcp_config_data: "{{ mcp_config_raw.content | b64decode | from_json }}"
+  failed_when: false
+  register: json_parse_result
+
+- name: Handle JSON syntax errors
+  fail:
+    msg: "Invalid JSON syntax in MCP configuration file: {{ mcp_config_file }}. Please check JSON formatting."
+  when: json_parse_result.failed
+
+- name: Validate required JSON structure
+  fail:
+    msg: "MCP configuration must contain 'mcpServers' object"
+  when: "'mcpServers' not in mcp_config_data"
+
+- name: Validate MCP servers structure
+  fail:
+    msg: "MCP server '{{ item.key }}' missing required 'command' field"
+  when: "'command' not in item.value"
+  loop: "{{ mcp_config_data.mcpServers | dict2items }}"
+
+- name: Count MCP servers for processing
+  set_fact:
+    mcp_servers_count: "{{ mcp_config_data.mcpServers | length }}"
+
+- name: Log successful validation
+  debug:
+    msg: "MCP configuration validated successfully. Found {{ mcp_servers_count }} MCP servers."

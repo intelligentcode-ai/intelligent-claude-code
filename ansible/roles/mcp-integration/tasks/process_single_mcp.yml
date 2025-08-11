@@ -1,0 +1,61 @@
+---
+# Process a single MCP server configuration with environment variable resolution
+
+- name: Set current MCP server details
+  set_fact:
+    mcp_name: "{{ mcp_server.key }}"
+    mcp_config: "{{ mcp_server.value }}"
+
+- name: Validate MCP server name
+  fail:
+    msg: "MCP server name cannot be empty"
+  when: mcp_name | length == 0
+
+- name: Initialize processed MCP config
+  set_fact:
+    processed_mcp_config:
+      command: "{{ mcp_config.command }}"
+
+- name: Process command arguments
+  set_fact:
+    processed_args: []
+
+- name: Resolve environment variables in arguments
+  set_fact:
+    processed_args: "{{ processed_args + [item | regex_replace('\\$\\{([^}]+)\\}', lookup('env', '\\1') if lookup('env', '\\1') else item)] }}"
+  loop: "{{ mcp_config.args | default([]) }}"
+  when: mcp_config.args is defined
+
+- name: Add processed arguments to config
+  set_fact:
+    processed_mcp_config: "{{ processed_mcp_config | combine({'args': processed_args}) }}"
+  when: processed_args | length > 0
+
+- name: Process environment variables if defined
+  block:
+    - name: Initialize processed environment
+      set_fact:
+        processed_env: {}
+
+    - name: Resolve environment variables
+      set_fact:
+        processed_env: "{{ processed_env | combine({item.key: item.value | regex_replace('\\$\\{([^}]+)\\}', lookup('env', '\\1') if lookup('env', '\\1') else item.value)}) }}"
+      loop: "{{ mcp_config.env | dict2items }}"
+
+    - name: Add processed environment to config
+      set_fact:
+        processed_mcp_config: "{{ processed_mcp_config | combine({'env': processed_env}) }}"
+  when: mcp_config.env is defined
+
+- name: Validate processed configuration
+  fail:
+    msg: "MCP server '{{ mcp_name }}' has empty command after processing"
+  when: processed_mcp_config.command | length == 0
+
+- name: Add processed MCP server to collection
+  set_fact:
+    processed_mcp_servers: "{{ processed_mcp_servers | combine({mcp_name: processed_mcp_config}) }}"
+
+- name: Log successful processing
+  debug:
+    msg: "Successfully processed MCP server: {{ mcp_name }}"
