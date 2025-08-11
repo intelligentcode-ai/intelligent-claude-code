@@ -40,12 +40,11 @@ requirements:
 # EXECUTION PROCESS: 5 CLEAR STEPS
 # ========================================
 
-## STEP 1: KNOWLEDGE GATHERING
-knowledge_gathering:
+## STEP 1: KNOWLEDGE
+knowledge_search:
   memory_search: "Search memory/[topic]/ for implementation patterns"
   best_practices: "Review best-practices/[domain]/ for guidance"
-  code_analysis: "Examine existing code patterns in project"
-  embedded_learnings: "[TOP_RELEVANT_PATTERNS]"
+  patterns: "[TOP_RELEVANT_PATTERNS]"
 
 ## STEP 2: IMPLEMENTATION
 implementation:
@@ -53,48 +52,32 @@ implementation:
   changes_needed:
     - "[CHANGE_1]"
     - "[CHANGE_2]"
-    - "[CHANGE_3]"
-  validation_approach: "[HOW_TO_TEST]"
+  validation: "[HOW_TO_TEST]"
 
 ## STEP 3: REVIEW
-review_process:
-  type: "self-review"
-  checklist:
-    - "Functional requirements met"
-    - "Code follows project patterns"
-    - "No unintended side effects"
-    - "Configuration settings applied"
+review_checklist:
+  - "Functional requirements met"
+  - "Code follows project patterns"
+  - "No unintended side effects"
 
 ## STEP 4: DOCUMENTATION
-documentation_updates:
+documentation:
   changelog:
-    file: "CHANGELOG.md"
     entry: "### Added/Fixed\n- [FEATURE_DESCRIPTION]"
-  readme_check: "[UPDATE_IF_USER_FACING]"
   comments: "Add inline comments for complex logic"
 
-## STEP 5: GIT OPERATIONS  
+## STEP 5: GIT (COMMIT/PUSH)
 git_operations:
-  branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
-  commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]" # Apply if git_privacy enabled
-  version_bump: "[NONE|PATCH]"
+  commit_message: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]"
   actions:
-    - "Create feature branch if needed"
     - "Commit changes with clear message"
     - "Push to remote repository"
 
-# MANDATORY: Knowledge Management
-knowledge_management:
-  capture_condition: "Store if novel implementation pattern"
-  pattern_type: "implementation_approach"
-  location: "memory/[topic]/[subtopic].md"
-
 # EXECUTION CHECKLIST
 execution_checklist: |
-  ☐ STEP 1: Knowledge gathered - memory searched, patterns identified
-  ☐ STEP 2: Implementation completed - changes made and validated
-  ☐ STEP 3: Review completed - self-review checklist satisfied
-  ☐ STEP 4: Documentation updated - CHANGELOG and relevant docs
-  ☐ STEP 5: Git operations executed - branch, commit, push with privacy
-  ☐ Knowledge captured if novel pattern discovered
+  ☐ Knowledge: Memory searched and patterns identified
+  ☐ Implementation: Changes made and validated
+  ☐ Review: Self-review checklist completed
+  ☐ Documentation: CHANGELOG updated
+  ☐ Git: Committed and pushed with privacy filter

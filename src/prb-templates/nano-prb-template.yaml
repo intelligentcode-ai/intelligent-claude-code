@@ -36,49 +36,27 @@ requirements:
 # EXECUTION PROCESS: 3 CLEAR STEPS
 # ========================================
 
-## STEP 1: KNOWLEDGE GATHERING
-knowledge_gathering:
-  memory_search: "Check memory/[topic]/ for similar changes"
-  best_practices: "Review relevant patterns from best-practices/"
-  context_review: "Understand target file and change impact"
+## STEP 1: KNOWLEDGE
+knowledge_search:
+  memory_check: "Quick check in memory/[topic]/ for similar changes"
+  patterns: "Review existing patterns briefly"
 
-## STEP 2: IMPLEMENTATION  
+## STEP 2: IMPLEMENTATION
 implementation:
   target_file: "[FILE_PATH]"
   change_description: "[WHAT_TO_CHANGE]"
   validation: "[HOW_TO_VERIFY]"
 
-## STEP 3: GIT OPERATIONS
+## STEP 3: GIT (COMMIT/PUSH)
 git_operations:
-  commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]" # Apply if git_privacy enabled
-  version_bump: "[NONE|PATCH]"
+  commit_message: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]"
   actions:
-    - "Commit changes with appropriate message"
-    - "Push to configured default branch"
-
-# MANDATORY: Documentation Updates
-documentation_updates:
-  changelog:
-    file: "CHANGELOG.md" 
-    entry: "### Fixed\n- [CHANGE_DESCRIPTION]"
-    required: true
-
-# MANDATORY: Knowledge Management
-knowledge_management:
-  capture: "Store pattern if novel approach used"
-  location: "memory/[topic]/[subtopic].md"
-  
-# MANDATORY: Review Process
-review_process:
-  type: "self-review"
-  validation: "[VERIFY_CHANGE_WORKS]"
+    - "Commit changes with clean message"
+    - "Push to default branch"
 
 # EXECUTION CHECKLIST
 execution_checklist: |
-  ☐ STEP 1: Knowledge gathered from memory and best practices
-  ☐ STEP 2: Implementation completed and validated  
-  ☐ STEP 3: Git operations executed with privacy filter
-  ☐ CHANGELOG.md updated
-  ☐ Knowledge captured if novel pattern
-  ☐ Self-review completed
+  ☐ Knowledge: Quick memory check completed
+  ☐ Implementation: Change made and validated
+  ☐ Git: Committed and pushed with privacy filter

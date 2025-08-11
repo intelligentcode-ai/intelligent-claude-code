@@ -47,98 +47,71 @@ requirements:
 # EXECUTION PROCESS: 7 CLEAR STEPS
 # ========================================
 
-## STEP 1: BRANCH CREATION
-branch_operations:
+## STEP 1: BRANCH
+branch_creation:
   branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
-  base_branch: "[FROM_CONFIG_DEFAULT_BRANCH]"
-  branch_protection: "[FROM_CONFIG]"
   actions:
     - "Create feature branch from default branch"
-    - "Switch to feature branch for development"
+    - "Switch to feature branch"
 
-## STEP 2: KNOWLEDGE GATHERING  
-knowledge_gathering:
+## STEP 2: KNOWLEDGE
+knowledge_search:
   memory_search: "Search memory/[topic]/ for feature patterns"
-  best_practices: "Review best-practices/[domain]/ for architecture guidance"
-  code_analysis: "Examine existing implementations and patterns"
-  external_docs: "Reference relevant documentation if needed"
-  embedded_learnings: "[TOP_RELEVANT_PATTERNS]"
+  best_practices: "Review best-practices/[domain]/ for guidance"
+  patterns: "[TOP_RELEVANT_PATTERNS]"
 
 ## STEP 3: IMPLEMENTATION
 implementation:
   files_to_modify:
     - path: "[FILE_1]"
       changes: "[CHANGES_DESCRIPTION_1]"
-    - path: "[FILE_2]" 
+    - path: "[FILE_2]"
       changes: "[CHANGES_DESCRIPTION_2]"
-    - path: "[FILE_3]"
-      changes: "[CHANGES_DESCRIPTION_3]"
-  validation_approach: "[TESTING_STRATEGY]"
-  integration_points: "[HOW_FILES_CONNECT]"
+  validation: "[TESTING_STRATEGY]"
 
 ## STEP 4: REVIEW
-review_process:
-  type: "thorough_review"
-  reviewer: "[PRE_ASSIGNED_SME]"
-  focus_areas:
-    - "Multi-file coordination"
-    - "Feature completeness"
-    - "Code quality and patterns"
-    - "Configuration compliance"
-  max_review_cycles: 3
+review_checklist:
+  - "Multi-file coordination"
+  - "Feature completeness"
+  - "Code quality and patterns"
+  - "Configuration compliance"
 
 ## STEP 5: DOCUMENTATION
-documentation_updates:
+documentation:
   changelog:
-    file: "CHANGELOG.md"
     entry: "### Added\n- [FEATURE_DESCRIPTION]"
   readme_updates: "[UPDATE_IF_USER_FACING]"
-  api_docs: "[UPDATE_IF_API_CHANGES]"
-  inline_comments: "Document complex logic and integrations"
+  comments: "Document complex logic and integrations"
 
-## STEP 6: GIT OPERATIONS
+## STEP 6: GIT (COMMIT/PUSH)
 git_operations:
-  commit_strategy: "Logical commits for each major component"
-  commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]" # Apply if git_privacy enabled
-  version_bump: "[PATCH|MINOR]"
+  commit_message: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]"
   actions:
-    - "Stage and commit all changes"
+    - "Commit all changes"
     - "Push feature branch to remote"
 
-## STEP 7: PULL REQUEST
+## STEP 7: PR
 pull_request:
   title: "[ID]: [FEATURE_DESCRIPTION]"
-  description_template: |
+  description: |
     ## Summary
     [FEATURE_OVERVIEW]
     
     ## Changes Made
     - [CHANGE_1]
-    - [CHANGE_2] 
-    - [CHANGE_3]
+    - [CHANGE_2]
     
     ## Testing
     [TESTING_PERFORMED]
-    
-    ## Review Focus
-    [AREAS_FOR_REVIEWER_ATTENTION]
   reviewer: "[PRE_ASSIGNED_SME]"
-  labels: ["feature", "[DOMAIN]"]
-
-# MANDATORY: Knowledge Management
-knowledge_management:
-  capture_patterns: "Store successful multi-file coordination patterns"
-  capture_insights: "Document feature implementation approach"
-  location: "memory/[topic]/[subtopic].md"
 
 # EXECUTION CHECKLIST
 execution_checklist: |
-  ☐ STEP 1: Feature branch created and checked out
-  ☐ STEP 2: Knowledge gathered - memory, best practices, code analysis
-  ☐ STEP 3: Implementation completed across all target files
-  ☐ STEP 4: Review completed by SME with max 3 cycles
-  ☐ STEP 5: Documentation updated - CHANGELOG, README, API docs
-  ☐ STEP 6: Git operations executed - commits and push with privacy
-  ☐ STEP 7: Pull request created with detailed description
-  ☐ Knowledge patterns captured for future reference
+  ☐ Branch: Feature branch created and checked out
+  ☐ Knowledge: Memory and best practices searched
+  ☐ Implementation: All target files updated
+  ☐ Review: Checklist completed
+  ☐ Documentation: CHANGELOG and docs updated
+  ☐ Git: Committed and pushed with privacy filter
+  ☐ PR: Pull request created with description
