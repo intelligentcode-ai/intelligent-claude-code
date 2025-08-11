@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.17.1] - 2025-08-11
+
+### Fixed
+- ADHOC-PRB-003: Fixed memory-operations.md behavioral pattern references
+- Removed function references from MARKDOWN-BASED AI-AGENTIC SYSTEM
+- Changed "ResolveMemoryBasePath()" references to "Memory Base Path Resolution pattern"
+- Maintained behavioral pattern integrity throughout memory operations
+
 ## [6.9.0] - 2025-08-10
 
 ### Fixed
