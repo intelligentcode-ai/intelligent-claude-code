@@ -1,217 +1,144 @@
-# Medium PRB Template - Standard Features
-# For moderate instruction complexity (6-15 points) - AI executes instantly
-# Provides complete instructions for multi-file features
-
-# ⚠️ CRITICAL: FOLLOW ALL SECTIONS - SKIP NOTHING
-# ⚠️ SETTINGS: git_privacy: true = NO AI mentions in commits
-# ⚠️ TEMPLATES: [DYNAMIC_*_PRACTICES] placeholders get filled with actual content
+# Medium PRB Template - Standard Features (6-15 points)
+# For multi-file features and moderate complexity implementations
 
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: medium-prb
 complexity: standard
-priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
+priority: "[PRIORITY_LEVEL]"
 title: "[ROLE] [DESCRIPTION]"
 
 # MANDATORY: Complete Context Section
 complete_context:
-  project: "[CLAUDE.md]"        # Project context from CLAUDE.md
-  settings: "[ALL-SETTINGS]"   # All configuration values
-  git_privacy: "[FROM_CONFIG]" # git_privacy setting from config
-  branch_protection: "[FROM_CONFIG]" # branch_protection from config
-  default_branch: "[FROM_CONFIG]"    # default_branch from config
-  branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
-  scope: "[FEATURE_SCOPE]"
-  best_practices:
-    # Auto-discovered practices from best-practices/ directory
-    # Top 2-3 relevant practices injected based on work type and complexity
-    # No manual configuration needed - system handles discovery
-    - "[DYNAMIC_BEST_PRACTICES_1]"
-    - "[DYNAMIC_BEST_PRACTICES_2]"
-    - "[DYNAMIC_BEST_PRACTICES_3]"
-  code_samples:
-    - search: "[PATTERN_IN_CODEBASE]"
-    - reference: "[EXISTING_IMPLEMENTATION]"
-  external_docs:
-    - url: "[DOCUMENTATION_URL]"
-    - context7: "[LIBRARY_ID]"  # Real-time documentation
-  
+  project_root: "[PROJECT_ROOT]"
+  system_nature: "[SYSTEM_NATURE]"
+  configuration:
+    git_privacy: "[FROM_CONFIG]"
+    branch_protection: "[FROM_CONFIG]"
+    default_branch: "[FROM_CONFIG]"
+    branch_strategy: "[FROM_CONFIG]"
+  critical_files:
+    - path: "[PRIMARY_FILE]"
+      purpose: "[FILE_PURPOSE]"
+      sample: "[FILE_SAMPLE]"
+    - path: "[SECONDARY_FILE]"
+      purpose: "[FILE_PURPOSE_2]" 
+      sample: "[FILE_SAMPLE_2]"
+  user_requirements:
+    original_request: "[USER_REQUEST]"
+    success_criteria: "[SUCCESS_CRITERIA]"
+    feature_scope: "[FEATURE_BOUNDARY]"
+
 # MANDATORY: Requirements Section
 requirements:
   functional:
-    - "[REQUIREMENT_1]"
-    - "[REQUIREMENT_2]"
-    - "[REQUIREMENT_3]"
+    - "[MAIN_FEATURE_REQUIREMENT]"
+    - "[SUPPORTING_REQUIREMENT_1]"
+    - "[SUPPORTING_REQUIREMENT_2]"
   processual:
-    - "Respect git_privacy setting for commit messages"
-    - "Follow branch protection strategy from config"
-    - "Use configured default branch for operations"
-    - "Apply configured branch naming strategy"
+    - "Apply git_privacy setting for all commits"
+    - "Follow branch protection strategy"
+    - "Create feature branch for development"
+    - "Generate pull request for review"
   technical:
-    - "Write AI instructions in clear, simple language"
-    - "[TECH_REQUIREMENT_2]"
-  constraints:
-    coding_style: "[DYNAMIC_CODING_PRACTICES]"        # From best-practices/development/
-    architecture: "[DYNAMIC_ARCHITECTURE_PRACTICES]"   # From best-practices/architecture/
-    infrastructure: "[DYNAMIC_OPERATIONS_PRACTICES]"   # From best-practices/operations/
-    security: "[DYNAMIC_SECURITY_PRACTICES]"          # From best-practices/security/
-    quality: "[DYNAMIC_QUALITY_PRACTICES]"            # From best-practices/quality/
-    
-# Embedded learnings and best-practices (no runtime search needed)
-embedded_learnings:
-  # Only MOST RELEVANT 2-3 entries embedded (token-efficient)
-  # Auto-discovered from memory/ during PRB generation
+    - "Multi-file coordination"
+    - "Feature-level implementation"
 
-embedded_best_practices:
-  # Only MOST RELEVANT 2-3 practices embedded (token-efficient)
-  # Auto-discovered from best-practices/ during PRB generation
-  # Replaces [DYNAMIC_*_PRACTICES] placeholders with actual content
-  # Selected based on topic match and recency
-  primary_pattern: |
-    From: memory/authentication/oauth2-patterns.md
-    ## 2025-01-23: OAuth2 Token Refresh
-    [ONLY THIS SPECIFIC ENTRY - max 500 tokens]
-    
-  related_learning: |
-    From: memory/error-handling/api-errors.md  
-    ## 2025-01-20: 401 Error Handling
-    [ONLY THIS SPECIFIC ENTRY - max 300 tokens]
-  
-# Execution plan with configurable behaviors
-execution_plan:
-  approach: "[TECHNICAL_APPROACH]"
-  behavioral_overrides:  # Project-specific behavior customization
-    error_handling: "[PROJECT_ERROR_PATTERN]"
-    testing_approach: "[PROJECT_TEST_STRATEGY]"
-    review_process: "[PROJECT_REVIEW_STYLE]"
-  steps:
-    - "[DESIGN_STEP]"
-    - "[IMPLEMENT_STEP]" 
-    - "[TEST_STEP]"
-    - "[INTEGRATE_STEP]"
-    
-# Instructions for what to create/modify  
-what_to_do:
+# ========================================
+# EXECUTION PROCESS: 7 CLEAR STEPS
+# ========================================
+
+## STEP 1: BRANCH CREATION
+branch_operations:
+  branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
+  base_branch: "[FROM_CONFIG_DEFAULT_BRANCH]"
+  branch_protection: "[FROM_CONFIG]"
+  actions:
+    - "Create feature branch from default branch"
+    - "Switch to feature branch for development"
+
+## STEP 2: KNOWLEDGE GATHERING  
+knowledge_gathering:
+  memory_search: "Search memory/[topic]/ for feature patterns"
+  best_practices: "Review best-practices/[domain]/ for architecture guidance"
+  code_analysis: "Examine existing implementations and patterns"
+  external_docs: "Reference relevant documentation if needed"
+  embedded_learnings: "[TOP_RELEVANT_PATTERNS]"
+
+## STEP 3: IMPLEMENTATION
+implementation:
   files_to_modify:
     - path: "[FILE_1]"
-      changes: "[CHANGES_1]"
-    - path: "[FILE_2]"
-      changes: "[CHANGES_2]"
-      
-how_to_validate:
-  technical:
-    - "[TECH_CHECK_1]"
-    - "[TECH_CHECK_2]"
-  functional:
-    - "[FUNC_CHECK_1]"
-    - "[FUNC_CHECK_2]"
-    
-# Expert to review the work
-expert_review:
-  reviewer: "[PRE_ASSIGNED_SME]"
-  focus_areas: ["[AREA_1]", "[AREA_2]"]
-  max_cycles: 3
-  
-# MANDATORY: Git Operations Section
-# ⚠️ git_privacy: true = NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
-git_operations:
-  branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
-  branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
-  branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
-  commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled - CRITICAL!
-  default_branch: "[FROM_CONFIG]"     # Target configured default branch
-  version_bump: "[PATCH|MINOR]"
+      changes: "[CHANGES_DESCRIPTION_1]"
+    - path: "[FILE_2]" 
+      changes: "[CHANGES_DESCRIPTION_2]"
+    - path: "[FILE_3]"
+      changes: "[CHANGES_DESCRIPTION_3]"
+  validation_approach: "[TESTING_STRATEGY]"
+  integration_points: "[HOW_FILES_CONNECT]"
 
-# MANDATORY: Documentation Updates Section
-documentation_updates:
-  - file: "CHANGELOG.md"
-    action: "Update with PR description"
-  - file: "[FROM_CONFIG]"
-    action: "Update if affected"
-  
-# MANDATORY: Knowledge Management Section
-knowledge_management:
-  structure: "memory/[topic]/[subtopic].md"
-  storage: "version-controlled"
-  embedded_learnings: "pre_searched_patterns"
-  capture_patterns: "[CAPTURE_PATTERNS]"
-  capture_insights: "[CAPTURE_INSIGHTS]"
-  store_location: "memory/[topic]/[subtopic].md"
-
-# MANDATORY: Review Process Section
+## STEP 4: REVIEW
 review_process:
-  type: "sme_review"
+  type: "thorough_review"
   reviewer: "[PRE_ASSIGNED_SME]"
-  focus_areas: ["[AREA_1]", "[AREA_2]"]
-  max_cycles: 3
-  checklist:
-    - "Configuration settings applied correctly"
-    - "Multi-file coordination successful"
-    - "Functional requirements met"
-    - "Technical constraints satisfied"
+  focus_areas:
+    - "Multi-file coordination"
+    - "Feature completeness"
+    - "Code quality and patterns"
+    - "Configuration compliance"
+  max_review_cycles: 3
 
-# MANDATORY: Documentation Management Section
-documentation_management:
-  required_updates:
-    changelog:
-      file: "CHANGELOG.md"
-      entry_format: |
-        ## [VERSION] - DATE
-        ### Added/Fixed/Changed/Removed
-        - [MEDIUM_FEATURE_DESCRIPTION]
-      semantic_versioning: true
-      mandatory: true
-      
-    readme:
-      file: "README.md"  
-      update_required: "[YES_IF_USER_FACING_FEATURE]"
-      sections_affected: "[FEATURES/USAGE/API_IF_YES]"
-      user_impact: "[DESCRIBE_NEW_CAPABILITIES]"
-      
-    api_docs:
-      update_required: "[YES_IF_API_CHANGES]"
-      files_affected: "[docs/api/*.md_IF_YES]"
-      breaking_changes: "[YES/NO]"
-      
-  release_management:
-    github_release: "[YES_FOR_MINOR_BUMPS]"  # Create release for feature additions
-    release_notes: "[YES]"                   # Document new features
-    migration_guide: "[IF_BREAKING_CHANGES]"
+## STEP 5: DOCUMENTATION
+documentation_updates:
+  changelog:
+    file: "CHANGELOG.md"
+    entry: "### Added\n- [FEATURE_DESCRIPTION]"
+  readme_updates: "[UPDATE_IF_USER_FACING]"
+  api_docs: "[UPDATE_IF_API_CHANGES]"
+  inline_comments: "Document complex logic and integrations"
+
+## STEP 6: GIT OPERATIONS
+git_operations:
+  commit_strategy: "Logical commits for each major component"
+  commit_format: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]" # Apply if git_privacy enabled
+  version_bump: "[PATCH|MINOR]"
+  actions:
+    - "Stage and commit all changes"
+    - "Push feature branch to remote"
+
+## STEP 7: PULL REQUEST
+pull_request:
+  title: "[ID]: [FEATURE_DESCRIPTION]"
+  description_template: |
+    ## Summary
+    [FEATURE_OVERVIEW]
     
-  validation_checklist:
-    - "CHANGELOG.md updated with feature/fix description"
-    - "Version bumped appropriately (patch/minor)"
-    - "README.md updated if user-facing changes"
-    - "API docs updated if applicable"
-    - "GitHub release created if minor version bump"
-
-# MANDATORY: Implementation Samples Section
-# ⚠️ EXECUTION CHECKLIST: All 6 sections must be completed
-implementation_samples:
-  example_commit: "[MEDIUM-001]: Implement user authentication system"
-  example_branch: "feature/MEDIUM-001-user-authentication"
-  example_scope: |
-    Files: src/auth/, src/middleware/, src/routes/auth.js
-    - Implement JWT authentication
-    - Add middleware for route protection
-    - Create user login/logout endpoints
-    - Add password hashing utilities
-
-  execution_checklist: |
-    ☐ Complete Context Section - Settings, best practices, code samples loaded
-    ☐ Requirements Section - All functional/processual/technical requirements met
-    ☐ Git Operations Section - Branch created, commits with privacy_filter
-    ☐ Documentation Updates Section - CHANGELOG.md and affected files updated
-    ☐ Knowledge Management Section - Patterns captured + stored in memory/
-    ☐ Review Process Section - SME review completed with max 3 cycles
-    ☐ Documentation Management Section - CHANGELOG, README, docs updated + release if minor
-    ☐ Implementation Samples Section - Applied correctly with multi-file scope
+    ## Changes Made
+    - [CHANGE_1]
+    - [CHANGE_2] 
+    - [CHANGE_3]
     
-    SKIP NOTHING. EXECUTE EVERYTHING. FULL LIFECYCLE DELIVERY.
+    ## Testing
+    [TESTING_PERFORMED]
+    
+    ## Review Focus
+    [AREAS_FOR_REVIEWER_ATTENTION]
+  reviewer: "[PRE_ASSIGNED_SME]"
+  labels: ["feature", "[DOMAIN]"]
 
-# Store new learnings in version control
-learning_capture:
-  patterns: "[CAPTURE_PATTERNS]"
-  insights: "[CAPTURE_INSIGHTS]"
-  store_location: "memory/[topic]/[subtopic].md"
-  version_control: true
+# MANDATORY: Knowledge Management
+knowledge_management:
+  capture_patterns: "Store successful multi-file coordination patterns"
+  capture_insights: "Document feature implementation approach"
+  location: "memory/[topic]/[subtopic].md"
+
+# EXECUTION CHECKLIST
+execution_checklist: |
+  ☐ STEP 1: Feature branch created and checked out
+  ☐ STEP 2: Knowledge gathered - memory, best practices, code analysis
+  ☐ STEP 3: Implementation completed across all target files
+  ☐ STEP 4: Review completed by SME with max 3 cycles
+  ☐ STEP 5: Documentation updated - CHANGELOG, README, API docs
+  ☐ STEP 6: Git operations executed - commits and push with privacy
+  ☐ STEP 7: Pull request created with detailed description
+  ☐ Knowledge patterns captured for future reference

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Standardized PRB template execution processes with clear numbered steps
+- Nano template: 3-step process (Knowledge → Implementation → Git) 
+- Tiny template: 5-step process (Knowledge → Implementation → Review → Documentation → Git)
+- Medium template: 7-step process (Branch → Knowledge → Implementation → Review → Documentation → Git → PR)
+- Simplified large and mega templates with focused coordination strategies
+- Removed redundant content and excessive complexity from all templates
+- Enhanced execution clarity with numbered steps and clear checklists
+
 ### Fixed
 - Adjusted /icc-init-system command to reference installed ~/.claude/ paths instead of src/ paths
 
