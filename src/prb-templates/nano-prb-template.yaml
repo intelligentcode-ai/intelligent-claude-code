@@ -33,7 +33,7 @@ requirements:
     - "Respect branch protection if enabled"
 
 # ========================================
-# EXECUTION PROCESS: 3 CLEAR STEPS
+# EXECUTION PROCESS: 4 CLEAR STEPS
 # ========================================
 
 ## STEP 1: KNOWLEDGE
@@ -47,16 +47,19 @@ implementation:
   change_description: "[WHAT_TO_CHANGE]"
   validation: "[HOW_TO_VERIFY]"
 
-## STEP 3: GIT (COMMIT/PUSH)
-git_operations:
+## STEP 3: GIT COMMIT
+git_commit:
   commit_message: "[ID]: [DESCRIPTION]"
   privacy_filter: "[FROM_CONFIG]"
-  actions:
-    - "Commit changes with clean message"
-    - "Push to default branch"
+  action: "Commit changes with clean message (no AI mentions)"
+
+## STEP 4: GIT PUSH
+git_push:
+  action: "Push to default branch"
 
 # EXECUTION CHECKLIST
 execution_checklist: |
-  ☐ Knowledge: Quick memory check completed
-  ☐ Implementation: Change made and validated
-  ☐ Git: Committed and pushed with privacy filter
+  ☐ Step 1 - Knowledge: Quick memory check completed
+  ☐ Step 2 - Implementation: Change made and validated
+  ☐ Step 3 - Git Commit: Changes committed with privacy filter
+  ☐ Step 4 - Git Push: Changes pushed to remote

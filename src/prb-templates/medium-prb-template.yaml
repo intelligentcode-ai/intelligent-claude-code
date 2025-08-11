@@ -44,10 +44,10 @@ requirements:
     - "Feature-level implementation"
 
 # ========================================
-# EXECUTION PROCESS: 7 CLEAR STEPS
+# EXECUTION PROCESS: 9 CLEAR STEPS
 # ========================================
 
-## STEP 1: BRANCH
+## STEP 1: GIT BRANCH
 branch_creation:
   branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
   actions:
@@ -76,22 +76,30 @@ review_checklist:
   - "Code quality and patterns"
   - "Configuration compliance"
 
-## STEP 5: DOCUMENTATION
+## STEP 5: VERSION
+version_bump:
+  type: "patch/minor"
+  action: "Bump version number appropriately"
+
+## STEP 6: DOCUMENTATION
 documentation:
   changelog:
     entry: "### Added\n- [FEATURE_DESCRIPTION]"
-  readme_updates: "[UPDATE_IF_USER_FACING]"
+    required: true
+  readme_updates: "Update README/API docs/guides as needed"
   comments: "Document complex logic and integrations"
 
-## STEP 6: GIT (COMMIT/PUSH)
-git_operations:
+## STEP 7: GIT COMMIT
+git_commit:
   commit_message: "[ID]: [DESCRIPTION]"
   privacy_filter: "[FROM_CONFIG]"
-  actions:
-    - "Commit all changes"
-    - "Push feature branch to remote"
+  action: "Commit all changes with clean message (no AI mentions)"
 
-## STEP 7: PR
+## STEP 8: GIT PUSH
+git_push:
+  action: "Push feature branch to remote"
+
+## STEP 9: GIT PR
 pull_request:
   title: "[ID]: [FEATURE_DESCRIPTION]"
   description: |
@@ -108,10 +116,12 @@ pull_request:
 
 # EXECUTION CHECKLIST
 execution_checklist: |
-  ☐ Branch: Feature branch created and checked out
-  ☐ Knowledge: Memory and best practices searched
-  ☐ Implementation: All target files updated
-  ☐ Review: Checklist completed
-  ☐ Documentation: CHANGELOG and docs updated
-  ☐ Git: Committed and pushed with privacy filter
-  ☐ PR: Pull request created with description
+  ☐ Step 1 - Git Branch: Feature branch created and checked out
+  ☐ Step 2 - Knowledge: Memory and best practices searched
+  ☐ Step 3 - Implementation: All target files updated
+  ☐ Step 4 - Review: Technical review checklist completed
+  ☐ Step 5 - Version: Version bumped appropriately
+  ☐ Step 6 - Documentation: CHANGELOG updated (minimum) + README/API docs/guides as needed
+  ☐ Step 7 - Git Commit: Changes committed with privacy filter
+  ☐ Step 8 - Git Push: Feature branch pushed to remote
+  ☐ Step 9 - Git PR: Pull request created with description

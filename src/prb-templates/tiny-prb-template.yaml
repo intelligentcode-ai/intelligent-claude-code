@@ -37,7 +37,7 @@ requirements:
     - "Under 50 lines of changes"
 
 # ========================================
-# EXECUTION PROCESS: 5 CLEAR STEPS
+# EXECUTION PROCESS: 7 CLEAR STEPS
 # ========================================
 
 ## STEP 1: KNOWLEDGE
@@ -60,24 +60,35 @@ review_checklist:
   - "Code follows project patterns"
   - "No unintended side effects"
 
-## STEP 4: DOCUMENTATION
+## STEP 4: VERSION
+version_bump:
+  type: "patch"
+  action: "Bump version number appropriately"
+
+## STEP 5: DOCUMENTATION
 documentation:
   changelog:
     entry: "### Added/Fixed\n- [FEATURE_DESCRIPTION]"
+    required: true
+  additional: "Update any affected docs as needed"
   comments: "Add inline comments for complex logic"
 
-## STEP 5: GIT (COMMIT/PUSH)
-git_operations:
+## STEP 6: GIT COMMIT
+git_commit:
   commit_message: "[ID]: [DESCRIPTION]"
   privacy_filter: "[FROM_CONFIG]"
-  actions:
-    - "Commit changes with clear message"
-    - "Push to remote repository"
+  action: "Commit changes with clean message (no AI mentions)"
+
+## STEP 7: GIT PUSH
+git_push:
+  action: "Push to remote repository"
 
 # EXECUTION CHECKLIST
 execution_checklist: |
-  ☐ Knowledge: Memory searched and patterns identified
-  ☐ Implementation: Changes made and validated
-  ☐ Review: Self-review checklist completed
-  ☐ Documentation: CHANGELOG updated
-  ☐ Git: Committed and pushed with privacy filter
+  ☐ Step 1 - Knowledge: Memory searched and patterns identified
+  ☐ Step 2 - Implementation: Changes made and validated
+  ☐ Step 3 - Review: Self-review checklist completed
+  ☐ Step 4 - Version: Version bumped appropriately
+  ☐ Step 5 - Documentation: CHANGELOG updated (minimum) + affected docs
+  ☐ Step 6 - Git Commit: Changes committed with privacy filter
+  ☐ Step 7 - Git Push: Changes pushed to remote

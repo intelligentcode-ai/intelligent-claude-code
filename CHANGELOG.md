@@ -5,16 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [6.17.1] - 2025-08-11
 
 ### Changed
-- Standardized PRB template execution processes with clear numbered steps
-- Nano template: 3-step process (Knowledge → Implementation → Git) 
-- Tiny template: 5-step process (Knowledge → Implementation → Review → Documentation → Git)
-- Medium template: 7-step process (Branch → Knowledge → Implementation → Review → Documentation → Git → PR)
-- Simplified large and mega templates with focused coordination strategies
-- Removed redundant content and excessive complexity from all templates
-- Enhanced execution clarity with numbered steps and clear checklists
+- Standardized PRB template execution processes with consistent base process flows
+- Nano template: 4-step process (Knowledge → Implementation → Git Commit → Git Push)
+- Tiny template: 7-step process (Knowledge → Implementation → Review → Version → Documentation → Git Commit → Git Push)
+- Medium template: 9-step process (Branch → Knowledge → Implementation → Review → Version → Documentation → Git Commit → Git Push → PR)
+- Added explicit version bump steps to Tiny and Medium PRB templates
+- Documentation step now specifies CHANGELOG as minimum requirement plus additional docs as needed
+- Enhanced execution clarity with crystal clear numbered steps and detailed checklists
+- Separated git operations into distinct commit and push steps for better process control
+
+## [Unreleased]
 
 ### Fixed
 - Adjusted /icc-init-system command to reference installed ~/.claude/ paths instead of src/ paths
