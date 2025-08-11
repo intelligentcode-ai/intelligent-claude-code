@@ -9,6 +9,7 @@
   vars:
     source_dir: "{{ playbook_dir }}/../src"
     target_path: "{{ target_path | default('') }}"
+    mcp_config_file: "{{ mcp_config_file | default('') }}"
   
   tasks:
     - name: Determine installation scope and path
@@ -28,3 +29,10 @@
         claude_install_path: "{{ install_path }}"
         claude_project_path: "{{ project_path }}"
         claude_scope: "{{ target_scope }}"
+
+    - name: Install MCP servers if configuration provided
+      include_role:
+        name: mcp-integration
+      vars:
+        settings_json_path: "{{ install_path }}/settings.json"
+      when: mcp_config_file != '' and mcp_config_file is defined

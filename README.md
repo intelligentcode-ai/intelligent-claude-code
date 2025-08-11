@@ -103,6 +103,52 @@ stories/
 /icc-store-memory            # Save learnings (auto-prunes)
 ```
 
+## MCP Server Integration
+
+Install with automatic MCP server configuration:
+
+```bash
+# Create MCP configuration
+cat > config/mcps.json << 'EOF'
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "playwright": {
+      "command": "npx", 
+      "args": ["-y", "@modelcontextprotocol/server-playwright"]
+    },
+    "custom-api": {
+      "command": "node",
+      "args": ["/path/to/custom-mcp.js"],
+      "env": {
+        "API_KEY": "${OPENAI_API_KEY}",
+        "DATABASE_URL": "${DB_CONNECTION}"
+      }
+    }
+  }
+}
+EOF
+
+# Install with MCP integration
+make install MCP_CONFIG=./config/mcps.json
+```
+
+### Environment Variable Support
+- Use `${VARIABLE_NAME}` placeholders in MCP configurations
+- Variables resolved from environment or API keys file
+- Validation and backup included automatically
+- Rollback on failure to previous settings
+
+### Error Handling Features
+- **JSON Syntax Validation**: Comprehensive JSON structure checking
+- **Backup & Rollback**: Automatic settings.json backup before changes
+- **Permission Handling**: Graceful file permission error handling  
+- **Environment Resolution**: Safe environment variable substitution
+- **Detailed Logging**: Complete error logs with troubleshooting steps
+
 ## Configuration (CLAUDE.md)
 
 ```yaml
