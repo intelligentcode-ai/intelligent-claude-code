@@ -59,6 +59,24 @@ auto_delegation: true
 repository_type: "git"
 release_automation: true
 
+# Memory Configuration (External memory storage - optional)
+memory_configuration:
+  external_memory_enabled: false     # Enable external memory storage
+  memory_path: "./memory"            # Default: project-local memory directory
+  memory_type: "local_dir"           # local_dir or git_repo
+  sync_strategy: "manual"            # manual or auto
+
+  # Example: External local directory
+  # external_memory_enabled: true
+  # memory_path: "~/shared-memory/intelligent-claude-code"
+  # memory_type: "local_dir"
+  
+  # Example: Git repository for memory
+  # external_memory_enabled: true  
+  # memory_path: "git@github.com:user/project-memory.git"
+  # memory_type: "git_repo"
+  # sync_strategy: "auto"
+
 # Enforcement
 blocking_enabled: false
 violation_logging: true

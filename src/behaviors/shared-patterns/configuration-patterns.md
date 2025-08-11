@@ -32,6 +32,12 @@
 - template_validation (true/false)
 - complexity_override (true/false)
 
+### Memory Configuration
+- external_memory_enabled (true/false) - Enable external memory storage
+- memory_path (path) - Custom path for memory storage, defaults to project-local
+- memory_type (local_dir/git_repo) - Type of external memory storage
+- sync_strategy (manual/auto) - How to sync external memory changes
+
 ## Loading Process
 1. Load configuration from hierarchy
 2. Load system defaults

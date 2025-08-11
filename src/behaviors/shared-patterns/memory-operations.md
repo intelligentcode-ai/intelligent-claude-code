@@ -24,7 +24,7 @@ memory/
 
 ### StoreInMemory Pattern
 1. **Security Validation**: Apply security checklist - BLOCK if sensitive data detected
-2. **Path Resolution**: Check for external_path configuration, use configured path or default to ./memory/
+2. **Path Resolution**: Use ResolveMemoryBasePath() to determine memory base directory with external configuration support
 3. Determine topic/subtopic path within memory base directory
 4. Add entry at TOP of file (newest first for precedence)
 5. Auto-prune if >10 entries or >5KB
@@ -34,13 +34,56 @@ memory/
 ### Memory Base Path Resolution
 
 **Steps to Determine Memory Base Path:**
-1. **Check External Path Configuration:** Look for memory_configuration.external_path setting
-2. **If External Path Exists:**
+1. **Check External Memory Configuration:** Look for memory_configuration.external_memory_enabled setting
+2. **If External Memory Disabled:** Use default project-local behavior with get_project_path("memory_path", "memory")
+3. **If External Memory Enabled:**
+   - **Validate Configuration:** Check memory_configuration.memory_path exists and is valid
+   - **Apply Security Validation:** Run comprehensive path security checks
    - **Expand Home Directory:** If path starts with ~, expand to full home directory path
-   - **Use Path Directly:** If path is absolute, use as specified
-   - **Ensure Directory Exists:** Create directory if it doesn't exist
-   - **Return External Path:** Use the configured external path
-3. **If No External Path:** Use default backward-compatible behavior with get_project_path("memory_path", "memory")
+   - **Validate Path Accessibility:** Ensure read/write permissions and directory exists
+   - **Apply Path Type Logic:** Handle local_dir vs git_repo based on memory_type
+   - **Return External Path:** Use the validated external path
+4. **Fallback on Errors:** If validation fails, log error and fallback to project-local memory
+
+### External Path Security Validation
+
+**Steps to Validate External Memory Path for Security:**
+
+**Security Validation Rules:**
+1. **Block System Directories:** Reject paths like /bin, /usr, /etc, /var, /sys, /proc
+2. **Block Root Directory:** Reject attempts to use / as memory path
+3. **Validate Permissions:** Check read/write access to target directory
+4. **Check Path Traversal:** Block paths containing ../ or other traversal attempts
+5. **Validate Home Directory:** If using ~/, ensure it expands to valid user home
+
+**Validation Steps:**
+1. **Normalize Path:** Convert to absolute path, resolve ~ expansion
+2. **System Directory Check:** 
+   - If path starts with /bin, /usr, /etc, /var, /sys, /proc, /boot, /dev
+   - THEN block with error: "Security violation: Cannot use system directory for memory storage"
+3. **Root Directory Check:**
+   - If normalized path equals "/"
+   - THEN block with error: "Security violation: Cannot use root directory for memory storage"
+4. **Path Traversal Check:**
+   - If path contains ".." components
+   - THEN block with error: "Security violation: Path traversal not allowed in memory path"
+5. **Permission Validation:**
+   - Test directory exists or can be created
+   - Test read/write permissions
+   - If validation fails, show error: "Path validation failed: Cannot access configured memory path"
+6. **Success:** Allow external path usage if all validations pass
+
+### Memory Type Handling
+
+**Local Directory (memory_type: local_dir):**
+- Path must be accessible local filesystem directory
+- Directory auto-created if it doesn't exist
+- Standard file operations for memory storage
+
+**Git Repository (memory_type: git_repo):**
+- Path must be valid git repository URL or local git directory
+- Requires git operations for sync based on sync_strategy
+- Repository must be accessible and have proper permissions
 
 ### Security Validation Process
 

@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.18.1] - 2025-08-11
+
+### Added
+- Configuration system enhancement for external memory paths
+- memory_configuration section with external_memory_enabled, memory_path, memory_type settings
+- External path validation and security checks for system directories and path traversal
+- Support for both local directory and git repository external memory storage
+- Comprehensive path security validation with permission checks
+- Backward compatibility maintained with project-local memory as default
+
+### Enhanced
+- Memory operations with improved external path resolution logic
+- Configuration patterns documentation with new memory configuration options
+- Config template with examples for local directory and git repository configurations
+
 ## [6.18.0] - 2025-08-11
 
 ### Added
