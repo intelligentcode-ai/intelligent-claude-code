@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Adjusted /icc-init-system command to reference installed ~/.claude/ paths instead of src/ paths
+
 ## [6.9.0] - 2025-08-10
 
 ### Fixed

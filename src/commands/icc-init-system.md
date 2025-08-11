@@ -25,7 +25,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 When running `/icc-init-system`, the system displays progress through these phases:
 
 ### 🧠 RELOADING SYSTEM BEHAVIORS
-Loading all behavioral patterns from src/behaviors/:
+Loading all behavioral patterns from ~/.claude/behaviors/:
   ✓ config-loader.md - Configuration hierarchy management
   ✓ directory-structure.md - Project structure enforcement
   ✓ learning-team-automation.md - Error forgiveness and learning
@@ -40,7 +40,7 @@ Loading all behavioral patterns from src/behaviors/:
 All behaviors successfully reloaded ✅
 
 ### 📋 RELOADING PRB TEMPLATES
-Loading all templates from prb-templates/:
+Loading all templates from ~/.claude/prb-templates/:
   ✓ nano-prb-template.yaml - Trivial changes (0-2 points)
   ✓ tiny-prb-template.yaml - Simple single-file (3-5 points)
   ✓ medium-prb-template.yaml - Multi-file features (6-15 points)
