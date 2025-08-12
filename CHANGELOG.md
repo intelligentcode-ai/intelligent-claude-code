@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.18.0] - 2025-08-12
+
+### Added
+- STORY-004: External memory path configuration support
+- Configurable `memory_path` setting for storing memory outside project directory
+- Support for relative, absolute, and home directory paths
+- Git auto-commit integration when .git exists in memory path
+- Comprehensive user guide for external memory configuration
+- Configuration guide with complete examples and scenarios
+- Security validation to prevent sensitive data storage
+
+### Changed
+- Updated memory-operations.md with Memory Base Path Resolution behavioral pattern
+- Enhanced configuration-patterns.md with memory_path setting
+- Replaced function references with behavioral instructions (MARKDOWN-BASED AI-AGENTIC SYSTEM)
+
+### Documentation
+- Added memory configuration section to README.md
+- Created detailed user guide with setup scenarios (docs/user-guide.md)
+- Created comprehensive configuration guide (docs/configuration-guide.md)
+
 ## [6.17.1] - 2025-08-11
 
 ### Fixed
