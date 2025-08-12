@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.20.0] - 2025-08-12
+
+### Added
+- STORY-006: PRB size blocking to prevent creation of PRBs larger than 15 points
+- Automatic blocking rule in prb-auto-trigger.md for oversized PRBs
+- PM instructions to break down large stories into multiple smaller PRBs
+- Clear error message when PRB exceeds 15 point complexity limit
+
+### Changed
+- Enhanced story-breakdown.md with PRB size management rules
+- Updated PRB creation process to include complexity analysis step
+- Added examples for splitting large stories (Authentication, API Integration)
+
 ## [6.19.0] - 2025-08-12
 
 ### Added
