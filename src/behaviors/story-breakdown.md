@@ -184,14 +184,44 @@ User simply says:
 
 ## PRB Generation
 
+### PRB Size Limits
+**MANDATORY:** @PM MUST keep individual PRBs under 15 complexity points:
+
+**Size Management Rules:**
+- **Single PRB**: If story analysis shows ≤15 points → Create one PRB
+- **Multiple PRBs**: If story analysis shows >15 points → Split into multiple PRBs
+- **Each PRB < 15 points**: Every individual PRB must be under the limit
+- **Sequential numbering**: PRB-001, PRB-002, PRB-003, etc. under same parent story
+- **Logical grouping**: Split by natural boundaries (frontend/backend, auth/data, setup/implementation)
+
+**Large Story Breakdown Process:**
+1. **Analyze total complexity**: Calculate full story complexity points
+2. **Identify split points**: Find logical boundaries to divide work
+3. **Create multiple PRBs**: Each focused on specific aspect, each <15 points
+4. **Maintain dependencies**: Ensure PRBs can be executed in logical order
+5. **Document relationships**: Note dependencies between PRBs in descriptions
+
+**Examples of splits:**
+- **Authentication Story (25 points)**: 
+  - PRB-001: Backend auth setup (12 points)
+  - PRB-002: Frontend login UI (10 points)
+- **API Integration (20 points)**:
+  - PRB-001: API client setup (8 points) 
+  - PRB-002: Data models and validation (7 points)
+  - PRB-003: Error handling and tests (9 points)
+
+### Standard PRB Creation Process
+
 When @PM breaks down a story:
 1. **Validates Parent Story:** Ensures story follows naming format (STORY-###-title-date.md)
-2. **Generates Compliant PRB Names:** Using format `<STORY_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
-3. **Sequential Numbering:** Uses NumberingService for parent-scoped PRB numbers
-4. **Creates PRBs:** In configured prb_path/prb_ready (default: `prbs/ready/`)
-5. **Template Selection:** Appropriate complexity and template selected using hierarchy
-6. **Validation:** Each PRB name validated before creation
-7. **Ready for Execution:** Uses directory structure from configuration
+2. **Analyzes Complexity:** Calculate total story complexity points
+3. **Determines Split Strategy:** Single PRB (≤15 points) or multiple PRBs (>15 points)
+4. **Generates Compliant PRB Names:** Using format `<STORY_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
+5. **Sequential Numbering:** Uses NumberingService for parent-scoped PRB numbers
+6. **Creates PRBs:** In configured prb_path/prb_ready (default: `prbs/ready/`)
+7. **Template Selection:** Appropriate complexity and template selected using hierarchy
+8. **Validation:** Each PRB name validated before creation and complexity under 15 points
+9. **Ready for Execution:** Uses directory structure from configuration
 
 ### PRB Naming Instructions
 **MANDATORY:** When creating PRBs from stories, MUST follow these steps:
