@@ -43,6 +43,12 @@ make uninstall FORCE=true  # Complete removal including user data
 /icc-search-memory [query]   # Search memory for patterns/learnings
 /icc-store-memory [type] [content]  # Store new memory entity
 /icc-memory-status          # Check memory system statistics
+
+# MCP Server Integration
+make install MCP_CONFIG=./config/mcps.json  # Install with MCP servers
+# Configure MCP servers with environment variables and validation
+# Automatic backup and rollback on configuration errors
+# JSON syntax validation and comprehensive error handling
 ```
 
 ## High-Level Architecture
