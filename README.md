@@ -117,7 +117,37 @@ prb_configuration:
     
   behavioral_overrides:
     testing_approach: "tdd"    # Your preferences
+
+# Memory configuration - where AI agents store learnings
+memory_configuration:
+  external_path: "~/claude-memory"    # External memory location
+  # Or use project-local (default): "./memory/"
 ```
+
+## Memory Configuration
+
+The AI agents can store their learnings in different locations:
+
+### Default (Project-Local)
+```yaml
+# Memory stored in ./memory/ within your project
+# No configuration needed - this is the default
+```
+
+### External Memory Path
+```yaml
+# In CLAUDE.md
+memory_configuration:
+  external_path: "~/claude-memory"     # Home directory
+  external_path: "../shared-memory"   # Relative to project
+  external_path: "/path/to/memory"    # Absolute path
+```
+
+**Benefits of External Memory:**
+- **Privacy**: Keep learnings separate from project code
+- **Sharing**: Use same memory across multiple projects  
+- **Git Integration**: When `.git` exists in memory path, system auto-commits changes
+- **Flexibility**: Store anywhere accessible to the AI agents
 
 ## Directory Structure
 
@@ -128,7 +158,7 @@ your-project/
 ├── src/                       # Your code
 ├── stories/                   # User stories for PRB generation
 │   └── drafts/                # Work-in-progress stories
-├── memory/                    # Version-controlled learnings
+├── memory/                    # Version-controlled learnings (default)
 └── prbs/                      # Version-controlled PRBs
     ├── ready/                 # Ready to execute
     └── completed/             # Executed PRBs
