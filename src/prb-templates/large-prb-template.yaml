@@ -1,302 +1,109 @@
-# Large PRB Template - Complex Features with Sub-PRBs
-# Auto-selected for sophisticated instruction complexity (16-30 points) - AI executes instantly  
-# Manages multiple Medium/Tiny PRBs with advanced coordination
-
-# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
-# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
-# ⚠️ SUB-PRB INHERITANCE: All sub-PRBs inherit ALL 6 mandatory sections
+# Large PRB Template - Complex Features (16-30 points)
+# For sophisticated multi-component features requiring coordination
 
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: large-prb
 complexity: complex
-priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
-title: "[EPIC_OR_STORY_TITLE]"
+priority: "[PRIORITY_LEVEL]"
+title: "[ROLE] [DESCRIPTION]"
 requires_decomposition: true
 
 # MANDATORY: Complete Context Section
 complete_context:
-  project: "[CLAUDE.md]"        # Project context from CLAUDE.md
-  settings: "[ALL-SETTINGS]"   # All configuration values
-  git_privacy: "[FROM_CONFIG]" # git_privacy setting from config
-  branch_protection: "[FROM_CONFIG]" # branch_protection from config
-  default_branch: "[FROM_CONFIG]"    # default_branch from config
-  branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
-  business_goal: "[BUSINESS_OBJECTIVE]"
-  technical_scope: "[SYSTEM_COMPONENTS]"
-  best_practices:
-    # Auto-discovered practices from best-practices/ directory
-    # Top 3 relevant practices for complex features
-    - "[DYNAMIC_BEST_PRACTICES_1]"
-    - "[DYNAMIC_BEST_PRACTICES_2]"
-    - "[DYNAMIC_BEST_PRACTICES_3]"
-  
+  project_root: "[PROJECT_ROOT]"
+  system_nature: "[SYSTEM_NATURE]"
+  configuration:
+    git_privacy: "[FROM_CONFIG]"
+    branch_protection: "[FROM_CONFIG]"
+    default_branch: "[FROM_CONFIG]"
+    branch_strategy: "[FROM_CONFIG]"
+  business_goal: "[WHY_THIS_FEATURE_MATTERS]"
+  technical_scope: "[SYSTEM_COMPONENTS_AFFECTED]"
+  critical_files:
+    - path: "[CORE_FILE_1]"
+      purpose: "[PURPOSE_1]"
+      sample: "[SAMPLE_1]"
+    - path: "[CORE_FILE_2]"
+      purpose: "[PURPOSE_2]"
+      sample: "[SAMPLE_2]"
+  user_requirements:
+    original_request: "[USER_REQUEST]"
+    success_criteria: "[SUCCESS_CRITERIA]"
+    feature_scope: "[FEATURE_BOUNDARY]"
+
 # MANDATORY: Requirements Section
 requirements:
   functional:
-    - "[COMPLEX_REQUIREMENT_1]"
-    - "[COMPLEX_REQUIREMENT_2]"
-    - "[COMPLEX_REQUIREMENT_3]"
+    - "[MAIN_FEATURE_REQUIREMENT]"
+    - "[SUPPORTING_REQUIREMENT_1]"
+    - "[SUPPORTING_REQUIREMENT_2]"
   processual:
-    - "Respect git_privacy setting for all sub-PRB commits"
-    - "Follow branch protection strategy across all components"
-    - "Use configured default branch for final integration"
-    - "Apply configured branch naming for feature branches"
-    - "Coordinate sub-PRB execution with proper sequencing"
+    - "Apply git_privacy for all sub-component commits"
+    - "Coordinate multi-component development"
+    - "Manage feature branch strategy"
   technical:
-    - "Multi-component system integration"
+    - "Multi-component integration"
     - "Complex feature coordination"
-    - "16-30 instruction sophistication management"
 
-# Automatic sub-PRB generation
-sub_prbs:
-  # ALL SUB-PRBS INHERIT COMPLETE CONTEXT AND MANDATORY SECTIONS
-  - id: "[MEDIUM-001]"
-    title: "[ROLE] [COMPONENT_1]"
-    complexity: medium
-    dependencies: []
-    complete_context:
-      inherit_all: true  # Inherits ALL parent context
-      project: "[CLAUDE.md]"
-      settings: "[ALL-SETTINGS]"
-      git_privacy: "[FROM_CONFIG]"
-      branch_protection: "[FROM_CONFIG]"
-      default_branch: "[FROM_CONFIG]"
-      branch_strategy: "[FROM_CONFIG]"
-    requirements:
-      functional: ["[COMPONENT_1_REQUIREMENTS]"]
-      processual: 
-        - "Respect git_privacy setting for commit messages"
-        - "Follow branch protection strategy from config"
-        - "Use configured default branch for operations"
-        - "Apply configured branch naming strategy"
-      technical: ["[COMPONENT_1_TECH_SPECS]"]
-    git_operations:
-      branch_strategy: "[FROM_CONFIG]"
-      branch_protection: "[FROM_CONFIG]"
-      privacy_filter: "[FROM_CONFIG]"
-      default_branch: "[FROM_CONFIG]"
-    knowledge_management:
-      structure: "memory/[topic]/[subtopic].md"
-      storage: "version-controlled"
-    review_process:
-      type: "sme_review"
-      inherit_from_parent: true
-    implementation_samples:
-      example_commit: "[MEDIUM-001]: [COMPONENT_1_DESCRIPTION]"
-    
-  - id: "[MEDIUM-002]"
-    title: "[ROLE] [COMPONENT_2]"
-    complexity: medium
-    dependencies: ["[MEDIUM-001]"]
-    complete_context:
-      inherit_all: true  # Inherits ALL parent context
-      project: "[CLAUDE.md]"
-      settings: "[ALL-SETTINGS]"
-      git_privacy: "[FROM_CONFIG]"
-      branch_protection: "[FROM_CONFIG]"
-      default_branch: "[FROM_CONFIG]"
-      branch_strategy: "[FROM_CONFIG]"
-    requirements:
-      functional: ["[COMPONENT_2_REQUIREMENTS]"]
-      processual:
-        - "Respect git_privacy setting for commit messages"
-        - "Follow branch protection strategy from config"
-        - "Use configured default branch for operations"
-        - "Apply configured branch naming strategy"
-      technical: ["[COMPONENT_2_TECH_SPECS]"]
-    git_operations:
-      branch_strategy: "[FROM_CONFIG]"
-      branch_protection: "[FROM_CONFIG]"
-      privacy_filter: "[FROM_CONFIG]"
-      default_branch: "[FROM_CONFIG]"
-    knowledge_management:
-      structure: "memory/[topic]/[subtopic].md"
-      storage: "version-controlled"
-    review_process:
-      type: "sme_review"
-      inherit_from_parent: true
-    implementation_samples:
-      example_commit: "[MEDIUM-002]: [COMPONENT_2_DESCRIPTION]"
-    
-  - id: "[TINY-001]"
-    title: "[ROLE] [CONFIG_TASK]"
-    complexity: tiny
-    dependencies: []
-    complete_context:
-      inherit_all: true  # Inherits ALL parent context
-      project: "[CLAUDE.md]"
-      settings: "[ALL-SETTINGS]"
-      git_privacy: "[FROM_CONFIG]"
-      branch_protection: "[FROM_CONFIG]"
-      default_branch: "[FROM_CONFIG]"
-      branch_strategy: "[FROM_CONFIG]"
-    requirements:
-      functional: ["[CONFIG_REQUIREMENTS]"]
-      processual:
-        - "Respect git_privacy setting for commit messages"
-        - "Follow branch protection strategy from config"
-        - "Use configured default branch for operations"
-        - "Apply configured branch naming strategy"
-      technical: ["[CONFIG_TECH_SPECS]"]
-    git_operations:
-      branch_strategy: "[FROM_CONFIG]"
-      branch_protection: "[FROM_CONFIG]"
-      privacy_filter: "[FROM_CONFIG]"
-      default_branch: "[FROM_CONFIG]"
-    knowledge_management:
-      structure: "memory/[topic]/[subtopic].md"
-      storage: "version-controlled"
-    review_process:
-      type: "minimal_self_review"
-      inherit_from_parent: true
-    implementation_samples:
-      example_commit: "[TINY-001]: [CONFIG_DESCRIPTION]"
-    
-# Coordination strategy
-execution_strategy:
-  parallel_groups:
-    - ["[MEDIUM-001]", "[TINY-001]"] # Can run together
-    - ["[MEDIUM-002]"]               # Depends on group 1
-    
-  integration_points:
-    - between: ["[MEDIUM-001]", "[MEDIUM-002]"]
-      validate: "[API_CONTRACT]"
-      
-# Sequential thinking for complex decisions
-sequential_thinking:
-  required: true
-  command: "/icc-think-sequential"
-  focus_areas:
-    - "[ARCHITECTURE_DECISIONS]"
-    - "[INTEGRATION_APPROACH]"
-    - "[RISK_ASSESSMENT]"
-    
-# Multiple validation gates
-validation_gates:
-  - after: "[MEDIUM-001]"
-    check: "[SECURITY_REVIEW]"
-    reviewer: "@Security-Engineer"
-    
-  - after: "all_complete"
-    check: "[INTEGRATION_TEST]"
-    reviewer: "@QA-Engineer"
-    
-# MANDATORY: Git Operations Section
-# ⚠️ git_privacy: true = NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
-# ⚠️ SUB-PRB COORDINATION: All sub-PRBs must follow same git privacy settings
-git_operations:
-  branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
-  branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
-  branch_name: "[FROM_CONFIG_PREFIX]/[STORY-ID]-[DESCRIPTION]"
-  commit_coordination: "sub_prb_aware"
-  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy across all sub-PRBs - CRITICAL!
-  default_branch: "[FROM_CONFIG]"     # Target configured default branch
-  version_bump: "[MINOR|MAJOR]"       # MINOR for features, MAJOR for breaking changes
-  merge_request: true # Parent asks user
-  squash_commits: true
+# Sub-PRB Decomposition Strategy
+decomposition:
+  approach: "Break into Medium/Tiny PRBs for manageable execution"
+  sub_components:
+    - component: "[COMPONENT_1]"
+      prb_type: "medium"
+      dependencies: []
+    - component: "[COMPONENT_2]" 
+      prb_type: "medium"
+      dependencies: ["[COMPONENT_1]"]
+    - component: "[INTEGRATION]"
+      prb_type: "tiny"
+      dependencies: ["[COMPONENT_1]", "[COMPONENT_2]"]
 
-# MANDATORY: Knowledge Management Section
+# Coordination Strategy
+coordination:
+  execution_order: "Sequential based on dependencies"
+  integration_points: "[HOW_COMPONENTS_CONNECT]"
+  validation_strategy: "[HOW_TO_TEST_INTEGRATION]"
+
+# MANDATORY: Knowledge Management
 knowledge_management:
-  structure: "memory/[topic]/[subtopic].md"
-  storage: "version-controlled"
-  complex_pattern_capture: true
-  sub_prb_learning_aggregation: true
-  capture_points:
-    - "[ARCHITECTURE_PATTERNS]"
-    - "[INTEGRATION_APPROACHES]"
-    - "[COORDINATION_INSIGHTS]"
-  store_as: "ComplexPattern"
+  capture_patterns: "Store complex feature coordination patterns"
+  capture_insights: "Document multi-component integration approach"
+  location: "memory/[topic]/complex-features.md"
 
-# MANDATORY: Review Process Section
+# MANDATORY: Git Operations
+git_operations:
+  branch_strategy: "Feature branch with sub-component branches"
+  commit_format: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]"
+  coordination: "Merge sub-components to feature branch"
+
+# MANDATORY: Review Process
 review_process:
-  type: "multi_gate_review"
-  validation_gates:
-    - after: "[MEDIUM-001]"
-      check: "[SECURITY_REVIEW]"
-      reviewer: "@Security-Engineer"
-    - after: "all_complete"
-      check: "[INTEGRATION_TEST]"
-      reviewer: "@QA-Engineer"
-  coordination: "continuous"
-  escalation: "architect_consultation"
+  type: "architectural_review"
+  reviewer: "[PRE_ASSIGNED_ARCHITECT]"
+  focus: "Component integration and system design"
 
-# MANDATORY: Documentation Management Section
-documentation_management:
-  required_updates:
-    changelog:
-      file: "CHANGELOG.md"
-      entry_format: |
-        ## [VERSION] - DATE
-        ### Added
-        - [LARGE_FEATURE_DESCRIPTION]
-        - [KEY_CAPABILITIES_ADDED]
-        ### Changed
-        - [ARCHITECTURAL_CHANGES_IF_ANY]
-      semantic_versioning: true
-      mandatory: true
-      
-    readme:
-      file: "README.md"  
-      update_required: "[YES_FOR_MAJOR_FEATURES]"
-      sections_affected: "[FEATURES/INSTALLATION/USAGE/ARCHITECTURE]"
-      user_impact: "[COMPREHENSIVE_DESCRIPTION]"
-      
-    api_docs:
-      update_required: "[YES_IF_API_CHANGES]"
-      files_affected: "[docs/api/*.md_LIST]"
-      breaking_changes: "[YES/NO_WITH_DETAILS]"
-      
-    user_guides:
-      update_required: "[YES_FOR_NEW_WORKFLOWS]"
-      guides_affected: "[docs/guides/*.md_LIST]"
-      new_features: "[FEATURE_DOCUMENTATION_NEEDS]"
-    
-  release_management:
-    github_release: "YES"                    # Always for minor versions
-    release_notes: "YES"                     # Comprehensive feature documentation
-    migration_guide: "[YES_IF_BREAKING]"     # Required for breaking changes
-    announcement: "[YES_FOR_MAJOR_FEATURES]" # Blog/announcement consideration
-    
-  validation_checklist:
-    - "CHANGELOG.md updated with comprehensive feature description"
-    - "Version bumped (minor) for feature additions"
-    - "README.md updated with new capabilities and usage"
-    - "API documentation updated for all new endpoints"
-    - "User guides created/updated for new workflows"
-    - "GitHub release created with detailed release notes"
-    - "Migration guide provided if breaking changes"
+# MANDATORY: Documentation Updates
+documentation_updates:
+  changelog: "Document major feature addition"
+  architecture_docs: "Update system architecture if needed"
+  user_docs: "Update user-facing documentation"
 
-# MANDATORY: Implementation Samples Section
-# ⚠️ EXECUTION CHECKLIST: All 6 sections + sub-PRB coordination must be completed
-implementation_samples:
-  example_commit: "[LARGE-001]: Implement complete user management system"
-  example_branch: "feature/LARGE-001-user-management"
-  example_scope: |
-    Sub-PRBs:
-    - MEDIUM-001: User authentication module
-    - MEDIUM-002: User profile management
-    - TINY-001: Configuration updates
-    Complex coordination across 15+ files
-    Multiple service integration points
-
-  execution_checklist: |
-    ☐ Complete Context Section - Settings and scope loaded for parent + all sub-PRBs
-    ☐ Requirements Section - All functional/processual/technical requirements met
-    ☐ Git Operations Section - Coordination strategy with privacy_filter for all
-    ☐ Documentation Updates Section - CHANGELOG.md and architecture docs updated
-    ☐ Knowledge Management Section - Complex patterns captured + stored
-    ☐ Review Process Section - Multi-gate reviews completed at each validation point
-    ☐ Documentation Management Section - CHANGELOG, README, and release docs updated
-    ☐ Implementation Samples Section - Applied with proper sub-PRB coordination
-    ☐ SUB-PRB INHERITANCE - All sub-PRBs have complete 6-section context
-    ☐ SUB-PRB EXECUTION - Each sub-PRB follows its own mandatory checklist
-    
-    SKIP NOTHING. EXECUTE EVERYTHING. COORDINATE ALL SUB-PRBS. FULL LIFECYCLE DELIVERY.
-
-# Complex learning capture
-learning_strategy:
-  capture_points:
-    - "[ARCHITECTURE_PATTERNS]"
-    - "[INTEGRATION_APPROACHES]"
-    - "[COORDINATION_INSIGHTS]"
-  store_as: "ComplexPattern"
+# Execution Strategy
+execution_strategy: |
+  1. Create feature branch for overall coordination
+  2. Generate and execute sub-PRBs in dependency order
+  3. Integrate components on feature branch
+  4. Comprehensive testing and validation
+  5. Update documentation and create pull request
+  
+# EXECUTION CHECKLIST
+execution_checklist: |
+  ☐ Feature branch created for coordination
+  ☐ Sub-PRBs generated with proper dependencies
+  ☐ Components executed in correct order
+  ☐ Integration completed and tested
+  ☐ Documentation updated comprehensively
+  ☐ Architectural review completed
+  ☐ Pull request created with detailed description

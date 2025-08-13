@@ -1,140 +1,94 @@
-# Tiny PRB Template - Simple Single-File Changes  
-# Auto-selected for simple instruction complexity (3-5 points) - AI executes instantly
-
-# ⚠️ CRITICAL: ALL 6 SECTIONS MANDATORY - SKIP NOTHING
-# ⚠️ SETTINGS ENFORCEMENT: git_privacy: true = NO AI mentions in commits
+# Tiny PRB Template - Simple Changes (3-5 points)  
+# For single-file modifications and straightforward features
 
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: tiny-prb
 complexity: simple
-priority: "[PRIORITY_LEVEL]"  # CRITICAL, HIGH, MEDIUM, LOW
+priority: "[PRIORITY_LEVEL]"
 title: "[ROLE] [DESCRIPTION]"
 
 # MANDATORY: Complete Context Section
 complete_context:
-  project: "[CLAUDE.md]"        # Project context from CLAUDE.md
-  settings: "[ALL-SETTINGS]"   # All configuration values
-  git_privacy: "[FROM_CONFIG]" # git_privacy setting from config
-  branch_protection: "[FROM_CONFIG]" # branch_protection from config
-  default_branch: "[FROM_CONFIG]"    # default_branch from config
-  branch_strategy: "[FROM_CONFIG]"   # branch_prefixes from config
-  scope: "[SINGLE_FILE]"
-  best_practices:
-    # Auto-discovered practices from best-practices/ directory
-    # Top 1-2 relevant practices for simple changes
-    - "[DYNAMIC_BEST_PRACTICES_1]"
-    - "[DYNAMIC_BEST_PRACTICES_2]"
-  
+  project_root: "[PROJECT_ROOT]"
+  system_nature: "[SYSTEM_NATURE]"
+  configuration:
+    git_privacy: "[FROM_CONFIG]"
+    branch_protection: "[FROM_CONFIG]"
+    default_branch: "[FROM_CONFIG]"
+    branch_strategy: "[FROM_CONFIG]"
+  critical_files:
+    - path: "[PRIMARY_FILE]"
+      purpose: "[FILE_PURPOSE]"
+      sample: "[FILE_SAMPLE]"
+  user_requirements:
+    original_request: "[USER_REQUEST]"
+    success_criteria: "[SUCCESS_CRITERIA]"
+
 # MANDATORY: Requirements Section
 requirements:
   functional:
-    - "[WHAT_TO_CHANGE]"
-    - "[WHY_CHANGE_NEEDED]"
-    - "[EXPECTED_OUTCOME]"
+    - "[WHAT_TO_IMPLEMENT]"
+    - "[EXPECTED_BEHAVIOR]"
   processual:
-    - "Respect git_privacy setting for commit messages"
-    - "Follow branch protection strategy from config"
-    - "Use configured default branch for operations"
-    - "Apply configured branch naming strategy"
+    - "Apply git_privacy setting for commit messages"
+    - "Follow branch protection strategy"
+    - "Single file modification scope"
   technical:
-    - "Single file modification only"
     - "Under 50 lines of changes"
-  
-execution:
-  memory_check: "[QUICK_PATTERN_SEARCH]" # instant AI execution
-  steps:
-    - "[STEP_1]"
-    - "[STEP_2]"
-    - "[STEP_3_OPTIONAL]"
-    
-validation:
-  - "[CHECK_1]"
-  - "[CHECK_2]"
 
-# MANDATORY: Git Operations Section
-# ⚠️ git_privacy: true = NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
-git_operations:
-  branch_strategy: "[FROM_CONFIG]"     # Use configured branch prefixes
-  branch_protection: "[FROM_CONFIG]"  # Respect branch protection setting
-  branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
-  commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"     # Apply git_privacy if enabled - CRITICAL!
-  default_branch: "[FROM_CONFIG]"     # Target configured default branch
-  version_bump: "[NONE|PATCH]"
+# ========================================
+# EXECUTION PROCESS: 7 CLEAR STEPS
+# ========================================
 
-# MANDATORY: Documentation Updates Section
-documentation_updates:
-  - file: "CHANGELOG.md"
-    action: "Update with PR description"
-  - file: "[FROM_CONFIG]"
-    action: "Update if affected"
+## STEP 1: KNOWLEDGE
+knowledge_search:
+  memory_search: "Search memory/[topic]/ for implementation patterns"
+  best_practices: "Review best-practices/[domain]/ for guidance"
+  patterns: "[TOP_RELEVANT_PATTERNS]"
 
-# MANDATORY: Knowledge Management Section
-knowledge_management:
-  structure: "memory/[topic]/[subtopic].md"
-  storage: "version-controlled"
-  quick_search: "pattern_based_instant"
-  capture_condition: "if_novel_pattern"
-  capture_type: "implementation_approach"
+## STEP 2: IMPLEMENTATION
+implementation:
+  target_file: "[FILE_PATH]"
+  changes_needed:
+    - "[CHANGE_1]"
+    - "[CHANGE_2]"
+  validation: "[HOW_TO_TEST]"
 
-# MANDATORY: Review Process Section
-review_process:
-  type: "minimal_self_review"
-  checklist:
-    - "Configuration settings applied correctly"
-    - "Single file scope maintained"
-    - "Functional requirements met"
-  escalation: "if_validation_fails"
+## STEP 3: REVIEW
+review_checklist:
+  - "Functional requirements met"
+  - "Code follows project patterns"
+  - "No unintended side effects"
 
-# MANDATORY: Documentation Management Section
-documentation_management:
-  required_updates:
-    changelog:
-      file: "CHANGELOG.md"
-      entry_format: |
-        ### Added/Fixed/Changed
-        - [TINY_CHANGE_DESCRIPTION]
-      semantic_versioning: true
-      mandatory: true
-      
-    readme:
-      file: "README.md"  
-      update_required: "[YES_IF_USER_FACING]"
-      sections_affected: "[LIST_IF_YES]"
-      
-  release_management:
-    github_release: "NO"     # Patch bumps don't need releases
-    release_notes: "NO"      # Simple changes documented in CHANGELOG only
-    
-  validation_checklist:
-    - "CHANGELOG.md updated with appropriate entry"
-    - "Version bumped (patch) for accumulation of changes"
-    - "README updated if user-facing change"
+## STEP 4: VERSION
+version_bump:
+  type: "patch"
+  action: "Bump version number appropriately"
 
-# MANDATORY: Implementation Samples Section
-# ⚠️ EXECUTION CHECKLIST: All 6 sections must be completed
-implementation_samples:
-  example_commit: "[TINY-001]: Add input validation to user form"
-  example_branch: "feature/TINY-001-add-input-validation"
-  example_change: |
-    File: src/components/UserForm.js
-    - Add email validation regex
-    - Add required field checks
-    - Update error messaging
-  
-  execution_checklist: |
-    ☐ Complete Context Section - Settings loaded and applied
-    ☐ Requirements Section - All functional/processual/technical requirements met
-    ☐ Git Operations Section - Commands executed with privacy_filter
-    ☐ Documentation Updates Section - CHANGELOG.md and affected files updated
-    ☐ Knowledge Management Section - Pattern search + capture if novel
-    ☐ Review Process Section - Self-review completed or escalated
-    ☐ Documentation Management Section - CHANGELOG updated, version bumped if needed
-    ☐ Implementation Samples Section - Applied correctly
-    
-    SKIP NOTHING. EXECUTE EVERYTHING. DOCUMENT ALL CHANGES.
-  
-learning_capture:
-  condition: "if_novel_pattern"
-  type: "implementation_approach"
-  storage: "memory/[topic]/[subtopic].md"
+## STEP 5: DOCUMENTATION
+documentation:
+  changelog:
+    entry: "### Added/Fixed\n- [FEATURE_DESCRIPTION]"
+    required: true
+  additional: "Update any affected docs as needed"
+  comments: "Add inline comments for complex logic"
+
+## STEP 6: GIT COMMIT
+git_commit:
+  commit_message: "[ID]: [DESCRIPTION]"
+  privacy_filter: "[FROM_CONFIG]"
+  action: "Commit changes with clean message (no AI mentions)"
+
+## STEP 7: GIT PUSH
+git_push:
+  action: "Push to remote repository"
+
+# EXECUTION CHECKLIST
+execution_checklist: |
+  ☐ Step 1 - Knowledge: Memory searched and patterns identified
+  ☐ Step 2 - Implementation: Changes made and validated
+  ☐ Step 3 - Review: Self-review checklist completed
+  ☐ Step 4 - Version: Version bumped appropriately
+  ☐ Step 5 - Documentation: CHANGELOG updated (minimum) + affected docs
+  ☐ Step 6 - Git Commit: Changes committed with privacy filter
+  ☐ Step 7 - Git Push: Changes pushed to remote
