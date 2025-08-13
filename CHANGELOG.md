@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.17.1] - 2025-08-11
+
+### Changed
+- Standardized PRB template execution processes with consistent base process flows
+- Nano template: 4-step process (Knowledge → Implementation → Git Commit → Git Push)
+- Tiny template: 7-step process (Knowledge → Implementation → Review → Version → Documentation → Git Commit → Git Push)
+- Medium template: 9-step process (Branch → Knowledge → Implementation → Review → Version → Documentation → Git Commit → Git Push → PR)
+- Added explicit version bump steps to Tiny and Medium PRB templates
+- Documentation step now specifies CHANGELOG as minimum requirement plus additional docs as needed
+- Enhanced execution clarity with crystal clear numbered steps and detailed checklists
+- Separated git operations into distinct commit and push steps for better process control
+
 ## [Unreleased]
 
 ## [6.20.0] - 2025-08-12
@@ -61,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed function references from MARKDOWN-BASED AI-AGENTIC SYSTEM
 - Changed "ResolveMemoryBasePath()" references to "Memory Base Path Resolution pattern"
 - Maintained behavioral pattern integrity throughout memory operations
+>>>>>>> origin/main
 
 ## [6.9.0] - 2025-08-10
 
