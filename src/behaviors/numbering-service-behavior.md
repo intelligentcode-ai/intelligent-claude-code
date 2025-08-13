@@ -78,9 +78,9 @@ echo "[PATTERN]-${NEXT}-title-$(date +%Y-%m-%d).[ext]"
 ### PRB Numbering Under Parents
 ```
 Examples:
-- STORY-001-PRB-001-implementation-2025-01-09.prb.yaml
-- STORY-001-PRB-002-testing-2025-01-09.prb.yaml
-- BUG-005-PRB-001-bug-fix-2025-01-09.prb.yaml
+- STORY-001-PRB-001-implementation-YYYY-MM-DD.prb.yaml
+- STORY-001-PRB-002-testing-YYYY-MM-DD.prb.yaml
+- BUG-005-PRB-001-bug-fix-YYYY-MM-DD.prb.yaml
 
 Scoping Rules:
 - Each parent starts PRB numbering at 001

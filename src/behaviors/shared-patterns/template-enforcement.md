@@ -26,15 +26,14 @@
 **CRITICAL:** ALL placeholders MUST be resolved during PRB generation:
 
 **MANDATORY RESOLUTION:**
-```yaml
-# Template contains:
-git_privacy: "[FROM_CONFIG]"
-branch_protection: "[FROM_CONFIG]"
 
-# MUST become in final PRB:
-git_privacy: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
-branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
-```
+**Template Before Resolution:**
+- git_privacy: "[FROM_CONFIG]"
+- branch_protection: "[FROM_CONFIG]"
+
+**Template After Resolution:**
+- git_privacy: Actual value from config hierarchy
+- branch_protection: Actual value from config hierarchy
 
 **PLACEHOLDER PATTERNS TO RESOLVE:**
 - `[FROM_CONFIG]` → Load actual config value
@@ -56,76 +55,58 @@ branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
 - Any unresolved placeholder values in PRB
 - Runtime config lookups instead of embedded values
 
-**VALIDATION FUNCTION:**
-```
-ValidateTemplateEnforcement(prb_content, creation_context):
-  # 1. Template Source Validation
-  IF NOT creation_context.template_source:
-    BLOCK_ERROR("❌ PRB creation without template FORBIDDEN")
-  
-  IF NOT template_source.startswith("src/prb-templates/"):
-    BLOCK_ERROR("❌ Must use templates from src/prb-templates/")
-  
-  # 2. Template Completeness Check
-  required_sections = [
-    "complete_context", "requirements", "git_operations",
-    "documentation_updates", "knowledge_management", 
-    "review_process", "execution_checklist"
-  ]
-  
-  FOR section IN required_sections:
-    IF NOT section IN prb_content:
-      BLOCK_ERROR("❌ Missing mandatory template section: {section}")
-  
-  # 3. Placeholder Resolution Check  
-  placeholder_patterns = [
-    "[FROM_CONFIG]", "[ALL-SETTINGS]", "[PROJECT_ROOT]",
-    "[DYNAMIC_", "[REQUIREMENT_", "[CURRENT_DATE]"
-  ]
-  
-  FOR pattern IN placeholder_patterns:
-    IF pattern IN prb_content_text:
-      BLOCK_ERROR("❌ Unresolved placeholder: {pattern}")
-  
-  # 4. Embedded Values Check
-  IF NOT prb_content.complete_context.configuration:
-    BLOCK_ERROR("❌ Configuration values not embedded")
-  
-  IF prb_content.complete_context.configuration.git_privacy == "[FROM_CONFIG]":
-    BLOCK_ERROR("❌ git_privacy not resolved from config")
-  
-  RETURN VALIDATION_PASSED
-```
+**Template Enforcement Validation Process:**
+
+**1. Template Source Validation:**
+   - **Check Template Source:** Verify creation context includes template source
+   - **When template source missing:** Block with error "❌ PRB creation without template FORBIDDEN"
+   - **Check Template Path:** Verify template source starts with "src/prb-templates/"
+   - **When wrong path:** Block with error "❌ Must use templates from src/prb-templates/"
+
+**2. Template Completeness Check:**
+   - **Required Sections:** complete_context, requirements, git_operations, documentation_updates, knowledge_management, review_process, execution_checklist
+   - **Section Validation:** Check each required section exists in PRB content
+   - **When section missing:** Block with error "❌ Missing mandatory template section: {section}"
+
+**3. Placeholder Resolution Check:**
+   - **Placeholder Patterns:** [FROM_CONFIG], [ALL-SETTINGS], [PROJECT_ROOT], [DYNAMIC_*, [REQUIREMENT_*, [CURRENT_DATE]
+   - **Pattern Detection:** Scan PRB content for any placeholder patterns
+   - **When pattern found:** Block with error "❌ Unresolved placeholder: {pattern}"
+
+**4. Embedded Values Check:**
+   - **Configuration Embedding:** Verify complete_context.configuration exists
+   - **When not embedded:** Block with error "❌ Configuration values not embedded"
+   - **Specific Value Check:** Verify git_privacy is not "[FROM_CONFIG]"
+   - **When not resolved:** Block with error "❌ git_privacy not resolved from config"
 
 ### Template Section Validation
 **MANDATORY SECTIONS (ALL must be present):**
-```yaml
-complete_context:
-  project_root: "/absolute/path"  # NOT "[PROJECT_ROOT]"
-  configuration:
-    git_privacy: <ACTUAL_VALUE>   # NOT "[FROM_CONFIG]"
-    branch_protection: <ACTUAL_VALUE>  # NOT "[FROM_CONFIG]"
-    default_branch: <ACTUAL_VALUE>     # NOT "[FROM_CONFIG]"
 
-requirements:
-  functional: [...]               # NOT "[REQUIREMENT_1]"
-  processual: [...]
-  technical: [...]
+**Complete Context Section:**
+- **project_root:** Absolute path (NOT "[PROJECT_ROOT]")
+- **configuration.git_privacy:** Actual value (NOT "[FROM_CONFIG]")
+- **configuration.branch_protection:** Actual value (NOT "[FROM_CONFIG]") 
+- **configuration.default_branch:** Actual value (NOT "[FROM_CONFIG]")
 
-git_operations:
-  branch_strategy: "feature/"     # NOT "[FROM_CONFIG]"
-  privacy_filter: true            # NOT "[FROM_CONFIG]"
+**Requirements Section:**
+- **functional:** Actual requirements (NOT "[REQUIREMENT_1]")
+- **processual:** Process requirements
+- **technical:** Technical requirements
 
-knowledge_management:
-  structure: "memory/[topic]/"    # Actual path structure
-  storage: "version-controlled"
+**Git Operations Section:**
+- **branch_strategy:** Actual strategy like "feature/" (NOT "[FROM_CONFIG]")
+- **privacy_filter:** Actual boolean value (NOT "[FROM_CONFIG]")
 
-review_process:
-  reviewer: "@AI-Engineer"        # NOT "[PRE_ASSIGNED_SME]"
-  
-execution_checklist:             # Complete checklist
-documentation_updates:           # Documentation requirements
-```
+**Knowledge Management Section:**
+- **structure:** Actual path structure like "memory/[topic]/"
+- **storage:** Storage method like "version-controlled"
+
+**Review Process Section:**
+- **reviewer:** Actual reviewer like "@AI-Engineer" (NOT "[PRE_ASSIGNED_SME]")
+
+**Additional Required Sections:**
+- **execution_checklist:** Complete checklist content
+- **documentation_updates:** Documentation requirements
 
 **BLOCK if ANY section missing or contains unresolved placeholders**
 
@@ -144,29 +125,17 @@ documentation_updates:           # Documentation requirements
 - Complete context available in PRB itself
 - Self-contained execution without external dependencies
 
-**VALIDATION:**
-```
-ValidateNoRuntimeConfig(prb_execution_plan):
-  # Scan execution plan for config lookup attempts
-  forbidden_patterns = [
-    "load_config", "get_setting", "check_configuration",
-    "read_claude_md", "config_hierarchy", "dynamic_config"
-  ]
-  
-  FOR pattern IN forbidden_patterns:
-    IF pattern IN prb_execution_plan:
-      BLOCK_ERROR("❌ Runtime config lookup forbidden - embed in PRB")
-      
-  # Ensure all needed values are embedded
-  required_embedded_values = [
-    "git_privacy", "branch_protection", "default_branch", 
-    "project_root", "autonomy_level"
-  ]
-  
-  FOR value IN required_embedded_values:
-    IF NOT value IN prb_content.complete_context.configuration:
-      BLOCK_ERROR("❌ Required value not embedded: {value}")
-```
+**Runtime Configuration Validation Process:**
+
+**1. Scan for Forbidden Patterns:**
+   - **Forbidden Patterns:** load_config, get_setting, check_configuration, read_claude_md, config_hierarchy, dynamic_config
+   - **Pattern Detection:** Review PRB execution plan for config lookup attempts
+   - **When pattern found:** Block with error "❌ Runtime config lookup forbidden - embed in PRB"
+
+**2. Ensure Required Values Embedded:**
+   - **Required Values:** git_privacy, branch_protection, default_branch, project_root, autonomy_level
+   - **Embedding Check:** Verify each required value exists in prb_content.complete_context.configuration
+   - **When value missing:** Block with error "❌ Required value not embedded: {value}"
 
 ## Enforcement Mechanisms
 
@@ -191,82 +160,60 @@ ValidateNoRuntimeConfig(prb_execution_plan):
 - Manual PRB structure creation
 - Template bypassing patterns
 
-**AUTO-BLOCK IMMEDIATELY:**
-```
-PRB_CREATION_MONITOR():
-  # Block manual creation
-  IF detect_manual_prb_creation():
-    BLOCK("❌ PRB creation without template FORBIDDEN")
-  
-  # Block unresolved placeholders
-  IF detect_unresolved_placeholders():
-    BLOCK("❌ All template placeholders must be resolved")
-  
-  # Block runtime config
-  IF detect_runtime_config_lookup():
-    BLOCK("❌ Config values must be embedded at generation time")
-  
-  # Block missing sections
-  IF detect_missing_template_sections():
-    BLOCK("❌ All mandatory template sections required")
-```
+**Auto-Block Process:**
+
+**PRB Creation Monitoring:**
+- **Manual Creation Detection:** When manual PRB creation detected, block with "❌ PRB creation without template FORBIDDEN"
+- **Unresolved Placeholders Detection:** When unresolved placeholders detected, block with "❌ All template placeholders must be resolved"
+- **Runtime Config Detection:** When runtime config lookup detected, block with "❌ Config values must be embedded at generation time"
+- **Missing Sections Detection:** When missing template sections detected, block with "❌ All mandatory template sections required"
 
 ### Error Responses
-```
-Template Enforcement Errors:
-- TEMPLATE_REQUIRED: "❌ PRB creation without template FORBIDDEN - use src/prb-templates/"
-- PLACEHOLDER_UNRESOLVED: "❌ Unresolved placeholder: {placeholder} - resolve during generation"
-- SECTION_MISSING: "❌ Missing mandatory template section: {section}"
-- RUNTIME_CONFIG_FORBIDDEN: "❌ Runtime config lookup forbidden - embed values in PRB"
-- MANUAL_CREATION_BLOCKED: "❌ Manual PRB structure not allowed - use complexity-based templates"
-- TEMPLATE_SOURCE_INVALID: "❌ Must use templates from src/prb-templates/ hierarchy only"
-```
+
+**Template Enforcement Error Messages:**
+- **TEMPLATE_REQUIRED:** "❌ PRB creation without template FORBIDDEN - use src/prb-templates/"
+- **PLACEHOLDER_UNRESOLVED:** "❌ Unresolved placeholder: {placeholder} - resolve during generation"
+- **SECTION_MISSING:** "❌ Missing mandatory template section: {section}"
+- **RUNTIME_CONFIG_FORBIDDEN:** "❌ Runtime config lookup forbidden - embed values in PRB"
+- **MANUAL_CREATION_BLOCKED:** "❌ Manual PRB structure not allowed - use complexity-based templates"
+- **TEMPLATE_SOURCE_INVALID:** "❌ Must use templates from src/prb-templates/ hierarchy only"
 
 ## Configuration Embedding Process
 
 ### Generation-Time Resolution
-**MANDATORY DURING PRB GENERATION:**
-```
-ResolvePRBTemplate(template_content, work_context):
-  # 1. Load complete configuration hierarchy
-  config = LoadConfigurationHierarchy()
-  
-  # 2. Resolve all placeholders with actual values
-  resolved_content = template_content
-  resolved_content = resolved_content.replace("[FROM_CONFIG_git_privacy]", str(config.git_privacy))
-  resolved_content = resolved_content.replace("[FROM_CONFIG_branch_protection]", str(config.branch_protection))
-  resolved_content = resolved_content.replace("[FROM_CONFIG_default_branch]", config.default_branch)
-  resolved_content = resolved_content.replace("[PROJECT_ROOT]", work_context.project_root)
-  resolved_content = resolved_content.replace("[CURRENT_DATE]", get_current_date())
-  
-  # 3. Embed complete context
-  resolved_content.complete_context.configuration = config
-  resolved_content.complete_context.project_root = work_context.project_root
-  
-  # 4. Validate no placeholders remain
-  IF detect_any_placeholder(resolved_content):
-    BLOCK_ERROR("❌ Unresolved placeholders detected")
-  
-  RETURN resolved_content
-```
+**PRB Template Resolution Process:**
+
+**1. Load Configuration Hierarchy:**
+   - Load complete configuration hierarchy from all sources
+   - Gather embedded, project, user, and system defaults
+
+**2. Resolve All Placeholders:**
+   - Replace "[FROM_CONFIG_git_privacy]" with actual config.git_privacy value
+   - Replace "[FROM_CONFIG_branch_protection]" with actual config.branch_protection value
+   - Replace "[FROM_CONFIG_default_branch]" with actual config.default_branch value
+   - Replace "[PROJECT_ROOT]" with actual work_context.project_root path
+   - Replace "[CURRENT_DATE]" with current system date
+
+**3. Embed Complete Context:**
+   - Set resolved_content.complete_context.configuration to loaded config
+   - Set resolved_content.complete_context.project_root to work context project root
+
+**4. Validate Resolution Complete:**
+   - Scan resolved content for any remaining placeholders
+   - When placeholders detected: Block with error "❌ Unresolved placeholders detected"
 
 ### Configuration Validation
-**VALIDATE EMBEDDED CONFIG:**
-```yaml
-# Template BEFORE resolution:
-complete_context:
-  configuration:
-    git_privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
+**Embedded Configuration Validation:**
 
-# Template AFTER resolution:
-complete_context:
-  configuration:
-    git_privacy: <ACTUAL_VALUE_FROM_CONFIG>
-    branch_protection: <ACTUAL_VALUE_FROM_CONFIG>
-    default_branch: <ACTUAL_VALUE_FROM_CONFIG>
-    autonomy_level: <ACTUAL_VALUE_FROM_CONFIG>
-```
+**Template BEFORE Resolution:**
+- **complete_context.configuration.git_privacy:** "[FROM_CONFIG]"
+- **complete_context.configuration.branch_protection:** "[FROM_CONFIG]"
+
+**Template AFTER Resolution:**
+- **complete_context.configuration.git_privacy:** Actual value from config
+- **complete_context.configuration.branch_protection:** Actual value from config
+- **complete_context.configuration.default_branch:** Actual value from config
+- **complete_context.configuration.autonomy_level:** Actual value from config
 
 **BLOCK if any "[FROM_CONFIG]" remains after resolution**
 

@@ -54,39 +54,34 @@
 - State validated
 - PRB moved to completed/
 
-## Scope Validation Function
+## Scope Validation Process
 
-```
-ValidateProjectScope(operation_context):
-  project_root = get_project_root()
-  
-  FOR each operation:
-    IF write to ~/.claude/ AND NOT installation:
-      BLOCK with SCOPE_VIOLATION_ERROR
-    IF outside project_root:
-      BLOCK with BOUNDARY_ERROR
-  
-  RETURN VALIDATION_PASSED
-```
+**Project Scope Validation Steps:**
+
+1. **Identify Project Root:** Determine the current project root directory
+2. **Review Each Operation:**
+   - **Check ~/.claude/ Writes:** When operation writes to ~/.claude/ and is not installation, block with scope violation error
+   - **Check Project Boundaries:** When operation is outside project root, block with boundary error
+3. **Allow Valid Operations:** Operations within project boundaries proceed normally
 
 ## Evidence Collection
 
-```markdown
-## VALIDATION LOG
-### Search: grep -r "PATTERN" .
-Results: [DOCUMENTED]
-Zero remaining: ✓/❌
+**Validation Log Format:**
 
-### Deliverables: 
-Requirements met: ✓/❌
-Specifications: ✓/❌
-Quality gates: ✓/❌
+### Search Validation
+- **Command Executed:** Documentation of search commands used
+- **Results Found:** Documented search results
+- **Zero Remaining References:** Confirmed or requires attention
 
-### Documentation:
-README updated: ✓/❌
-All docs checked: ✓/❌
-Consistency: ✓/❌
-```
+### Deliverables Verification
+- **Requirements Met:** All functional requirements satisfied
+- **Specifications Complete:** Implementation matches specifications
+- **Quality Gates Passed:** All quality standards achieved
+
+### Documentation Validation
+- **README Updated:** Main documentation reflects changes
+- **All Documentation Checked:** Comprehensive documentation review
+- **Consistency Maintained:** All documentation remains consistent
 
 ---
 *Shared validation patterns extracted from prb-execution.md*

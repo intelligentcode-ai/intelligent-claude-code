@@ -259,13 +259,13 @@ echo "API Requirements..." > drafts/api-spec.md
 /icc-create-prb "Implement websocket scaling solution"
 ```
 
-### Learning from Errors
+### Learning from PRB Patterns
 ```bash
-# First time error - no penalty
-"Error: OAuth token expired"
-/icc-store-memory authentication/oauth "Problem: Token expiry. Solution: Auto-refresh on 401"
+# PRB pattern recognized - captured for learning
+"Successful OAuth implementation with refresh"
+/icc-store-memory authentication/oauth "Pattern: OAuth with auto-refresh. Context: Successful implementation"
 
-# Next time - learning applied automatically
+# Next time - pattern applied automatically
 /icc-create-prb "Implement Microsoft OAuth"
 # PRB includes previous OAuth learnings
 ```

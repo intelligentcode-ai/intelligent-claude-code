@@ -60,7 +60,7 @@ The system implements a **14-role virtual development team** that operates throu
 2. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
 3. **Memory System**: File-based memory storage (version-controlled in `memory/`) with topic-based organization and pattern capture
 4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
-5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and penalty systems
+5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and PRB validation
 
 ### Your Project Structure
 ```
@@ -87,7 +87,7 @@ The system adapts to YOUR structure via CLAUDE.md configuration!
 1. **Task Tool Pattern**: Every @Role mention triggers a Task tool invocation creating a subagent
 2. **Context Loading**: CLAUDE.md provides all context, PRBs are self-contained
 3. **Memory-First**: All operations check memory before action, store results after completion
-4. **Learning System**: First errors forgiven with pattern capture, repeated errors penalized
+4. **Learning System**: PRB-driven pattern capture and application
 5. **Autonomy Levels**: L1 (manual approval), L2 (architect approval), L3 (full autonomous)
 
 ### PRB Execution
@@ -151,9 +151,9 @@ Tests verify:
 ### System Features
 
 - **Dynamic Specialists**: Auto-create domain experts (@React-Developer, @AWS-Engineer) with 10+ years expertise
-- **Learning Culture**: First errors create learnings, repeated errors get penalties, applied learnings earn bonuses
+- **Learning Culture**: PRB execution generates learnings, successful patterns stored for reuse
 - **Parallel Execution**: Up to 5 non-conflicting tasks execute simultaneously
-- **Self-Correcting**: Automatic violation detection and correction with penalty systems
+- **Self-Correcting**: Automatic violation detection and correction through PRB validation
 - **Memory Integration**: File-based storage with search, relationships, and exponential aging
 - **Story Management**: Natural language stories converted to PRBs by @PM and architect collaboration
 

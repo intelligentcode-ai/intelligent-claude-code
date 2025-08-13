@@ -2,17 +2,16 @@
 
 **MANDATORY:** MUST use learnings. Auto-correct violations.
 
-**CORE:** First error forgiven • Second error penalized • Active learning tracking • PROACTIVE memory generation
+**CORE:** PRB-driven execution • Active learning tracking • PROACTIVE memory generation
 
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/memory-operations.md
 @./proactive-memory-behavior.md
 
-## Error Processing
+## Learning Processing
 
-**First Error:** No penalty + Learning created + Pattern stored  
-**Repeated Error:** Double penalty + Escalation  
-**Learning Application:** Memory patterns successfully applied
+**Learning Capture:** Store patterns from successful PRB execution  
+**Learning Application:** Memory patterns successfully applied in PRB context
 
 **Learning Storage:** memory/[topic]/[subtopic].md
 
@@ -21,12 +20,12 @@
 **Learning Triggers:**
 - "Based on previous learning" → Memory pattern applied
 - "Applying lesson from" → Previous learning referenced  
-- "To prevent repeat of" → Error pattern avoided
+- "To prevent repeat of" → Issue pattern avoided
 
 ### Storage (Using Shared Patterns)
 - Use Learning Storage Pattern from learning-patterns.md
 - Apply StoreInMemory Pattern from memory-operations.md
-- Apply Error Forgiveness Logic for consistency
+- Follow PRB-driven execution patterns
 - Follow standard field definitions
 - Implement proper indexing and relationships
 
@@ -41,7 +40,7 @@
 **Learning Patterns:**
 - "Based on previous learning..." → Process improvement applied
 - "Applying lesson from..." → Knowledge transfer successful  
-- "To prevent repeat of..." → Error prevention active
+- "To prevent repeat of..." → Issue prevention active
 - "Learning from [Learning-ID]..." → Specific pattern referenced
 - Pattern breaking (novel solution) → Innovation documented
 
@@ -49,9 +48,9 @@
 
 ## Implementation
 
-**First Error:** Check embedded learnings in PRB → IF found: 2x penalty • ELSE: No penalty + Store in memory/  
+**PRB Execution:** Check embedded learnings in PRB → Apply patterns during execution → Store new patterns in memory/  
 **Learning Application:** Scan for "Based on previous learning" → Track pattern usage  
-**Pattern Storage:** Learning-[ErrorType]-[YYYY-MM-DD] format in version control
+**Pattern Storage:** Learning-[PatternType]-[YYYY-MM-DD] format in version control
 
 **Integration:** PRBs contain embedded learnings → Apply during execution → Store new patterns in memory/
 
@@ -68,7 +67,7 @@
 - Repeated questions or requests from users
 - Tool or service configuration discoveries
 - Successful workflow completions
-- Error resolution patterns
+- Issue resolution patterns
 
 ### Intelligent Detection Patterns
 
@@ -87,7 +86,7 @@ IMMEDIATE Storage Required:
 ☐ Successful resolution of complex problem
 ☐ Workflow process that could be repeated
 ☐ Tool configuration that works
-☐ Error solution that could prevent future issues
+☐ Issue solution that could prevent future problems
 ```
 
 ### Situational Awareness
@@ -142,7 +141,7 @@ IMMEDIATE Storage Required:
 6. **Proactive Storage**: Store new learnings discovered during execution
 
 **INTEGRATION WITH EXISTING PATTERNS:**
-- Memory-first approach enhances error forgiveness
+- Memory-first approach enhances PRB execution
 - Proactive generation improves learning application detection
 - Continuous learning supports pattern storage automation
 - Role-specific memories enhance specialist effectiveness

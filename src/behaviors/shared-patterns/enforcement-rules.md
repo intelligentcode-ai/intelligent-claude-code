@@ -4,23 +4,20 @@
 
 ## Task Scope Validation
 
-```
-ValidateTaskScope(task_context):
-  project_root = get_project_root()
-  
-  # Check working directory
-  IF task_context.working_directory.startswith("~/.claude/"):
-    BLOCK_TASK()
-    ERROR("❌ Cannot use ~/.claude/ as working directory")
-  
-  # Check file operations
-  FOR each file_path IN task_context.files:
-    IF file_path.startswith("~/.claude/") AND NOT installation:
-      BLOCK_TASK()
-      ERROR("❌ Task references forbidden ~/.claude/ path")
-  
-  RETURN VALIDATION_PASSED
-```
+**Task Scope Validation Process:**
+
+1. **Check Working Directory:**
+   - When task working directory starts with ~/.claude/
+   - Block task and show error: "❌ Cannot use ~/.claude/ as working directory"
+
+2. **Check File Operations:**
+   - Review each file path in task context
+   - When file path starts with ~/.claude/ and operation is not installation
+   - Block task and show error: "❌ Task references forbidden ~/.claude/ path"
+
+3. **Allow Valid Tasks:**
+   - Tasks with project root working directories proceed
+   - Tasks with valid file operations within project scope proceed
 
 ## Role System Enforcement
 
@@ -41,31 +38,33 @@ ValidateTaskScope(task_context):
 ## Detection Functions
 
 ### Work Pattern Detection
-```
-DetectWorkPattern(text):
-  patterns = [
-    r'@\w+[-\w]*',  # @Role patterns
-    r'(STORY|BUG|EPIC|TASK|PRB)-\d{3}',  # Work items
-    r'implement|fix|create|update|modify'  # Action verbs
-  ]
-  
-  FOR pattern IN patterns:
-    IF match(pattern, text):
-      RETURN REQUIRES_PRB
-```
+
+**Work Pattern Detection Process:**
+
+**Detected Patterns:**
+- **Role Patterns:** @Role mentions (like @Developer, @AI-Engineer)
+- **Work Items:** STORY/BUG/EPIC/TASK/PRB references with numbers
+- **Action Verbs:** implement, fix, create, update, modify
+
+**Detection Steps:**
+1. **Scan Text:** Review input text for pattern matches
+2. **Match Patterns:** Check against known work pattern types
+3. **Trigger PRB Generation:** When work patterns detected, require PRB creation
 
 ### False Completion Detection
-```
-DetectFalseCompletion(claim):
-  triggers = [
-    "PRB COMPLETE", "Task finished", 
-    "Work done", "Completed"
-  ]
-  
-  IF any(trigger IN claim):
-    IF NOT ValidateChecklist():
-      BLOCK_COMPLETION()
-```
+
+**False Completion Detection Process:**
+
+**Completion Triggers:**
+- Text contains "PRB COMPLETE"
+- Text contains "Task finished"
+- Text contains "Work done"
+- Text contains "Completed"
+
+**Validation Steps:**
+1. **Detect Completion Claims:** Scan for completion trigger phrases
+2. **Check Validation Status:** Review completion checklist validation
+3. **Block Invalid Claims:** When checklist incomplete, block completion
 
 ## Error Messages
 

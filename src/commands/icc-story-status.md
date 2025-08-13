@@ -43,8 +43,8 @@ Progress: ████████░░ 2/3 PRBs
 ## Output Format (Detailed)
 ```
 📖 Story: authentication-system.md
-Created: 2025-01-20
-Last Updated: 2025-01-22
+Created: YYYY-MM-DD
+Last Updated: YYYY-MM-DD
 
 Story Content:
 ---
@@ -56,12 +56,12 @@ Generated PRBs (3 total, 24 complexity points):
 ✅ PRB-001: [Developer] Implement user model and database schema
    Status: Completed
    Complexity: Medium (8 points)
-   Completed: 2025-01-21
+   Completed: YYYY-MM-DD
    
 🔄 PRB-002: [Developer] Create authentication service with JWT  
    Status: In Progress
    Complexity: Medium (10 points)
-   Started: 2025-01-22
+   Started: YYYY-MM-DD
    Assignee: @Developer
    
 ⏳ PRB-003: [Developer] Build registration and login UI
