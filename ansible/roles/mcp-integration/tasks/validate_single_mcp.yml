@@ -1,0 +1,46 @@
+---
+# Validate a single MCP server configuration
+
+- name: Set MCP details for validation
+  set_fact:
+    validate_mcp_name: "{{ mcp_server_item.key }}"
+    validate_mcp_config: "{{ mcp_server_item.value }}"
+
+- name: Validate MCP server name is not empty
+  fail:
+    msg: "MCP server name cannot be empty"
+  when: validate_mcp_name | length == 0
+
+- name: Validate command field exists
+  fail:
+    msg: "MCP server '{{ validate_mcp_name }}' missing required 'command' field"
+  when: "'command' not in validate_mcp_config"
+
+- name: Validate command is not empty
+  fail:
+    msg: "MCP server '{{ validate_mcp_name }}' has empty command"
+  when: validate_mcp_config.command | length == 0
+
+- name: Validate args field if present
+  fail:
+    msg: "MCP server '{{ validate_mcp_name }}' args field must be a list"
+  when: 
+    - "'args' in validate_mcp_config"
+    - validate_mcp_config.args is not sequence
+
+- name: Validate env field if present
+  fail:
+    msg: "MCP server '{{ validate_mcp_name }}' env field must be an object"
+  when:
+    - "'env' in validate_mcp_config"
+    - validate_mcp_config.env is not mapping
+
+- name: Check for unresolved environment variables
+  debug:
+    msg: "Warning: MCP server '{{ validate_mcp_name }}' contains unresolved variable: {{ item }}"
+  when: "'${' in item"
+  loop: "{{ validate_mcp_config.args | default([]) }}"
+
+- name: Log successful MCP validation
+  debug:
+    msg: "MCP server '{{ validate_mcp_name }}' validated successfully"

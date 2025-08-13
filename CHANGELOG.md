@@ -19,8 +19,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.20.0] - 2025-08-12
+
+### Added
+- STORY-006: PRB size blocking to prevent creation of PRBs larger than 15 points
+- Automatic blocking rule in prb-auto-trigger.md for oversized PRBs
+- PM instructions to break down large stories into multiple smaller PRBs
+- Clear error message when PRB exceeds 15 point complexity limit
+
+### Changed
+- Enhanced story-breakdown.md with PRB size management rules
+- Updated PRB creation process to include complexity analysis step
+- Added examples for splitting large stories (Authentication, API Integration)
+
+## [6.19.0] - 2025-08-12
+
+### Added
+- STORY-001: Complete MCP server integration with error handling and validation
+- Comprehensive JSON syntax validation for MCP configurations
+- Automatic backup and rollback functionality for settings.json
+- Environment variable placeholder resolution with ${VAR} syntax
+- Graceful file permission error handling
+- Detailed error logging and troubleshooting guidance
+- MCP configuration parameter support in Makefile
+- Complete troubleshooting documentation for MCP integration
+- Integration with main installation playbook for seamless MCP setup
+
+## [6.18.0] - 2025-08-12
+
+### Added
+- STORY-004: External memory path configuration support
+- Configurable `memory_path` setting for storing memory outside project directory
+- Support for relative, absolute, and home directory paths
+- Git auto-commit integration when .git exists in memory path
+- Comprehensive user guide for external memory configuration
+- Configuration guide with complete examples and scenarios
+- Security validation to prevent sensitive data storage
+
+### Changed
+- Updated memory-operations.md with Memory Base Path Resolution behavioral pattern
+- Enhanced configuration-patterns.md with memory_path setting
+- Replaced function references with behavioral instructions (MARKDOWN-BASED AI-AGENTIC SYSTEM)
+
+### Documentation
+- Added memory configuration section to README.md
+- Created detailed user guide with setup scenarios (docs/user-guide.md)
+- Created comprehensive configuration guide (docs/configuration-guide.md)
+
+## [6.17.1] - 2025-08-11
+
 ### Fixed
-- Adjusted /icc-init-system command to reference installed ~/.claude/ paths instead of src/ paths
+- ADHOC-PRB-003: Fixed memory-operations.md behavioral pattern references
+- Removed function references from MARKDOWN-BASED AI-AGENTIC SYSTEM
+- Changed "ResolveMemoryBasePath()" references to "Memory Base Path Resolution pattern"
+- Maintained behavioral pattern integrity throughout memory operations
+>>>>>>> origin/main
 
 ## [6.9.0] - 2025-08-10
 

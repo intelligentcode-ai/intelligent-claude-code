@@ -60,7 +60,7 @@ memory/
 3. **If Clean:** Allow storage to proceed normally
 
 ### SearchMemory Pattern
-1. **Path Resolution**: Determine memory base path using ResolveMemoryBasePath()
+1. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
 2. Parse query for keywords/context
 3. Check index for quick filtering
 4. Search within topic files in [memory_base]/[topic]/
@@ -68,7 +68,7 @@ memory/
 6. Return top matches for PRB embedding
 
 ### LoadFromMemory Pattern
-1. **Path Resolution**: Determine memory base path using ResolveMemoryBasePath()
+1. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
 2. Read topic file from [memory_base]/[topic]/
 3. Parse markdown entries
 4. Update access stats
