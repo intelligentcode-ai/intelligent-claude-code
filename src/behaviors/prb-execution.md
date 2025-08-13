@@ -37,61 +37,59 @@
 **CRITICAL:** Every PRB has 6 mandatory sections. ALL must be executed without exception.
 
 ### Section-by-Section Execution Requirements
-```markdown
-TASK TOOL VALIDATION (MANDATORY FIRST CHECK):
-☐ 0. Task Tool Check - VERIFY Task tool subagent is executing PRB (BLOCKING)
 
-MANDATORY PRB SECTION EXECUTION:
-☐ 1. Complete Context Section - ALL file references validated, settings loaded
-☐ 2. Requirements Section - EVERY functional/processual/technical requirement met
-☐ 3. Git Operations Section - EVERY command executed exactly as specified (CHANGELOG before PR creation)
-☐ 4. Knowledge Management Section - ALL learnings captured in specified paths
-☐ 5. Review Process Section - ALL reviewers complete their reviews
-☐ 6. Implementation Samples Section - Applied correctly with examples
+**TASK TOOL VALIDATION (MANDATORY FIRST CHECK):**
+- 0. Task Tool Check - VERIFY Task tool subagent is executing PRB (BLOCKING)
 
-CRITICAL SETTINGS ENFORCEMENT:
-☐ git_privacy setting → NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
-☐ branch_protection: true → Follow branch protection rules exactly
-☐ autonomy_level → Apply L1/L2/L3 behaviors as configured
-☐ memory_integration: true → Store ALL learnings as specified
+**MANDATORY PRB SECTION EXECUTION:**
+- 1. Complete Context Section - ALL file references validated, settings loaded
+- 2. Requirements Section - EVERY functional/processual/technical requirement met
+- 3. Git Operations Section - EVERY command executed exactly as specified (CHANGELOG before PR creation)
+- 4. Knowledge Management Section - ALL learnings captured in specified paths
+- 5. Review Process Section - ALL reviewers complete their reviews
+- 6. Implementation Samples Section - Applied correctly with examples
 
-EXECUTION TRACKING:
-☐ Each section read and understood
-☐ Each requirement executed exactly as specified (no interpretation)
-☐ Each completion verified against specification
-☐ Each result documented in execution log
-☐ Move to next section only after verification
+**CRITICAL SETTINGS ENFORCEMENT:**
+- git_privacy setting → NO "Generated with Claude Code", NO "Co-Authored-By: Claude"
+- branch_protection: true → Follow branch protection rules exactly
+- autonomy_level → Apply L1/L2/L3 behaviors as configured
+- memory_integration: true → Store ALL learnings as specified
 
-PROJECT SCOPE VALIDATION (MANDATORY BEFORE EXECUTION):
-☐ All file operations validated within project root
-☐ No write operations to ~/.claude/ during normal execution
-☐ Task tool invocations constrained to project boundaries
-☐ Memory operations restricted to ./memory/ directory
-☐ Configuration changes limited to project-local only
+**EXECUTION TRACKING:**
+- Each section read and understood
+- Each requirement executed exactly as specified (no interpretation)
+- Each completion verified against specification
+- Each result documented in execution log
+- Move to next section only after verification
 
-SYSTEMATIC VALIDATION (MANDATORY BEFORE COMPLETION):
-☐ Comprehensive project search executed and documented
-☐ All deliverables verified with evidence
-☐ Documentation completeness validated
-☐ Zero remaining references confirmed
-☐ Validation log complete with all evidence
-☐ All validation functions executed successfully
+**PROJECT SCOPE VALIDATION (MANDATORY BEFORE EXECUTION):**
+- All file operations validated within project root
+- No write operations to ~/.claude/ during normal execution
+- Task tool invocations constrained to project boundaries
+- Memory operations restricted to ./memory/ directory
+- Configuration changes limited to project-local only
 
-SKIP NOTHING. EXECUTE EVERYTHING. VALIDATE SYSTEMATICALLY.
-```
+**SYSTEMATIC VALIDATION (MANDATORY BEFORE COMPLETION):**
+- Comprehensive project search executed and documented
+- All deliverables verified with evidence
+- Documentation completeness validated
+- Zero remaining references confirmed
+- Validation log complete with all evidence
+- All validation functions executed successfully
+
+**SKIP NOTHING. EXECUTE EVERYTHING. VALIDATE SYSTEMATICALLY.**
 
 ### Settings Compliance Verification
-```markdown
-SETTINGS ENFORCEMENT CHECKLIST:
-☐ git_privacy setting verified and applied to ALL git operations
-☐ branch_protection rules followed for branch creation/merging
-☐ default_branch setting used for all git operations
-☐ autonomy_level behaviors applied throughout execution
-☐ memory_integration enabled and learnings stored
-☐ All other configuration settings from CLAUDE.md applied
 
-CRITICAL: Settings are NOT suggestions - they are MANDATORY requirements.
-```
+**SETTINGS ENFORCEMENT CHECKLIST:**
+- git_privacy setting verified and applied to ALL git operations
+- branch_protection rules followed for branch creation/merging
+- default_branch setting used for all git operations
+- autonomy_level behaviors applied throughout execution
+- memory_integration enabled and learnings stored
+- All other configuration settings from CLAUDE.md applied
+
+**CRITICAL:** Settings are NOT suggestions - they are MANDATORY requirements.
 
 ## Execution State Tracking
 
@@ -116,20 +114,16 @@ Each state transition MUST validate previous state completion before proceeding.
 
 ### Pre-Execution Task Tool Validation
 
-```markdown
-TASK TOOL VALIDATION CHECKLIST (HIGHEST PRIORITY):
-☐ Verify current execution is within Task tool subagent context
-☐ Confirm Task tool invocation pattern was used
-☐ Block ANY attempt at direct PRB execution
-☐ Display clear error if Task tool not detected
-```
+**TASK TOOL VALIDATION CHECKLIST (HIGHEST PRIORITY):**
+- Verify current execution is within Task tool subagent context
+- Confirm Task tool invocation pattern was used
+- Block ANY attempt at direct PRB execution
+- Display clear error if Task tool not detected
 
 ### Task Tool Detection Function
 
-```
-INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_VALIDATION 
-→ PENDING_KNOWLEDGE → PENDING_GIT → PENDING_LIFECYCLE → COMPLETE
-```
+**State Transition Flow:**
+INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_VALIDATION → PENDING_KNOWLEDGE → PENDING_GIT → PENDING_LIFECYCLE → COMPLETE
 
 State transitions require validation of previous state completion.
 
@@ -157,13 +151,13 @@ State transitions require validation of previous state completion.
 **Triggers**: "PRB COMPLETE" without checklist validation
 **Action**: BLOCK → Display missing items → Reset state
 
-**Auto-correction**:
-```
-❌ PRB COMPLETION BLOCKED
-Missing: [unchecked items]
-Action: Complete missing items
-State: [current] → Required: COMPLETE
-```
+**Auto-correction Process:**
+
+**PRB Completion Blocking Message:**
+- ❌ PRB COMPLETION BLOCKED
+- **Missing:** List of unchecked items
+- **Action:** Complete missing items
+- **State:** Current state → Required: COMPLETE
 
 ## Project Scope Enforcement
 
@@ -260,11 +254,11 @@ State: [current] → Required: COMPLETE
 **CRITICAL RULE:** PRB file movement is the absolute final operation. If ANY prior step fails, PRB remains in ready/ for retry.
 
 ### Lifecycle State Management
-```
-PRB_READY: File in prbs/ready/, available for execution
-PRB_IN_PROGRESS: File in prbs/ready/, currently being executed
-PRB_COMPLETED: File in prbs/completed/, execution finished
-```
+
+**PRB File States:**
+- **PRB_READY:** File in prbs/ready/, available for execution
+- **PRB_IN_PROGRESS:** File in prbs/ready/, currently being executed
+- **PRB_COMPLETED:** File in prbs/completed/, execution finished
 
 **State Validation:**
 - Only PRBs in READY state can begin execution

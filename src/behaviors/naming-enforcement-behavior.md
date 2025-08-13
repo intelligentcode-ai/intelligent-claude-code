@@ -23,20 +23,20 @@
 ```bash
 CURRENT_DATE=$(date +%Y-%m-%d)
 ```
-**NEVER** hardcode dates like "2025-01-09" - always get date from system for accuracy.
+**NEVER** hardcode specific dates - always get date from system for accuracy.
 
 ### Valid Examples
-- `EPIC-001-virtual-team-enhancement-2025-01-09.md`
-- `STORY-001-mcp-installation-2025-01-09.md`
-- `BUG-005-naming-format-inconsistency-2025-01-09.md`
-- `STORY-001-PRB-001-ansible-playbook-update-2025-01-09.prb.yaml`
-- `BUG-005-PRB-001-naming-format-enforcement-2025-01-09.prb.yaml`
+- `EPIC-001-virtual-team-enhancement-YYYY-MM-DD.md`
+- `STORY-001-user-authentication-YYYY-MM-DD.md`
+- `BUG-005-naming-format-inconsistency-YYYY-MM-DD.md`
+- `STORY-001-PRB-001-implement-auth-backend-YYYY-MM-DD.prb.yaml`
+- `BUG-005-PRB-001-fix-naming-enforcement-YYYY-MM-DD.prb.yaml`
 
 ### Invalid Examples
 - `story-1-something.md` (wrong category case, no zero-padding, no date)
-- `TASK-001-example-2025-01-09.md` (invalid category)
-- `STORY-1-Example_Title-2025-01-09.md` (no zero-padding, spaces/underscores)
-- `STORY-001-title-25-01-09.md` (invalid date format)
+- `TASK-001-example-YYYY-MM-DD.md` (invalid category)
+- `STORY-1-Example_Title-YYYY-MM-DD.md` (no zero-padding, spaces/underscores)
+- `STORY-001-title-YY-MM-DD.md` (invalid date format)
 
 ## How to Validate Names
 

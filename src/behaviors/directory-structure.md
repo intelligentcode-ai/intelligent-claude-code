@@ -128,9 +128,9 @@ All work items MUST follow consistent naming format:
 - **PRB:** Product Requirement Blueprints (implementation plans)
 
 **Examples:**
-- `STORY-001-user-authentication-2025-01-09.md`
-- `BUG-005-login-timeout-issue-2025-01-09.md`
-- `STORY-001-PRB-001-auth-backend-2025-01-09.prb.yaml`
+- `STORY-001-user-authentication-YYYY-MM-DD.md`
+- `BUG-005-login-timeout-issue-YYYY-MM-DD.md`
+- `STORY-001-PRB-001-auth-backend-YYYY-MM-DD.prb.yaml`
 
 **Validation Rules:**
 - Numbers: Zero-padded (001, 002, etc.), sequential within category

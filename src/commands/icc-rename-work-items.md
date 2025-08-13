@@ -107,7 +107,7 @@ CreateBackup(files_to_rename):
 ### Backup Directory Structure
 ```
 backups/
-└── rename-operation-2025-01-09-14-30-15/
+└── rename-operation-YYYY-MM-DD-HH-MM-SS/
     ├── manifest.json              # Rename operation metadata
     ├── stories/                   # Original files organized by type
     │   ├── example-auth-system.txt
@@ -249,8 +249,8 @@ RollbackRename(backup_directory):
 ### Operation Report Format
 ```
 === WORK ITEM RENAME OPERATION REPORT ===
-Date: 2025-01-09 14:30:15
-Backup: backups/rename-operation-2025-01-09-14-30-15/
+Date: YYYY-MM-DD HH:MM:SS
+Backup: backups/rename-operation-YYYY-MM-DD-HH-MM-SS/
 
 Files Renamed: 12
 - STORY: 8 files

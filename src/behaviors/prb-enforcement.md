@@ -113,19 +113,14 @@
 
 **CRITICAL RULE:** EVERY PRB execution MUST use Task tool subagent - NO EXCEPTIONS EVER.
 
-### Task Tool Detection Logic
-```
-DetectTaskToolViolation(execution_context):
-  # Check if executing within Task tool subagent
-  IF NOT execution_context.is_task_tool_subagent:
-    RETURN CRITICAL_VIOLATION("Direct PRB execution forbidden")
-  
-  # Validate Task tool pattern
-  IF NOT execution_context.task_tool_pattern_valid:
-    RETURN PATTERN_VIOLATION("Invalid Task tool invocation")
-  
-  RETURN VALIDATION_PASSED
-```
+### Task Tool Detection Process
+
+**Task Tool Violation Detection Steps:**
+1. **Check Execution Context:** Verify if executing within Task tool subagent
+   - When NOT executing within Task tool subagent: Report critical violation "Direct PRB execution forbidden"
+2. **Validate Task Tool Pattern:** Check if Task tool pattern is valid
+   - When pattern is invalid: Report pattern violation "Invalid Task tool invocation"
+3. **Allow Valid Execution:** When both checks pass, allow execution to proceed
 
 ### Task Tool Blocking Mechanisms
 **ABSOLUTE BLOCKS:**
@@ -142,14 +137,13 @@ DetectTaskToolViolation(execution_context):
 5. **NO BYPASS:** This rule cannot be overridden by ANY configuration
 
 ### Required Task Tool Pattern
-```
-MANDATORY PATTERN FOR ALL PRB EXECUTION:
-Task(
-  subagent_type='general-purpose',
-  description='Execute [PRB-ID] for [description]',
-  prompt='[Complete PRB context and instructions]'
-)
-```
+
+**MANDATORY PATTERN FOR ALL PRB EXECUTION:**
+
+**Task Tool Invocation Structure:**
+- **subagent_type:** 'general-purpose'
+- **description:** 'Execute [PRB-ID] for [description]'
+- **prompt:** '[Complete PRB context and instructions]'
 
 **PATTERN VALIDATION:**
 - Must include 'subagent_type' parameter
@@ -184,17 +178,16 @@ Task(
 **BLOCK:** Any operation that violates settings
 
 ### Settings Validation Checklist
-```markdown
-MANDATORY SETTINGS COMPLIANCE:
-☐ git_privacy setting → Strip ALL AI mentions from commits
-☐ branch_protection: true → Follow protection strategy exactly
-☐ default_branch setting → Use for all git operations
-☐ autonomy_level → Apply appropriate behavior patterns
-☐ memory_integration: true → Store learnings in memory/
-☐ All CLAUDE.md settings → Applied throughout execution
 
-CRITICAL: Settings violations AUTO-BLOCK execution.
-```
+**MANDATORY SETTINGS COMPLIANCE:**
+- **git_privacy setting:** Strip ALL AI mentions from commits
+- **branch_protection: true:** Follow protection strategy exactly
+- **default_branch setting:** Use for all git operations
+- **autonomy_level:** Apply appropriate behavior patterns
+- **memory_integration: true:** Store learnings in memory/
+- **All CLAUDE.md settings:** Applied throughout execution
+
+**CRITICAL:** Settings violations AUTO-BLOCK execution.
 
 ### Git Privacy Enforcement
 **git_privacy setting enabled MEANS:**
@@ -214,13 +207,12 @@ CRITICAL: Settings violations AUTO-BLOCK execution.
 - DOCUMENT discoveries for future PRBs
 - ONLY switch on explicit user command
 
-**Discovery Format**:
-```markdown
-<!-- DISCOVERED ISSUE (DEFERRED) -->
-Issue: [description]
-Location: [file/section]
-Action: Deferred to future PRB
-```
+**Discovery Format:**
+
+**Issue Discovery Documentation:**
+- **Issue:** Brief description of discovered issue
+- **Location:** File/section where found
+- **Action:** Deferred to future PRB
 
 ## Completion Validation
 

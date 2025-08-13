@@ -28,7 +28,7 @@ When running `/icc-init-system`, the system displays progress through these phas
 Loading all behavioral patterns from ~/.claude/behaviors/:
   ✓ config-loader.md - Configuration hierarchy management
   ✓ directory-structure.md - Project structure enforcement
-  ✓ learning-team-automation.md - Error forgiveness and learning
+  ✓ learning-team-automation.md - PRB learning and pattern capture
   ✓ naming-enforcement-behavior.md - Work item naming standards
   ✓ numbering-service-behavior.md - Sequential numbering service
   ✓ prb-auto-trigger.md - Automatic PRB generation
@@ -81,7 +81,7 @@ All templates successfully loaded ✅
 3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
 4. **Activate PRB System**: Enable PRB-driven execution system
 5. **Initialize Progress Reporting**: Activate clean completion tracking
-6. **Setup Learning System**: Enable error forgiveness and pattern capture
+6. **Setup Learning System**: Enable PRB learning and pattern capture
 7. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
 8. **Validate System**: Verify all components operational and ready
 9. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration

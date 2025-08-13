@@ -57,7 +57,7 @@ System: "I need your GitHub token, where is it located?"
 
 **HIGH VALUE for Memory Storage:**
 - **Frequently Requested Information**: Paths, configurations, credentials locations
-- **Problem Solutions**: Error fixes, workarounds, troubleshooting steps
+- **Problem Solutions**: Issue fixes, workarounds, troubleshooting steps
 - **Project-Specific Patterns**: Build processes, deployment steps, testing procedures
 - **External Dependencies**: API endpoints, service configurations, tool locations
 - **Team Preferences**: Coding standards, review patterns, workflow preferences
@@ -78,7 +78,7 @@ System: "I need your GitHub token, where is it located?"
 - Information is requested more than once
 - Solution involves multiple steps that could be reused
 - Configuration or path discovery that applies broadly
-- Error resolution that could help future similar issues
+- Issue resolution that could help future similar problems
 - Process documentation that standardizes workflows
 
 **DON'T STORE When:**
@@ -164,7 +164,7 @@ BEFORE STORING ANY MEMORY:
 ### With Learning System
 - **Proactive Storage**: Generate memories based on learning triggers
 - **Pattern Enhancement**: Use learning patterns to identify valuable storage opportunities
-- **Error Prevention**: Store solution patterns to prevent repeated errors
+- **Issue Prevention**: Store solution patterns to prevent repeated issues
 
 ### With Task Execution
 - **Pre-Task Memory Check**: Search memory before starting any task
