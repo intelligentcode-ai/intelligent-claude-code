@@ -243,7 +243,7 @@ NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
 PRB_NAME="STORY-001-PRB-${NEXT}-<descriptive-title>-${CURRENT_DATE}.prb.yaml"
 ```
 
-**CRITICAL:** Always use system date command - NEVER hardcode dates like "2025-01-09".
+**CRITICAL:** Always use system date command - NEVER hardcode specific dates.
 
 ### Naming Validation Integration
 - **Parent Reference:** All PRBs must reference valid parent story ID

@@ -6,8 +6,8 @@
 
 ### learning-patterns.md
 **Used by:** learning-team-automation, prb-creation-mandates, role-management
-**Purpose:** Error forgiveness, learning detection, memory-first approach
-**Key:** First error = learning, second = penalty, +0.5 bonus for applying learnings
+**Purpose:** PRB learning capture, pattern detection, memory-first approach
+**Key:** PRB execution generates learnings, patterns applied in future PRBs
 
 ### memory-operations.md  
 **Used by:** learning-team-automation, memory commands (store/search/load)

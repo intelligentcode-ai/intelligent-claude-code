@@ -40,32 +40,31 @@
 - **INSTALLATION SCOPE**: ~/.claude/ write operations only during installation or explicit global config changes
 
 **Project Boundary Rules:**
-```markdown
-ALLOWED OPERATIONS:
-☐ Read operations from ~/.claude/ for configuration loading
-☐ All operations within project_root/ directory
-☐ Memory operations within ./memory/ subdirectory
-☐ Configuration updates within project scope
 
-BLOCKED OPERATIONS:  
-☐ Write operations to ~/.claude/ during normal execution
-☐ File operations outside project root directory
-☐ Memory storage in ~/.claude/memory/ instead of ./memory/
-☐ Global configuration changes without explicit user request
-☐ Task tool working directories outside project boundaries
-```
+**ALLOWED OPERATIONS:**
+- Read operations from ~/.claude/ for configuration loading
+- All operations within project_root/ directory
+- Memory operations within ./memory/ subdirectory
+- Configuration updates within project scope
+
+**BLOCKED OPERATIONS:**  
+- Write operations to ~/.claude/ during normal execution
+- File operations outside project root directory
+- Memory storage in ~/.claude/memory/ instead of ./memory/
+- Global configuration changes without explicit user request
+- Task tool working directories outside project boundaries
 
 **Boundary Validation Process:**
 
 **Steps to Validate Project Boundaries:**
 1. **Check Each File Operation:** Review all planned file operations in the work context
 2. **Block Unauthorized ~/.claude/ Writes:** 
-   - If operation is writing to ~/.claude/ directory
-   - AND operation is not installation or explicit global config
-   - THEN block the operation and show error: "Write to ~/.claude/ forbidden"
+   - When operation writes to ~/.claude/ directory
+   - When operation is not installation or explicit global config
+   - Show error: "Write to ~/.claude/ forbidden"
 3. **Block External Directory Operations:**
-   - If operation path is outside project root AND not ~/.claude/ directory
-   - THEN block the operation and show error: "Operation outside project scope"
+   - When operation path is outside project root and not ~/.claude/ directory
+   - Show error: "Operation outside project scope"
 4. **Allow Valid Operations:** Operations within project boundaries or authorized ~/.claude/ access proceed normally
 
 ### Configuration Value Loading
@@ -87,13 +86,12 @@ BLOCKED OPERATIONS:
 **REQUIRED**: Relevant files with actual content samples
 
 **File Reference Structure:**
-```yaml
-critical_files:
-  - path: "/absolute/path/to/file"
-    purpose: "specific purpose for this work"
-    sample: "actual content from file (first 200 chars)"
-    relevance: "why this file matters for the work"
-```
+
+**Critical Files Format:**
+- **Path:** Absolute path to file
+- **Purpose:** Specific purpose for this work
+- **Sample:** Actual content from file (first 200 chars)
+- **Relevance:** Why this file matters for the work
 
 **File Discovery Process:**
 1. Analyze work request for file types/patterns needed
@@ -105,14 +103,13 @@ critical_files:
 **REQUIRED**: Clear, specific user requirements
 
 **Requirements Structure:**
-```yaml
-user_requirements:
-  original_request: "exact user words/request"
-  work_type: "implementation/fix/enhancement/refactor"
-  success_criteria: ["specific success criteria"]
-  clarifications: ["any assumptions or clarifications"]
-  scope_limits: ["what is NOT included"]
-```
+
+**User Requirements Format:**
+- **Original Request:** Exact user words/request
+- **Work Type:** implementation/fix/enhancement/refactor
+- **Success Criteria:** Specific success criteria list
+- **Clarifications:** Any assumptions or clarifications
+- **Scope Limits:** What is NOT included
 
 ## Validation Logic
 

@@ -39,19 +39,19 @@
 ## Example
 
 ```bash
-/icc-load-memory Learning-OAuth2Refresh-20250123-143000
+/icc-load-memory Learning-OAuth2Refresh-YYYYMMDD-HHMMSS
 ```
 
 **Output:**
 ```
-✓ Loaded Learning-OAuth2Refresh-20250123-143000
+✓ Loaded Learning-OAuth2Refresh-YYYYMMDD-HHMMSS
 
 Type: Learning
-Created: 2025-01-23T14:30:00Z
+Created: YYYY-MM-DDTHH:MM:SSZ
 Context: TASK-001
 Relevance: 8/10
 Applications: 3
-Last Accessed: 2025-01-23T15:45:00Z
+Last Accessed: YYYY-MM-DDTHH:MM:SSZ
 
 ## Observations
 - OAuth2 token refresh requires specific error handling
@@ -64,8 +64,8 @@ Last Accessed: 2025-01-23T15:45:00Z
 3. Add comprehensive error logging
 
 ## Related Entities
-- Pattern-OAuth2Flow-20250122
-- Knowledge-AuthBestPractices-20250120
+- Pattern-OAuth2Flow-YYYYMMDD
+- Knowledge-AuthBestPractices-YYYYMMDD
 ```
 
 ## Cache Behavior

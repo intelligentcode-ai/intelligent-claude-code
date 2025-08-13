@@ -172,7 +172,7 @@ Then: `/icc-generate-prb-from-draft drafts/new-feature/`
 
 ### Learning Phase
 1. New patterns stored in `memory/[topic]/`
-2. Errors become learnings (no penalty first time)
+2. PRB patterns become learnings automatically
 3. Future PRBs include relevant learnings
 4. Team improves continuously
 

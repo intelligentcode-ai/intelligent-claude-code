@@ -33,37 +33,36 @@
 
 ## Resolution Process
 
-### Main Agent Resolution Function
-```
-ResolveAllPlaceholders(template_content, work_context):
-  1. **Load Configuration Hierarchy:**
-     - embedded_config = work_context.prb_config
-     - project_config = load_project_config()  
-     - user_config = load_user_config()
-     - system_config = load_system_defaults()
-     - merged_config = merge_hierarchy(embedded, project, user, system)
-  
-  2. **Gather Project Context:**
-     - project_root = detect_project_root()
-     - system_nature = analyze_system_nature(project_root)
-     - critical_files = identify_critical_files(work_context)
-     - current_date = get_current_date()
-  
-  3. **Perform Searches:**
-     - memory_results = search_memory(work_context.keywords)
-     - practices_results = search_best_practices(work_context.domain)
-  
-  4. **Replace All Placeholders:**
-     FOR each placeholder IN extract_placeholders(template_content):
-       resolved_value = resolve_placeholder(placeholder, context_data)
-       template_content = replace(template_content, placeholder, resolved_value)
-  
-  5. **Validate Resolution:**
-     IF contains_unresolved_placeholders(template_content):
-       RETURN RESOLUTION_ERROR("Unresolved placeholders remaining")
-     
-     RETURN resolved_template_content
-```
+### Main Agent Resolution Process
+
+**Placeholder Resolution Steps:**
+
+**1. Load Configuration Hierarchy:**
+- **embedded_config:** Extract from work context PRB config
+- **project_config:** Load project-specific configuration
+- **user_config:** Load user global configuration
+- **system_config:** Load system default configuration
+- **merged_config:** Merge hierarchy (embedded → project → user → system)
+
+**2. Gather Project Context:**
+- **project_root:** Detect absolute project root path
+- **system_nature:** Analyze system nature (CODE-BASED vs MARKDOWN-BASED AI-AGENTIC)
+- **critical_files:** Identify relevant files with content samples
+- **current_date:** Get current system date in YYYY-MM-DD format
+
+**3. Perform Searches:**
+- **memory_results:** Search memory directory for relevant patterns
+- **practices_results:** Search best-practices directory for applicable approaches
+
+**4. Replace All Placeholders:**
+- **Extract Placeholders:** Identify all "[...]" patterns in template content
+- **Resolve Each:** Replace placeholder with appropriate resolved value
+- **Update Template:** Apply resolved values to template content
+
+**5. Validate Resolution:**
+- **Check Completeness:** Scan for any remaining unresolved placeholders
+- **When unresolved found:** Report resolution error "Unresolved placeholders remaining"
+- **When complete:** Return fully resolved template content
 
 ### Task Tool Limitations
 **Cannot access**: Configuration hierarchy, project-wide files, memory/ directories, best-practices/, project root analysis, system nature detection

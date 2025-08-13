@@ -29,8 +29,8 @@ Self-contained blueprints replace complex workflows. Each PRB includes everythin
 - All with 10+ years expertise
 
 ### 🧠 Self-Learning System
-- First errors create learnings (no penalty)
-- Repeated errors get penalties  
+- PRB execution generates learnings automatically
+- Successful patterns captured and stored
 - Applies previous learnings automatically
 - Continuous improvement through memory patterns
 

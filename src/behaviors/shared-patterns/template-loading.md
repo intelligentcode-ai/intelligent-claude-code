@@ -36,11 +36,9 @@
 ## Configuration Integration
 
 ### PRB Template Path Setting
-```yaml
-# CLAUDE.md or config.md
-directory_structure:
-  prb_template_path: "custom-templates"  # Default: "prb-templates"
-```
+
+**Configuration Example:**
+- **In CLAUDE.md or config.md:** Set directory_structure.prb_template_path to "custom-templates" (Default: "prb-templates")
 
 ### Hierarchy Override
 Projects can override any template by placing it in their configured template directory.

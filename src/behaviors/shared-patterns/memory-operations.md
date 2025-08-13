@@ -3,22 +3,20 @@
 **MANDATORY:** Version-controlled memory in project.
 
 ## Structure
-```
-memory/
-├── [topic]/
-│   └── [subtopic].md  # Dated entries (newest first)
-└── index.md           # Topic index
-```
+
+**Memory Directory Organization:**
+- **memory/[topic]/[subtopic].md** - Dated entries (newest first)
+- **memory/index.md** - Topic index
 
 ## Entry Format
-```markdown
-## YYYY-MM-DD: Title
-**Context:** Task/PRB reference
-**Problem:** What went wrong
-**Solution:** How fixed
-**Code:** [if applicable]
----
-```
+
+**Standard Memory Entry Format:**
+- **Header:** ## YYYY-MM-DD: Title
+- **Context:** Task/PRB reference
+- **Problem:** What went wrong
+- **Solution:** How fixed
+- **Code:** [if applicable]
+- **Separator:** --- (between entries)
 
 ## Operations
 

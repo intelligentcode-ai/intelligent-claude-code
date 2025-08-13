@@ -30,7 +30,7 @@
 
 4. **Format Entry**
    ```markdown
-   ## 2025-01-23: OAuth2 Token Refresh
+   ## YYYY-MM-DD: OAuth2 Token Refresh
    **Context:** PRB-001 / TASK-001
    
    ### Problem
@@ -65,7 +65,7 @@
 **Output:**
 ```
 ✓ Stored in memory/authentication/oauth2-patterns.md
-  Entry: 2025-01-23: Token Refresh Strategy
+  Entry: YYYY-MM-DD: Token Refresh Strategy
   Topic: Authentication / OAuth2
   Status: Ready to commit
 ```

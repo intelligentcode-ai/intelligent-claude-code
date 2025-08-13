@@ -48,22 +48,24 @@
 - Task tool accessing template hierarchy
 - Task tool performing memory searches for creation
 
-### Detection Function
-```
-DetectCreationViolation(execution_context):
-  # Check if Task tool attempting work item creation
-  IF execution_context.is_task_tool_subagent AND 
-     execution_context.operation_type IN ["create_story", "create_bug", "create_epic", "create_prb"]:
-    RETURN CREATION_VIOLATION("Task tool cannot create work items")
-  
-  # Check file creation patterns  
-  IF execution_context.is_task_tool_subagent AND
-     execution_context.file_operations.contains_creation AND
-     execution_context.target_directories IN ["stories/", "bugs/", "prbs/"]:
-    RETURN FILE_CREATION_VIOLATION("Work item files must be created by main agent")
-  
-  RETURN VALIDATION_PASSED
-```
+### Creation Violation Detection Process
+
+**Steps to Detect Creation Violations:**
+
+**1. Check Work Item Creation Attempts:**
+- **When:** Task tool subagent attempts work item creation operations
+- **Operations:** create_story, create_bug, create_epic, create_prb
+- **Action:** Report creation violation "Task tool cannot create work items"
+
+**2. Check File Creation Patterns:**
+- **When:** Task tool subagent performs file creation operations
+- **Directories:** stories/, bugs/, prbs/
+- **Action:** Report file creation violation "Work item files must be created by main agent"
+
+**3. Allow Valid Operations:**
+- **When:** Main agent performs creation operations
+- **When:** Task tool performs execution operations only
+- **Action:** Proceed with operation normally
 
 ### Blocking Actions
 **IMMEDIATE BLOCKS:**
