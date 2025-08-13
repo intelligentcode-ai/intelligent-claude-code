@@ -19,6 +19,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.21.0] - 2025-01-13
+
+### Added
+- Universal markdown-based behavioral system - removed ALL hardcoded paths and user-specific references
+- Standardized PRB template execution processes with consistent flows across all complexity levels
+- Pure markdown behavioral descriptions - eliminated all code and pseudo-code from src/
+
+### Changed
+- PRB templates now follow standardized 4-9 step execution processes based on complexity
+- Nano: 4 steps, Tiny: 7 steps, Medium: 9 steps (with branch creation and PR)
+- All behavioral patterns converted to pure markdown instructions
+- System is now completely portable and universal
+
+### Fixed
+- Removed hardcoded project references that prevented universal deployment
+- Eliminated pseudo-code that violated markdown-based system principles
+- Removed error forgiveness concept incompatible with PRB-driven execution
+
 ## [6.20.0] - 2025-08-12
 
 ### Added
