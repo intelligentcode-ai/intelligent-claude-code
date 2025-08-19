@@ -24,7 +24,7 @@
 - Complete project context gathering and analysis
 - Placeholder resolution with actual configuration values
 
-**BLOCKED:** Task tool CANNOT create PRBs due to isolated context limitations.
+**BLOCKED:** Subagents CANNOT create PRBs due to task-specific context limitations.
 
 ## MANDATORY TEMPLATE USAGE WITH PLACEHOLDER RESOLUTION
 

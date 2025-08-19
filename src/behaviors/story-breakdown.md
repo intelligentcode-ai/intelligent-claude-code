@@ -6,7 +6,7 @@
 
 ## Core Process
 
-**CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT Task tool).
+**CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT subagent).
 
 When user says "@PM break down story X" or similar:
 1. **@PM reads story**: Understands business goals and requirements
@@ -20,7 +20,7 @@ When user says "@PM break down story X" or similar:
 
 **SEPARATION ENFORCEMENT:** 
 - **CREATION**: @PM + Architect work in main agent context with full project access
-- **EXECUTION**: Created PRBs are executed via Task tool with resolved context
+- **EXECUTION**: Created PRBs are executed via subagents with resolved context
 
 ## Two-Factor Analysis Process
 

@@ -1,6 +1,6 @@
 # Placeholder Resolution Behavior
 
-**MANDATORY:** Placeholder resolution MUST happen in main agent context only. Auto-correct Task tool attempts.
+**MANDATORY:** Placeholder resolution MUST happen in main agent context only. Auto-correct subagent attempts.
 
 **PURPOSE:** Ensure proper template placeholder resolution with complete project context
 
@@ -14,7 +14,7 @@
 - Memory search across memory/ directories
 - Best practices search across best-practices/ directory
 
-**Task tool CANNOT resolve placeholders due to isolated context.**
+**Subagents CANNOT resolve placeholders due to task-specific context.**
 
 ## Common Placeholders
 
@@ -64,9 +64,9 @@
 - **When unresolved found:** Report resolution error "Unresolved placeholders remaining"
 - **When complete:** Return fully resolved template content
 
-### Task Tool Limitations
+### Subagent Limitations
 **Cannot access**: Configuration hierarchy, project-wide files, memory/ directories, best-practices/, project root analysis, system nature detection
-**Reason**: Isolated context with limited working directory scope
+**Reason**: Task-specific context with limited working scope
 
 ## Placeholder Categories Requiring Main Agent
 
@@ -80,13 +80,13 @@
 
 ### Blocking & Error Handling
 
-**BLOCKED OPERATIONS**: Task tool attempts at placeholder resolution, configuration access, project-wide searches
+**BLOCKED OPERATIONS**: Subagent attempts at placeholder resolution, configuration access, project-wide searches
 
-**DETECTION**: Monitor Task tool context for placeholder resolution attempts, config hierarchy access, memory search operations
+**DETECTION**: Monitor subagent context for placeholder resolution attempts, config hierarchy access, memory search operations
 
 **ERROR MESSAGES**: 
-- "❌ PLACEHOLDER RESOLUTION BLOCKED: Task tool cannot resolve placeholders - use main agent"
-- "❌ CONFIGURATION ACCESS DENIED: Config hierarchy not available in isolated context"  
+- "❌ PLACEHOLDER RESOLUTION BLOCKED: Subagents cannot resolve placeholders - use main agent"
+- "❌ CONFIGURATION ACCESS DENIED: Config hierarchy not available in subagent context"  
 - "❌ PROJECT ANALYSIS BLOCKED: Project-wide analysis requires main agent access"
 - "❌ MEMORY SEARCH BLOCKED: Memory operations require main agent directory access"
 
@@ -94,7 +94,7 @@
 
 ### Resolution Requirements
 
-**BEFORE Task tool execution**: ALL placeholders resolved, NO "[...]" patterns remain, configuration values specific, file paths absolute, search results embedded
+**BEFORE subagent execution**: ALL placeholders resolved, NO "[...]" patterns remain, configuration values specific, file paths absolute, search results embedded
 
 **VALIDATION CHECKLIST**:
 ☐ No config/context/search patterns remain ☐ Absolute file paths ☐ Actual config values ☐ Current dates ☐ Embedded search results
@@ -106,20 +106,20 @@
 ### With PRB Creation
 **prb-creation-mandates.md integration:**
 - Main agent must resolve ALL placeholders before PRB completion
-- Task tool receives PRB with completely resolved context
+- Subagents receive PRB with completely resolved context
 - No placeholder resolution happens during PRB execution
 
 ### With Template System
 **template-loading.md integration:**  
 - Template loading happens in main agent context
 - Placeholder resolution happens immediately after template loading
-- Resolved templates are passed to Task tool for execution
+- Resolved templates are passed to subagents for execution
 
 ### With Work Item Creation
 **work-item-creation.md integration:**
 - All work item templates get placeholder resolution in main agent
 - Complete context gathered before placeholder resolution
-- Resolved work items ready for Task tool execution
+- Resolved work items ready for subagent execution
 
 ## Learning Integration
 
