@@ -29,14 +29,14 @@
 - **Invalid template source** → IMMEDIATE BLOCK → "❌ Must use templates from src/prb-templates/ hierarchy ONLY"
 - **Config not embedded** → IMMEDIATE BLOCK → "❌ Configuration must be embedded at generation time"
 
-### Priority 1: Task Tool Enforcement
-- **Direct PRB execution** → BLOCK → "❌ PRB requires Task tool subagent"
+### Priority 1: Dual-Mode Execution Enforcement
+- **Direct PRB execution without subagent** → BLOCK → "❌ PRB requires subagent execution (native or Task tool)"
 - **Task creating work items** → BLOCK → "❌ Creation requires main agent"
 
 ### Priority 2: Pattern Detection
 | Pattern | Detection | Action |
 |---------|-----------|--------|
-| @Role | All formats (@Role:, [@Role]) | Generate PRB → Task tool |
+| @Role | All formats (@Role:, [@Role]) | Generate PRB → Native subagent (or Task tool fallback) |
 | Work Items | STORY-XXX, BUG-XXX | Convert to PRB → Execute |
 | Direct Work | Code changes without PRB | Block → Generate PRB |
 
@@ -58,7 +58,7 @@
 | **Config not embedded** | **IMMEDIATE BLOCK → Embed complete configuration at generation** |
 | Missing PRB | Analyze → Generate from src/prb-templates/ → Execute |
 | Wrong template | Re-analyze complexity → Correct template from src/prb-templates/ |
-| Direct execution | Create PRB from src/prb-templates/ → Use Task tool |
+| Direct execution | Create PRB from src/prb-templates/ → Use native subagent or Task tool |
 | Wrong role | PM+Architect collaboration → Reassign |
 | Task creation | Redirect to main agent |
 
@@ -74,7 +74,7 @@
 **Wrong Template:** STOP → Re-analyze → Generate correct PRB
 **Direct Execution:** STOP → Create PRB → Execute through PRB
 **Legacy Workflow:** STOP → Convert to PRB → Direct execution
-**Missing Task Tool:** STOP → Error message → Require Task tool wrapper
+**Missing Execution Mode:** STOP → Error message → Require subagent execution (native or Task tool)
 **System Nature Mismatch:** STOP → Block inappropriate role → Enforce PM+Architect collaboration → Re-assign correct role
 **Wrong Domain Architect:** STOP → Force correct architect selection → Re-validate role assignment
 
@@ -92,10 +92,10 @@
 **Validation:** Success criteria embedded
 
 ## Multi-Layer Detection
-1. **Task Tool Validator:** FIRST CHECK - Validate ALL PRB executions use Task tool (MANDATORY)
+1. **Dual-Mode Validator:** FIRST CHECK - Validate ALL PRB executions use subagent (native or Task tool) (MANDATORY)
 2. **Input Scanner:** Pre-process ALL text before execution
 3. **Pattern Matcher:** Detect @Role and work patterns
-4. **Task Tool Checker:** Validate Task tool usage for @Role mentions
+4. **Execution Mode Checker:** Validate subagent usage for @Role mentions (native preferred, Task tool fallback)
 5. **PRB Checker:** Validate PRB exists for work
 6. **Template Validator:** Ensure correct complexity template
 7. **System Nature Validator:** Check role assignments align with system nature
@@ -103,52 +103,61 @@
 9. **Auto-Generator:** Create PRB if missing
 
 ## Real-Time Interception
-**Monitor:** ALL execution attempts (Task tool check FIRST)
-**Interrupt:** IMMEDIATELY on direct PRB execution (highest priority)
-**Block:** No PRB execution without Task tool subagent
+**Monitor:** ALL execution attempts (Dual-mode check FIRST)
+**Interrupt:** IMMEDIATELY on direct PRB execution without subagent (highest priority)
+**Block:** No PRB execution without subagent (native or Task tool)
 **Block:** No direct work without PRB
-**Correct:** Generate appropriate PRB with Task tool enforcement
+**Correct:** Generate appropriate PRB with subagent enforcement
 
-## Task Tool Enforcement (ABSOLUTE PRIORITY)
+## Dual-Mode Subagent Enforcement (ABSOLUTE PRIORITY)
 
-**CRITICAL RULE:** EVERY PRB execution MUST use Task tool subagent - NO EXCEPTIONS EVER.
+**CRITICAL RULE:** EVERY PRB execution MUST use subagent execution (native preferred, Task tool fallback) - NO EXCEPTIONS EVER.
 
-### Task Tool Detection Process
+### Dual-Mode Detection Process
 
-**Task Tool Violation Detection Steps:**
-1. **Check Execution Context:** Verify if executing within Task tool subagent
-   - When NOT executing within Task tool subagent: Report critical violation "Direct PRB execution forbidden"
-2. **Validate Task Tool Pattern:** Check if Task tool pattern is valid
-   - When pattern is invalid: Report pattern violation "Invalid Task tool invocation"
-3. **Allow Valid Execution:** When both checks pass, allow execution to proceed
+**Subagent Execution Violation Detection Steps:**
+1. **Check Native Subagent Availability:** Detect if native subagent capability exists and is handling execution
+   - When native subagent active: Allow execution to proceed (PREFERRED)
+   - When native subagent available but not active: Route to native subagent
+2. **Check Task Tool Context:** Verify if executing within Task tool subagent (fallback)
+   - When Task tool context detected: Allow execution to proceed (FALLBACK)
+   - When Task tool pattern is valid: Continue with execution
+3. **Block Direct Execution:** Only when neither mode is active
+   - When neither native nor Task tool detected: Report critical violation "PRB execution requires subagent (native or Task tool)"
 
-### Task Tool Blocking Mechanisms
+### Dual-Mode Blocking Mechanisms
 **ABSOLUTE BLOCKS:**
-- Any PRB execution outside Task tool context
-- Direct access to PRB files for execution
-- Bypassing Task tool requirement
-- Attempting to override Task tool mandate
+- Any PRB execution without subagent (neither native nor Task tool)
+- Direct access to PRB files for execution without subagent context
+- Bypassing subagent requirement entirely
+- Attempting to override subagent mandate
 
 **IMMEDIATE ACTIONS:**
-1. **BLOCK EXECUTION** at first detection
-2. **DISPLAY CLEAR ERROR:** "❌ PRB execution REQUIRES Task tool subagent"
-3. **SHOW CORRECT PATTERN:** Provide Task tool invocation example
-4. **LOG VIOLATION:** Track attempts for monitoring
-5. **NO BYPASS:** This rule cannot be overridden by ANY configuration
+1. **PREFER NATIVE SUBAGENT** if available
+2. **FALLBACK TO TASK TOOL** if native unavailable
+3. **BLOCK EXECUTION** only if neither available
+4. **DISPLAY CLEAR ERROR:** "❌ PRB execution REQUIRES subagent execution (native preferred, Task tool fallback)"
+5. **SHOW CORRECT PATTERNS:** Provide both native and Task tool examples
+6. **LOG VIOLATION:** Track attempts and mode usage for monitoring
+7. **NO DIRECT BYPASS:** Direct execution rule cannot be overridden by ANY configuration
 
-### Required Task Tool Pattern
+### Supported Execution Patterns
 
-**MANDATORY PATTERN FOR ALL PRB EXECUTION:**
+**PREFERRED: Native Subagent Invocation:**
+- **Pattern:** Direct @Role invocation creates native subagent automatically
+- **Benefits:** Enhanced capability, better context preservation, improved performance
+- **Usage:** @AI-Engineer execute PRB-001 (creates native @AI-Engineer subagent)
 
-**Task Tool Invocation Structure:**
+**FALLBACK: Task Tool Invocation Structure:**
 - **subagent_type:** 'general-purpose'
 - **description:** 'Execute [PRB-ID] for [description]'
 - **prompt:** '[Complete PRB context and instructions]'
 
 **PATTERN VALIDATION:**
-- Must include 'subagent_type' parameter
+- Native subagent: Direct @Role pattern with subagent creation
+- Task tool: Must include 'subagent_type' parameter and complete context
 - Must reference specific PRB being executed
-- Must contain complete context for subagent
+- Must contain complete context for subagent execution
 - No shortcuts or abbreviated patterns allowed
 
 ## Advanced Patterns
