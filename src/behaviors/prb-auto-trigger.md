@@ -15,7 +15,7 @@
 |---------|---------|--------|
 | PRB File | *.prb.yaml | Execute existing |
 | Work Request | Implementation intent | Generate PRB |
-| @Role | @Role mention | PRB + Task tool |
+| @Role | @Role mention | PRB + Native subagent (or Task tool fallback) |
 | Commands | /icc-create-prb | Generate with options |
 
 ## Complexity Scoring
@@ -51,7 +51,7 @@
 ## MANDATORY Template-First Generation Flow (ZERO EXCEPTIONS)
 
 1. **Detect** work requirement
-2. **Validate** Task tool if @Role
+2. **Validate** Subagent mode if @Role (native preferred, Task tool fallback)
 3. **Gather** complete context (MANDATORY)
 4. **Search** memory/[topic]/ (MANDATORY)
 5. **Search** best-practices/ (MANDATORY)
@@ -71,7 +71,7 @@
 15. **Create** PRB using complete resolved template structure
 16. **Validate** NO runtime config dependencies
 17. **Document** template source in metadata
-18. **Execute** via Task tool if needed
+18. **Execute** via native subagent (preferred) or Task tool (fallback) if needed
 
 **ABSOLUTE ENFORCEMENT:** Steps 8-17 are MANDATORY - NO bypassing, NO exceptions, NO runtime config lookups.
 
@@ -102,6 +102,32 @@ Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 
 **MUST Trigger**: Work requests, @Role mentions, PRB commands
 **MUST NOT**: Information queries, status checks, reading only
+
+## Dual-Mode Execution Configuration
+
+### Native Subagent Detection
+**Configuration-based detection:**
+- Check subagent_model setting in configuration
+- Verify auto_delegation is enabled  
+- Confirm max_concurrent_subagents > 0
+- Validate subagent_threshold configuration
+
+**Native Subagent Capability Indicators:**
+- subagent_model: "sonnet" (or other valid model)
+- auto_delegation: true
+- max_concurrent_subagents: 1-10
+- subagent_threshold: 1-5 (complexity threshold)
+
+### Execution Mode Priority
+1. **FIRST PRIORITY:** Native subagent if available and configured
+2. **FALLBACK:** Task tool if native subagents unavailable
+3. **BLOCK:** Direct execution without either mode
+
+### Backward Compatibility
+- Existing Task tool patterns continue to work
+- No breaking changes to current implementations  
+- Graceful degradation when native subagents unavailable
+- Configuration-driven feature detection
 
 ---
 *Optimized: 335→~75 lines*

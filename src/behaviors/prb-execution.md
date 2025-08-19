@@ -7,18 +7,28 @@
 @./shared-patterns/template-loading.md
 @./shared-patterns/execution-validation.md
 
-## Task Tool Requirement
+## Dual-Mode Execution Support
 
-**CRITICAL:** ALL PRB execution via Task tool subagent ONLY.
-- Block direct execution → Error: "❌ PRB requires Task tool subagent"
+**FLEXIBLE EXECUTION:** PRB execution supports both native subagents and Task tool fallback.
+
+### Primary Mode: Native Subagents
+**PREFERRED:** Direct subagent invocation when available:
+- Pattern: Direct @Role invocation creates native subagent
+- Benefits: Enhanced capability, better context preservation, improved performance
+- Detection: Check if native subagent capability available
+
+### Fallback Mode: Task Tool 
+**FALLBACK:** Task tool subagent when native unavailable:
 - Pattern: `Task(subagent_type='general-purpose', prompt='[PRB context]')`
+- Used: When native subagents not available or not supported for role
+- Compatibility: Maintains backward compatibility with existing patterns
 
 ## Mandatory Execution Checklist
 
 ### 6 Sections (ALL MANDATORY)
 | Section | Requirements | Validation |
 |---------|-------------|------------|
-| 0. Task Tool | Verify subagent execution | BLOCKING if missing |
+| 0. Execution Mode | Verify dual-mode execution | Native OR Task tool |
 | 1. Context | Load settings, validate files | All values resolved |
 | 2. Requirements | Execute functional/processual/technical | Every item complete |
 | 3. Git Ops | Branch→Commit→PR→Merge | CHANGELOG before PR |
@@ -38,8 +48,8 @@
 
 ### Section-by-Section Execution Requirements
 
-**TASK TOOL VALIDATION (MANDATORY FIRST CHECK):**
-- 0. Task Tool Check - VERIFY Task tool subagent is executing PRB (BLOCKING)
+**DUAL-MODE VALIDATION (MANDATORY FIRST CHECK):**
+- 0. Execution Mode Check - VERIFY Native subagent OR Task tool is executing PRB (BLOCKING)
 
 **MANDATORY PRB SECTION EXECUTION:**
 - 1. Complete Context Section - ALL file references validated, settings loaded
@@ -106,21 +116,33 @@
 ### State Transition Guards
 Each state transition MUST validate previous state completion before proceeding.
 
-**CRITICAL:** Task tool validation MUST be FIRST check before ANY state transitions.
+**CRITICAL:** Dual-mode execution validation MUST be FIRST check before ANY state transitions.
 
-## Task Tool Validation (MANDATORY FIRST)
+## Dual-Mode Execution Validation (MANDATORY FIRST)
 
-**ABSOLUTE PRIORITY:** Task tool check MUST happen BEFORE any other validation.
+**ABSOLUTE PRIORITY:** Dual-mode execution check MUST happen BEFORE any other validation.
 
-### Pre-Execution Task Tool Validation
+### Pre-Execution Mode Detection
 
-**TASK TOOL VALIDATION CHECKLIST (HIGHEST PRIORITY):**
-- Verify current execution is within Task tool subagent context
-- Confirm Task tool invocation pattern was used
-- Block ANY attempt at direct PRB execution
-- Display clear error if Task tool not detected
+**DUAL-MODE VALIDATION CHECKLIST (HIGHEST PRIORITY):**
+- Detect if native subagent is available and active
+- Verify current execution context (native subagent OR Task tool)
+- Allow native subagent execution when available (preferred)
+- Fallback to Task tool when native subagents unavailable
+- Block ONLY direct execution without either mode
+- Display clear error if neither execution mode detected
 
-### Task Tool Detection Function
+### Execution Mode Detection Logic
+
+**Steps to Detect Execution Mode:**
+1. **Check Native Subagent Availability:** Detect if native subagent capability exists
+   - When native subagent available: Allow direct @Role invocation (PREFERRED)
+   - When native subagent handling current execution: Allow execution to proceed
+2. **Check Task Tool Context:** Verify if executing within Task tool subagent
+   - When Task tool context detected: Allow execution to proceed (FALLBACK)
+   - When Task tool pattern is valid: Continue with execution
+3. **Block Direct Execution:** Only block direct execution without either mode
+   - When neither native nor Task tool detected: Report violation "PRB execution requires subagent (native or Task tool)"
 
 **State Transition Flow:**
 INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_VALIDATION → PENDING_KNOWLEDGE → PENDING_GIT → PENDING_LIFECYCLE → COMPLETE
@@ -200,8 +222,8 @@ State transitions require validation of previous state completion.
 ### State Validation Process
 
 **Steps to Validate PRB State Transition:**
-1. **Critical Task Tool Validation (HIGHEST PRIORITY):** Validate that Task tool was used for all @Role delegations in PRB
-   - If Task tool validation fails: Block transition, display Task tool error, return validation failed
+1. **Critical Dual-Mode Validation (HIGHEST PRIORITY):** Validate that native subagent OR Task tool is handling PRB execution
+   - If neither execution mode detected: Block transition, display execution mode error, return validation failed
 2. **Get Current State:** Determine current PRB state and target state
 3. **Load Completion Checklist:** Get the mandatory checklist items for this PRB
 4. **Check State Transition Path:** For each required state between current and target:
