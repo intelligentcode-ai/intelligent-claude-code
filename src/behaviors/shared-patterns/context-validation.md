@@ -52,7 +52,7 @@
 - File operations outside project root directory
 - Memory storage in ~/.claude/memory/ instead of ./memory/
 - Global configuration changes without explicit user request
-- Task tool working directories outside project boundaries
+- Subagent working directories outside project boundaries
 
 **Boundary Validation Process:**
 

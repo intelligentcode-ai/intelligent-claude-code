@@ -7,28 +7,22 @@
 @./shared-patterns/template-loading.md
 @./shared-patterns/execution-validation.md
 
-## Dual-Mode Execution Support
+## Subagent Execution
 
-**FLEXIBLE EXECUTION:** PRB execution supports both native subagents and Task tool fallback.
+**PATTERN:** PRBs execute via subagents with complete embedded context.
 
-### Primary Mode: Native Subagents
-**PREFERRED:** Direct subagent invocation when available:
-- Pattern: Direct @Role invocation creates native subagent
-- Benefits: Enhanced capability, better context preservation, improved performance
-- Detection: Check if native subagent capability available
-
-### Fallback Mode: Task Tool 
-**FALLBACK:** Task tool subagent when native unavailable:
-- Pattern: `Task(subagent_type='general-purpose', prompt='[PRB context]')`
-- Used: When native subagents not available or not supported for role
-- Compatibility: Maintains backward compatibility with existing patterns
+### Subagent Invocation
+**Standard Pattern:** Direct @Role invocation creates appropriate subagent:
+- Pattern: Direct @Role invocation creates role-specific subagent
+- Benefits: Role-specific capability, context preservation, specialized execution
+- Context: Complete PRB context embedded, no runtime lookups needed
 
 ## Mandatory Execution Checklist
 
 ### 6 Sections (ALL MANDATORY)
 | Section | Requirements | Validation |
 |---------|-------------|------------|
-| 0. Execution Mode | Verify dual-mode execution | Native OR Task tool |
+| 0. Context Loading | Verify embedded context | All config resolved |
 | 1. Context | Load settings, validate files | All values resolved |
 | 2. Requirements | Execute functional/processual/technical | Every item complete |
 | 3. Git Ops | Branch→Commit→PR→Merge | CHANGELOG before PR |
@@ -48,8 +42,8 @@
 
 ### Section-by-Section Execution Requirements
 
-**DUAL-MODE VALIDATION (MANDATORY FIRST CHECK):**
-- 0. Execution Mode Check - VERIFY Native subagent OR Task tool is executing PRB (BLOCKING)
+**CONTEXT VALIDATION (MANDATORY FIRST CHECK):**
+- 0. Context Loading Check - VERIFY PRB contains complete embedded context (BLOCKING)
 
 **MANDATORY PRB SECTION EXECUTION:**
 - 1. Complete Context Section - ALL file references validated, settings loaded
@@ -75,7 +69,7 @@
 **PROJECT SCOPE VALIDATION (MANDATORY BEFORE EXECUTION):**
 - All file operations validated within project root
 - No write operations to ~/.claude/ during normal execution
-- Task tool invocations constrained to project boundaries
+- Subagent operations constrained to project boundaries
 - Memory operations restricted to ./memory/ directory
 - Configuration changes limited to project-local only
 
@@ -116,33 +110,32 @@
 ### State Transition Guards
 Each state transition MUST validate previous state completion before proceeding.
 
-**CRITICAL:** Dual-mode execution validation MUST be FIRST check before ANY state transitions.
+**CRITICAL:** Context validation MUST be FIRST check before ANY state transitions.
 
-## Dual-Mode Execution Validation (MANDATORY FIRST)
+## Context Validation (MANDATORY FIRST)
 
-**ABSOLUTE PRIORITY:** Dual-mode execution check MUST happen BEFORE any other validation.
+**ABSOLUTE PRIORITY:** Context validation check MUST happen BEFORE any other validation.
 
-### Pre-Execution Mode Detection
+### Pre-Execution Context Validation
 
-**DUAL-MODE VALIDATION CHECKLIST (HIGHEST PRIORITY):**
-- Detect if native subagent is available and active
-- Verify current execution context (native subagent OR Task tool)
-- Allow native subagent execution when available (preferred)
-- Fallback to Task tool when native subagents unavailable
-- Block ONLY direct execution without either mode
-- Display clear error if neither execution mode detected
+**CONTEXT VALIDATION CHECKLIST (HIGHEST PRIORITY):**
+- Verify PRB contains complete embedded context
+- Check all configuration values are resolved (no placeholders)
+- Validate all file references and samples are present
+- Confirm memory and best practices patterns are embedded
 
-### Execution Mode Detection Logic
+### Context Loading Validation
 
-**Steps to Detect Execution Mode:**
-1. **Check Native Subagent Availability:** Detect if native subagent capability exists
-   - When native subagent available: Allow direct @Role invocation (PREFERRED)
-   - When native subagent handling current execution: Allow execution to proceed
-2. **Check Task Tool Context:** Verify if executing within Task tool subagent
-   - When Task tool context detected: Allow execution to proceed (FALLBACK)
-   - When Task tool pattern is valid: Continue with execution
-3. **Block Direct Execution:** Only block direct execution without either mode
-   - When neither native nor Task tool detected: Report violation "PRB execution requires subagent (native or Task tool)"
+**Steps to Validate Context:**
+1. **Check Embedded Configuration:** Verify all config values are actual values
+   - git_privacy, branch_protection, default_branch must be specific values
+   - No "[FROM_CONFIG]" or placeholder patterns remain
+2. **Validate File References:** Confirm critical files have actual paths and samples
+   - File paths must be absolute and accessible
+   - Sample content must be present for referenced files
+3. **Verify Complete Context:** Ensure PRB is self-contained
+   - No runtime config lookups needed during execution
+   - All necessary context embedded at generation time
 
 **State Transition Flow:**
 INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_VALIDATION → PENDING_KNOWLEDGE → PENDING_GIT → PENDING_LIFECYCLE → COMPLETE
@@ -222,8 +215,8 @@ State transitions require validation of previous state completion.
 ### State Validation Process
 
 **Steps to Validate PRB State Transition:**
-1. **Critical Dual-Mode Validation (HIGHEST PRIORITY):** Validate that native subagent OR Task tool is handling PRB execution
-   - If neither execution mode detected: Block transition, display execution mode error, return validation failed
+1. **Critical Context Validation (HIGHEST PRIORITY):** Validate that PRB contains complete embedded context
+   - If context incomplete: Block transition, display context error, return validation failed
 2. **Get Current State:** Determine current PRB state and target state
 3. **Load Completion Checklist:** Get the mandatory checklist items for this PRB
 4. **Check State Transition Path:** For each required state between current and target:

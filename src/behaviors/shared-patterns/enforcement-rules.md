@@ -2,22 +2,22 @@
 
 **PURPOSE:** Shared enforcement patterns and validation functions
 
-## Task Scope Validation
+## Subagent Scope Validation
 
-**Task Scope Validation Process:**
+**Subagent Scope Validation Process:**
 
 1. **Check Working Directory:**
-   - When task working directory starts with ~/.claude/
-   - Block task and show error: "❌ Cannot use ~/.claude/ as working directory"
+   - When subagent working directory starts with ~/.claude/
+   - Block execution and show error: "❌ Cannot use ~/.claude/ as working directory"
 
 2. **Check File Operations:**
-   - Review each file path in task context
+   - Review each file path in subagent context
    - When file path starts with ~/.claude/ and operation is not installation
-   - Block task and show error: "❌ Task references forbidden ~/.claude/ path"
+   - Block execution and show error: "❌ References forbidden ~/.claude/ path"
 
-3. **Allow Valid Tasks:**
-   - Tasks with project root working directories proceed
-   - Tasks with valid file operations within project scope proceed
+3. **Allow Valid Operations:**
+   - Subagents with project root working directories proceed
+   - Subagents with valid file operations within project scope proceed
 
 ## Role System Enforcement
 
@@ -69,7 +69,7 @@
 ## Error Messages
 
 ### Standard Errors
-- `TASK_TOOL_REQUIRED`: "❌ PRB execution requires Task tool subagent"
+- `SUBAGENT_REQUIRED`: "❌ PRB execution requires subagent"
 - `CREATION_BLOCKED`: "❌ Work items must be created by main agent"
 - `ROLE_MISMATCH`: "❌ Role {role} invalid for {system_type}"
 - `SCOPE_VIOLATION`: "❌ Operation outside project boundaries"
