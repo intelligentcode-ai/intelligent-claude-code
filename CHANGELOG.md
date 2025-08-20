@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.24.0] - 2025-08-20
+
+### Added
+- Created backend-tester.md agent file with comprehensive backend testing behavioral patterns (70 lines)
+- Created user-role.md agent file with end-to-end testing and browser automation focus (71 lines)
+
+### Changed
+- Refactored qa-engineer.md from 32 to 71 lines with complete behavioral pattern structure
+- Refactored security-engineer.md from 32 to 71 lines with complete behavioral pattern structure
+- Enhanced all quality/testing agents with configuration-driven specialization and memory integration
+- Standardized behavioral focus across qa-engineer, backend-tester, security-engineer, and user-role agents
+- Improved collaboration patterns between quality/testing specialists and other core agents
+
 ## [6.23.0] - 2025-08-20
 
 ### Changed
