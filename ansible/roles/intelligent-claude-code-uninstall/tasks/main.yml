@@ -51,6 +51,58 @@
     msg: "{{ 'Behaviors directory removed' if not behaviors_removal.failed else 'Could not remove behaviors directory: ' + (behaviors_removal.msg | default('Permission denied')) }}"
   when: install_directory.stat.exists
 
+- name: Remove system files (commands directory)
+  file:
+    path: "{{ claude_install_path }}/commands"
+    state: absent
+  ignore_errors: yes
+  register: commands_removal
+  when: install_directory.stat.exists
+
+- name: Display commands removal result
+  debug:
+    msg: "{{ 'Commands directory removed' if not commands_removal.failed else 'Could not remove commands directory: ' + (commands_removal.msg | default('Permission denied')) }}"
+  when: install_directory.stat.exists
+
+- name: Remove system files (roles directory)
+  file:
+    path: "{{ claude_install_path }}/roles"
+    state: absent
+  ignore_errors: yes
+  register: roles_removal
+  when: install_directory.stat.exists
+
+- name: Display roles removal result
+  debug:
+    msg: "{{ 'Roles directory removed' if not roles_removal.failed else 'Could not remove roles directory: ' + (roles_removal.msg | default('Permission denied')) }}"
+  when: install_directory.stat.exists
+
+- name: Remove system files (agents directory)
+  file:
+    path: "{{ claude_install_path }}/agents"
+    state: absent
+  ignore_errors: yes
+  register: agents_removal
+  when: install_directory.stat.exists
+
+- name: Display agents removal result
+  debug:
+    msg: "{{ 'Agents directory removed' if not agents_removal.failed else 'Could not remove agents directory: ' + (agents_removal.msg | default('Permission denied')) }}"
+  when: install_directory.stat.exists
+
+- name: Remove system files (prb-templates directory)
+  file:
+    path: "{{ claude_install_path }}/prb-templates"
+    state: absent
+  ignore_errors: yes
+  register: prb_templates_removal
+  when: install_directory.stat.exists
+
+- name: Display prb-templates removal result
+  debug:
+    msg: "{{ 'PRB templates directory removed' if not prb_templates_removal.failed else 'Could not remove prb-templates directory: ' + (prb_templates_removal.msg | default('Permission denied')) }}"
+  when: install_directory.stat.exists
+
 - name: Remove system files (VERSION file)
   file:
     path: "{{ claude_install_path }}/VERSION"
@@ -139,7 +191,7 @@
       - "Uninstall complete!"
       - "Location: {{ claude_install_path }}"
       - "Mode: {{ 'Force removal - all files removed' if (force_remove is defined and force_remove | bool) else 'Conservative - user data preserved' }}"
-      - "Removed: Virtual team modes, behaviors, VERSION file"
+      - "Removed: Virtual team modes, behaviors, commands, roles, agents, prb-templates, VERSION file"
       - "{{ 'Preserved: config.md, scores.md, learning-callouts.md' if not (force_remove is defined and force_remove | bool) else 'All files removed' }}"
       - "{{ 'Directory preserved (contains user files)' if (claude_dir_contents.matched > 0 and not (force_remove is defined and force_remove | bool)) else 'Directory removed' }}"
   when: install_directory.stat.exists

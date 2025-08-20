@@ -17,6 +17,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced execution clarity with crystal clear numbered steps and detailed checklists
 - Separated git operations into distinct commit and push steps for better process control
 
+## [6.23.0] - 2025-08-20
+
+### Added
+- Core agent definitions created in src/agents/ directory
+- Agent behavioral patterns now deployed to user environments
+- Enhanced deployment pipeline to include agent distribution
+- Agent deployment integration with Ansible installation system
+- Comprehensive agent definitions for Architect, Developer, AI-Engineer, System-Engineer, DevOps-Engineer, Security-Engineer, Database-Engineer, QA-Engineer
+- Agent behavioral pattern encapsulation with 10+ years expertise modeling
+- Dynamic specialist creation capability embedded in core agents
+- Agent directory creation and deployment through installation pipeline
+- Agent directory removal through uninstall pipeline
+- Updated installation and uninstall tests to verify agent deployment
+- Makefile test validation for agent installation and removal
+
+### Fixed
+- Deployment gap where agent behavioral patterns existed in source but weren't deployed to users
+- Missing agent definitions that were referenced in completed PRBs but never created
+- Installation system now properly distributes agent behavioral patterns to ~/.claude/agents/
+- Behavioral framework integration now includes deployed agent definitions
+
+### Changed
+- Enhanced installation summary to mention agent deployment
+- Updated uninstall process to properly remove agent directories
+- Installation tests now verify agent deployment functionality
+- Deployment system covers complete behavioral pattern distribution
+
 ## [Unreleased]
 
 ## [6.22.0] - 2025-08-20
