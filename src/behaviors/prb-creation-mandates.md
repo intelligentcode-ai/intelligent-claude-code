@@ -56,11 +56,13 @@
    - [PROJECT_ROOT] → actual project root path
    - [CURRENT_DATE] → actual system date
    - [ALL-SETTINGS] → actual configuration object
+   - [TECHNOLOGY_DOMAINS] → actual technology domains for unlimited specialist creation
 6. **Embed Complete Context**: All config values embedded in PRB complete_context
-7. **Validate NO Placeholders**: Ensure ZERO unresolved placeholders remain
-8. **Validate All Sections**: Ensure ALL mandatory template sections present
-9. **Document Template Source**: Record template used in PRB metadata
-10. **Block Runtime Config**: Ensure NO config lookups needed during execution
+7. **Embed Specialization Context**: Technology domains and unlimited specialist creation instructions embedded
+8. **Validate NO Placeholders**: Ensure ZERO unresolved placeholders remain
+9. **Validate All Sections**: Ensure ALL mandatory template sections present
+10. **Document Template Source**: Record template used in PRB metadata
+11. **Block Runtime Config**: Ensure NO config lookups needed during execution
 
 **ABSOLUTE BLOCKING (ZERO TOLERANCE):**
 - ❌ Manual PRB structure creation

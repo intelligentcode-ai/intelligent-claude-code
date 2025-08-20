@@ -1,23 +1,23 @@
 # Dynamic Specialist Creation Behavior
 
-**MANDATORY:** Create domain-specific specialists when <70% capability match detected.
+**MANDATORY:** Create domain-specific specialists ALWAYS when technology expertise is needed.
 
-**PURPOSE:** Enable automatic creation of specialized subagents for domains not covered by the 14 core roles.
+**PURPOSE:** Enable unlimited automatic creation of specialized subagents for ANY technology domain.
 
-## Core Principle: Specialist Discovery
+## Core Principle: Unlimited Specialist Discovery
 
-**DISCOVERY RULE:** Specialists are DISCOVERED from project context, not PREDEFINED.
+**DISCOVERY RULE:** Specialists are ALWAYS created when technology expertise is needed, regardless of capability matches.
 
-When work requirements have <70% match with existing 14 core roles, create a dynamic specialist subagent with domain-specific expertise.
+**CRITICAL CHANGE:** Specialists are NOT limited by capability thresholds - they are created when PM + Architect determine technology expertise is required for optimal work execution.
 
 ## Specialist Creation Process
 
-### 1. Capability Analysis
+### 1. Technology Analysis
 **Detection Logic:**
 1. **Parse Work Requirements**: Extract technology stack and domain needs
-2. **Match Against Core Roles**: Calculate capability overlap with 14 core roles
-3. **Threshold Check**: If match <70%, trigger dynamic specialist creation
-4. **Domain Identification**: Identify specific domain expertise needed
+2. **Identify Technology Domains**: Determine specific technology expertise required
+3. **ALWAYS Create Specialists**: Create domain-specific specialists when technology expertise is needed
+4. **Domain Identification**: Identify specific domain expertise needed for optimal execution
 
 ### 2. Dynamic Specialist Generation
 **Creation Steps:**
@@ -98,13 +98,13 @@ When work requirements have <70% match with existing 14 core roles, create a dyn
 1. **PM Analyzes Requirements**: Identifies technology needs
 2. **Architect Collaboration**: Domain expert helps with specialist selection
 3. **Capability Matching**: Calculate overlap with existing 14 roles
-4. **Dynamic Creation**: Generate specialist if <70% match
+4. **Dynamic Creation**: Generate specialist ALWAYS when technology expertise is needed
 5. **PRB Assignment**: Assign work to newly created specialist
 
 ### With Role Assignment Matrix
 **Enhanced Decision Logic:**
 ```
-if (capability_match < 70%):
+if (technology_expertise_needed):
     domain = extract_domain(work_requirements)
     role_type = determine_role_type(work_focus)
     specialist_name = f"@{domain}-{role_type}"

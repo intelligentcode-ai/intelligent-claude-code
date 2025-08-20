@@ -19,6 +19,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.22.0] - 2025-08-20
+
+### Added
+- Unlimited dynamic specialist creation for any technology domain
+- ALWAYS create specialists when technology expertise is needed
+- PM + Architect process for ANY specialist creation (@React-Developer, @AWS-Engineer, @Kubernetes-DevOps-Engineer, etc.)
+- Specialization context sections in ALL PRB templates (nano, tiny, medium, large, mega)
+- Technology domain placeholders for unlimited specialist creation in templates
+- Enhanced role assignment matrix supporting unlimited technology domains
+
+### Changed
+- Removed <70% capability match rule - specialists now ALWAYS created when technology expertise benefits the work
+- Updated dynamic specialist creation to support ANY technology domain through PM + Architect collaboration
+- Role assignment matrix now uses "ALWAYS" pattern instead of capability thresholds
+- PRB templates now include specialization_context sections for technology domain support
+- Enhanced unlimited specialist creation examples across all behavioral patterns
+
+### Fixed
+- Removed arbitrary capability thresholds that limited specialist creation
+- Corrected specialist creation logic to focus on technology expertise needs rather than generic capability matching
+
 ## [6.21.0] - 2025-01-13
 
 ### Added
