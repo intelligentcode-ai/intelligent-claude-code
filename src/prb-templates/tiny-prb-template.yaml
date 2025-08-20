@@ -1,94 +1,41 @@
 # Tiny PRB Template - Simple Changes (3-5 points)  
 # For single-file modifications and straightforward features
 
+# === TEMPLATE METADATA (@PM FILLS THESE) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+title: "[ROLE] [DESCRIPTION]"
 type: tiny-prb
 complexity: simple
-priority: "[PRIORITY_LEVEL]"
-title: "[ROLE] [DESCRIPTION]"
+priority: normal
 
-# MANDATORY: Complete Context Section
-complete_context:
-  project_root: "[PROJECT_ROOT]"
-  system_nature: "[SYSTEM_NATURE]"
-  configuration:
-    git_privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
-  critical_files:
-    - path: "[PRIMARY_FILE]"
-      purpose: "[FILE_PURPOSE]"
-      sample: "[FILE_SAMPLE]"
-  user_requirements:
-    original_request: "[USER_REQUEST]"
-    success_criteria: "[SUCCESS_CRITERIA]"
+# === PROJECT CONTEXT (@PM FILLS FROM CONFIG) ===
+project_root: "[PROJECT_ROOT]"
+system_nature: "[SYSTEM_NATURE]"
+git_privacy: "[FROM_CONFIG]"
+default_branch: "[FROM_CONFIG]"
 
-# MANDATORY: Requirements Section
-requirements:
-  functional:
-    - "[WHAT_TO_IMPLEMENT]"
-    - "[EXPECTED_BEHAVIOR]"
-  processual:
-    - "Apply git_privacy setting for commit messages"
-    - "Follow branch protection strategy"
-    - "Single file modification scope"
-  technical:
-    - "Under 50 lines of changes"
+# === WORK SPECIFICATION (@PM FILLS FROM STORY) ===
+user_request: "[USER_REQUEST]"
+success_criteria: "[SUCCESS_CRITERIA]"
+primary_file: "[PRIMARY_FILE]"
+implementation_needed: "[WHAT_TO_IMPLEMENT]"
+expected_behavior: "[EXPECTED_BEHAVIOR]"
 
-# ========================================
-# EXECUTION PROCESS: 7 CLEAR STEPS
-# ========================================
+# === EXECUTION PATTERN (KEEP AS-IS) ===
+execution_steps:
+  - "Search memory/[TOPIC]/ and best-practices/[DOMAIN]/ for patterns"
+  - "Implement changes to primary file (under 50 lines)"
+  - "Review: functional requirements met, follows patterns, no side effects"
+  - "Update CHANGELOG with feature description"
+  - "Add inline comments for complex logic"
+  - "Bump version (patch level)"
+  - "Commit with format: [ID]: [DESCRIPTION]"
+  - "Push to remote repository"
 
-## STEP 1: KNOWLEDGE
-knowledge_search:
-  memory_search: "Search memory/[topic]/ for implementation patterns"
-  best_practices: "Review best-practices/[domain]/ for guidance"
-  patterns: "[TOP_RELEVANT_PATTERNS]"
-
-## STEP 2: IMPLEMENTATION
-implementation:
-  target_file: "[FILE_PATH]"
-  changes_needed:
-    - "[CHANGE_1]"
-    - "[CHANGE_2]"
-  validation: "[HOW_TO_TEST]"
-
-## STEP 3: REVIEW
-review_checklist:
-  - "Functional requirements met"
+validation_checklist:
+  - "Implementation matches requirements"
   - "Code follows project patterns"
-  - "No unintended side effects"
-
-## STEP 4: VERSION
-version_bump:
-  type: "patch"
-  action: "Bump version number appropriately"
-
-## STEP 5: DOCUMENTATION
-documentation:
-  changelog:
-    entry: "### Added/Fixed\n- [FEATURE_DESCRIPTION]"
-    required: true
-  additional: "Update any affected docs as needed"
-  comments: "Add inline comments for complex logic"
-
-## STEP 6: GIT COMMIT
-git_commit:
-  commit_message: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"
-  action: "Commit changes with clean message (no AI mentions)"
-
-## STEP 7: GIT PUSH
-git_push:
-  action: "Push to remote repository"
-
-# EXECUTION CHECKLIST
-execution_checklist: |
-  ☐ Step 1 - Knowledge: Memory searched and patterns identified
-  ☐ Step 2 - Implementation: Changes made and validated
-  ☐ Step 3 - Review: Self-review checklist completed
-  ☐ Step 4 - Version: Version bumped appropriately
-  ☐ Step 5 - Documentation: CHANGELOG updated (minimum) + affected docs
-  ☐ Step 6 - Git Commit: Changes committed with privacy filter
-  ☐ Step 7 - Git Push: Changes pushed to remote
+  - "CHANGELOG updated appropriately"
+  - "Version bumped correctly"
+  - "Git privacy settings applied"
+  - "Changes pushed to remote"

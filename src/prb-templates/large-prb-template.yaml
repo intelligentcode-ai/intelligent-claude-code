@@ -1,109 +1,73 @@
 # Large PRB Template - Complex Features (16-30 points)
 # For sophisticated multi-component features requiring coordination
 
+# === TEMPLATE METADATA (@PM FILLS THESE) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+title: "[ROLE] [DESCRIPTION]"
 type: large-prb
 complexity: complex
-priority: "[PRIORITY_LEVEL]"
-title: "[ROLE] [DESCRIPTION]"
+priority: high
 requires_decomposition: true
 
-# MANDATORY: Complete Context Section
-complete_context:
-  project_root: "[PROJECT_ROOT]"
-  system_nature: "[SYSTEM_NATURE]"
-  configuration:
-    git_privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
-  business_goal: "[WHY_THIS_FEATURE_MATTERS]"
-  technical_scope: "[SYSTEM_COMPONENTS_AFFECTED]"
-  critical_files:
-    - path: "[CORE_FILE_1]"
-      purpose: "[PURPOSE_1]"
-      sample: "[SAMPLE_1]"
-    - path: "[CORE_FILE_2]"
-      purpose: "[PURPOSE_2]"
-      sample: "[SAMPLE_2]"
-  user_requirements:
-    original_request: "[USER_REQUEST]"
-    success_criteria: "[SUCCESS_CRITERIA]"
-    feature_scope: "[FEATURE_BOUNDARY]"
+# === PROJECT CONTEXT (@PM FILLS FROM CONFIG) ===
+project_root: "[PROJECT_ROOT]"
+system_nature: "[SYSTEM_NATURE]"
+git_privacy: "[FROM_CONFIG]"
+branch_protection: "[FROM_CONFIG]"
+default_branch: "[FROM_CONFIG]"
+branch_prefix: "[FROM_CONFIG]"
 
-# MANDATORY: Requirements Section
-requirements:
-  functional:
-    - "[MAIN_FEATURE_REQUIREMENT]"
-    - "[SUPPORTING_REQUIREMENT_1]"
-    - "[SUPPORTING_REQUIREMENT_2]"
-  processual:
-    - "Apply git_privacy for all sub-component commits"
-    - "Coordinate multi-component development"
-    - "Manage feature branch strategy"
-  technical:
-    - "Multi-component integration"
-    - "Complex feature coordination"
+# === WORK SPECIFICATION (@PM FILLS FROM STORY) ===
+user_request: "[USER_REQUEST]"
+success_criteria: "[SUCCESS_CRITERIA]"
+business_goal: "[WHY_THIS_FEATURE_MATTERS]"
+feature_scope: "[FEATURE_BOUNDARY]"
+system_components_affected: "[SYSTEM_COMPONENTS_AFFECTED]"
 
-# Sub-PRB Decomposition Strategy
-decomposition:
-  approach: "Break into Medium/Tiny PRBs for manageable execution"
-  sub_components:
-    - component: "[COMPONENT_1]"
-      prb_type: "medium"
-      dependencies: []
-    - component: "[COMPONENT_2]" 
-      prb_type: "medium"
-      dependencies: ["[COMPONENT_1]"]
-    - component: "[INTEGRATION]"
-      prb_type: "tiny"
-      dependencies: ["[COMPONENT_1]", "[COMPONENT_2]"]
+# === FEATURE REQUIREMENTS (@PM FILLS FROM ANALYSIS) ===
+main_requirement: "[MAIN_FEATURE_REQUIREMENT]"
+supporting_requirements:
+  - "[SUPPORTING_REQUIREMENT_1]"
+  - "[SUPPORTING_REQUIREMENT_2]"
 
-# Coordination Strategy
-coordination:
-  execution_order: "Sequential based on dependencies"
-  integration_points: "[HOW_COMPONENTS_CONNECT]"
-  validation_strategy: "[HOW_TO_TEST_INTEGRATION]"
+# === DECOMPOSITION STRATEGY (@PM FILLS BASED ON COMPLEXITY) ===
+component_breakdown:
+  component_1:
+    name: "[COMPONENT_1]"
+    prb_type: "medium"
+    dependencies: []
+  component_2:
+    name: "[COMPONENT_2]"
+    prb_type: "medium"
+    dependencies: ["[COMPONENT_1]"]
+  integration:
+    name: "[INTEGRATION]"
+    prb_type: "tiny"
+    dependencies: ["[COMPONENT_1]", "[COMPONENT_2]"]
 
-# MANDATORY: Knowledge Management
-knowledge_management:
-  capture_patterns: "Store complex feature coordination patterns"
-  capture_insights: "Document multi-component integration approach"
-  location: "memory/[topic]/complex-features.md"
+# === COORDINATION PLAN (@PM FILLS FROM TECHNICAL ANALYSIS) ===
+integration_points: "[HOW_COMPONENTS_CONNECT]"
+validation_strategy: "[HOW_TO_TEST_INTEGRATION]"
+reviewer_assignment: "[PRE_ASSIGNED_ARCHITECT]"
 
-# MANDATORY: Git Operations
-git_operations:
-  branch_strategy: "Feature branch with sub-component branches"
-  commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"
-  coordination: "Merge sub-components to feature branch"
+# === EXECUTION PATTERN (KEEP AS-IS) ===
+execution_steps:
+  - "Create feature branch for overall coordination"
+  - "Generate sub-PRBs for each component in dependency order"
+  - "Execute Component 1 PRB (no dependencies)"
+  - "Execute Component 2 PRB (depends on Component 1)"
+  - "Execute Integration PRB (depends on both components)"
+  - "Comprehensive integration testing and validation"
+  - "Update CHANGELOG, architecture docs, and user documentation"
+  - "Request architectural review focusing on integration"
+  - "Create pull request with detailed component description"
 
-# MANDATORY: Review Process
-review_process:
-  type: "architectural_review"
-  reviewer: "[PRE_ASSIGNED_ARCHITECT]"
-  focus: "Component integration and system design"
-
-# MANDATORY: Documentation Updates
-documentation_updates:
-  changelog: "Document major feature addition"
-  architecture_docs: "Update system architecture if needed"
-  user_docs: "Update user-facing documentation"
-
-# Execution Strategy
-execution_strategy: |
-  1. Create feature branch for overall coordination
-  2. Generate and execute sub-PRBs in dependency order
-  3. Integrate components on feature branch
-  4. Comprehensive testing and validation
-  5. Update documentation and create pull request
-  
-# EXECUTION CHECKLIST
-execution_checklist: |
-  ☐ Feature branch created for coordination
-  ☐ Sub-PRBs generated with proper dependencies
-  ☐ Components executed in correct order
-  ☐ Integration completed and tested
-  ☐ Documentation updated comprehensively
-  ☐ Architectural review completed
-  ☐ Pull request created with detailed description
+validation_checklist:
+  - "All component PRBs executed successfully"
+  - "Components integrate correctly at specified points"
+  - "Complex feature coordination working as designed"
+  - "Architecture documentation updated appropriately"
+  - "User documentation reflects new capabilities"
+  - "Architectural review completed and approved"
+  - "Git privacy settings applied throughout"
+  - "Pull request created with comprehensive description"

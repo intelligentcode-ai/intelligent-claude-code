@@ -1,127 +1,53 @@
 # Medium PRB Template - Standard Features (6-15 points)
 # For multi-file features and moderate complexity implementations
 
+# === TEMPLATE METADATA (@PM FILLS THESE) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+title: "[ROLE] [DESCRIPTION]"
 type: medium-prb
 complexity: standard
-priority: "[PRIORITY_LEVEL]"
-title: "[ROLE] [DESCRIPTION]"
+priority: normal
 
-# MANDATORY: Complete Context Section
-complete_context:
-  project_root: "[PROJECT_ROOT]"
-  system_nature: "[SYSTEM_NATURE]"
-  configuration:
-    git_privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
-  critical_files:
-    - path: "[PRIMARY_FILE]"
-      purpose: "[FILE_PURPOSE]"
-      sample: "[FILE_SAMPLE]"
-    - path: "[SECONDARY_FILE]"
-      purpose: "[FILE_PURPOSE_2]" 
-      sample: "[FILE_SAMPLE_2]"
-  user_requirements:
-    original_request: "[USER_REQUEST]"
-    success_criteria: "[SUCCESS_CRITERIA]"
-    feature_scope: "[FEATURE_BOUNDARY]"
+# === PROJECT CONTEXT (@PM FILLS FROM CONFIG) ===
+project_root: "[PROJECT_ROOT]"
+system_nature: "[SYSTEM_NATURE]"
+git_privacy: "[FROM_CONFIG]"
+branch_protection: "[FROM_CONFIG]"
+default_branch: "[FROM_CONFIG]"
+branch_prefix: "[FROM_CONFIG]"
 
-# MANDATORY: Requirements Section
-requirements:
-  functional:
-    - "[MAIN_FEATURE_REQUIREMENT]"
-    - "[SUPPORTING_REQUIREMENT_1]"
-    - "[SUPPORTING_REQUIREMENT_2]"
-  processual:
-    - "Apply git_privacy setting for all commits"
-    - "Follow branch protection strategy"
-    - "Create feature branch for development"
-    - "Generate pull request for review"
-  technical:
-    - "Multi-file coordination"
-    - "Feature-level implementation"
+# === WORK SPECIFICATION (@PM FILLS FROM STORY) ===
+user_request: "[USER_REQUEST]"
+success_criteria: "[SUCCESS_CRITERIA]"
+feature_scope: "[FEATURE_BOUNDARY]"
+main_requirement: "[MAIN_FEATURE_REQUIREMENT]"
+supporting_requirements:
+  - "[SUPPORTING_REQUIREMENT_1]"
+  - "[SUPPORTING_REQUIREMENT_2]"
 
-# ========================================
-# EXECUTION PROCESS: 9 CLEAR STEPS
-# ========================================
+# === FILES AFFECTED (@PM FILLS FROM ANALYSIS) ===
+primary_file: "[PRIMARY_FILE]"
+secondary_file: "[SECONDARY_FILE]"
+additional_files: "[OTHER_FILES_IF_NEEDED]"
 
-## STEP 1: GIT BRANCH
-branch_creation:
-  branch_name: "[FROM_CONFIG_PREFIX]/[ID]-[DESCRIPTION]"
-  actions:
-    - "Create feature branch from default branch"
-    - "Switch to feature branch"
+# === EXECUTION PATTERN (KEEP AS-IS) ===
+execution_steps:
+  - "Create feature branch: [BRANCH_PREFIX]/[ID]-[DESCRIPTION]"
+  - "Search memory/[TOPIC]/ and best-practices/[DOMAIN]/ for patterns"
+  - "Implement changes across multiple files with coordination"
+  - "Review: multi-file coordination, completeness, quality, compliance"
+  - "Update CHANGELOG and affected documentation"
+  - "Add comments for complex logic and integrations"
+  - "Bump version (patch or minor as appropriate)"
+  - "Commit all changes with format: [ID]: [DESCRIPTION]"
+  - "Push feature branch to remote"
+  - "Create pull request with summary and testing details"
 
-## STEP 2: KNOWLEDGE
-knowledge_search:
-  memory_search: "Search memory/[topic]/ for feature patterns"
-  best_practices: "Review best-practices/[domain]/ for guidance"
-  patterns: "[TOP_RELEVANT_PATTERNS]"
-
-## STEP 3: IMPLEMENTATION
-implementation:
-  files_to_modify:
-    - path: "[FILE_1]"
-      changes: "[CHANGES_DESCRIPTION_1]"
-    - path: "[FILE_2]"
-      changes: "[CHANGES_DESCRIPTION_2]"
-  validation: "[TESTING_STRATEGY]"
-
-## STEP 4: REVIEW
-review_checklist:
-  - "Multi-file coordination"
-  - "Feature completeness"
-  - "Code quality and patterns"
-  - "Configuration compliance"
-
-## STEP 5: VERSION
-version_bump:
-  type: "patch/minor"
-  action: "Bump version number appropriately"
-
-## STEP 6: DOCUMENTATION
-documentation:
-  changelog:
-    entry: "### Added\n- [FEATURE_DESCRIPTION]"
-    required: true
-  readme_updates: "Update README/API docs/guides as needed"
-  comments: "Document complex logic and integrations"
-
-## STEP 7: GIT COMMIT
-git_commit:
-  commit_message: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"
-  action: "Commit all changes with clean message (no AI mentions)"
-
-## STEP 8: GIT PUSH
-git_push:
-  action: "Push feature branch to remote"
-
-## STEP 9: GIT PR
-pull_request:
-  title: "[ID]: [FEATURE_DESCRIPTION]"
-  description: |
-    ## Summary
-    [FEATURE_OVERVIEW]
-    
-    ## Changes Made
-    - [CHANGE_1]
-    - [CHANGE_2]
-    
-    ## Testing
-    [TESTING_PERFORMED]
-  reviewer: "[PRE_ASSIGNED_SME]"
-
-# EXECUTION CHECKLIST
-execution_checklist: |
-  ☐ Step 1 - Git Branch: Feature branch created and checked out
-  ☐ Step 2 - Knowledge: Memory and best practices searched
-  ☐ Step 3 - Implementation: All target files updated
-  ☐ Step 4 - Review: Technical review checklist completed
-  ☐ Step 5 - Version: Version bumped appropriately
-  ☐ Step 6 - Documentation: CHANGELOG updated (minimum) + README/API docs/guides as needed
-  ☐ Step 7 - Git Commit: Changes committed with privacy filter
-  ☐ Step 8 - Git Push: Feature branch pushed to remote
-  ☐ Step 9 - Git PR: Pull request created with description
+validation_checklist:
+  - "Feature requirements fully implemented"
+  - "Multi-file changes work together correctly"
+  - "Code quality and patterns maintained"
+  - "Documentation updated appropriately"
+  - "Version bumped correctly"
+  - "Git privacy settings applied"
+  - "Pull request created with proper description"
