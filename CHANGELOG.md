@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.25.0] - 2025-08-20
+
+### Added
+- Created web-designer.md agent file with UI/UX design specialist behavioral patterns (70 lines)
+- Created requirements-engineer.md agent file with requirements analysis specialist behavioral patterns (70 lines)
+
+### Changed
+- Enhanced agents README.md to include all 12 core agent files including new UX/requirements agents
+- Completed UX/requirements agent behavioral pattern consistency with 70-line focused structure
+- Unified behavioral pattern approach across all agent types (core development, infrastructure, quality/testing, UX/requirements)
+
 ## [6.24.0] - 2025-08-20
 
 ### Added

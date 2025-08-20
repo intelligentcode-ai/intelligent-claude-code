@@ -14,6 +14,10 @@ The following core agents are available:
 - **security-engineer.md**: Security and compliance specialist
 - **database-engineer.md**: Database design and optimization specialist
 - **qa-engineer.md**: Quality assurance and test planning specialist
+- **backend-tester.md**: Backend testing and API validation specialist
+- **user-role.md**: End-to-end testing and browser automation specialist
+- **web-designer.md**: UI/UX design and user experience specialist
+- **requirements-engineer.md**: Requirements analysis and documentation specialist
 
 ## Agent Structure
 
@@ -51,5 +55,8 @@ Agents are activated through @-notation:
 - `@Developer`: Feature implementation
 - `@AI-Engineer`: Behavioral framework work
 - `@Security-Engineer`: Security reviews
+- `@Web-Designer`: UI/UX design and user experience
+- `@Requirements-Engineer`: Requirements analysis and documentation
+- `@User-Role`: End-to-end testing and browser automation
 
 Each @Agent mention creates a subagent for specialized task execution.
