@@ -17,6 +17,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced execution clarity with crystal clear numbered steps and detailed checklists
 - Separated git operations into distinct commit and push steps for better process control
 
+## [6.22.0] - 2025-08-19
+
+### Added
+- Core 13 Subagent definitions with embedded behavioral patterns
+- Claude Code native Subagents integration foundation
+- Behavioral pattern encapsulation in agent definitions
+- Dynamic specialization capability through PRB context
+- Complete agent architecture with unlimited domain coverage
+- Agent-based workflow execution replacing Task tool approach
+
+### Changed
+- Enhanced story breakdown behavior with subagent integration support
+- Updated role assignment process with subagent context creation
+- Improved dynamic specialist creation with subagent integration
+
 ## [Unreleased]
 
 ## [6.21.0] - 2025-01-13
