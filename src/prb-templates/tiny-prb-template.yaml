@@ -23,6 +23,12 @@ complete_context:
   user_requirements:
     original_request: "[USER_REQUEST]"
     success_criteria: "[SUCCESS_CRITERIA]"
+  
+  specialization_context:
+    technology_domains: "[TECHNOLOGY_DOMAINS]"
+    specialist_creation: "ALWAYS create specialists when technology expertise is needed"
+    unlimited_domains: "Support ANY technology domain through dynamic specialist creation"
+    role_assignment: "PM + Specialist Architect determine when specialists should be created"
 
 # MANDATORY: Requirements Section
 requirements:
