@@ -1,127 +1,85 @@
 # Mega PRB Template - System-Wide Changes (30+ points)
 # For major system overhauls and architectural changes
 
+# === TEMPLATE METADATA (@PM FILLS THESE) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+title: "[ROLE] [DESCRIPTION]"
 type: mega-prb
 complexity: system-wide
-priority: "[PRIORITY_LEVEL]"
-title: "[ROLE] [DESCRIPTION]"
+priority: critical
 requires_epic_decomposition: true
 
-# MANDATORY: Complete Context Section
-complete_context:
-  project_root: "[PROJECT_ROOT]"
-  system_nature: "[SYSTEM_NATURE]"
-  configuration:
-    git_privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
-  business_driver: "[BUSINESS_JUSTIFICATION]"
-  impact_scope: "[ENTIRE_SYSTEM_AFFECTED]"
-  risk_level: "[HIGH|CRITICAL]"
-  rollback_required: true
-  critical_files:
-    - path: "[SYSTEM_CORE_1]"
-      purpose: "[CORE_PURPOSE_1]"
-      sample: "[CORE_SAMPLE_1]"
-    - path: "[SYSTEM_CORE_2]"
-      purpose: "[CORE_PURPOSE_2]"
-      sample: "[CORE_SAMPLE_2]"
-  user_requirements:
-    original_request: "[USER_REQUEST]"
-    success_criteria: "[SUCCESS_CRITERIA]"
-    system_scope: "[COMPLETE_SYSTEM_BOUNDARY]"
+# === PROJECT CONTEXT (@PM FILLS FROM CONFIG) ===
+project_root: "[PROJECT_ROOT]"
+system_nature: "[SYSTEM_NATURE]"
+git_privacy: "[FROM_CONFIG]"
+branch_protection: "[FROM_CONFIG]"
+default_branch: "[FROM_CONFIG]"
+branch_prefix: "[FROM_CONFIG]"
 
-# MANDATORY: Requirements Section
-requirements:
-  functional:
-    - "[SYSTEM_WIDE_REQUIREMENT_1]"
-    - "[SYSTEM_WIDE_REQUIREMENT_2]"
-    - "[SYSTEM_WIDE_REQUIREMENT_3]"
-  processual:
-    - "Apply git_privacy across all system changes"
-    - "Coordinate system-wide development phases"
-    - "Manage complex dependency chains"
-    - "Ensure rollback capability at all phases"
-  technical:
-    - "System-wide architecture changes"
-    - "Multi-system integration"
-    - "Backward compatibility management"
+# === WORK SPECIFICATION (@PM FILLS FROM EPIC/STORY) ===
+user_request: "[USER_REQUEST]"
+success_criteria: "[SUCCESS_CRITERIA]"
+business_driver: "[BUSINESS_JUSTIFICATION]"
+system_scope: "[COMPLETE_SYSTEM_BOUNDARY]"
+impact_scope: "[ENTIRE_SYSTEM_AFFECTED]"
+risk_level: "[HIGH|CRITICAL]"
 
-# Epic Decomposition Strategy
-epic_decomposition:
-  approach: "Break into Large PRBs, then Medium/Tiny sub-PRBs"
-  major_phases:
-    - phase: "[PHASE_1]"
-      prb_type: "large"
-      scope: "[PHASE_1_SCOPE]"
-      dependencies: []
-    - phase: "[PHASE_2]"
-      prb_type: "large" 
-      scope: "[PHASE_2_SCOPE]"
-      dependencies: ["[PHASE_1]"]
-    - phase: "[INTEGRATION]"
-      prb_type: "large"
-      scope: "[SYSTEM_INTEGRATION]"
-      dependencies: ["[PHASE_1]", "[PHASE_2]"]
+# === SYSTEM REQUIREMENTS (@PM FILLS FROM ANALYSIS) ===
+system_requirements:
+  - "[SYSTEM_WIDE_REQUIREMENT_1]"
+  - "[SYSTEM_WIDE_REQUIREMENT_2]"
+  - "[SYSTEM_WIDE_REQUIREMENT_3]"
 
-# Risk Management
-risk_management:
-  rollback_strategy: "[HOW_TO_ROLLBACK_AT_EACH_PHASE]"
-  validation_gates: "[VALIDATION_AT_EACH_PHASE]"
-  monitoring_plan: "[HOW_TO_MONITOR_SYSTEM_HEALTH]"
+# === EPIC DECOMPOSITION (@PM FILLS BASED ON ANALYSIS) ===
+major_phases:
+  phase_1:
+    name: "[PHASE_1]"
+    prb_type: "large"
+    scope: "[PHASE_1_SCOPE]"
+    dependencies: []
+  phase_2:
+    name: "[PHASE_2]"
+    prb_type: "large"
+    scope: "[PHASE_2_SCOPE]"
+    dependencies: ["[PHASE_1]"]
+  integration:
+    name: "[INTEGRATION]"
+    prb_type: "large"
+    scope: "[SYSTEM_INTEGRATION]"
+    dependencies: ["[PHASE_1]", "[PHASE_2]"]
 
-# System Coordination
-system_coordination:
-  execution_phases: "Sequential with validation gates"
-  integration_strategy: "[SYSTEM_WIDE_INTEGRATION_APPROACH]"
-  testing_strategy: "[COMPREHENSIVE_SYSTEM_TESTING]"
+# === RISK MANAGEMENT (@PM FILLS FROM RISK ANALYSIS) ===
+rollback_strategy: "[HOW_TO_ROLLBACK_AT_EACH_PHASE]"
+validation_gates: "[VALIDATION_AT_EACH_PHASE]"
+monitoring_plan: "[HOW_TO_MONITOR_SYSTEM_HEALTH]"
+integration_strategy: "[SYSTEM_WIDE_INTEGRATION_APPROACH]"
+testing_strategy: "[COMPREHENSIVE_SYSTEM_TESTING]"
 
-# MANDATORY: Knowledge Management
-knowledge_management:
-  capture_patterns: "Store system-wide change patterns"
-  capture_insights: "Document architectural transformation approach"
-  location: "memory/[topic]/system-changes.md"
+# === REVIEW AND STAKEHOLDERS (@PM ASSIGNS) ===
+system_architect: "[SYSTEM_ARCHITECT]"
+key_stakeholders: "[KEY_STAKEHOLDERS]"
 
-# MANDATORY: Git Operations  
-git_operations:
-  branch_strategy: "Epic branch with phase branches"
-  commit_format: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"
-  coordination: "Merge phases to epic branch systematically"
+# === EXECUTION PATTERN (KEEP AS-IS) ===
+execution_steps:
+  - "Create epic branch for system-wide coordination"
+  - "Generate Phase 1 Large PRBs and execute with validation gates"
+  - "Generate Phase 2 Large PRBs building on Phase 1, execute with validation"
+  - "Generate Integration Large PRBs for system unification, execute with validation"
+  - "Perform comprehensive system testing and health monitoring"
+  - "Update CHANGELOG, complete architecture documentation overhaul"
+  - "Create comprehensive user documentation and migration guide"
+  - "Conduct architectural board review with all stakeholders"
+  - "Execute staged rollout plan with rollback capability enabled"
 
-# MANDATORY: Review Process
-review_process:
-  type: "architectural_board_review"
-  reviewer: "[SYSTEM_ARCHITECT]"
-  focus: "System-wide impact and architectural integrity"
-  stakeholders: "[KEY_STAKEHOLDERS]"
-
-# MANDATORY: Documentation Updates
-documentation_updates:
-  changelog: "Document major system changes"
-  architecture_docs: "Complete architecture documentation update"
-  user_docs: "Comprehensive user documentation overhaul"
-  migration_guide: "Provide migration path for users"
-
-# Execution Strategy
-execution_strategy: |
-  1. Create epic branch for system-wide coordination
-  2. Execute Phase 1 Large PRBs with validation gates
-  3. Execute Phase 2 Large PRBs building on Phase 1
-  4. Execute Integration Large PRBs for system unification
-  5. Comprehensive system testing and validation
-  6. Documentation overhaul and migration guide creation
-  7. Staged rollout with rollback capability
-  
-# EXECUTION CHECKLIST
-execution_checklist: |
-  ☐ Epic branch created for system coordination
-  ☐ Phase 1 Large PRBs executed with validation
-  ☐ Phase 2 Large PRBs executed building on Phase 1
-  ☐ Integration Large PRBs executed for system unification
-  ☐ Comprehensive system testing completed
-  ☐ Documentation completely updated with migration guide
-  ☐ Architectural board review completed
-  ☐ Staged rollout plan executed with rollback capability
+validation_checklist:
+  - "All phase Large PRBs executed successfully with validation gates"
+  - "System integration working across all components"
+  - "Comprehensive system testing passed"
+  - "Architecture documentation completely updated"
+  - "Migration guide created and validated"
+  - "Architectural board review completed and approved"
+  - "Rollback strategy tested and verified"
+  - "Staged rollout plan ready for execution"
+  - "Git privacy settings applied throughout system"
+  - "System health monitoring active and functioning"
