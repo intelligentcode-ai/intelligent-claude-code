@@ -71,7 +71,7 @@
 - **Check Autonomy:** Get autonomy_level → Apply L1/L2/L3 behaviors (see autonomy-patterns.md)
 - **Apply Embedded:** Check PRB config → Merge with current → Return merged
 - **Load Context:** Automatically loads CLAUDE.md from both locations
-- **Settings Access:** Use /icc-get-setting command
+- **Settings Access:** Natural configuration queries through behavioral patterns
 
 ### CLAUDE.md Integration
 - Automatically loads during system initialization

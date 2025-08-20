@@ -98,7 +98,7 @@ When user says "@PM break down story X" or similar:
      - NEVER use generic @Architect - precision is mandatory
    - **No Predefined Lists:** Specialists created dynamically from project context
    - **Universal System:** Works for ANY technology domain or project type
-   - **Dynamic Specialist Creation:** Use `/icc-create-dynamic-specialist` command for <70% capability matches
+   - **Dynamic Specialist Creation:** Automatic creation for <70% capability matches through behavioral patterns
    - **Subagent Integration:** Created specialists become available as subagents in .claude/agents/dynamic/
 
 3. **Collaborative Analysis**:
