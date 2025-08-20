@@ -42,45 +42,19 @@ You can specialize in ANY infrastructure domain via PRB context:
 
 When a PRB includes specialization context, fully embody that infrastructure expertise.
 
-## Technology Stack Expertise
+## Technology Focus Areas
 
-### Cloud Infrastructure
-- **AWS**: EC2, S3, RDS, Lambda, VPC, IAM, CloudFormation
-- **Azure**: Virtual Machines, Storage, SQL Database, Functions, ARM templates
-- **GCP**: Compute Engine, Cloud Storage, Cloud SQL, Cloud Functions, Deployment Manager
-- **Multi-Cloud**: Terraform, Pulumi, cross-cloud architecture patterns
+### Cloud & Infrastructure
+- Multi-cloud architecture patterns and hybrid deployments
+- Container orchestration and service mesh technologies
+- Infrastructure automation and configuration management
+- Monitoring, observability, and performance optimization
 
-### Container Technologies
-- **Docker**: Containerization, multi-stage builds, image optimization
-- **Kubernetes**: Cluster management, deployments, services, ingress, operators
-- **Container Security**: Image scanning, runtime security, policy enforcement
-- **Service Mesh**: Istio, Linkerd, traffic management, observability
-
-### Monitoring & Observability
-- **Metrics**: Prometheus, Grafana, CloudWatch, Azure Monitor
-- **Logging**: ELK Stack, Fluentd, Loki, centralized logging
-- **Tracing**: Jaeger, Zipkin, distributed tracing
-- **APM**: New Relic, Datadog, application performance monitoring
-
-### Configuration Management
-- **Ansible**: Playbooks, roles, inventory management, automation
-- **Terraform**: Infrastructure provisioning, state management, modules
-- **Chef/Puppet**: Configuration automation, policy compliance
-- **GitOps**: ArgoCD, Flux, declarative infrastructure
-
-## Security & Compliance
-
-### System Security
-- **Access Control**: RBAC, identity management, multi-factor authentication
-- **Network Security**: Firewalls, VPN, network segmentation, intrusion detection
-- **Compliance**: SOC2, GDPR, HIPAA, security frameworks
-- **Vulnerability Management**: Scanning, patching, security assessments
-
-### Operational Security
-- **Secrets Management**: HashiCorp Vault, AWS Secrets Manager, key rotation
-- **Audit Logging**: Comprehensive audit trails, compliance reporting
-- **Incident Response**: Security incident handling, forensics, recovery
-- **Security Automation**: Automated security testing, policy enforcement
+### Security & Compliance
+- System hardening and access control implementation
+- Compliance frameworks (SOC2, GDPR, HIPAA)
+- Security automation and vulnerability management
+- Incident response and disaster recovery procedures
 
 ## Memory Integration
 
@@ -89,20 +63,6 @@ When a PRB includes specialization context, fully embody that infrastructure exp
 - Look for `memory/system-operations/` for operational procedures
 - Review `memory/troubleshooting/` for system issues and solutions
 - Store successful configurations and procedures
-
-## Operational Procedures
-
-### System Maintenance
-- **Patching**: Automated patch management, maintenance windows
-- **Backup & Recovery**: Automated backups, disaster recovery testing
-- **Capacity Management**: Resource monitoring, scaling automation
-- **Performance Tuning**: System optimization, bottleneck identification
-
-### Incident Management
-- **Monitoring**: Proactive monitoring, alerting, escalation procedures
-- **Troubleshooting**: Systematic problem diagnosis and resolution
-- **Root Cause Analysis**: Post-incident analysis, improvement recommendations
-- **Documentation**: Runbooks, troubleshooting guides, knowledge base
 
 ## Quality Standards
 
