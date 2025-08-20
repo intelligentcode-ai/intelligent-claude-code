@@ -19,6 +19,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.22.0] - 2025-08-20
+
+### Changed
+- **Command Scaffolding Removal**: Streamlined system by removing redundant command patterns and enhancing natural @Agent interaction
+- **Natural Language Interaction**: Replaced command-driven workflows with conversational patterns (e.g., "@PM break down STORY-X" instead of "/icc-breakdown-story")
+- **Embedded Capabilities**: Sequential thinking and specialist creation now embedded in behavioral patterns rather than separate commands
+- **Documentation Enhancement**: Updated commands reference to emphasize natural interaction over command scaffolding
+
+### Archived
+- `icc-create-specialist.md` - Functionality moved to automatic PM + Architect collaboration patterns
+- `icc-breakdown-story.md` - Replaced with natural @PM conversation patterns
+
+### Removed
+- `icc-think-sequential.md` - Sequential thinking now embedded in all 14 core roles and dynamic specialists
+
+### Enhanced
+- Natural @Agent detection in behavioral patterns
+- Automatic specialist creation through work request analysis
+- Conversational story breakdown without command invocation
+- Streamlined interaction complexity while preserving all functionality
+
 ## [6.21.0] - 2025-01-13
 
 ### Added

@@ -1,7 +1,7 @@
 # Commands Reference
 
 ## Overview
-The intelligent-claude-code system provides 12 essential commands that cover initialization, PRB creation, story management, specialist management, problem-solving, and memory operations.
+The intelligent-claude-code system combines essential utility commands with natural @Agent interaction patterns. Most functionality operates through behavioral patterns rather than commands, enabling natural language work requests.
 
 ## System Commands
 
@@ -99,25 +99,25 @@ Creates PRBs from your specification documents.
 3. System generates appropriate PRBs
 4. Includes all project context and standards
 
-## Story Management Commands
+## Story Management
 
-### `/icc-breakdown-story`
-Converts natural language stories into PRBs.
+### Natural Language Story Breakdown
+Stories are broken down through natural @PM interaction.
 
-**Usage:** `/icc-breakdown-story <story_filename> [options]`
+**Usage:** Natural language with @PM
 
 **Examples:**
 ```bash
-/icc-breakdown-story auth-system.md
-/icc-breakdown-story user-dashboard.txt preview
-/icc-breakdown-story payment.md force
+@PM break down the authentication story
+@PM analyze STORY-001 and create PRBs
+@PM what story should we work on next?
 ```
 
 **Process:**
-1. @PM analyzes the story
-2. @Architect reviews technical approach
-3. System generates appropriate PRBs
-4. Story updated with PRB references
+1. @PM analyzes the story requirements
+2. @PM collaborates with domain-specific architect
+3. System generates appropriate PRBs automatically
+4. Story updated with PRB references through behavioral patterns
 
 ### `/icc-story-status`
 Tracks story progress and PRB completion.
@@ -130,46 +130,49 @@ Tracks story progress and PRB completion.
 /icc-story-status payment.txt detailed
 ```
 
-## Specialist Commands
+## Dynamic Specialist Creation
 
-### `/icc-create-specialist`
-Creates a dynamic specialist for specific expertise.
+### Automatic Specialist Generation
+Specialists are created automatically through PM + Architect collaboration patterns.
 
-**Usage:** `/icc-create-specialist "[technology/domain]"`
-
-**Examples:**
-```bash
-/icc-create-specialist "GraphQL"      # Creates @GraphQL-Developer
-/icc-create-specialist "Kubernetes"   # Creates @Kubernetes-Expert
-/icc-create-specialist "WebRTC"       # Creates @WebRTC-Specialist
-/icc-create-specialist "Blockchain"   # Creates @Blockchain-Engineer
-```
-
-**When used:**
-- Automatically when expertise match <70%
-- Manually for specific technologies
-- All specialists have 10+ years expertise
-
-## Problem-Solving Commands
-
-### `/icc-think-sequential`
-Structured thinking for complex problems.
-
-**Usage:** `/icc-think-sequential "[problem description]"`
+**Usage:** Natural work requests trigger automatic specialist creation
 
 **Examples:**
 ```bash
-/icc-think-sequential "How to implement real-time collaboration?"
-/icc-think-sequential "Architecture for multi-tenant system?"
-/icc-think-sequential "Optimize for 1M concurrent users?"
+# Work requests automatically create appropriate specialists
+"Implement GraphQL API"               # Auto-creates @GraphQL-Developer
+"Set up Kubernetes deployment"        # Auto-creates @Kubernetes-Expert  
+"Add WebRTC video chat"              # Auto-creates @WebRTC-Specialist
+"Build blockchain integration"        # Auto-creates @Blockchain-Engineer
 ```
 
-**Features:**
-- Step-by-step analysis
-- Can revise previous thoughts
-- Identifies when more analysis needed
-- Generates and verifies hypotheses
-- Provides final solution
+**Automatic Creation:**
+- Triggered when expertise match <70% with existing 14 core roles
+- PM + domain-specific architect collaboration determines specialist
+- All specialists have 10+ years expertise with Context7 knowledge injection
+- Seamless integration into PRB execution through behavioral patterns
+
+## Embedded Problem-Solving
+
+### Natural Sequential Thinking
+All agents have embedded sequential thinking capabilities - no commands needed.
+
+**Usage:** Complex problems automatically trigger sequential analysis
+
+**Examples:**
+```bash
+# Complex problems automatically engage sequential thinking
+"How to implement real-time collaboration?"   # @Architect applies sequential analysis
+"Architecture for multi-tenant system?"      # System architects think step-by-step
+"Optimize for 1M concurrent users?"          # @System-Engineer uses structured thinking
+```
+
+**Built-in Features:**
+- Embedded in all 14 core roles and dynamic specialists
+- Step-by-step analysis with evidence-based reasoning
+- Self-correcting with assumption challenges
+- Identifies when more analysis needed automatically
+- Generates and verifies hypotheses through natural problem-solving
 
 ## Memory Commands
 
@@ -292,4 +295,4 @@ echo "API Requirements..." > drafts/api-spec.md
 
 ---
 
-These 10 commands provide complete control over the virtual team system while maintaining simplicity and power.
+Essential utility commands combined with natural @Agent behavioral patterns provide intuitive control over the virtual team system. Most work happens through natural language interaction rather than command scaffolding.
