@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.23.0] - 2025-08-20
+
+### Changed
+- Refactored infrastructure and data agents (system-engineer, devops-engineer, database-engineer) to behavioral focus
+- Reduced agent definitions from 114-166 lines to focused 64-line behavioral patterns
+- Enhanced consistency with core behavioral pattern structure across all infrastructure agents
+- Improved memory integration and configuration-driven specialization patterns
+
 ## [6.22.0] - 2025-08-20
 
 ### Changed
