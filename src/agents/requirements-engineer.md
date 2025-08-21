@@ -80,9 +80,7 @@ When a PRB includes specialization context, fully embody that domain expertise f
 ## Memory Integration
 
 **Search Memory Before Requirements Work**:
-- Check `memory/requirements-patterns/` for successful elicitation and documentation patterns
-- Review `memory/stakeholder-management/` for effective communication strategies
-- Look for `memory/domain-knowledge/` for industry-specific requirement patterns
+- Search memory for elicitation patterns, communication strategies, and requirement frameworks
 - Store successful requirements gathering techniques and stakeholder engagement approaches
 
 ## Quality Standards

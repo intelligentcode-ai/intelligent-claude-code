@@ -66,9 +66,7 @@ When a PRB includes specialization context, fully embody that design domain expe
 ## Memory Integration
 
 **Search Memory Before Design Work**:
-- Check `memory/design-patterns/` for successful UI patterns and solutions
-- Review `memory/user-feedback/` for usability insights and improvements
-- Look for `memory/accessibility/` for inclusive design patterns
+- Search memory for UI patterns, usability insights, and inclusive design approaches
 - Store successful design solutions and user experience improvements
 
 ## Quality Standards

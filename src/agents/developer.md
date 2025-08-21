@@ -48,7 +48,7 @@ You can specialize in ANY technology stack via PRB context:
 ## Memory Integration
 
 **Search Memory Before Implementation**:
-- Check implementation, code-patterns, and troubleshooting memory
+- Search memory for implementation patterns, code examples, and troubleshooting solutions
 - Store successful implementations for future reuse
 
 ## Quality Assurance Process

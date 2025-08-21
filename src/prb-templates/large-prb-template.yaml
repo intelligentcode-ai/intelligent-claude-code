@@ -1,7 +1,7 @@
 # Large PRB Template - Complex Features (16-30 points)
 # For sophisticated multi-component features requiring coordination
 
-# === TEMPLATE METADATA (@PM FILLS THESE) ===
+# === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 title: "[ROLE] [DESCRIPTION]"
 type: large-prb
@@ -9,7 +9,7 @@ complexity: complex
 priority: high
 requires_decomposition: true
 
-# === PROJECT CONTEXT (@PM FILLS FROM CONFIG) ===
+# === PROJECT CONTEXT (SYSTEM FILLS FROM CONFIG) ===
 project_root: "[PROJECT_ROOT]"
 system_nature: "[SYSTEM_NATURE]"
 git_privacy: "[FROM_CONFIG]"
@@ -17,20 +17,20 @@ branch_protection: "[FROM_CONFIG]"
 default_branch: "[FROM_CONFIG]"
 branch_prefix: "[FROM_CONFIG]"
 
-# === WORK SPECIFICATION (@PM FILLS FROM STORY) ===
+# === WORK SPECIFICATION (@PM COORDINATES, SPECIALIST ARCHITECT ANALYZES) ===
 user_request: "[USER_REQUEST]"
 success_criteria: "[SUCCESS_CRITERIA]"
 business_goal: "[WHY_THIS_FEATURE_MATTERS]"
 feature_scope: "[FEATURE_BOUNDARY]"
 system_components_affected: "[SYSTEM_COMPONENTS_AFFECTED]"
 
-# === FEATURE REQUIREMENTS (@PM FILLS FROM ANALYSIS) ===
+# === FEATURE REQUIREMENTS (SPECIALIST ARCHITECT ANALYZES) ===
 main_requirement: "[MAIN_FEATURE_REQUIREMENT]"
 supporting_requirements:
   - "[SUPPORTING_REQUIREMENT_1]"
   - "[SUPPORTING_REQUIREMENT_2]"
 
-# === DECOMPOSITION STRATEGY (@PM FILLS BASED ON COMPLEXITY) ===
+# === DECOMPOSITION STRATEGY (PM + SPECIALIST ARCHITECT COLLABORATE) ===
 component_breakdown:
   component_1:
     name: "[COMPONENT_1]"
@@ -45,10 +45,10 @@ component_breakdown:
     prb_type: "tiny"
     dependencies: ["[COMPONENT_1]", "[COMPONENT_2]"]
 
-# === COORDINATION PLAN (@PM FILLS FROM TECHNICAL ANALYSIS) ===
+# === COORDINATION PLAN (PM COORDINATES, SPECIALIST ARCHITECT DEFINES) ===
 integration_points: "[HOW_COMPONENTS_CONNECT]"
 validation_strategy: "[HOW_TO_TEST_INTEGRATION]"
-reviewer_assignment: "[PRE_ASSIGNED_ARCHITECT]"
+reviewer_assignment: "[PRE_ASSIGNED_SPECIALIST_ARCHITECT]"
 
 # === EXECUTION PATTERN (KEEP AS-IS) ===
 execution_steps:

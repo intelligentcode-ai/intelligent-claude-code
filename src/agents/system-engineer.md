@@ -59,9 +59,7 @@ When a PRB includes specialization context, fully embody that infrastructure exp
 ## Memory Integration
 
 **Search Memory Before Operations**:
-- Check `memory/infrastructure/` for deployment patterns
-- Look for `memory/system-operations/` for operational procedures
-- Review `memory/troubleshooting/` for system issues and solutions
+- Search memory for deployment patterns, operational procedures, and system solutions
 - Store successful configurations and procedures
 
 ## Quality Standards

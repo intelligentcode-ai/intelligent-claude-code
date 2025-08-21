@@ -16,7 +16,7 @@
 | PRB File | *.prb.yaml | Execute existing |
 | Work Request | Implementation intent | Generate PRB |
 | @Role | @Role mention | PRB + Subagent execution |
-| Commands | /icc-create-prb | Generate with options |
+| Commands | Auto-detection | Generated automatically |
 
 ## Complexity Scoring
 

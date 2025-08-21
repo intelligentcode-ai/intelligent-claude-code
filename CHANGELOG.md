@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.2.0] - 2025-08-21
+
+### Changed
+- **MAJOR**: Implemented lean command system - removed 11 redundant commands (79% reduction)
+- Retained only 3 essential commands: icc-init-system, icc-get-setting, icc-search-memory
+- PRB generation, story management, and specialist creation now fully automatic
+- Updated behavior files to reflect automatic command patterns
+- Completely rewrote commands-reference.md for lean system documentation
+- Updated CLAUDE.md examples to show remaining commands only
+
+### Removed
+- icc-breakdown-story.md - Story management now automatic via @PM
+- icc-create-prb.md - PRB generation now automatic on work detection
+- icc-generate-prb-from-draft.md - Draft processing integrated into auto-generation
+- icc-story-status.md - Status tracking integrated into system
+- icc-create-dynamic-specialist.md - Specialist creation now automatic (<70% match)
+- icc-create-specialist.md - Manual specialist creation deprecated
+- icc-analyze-complexity.md - Complexity analysis now automatic
+- icc-think-sequential.md - Sequential thinking integrated into specialist behavior
+- icc-load-memory.md - Memory loading integrated into search functionality
+- icc-store-memory.md - Memory storage now automatic during PRB execution
+- icc-rename-work-items.md - Work item management simplified
+
 ## [7.1.0] - 2025-08-20
 
 ### Changed

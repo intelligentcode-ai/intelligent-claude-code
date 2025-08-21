@@ -1,7 +1,7 @@
 # Mega PRB Template - System-Wide Changes (30+ points)
 # For major system overhauls and architectural changes
 
-# === TEMPLATE METADATA (@PM FILLS THESE) ===
+# === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 title: "[ROLE] [DESCRIPTION]"
 type: mega-prb
@@ -9,7 +9,7 @@ complexity: system-wide
 priority: critical
 requires_epic_decomposition: true
 
-# === PROJECT CONTEXT (@PM FILLS FROM CONFIG) ===
+# === PROJECT CONTEXT (SYSTEM FILLS FROM CONFIG) ===
 project_root: "[PROJECT_ROOT]"
 system_nature: "[SYSTEM_NATURE]"
 git_privacy: "[FROM_CONFIG]"
@@ -17,7 +17,7 @@ branch_protection: "[FROM_CONFIG]"
 default_branch: "[FROM_CONFIG]"
 branch_prefix: "[FROM_CONFIG]"
 
-# === WORK SPECIFICATION (@PM FILLS FROM EPIC/STORY) ===
+# === WORK SPECIFICATION (@PM COORDINATES, SYSTEM ARCHITECT ANALYZES) ===
 user_request: "[USER_REQUEST]"
 success_criteria: "[SUCCESS_CRITERIA]"
 business_driver: "[BUSINESS_JUSTIFICATION]"
@@ -25,13 +25,13 @@ system_scope: "[COMPLETE_SYSTEM_BOUNDARY]"
 impact_scope: "[ENTIRE_SYSTEM_AFFECTED]"
 risk_level: "[HIGH|CRITICAL]"
 
-# === SYSTEM REQUIREMENTS (@PM FILLS FROM ANALYSIS) ===
+# === SYSTEM REQUIREMENTS (SYSTEM ARCHITECT ANALYZES) ===
 system_requirements:
   - "[SYSTEM_WIDE_REQUIREMENT_1]"
   - "[SYSTEM_WIDE_REQUIREMENT_2]"
   - "[SYSTEM_WIDE_REQUIREMENT_3]"
 
-# === EPIC DECOMPOSITION (@PM FILLS BASED ON ANALYSIS) ===
+# === EPIC DECOMPOSITION (PM + SYSTEM ARCHITECT COLLABORATE) ===
 major_phases:
   phase_1:
     name: "[PHASE_1]"
@@ -49,15 +49,15 @@ major_phases:
     scope: "[SYSTEM_INTEGRATION]"
     dependencies: ["[PHASE_1]", "[PHASE_2]"]
 
-# === RISK MANAGEMENT (@PM FILLS FROM RISK ANALYSIS) ===
+# === RISK MANAGEMENT (SYSTEM ARCHITECT ANALYZES, PM COORDINATES) ===
 rollback_strategy: "[HOW_TO_ROLLBACK_AT_EACH_PHASE]"
 validation_gates: "[VALIDATION_AT_EACH_PHASE]"
 monitoring_plan: "[HOW_TO_MONITOR_SYSTEM_HEALTH]"
 integration_strategy: "[SYSTEM_WIDE_INTEGRATION_APPROACH]"
 testing_strategy: "[COMPREHENSIVE_SYSTEM_TESTING]"
 
-# === REVIEW AND STAKEHOLDERS (@PM ASSIGNS) ===
-system_architect: "[SYSTEM_ARCHITECT]"
+# === REVIEW AND STAKEHOLDERS (PM COORDINATES ASSIGNMENTS) ===
+system_architect: "[DYNAMICALLY_CREATED_SYSTEM_ARCHITECT]"
 key_stakeholders: "[KEY_STAKEHOLDERS]"
 
 # === EXECUTION PATTERN (KEEP AS-IS) ===

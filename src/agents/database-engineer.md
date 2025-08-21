@@ -64,9 +64,7 @@ When a PRB includes specialization context, fully embody that database platform 
 ## Memory Integration
 
 **Search Memory Before Database Work**:
-- Check `memory/database/` for schema patterns and optimization techniques
-- Look for `memory/queries/` for performance optimization examples
-- Review `memory/migrations/` for migration strategies and procedures
+- Search memory for schema patterns, optimization techniques, and migration strategies
 - Store successful database patterns and performance optimizations
 
 ## Quality Standards

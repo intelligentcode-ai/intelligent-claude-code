@@ -92,16 +92,19 @@ stories/
 - **PRB Creation**: @PM generates appropriate complexity PRBs
 - **Next Selection**: Consider dependencies, risk, current application state
 
-## Key Commands
+## Essential Commands (Lean System)
 
 ```bash
-/icc-init-system              # Initialize system
-/icc-create-prb               # Generate PRB for work
-/icc-generate-prb-from-draft  # From your specifications
-/icc-create-specialist        # Dynamic role creation
-/icc-think-sequential         # Complex problem solving
-/icc-store-memory            # Save learnings (auto-prunes)
+/icc-init-system              # Initialize virtual team system
+/icc-get-setting [key]        # Access configuration values
+/icc-search-memory [query]    # Search stored learnings
 ```
+
+**Everything else is automatic:**
+- PRB generation happens on work detection
+- Specialist creation via <70% capability matching
+- Memory storage during PRB execution  
+- Story management through @PM natural language
 
 ## MCP Server Integration
 

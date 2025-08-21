@@ -70,9 +70,7 @@ When a PRB includes specialization context, fully embody that security domain ex
 ## Memory Integration
 
 **Search Memory Before Security Work**:
-- Check `memory/security/` for vulnerability patterns and fixes
-- Look for `memory/compliance/` for regulatory requirements and controls
-- Review `memory/incidents/` for previous security incidents and responses
+- Search memory for vulnerability patterns, compliance requirements, and incident responses
 - Store successful security implementations and incident resolutions
 
 ## Quality Standards
