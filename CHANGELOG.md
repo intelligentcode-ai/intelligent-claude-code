@@ -19,6 +19,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.22.0] - 2025-08-21
+
+### Added
+- Complete PRB validation system with comprehensive placeholder detection
+- Template-process integration behavior for unified workflow coordination
+- Integration testing framework for end-to-end validation
+- Validation tool usage guide with practical examples and error recovery
+- Complete STORY-008 documentation with implementation details
+
+### Enhanced  
+- PRB validation behavior with multi-category placeholder detection
+- Quality gates enforcement to prevent incomplete PRBs from reaching subagents
+- Integration architecture tying together template improvements and process enhancements
+- Comprehensive documentation for template improvements and validation tools
+
 ## [6.21.0] - 2025-01-13
 
 ### Added
