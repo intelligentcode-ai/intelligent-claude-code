@@ -1,20 +1,20 @@
 # Nano PRB Template - Trivial Changes (0-2 points)
 # For simple one-line fixes, typos, and minimal adjustments
 
-# === TEMPLATE METADATA (@PM FILLS THESE) ===
+# === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 title: "[ROLE] [DESCRIPTION]"
 type: nano-prb
 complexity: trivial
 priority: normal
 
-# === PROJECT CONTEXT (@PM FILLS FROM CONFIG) ===
+# === PROJECT CONTEXT (SYSTEM FILLS FROM CONFIG) ===
 project_root: "[PROJECT_ROOT]"
 system_nature: "[SYSTEM_NATURE]"
 git_privacy: "[FROM_CONFIG]"
 default_branch: "[FROM_CONFIG]"
 
-# === WORK SPECIFICATION (@PM FILLS FROM STORY) ===
+# === WORK SPECIFICATION (@PM COORDINATES, ASSIGNED ROLE ANALYZES) ===
 user_request: "[USER_REQUEST]"
 success_criteria: "[SUCCESS_CRITERIA]"
 target_file: "[TARGET_FILE]"

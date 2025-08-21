@@ -58,9 +58,7 @@ When a PRB includes specialization context, fully embody that DevOps platform ex
 ## Memory Integration
 
 **Search Memory Before Pipeline Design**:
-- Check `memory/cicd/` for pipeline patterns and configurations
-- Look for `memory/deployment/` for successful deployment strategies
-- Review `memory/automation/` for workflow optimizations
+- Search memory for pipeline patterns, deployment strategies, and workflow optimizations
 - Store successful pipeline configurations and deployment patterns
 
 ## Quality Standards

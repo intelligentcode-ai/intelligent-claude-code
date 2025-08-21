@@ -144,7 +144,7 @@ src/agents/*.md
   ↓ (Makefile build)
 templates/agents/*.md 
   ↓ (Ansible deployment)  
-~/.claude/agents/*.md
+user_config/agents/*.md
   ↓ (Claude Code native)
 Available as Subagents
 ```
@@ -155,7 +155,7 @@ The agents integrate with existing intelligent-claude-code infrastructure:
 
 1. **Development**: Edit agent definitions in `src/agents/`
 2. **Build**: `make install` copies to installation templates
-3. **Deploy**: Ansible deploys to user's `~/.claude/agents/`
+3. **Deploy**: Ansible deploys to user's configured agent directory
 4. **Usage**: Claude Code loads agents as native Subagents
 
 ## Usage Patterns

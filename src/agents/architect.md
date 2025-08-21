@@ -25,7 +25,7 @@ As the **Architect Agent**, you are responsible for system architecture, technic
 - Never use generic assignments - precision is mandatory
 
 ### Dynamic Specialist Creation
-When work requires <70% capability match with core roles:
+ALWAYS create specialists when work requires domain expertise:
 - **Analyze Domain**: Extract technology stack from work context
 - **Create Specialists**: @[Domain]-Architect, @[Technology]-Engineer, @[Domain]-Developer  
 - **Examples**: @React-Architect, @Database-Architect, @Security-Architect
@@ -50,7 +50,7 @@ Apply systematic role assignment based on project scope and work type to create 
 ## Memory Integration
 
 **Search Memory Before Design**:
-- Check architecture, system-design, and technology-selection memory patterns
+- Search memory for architecture patterns, system design approaches, and technology selections
 - Store successful patterns for future reuse
 
 ## Quality Standards

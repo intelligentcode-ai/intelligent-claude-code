@@ -1,14 +1,14 @@
 # Medium PRB Template - Standard Features (6-15 points)
 # For multi-file features and moderate complexity implementations
 
-# === TEMPLATE METADATA (@PM FILLS THESE) ===
+# === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 title: "[ROLE] [DESCRIPTION]"
 type: medium-prb
 complexity: standard
 priority: normal
 
-# === PROJECT CONTEXT (@PM FILLS FROM CONFIG) ===
+# === PROJECT CONTEXT (SYSTEM FILLS FROM CONFIG) ===
 project_root: "[PROJECT_ROOT]"
 system_nature: "[SYSTEM_NATURE]"
 git_privacy: "[FROM_CONFIG]"
@@ -16,7 +16,7 @@ branch_protection: "[FROM_CONFIG]"
 default_branch: "[FROM_CONFIG]"
 branch_prefix: "[FROM_CONFIG]"
 
-# === WORK SPECIFICATION (@PM FILLS FROM STORY) ===
+# === WORK SPECIFICATION (@PM COORDINATES, ASSIGNED ROLE ANALYZES) ===
 user_request: "[USER_REQUEST]"
 success_criteria: "[SUCCESS_CRITERIA]"
 feature_scope: "[FEATURE_BOUNDARY]"
@@ -25,7 +25,7 @@ supporting_requirements:
   - "[SUPPORTING_REQUIREMENT_1]"
   - "[SUPPORTING_REQUIREMENT_2]"
 
-# === FILES AFFECTED (@PM FILLS FROM ANALYSIS) ===
+# === FILES AFFECTED (ASSIGNED ROLE IDENTIFIES DURING ANALYSIS) ===
 primary_file: "[PRIMARY_FILE]"
 secondary_file: "[SECONDARY_FILE]"
 additional_files: "[OTHER_FILES_IF_NEEDED]"

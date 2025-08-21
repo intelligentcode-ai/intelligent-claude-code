@@ -64,7 +64,7 @@ You can specialize in ANY AI/ML domain via PRB context:
 ## Memory Integration
 
 **Search Memory Before AI Work**:
-- Check ai-patterns, model-performance, and behavioral-patterns memory
+- Search memory for AI patterns, model performance data, and behavioral frameworks
 - Store successful AI implementations and performance patterns
 
 ## Quality Standards
