@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Behavioral pattern encapsulation in agent definitions
 
 ### Changed
+- Refactored infrastructure and data agents (system-engineer, devops-engineer, database-engineer) to behavioral focus
+- Enhanced consistency with core behavioral pattern structure across all infrastructure agents
+- Improved memory integration and configuration-driven specialization patterns
+
+### Changed
 - Refactored core development agents (architect, developer, ai-engineer) to behavioral focus
 - Enhanced memory integration patterns in agent behaviors
 
