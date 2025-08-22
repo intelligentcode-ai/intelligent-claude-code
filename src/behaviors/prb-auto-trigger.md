@@ -16,7 +16,7 @@
 | PRB File | *.prb.yaml | Execute existing |
 | Work Request | Implementation intent | Generate PRB |
 | @Role | @Role mention | PRB + Subagent execution |
-| Commands | /icc-create-prb | Generate with options |
+| Natural Language | "break down STORY-X", "create specialist for Y" | Generate PRB |
 
 ## Complexity Scoring
 
@@ -100,7 +100,7 @@ Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 
 ## Critical Triggers
 
-**MUST Trigger**: Work requests, @Role mentions, PRB commands
+**MUST Trigger**: Work requests, @Role mentions, natural language work patterns
 **MUST NOT**: Information queries, status checks, reading only
 
 ## Subagent Execution

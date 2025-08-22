@@ -272,8 +272,12 @@ complete_context:
 - **NAME_EXISTS:** "❌ PRB name already exists: {name}"
 - **NUMBERING_CONFLICT:** "❌ Cannot generate unique number for parent: {parent_id}"
 
-## Available Tools
-Use these commands: `/icc-analyze-complexity`, `/icc-create-prb`, `/icc-think-sequential`, `/icc-validate-context`, `/icc-validate-prb-name`
+## Natural Interaction Patterns
+PRB creation responds to natural language patterns:
+- "Create PRB for [work description]" → Complexity analysis and template selection
+- "Break down STORY-X" → @PM story analysis and PRB generation 
+- "@Role implement [feature]" → Role assignment and PRB creation
+- Work requests automatically trigger appropriate PRB generation with embedded context
 
 ---
 *Optimized: 113→35 lines*
