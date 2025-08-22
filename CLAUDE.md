@@ -150,6 +150,10 @@ Tests verify:
 
 ### System Features
 
+- **Claude Code Native Subagents**: 13 core agent definitions with embedded behavioral patterns
+- **Dynamic Specialization**: Unlimited technology domain coverage via PRB context specialization
+- **Agent-Based Execution**: Natural @Agent communication replacing complex command scaffolding
+- **Behavioral Pattern Encapsulation**: All behavioral patterns embedded in agent definitions
 - **Dynamic Specialists**: Auto-create domain experts (@React-Developer, @AWS-Engineer) with 10+ years expertise
 - **Learning Culture**: PRB execution generates learnings, successful patterns stored for reuse
 - **Parallel Execution**: Up to 5 non-conflicting tasks execute simultaneously
