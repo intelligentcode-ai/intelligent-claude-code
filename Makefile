@@ -125,8 +125,10 @@ test:
 	@echo "Verifying installation..."
 	@test -f test-install/CLAUDE.md || (echo "FAIL: CLAUDE.md not created"; exit 1)
 	@test -f test-install/.claude/modes/virtual-team.md || (echo "FAIL: virtual-team.md not installed"; exit 1)
-	@test -f test-install/.claude/workflow-templates/outer-workflow.yaml || (echo "FAIL: workflow-templates not installed"; exit 1)
-	@test -f test-install/.claude/workflow-templates/inner-workflow.yaml || (echo "FAIL: workflow-templates not installed"; exit 1)
+	@test -f test-install/.claude/agents/architect.md || (echo "FAIL: agent definitions not installed"; exit 1)
+	@test -f test-install/.claude/agents/developer.md || (echo "FAIL: developer agent not installed"; exit 1)
+	@test -f test-install/.claude/agents/ai-engineer.md || (echo "FAIL: ai-engineer agent not installed"; exit 1)
+	@test -f test-install/.claude/prb-templates/medium-prb-template.yaml || (echo "FAIL: prb-templates not installed"; exit 1)
 	@grep -q "@~/.claude/modes/virtual-team.md" test-install/CLAUDE.md || (echo "FAIL: Import not added"; exit 1)
 	@echo "✅ Installation tests passed!"
 	@echo ""
@@ -138,6 +140,7 @@ test:
 	@$(MAKE) uninstall TARGET_PATH=test-install
 	@test ! -f test-install/.claude/modes/virtual-team.md || (echo "FAIL: modes not removed"; exit 1)
 	@test ! -f test-install/.claude/behaviors || (echo "FAIL: behaviors not removed"; exit 1)
+	@test ! -f test-install/.claude/agents || (echo "FAIL: agents not removed"; exit 1)
 	@echo "✅ Conservative uninstall test passed!"
 	@echo ""
 	@echo "Testing force uninstall..."
