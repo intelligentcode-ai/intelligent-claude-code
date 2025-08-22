@@ -19,6 +19,7 @@
     - "{{ claude_install_path }}/behaviors"
     - "{{ claude_install_path }}/commands"
     - "{{ claude_install_path }}/roles"
+    - "{{ claude_install_path }}/agents"
     - "{{ claude_install_path }}/prb-templates"
 
 - name: Check if CLAUDE.md exists
@@ -96,7 +97,18 @@
     msg: "Roles directory preserved: {{ claude_install_path }}/roles/ already exists - keeping user modifications"
   when: roles_copy_result.failed
 
+- name: Copy agents directory
+  copy:
+    src: "{{ playbook_dir }}/../src/agents/"
+    dest: "{{ claude_install_path }}/agents/"
+    mode: '0644'
+    force: yes
+  register: agents_copy_result
 
+- name: Display agents preservation notice
+  debug:
+    msg: "Agents directory preserved: {{ claude_install_path }}/agents/ already exists - keeping user modifications"
+  when: agents_copy_result.failed
 
 - name: Copy PRB templates directory
   copy:
@@ -157,6 +169,7 @@
       - "Location: {{ claude_install_path }}"
       - "Mode: Enhanced Virtual Team (14 core roles + unlimited dynamic specialists)"
       - "Core Roles: @PM, @Architect, @Developer, @User-Role, @System/DevOps/Database/Security/AI/Web/QA/Frontend/Backend-Engineers, @Requirements-Engineer"
+      - "Agent Definitions: Core agent behavioral patterns deployed to agents/ directory"
       - "Features: Memory Bank (λ=0.1), User-Role (Puppeteer), Anti-Panic, Task Format Enforcement"
       - "Activation: @-notation for specialized roles (@PM, @Architect, @Developer, @User-Role, etc.)"
       - "Architecture: 5-module clustered system with Level 3 autonomy"

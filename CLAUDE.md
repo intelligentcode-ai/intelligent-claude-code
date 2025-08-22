@@ -57,10 +57,11 @@ make install MCP_CONFIG=./config/mcps.json  # Install with MCP servers
 The system implements a **14-role virtual development team** that operates through behavioral patterns and command chains:
 
 1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for ANY technology domain when expertise is needed
-2. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
-3. **Memory System**: File-based memory storage (version-controlled in `memory/`) with topic-based organization and pattern capture
-4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
-5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and PRB validation
+2. **Agent Deployment**: Core agent behavioral patterns distributed to user environments via installation system
+3. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
+4. **Memory System**: File-based memory storage (version-controlled in `memory/`) with topic-based organization and pattern capture
+5. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
+6. **Behavioral Enforcement**: Mandatory patterns with auto-correction and PRB validation
 
 ### Your Project Structure
 ```
