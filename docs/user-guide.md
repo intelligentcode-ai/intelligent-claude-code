@@ -226,7 +226,7 @@ To verify your memory configuration is working:
 - Consider Git integration for learning history
 - Keep memory private and separate from project code
 
-### for Teams
+### For Teams
 
 - Use shared network locations: `/shared/team/claude-memory`
 - Implement Git-based memory with team access

@@ -1,7 +1,7 @@
 # Commands Reference
 
 ## Overview
-The intelligent-claude-code system provides 12 essential commands that cover initialization, PRB creation, story management, specialist management, problem-solving, and memory operations.
+The intelligent-claude-code system provides 14 essential commands that cover initialization, PRB creation, story management, specialist management, problem-solving, and memory operations.
 
 ## System Commands
 
@@ -130,6 +130,85 @@ Tracks story progress and PRB completion.
 /icc-story-status payment.txt detailed
 ```
 
+## Specialist Creation Commands
+
+### `/icc-create-specialist`
+Creates dynamic specialist roles for any domain.
+
+**Usage:** `/icc-create-specialist [domain] [role-type]`
+
+**Examples:**
+```bash
+/icc-create-specialist React Developer        # Creates @React-Developer
+/icc-create-specialist AWS Engineer          # Creates @AWS-Engineer
+/icc-create-specialist Kubernetes DevOps     # Creates @Kubernetes-DevOps-Engineer
+```
+
+**Process:**
+1. Analyzes domain requirements
+2. Creates domain-specific specialist with 10+ years expertise
+3. Integrates with existing team
+4. Available immediately for @Agent mentions
+
+### `/icc-create-dynamic-specialist`
+Advanced dynamic specialist creation with detailed requirements.
+
+**Usage:** `/icc-create-dynamic-specialist [domain] [role-type] [requirements]`
+
+**Examples:**
+```bash
+/icc-create-dynamic-specialist Machine-Learning Specialist "TensorFlow, PyTorch, MLOps"
+/icc-create-dynamic-specialist Vue Frontend-Developer "Vue3, TypeScript, Pinia"
+```
+
+**Features:**
+- ALWAYS creates specialists when technology expertise is needed
+- Support for ANY technology domain
+- Custom expertise requirements
+- No capability thresholds - created based on need
+
+### `/icc-rename-work-items`
+Renames work items to follow standard naming format.
+
+**Usage:** `/icc-rename-work-items [options]`
+
+**Examples:**
+```bash
+/icc-rename-work-items                # Rename all work items
+/icc-rename-work-items --preview      # Preview changes without applying
+```
+
+**Process:**
+1. Scans project for work items
+2. Validates naming compliance
+3. Renames to standard format
+4. Updates references
+
+## Problem Solving Commands
+
+### `/icc-think-sequential`
+Engages sequential thinking mode for complex problem analysis.
+
+**Usage:** `/icc-think-sequential <problem_description> [complexity_level] [analysis_depth]`
+
+**Examples:**
+```bash
+/icc-think-sequential "Design memory system architecture"
+/icc-think-sequential "Optimize database queries" high
+/icc-think-sequential "Fix authentication bug" low basic
+```
+
+**Parameters:**
+- **problem_description** (required): Problem to analyze
+- **complexity_level** (optional): low, medium, high (default: auto-detect)
+- **analysis_depth** (optional): basic, detailed, maximum (default: detailed)
+
+**Features:**
+- Ultra-experienced cognitive pattern analysis
+- Evidence-based thinking with assumption questioning
+- Iterative refinement process
+- Available to all roles for deep analysis
+
 ## Agent System Integration
 
 ### Natural @Agent Communication
@@ -148,65 +227,11 @@ All work operates through direct agent communication - no command scaffolding ne
 
 **Agent Features:**
 - 14 core specialized roles with embedded behavioral patterns
-- Unlimited dynamic specialist creation for ANY technology domain when expertise needed
+- Unlimited dynamic specialist creation for ANY technology domain when expertise is needed
 - Direct PRB execution through Task tool invocation
 - Complete context preservation across agent interactions
 
-## L3 Autonomous Mode Commands
 
-### `/icc-enable-l3-autonomous`
-Enables L3 autonomous operation for continuous work discovery.
-
-**Usage:** `/icc-enable-l3-autonomous [max_parallel_tasks]`
-
-**Examples:**
-```bash
-/icc-enable-l3-autonomous           # Enable with default settings
-/icc-enable-l3-autonomous 3         # Enable with max 3 parallel tasks
-```
-
-**L3 Features:**
-- Automatically discovers PLANNED/IN_PROGRESS tasks
-- Processes uncommitted changes into PRBs
-- Continuously improves memory and patterns
-- Operates until explicit stop or critical issues
-- Maintains up to 5 parallel non-conflicting tasks
-
-## Template Validation Commands
-
-### `/icc-validate-template-usage`
-Validates PRB compliance with mandatory template usage from src/prb-templates/.
-
-**Usage:** `/icc-validate-template-usage [prb-path]`
-
-**Examples:**
-```bash
-/icc-validate-template-usage prbs/ready/STORY-001-PRB-001.prb.yaml
-/icc-validate-template-usage prbs/completed/BUG-005-PRB-001.prb.yaml
-```
-
-**Validation Checks:**
-- Template source from src/prb-templates/ hierarchy
-- All placeholders resolved (no [FROM_CONFIG] remaining)
-- Complete configuration embedded in PRB
-- Mandatory template sections present
-- No runtime config dependencies
-
-### `/icc-check-placeholder-resolution`
-Verifies all template placeholders have been resolved with actual values.
-
-**Usage:** `/icc-check-placeholder-resolution [prb-path]`
-
-**Examples:**
-```bash
-/icc-check-placeholder-resolution prbs/ready/STORY-001-PRB-001.prb.yaml
-```
-
-**Checks for unresolved patterns:**
-- `[FROM_CONFIG]` - Must be replaced with actual config values
-- `[PROJECT_ROOT]` - Must be replaced with actual project path
-- `[CURRENT_DATE]` - Must be replaced with actual date
-- `[ALL-SETTINGS]` - Must be replaced with specific configuration
 
 ## Memory Commands
 
@@ -292,7 +317,7 @@ echo "API Requirements..." > drafts/api-spec.md
 ### Complex Problem Solving
 ```bash
 /icc-think-sequential "How to handle 10K concurrent websocket connections"
-# ... thinking process ...
+# ... thinking process completes with solution analysis ...
 /icc-create-prb "Implement websocket scaling solution"
 ```
 
@@ -329,4 +354,4 @@ echo "API Requirements..." > drafts/api-spec.md
 
 ---
 
-Essential utility commands combined with natural @Agent behavioral patterns provide intuitive control over the virtual team system. Most work happens through natural language interaction with the 14-role team rather than command scaffolding.
+Essential utility commands combined with natural @Agent behavioral patterns provide intuitive control over the virtual team system. Most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists rather than command scaffolding.
