@@ -21,11 +21,11 @@ Role assignment MUST consider both factors:
 | **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | Universal: Always @DevOps-Engineer | PM + @DevOps-Architect → Domain-specific infrastructure specialist |
 | **Security** | security, vulnerability, compliance, auth, authorization, encrypt | Universal: Always @Security-Engineer | PM + @Security-Architect → Domain-specific security specialist |
 | **Database** | database, schema, migration, query, SQL, performance, index | Universal: Always @Database-Engineer | PM + @Database-Architect → Domain-specific data specialist |
-| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern, decision | Dynamic: Create specialist for domain | PM + @AI-Architect → @[Domain]-AI-Engineer (e.g., @Memory-AI-Engineer, @Behavioral-AI-Engineer) |
-| **Architecture** | design, architecture, pattern, structure, framework, system | Dynamic: Create domain architect | PM + @System-Architect → @[Domain]-Architect (e.g., @Behavioral-Architect, @AI-System-Architect) |
-| **Testing** | test, QA, validation, quality, coverage, automation | Dynamic: Create testing specialist | PM + @Testing-Architect → @[Domain]-Tester (e.g., @Behavioral-Tester, @AI-System-Tester) |
-| **Documentation** | documentation, docs, README, guide, manual, API docs | Universal: Always @Requirements-Engineer | PM + @Documentation-Architect → Domain-specific documentation specialist |
-| **Implementation** | implement, feature, bug fix, refactor, code | Dynamic: Create implementation specialist | PM + @AI-Architect → @[Domain]-Developer (e.g., @Behavioral-Developer, @AI-System-Developer) |
+| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern, decision | ALWAYS: Create specialist for domain | PM + @AI-Architect → @[Domain]-AI-Engineer (e.g., @Memory-AI-Engineer, @Behavioral-AI-Engineer) |
+| **Architecture** | design, architecture, pattern, structure, framework, system | ALWAYS: Create domain architect | PM + @System-Architect → @[Domain]-Architect (e.g., @Behavioral-Architect, @AI-System-Architect) |
+| **Testing** | test, QA, validation, quality, coverage, automation | ALWAYS: Create testing specialist | PM + @Testing-Architect → @[Domain]-Tester (e.g., @Behavioral-Tester, @AI-System-Tester) |
+| **Documentation** | documentation, docs, README, guide, manual, API docs | ALWAYS: Create documentation specialist | PM + @Documentation-Architect → @[Domain]-Documentation-Engineer |
+| **Implementation** | implement, feature, bug fix, refactor, code | ALWAYS: Create implementation specialist | PM + @AI-Architect → @[Domain]-Developer (e.g., @Behavioral-Developer, @AI-System-Developer) |
 
 ### CODE-BASED SYSTEM Projects
 
@@ -34,11 +34,11 @@ Role assignment MUST consider both factors:
 | **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | Universal: Always @DevOps-Engineer | PM + @DevOps-Architect → Domain-specific infrastructure specialist |
 | **Security** | security, vulnerability, compliance, auth, authorization, encrypt | Universal: Always @Security-Engineer | PM + @Security-Architect → Domain-specific security specialist |
 | **Database** | database, schema, migration, query, SQL, performance, index | Universal: Always @Database-Engineer | PM + @Database-Architect → Domain-specific data specialist |
-| **AI/Behavioral** | AI, ML, machine learning, neural, model, prediction | Dynamic: Create AI implementation specialist | PM + @AI-Architect → @[Technology]-AI-Engineer (e.g., @TensorFlow-AI-Engineer, @PyTorch-AI-Engineer) |
-| **Architecture** | design, architecture, pattern, structure, framework, system | Dynamic: Create domain architect | PM + @System-Architect → @[Domain]-Architect (e.g., @Microservice-Architect, @API-Architect) |
-| **Testing** | test, QA, validation, quality, coverage, automation, unit, integration | Dynamic: Create testing specialist | PM + @Testing-Architect → @[Stack]-Tester (e.g., @Backend-Tester, @API-Tester) |
-| **Documentation** | documentation, docs, README, guide, manual, API docs | Universal: Always @Requirements-Engineer | PM + @Documentation-Architect → Domain-specific documentation specialist |
-| **Implementation** | implement, feature, bug fix, refactor, code, function, API | Dynamic: Create implementation specialist | PM + @Code-Architect → @[Technology]-Developer (e.g., @React-Developer, @Node-Developer) |
+| **AI/Behavioral** | AI, ML, machine learning, neural, model, prediction | ALWAYS: Create AI implementation specialist | PM + @AI-Architect → @[Technology]-AI-Engineer (e.g., @TensorFlow-AI-Engineer, @PyTorch-AI-Engineer) |
+| **Architecture** | design, architecture, pattern, structure, framework, system | ALWAYS: Create domain architect | PM + @System-Architect → @[Domain]-Architect (e.g., @Microservice-Architect, @API-Architect) |
+| **Testing** | test, QA, validation, quality, coverage, automation, unit, integration | ALWAYS: Create testing specialist | PM + @Testing-Architect → @[Stack]-Tester (e.g., @Backend-Tester, @API-Tester) |
+| **Documentation** | documentation, docs, README, guide, manual, API docs | ALWAYS: Create documentation specialist | PM + @Documentation-Architect → @[Domain]-Documentation-Engineer |
+| **Implementation** | implement, feature, bug fix, refactor, code, function, API | ALWAYS: Create implementation specialist | PM + @Code-Architect → @[Technology]-Developer (e.g., @React-Developer, @Node-Developer) |
 
 ### HYBRID SYSTEM Projects
 
@@ -47,11 +47,11 @@ Role assignment MUST consider both factors:
 | **DevOps** | deploy, CI/CD, container, docker, kubernetes, scaling, pipeline | Universal: Always @DevOps-Engineer | PM + @DevOps-Architect → Domain-specific infrastructure specialist |
 | **Security** | security, vulnerability, compliance, auth, authorization, encrypt | Universal: Always @Security-Engineer | PM + @Security-Architect → Domain-specific security specialist |
 | **Database** | database, schema, migration, query, SQL, performance, index | Universal: Always @Database-Engineer | PM + @Database-Architect → Domain-specific data specialist |
-| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern | Dynamic: Create AI-behavioral specialist | PM + @AI-Architect → @[Domain]-AI-Engineer (AI-agentic portions) |
-| **Code Implementation** | implement, feature, bug fix, refactor, code, function, API | Dynamic: Create code implementation specialist | PM + @Code-Architect → @[Technology]-Developer (traditional code portions) |
-| **Architecture** | design, architecture, pattern, structure, framework, system | Joint: Multiple specialist architects | PM + @System-Architect + @AI-Architect → Joint architectural assessment |
-| **Testing** | test, QA, validation, quality, coverage | Joint: Multiple testing specialists | PM + @Testing-Architect → @[Domain]-Tester + @[Stack]-Tester (hybrid testing approach) |
-| **Documentation** | documentation, docs, README, guide, manual | Universal: Always @Requirements-Engineer | PM + @Documentation-Architect → Domain-specific documentation specialist |
+| **AI/Behavioral** | behavioral, memory, learning, agent, PRB, pattern | ALWAYS: Create AI-behavioral specialist | PM + @AI-Architect → @[Domain]-AI-Engineer (AI-agentic portions) |
+| **Code Implementation** | implement, feature, bug fix, refactor, code, function, API | ALWAYS: Create code implementation specialist | PM + @Code-Architect → @[Technology]-Developer (traditional code portions) |
+| **Architecture** | design, architecture, pattern, structure, framework, system | ALWAYS: Create multiple specialist architects | PM + @System-Architect + @AI-Architect → Joint architectural assessment |
+| **Testing** | test, QA, validation, quality, coverage | ALWAYS: Create multiple testing specialists | PM + @Testing-Architect → @[Domain]-Tester + @[Stack]-Tester (hybrid testing approach) |
+| **Documentation** | documentation, docs, README, guide, manual | ALWAYS: Create documentation specialist | PM + @Documentation-Architect → @[Domain]-Documentation-Engineer |
 
 ## Universal Role Assignments
 
@@ -88,7 +88,7 @@ Parse requirements for work type keywords:
 Role = DecisionMatrix[ProjectScope][WorkType]
 - Look up intersection in matrix
 - Apply universal roles if applicable
-- Validate >70% capability match
+- Validate technology expertise assessment and specialist creation rationale
 ```
 
 ### Step 4: Document Rationale
@@ -141,12 +141,13 @@ PRB must include:
 4. HYBRID → PM + @System-Architect + @AI-Architect → Joint analysis and specialist creation
 
 ### Domain-Specific Work
-**ALWAYS create dynamic specialists for precise expertise matching:**
-1. Create specialist for specific domain: @[Domain]-Engineer
-2. Examples: @React-Developer, @AWS-Engineer, @GraphQL-Specialist, @Memory-AI-Engineer
-3. Document domain expertise and specialist creation rationale
+**UNLIMITED SPECIALIST CREATION - ALWAYS when technology expertise is needed:**
+1. Create specialist for ANY technology domain: @[Domain]-Engineer/@[Technology]-Developer/@[Framework]-Architect
+2. Examples: @React-Developer, @AWS-Engineer, @GraphQL-Specialist, @Memory-AI-Engineer, @Kubernetes-DevOps-Engineer, @Vue-Frontend-Developer
+3. Document domain expertise and specialist creation rationale  
 4. PM + Specialist Architect must collaborate to define specialist role
-5. No generic fallbacks - precision is mandatory
+5. No capability thresholds - ALWAYS create when technology expertise benefits the work
+6. Support ANY technology domain through dynamic specialist creation
 
 ## Validation and Enforcement
 

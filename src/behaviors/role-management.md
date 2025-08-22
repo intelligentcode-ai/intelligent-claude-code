@@ -17,9 +17,9 @@
 **Enforcement:** Real expertise adoption (no fake switching)
 
 ### Dynamic Specialists
-**Trigger:** <70% capability match
+**Trigger:** ALWAYS when technology expertise is needed
 **Creation:** 10+ years expertise + Context7 knowledge injection
-**Examples:** @GraphQL-Developer, @Kubernetes-Expert
+**Examples:** @GraphQL-Developer, @Kubernetes-Expert, @React-Developer, @AWS-Engineer
 
 ### Role State
 **History:** Stack-based switching context
@@ -28,10 +28,10 @@
 
 ## Validation
 
-### Capability Matching
-**Threshold:** >70% match required
-**Formula:** (matched/required) * 100
-**Fallback:** Create specialist if no match
+### Technology Expertise Assessment
+**Principle:** ALWAYS create specialists when technology expertise is needed
+**Assessment:** Identify technology domains required for optimal execution
+**Creation:** Create specialist for ANY technology domain identified
 
 ### Work Type → Role
 - AI/Behavioral → @AI-Engineer/@AI-Architect
@@ -58,12 +58,12 @@
    - Block direct role assignments without PM+Architect process
    - Intercept @Role mentions and redirect to collaboration
    - Validate PRBs include assignment documentation
-   - Enforce >70% capability match with justification
+   - Enforce technology expertise assessment with specialist creation justification
 
 4. **Assignment Validation**:
    - PRB contains role assignment rationale
    - PM+Architect collaboration documented
-   - Capability match score included (>70%)
+   - Technology expertise assessment and specialist creation rationale included
    - Domain expert selection justified
 
 ### Quality Gates
