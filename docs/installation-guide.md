@@ -26,7 +26,7 @@ brew install ansible  # macOS
 sudo apt install ansible  # Ubuntu/Debian
 
 # 2. Clone the repository
-git clone https://github.com/your-org/intelligent-claude-code.git
+git clone https://github.com/intelligentcode-ai/intelligent-claude-code.git
 cd intelligent-claude-code
 
 # 3. Install the system
@@ -166,7 +166,7 @@ This installs the system to `~/.claude/` for the current user.
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/intelligent-claude-code.git
+git clone https://github.com/intelligentcode-ai/intelligent-claude-code.git
 cd intelligent-claude-code
 
 # Install to user directory
