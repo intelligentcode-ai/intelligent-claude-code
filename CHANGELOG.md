@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ## [6.22.0] - 2025-08-21
 
 ### Added
@@ -68,6 +69,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Role assignment matrix now uses "ALWAYS" pattern instead of capability thresholds
 - PRB templates now include specialization_context sections for technology domain support
 - Enhanced unlimited specialist creation examples across all behavioral patterns
+
+### Changed
+- **Command Scaffolding Removal**: Streamlined system by removing redundant command patterns and enhancing natural @Agent interaction
+- **Natural Language Interaction**: Replaced command-driven workflows with conversational patterns (e.g., "@PM break down STORY-X" instead of "/icc-breakdown-story")
+- **Embedded Capabilities**: Sequential thinking and specialist creation now embedded in behavioral patterns rather than separate commands
+- **Documentation Enhancement**: Updated commands reference to emphasize natural interaction over command scaffolding
+- Removed <70% capability match rule - specialists now ALWAYS created when technology expertise benefits the work
+- Updated dynamic specialist creation to support ANY technology domain through PM + Architect collaboration
+- Role assignment matrix now uses "ALWAYS" pattern instead of capability thresholds
+- PRB templates now include specialization_context sections for technology domain support
+- Enhanced unlimited specialist creation examples across all behavioral patterns
+
+### Archived
+- `icc-create-specialist.md` - Functionality moved to automatic PM + Architect collaboration patterns
+- `icc-breakdown-story.md` - Replaced with natural @PM conversation patterns
+
+### Removed
+- `icc-think-sequential.md` - Sequential thinking now embedded in all 14 core roles and dynamic specialists
+
+### Enhanced
+- Natural @Agent detection in behavioral patterns
+- Automatic specialist creation through work request analysis
+- Conversational story breakdown without command invocation
+- Streamlined interaction complexity while preserving all functionality
 
 ### Fixed
 - Removed arbitrary capability thresholds that limited specialist creation
