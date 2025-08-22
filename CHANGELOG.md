@@ -19,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.22.0] - 2025-01-22
+
+### Added
+- Comprehensive troubleshooting guide with common issues and solutions
+- System architecture documentation with component diagrams and interactions
+- Enhanced installation guide with verification procedures
+
 ## [6.21.1] - 2025-01-22
 
 ### Added
