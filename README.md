@@ -6,7 +6,7 @@ Transform Claude Code into an intelligent development team with 14+ specialized 
 
 ```bash
 # Install
-git clone https://github.com/ksamaschke/intelligent-claude-code
+git clone https://github.com/intelligentcode-ai/intelligent-claude-code.git
 cd intelligent-claude-code
 make install
 

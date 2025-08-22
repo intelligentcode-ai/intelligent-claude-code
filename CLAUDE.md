@@ -57,11 +57,10 @@ make install MCP_CONFIG=./config/mcps.json  # Install with MCP servers
 The system implements a **14-role virtual development team** that operates through behavioral patterns and command chains:
 
 1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for ANY technology domain when expertise is needed
-2. **Agent Deployment**: Core agent behavioral patterns distributed to user environments via installation system
-3. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
-4. **Memory System**: File-based memory storage (version-controlled in `memory/`) with topic-based organization and pattern capture
-5. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
-6. **Behavioral Enforcement**: Mandatory patterns with auto-correction and PRB validation
+2. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
+3. **Memory System**: File-based memory storage (version-controlled in `memory/`) with topic-based organization and pattern capture
+4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
+5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and PRB validation
 
 ### Your Project Structure
 ```
@@ -151,11 +150,7 @@ Tests verify:
 
 ### System Features
 
-- **Claude Code Native Subagents**: 13 core agent definitions with embedded behavioral patterns
-- **Dynamic Specialization**: Unlimited technology domain coverage via PRB context specialization
-- **Agent-Based Execution**: Natural @Agent communication replacing complex command scaffolding
-- **Behavioral Pattern Encapsulation**: All behavioral patterns embedded in agent definitions
-- **Unlimited Dynamic Specialists**: Auto-create domain experts for ANY technology (@React-Developer, @AWS-Engineer, @Kubernetes-DevOps-Engineer, @Vue-Frontend-Developer) with 10+ years expertise - ALWAYS when technology expertise is needed
+- **Dynamic Specialists**: Auto-create domain experts for ANY technology (@React-Developer, @AWS-Engineer, @Kubernetes-DevOps-Engineer, @Vue-Frontend-Developer) with 10+ years expertise - ALWAYS when technology expertise is needed
 - **Learning Culture**: PRB execution generates learnings, successful patterns stored for reuse
 - **Parallel Execution**: Up to 5 non-conflicting tasks execute simultaneously
 - **Self-Correcting**: Automatic violation detection and correction through PRB validation

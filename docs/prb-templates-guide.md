@@ -2,13 +2,48 @@
 
 ## Overview
 
-PRB templates are the backbone of the intelligent-claude-code system. They define how work is structured, what context is included, and how specialists execute tasks. The system automatically selects the right template based on complexity.
+PRB templates are the backbone of the intelligent-claude-code system. They define how work is structured, what context is included, and how specialists execute tasks. The system automatically selects the right template based on complexity from the mandatory src/prb-templates/ hierarchy.
+
+**Key Enhancement from STORY-008**: All templates now have mandatory usage enforcement with complete placeholder resolution at generation time, ensuring self-contained execution without runtime config dependencies.
+
+## Template Validation and Enforcement
+
+### Mandatory Template Usage (STORY-008 Enhancement)
+
+**CRITICAL RULE**: ALL PRB creation MUST use templates from src/prb-templates/ with complete placeholder resolution.
+
+**Template Enforcement Rules**:
+1. **Template Source Enforcement**: Only templates from src/prb-templates/ hierarchy allowed
+2. **Placeholder Resolution**: ALL placeholders must be resolved at generation time
+3. **Config Embedding**: Complete configuration embedded in PRB, no runtime lookups
+4. **Manual Creation Blocking**: Immediate blocking of any manual PRB creation attempts
+5. **Template Completeness**: All mandatory template sections required
+
+**Blocked Patterns**:
+- ❌ Manual PRB creation without templates
+- ❌ Unresolved placeholders like `[FROM_CONFIG]` in final PRBs  
+- ❌ Runtime config lookups during execution
+- ❌ Invalid template sources outside src/prb-templates/
+- ❌ Missing mandatory template sections
+
+**Template Resolution Process**:
+```yaml
+# Template BEFORE resolution (BLOCKED):
+git_privacy: "[FROM_CONFIG]"
+branch_protection: "[FROM_CONFIG]"
+
+# Template AFTER resolution (REQUIRED):
+git_privacy: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+default_branch: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+```
 
 ## Template Types by Complexity
 
 ### 🔵 Nano PRB (Score: 0-2)
 **For:** Trivial one-line changes, config updates, typo fixes
 **File:** `nano-prb-template.yaml`
+**Execution Process:** 4 steps (Knowledge → Implementation → Git Commit → Git Push)
 
 **When used:**
 - Change a single value
@@ -21,6 +56,12 @@ PRB templates are the backbone of the intelligent-claude-code system. They defin
 id: NANO-[AUTO]
 type: nano-prb
 title: "[ROLE] [DESCRIPTION]"
+complete_context:
+  # Complete configuration embedded at generation time
+  project_root: <ACTUAL_PROJECT_ROOT_PATH>
+  configuration:
+    git_privacy: <ACTUAL_VALUE>
+    branch_protection: <ACTUAL_VALUE>
 change:
   file: "[PATH]"
   find: "[EXACT_TEXT]"
@@ -36,6 +77,7 @@ validation: "[HOW_TO_VERIFY]"
 ### 🟢 Tiny PRB (Score: 3-5)
 **For:** Simple single-file changes, small features
 **File:** `tiny-prb-template.yaml`
+**Execution Process:** 7 steps (Knowledge → Implementation → Review → Version → Documentation → Git Commit → Git Push)
 
 **When used:**
 - Add a simple function
@@ -67,6 +109,7 @@ validation:
 ### 🟡 Medium PRB (Score: 6-15)
 **For:** Standard features, multi-file changes
 **File:** `medium-prb-template.yaml`
+**Execution Process:** 9 steps (Branch → Knowledge → Implementation → Review → Version → Documentation → Git Commit → Git Push → PR)
 
 **When used:**
 - New API endpoints
@@ -75,10 +118,12 @@ validation:
 - Complex bug fixes
 
 **Key features:**
-- Embedded learnings from memory
-- Best practices inclusion
-- Code pattern references
-- Pre-assigned SME reviewer
+- Embedded learnings from memory/ (2-3 entries max)
+- Best practices inclusion from best-practices/
+- Code pattern references with existing implementations
+- Pre-assigned SME reviewer through agent system
+- Complete context embedding with no runtime config lookups
+- Direct @Agent execution through Task tool subagent creation
 
 **Structure includes:**
 - Full context with project settings
@@ -450,4 +495,49 @@ prb_configuration:
 
 ---
 
-Remember: PRB templates are meant to adapt to YOUR workflow, not the other way around. Start with defaults, then customize based on what your team needs.
+## Agent System Integration (STORY-007 Enhancement)
+
+### 14-Role Virtual Team Execution
+
+All PRB templates now integrate with the 14-role virtual team system:
+
+**Core Roles Available:**
+- @PM, @Architect, @Developer, @System-Engineer, @DevOps-Engineer
+- @Database-Engineer, @Security-Engineer, @AI-Engineer, @Web-Designer
+- @QA-Engineer, @Backend-Tester, @Requirements-Engineer, @User-Role
+
+**Dynamic Specialist Creation:**
+- **Unlimited Technology Coverage**: ANY domain (@React-Developer, @AWS-Engineer, @Kubernetes-DevOps-Engineer)
+- **Technology-Driven Creation**: ALWAYS when technology expertise needed for optimal execution  
+- **PM + Architect Collaboration**: Dynamic specialists created through behavioral patterns
+- **Storage Location**: Created specialists stored in .claude/agents/dynamic/
+- **10+ Years Expertise**: All specialists created with senior-level domain expertise
+
+**Template Integration Features:**
+```yaml
+# Embedded in all PRB templates
+specialization_context:
+  technology_domains: <DETECTED_FROM_PROJECT>
+  specialist_creation: "ALWAYS create specialists when technology expertise is needed"
+  unlimited_domains: "Support ANY technology domain through dynamic specialist creation"
+  role_assignment: "PM + Specialist Architect determine when specialists should be created"
+```
+
+### Execution Through @Agent Communication
+
+**Natural Communication Pattern:**
+- User: "@Developer implement authentication API"
+- System: Creates Medium PRB with embedded context
+- Task tool: Creates @Developer subagent with complete PRB context
+- Subagent: Executes 9-step process autonomously
+- Result: Complete implementation with learning capture
+
+**Behavioral Pattern Integration:**
+- All templates include embedded behavioral patterns
+- Context preservation across agent interactions
+- Automatic learning capture and memory storage
+- Evidence-based completion verification
+
+---
+
+Remember: PRB templates are meant to adapt to YOUR workflow, not the other way around. Start with defaults, then customize based on what your team needs. The agent system provides unlimited specialist coverage for any technology domain while maintaining consistent behavioral patterns.

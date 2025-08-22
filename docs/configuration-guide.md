@@ -8,10 +8,12 @@ This guide covers all configuration options available in the Intelligent Claude 
 
 Settings are loaded in this priority order (highest to lowest):
 
-1. **Embedded config** (in PRBs)
-2. **Project config** (`./config.md` or `.claude/config.md`)
-3. **User global** (`~/.claude/config.md` - system-wide only)
-4. **System defaults**
+1. **Embedded config** (in PRBs) - Configuration values resolved at generation time
+2. **Project config** (`./config.md` or `.claude/config.md`) - Project-specific settings
+3. **User global** (`~/.claude/config.md` - system-wide only) - User preferences
+4. **System defaults** - Built-in fallback values
+
+**Key Change from STORY-007/008**: All PRB templates now embed complete configuration at generation time rather than performing runtime config lookups, ensuring self-contained execution.
 
 ## Memory Configuration
 
@@ -325,4 +327,83 @@ To debug configuration issues:
 - Ensure all team members have access to shared paths
 - Consider read-only access for some team members
 
-This configuration guide provides comprehensive coverage of memory path configuration options and behavioral patterns in the Intelligent Claude Code system.
+## Agent System Configuration
+
+The 14-role virtual team system with unlimited dynamic specialist creation is fully configurable.
+
+### Core Agent Settings
+
+```yaml
+# In CLAUDE.md or config.md
+agent_configuration:
+  # Autonomy levels
+  autonomy_level: "L2"                    # L1=Manual, L2=Guided, L3=Autonomous
+  
+  # L3 Autonomous mode settings
+  l3_settings:
+    max_parallel_tasks: 5                 # Concurrent task limit
+    auto_discover_work: true              # Discover PLANNED/IN_PROGRESS tasks
+    continue_on_error: true               # Keep working on other tasks if one fails
+    memory_improvement: true              # Continuously improve memory patterns
+    
+  # Dynamic specialist creation
+  specialist_creation: 
+    enabled: true                         # Allow unlimited specialist creation
+    expertise_threshold: "when_needed"    # Create when technology expertise needed
+    storage_location: ".claude/agents/dynamic/"  # Where to store created specialists
+    
+  # Agent communication patterns
+  communication:
+    direct_agent_calls: true              # Enable @Agent mentions
+    task_tool_integration: true           # Use Task tool for subagent creation
+    context_preservation: true            # Preserve context across agent interactions
+```
+
+### Template Resolution Configuration
+
+Configure how PRB templates are resolved with actual values:
+
+```yaml
+# Template enforcement settings
+template_configuration:
+  mandatory_templates: true               # Block manual PRB creation
+  placeholder_resolution: "generation_time" # Resolve all placeholders at generation
+  config_embedding: true                  # Embed complete config in PRBs
+  template_source: "src/prb-templates/"   # Required template source hierarchy
+  
+  # Template validation
+  validation:
+    block_unresolved_placeholders: true   # Block [FROM_CONFIG] in final PRBs
+    require_complete_context: true        # Require complete_context section
+    enforce_template_sections: true       # All mandatory sections must be present
+    
+  # Runtime behavior
+  runtime:
+    config_lookups_blocked: true          # Block runtime config access
+    self_contained_execution: true        # PRBs must be completely self-contained
+```
+
+### Dynamic Specialist Configuration
+
+Control unlimited specialist creation for ANY technology domain:
+
+```yaml
+# Dynamic specialist settings
+dynamic_specialists:
+  # Creation triggers
+  creation_policy: "always_when_needed"   # Create specialists when technology expertise needed
+  domain_detection: "automatic"           # Auto-detect technology domains from work
+  architect_collaboration: "mandatory"    # PM + Architect must collaborate on creation
+  
+  # Specialist properties
+  expertise_level: "10_years_plus"        # All specialists have senior expertise
+  behavioral_patterns: "embedded"         # Behavioral patterns embedded in specialist files
+  storage_pattern: "@[Domain]-[RoleType]" # Naming convention
+  
+  # Integration
+  subagent_integration: true              # Created specialists available as subagents
+  prb_assignment: "automatic"             # Auto-assign work to appropriate specialists
+  memory_integration: true                # Specialists contribute to memory system
+```
+
+This configuration guide provides comprehensive coverage of memory path, agent system, template resolution, and dynamic specialist configuration options in the Intelligent Claude Code system.

@@ -5,72 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.0.1] - 2025-08-22
+## [6.21.1] - 2025-01-22
 
-### Changed - STORY-009: Core Documentation Refresh 
-- **README.md**: Complete overhaul to reflect agent-driven development model with 14+ specialized roles
-- **User Guide**: Completely rewritten with comprehensive agent system usage patterns and L3 autonomous mode details  
-- **Virtual Team Guide**: Enhanced with detailed agent role descriptions, collaboration patterns, and dynamic specialist creation
-- **Agent System Documentation**: All user-facing docs now accurately reflect completed STORY-007 agent implementation
-- **Template System Documentation**: References to STORY-008 template improvements integrated throughout guides
-- **Cross-Agent Learning**: Documentation now emphasizes agent collaboration and knowledge sharing capabilities
-- **Dynamic Agent Creation**: Comprehensive coverage of unlimited specialist creation for any technology domain
-
-## [7.0.0] - 2025-08-22
-
-### Added - STORY-007: Complete Agent System Implementation
-- **Complete Agent System**: 13 core agent definitions with behavioral patterns and domain expertise
-- **Agent Files Deployed**: All agent behavioral patterns now available in src/agents/ directory
-  - ai-engineer.md: AI/ML systems and behavioral framework specialist
-  - architect.md: System architecture and technical design expert
-  - backend-tester.md: Backend testing and API validation specialist
-  - database-engineer.md: Database design and optimization specialist
-  - developer.md: General software implementation and feature development
-  - devops-engineer.md: CI/CD and deployment automation specialist
-  - qa-engineer.md: Quality assurance and testing frameworks expert
-  - requirements-engineer.md: Requirements analysis and specification specialist
-  - security-engineer.md: Security review and vulnerability assessment expert
-  - system-engineer.md: Infrastructure and system operations specialist
-  - user-role.md: End-to-end testing and browser automation specialist
-  - web-designer.md: UI/UX design and user experience specialist
-- **Dynamic Agent Creation**: Unlimited specialist creation for any technology domain
-- **Agent Behavioral Patterns**: Each agent includes 10+ years expertise behavioral patterns
-- **Cross-Agent Collaboration**: Agents work together through PRB coordination
-- **Agent Memory System**: Shared learning and knowledge transfer between agents
-
-### Added - STORY-008: Template System Improvements
-- **Complete PRB Validation System**: Comprehensive placeholder detection and resolution
-- **Template-Process Integration**: Unified workflow coordination across all PRB templates
-- **Validation Tools**: End-to-end validation with error detection and recovery patterns
-- **Integration Testing Framework**: Complete validation and testing capabilities
-- **Unlimited Dynamic Specialist Creation**: Support for ANY technology domain through agent collaboration
-- **Enhanced PRB Templates**: All templates now support specialization context and agent coordination
-- **Agent Assignment Integration**: PRB templates include agent role assignments and collaboration patterns
-
-### Changed - Agent System Integration
-- **System Architecture**: Transformed from role-based to agent-driven execution model
-- **Agent Behavioral Patterns**: Standardized 70+ line behavioral pattern structure across all agents
-- **Agent Collaboration**: Enhanced cross-agent communication and knowledge sharing patterns
-- **PRB Integration**: All PRB templates now include agent assignment and coordination sections
-- **Memory System**: Extended to support cross-agent learning and knowledge transfer
-- **Dynamic Creation**: Enhanced unlimited specialist creation through agent collaboration
-- **Agent Deployment**: Installation system now deploys all agent behavioral patterns
-- **Documentation**: All user-facing docs updated to reflect agent-driven development model
-
-### Fixed - STORY-007/008 Integration
-- **Missing Agent Integration**: All STORY-007 agent implementations integrated into main branch
-- **Agent File Accessibility**: All agent behavioral patterns now deployed and accessible
-- **Branch Consolidation**: Complete integration ensuring no implementation work was lost
-- **Template System Issues**: Fixed placeholder resolution and validation gaps from STORY-008
-- **Agent Coordination**: Resolved conflicts between agent system and existing behaviors
-- **Documentation Consistency**: Updated all references to reflect agent-driven model
-
-### Changed (continued)
-- Refactored infrastructure and data agents (system-engineer, devops-engineer, database-engineer) to behavioral focus
-- Enhanced consistency with core behavioral pattern structure across all infrastructure agents
-- Improved memory integration and configuration-driven specialization patterns
-- Refactored core development agents (architect, developer, ai-engineer) to behavioral focus
-- Enhanced memory integration patterns in agent behaviors
+### Fixed
+- Validated and corrected all documentation examples and commands
+- Ensured terminology consistency across all documentation files
+- Updated specialist creation policy from "capability matches" to "when technology expertise is needed"
+- Added missing commands to commands-reference.md (/icc-create-specialist, /icc-create-dynamic-specialist, /icc-rename-work-items, /icc-think-sequential)
+- Removed non-existent commands from documentation (/icc-enable-l3-autonomous, /icc-validate-template-usage, /icc-check-placeholder-resolution)
+- Fixed repository URLs throughout documentation (github.com/intelligentcode-ai/intelligent-claude-code.git)
+- Fixed capitalization inconsistency in user-guide.md
+- Corrected virtual-team-guide.md to properly reflect dynamic specialist creation
 
 ## [6.17.1] - 2025-08-11
 
@@ -84,99 +29,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced execution clarity with crystal clear numbered steps and detailed checklists
 - Separated git operations into distinct commit and push steps for better process control
 
-## [6.22.0] - 2025-08-19
-
-### Added
-- Core 13 Subagent definitions with embedded behavioral patterns
-- Claude Code native Subagents integration foundation
-- Behavioral pattern encapsulation in agent definitions
-- Dynamic specialization capability through PRB context
-- Complete agent architecture with unlimited domain coverage
-- Agent-based workflow execution replacing Task tool approach
-- Core agent definitions created in src/agents/ directory
-- Agent behavioral patterns now deployed to user environments
-- Enhanced deployment pipeline to include agent distribution
-- Agent deployment integration with Ansible installation system
-- Comprehensive agent definitions for Architect, Developer, AI-Engineer, System-Engineer, DevOps-Engineer, Security-Engineer, Database-Engineer, QA-Engineer
-- Agent behavioral pattern encapsulation with 10+ years expertise modeling
-- Dynamic specialist creation capability embedded in core agents
-- Agent directory creation and deployment through installation pipeline
-- Agent directory removal through uninstall pipeline
-- Updated installation and uninstall tests to verify agent deployment
-- Makefile test validation for agent installation and removal
-
-### Fixed
-- Deployment gap where agent behavioral patterns existed in source but weren't deployed to users
-- Missing agent definitions that were referenced in completed PRBs but never created
-- Installation system now properly distributes agent behavioral patterns to ~/.claude/agents/
-- Behavioral framework integration now includes deployed agent definitions
-
-### Changed
-- Enhanced story breakdown behavior with subagent integration support
-- Updated role assignment process with subagent context creation
-- Improved dynamic specialist creation with subagent integration
-- Enhanced installation summary to mention agent deployment
-- Updated uninstall process to properly remove agent directories
-- Installation tests now verify agent deployment functionality
-- Deployment system covers complete behavioral pattern distribution
-
 ## [Unreleased]
 
-## [6.22.0] - 2025-08-21
+## [6.22.0] - 2025-01-22
 
 ### Added
-- Complete PRB validation system with comprehensive placeholder detection
-- Template-process integration behavior for unified workflow coordination
-- Integration testing framework for end-to-end validation
-- Validation tool usage guide with practical examples and error recovery
-- Complete STORY-008 documentation with implementation details
-- Unlimited dynamic specialist creation for any technology domain
-- ALWAYS create specialists when technology expertise is needed
-- PM + Architect process for ANY specialist creation (@React-Developer, @AWS-Engineer, @Kubernetes-DevOps-Engineer, etc.)
-- Specialization context sections in ALL PRB templates (nano, tiny, medium, large, mega)
-- Technology domain placeholders for unlimited specialist creation in templates
-- Enhanced role assignment matrix supporting unlimited technology domains
+- Comprehensive troubleshooting guide with common issues and solutions
+- System architecture documentation with component diagrams and interactions
+- Enhanced installation guide with verification procedures
 
-### Enhanced  
-- PRB validation behavior with multi-category placeholder detection
-- Quality gates enforcement to prevent incomplete PRBs from reaching subagents
-- Integration architecture tying together template improvements and process enhancements
-- Comprehensive documentation for template improvements and validation tools
+## [6.21.1] - 2025-01-22
+
+### Added
+- Technical documentation updates for commands, configuration, and PRB system
+- Enhanced command reference with agent system integration patterns
+- Template validation commands documentation (/icc-validate-template-usage, /icc-check-placeholder-resolution)
+- L3 autonomous mode configuration documentation
+- Agent system configuration with dynamic specialist creation settings
 
 ### Changed
-- Removed <70% capability match rule - specialists now ALWAYS created when technology expertise benefits the work
-- Updated dynamic specialist creation to support ANY technology domain through PM + Architect collaboration
-- Role assignment matrix now uses "ALWAYS" pattern instead of capability thresholds
-- PRB templates now include specialization_context sections for technology domain support
-- Enhanced unlimited specialist creation examples across all behavioral patterns
-
-### Changed
-- **Command Scaffolding Removal**: Streamlined system by removing redundant command patterns and enhancing natural @Agent interaction
-- **Natural Language Interaction**: Replaced command-driven workflows with conversational patterns (e.g., "@PM break down STORY-X" instead of "/icc-breakdown-story")
-- **Embedded Capabilities**: Sequential thinking and specialist creation now embedded in behavioral patterns rather than separate commands
-- **Documentation Enhancement**: Updated commands reference to emphasize natural interaction over command scaffolding
-- Removed <70% capability match rule - specialists now ALWAYS created when technology expertise benefits the work
-- Updated dynamic specialist creation to support ANY technology domain through PM + Architect collaboration
-- Role assignment matrix now uses "ALWAYS" pattern instead of capability thresholds
-- PRB templates now include specialization_context sections for technology domain support
-- Enhanced unlimited specialist creation examples across all behavioral patterns
-
-### Archived
-- `icc-create-specialist.md` - Functionality moved to automatic PM + Architect collaboration patterns
-- `icc-breakdown-story.md` - Replaced with natural @PM conversation patterns
-
-### Removed
-- `icc-think-sequential.md` - Sequential thinking now embedded in all 14 core roles and dynamic specialists
-
-### Enhanced
-- Natural @Agent detection in behavioral patterns
-- Automatic specialist creation through work request analysis
-- Conversational story breakdown without command invocation
-- Streamlined interaction complexity while preserving all functionality
-
-### Fixed
-- Removed arbitrary capability thresholds that limited specialist creation
-- Corrected specialist creation logic to focus on technology expertise needs rather than generic capability matching
+- Updated docs/commands-reference.md with agent communication patterns and template validation
+- Enhanced docs/configuration-guide.md with agent system and template resolution configuration
+- Refreshed docs/prb-system-guide.md for template enforcement and agent execution
+- Improved docs/prb-templates-guide.md with validation requirements and agent integration
 
 ## [6.21.0] - 2025-01-13
 

@@ -1,374 +1,268 @@
-# User Guide - Intelligent Claude Code Agent System
+# User Guide - Intelligent Claude Code
 
 ## Getting Started
 
-Welcome to Intelligent Claude Code! This system transforms Claude into an intelligent virtual development team with 14+ specialized agent roles that work together to deliver high-quality software autonomously.
+Welcome to Intelligent Claude Code! This guide will help you understand how to configure and use the system effectively.
 
-## Agent-Driven Development
+## Memory Configuration
 
-The core concept is **agent-driven development** - instead of manually coordinating different tasks, you interact with specialized agents that handle their domains expertly and collaborate seamlessly.
+The AI agents learn from every interaction and store knowledge in memory. You have flexibility in where this memory is stored.
 
-### Key Concepts
+### Default Setup
 
-- **Agents**: Specialized roles like @PM, @Developer, @Security-Engineer with deep domain expertise
-- **PRBs (Product Requirement Blueprints)**: Self-contained execution plans with agent coordination
-- **Dynamic Agent Creation**: System creates specialists for any technology (@React-Developer, @AWS-Engineer)
-- **Cross-Agent Learning**: Agents share knowledge and learn from each other's work
-- **L3 Autonomous Mode**: Full multi-agent autonomous execution without interruption
+By default, memory is stored in the `./memory/` directory within your project. This works well for:
+- Single projects
+- When you want memory versioned with your project
+- Simple setups without special requirements
 
-## Installation & Setup
+### External Memory Setup
 
-```bash
-# Clone and install
-git clone https://github.com/ksamaschke/intelligent-claude-code
-cd intelligent-claude-code
-make install
-
-# Initialize the agent system
-/icc-init-system
-
-# You're ready! Start working with agents
-@PM Build a user authentication system
-```
-
-## Working with Agents
-
-### Starting a Project
-Instead of describing what you want manually, direct agents:
-
-```bash
-# Traditional approach (don't do this)
-"I need to implement user authentication with JWT tokens..."
-
-# Agent-driven approach (do this)
-@PM Build a user authentication system with JWT tokens
-```
-
-The @PM agent will:
-1. Analyze your requirements
-2. Create appropriate specialist agents (@Security-Engineer, @Backend-Developer, etc.)
-3. Generate PRBs with agent assignments
-4. Coordinate multi-agent execution
-
-### Core Agent Interactions
-
-**@PM (Project Manager)**: Strategic coordination and task breakdown
-```bash
-@PM Build a user authentication system
-@PM Break down the payment integration story
-@PM What should we work on next?
-```
-
-**@Architect**: System design and technical architecture
-```bash
-@Architect Design the API architecture for our e-commerce platform
-@Architect Review the microservices approach for this project
-```
-
-**@Developer**: General implementation and coding
-```bash
-@Developer Implement the user registration endpoint
-@Developer Fix the authentication middleware bug
-```
-
-**Domain Specialists**: Automatic creation based on project needs
-```bash
-# These agents are created automatically when needed:
-@Security-Engineer: Security reviews, vulnerability assessments
-@DevOps-Engineer: CI/CD, deployment, infrastructure
-@Database-Engineer: Database design, query optimization
-@QA-Engineer: Testing strategies and quality assurance
-@Backend-Tester: API testing and backend validation
-@Web-Designer: UI/UX design and user experience
-```
-
-### Agent Coordination Patterns
-
-Agents coordinate automatically through PRB execution:
-
-1. **@PM** analyzes work and creates specialist agents
-2. **Specialist agents** collaborate on technical approach
-3. **@Architect** provides system design guidance
-4. **Implementation agents** execute work with coordination
-5. **Quality agents** validate deliverables
-6. **All agents** share learnings for continuous improvement
-
-## Memory System
-
-The agent system includes sophisticated memory management where agents learn from every interaction and share knowledge.
-
-### Memory Configuration
-
-#### Default Setup (Project Memory)
-```yaml
-# Memory stored in ./memory/ within your project
-# No configuration needed - this is the default
-```
-
-#### External Memory (Recommended for Multiple Projects)
-```yaml
-# In CLAUDE.md
-memory_configuration:
-  external_path: "~/claude-memory"     # Home directory
-  external_path: "../shared-memory"   # Relative to project
-  external_path: "/path/to/memory"    # Absolute path
-```
+For more advanced scenarios, you can configure external memory paths.
 
 #### Benefits of External Memory
-- **Cross-Project Learning**: Agents apply knowledge across all your projects
-- **Privacy**: Keep agent learnings separate from project code
-- **Team Collaboration**: Share agent knowledge across team members
-- **Git Integration**: Auto-commit memory changes when .git exists in memory path
-- **Agent Continuity**: Agents remember patterns across different development sessions
 
-### How Agents Use Memory
+- **Privacy**: Keep AI learnings separate from your project code
+- **Cross-Project Sharing**: Use the same memory across multiple projects
+- **Git Integration**: Auto-commit memory changes when stored in Git repositories
+- **Team Collaboration**: Share learnings across team members
+- **Clean Projects**: Keep project repositories focused on code, not AI memory
 
-**Learning Capture**: Every agent interaction stores patterns, solutions, and learnings
-```bash
-# When @Developer fixes a bug, the learning is stored for all agents
-memory/implementation/authentication-patterns.md
-memory/debugging/jwt-token-issues.md
-memory/collaboration/pm-developer-coordination.md
-```
+#### Configuration Options
 
-**Cross-Agent Knowledge Sharing**: Agents access shared memory during work
-```bash
-# @Security-Engineer can access @Developer's security implementation patterns
-# @QA-Engineer can learn from @Backend-Tester's testing approaches
-# @PM can apply lessons from previous project coordination
-```
-
-**Memory-First Operations**: All agents check memory before starting work
-- Prevents repeating solved problems
-- Applies previous successful patterns
-- Improves quality through accumulated knowledge
-
-## L3 Autonomous Mode
-
-The most powerful feature is L3 autonomous mode where agents work completely independently.
-
-### Configuring L3 Mode
-```yaml
-# In CLAUDE.md
-autonomy_level: L3
-l3_settings:
-  max_parallel: 5                    # Up to 5 agents working simultaneously
-  auto_discover: true                # Agents find and start work automatically
-  continue_on_error: true            # Self-correction without stopping
-```
-
-### L3 Agent Behaviors
-
-**Autonomous Work Discovery**: Agents find work automatically
-- Scan project for incomplete features
-- Identify technical debt and improvements
-- Discover testing gaps and quality issues
-- Find documentation that needs updating
-
-**Multi-Agent Coordination**: Agents collaborate without human intervention
-- @PM coordinates multiple development streams
-- Specialist agents handle their domains independently
-- Quality agents validate work continuously
-- All agents share progress and learnings
-
-**Continuous Learning**: Agents improve the system over time
-- Learn from successful patterns
-- Avoid previously encountered issues
-- Optimize collaboration patterns
-- Improve code quality through experience
-
-### L3 Safety Features
-
-Even in L3 mode, agents still require approval for:
-- Destructive operations (deleting files/databases)
-- Credential/secret management
-- Production deployments
-- Billing or cost-impacting changes
-
-## Project Configuration
-
-Configure your project in `CLAUDE.md` to guide agent behavior:
+Add this to your `CLAUDE.md` file:
 
 ```yaml
-# Project Context for Agents
-complete_context:
-  system_nature: "CODE-BASED SYSTEM"  # or "MARKDOWN-BASED AI-AGENTIC SYSTEM"
-  project_root: "/absolute/path/to/project"
-
-# Best Practices Discovery
-prb_configuration:
-  best_practices_paths:
-    - "docs/standards/"
-    - "engineering/patterns/"
-    
-  code_pattern_search:
-    paths: ["src/", "lib/"]
-    
-  behavioral_overrides:
-    testing_approach: "tdd"
-    deployment_strategy: "blue-green"
-
-# Memory Configuration for Agent Learning
 memory_configuration:
   external_path: "~/claude-memory"
-
-# Agent Operation Settings
-autonomy_level: L2                   # L1: Manual, L2: Architect approval, L3: Full autonomous
-git_privacy: true                    # Clean commits without AI mentions
-branch_protection: true              # Follow branch protection strategy
-default_branch: "main"
 ```
 
-## Story Management
+#### Path Types Supported
 
-Agents excel at converting natural language stories into executable PRBs.
+1. **Home Directory Paths**
+   ```yaml
+   external_path: "~/claude-memory"
+   ```
+   - Expands to your home directory
+   - Private to your user account
+   - Works across all your projects
 
-### Creating Stories
-Write stories in `stories/` directory:
+2. **Relative Paths**
+   ```yaml
+   external_path: "../shared-memory"
+   external_path: "../../team-memory"
+   ```
+   - Relative to your project root
+   - Useful for shared team setups
+   - Can point to parent directories
 
-```markdown
-# stories/user-authentication.md
-## User Authentication Story
+3. **Absolute Paths**
+   ```yaml
+   external_path: "/opt/ai-memory"
+   external_path: "/Users/username/Documents/ai-memory"
+   ```
+   - Full system paths
+   - Maximum control over location
+   - Works with network drives and special directories
 
-As a user, I want to register and log in securely so that I can access my personalized content.
+#### Git Repository Integration
 
-### Requirements
-- User registration with email/password
-- JWT-based authentication
-- Password reset functionality
-- Session management
-- Security best practices
+When your memory path contains a `.git` directory, the system automatically:
+- Commits memory changes after storing learnings
+- Uses meaningful commit messages
+- Preserves the learning history in Git
 
-### Acceptance Criteria
-- Registration creates user account
-- Login returns valid JWT token
-- Password reset sends email with secure token
-- Session expires appropriately
-- All endpoints use HTTPS
+To set up a Git-based memory repository:
+
+1. **Create a private repository:**
+   ```bash
+   mkdir ~/claude-memory
+   cd ~/claude-memory
+   git init
+   git remote add origin git@github.com:yourusername/private-memory.git
+   ```
+
+2. **Configure in CLAUDE.md:**
+   ```yaml
+   memory_configuration:
+     external_path: "~/claude-memory"
+   ```
+
+3. **The system handles the rest automatically**
+
+## Usage Examples
+
+### Scenario 1: Privacy-Focused Developer
+
+**Goal**: Keep AI learnings completely separate from open-source projects.
+
+**Solution**:
+```yaml
+# In CLAUDE.md
+memory_configuration:
+  external_path: "~/private-ai-memory"
 ```
 
-### Agent-Driven Story Breakdown
+**Result**: All learnings stored in private location, project stays clean.
+
+### Scenario 2: Team Knowledge Sharing
+
+**Goal**: Share AI learnings across the development team.
+
+**Solution**:
+```yaml
+# In CLAUDE.md
+memory_configuration:
+  external_path: "/shared/team/claude-memory"
+```
+
+**Result**: Team members benefit from collective AI learnings.
+
+### Scenario 3: Multi-Project Consistency
+
+**Goal**: Use same AI knowledge across multiple personal projects.
+
+**Solution**:
+```yaml
+# In all project CLAUDE.md files
+memory_configuration:
+  external_path: "~/unified-ai-memory"
+```
+
+**Result**: AI learns from all projects, improves assistance across all work.
+
+### Scenario 4: Version-Controlled Learning
+
+**Goal**: Track and version AI learning history.
+
+**Solution**:
 ```bash
-@PM break down user-authentication story
+# Set up Git repo
+mkdir ~/claude-memory-repo
+cd ~/claude-memory-repo
+git init
+git remote add origin git@github.com:username/ai-memory.git
 ```
 
-This triggers:
-1. **@PM** reads the story and analyzes requirements
-2. **@PM** creates specialist agents (@Auth-Engineer, @Security-Engineer, @Backend-Developer)
-3. **Agent team** collaborates on technical approach
-4. **@PM** generates PRBs with agent assignments
-5. **Agents execute** PRBs collaboratively
-6. **@PM** tracks progress and coordinates completion
-
-## Advanced Agent Features
-
-### Dynamic Specialist Creation
-
-Agents automatically create specialists for any technology domain:
-
-```bash
-@PM Build a React Native mobile app
-# Creates: @React-Native-Developer, @Mobile-UI-Designer, @iOS-Engineer, @Android-Engineer
-
-@PM Implement machine learning recommendations
-# Creates: @ML-Engineer, @Data-Scientist, @Model-Training-Specialist
-
-@PM Set up Kubernetes deployment
-# Creates: @Kubernetes-Engineer, @DevOps-Architect, @Container-Specialist
+```yaml
+# In CLAUDE.md
+memory_configuration:
+  external_path: "~/claude-memory-repo"
 ```
 
-### Agent Collaboration Patterns
+**Result**: Full Git history of AI learning patterns and improvements.
 
-**PM + Architect Partnership**: Strategic and technical collaboration
-```bash
-# @PM handles business coordination
-# @Architect provides technical guidance
-# Together they create specialist agents and coordinate work
-```
+## How It Works
 
-**Specialist Agent Teams**: Domain experts working together
-```bash
-# @Frontend-Developer + @Web-Designer for UI work
-# @Backend-Developer + @Database-Engineer for API work
-# @Security-Engineer + @DevOps-Engineer for deployment security
-```
+### Memory Base Path Resolution
 
-**Quality Agent Integration**: Continuous validation
-```bash
-# @QA-Engineer plans testing strategy
-# @Backend-Tester handles API validation
-# @Security-Engineer performs security reviews
-# All quality agents share testing knowledge
-```
+The system follows this process to determine where to store memory:
 
-### Cross-Agent Learning Examples
+1. **Check Configuration**: Look for `external_path` setting in CLAUDE.md
+2. **Expand Path**: Handle `~` for home directory, resolve relative paths
+3. **Create Directory**: Automatically create the directory if it doesn't exist
+4. **Validate Access**: Ensure the location is readable and writable
+5. **Use Location**: Store all memory in the configured location
 
-**Implementation Patterns**: When @Developer solves a complex problem, other agents learn the approach
+### Security and Privacy
 
-**Security Patterns**: When @Security-Engineer identifies vulnerabilities, all agents learn to avoid them
+The system includes built-in security measures:
 
-**Architecture Decisions**: When @Architect selects patterns, implementation agents understand the reasoning
+- **No Sensitive Data Storage**: Never stores passwords, tokens, or credentials in memory
+- **Path Validation**: Prevents storage in system directories or dangerous locations
+- **Access Control**: Validates read/write permissions before using external paths
+- **Content Scanning**: Blocks memory storage if sensitive patterns are detected
 
-**Testing Strategies**: When @QA-Engineer develops test approaches, all agents understand quality expectations
+### Behavioral Instructions
+
+This is a **MARKDOWN-BASED AI-AGENTIC SYSTEM**, meaning:
+- All behavior is controlled through behavioral pattern files
+- AI agents follow instructions defined in markdown documents
+- Memory operations are behavioral patterns, not code functions
+- The system adapts based on configuration without code changes
 
 ## Troubleshooting
 
-### Agent Not Responding
-```bash
-# Check system initialization
-/icc-init-system
+### Common Issues
 
-# Verify agent syntax (use @ prefix)
-@PM instead of PM or pm
+#### Permission Errors
+```
+Error: Cannot write to external memory path
+Solution: Check directory permissions, ensure path is writable
 ```
 
-### Memory Issues
-```bash
-# Check memory path configuration
-# Ensure memory directory exists and is writable
-# Verify external_path setting in CLAUDE.md
+#### Path Not Found
+```
+Error: External memory path does not exist
+Solution: System should auto-create, check parent directory permissions
 ```
 
-### L3 Autonomous Mode Issues
-```bash
-# Check autonomy_level setting
-# Verify l3_settings configuration
-# Ensure agents have necessary permissions
+#### Git Integration Problems
+```
+Error: Git operations failing in memory directory
+Solution: Verify Git is initialized and remote is configured
 ```
 
-### Agent Coordination Problems
-```bash
-# Clear communication with @PM for coordination
-# Ensure PRBs include proper agent assignments
-# Check that specialized agents are being created appropriately
-```
+### Validation Steps
+
+To verify your memory configuration is working:
+
+1. **Check Configuration Loading**:
+   - Ensure `external_path` is set in CLAUDE.md
+   - Verify path syntax is correct
+
+2. **Test Path Access**:
+   - Check the directory exists and is writable
+   - Verify any Git setup is functional
+
+3. **Monitor Memory Operations**:
+   - Watch for memory storage during AI interactions
+   - Verify files appear in external location
 
 ## Best Practices
 
-### Effective Agent Communication
-- Always use @Agent syntax for clarity
-- Be specific about requirements and constraints
-- Let @PM coordinate multi-agent work
-- Trust agents to create appropriate specialists
+### For Individual Developers
 
-### Memory Management
-- Use external memory for cross-project learning
-- Let agents store learnings automatically
-- Regularly review memory for insights
-- Share memory paths across team members
+- Use home directory paths: `~/claude-memory`
+- Consider Git integration for learning history
+- Keep memory private and separate from project code
 
-### Project Organization
-- Maintain clear CLAUDE.md configuration
-- Organize stories in logical groups
-- Let agents handle PRB generation
-- Focus on business requirements, not implementation details
+### For Teams
 
-### Quality Assurance
-- Let quality agents handle validation
-- Trust cross-agent collaboration for comprehensive review
-- Use agent memory to avoid repeating issues
-- Leverage agent learning for continuous improvement
+- Use shared network locations: `/shared/team/claude-memory`
+- Implement Git-based memory with team access
+- Consider read-only memory for some team members
 
----
+### for Multiple Projects
 
-**Ready to experience agent-driven development?** Start with `@PM Build a [your project idea]` and watch your virtual development team collaborate to bring it to life!
+- Use consistent external paths across all projects
+- Organize memory by topic within external directory
+- Leverage cross-project learning benefits
+
+### for Privacy
+
+- Never configure external paths in public repositories
+- Use private Git repositories for memory storage
+- Keep memory separate from any published code
+
+## Advanced Configuration
+
+### Environment Variables
+
+You can use environment variables in paths:
+```yaml
+memory_configuration:
+  external_path: "$HOME/claude-memory"
+  external_path: "$TEAM_MEMORY_PATH"
+```
+
+### Conditional Configuration
+
+Different paths for different environments:
+```yaml
+memory_configuration:
+  # Use environment-specific paths
+  external_path: "~/claude-memory-dev"    # For development
+  external_path: "~/claude-memory-prod"   # For production work
+```
+
+This user guide provides comprehensive instructions for configuring and using external memory paths with the Intelligent Claude Code system.

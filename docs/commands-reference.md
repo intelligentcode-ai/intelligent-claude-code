@@ -1,7 +1,7 @@
 # Commands Reference
 
 ## Overview
-The intelligent-claude-code system combines essential utility commands with natural @Agent interaction patterns. Most functionality operates through behavioral patterns rather than commands, enabling natural language work requests.
+The intelligent-claude-code system provides 14 essential commands that cover initialization, PRB creation, story management, specialist management, problem-solving, and memory operations.
 
 ## System Commands
 
@@ -99,25 +99,25 @@ Creates PRBs from your specification documents.
 3. System generates appropriate PRBs
 4. Includes all project context and standards
 
-## Story Management
+## Story Management Commands
 
-### Natural Language Story Breakdown
-Stories are broken down through natural @PM interaction.
+### `/icc-breakdown-story`
+Converts natural language stories into PRBs.
 
-**Usage:** Natural language with @PM
+**Usage:** `/icc-breakdown-story <story_filename> [options]`
 
 **Examples:**
 ```bash
-@PM break down the authentication story
-@PM analyze STORY-001 and create PRBs
-@PM what story should we work on next?
+/icc-breakdown-story auth-system.md
+/icc-breakdown-story user-dashboard.txt preview
+/icc-breakdown-story payment.md force
 ```
 
 **Process:**
-1. @PM analyzes the story requirements
-2. @PM collaborates with domain-specific architect
-3. System generates appropriate PRBs automatically
-4. Story updated with PRB references through behavioral patterns
+1. @PM analyzes the story
+2. @Architect reviews technical approach
+3. System generates appropriate PRBs
+4. Story updated with PRB references
 
 ### `/icc-story-status`
 Tracks story progress and PRB completion.
@@ -130,49 +130,108 @@ Tracks story progress and PRB completion.
 /icc-story-status payment.txt detailed
 ```
 
-## Dynamic Specialist Creation
+## Specialist Creation Commands
 
-### Automatic Specialist Generation
-Specialists are created automatically through PM + Architect collaboration patterns.
+### `/icc-create-specialist`
+Creates dynamic specialist roles for any domain.
 
-**Usage:** Natural work requests trigger automatic specialist creation
-
-**Examples:**
-```bash
-# Work requests automatically create appropriate specialists
-"Implement GraphQL API"               # Auto-creates @GraphQL-Developer
-"Set up Kubernetes deployment"        # Auto-creates @Kubernetes-Expert  
-"Add WebRTC video chat"              # Auto-creates @WebRTC-Specialist
-"Build blockchain integration"        # Auto-creates @Blockchain-Engineer
-```
-
-**Automatic Creation:**
-- Triggered when expertise match <70% with existing 14 core roles
-- PM + domain-specific architect collaboration determines specialist
-- All specialists have 10+ years expertise with Context7 knowledge injection
-- Seamless integration into PRB execution through behavioral patterns
-
-## Embedded Problem-Solving
-
-### Natural Sequential Thinking
-All agents have embedded sequential thinking capabilities - no commands needed.
-
-**Usage:** Complex problems automatically trigger sequential analysis
+**Usage:** `/icc-create-specialist [domain] [role-type]`
 
 **Examples:**
 ```bash
-# Complex problems automatically engage sequential thinking
-"How to implement real-time collaboration?"   # @Architect applies sequential analysis
-"Architecture for multi-tenant system?"      # System architects think step-by-step
-"Optimize for 1M concurrent users?"          # @System-Engineer uses structured thinking
+/icc-create-specialist React Developer        # Creates @React-Developer
+/icc-create-specialist AWS Engineer          # Creates @AWS-Engineer
+/icc-create-specialist Kubernetes DevOps     # Creates @Kubernetes-DevOps-Engineer
 ```
 
-**Built-in Features:**
-- Embedded in all 14 core roles and dynamic specialists
-- Step-by-step analysis with evidence-based reasoning
-- Self-correcting with assumption challenges
-- Identifies when more analysis needed automatically
-- Generates and verifies hypotheses through natural problem-solving
+**Process:**
+1. Analyzes domain requirements
+2. Creates domain-specific specialist with 10+ years expertise
+3. Integrates with existing team
+4. Available immediately for @Agent mentions
+
+### `/icc-create-dynamic-specialist`
+Advanced dynamic specialist creation with detailed requirements.
+
+**Usage:** `/icc-create-dynamic-specialist [domain] [role-type] [requirements]`
+
+**Examples:**
+```bash
+/icc-create-dynamic-specialist Machine-Learning Specialist "TensorFlow, PyTorch, MLOps"
+/icc-create-dynamic-specialist Vue Frontend-Developer "Vue3, TypeScript, Pinia"
+```
+
+**Features:**
+- ALWAYS creates specialists when technology expertise is needed
+- Support for ANY technology domain
+- Custom expertise requirements
+- No capability thresholds - created based on need
+
+### `/icc-rename-work-items`
+Renames work items to follow standard naming format.
+
+**Usage:** `/icc-rename-work-items [options]`
+
+**Examples:**
+```bash
+/icc-rename-work-items                # Rename all work items
+/icc-rename-work-items --preview      # Preview changes without applying
+```
+
+**Process:**
+1. Scans project for work items
+2. Validates naming compliance
+3. Renames to standard format
+4. Updates references
+
+## Problem Solving Commands
+
+### `/icc-think-sequential`
+Engages sequential thinking mode for complex problem analysis.
+
+**Usage:** `/icc-think-sequential <problem_description> [complexity_level] [analysis_depth]`
+
+**Examples:**
+```bash
+/icc-think-sequential "Design memory system architecture"
+/icc-think-sequential "Optimize database queries" high
+/icc-think-sequential "Fix authentication bug" low basic
+```
+
+**Parameters:**
+- **problem_description** (required): Problem to analyze
+- **complexity_level** (optional): low, medium, high (default: auto-detect)
+- **analysis_depth** (optional): basic, detailed, maximum (default: detailed)
+
+**Features:**
+- Ultra-experienced cognitive pattern analysis
+- Evidence-based thinking with assumption questioning
+- Iterative refinement process
+- Available to all roles for deep analysis
+
+## Agent System Integration
+
+### Natural @Agent Communication
+All work operates through direct agent communication - no command scaffolding needed.
+
+**Usage:** Natural @Agent mentions automatically create subagents for execution
+
+**Examples:**
+```bash
+# Direct agent communication patterns
+"@PM break down the authentication story"     # PM analyzes and creates PRBs
+"@Developer implement the login API"          # Developer creates PRB and executes
+"@Security-Engineer review the auth flow"     # Security specialist reviews
+"@AI-Engineer optimize ML algorithm"          # AI specialist handles behavioral work
+```
+
+**Agent Features:**
+- 14 core specialized roles with embedded behavioral patterns
+- Unlimited dynamic specialist creation for ANY technology domain when expertise is needed
+- Direct PRB execution through Task tool invocation
+- Complete context preservation across agent interactions
+
+
 
 ## Memory Commands
 
@@ -258,7 +317,7 @@ echo "API Requirements..." > drafts/api-spec.md
 ### Complex Problem Solving
 ```bash
 /icc-think-sequential "How to handle 10K concurrent websocket connections"
-# ... thinking process ...
+# ... thinking process completes with solution analysis ...
 /icc-create-prb "Implement websocket scaling solution"
 ```
 
@@ -295,4 +354,4 @@ echo "API Requirements..." > drafts/api-spec.md
 
 ---
 
-Essential utility commands combined with natural @Agent behavioral patterns provide intuitive control over the virtual team system. Most work happens through natural language interaction rather than command scaffolding.
+Essential utility commands combined with natural @Agent behavioral patterns provide intuitive control over the virtual team system. Most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists rather than command scaffolding.
