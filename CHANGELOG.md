@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Claude Code native Subagents integration foundation
 - Behavioral pattern encapsulation in agent definitions
 
+### Changed
+- Refactored core development agents (architect, developer, ai-engineer) to behavioral focus
+- Enhanced memory integration patterns in agent behaviors
+
 ## [6.17.1] - 2025-08-11
 
 ### Changed
