@@ -1,6 +1,6 @@
-# Intelligent Claude Code - PRB-Driven Development
+# Intelligent Claude Code - Agent-Driven Development
 
-Transform Claude Code into an intelligent development team using Product Requirement Blueprints (PRBs) for predictable, autonomous execution.
+Transform Claude Code into an intelligent development team with 14+ specialized agent roles using Product Requirement Blueprints (PRBs) for predictable, autonomous execution.
 
 ## Quick Start (30 seconds)
 
@@ -13,69 +13,81 @@ make install
 # Initialize
 /icc-init-system
 
-# Start working
-"Build a user authentication system"
-# System generates PRB → Specialist executes → Work completes
+# Start working with agents
+@PM Build a user authentication system
+# System: Generates PRB → Creates specialist agents → Agents execute → Work completes
 ```
 
 ## What You Get
 
+### 🤖 Agent-Driven Architecture
+Complete virtual development team with 14+ specialized agent roles that work together autonomously. Each agent has deep domain expertise and behavioral patterns optimized for their specialty.
+
 ### 🎯 PRB-Driven Execution
-Self-contained blueprints replace complex workflows. Each PRB includes everything needed for single-pass execution: context, standards, examples, validation.
+Self-contained blueprints replace complex workflows. Each PRB includes everything needed for single-pass execution: context, standards, examples, validation, and agent coordination.
 
-### 👥 14 Specialist Roles  
-- @PM, @Architect, @Developer, @Security-Engineer, etc.
-- Dynamic specialist creation for any technology
-- All with 10+ years expertise
+### 👥 14+ Specialist Agent Roles  
+**Core Agents:**
+- @PM, @Architect, @Developer, @AI-Engineer
+- @System-Engineer, @DevOps-Engineer, @Database-Engineer
+- @Security-Engineer, @QA-Engineer, @Backend-Tester
+- @Requirements-Engineer, @Web-Designer, @User-Role
 
-### 🧠 Self-Learning System
-- PRB execution generates learnings automatically
-- Successful patterns captured and stored
-- Applies previous learnings automatically
-- Continuous improvement through memory patterns
+**Dynamic Agent Creation:**
+- Unlimited specialists for any technology (@React-Developer, @AWS-Engineer, @ML-Specialist)
+- Domain experts created automatically based on project needs
+- All agents have 10+ years of expertise in their specialization
+
+### 🧠 Self-Learning Agent System
+- Agent execution generates learnings automatically
+- Successful patterns captured and shared between agents
+- Agents apply previous learnings to new tasks
+- Continuous improvement through cross-agent knowledge sharing
 
 ### 🧠 Memory-First Operations
-- All operations check memory before action
-- Automatic pattern capture and storage
+- All agent operations check memory before action
+- Automatic pattern capture and storage across agent interactions
 - Memory pattern application tracking
 - Version-controlled in memory/ directory
 - Topic-based organization with auto-pruning
 
 ### 📋 Dynamic Best-Practices Injection
 - Add methodological approaches to `best-practices/` directory
-- Auto-discovery during PRB generation
+- Auto-discovery during PRB generation and agent coordination
 - Support for ANY methodology (GitOps, DevSecOps, TDD, Clean Architecture, etc.)
 - Template placeholders replaced with your project's practices
 - Zero system modification required
 
-### ⚡ Autonomous Operation
-- **L1**: Manual approval required
-- **L2**: Architect approval (default)
-- **L3**: Fully autonomous execution
+### ⚡ Autonomous Agent Operation
+- **L1**: Manual approval required for all agent actions
+- **L2**: Agent coordination with architect approval (default)
+- **L3**: Fully autonomous multi-agent execution
 
 ### 🔧 Adapts to YOUR Project
-Configure in CLAUDE.md where your docs/standards are. System finds and includes them automatically in PRBs.
+Configure in CLAUDE.md where your docs/standards are. Agents find and include them automatically in PRBs and execution patterns.
 
 ## How It Works
 
-1. **Request Work** → "Implement OAuth2 login"
-2. **Memory Check** → Search for existing patterns/learnings
-3. **Best-Practices Discovery** → Find relevant methodological approaches
-4. **Analyze Complexity** → System scores complexity (with PM + Architect for Large/Mega)
-5. **Generate PRB** → Self-contained blueprint with embedded context + practices
-6. **Specialist Executes** → Single-pass implementation
-7. **Git Integration** → Auto version bump + commit + push
-8. **Learn & Store** → Capture new patterns in memory/
+1. **Request Work** → "@PM Implement OAuth2 login"
+2. **Agent Activation** → @PM analyzes and creates specialist agents as needed
+3. **Memory Check** → Agents search for existing patterns/learnings
+4. **Best-Practices Discovery** → Agents find relevant methodological approaches
+5. **Analyze Complexity** → Agent team scores complexity (@PM + @Architect for Large/Mega)
+6. **Generate PRB** → Self-contained blueprint with embedded context + practices + agent coordination
+7. **Agent Execution** → Multi-agent collaborative implementation
+8. **Git Integration** → Auto version bump + commit + push
+9. **Cross-Agent Learning** → Capture new patterns shared across agent memory
 
-## Story Management
+## Agent-Driven Story Management
 
-Transform natural language stories into executable PRBs:
+Transform natural language stories into executable PRBs with multi-agent coordination:
 
 1. **Story Creation** → Write stories in `stories/` directory
 2. **@PM Analysis** → "@PM break down authentication story"
-3. **Architect Collaboration** → Joint technical analysis
-4. **PRB Generation** → Ready-to-execute blueprints in `prbs/ready/`
-5. **Story Selection** → "@PM what story should we work on next?"
+3. **Agent Collaboration** → @PM + @Architect + domain specialists collaborate
+4. **PRB Generation** → Ready-to-execute blueprints with agent assignments in `prbs/ready/`
+5. **Agent Execution** → Specialized agents execute PRBs collaboratively
+6. **Story Selection** → "@PM what story should we work on next?"
 
 ### Story Directory Structure
 ```
@@ -86,21 +98,37 @@ stories/
     └── api-redesign.md
 ```
 
-### PM + Architect Process
-- **Story Analysis**: @PM reads business goals, @Architect evaluates technical approach
-- **Priority Setting**: Joint evaluation of business value + technical complexity
-- **PRB Creation**: @PM generates appropriate complexity PRBs
-- **Next Selection**: Consider dependencies, risk, current application state
+### Multi-Agent Story Process
+- **Story Analysis**: @PM reads business goals, specialist agents evaluate technical approaches
+- **Agent Team Assembly**: Dynamic creation of domain specialists (@Auth-Engineer, @Frontend-Developer, etc.)
+- **Priority Setting**: Multi-agent evaluation of business value + technical complexity
+- **PRB Creation**: @PM generates complexity-appropriate PRBs with agent assignments
+- **Agent Coordination**: Collaborative execution across specialized agent team
+- **Next Selection**: Agent team considers dependencies, risk, current application state
 
-## Key Commands
+## Key Commands & Agent Interactions
 
 ```bash
-/icc-init-system              # Initialize system
-/icc-create-prb               # Generate PRB for work
-/icc-generate-prb-from-draft  # From your specifications
-/icc-create-specialist        # Dynamic role creation
-/icc-think-sequential         # Complex problem solving
-/icc-store-memory            # Save learnings (auto-prunes)
+# System Initialization
+/icc-init-system              # Initialize agent system
+
+# Agent Interaction Commands
+@PM Build a [project]         # Start any project with PM agent coordination
+@Architect Design the API     # Request architecture design from architect agent
+@Developer Implement auth     # Assign implementation task to developer agent
+@Security-Engineer Review     # Request security review from security agent
+
+# Story & PRB Management
+@PM break down [story]        # Convert story to PRBs with agent assignments
+@PM what story next?          # Agent-driven story selection with priorities
+/icc-create-prb               # Generate PRB with agent coordination
+
+# Memory & Learning (Cross-Agent)
+/icc-store-memory            # Save learnings shared across agents (auto-prunes)
+/icc-search-memory           # Search agent knowledge base
+
+# Advanced Agent Operations
+# Agents automatically create specialists when needed - no manual commands required
 ```
 
 ## MCP Server Integration
@@ -215,18 +243,20 @@ Work in YOUR structure - system adapts!
 ## Documentation
 
 - **[Documentation Index](docs/index.md)** - Start here!
-- [Virtual Team Guide](docs/virtual-team-guide.md) - Meet the 14 specialist roles
-- [Commands Reference](docs/commands-reference.md) - All 12 commands explained
-- [PRB System Guide](docs/prb-system-guide.md) - How PRBs work
-- [Project Configuration](docs/project-configuration.md) - Setup guide
+- [Virtual Team Guide](docs/virtual-team-guide.md) - Meet the 14+ agent roles and dynamic specialist creation
+- [User Guide](docs/user-guide.md) - Complete agent system usage guide
+- [Commands Reference](docs/commands-reference.md) - All commands and agent interactions explained
+- [PRB System Guide](docs/prb-system-guide.md) - How PRBs work with agent coordination
+- [Project Configuration](docs/project-configuration.md) - Setup guide for agent-driven projects
 
-## Why PRBs?
+## Why PRBs with Agents?
 
-- **No workflow interruptions** - Single-pass execution
-- **Token-optimized** - Load only what's needed  
-- **Project-adaptive** - Respects YOUR structure
-- **Truly autonomous** - Specialists have full context
-- **Predictable** - Same input → Same quality output
+- **No workflow interruptions** - Single-pass multi-agent execution
+- **Token-optimized** - Load only what each agent needs  
+- **Project-adaptive** - Agent team respects YOUR structure
+- **Truly autonomous** - Agent specialists have full context and coordination
+- **Predictable** - Same input → Same quality multi-agent output
+- **Agent collaboration** - Cross-specialist knowledge sharing and coordination
 
 ## License
 
@@ -234,4 +264,4 @@ MIT - See LICENSE file
 
 ---
 
-**Ready to work autonomously?** Install and let your specialists handle the implementation details.
+**Ready for autonomous agent-driven development?** Install and let your specialized agent team handle the implementation details.
