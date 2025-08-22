@@ -130,46 +130,83 @@ Tracks story progress and PRB completion.
 /icc-story-status payment.txt detailed
 ```
 
-## Specialist Commands
+## Agent System Integration
 
-### `/icc-create-specialist`
-Creates a dynamic specialist for specific expertise.
+### Natural @Agent Communication
+All work operates through direct agent communication - no command scaffolding needed.
 
-**Usage:** `/icc-create-specialist "[technology/domain]"`
-
-**Examples:**
-```bash
-/icc-create-specialist "GraphQL"      # Creates @GraphQL-Developer
-/icc-create-specialist "Kubernetes"   # Creates @Kubernetes-Expert
-/icc-create-specialist "WebRTC"       # Creates @WebRTC-Specialist
-/icc-create-specialist "Blockchain"   # Creates @Blockchain-Engineer
-```
-
-**When used:**
-- Automatically when expertise match <70%
-- Manually for specific technologies
-- All specialists have 10+ years expertise
-
-## Problem-Solving Commands
-
-### `/icc-think-sequential`
-Structured thinking for complex problems.
-
-**Usage:** `/icc-think-sequential "[problem description]"`
+**Usage:** Natural @Agent mentions automatically create subagents for execution
 
 **Examples:**
 ```bash
-/icc-think-sequential "How to implement real-time collaboration?"
-/icc-think-sequential "Architecture for multi-tenant system?"
-/icc-think-sequential "Optimize for 1M concurrent users?"
+# Direct agent communication patterns
+"@PM break down the authentication story"     # PM analyzes and creates PRBs
+"@Developer implement the login API"          # Developer creates PRB and executes
+"@Security-Engineer review the auth flow"     # Security specialist reviews
+"@AI-Engineer optimize ML algorithm"          # AI specialist handles behavioral work
 ```
 
-**Features:**
-- Step-by-step analysis
-- Can revise previous thoughts
-- Identifies when more analysis needed
-- Generates and verifies hypotheses
-- Provides final solution
+**Agent Features:**
+- 14 core specialized roles with embedded behavioral patterns
+- Unlimited dynamic specialist creation for ANY technology domain when expertise needed
+- Direct PRB execution through Task tool invocation
+- Complete context preservation across agent interactions
+
+## L3 Autonomous Mode Commands
+
+### `/icc-enable-l3-autonomous`
+Enables L3 autonomous operation for continuous work discovery.
+
+**Usage:** `/icc-enable-l3-autonomous [max_parallel_tasks]`
+
+**Examples:**
+```bash
+/icc-enable-l3-autonomous           # Enable with default settings
+/icc-enable-l3-autonomous 3         # Enable with max 3 parallel tasks
+```
+
+**L3 Features:**
+- Automatically discovers PLANNED/IN_PROGRESS tasks
+- Processes uncommitted changes into PRBs
+- Continuously improves memory and patterns
+- Operates until explicit stop or critical issues
+- Maintains up to 5 parallel non-conflicting tasks
+
+## Template Validation Commands
+
+### `/icc-validate-template-usage`
+Validates PRB compliance with mandatory template usage from src/prb-templates/.
+
+**Usage:** `/icc-validate-template-usage [prb-path]`
+
+**Examples:**
+```bash
+/icc-validate-template-usage prbs/ready/STORY-001-PRB-001.prb.yaml
+/icc-validate-template-usage prbs/completed/BUG-005-PRB-001.prb.yaml
+```
+
+**Validation Checks:**
+- Template source from src/prb-templates/ hierarchy
+- All placeholders resolved (no [FROM_CONFIG] remaining)
+- Complete configuration embedded in PRB
+- Mandatory template sections present
+- No runtime config dependencies
+
+### `/icc-check-placeholder-resolution`
+Verifies all template placeholders have been resolved with actual values.
+
+**Usage:** `/icc-check-placeholder-resolution [prb-path]`
+
+**Examples:**
+```bash
+/icc-check-placeholder-resolution prbs/ready/STORY-001-PRB-001.prb.yaml
+```
+
+**Checks for unresolved patterns:**
+- `[FROM_CONFIG]` - Must be replaced with actual config values
+- `[PROJECT_ROOT]` - Must be replaced with actual project path
+- `[CURRENT_DATE]` - Must be replaced with actual date
+- `[ALL-SETTINGS]` - Must be replaced with specific configuration
 
 ## Memory Commands
 
@@ -292,4 +329,4 @@ echo "API Requirements..." > drafts/api-spec.md
 
 ---
 
-These 10 commands provide complete control over the virtual team system while maintaining simplicity and power.
+Essential utility commands combined with natural @Agent behavioral patterns provide intuitive control over the virtual team system. Most work happens through natural language interaction with the 14-role team rather than command scaffolding.

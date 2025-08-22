@@ -19,6 +19,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [6.21.1] - 2025-01-22
+
+### Added
+- Technical documentation updates for commands, configuration, and PRB system
+- Enhanced command reference with agent system integration patterns
+- Template validation commands documentation (/icc-validate-template-usage, /icc-check-placeholder-resolution)
+- L3 autonomous mode configuration documentation
+- Agent system configuration with dynamic specialist creation settings
+
+### Changed
+- Updated docs/commands-reference.md with agent communication patterns and template validation
+- Enhanced docs/configuration-guide.md with agent system and template resolution configuration
+- Refreshed docs/prb-system-guide.md for template enforcement and agent execution
+- Improved docs/prb-templates-guide.md with validation requirements and agent integration
+
 ## [6.21.0] - 2025-01-13
 
 ### Added
