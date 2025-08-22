@@ -33,7 +33,7 @@
 2. PM selects domain architect
 3. Joint role assignment
 4. Document rationale in PRB
-5. Validate >70% capability match
+5. Validate technology expertise assessment and unlimited specialist creation capability
 
 ## Detection Functions
 

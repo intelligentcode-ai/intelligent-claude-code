@@ -56,7 +56,7 @@ make install MCP_CONFIG=./config/mcps.json  # Install with MCP servers
 ### Virtual Team System
 The system implements a **14-role virtual development team** that operates through behavioral patterns and command chains:
 
-1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for <70% capability matches
+1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for ANY technology domain when expertise is needed
 2. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
 3. **Memory System**: File-based memory storage (version-controlled in `memory/`) with topic-based organization and pattern capture
 4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
@@ -154,7 +154,7 @@ Tests verify:
 - **Dynamic Specialization**: Unlimited technology domain coverage via PRB context specialization
 - **Agent-Based Execution**: Natural @Agent communication replacing complex command scaffolding
 - **Behavioral Pattern Encapsulation**: All behavioral patterns embedded in agent definitions
-- **Dynamic Specialists**: Auto-create domain experts (@React-Developer, @AWS-Engineer) with 10+ years expertise
+- **Unlimited Dynamic Specialists**: Auto-create domain experts for ANY technology (@React-Developer, @AWS-Engineer, @Kubernetes-DevOps-Engineer, @Vue-Frontend-Developer) with 10+ years expertise - ALWAYS when technology expertise is needed
 - **Learning Culture**: PRB execution generates learnings, successful patterns stored for reuse
 - **Parallel Execution**: Up to 5 non-conflicting tasks execute simultaneously
 - **Self-Correcting**: Automatic violation detection and correction through PRB validation
