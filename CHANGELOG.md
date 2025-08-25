@@ -5,9 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<<<<<<< HEAD
-## [6.21.1] - 2025-01-22
-=======
+## [7.2.2] - 2025-08-25
+
+### Fixed
+- **CRITICAL**: Automatic PRB size limit enforcement - PRBs >15 complexity points now automatically broken down
+- Changed from manual breakdown errors to automatic decomposition into sub-PRBs
+- Added prb-breakdown-patterns.md with multiple breakdown strategies
+- Updated prb-auto-trigger.md from SIZE BLOCKING to SIZE BREAKDOWN rule
+- Enhanced prb-enforcement.md with Size Validator in multi-layer detection
+- Modified story-breakdown.md for automatic @PM size enforcement
+
+### Added
+- New file: src/behaviors/prb-breakdown-patterns.md with comprehensive breakdown logic
+- Domain-based, layer-based, feature-based, and epic-based splitting strategies
+- Automatic parent-child relationship tracking for sub-PRBs
+- Fallback mechanisms for breakdown failures
+
+## [7.2.1] - 2025-08-21
+
+### Changed
+- Enhanced @PM behavioral patterns with complete placeholder resolution
+- Simplified PRB templates for easier usage
+- Improved agent definitions with behavioral focus
+- Integrated comprehensive validation tools
+
 ## [7.2.0] - 2025-08-21
 
 ### Changed

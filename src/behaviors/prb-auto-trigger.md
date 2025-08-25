@@ -8,6 +8,7 @@
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./naming-enforcement-behavior.md
+@./prb-breakdown-patterns.md
 
 ## Detection → Memory → PRB → Execution
 
@@ -26,12 +27,13 @@
 - External APIs: 3pts each
 - Database/Security: 4-5pts
 
-**SIZE BLOCKING RULE:**
-**CRITICAL:** Block PRB creation if complexity > 15 points:
+**SIZE BREAKDOWN RULE:**
+**CRITICAL:** Auto-breakdown PRBs if complexity > 15 points:
 - **Detection:** After complexity calculation, check if score > 15
-- **Action:** IMMEDIATE BLOCK with error message
-- **Error Message:** "❌ PRB too large ({score} points). Break it down into smaller PRBs."
-- **Resolution:** User must decompose work into multiple smaller PRBs
+- **Action:** AUTOMATIC BREAKDOWN into multiple PRBs ≤15 points each
+- **Process:** Use prb-breakdown-patterns.md for logical decomposition
+- **Result:** Generate multiple sequential PRBs under same parent
+- **Fallback:** If auto-breakdown fails, BLOCK with manual breakdown request
 
 **MANDATORY Template Selection from src/prb-templates/ with Placeholder Resolution**:
 | Score | Template | Source File | Resolution Required |
@@ -56,7 +58,7 @@
 4. **Search** memory/[topic]/ (MANDATORY)
 5. **Search** best-practices/ (MANDATORY)
 6. **Score** complexity
-7. **SIZE CHECK** - Block if complexity > 15 points with decomposition error
+7. **SIZE CHECK** - Auto-breakdown if complexity > 15 points using prb-breakdown-patterns.md
 8. **MANDATORY: Load Template** from src/prb-templates/ hierarchy ONLY
 9. **MANDATORY: Load Complete Configuration** at generation time
 10. **MANDATORY: Resolve ALL Placeholders** with actual config values
@@ -91,7 +93,7 @@
 - Runtime config dependencies → Must embed all config values
 - Template source invalid → Must use src/prb-templates/ hierarchy
 - Missing template sections → Must use complete templates
-- **PRB too large** → Complexity > 15 points blocked with decomposition error
+- **PRB too large** → Complexity > 15 points triggers automatic breakdown into smaller PRBs
 
 ## Naming
 
