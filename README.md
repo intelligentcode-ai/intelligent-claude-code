@@ -106,6 +106,7 @@ stories/
 - **Agent Coordination**: Collaborative execution across specialized agent team
 - **Next Selection**: Agent team considers dependencies, risk, current application state
 
+<<<<<<< HEAD
 ## Key Commands & Agent Interactions
 
 ```bash
@@ -129,7 +130,21 @@ stories/
 
 # Advanced Agent Operations
 # Agents automatically create specialists when needed - no manual commands required
+=======
+## Essential Commands (Lean System)
+
+```bash
+/icc-init-system              # Initialize virtual team system
+/icc-get-setting [key]        # Access configuration values
+/icc-search-memory [query]    # Search stored learnings
+>>>>>>> feature/enhance-pm-placeholder-process
 ```
+
+**Everything else is automatic:**
+- PRB generation happens on work detection
+- Specialist creation via <70% capability matching
+- Memory storage during PRB execution  
+- Story management through @PM natural language
 
 ## MCP Server Integration
 

@@ -1,6 +1,6 @@
 # Placeholder Resolution Behavior
 
-**MANDATORY:** Placeholder resolution MUST happen in main agent context only. Auto-correct subagent attempts.
+**MANDATORY:** Placeholder resolution MUST happen in main agent context only. Auto-correct Task tool attempts.
 
 **PURPOSE:** Ensure proper template placeholder resolution with complete project context
 
@@ -14,7 +14,7 @@
 - Memory search across memory/ directories
 - Best practices search across best-practices/ directory
 
-**Subagents CANNOT resolve placeholders due to task-specific context.**
+**Task tool CANNOT resolve placeholders due to isolated context.**
 
 ## Common Placeholders
 
@@ -64,9 +64,9 @@
 - **When unresolved found:** Report resolution error "Unresolved placeholders remaining"
 - **When complete:** Return fully resolved template content
 
-### Subagent Limitations
+### Task Tool Limitations
 **Cannot access**: Configuration hierarchy, project-wide files, memory/ directories, best-practices/, project root analysis, system nature detection
-**Reason**: Task-specific context with limited working scope
+**Reason**: Isolated context with limited working directory scope
 
 ## Placeholder Categories Requiring Main Agent
 
@@ -80,13 +80,13 @@
 
 ### Blocking & Error Handling
 
-**BLOCKED OPERATIONS**: Subagent attempts at placeholder resolution, configuration access, project-wide searches
+**BLOCKED OPERATIONS**: Task tool attempts at placeholder resolution, configuration access, project-wide searches
 
-**DETECTION**: Monitor subagent context for placeholder resolution attempts, config hierarchy access, memory search operations
+**DETECTION**: Monitor Task tool context for placeholder resolution attempts, config hierarchy access, memory search operations
 
 **ERROR MESSAGES**: 
-- "❌ PLACEHOLDER RESOLUTION BLOCKED: Subagents cannot resolve placeholders - use main agent"
-- "❌ CONFIGURATION ACCESS DENIED: Config hierarchy not available in subagent context"  
+- "❌ PLACEHOLDER RESOLUTION BLOCKED: Task tool cannot resolve placeholders - use main agent"
+- "❌ CONFIGURATION ACCESS DENIED: Config hierarchy not available in isolated context"  
 - "❌ PROJECT ANALYSIS BLOCKED: Project-wide analysis requires main agent access"
 - "❌ MEMORY SEARCH BLOCKED: Memory operations require main agent directory access"
 
@@ -94,32 +94,224 @@
 
 ### Resolution Requirements
 
-**BEFORE subagent execution**: ALL placeholders resolved, NO "[...]" patterns remain, configuration values specific, file paths absolute, search results embedded
+**BEFORE Task tool execution**: ALL placeholders resolved, NO "[...]" patterns remain, configuration values specific, file paths absolute, search results embedded
 
-**VALIDATION CHECKLIST**:
-☐ No config/context/search patterns remain ☐ Absolute file paths ☐ Actual config values ☐ Current dates ☐ Embedded search results
+**MANDATORY VALIDATION CHECKLIST**:
+☐ **Zero Placeholders**: No [.*] patterns remain in any PRB content
+☐ **Absolute Paths**: All file paths start with / (no relative paths)  
+☐ **Actual Config Values**: Boolean/string values, not "[FROM_CONFIG]"
+☐ **Current Dates**: System date format YYYY-MM-DD, not "[CURRENT_DATE]"
+☐ **Embedded Search Results**: Memory/practice results included, not "[SEARCH_TOPIC]"
+☐ **Story Content**: Actual requirements text, not "[USER_REQUEST]"
+☐ **Role Assignment**: Specific role (@AI-Engineer), not "[ROLE]"
+☐ **Project Context**: Real system nature, not "[SYSTEM_NATURE]"
 
-**QUALITY GATES**: Config matches project settings, file samples actual content, memory/practices relevant to context, dates current, all context actionable
+**QUALITY GATES**: 
+- Config matches project settings exactly
+- File samples contain actual content (not placeholders)
+- Memory/practices relevant to current context
+- Dates reflect current system time
+- All context immediately actionable by Task tool
+
+### ENHANCED Validation Framework
+
+#### Validation Categories and Tests
+
+**Category 1: Configuration Validation**
+```bash
+validate_configuration() {
+    local prb_file="$1"
+    local errors=0
+    
+    # Test 1: git_privacy must be true/false, not placeholder
+    if grep -q "git_privacy:.*\[FROM_CONFIG\]" "$prb_file"; then
+        echo "❌ FAIL: git_privacy contains placeholder [FROM_CONFIG]"
+        errors=$((errors + 1))
+    elif ! grep -q "git_privacy:.*\(true\|false\)" "$prb_file"; then
+        echo "❌ FAIL: git_privacy not set to boolean value"
+        errors=$((errors + 1))
+    else
+        echo "✅ PASS: git_privacy properly resolved"
+    fi
+    
+    # Test 2: branch_protection validation
+    if grep -q "branch_protection:.*\[FROM_CONFIG\]" "$prb_file"; then
+        echo "❌ FAIL: branch_protection contains placeholder"
+        errors=$((errors + 1))
+    else
+        echo "✅ PASS: branch_protection resolved"
+    fi
+    
+    # Test 3: default_branch validation
+    if grep -q "default_branch:.*\[FROM_CONFIG\]" "$prb_file"; then
+        echo "❌ FAIL: default_branch contains placeholder"
+        errors=$((errors + 1))
+    else
+        echo "✅ PASS: default_branch resolved"
+    fi
+    
+    return $errors
+}
+```
+
+**Category 2: Context Validation**
+```bash
+validate_context() {
+    local prb_file="$1"
+    local errors=0
+    
+    # Test 1: project_root must be absolute path
+    if grep -q "project_root:.*\[PROJECT_ROOT\]" "$prb_file"; then
+        echo "❌ FAIL: project_root contains placeholder [PROJECT_ROOT]"
+        errors=$((errors + 1))
+    elif ! grep -q "project_root:.*/.*" "$prb_file"; then
+        echo "❌ FAIL: project_root not absolute path"
+        errors=$((errors + 1))
+    else
+        echo "✅ PASS: project_root is absolute path"
+    fi
+    
+    # Test 2: system_nature validation  
+    if grep -q "system_nature:.*\[SYSTEM_NATURE\]" "$prb_file"; then
+        echo "❌ FAIL: system_nature contains placeholder"
+        errors=$((errors + 1))
+    elif ! grep -q "system_nature:.*\(MARKDOWN-BASED\|CODE-BASED\|HYBRID\)" "$prb_file"; then
+        echo "❌ FAIL: system_nature not properly identified"
+        errors=$((errors + 1))
+    else
+        echo "✅ PASS: system_nature properly identified"
+    fi
+    
+    # Test 3: current date validation
+    if grep -q "\[CURRENT_DATE\]" "$prb_file"; then
+        echo "❌ FAIL: [CURRENT_DATE] placeholder still present"
+        errors=$((errors + 1))
+    elif ! grep -q "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" "$prb_file"; then
+        echo "❌ FAIL: No valid date format found"
+        errors=$((errors + 1))
+    else
+        echo "✅ PASS: Current date properly resolved"
+    fi
+    
+    return $errors
+}
+```
+
+**Category 3: Content Validation**
+```bash
+validate_content() {
+    local prb_file="$1"
+    local errors=0
+    
+    # Test 1: user_request validation
+    if grep -q "user_request:.*\[USER_REQUEST\]" "$prb_file"; then
+        echo "❌ FAIL: user_request contains placeholder"
+        errors=$((errors + 1))
+    elif grep -q "user_request:.*\".*\"" "$prb_file" && [ $(grep "user_request:" "$prb_file" | wc -c) -lt 50 ]; then
+        echo "❌ FAIL: user_request appears to be template text (too short)"
+        errors=$((errors + 1))
+    else
+        echo "✅ PASS: user_request contains actual story content"
+    fi
+    
+    # Test 2: role assignment validation
+    if grep -q "title:.*\[ROLE\]" "$prb_file"; then
+        echo "❌ FAIL: Role assignment contains placeholder [ROLE]"
+        errors=$((errors + 1))
+    elif ! grep -q "title:.*@.*-.*" "$prb_file"; then
+        echo "❌ FAIL: Role not properly assigned in title"
+        errors=$((errors + 1))
+    else
+        echo "✅ PASS: Role properly assigned"
+    fi
+    
+    return $errors
+}
+```
+
+**Category 4: Comprehensive Placeholder Scan**
+```bash
+validate_no_placeholders() {
+    local prb_file="$1"
+    
+    echo "Running comprehensive placeholder scan..."
+    
+    # Find all remaining placeholder patterns
+    PLACEHOLDERS=$(grep -o '\[.*\]' "$prb_file" 2>/dev/null | sort -u)
+    
+    if [ -z "$PLACEHOLDERS" ]; then
+        echo "✅ PASS: No placeholder patterns detected"
+        return 0
+    else
+        echo "❌ FAIL: Placeholder patterns still present:"
+        echo "$PLACEHOLDERS" | while read placeholder; do
+            LINE_NUM=$(grep -n "$placeholder" "$prb_file" | head -1 | cut -d: -f1)
+            echo "  - $placeholder (line $LINE_NUM)"
+        done
+        echo ""
+        echo "BLOCKING: All placeholders must be resolved before PRB creation"
+        return 1
+    fi
+}
+```
+
+#### Master Validation Function
+```bash
+# Complete validation orchestration
+validate_prb_complete() {
+    local prb_file="$1"
+    local total_errors=0
+    
+    echo "=== PRB VALIDATION REPORT ==="
+    echo "File: $prb_file"
+    echo "================================"
+    
+    # Run all validation categories
+    validate_configuration "$prb_file"
+    total_errors=$((total_errors + $?))
+    
+    validate_context "$prb_file"  
+    total_errors=$((total_errors + $?))
+    
+    validate_content "$prb_file"
+    total_errors=$((total_errors + $?))
+    
+    validate_no_placeholders "$prb_file"
+    total_errors=$((total_errors + $?))
+    
+    echo "================================"
+    if [ $total_errors -eq 0 ]; then
+        echo "✅ VALIDATION PASSED: PRB ready for Task tool execution"
+        echo "All placeholders resolved, context complete, ready for subagent"
+        return 0
+    else
+        echo "❌ VALIDATION FAILED: $total_errors errors detected"
+        echo "BLOCKING: PRB creation forbidden until all errors resolved"
+        echo "Required: Follow step-by-step placeholder resolution process"
+        return 1
+    fi
+}
+```
 
 ## Integration Points
 
 ### With PRB Creation
 **prb-creation-mandates.md integration:**
 - Main agent must resolve ALL placeholders before PRB completion
-- Subagents receive PRB with completely resolved context
+- Task tool receives PRB with completely resolved context
 - No placeholder resolution happens during PRB execution
 
 ### With Template System
 **template-loading.md integration:**  
 - Template loading happens in main agent context
 - Placeholder resolution happens immediately after template loading
-- Resolved templates are passed to subagents for execution
+- Resolved templates are passed to Task tool for execution
 
 ### With Work Item Creation
 **work-item-creation.md integration:**
 - All work item templates get placeholder resolution in main agent
 - Complete context gathered before placeholder resolution
-- Resolved work items ready for subagent execution
+- Resolved work items ready for Task tool execution
 
 ## Learning Integration
 
