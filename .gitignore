@@ -95,3 +95,5 @@ prbs/
 *.key
 credentials/
 secrets/memory/
+stories/
+bugs/
