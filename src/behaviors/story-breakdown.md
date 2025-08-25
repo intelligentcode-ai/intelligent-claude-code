@@ -6,6 +6,7 @@
 
 ## Imports
 @./dynamic-specialist-creation.md
+@./prb-breakdown-patterns.md
 
 ## Core Process
 
@@ -199,12 +200,14 @@ User simply says:
 - **Sequential numbering**: PRB-001, PRB-002, PRB-003, etc. under same parent story
 - **Logical grouping**: Split by natural boundaries (frontend/backend, auth/data, setup/implementation)
 
-**Large Story Breakdown Process:**
+**Large Story Breakdown Process (AUTOMATIC):**
 1. **Analyze total complexity**: Calculate full story complexity points
-2. **Identify split points**: Find logical boundaries to divide work
-3. **Create multiple PRBs**: Each focused on specific aspect, each <15 points
-4. **Maintain dependencies**: Ensure PRBs can be executed in logical order
-5. **Document relationships**: Note dependencies between PRBs in descriptions
+2. **AUTOMATIC BREAKDOWN**: If >15 points, use prb-breakdown-patterns.md for logical decomposition
+3. **Generate sub-PRBs**: Each focused on specific aspect, automatically ≤15 points
+4. **Sequential numbering**: PRB-001, PRB-002, PRB-003, etc. under same parent
+5. **Maintain dependencies**: Auto-document logical execution order
+6. **Validate each PRB**: Ensure every generated PRB is ≤15 points
+7. **FAIL-SAFE**: If auto-breakdown fails, BLOCK with manual breakdown request
 
 **Examples of splits:**
 - **Authentication Story (25 points)**: 
@@ -220,13 +223,14 @@ User simply says:
 When @PM breaks down a story:
 1. **Validates Parent Story:** Ensures story follows naming format (STORY-###-title-date.md)
 2. **Analyzes Complexity:** Calculate total story complexity points
-3. **Determines Split Strategy:** Single PRB (≤15 points) or multiple PRBs (>15 points)
+3. **AUTOMATIC SIZE ENFORCEMENT:** If any PRB would be >15 points, auto-breakdown using prb-breakdown-patterns.md
 4. **Generates Compliant PRB Names:** Using format `<STORY_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
 5. **Sequential Numbering:** Uses NumberingService for parent-scoped PRB numbers
 6. **Creates PRBs:** In configured prb_path/prb_ready (default: `prbs/ready/`)
-7. **Template Selection:** Appropriate complexity and template selected using hierarchy
-8. **Validation:** Each PRB name validated before creation and complexity under 15 points
-9. **Ready for Execution:** Uses directory structure from configuration
+7. **Template Selection:** Appropriate complexity and template selected using hierarchy (Nano/Tiny/Medium only)
+8. **MANDATORY Validation:** Each PRB complexity verified ≤15 points before creation
+9. **BLOCK on Failure:** If auto-breakdown fails to create PRBs ≤15 points, BLOCK with error
+10. **Ready for Execution:** Uses directory structure from configuration
 
 ### PRB Naming Instructions
 **MANDATORY:** When creating PRBs from stories, MUST follow these steps:
