@@ -15,8 +15,8 @@
 |---------|---------|--------|
 | PRB File | *.prb.yaml | Execute existing |
 | Work Request | Implementation intent | Generate PRB |
-| @Role | @Role mention | PRB + Task tool |
-| Commands | /icc-create-prb | Generate with options |
+| @Role | @Role mention | PRB + Subagent execution |
+| Natural Language | "break down STORY-X", "create specialist for Y" | Generate PRB |
 
 ## Complexity Scoring
 
@@ -51,7 +51,7 @@
 ## MANDATORY Template-First Generation Flow (ZERO EXCEPTIONS)
 
 1. **Detect** work requirement
-2. **Validate** Task tool if @Role
+2. **Validate** Subagent mode if @Role
 3. **Gather** complete context (MANDATORY)
 4. **Search** memory/[topic]/ (MANDATORY)
 5. **Search** best-practices/ (MANDATORY)
@@ -71,7 +71,7 @@
 15. **Create** PRB using complete resolved template structure
 16. **Validate** NO runtime config dependencies
 17. **Document** template source in metadata
-18. **Execute** via Task tool if needed
+18. **Execute** via subagent if needed
 
 **ABSOLUTE ENFORCEMENT:** Steps 8-17 are MANDATORY - NO bypassing, NO exceptions, NO runtime config lookups.
 
@@ -100,8 +100,12 @@ Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 
 ## Critical Triggers
 
-**MUST Trigger**: Work requests, @Role mentions, PRB commands
+**MUST Trigger**: Work requests, @Role mentions, natural language work patterns
 **MUST NOT**: Information queries, status checks, reading only
+
+## Subagent Execution
+
+**Pattern**: All PRBs execute via subagents with complete embedded context
 
 ---
 *Optimized: 335→~75 lines*

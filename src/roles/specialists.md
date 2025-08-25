@@ -16,18 +16,19 @@
 **@Requirements-Engineer:** Requirements analysis • Documentation • Specification
 **@User-Role:** End-to-end testing • Browser automation • Puppeteer
 
-## DYNAMIC SPECIALIST CREATION
+## UNLIMITED DYNAMIC SPECIALIST CREATION
 
-**<70% match:** Create specialist (@React-Developer, @AWS-Engineer)  
+**ALWAYS when needed:** Create specialist for ANY technology domain (@React-Developer, @AWS-Engineer, @Vue-Frontend-Developer, @Kubernetes-DevOps-Engineer)
 **Ultra-experienced:** All roles operate with 10+ years expertise  
 
-**Assignment Logic:** Analyze requirements → Calculate match → ≥70%=existing, <70%=create specialist
+**Assignment Logic:** Analyze requirements → Identify technology domains → ALWAYS create specialists when technology expertise is needed
 
 **Dynamic Creation Process:**
 1. **Domain Analysis:** Extract technology stack and requirements from work context
-2. **Expertise Matching:** Match to 14 core roles (>70% capability overlap)
-3. **Create Dynamic Specialist:** If <70% match, create @[Domain]-Developer, @[Technology]-Engineer, or @[Domain]-Architect
-4. **No Predefined Lists:** All specialists created based on actual project needs
+2. **Technology Assessment:** Identify specific technology expertise needed for optimal work execution
+3. **ALWAYS Create Specialists:** Create @[Domain]-Developer, @[Technology]-Engineer, or @[Domain]-Architect when technology expertise is needed
+4. **No Capability Thresholds:** Specialists created based on technology expertise needs, not arbitrary capability matches
+5. **Unlimited Technology Support:** All specialists created based on actual project needs
 
 **Examples:** @React-Developer, @AWS-Engineer, @Blockchain-Architect, @ML-Specialist
 **Principle:** Specialists are DISCOVERED from project context, not PREDEFINED
