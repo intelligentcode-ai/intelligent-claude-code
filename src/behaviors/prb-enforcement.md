@@ -8,6 +8,7 @@
 @./shared-patterns/enforcement-rules.md
 @./work-item-creation.md
 @./placeholder-resolution.md
+@./prb-breakdown-patterns.md
 
 ## Creation vs Execution Patterns
 
@@ -56,6 +57,7 @@
 | **Runtime config lookup** | **IMMEDIATE BLOCK → Embed config values in PRB** |
 | **Invalid template source** | **IMMEDIATE BLOCK → Must use src/prb-templates/ hierarchy** |
 | **Config not embedded** | **IMMEDIATE BLOCK → Embed complete configuration at generation** |
+| **PRB too large (>15 points)** | **AUTOMATIC BREAKDOWN → Generate multiple PRBs ≤15 points using prb-breakdown-patterns.md** |
 | Missing PRB | Analyze → Generate from src/prb-templates/ → Execute |
 | Wrong template | Re-analyze complexity → Correct template from src/prb-templates/ |
 | Direct execution | Create PRB from src/prb-templates/ → Use subagent |
@@ -77,6 +79,7 @@
 **Missing Subagent:** STOP → Error message → Require subagent execution
 **System Nature Mismatch:** STOP → Block inappropriate role → Enforce PM+Architect collaboration → Re-assign correct role
 **Wrong Domain Architect:** STOP → Force correct architect selection → Re-validate role assignment
+**PRB Too Large:** STOP → Auto-breakdown using prb-breakdown-patterns.md → Generate multiple PRBs ≤15 points
 
 ## Execution Enforcement
 
@@ -96,9 +99,10 @@
 2. **Pattern Matcher:** Detect @Role and work patterns
 3. **PRB Checker:** Validate PRB exists for work
 4. **Template Validator:** Ensure correct complexity template
-5. **System Nature Validator:** Check role assignments align with system nature
-6. **PM+Architect Validator:** Ensure collaboration process documented
-7. **Auto-Generator:** Create PRB if missing
+5. **Size Validator:** Check PRB complexity ≤15 points, auto-breakdown if needed
+6. **System Nature Validator:** Check role assignments align with system nature
+7. **PM+Architect Validator:** Ensure collaboration process documented
+8. **Auto-Generator:** Create PRB if missing
 
 ## Real-Time Interception
 **Monitor:** ALL execution attempts for PRB compliance
