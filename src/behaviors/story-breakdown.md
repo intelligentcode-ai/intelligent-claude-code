@@ -4,9 +4,12 @@
 
 **PURPOSE:** @PM and specialist architect work together to analyze stories and create PRBs
 
+## Imports
+@./dynamic-specialist-creation.md
+
 ## Core Process
 
-**CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT Task tool).
+**CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT subagent).
 
 When user says "@PM break down story X" or similar:
 1. **@PM reads story**: Understands business goals and requirements
@@ -20,7 +23,7 @@ When user says "@PM break down story X" or similar:
 
 **SEPARATION ENFORCEMENT:** 
 - **CREATION**: @PM + Architect work in main agent context with full project access
-- **EXECUTION**: Created PRBs are executed via Task tool with resolved context
+- **EXECUTION**: Created PRBs are executed via subagents with resolved context
 
 ## Two-Factor Analysis Process
 
@@ -95,6 +98,8 @@ When user says "@PM break down story X" or similar:
      - NEVER use generic @Architect - precision is mandatory
    - **No Predefined Lists:** Specialists created dynamically from project context
    - **Universal System:** Works for ANY technology domain or project type
+   - **Unlimited Specialist Creation:** ALWAYS create specialists when technology expertise is needed through PM + Architect behavioral patterns
+   - **Subagent Integration:** Created specialists become available as subagents in .claude/agents/dynamic/
 
 3. **Collaborative Analysis**:
    - PM + Selected Specialist Architect jointly evaluate requirements

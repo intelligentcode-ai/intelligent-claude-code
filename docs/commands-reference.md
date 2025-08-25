@@ -1,7 +1,7 @@
 # Commands Reference
 
 ## Overview
-The intelligent-claude-code system provides 12 essential commands that cover initialization, PRB creation, story management, specialist management, problem-solving, and memory operations.
+The intelligent-claude-code system provides 14 essential commands that cover initialization, PRB creation, story management, specialist management, problem-solving, and memory operations.
 
 ## System Commands
 
@@ -130,46 +130,108 @@ Tracks story progress and PRB completion.
 /icc-story-status payment.txt detailed
 ```
 
-## Specialist Commands
+## Specialist Creation Commands
 
 ### `/icc-create-specialist`
-Creates a dynamic specialist for specific expertise.
+Creates dynamic specialist roles for any domain.
 
-**Usage:** `/icc-create-specialist "[technology/domain]"`
+**Usage:** `/icc-create-specialist [domain] [role-type]`
 
 **Examples:**
 ```bash
-/icc-create-specialist "GraphQL"      # Creates @GraphQL-Developer
-/icc-create-specialist "Kubernetes"   # Creates @Kubernetes-Expert
-/icc-create-specialist "WebRTC"       # Creates @WebRTC-Specialist
-/icc-create-specialist "Blockchain"   # Creates @Blockchain-Engineer
+/icc-create-specialist React Developer        # Creates @React-Developer
+/icc-create-specialist AWS Engineer          # Creates @AWS-Engineer
+/icc-create-specialist Kubernetes DevOps     # Creates @Kubernetes-DevOps-Engineer
 ```
 
-**When used:**
-- Automatically when expertise match <70%
-- Manually for specific technologies
-- All specialists have 10+ years expertise
+**Process:**
+1. Analyzes domain requirements
+2. Creates domain-specific specialist with 10+ years expertise
+3. Integrates with existing team
+4. Available immediately for @Agent mentions
 
-## Problem-Solving Commands
+### `/icc-create-dynamic-specialist`
+Advanced dynamic specialist creation with detailed requirements.
 
-### `/icc-think-sequential`
-Structured thinking for complex problems.
-
-**Usage:** `/icc-think-sequential "[problem description]"`
+**Usage:** `/icc-create-dynamic-specialist [domain] [role-type] [requirements]`
 
 **Examples:**
 ```bash
-/icc-think-sequential "How to implement real-time collaboration?"
-/icc-think-sequential "Architecture for multi-tenant system?"
-/icc-think-sequential "Optimize for 1M concurrent users?"
+/icc-create-dynamic-specialist Machine-Learning Specialist "TensorFlow, PyTorch, MLOps"
+/icc-create-dynamic-specialist Vue Frontend-Developer "Vue3, TypeScript, Pinia"
 ```
 
 **Features:**
-- Step-by-step analysis
-- Can revise previous thoughts
-- Identifies when more analysis needed
-- Generates and verifies hypotheses
-- Provides final solution
+- ALWAYS creates specialists when technology expertise is needed
+- Support for ANY technology domain
+- Custom expertise requirements
+- No capability thresholds - created based on need
+
+### `/icc-rename-work-items`
+Renames work items to follow standard naming format.
+
+**Usage:** `/icc-rename-work-items [options]`
+
+**Examples:**
+```bash
+/icc-rename-work-items                # Rename all work items
+/icc-rename-work-items --preview      # Preview changes without applying
+```
+
+**Process:**
+1. Scans project for work items
+2. Validates naming compliance
+3. Renames to standard format
+4. Updates references
+
+## Problem Solving Commands
+
+### `/icc-think-sequential`
+Engages sequential thinking mode for complex problem analysis.
+
+**Usage:** `/icc-think-sequential <problem_description> [complexity_level] [analysis_depth]`
+
+**Examples:**
+```bash
+/icc-think-sequential "Design memory system architecture"
+/icc-think-sequential "Optimize database queries" high
+/icc-think-sequential "Fix authentication bug" low basic
+```
+
+**Parameters:**
+- **problem_description** (required): Problem to analyze
+- **complexity_level** (optional): low, medium, high (default: auto-detect)
+- **analysis_depth** (optional): basic, detailed, maximum (default: detailed)
+
+**Features:**
+- Ultra-experienced cognitive pattern analysis
+- Evidence-based thinking with assumption questioning
+- Iterative refinement process
+- Available to all roles for deep analysis
+
+## Agent System Integration
+
+### Natural @Agent Communication
+All work operates through direct agent communication - no command scaffolding needed.
+
+**Usage:** Natural @Agent mentions automatically create subagents for execution
+
+**Examples:**
+```bash
+# Direct agent communication patterns
+"@PM break down the authentication story"     # PM analyzes and creates PRBs
+"@Developer implement the login API"          # Developer creates PRB and executes
+"@Security-Engineer review the auth flow"     # Security specialist reviews
+"@AI-Engineer optimize ML algorithm"          # AI specialist handles behavioral work
+```
+
+**Agent Features:**
+- 14 core specialized roles with embedded behavioral patterns
+- Unlimited dynamic specialist creation for ANY technology domain when expertise is needed
+- Direct PRB execution through Task tool invocation
+- Complete context preservation across agent interactions
+
+
 
 ## Memory Commands
 
@@ -255,7 +317,7 @@ echo "API Requirements..." > drafts/api-spec.md
 ### Complex Problem Solving
 ```bash
 /icc-think-sequential "How to handle 10K concurrent websocket connections"
-# ... thinking process ...
+# ... thinking process completes with solution analysis ...
 /icc-create-prb "Implement websocket scaling solution"
 ```
 
@@ -292,4 +354,4 @@ echo "API Requirements..." > drafts/api-spec.md
 
 ---
 
-These 10 commands provide complete control over the virtual team system while maintaining simplicity and power.
+Essential utility commands combined with natural @Agent behavioral patterns provide intuitive control over the virtual team system. Most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists rather than command scaffolding.

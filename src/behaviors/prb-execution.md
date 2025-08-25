@@ -7,18 +7,22 @@
 @./shared-patterns/template-loading.md
 @./shared-patterns/execution-validation.md
 
-## Task Tool Requirement
+## Subagent Execution
 
-**CRITICAL:** ALL PRB execution via Task tool subagent ONLY.
-- Block direct execution → Error: "❌ PRB requires Task tool subagent"
-- Pattern: `Task(subagent_type='general-purpose', prompt='[PRB context]')`
+**PATTERN:** PRBs execute via subagents with complete embedded context.
+
+### Subagent Invocation
+**Standard Pattern:** Direct @Role invocation creates appropriate subagent:
+- Pattern: Direct @Role invocation creates role-specific subagent
+- Benefits: Role-specific capability, context preservation, specialized execution
+- Context: Complete PRB context embedded, no runtime lookups needed
 
 ## Mandatory Execution Checklist
 
 ### 6 Sections (ALL MANDATORY)
 | Section | Requirements | Validation |
 |---------|-------------|------------|
-| 0. Task Tool | Verify subagent execution | BLOCKING if missing |
+| 0. Context Loading | Verify embedded context | All config resolved |
 | 1. Context | Load settings, validate files | All values resolved |
 | 2. Requirements | Execute functional/processual/technical | Every item complete |
 | 3. Git Ops | Branch→Commit→PR→Merge | CHANGELOG before PR |
@@ -38,8 +42,8 @@
 
 ### Section-by-Section Execution Requirements
 
-**TASK TOOL VALIDATION (MANDATORY FIRST CHECK):**
-- 0. Task Tool Check - VERIFY Task tool subagent is executing PRB (BLOCKING)
+**CONTEXT VALIDATION (MANDATORY FIRST CHECK):**
+- 0. Context Loading Check - VERIFY PRB contains complete embedded context (BLOCKING)
 
 **MANDATORY PRB SECTION EXECUTION:**
 - 1. Complete Context Section - ALL file references validated, settings loaded
@@ -65,7 +69,7 @@
 **PROJECT SCOPE VALIDATION (MANDATORY BEFORE EXECUTION):**
 - All file operations validated within project root
 - No write operations to ~/.claude/ during normal execution
-- Task tool invocations constrained to project boundaries
+- Subagent operations constrained to project boundaries
 - Memory operations restricted to ./memory/ directory
 - Configuration changes limited to project-local only
 
@@ -106,21 +110,32 @@
 ### State Transition Guards
 Each state transition MUST validate previous state completion before proceeding.
 
-**CRITICAL:** Task tool validation MUST be FIRST check before ANY state transitions.
+**CRITICAL:** Context validation MUST be FIRST check before ANY state transitions.
 
-## Task Tool Validation (MANDATORY FIRST)
+## Context Validation (MANDATORY FIRST)
 
-**ABSOLUTE PRIORITY:** Task tool check MUST happen BEFORE any other validation.
+**ABSOLUTE PRIORITY:** Context validation check MUST happen BEFORE any other validation.
 
-### Pre-Execution Task Tool Validation
+### Pre-Execution Context Validation
 
-**TASK TOOL VALIDATION CHECKLIST (HIGHEST PRIORITY):**
-- Verify current execution is within Task tool subagent context
-- Confirm Task tool invocation pattern was used
-- Block ANY attempt at direct PRB execution
-- Display clear error if Task tool not detected
+**CONTEXT VALIDATION CHECKLIST (HIGHEST PRIORITY):**
+- Verify PRB contains complete embedded context
+- Check all configuration values are resolved (no placeholders)
+- Validate all file references and samples are present
+- Confirm memory and best practices patterns are embedded
 
-### Task Tool Detection Function
+### Context Loading Validation
+
+**Steps to Validate Context:**
+1. **Check Embedded Configuration:** Verify all config values are actual values
+   - git_privacy, branch_protection, default_branch must be specific values
+   - No "[FROM_CONFIG]" or placeholder patterns remain
+2. **Validate File References:** Confirm critical files have actual paths and samples
+   - File paths must be absolute and accessible
+   - Sample content must be present for referenced files
+3. **Verify Complete Context:** Ensure PRB is self-contained
+   - No runtime config lookups needed during execution
+   - All necessary context embedded at generation time
 
 **State Transition Flow:**
 INITIALIZED → IN_PROGRESS → PENDING_REVIEW → PENDING_VALIDATION → PENDING_KNOWLEDGE → PENDING_GIT → PENDING_LIFECYCLE → COMPLETE
@@ -200,8 +215,8 @@ State transitions require validation of previous state completion.
 ### State Validation Process
 
 **Steps to Validate PRB State Transition:**
-1. **Critical Task Tool Validation (HIGHEST PRIORITY):** Validate that Task tool was used for all @Role delegations in PRB
-   - If Task tool validation fails: Block transition, display Task tool error, return validation failed
+1. **Critical Context Validation (HIGHEST PRIORITY):** Validate that PRB contains complete embedded context
+   - If context incomplete: Block transition, display context error, return validation failed
 2. **Get Current State:** Determine current PRB state and target state
 3. **Load Completion Checklist:** Get the mandatory checklist items for this PRB
 4. **Check State Transition Path:** For each required state between current and target:

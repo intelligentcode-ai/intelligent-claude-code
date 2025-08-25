@@ -44,17 +44,7 @@ Think of PRBs as "everything a specialist needs to complete the work in one pass
 - Code refactoring and optimization
 - Triggers: "Implement...", "Fix the bug in...", "Refactor..."
 
-**@Backend-Developer** (Dynamic)
-- Server-side development
-- API design and implementation
-- Database interactions
-- Auto-created when backend expertise needed
-
-**@Frontend-Developer** (Dynamic)
-- UI/UX implementation
-- Client-side logic
-- User interaction handling
-- Auto-created when frontend expertise needed
+*Note: Backend and Frontend specialists are created dynamically as @[Technology]-Developer when specific technology expertise is needed (e.g., @React-Developer, @Node-Developer, @Vue-Developer)*
 
 ### Infrastructure & Operations
 **@System-Engineer**
@@ -115,7 +105,7 @@ Think of PRBs as "everything a specialist needs to complete the work in one pass
 
 ## Dynamic Specialists
 
-When a task requires expertise not covered by the 14 core roles, the system automatically creates ultra-experienced specialists:
+When technology expertise is needed, the system ALWAYS creates ultra-experienced specialists for ANY domain. This is not based on capability thresholds - specialists are created when PM + Architect determine technology expertise will improve execution:
 
 ```
 Task: "Implement GraphQL subscriptions"

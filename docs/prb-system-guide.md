@@ -13,6 +13,8 @@ The **Product Requirement Blueprint (PRB)** system replaces complex multi-step w
 5. **Project-Adaptive** - Respects your structure and standards
 6. **Version-Controlled Memory** - Team learnings shared via git
 7. **Systematic Validation** - Evidence-based completion verification with comprehensive checks
+8. **Template Enforcement** - Mandatory template usage with zero-tolerance blocking
+9. **Configuration Embedding** - Complete config resolution at generation time, no runtime lookups
 
 ## How It Works
 
@@ -33,12 +35,14 @@ System automatically analyzes complexity:
 - Coordination requirements
 
 ### 3. PRB Generation
-Appropriate template selected based on complexity:
-- **Nano (0-2)**: Trivial one-line changes
-- **Tiny (3-5)**: Simple single-file tasks
-- **Medium (6-15)**: Standard features
-- **Large (16-30)**: Complex with sub-PRBs
-- **Mega (30+)**: System-wide changes
+Mandatory template selected from src/prb-templates/ based on complexity:
+- **Nano (0-2)**: Trivial one-line changes - 4-step execution process
+- **Tiny (3-5)**: Simple single-file tasks - 7-step execution process
+- **Medium (6-15)**: Standard features - 9-step execution process
+- **Large (16-30)**: Complex with sub-PRBs - Sequential coordination
+- **Mega (30+)**: System-wide changes - Epic-level coordination
+
+**Key Enhancement from STORY-008**: All templates now use standardized execution processes with mandatory template usage and complete placeholder resolution at generation time.
 
 ### 4. Context Integration
 PRB includes everything from your project:
@@ -57,12 +61,15 @@ The system automatically discovers and injects relevant methodological approache
 - **Replaces template placeholders** with dynamic content
 - **No template modification needed** - system handles injection automatically
 
-### 5. Specialist Execution
-Appropriate @Role executes with full context:
-- No workflow steps to follow
-- Complete blueprint for implementation
-- Built-in validation criteria
-- Automatic learning capture
+### 5. Agent System Execution
+PRBs execute through the 14-role virtual team system:
+- **Direct @Agent Communication**: Natural @Role mentions trigger Task tool subagent creation
+- **Context Preservation**: Complete PRB context passed to executing subagent
+- **Behavioral Patterns**: Embedded behavioral patterns guide specialist execution
+- **Dynamic Specialist Creation**: Unlimited specialists created when technology expertise needed
+- **Self-Contained Execution**: No workflow steps, complete blueprint for implementation
+- **Built-in Validation**: Evidence-based completion verification
+- **Automatic Learning Capture**: Successful patterns stored in memory/
 
 ## PRB Structure
 

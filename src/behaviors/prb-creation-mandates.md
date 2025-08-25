@@ -24,7 +24,7 @@
 - Complete project context gathering and analysis
 - Placeholder resolution with actual configuration values
 
-**BLOCKED:** Task tool CANNOT create PRBs due to isolated context limitations.
+**BLOCKED:** Subagents CANNOT create PRBs due to task-specific context limitations.
 
 ## MANDATORY TEMPLATE USAGE WITH PLACEHOLDER RESOLUTION
 
@@ -56,11 +56,13 @@
    - [PROJECT_ROOT] → actual project root path
    - [CURRENT_DATE] → actual system date
    - [ALL-SETTINGS] → actual configuration object
+   - [TECHNOLOGY_DOMAINS] → actual technology domains for unlimited specialist creation
 6. **Embed Complete Context**: All config values embedded in PRB complete_context
-7. **Validate NO Placeholders**: Ensure ZERO unresolved placeholders remain
-8. **Validate All Sections**: Ensure ALL mandatory template sections present
-9. **Document Template Source**: Record template used in PRB metadata
-10. **Block Runtime Config**: Ensure NO config lookups needed during execution
+7. **Embed Specialization Context**: Technology domains and unlimited specialist creation instructions embedded
+8. **Validate NO Placeholders**: Ensure ZERO unresolved placeholders remain
+9. **Validate All Sections**: Ensure ALL mandatory template sections present
+10. **Document Template Source**: Record template used in PRB metadata
+11. **Block Runtime Config**: Ensure NO config lookups needed during execution
 
 **ABSOLUTE BLOCKING (ZERO TOLERANCE):**
 - ❌ Manual PRB structure creation
@@ -270,8 +272,12 @@ complete_context:
 - **NAME_EXISTS:** "❌ PRB name already exists: {name}"
 - **NUMBERING_CONFLICT:** "❌ Cannot generate unique number for parent: {parent_id}"
 
-## Available Tools
-Use these commands: `/icc-analyze-complexity`, `/icc-create-prb`, `/icc-think-sequential`, `/icc-validate-context`, `/icc-validate-prb-name`
+## Natural Interaction Patterns
+PRB creation responds to natural language patterns:
+- "Create PRB for [work description]" → Complexity analysis and template selection
+- "Break down STORY-X" → @PM story analysis and PRB generation 
+- "@Role implement [feature]" → Role assignment and PRB creation
+- Work requests automatically trigger appropriate PRB generation with embedded context
 
 ---
 *Optimized: 113→35 lines*

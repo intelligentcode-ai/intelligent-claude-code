@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.21.1] - 2025-01-22
+
+### Fixed
+- Validated and corrected all documentation examples and commands
+- Ensured terminology consistency across all documentation files
+- Updated specialist creation policy from "capability matches" to "when technology expertise is needed"
+- Added missing commands to commands-reference.md (/icc-create-specialist, /icc-create-dynamic-specialist, /icc-rename-work-items, /icc-think-sequential)
+- Removed non-existent commands from documentation (/icc-enable-l3-autonomous, /icc-validate-template-usage, /icc-check-placeholder-resolution)
+- Fixed repository URLs throughout documentation (github.com/intelligentcode-ai/intelligent-claude-code.git)
+- Fixed capitalization inconsistency in user-guide.md
+- Corrected virtual-team-guide.md to properly reflect dynamic specialist creation
+
 ## [6.17.1] - 2025-08-11
 
 ### Changed
@@ -18,6 +30,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Separated git operations into distinct commit and push steps for better process control
 
 ## [Unreleased]
+
+## [6.22.0] - 2025-01-22
+
+### Added
+- Comprehensive troubleshooting guide with common issues and solutions
+- System architecture documentation with component diagrams and interactions
+- Enhanced installation guide with verification procedures
+
+## [6.21.1] - 2025-01-22
+
+### Added
+- Technical documentation updates for commands, configuration, and PRB system
+- Enhanced command reference with agent system integration patterns
+- Template validation commands documentation (/icc-validate-template-usage, /icc-check-placeholder-resolution)
+- L3 autonomous mode configuration documentation
+- Agent system configuration with dynamic specialist creation settings
+
+### Changed
+- Updated docs/commands-reference.md with agent communication patterns and template validation
+- Enhanced docs/configuration-guide.md with agent system and template resolution configuration
+- Refreshed docs/prb-system-guide.md for template enforcement and agent execution
+- Improved docs/prb-templates-guide.md with validation requirements and agent integration
 
 ## [6.21.0] - 2025-01-13
 
