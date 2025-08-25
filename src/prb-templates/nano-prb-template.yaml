@@ -1,11 +1,12 @@
 # Nano PRB Template - Trivial Changes (0-2 points)
 # For simple one-line fixes, typos, and minimal adjustments
 
+# === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+title: "[ROLE] [DESCRIPTION]"
 type: nano-prb
 complexity: trivial
-priority: "[PRIORITY_LEVEL]"
-title: "[ROLE] [DESCRIPTION]"
+priority: normal
 
 # MANDATORY: Complete Context Section
 complete_context:
@@ -30,42 +31,22 @@ complete_context:
     unlimited_domains: "Support ANY technology domain through dynamic specialist creation"
     role_assignment: "PM + Specialist Architect determine when specialists should be created"
 
-# MANDATORY: Requirements Section  
-requirements:
-  functional:
-    - "[SPECIFIC_CHANGE_NEEDED]"
-  processual:
-    - "Apply git_privacy setting for commit messages"
-    - "Respect branch protection if enabled"
+# === WORK SPECIFICATION (@PM COORDINATES, ASSIGNED ROLE ANALYZES) ===
+user_request: "[USER_REQUEST]"
+success_criteria: "[SUCCESS_CRITERIA]"
+target_file: "[TARGET_FILE]"
+change_needed: "[WHAT_TO_CHANGE]"
 
-# ========================================
-# EXECUTION PROCESS: 4 CLEAR STEPS
-# ========================================
+# === EXECUTION PATTERN (KEEP AS-IS) ===
+execution_steps:
+  - "Check memory/[TOPIC]/ for similar patterns"
+  - "Make the specified change to target file"
+  - "Validate change works as expected"
+  - "Commit with format: [ID]: [DESCRIPTION]"
+  - "Push to default branch"
 
-## STEP 1: KNOWLEDGE
-knowledge_search:
-  memory_check: "Quick check in memory/[topic]/ for similar changes"
-  patterns: "Review existing patterns briefly"
-
-## STEP 2: IMPLEMENTATION
-implementation:
-  target_file: "[FILE_PATH]"
-  change_description: "[WHAT_TO_CHANGE]"
-  validation: "[HOW_TO_VERIFY]"
-
-## STEP 3: GIT COMMIT
-git_commit:
-  commit_message: "[ID]: [DESCRIPTION]"
-  privacy_filter: "[FROM_CONFIG]"
-  action: "Commit changes with clean message (no AI mentions)"
-
-## STEP 4: GIT PUSH
-git_push:
-  action: "Push to default branch"
-
-# EXECUTION CHECKLIST
-execution_checklist: |
-  ☐ Step 1 - Knowledge: Quick memory check completed
-  ☐ Step 2 - Implementation: Change made and validated
-  ☐ Step 3 - Git Commit: Changes committed with privacy filter
-  ☐ Step 4 - Git Push: Changes pushed to remote
+validation_checklist:
+  - "Change implemented correctly"
+  - "No unintended side effects"
+  - "Git privacy settings applied"
+  - "Change pushed to remote"
