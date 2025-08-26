@@ -5,7 +5,9 @@
 ## Imports
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/enforcement-rules.md
+@./shared-patterns/error-monitoring-patterns.md
 @./prb-breakdown-patterns.md
+@./agent-error-detection.md
 
 ## Creation vs Execution Patterns
 
@@ -99,12 +101,41 @@
 5. **Size Validator:** Check PRB complexity ≤15 points, auto-breakdown if needed
 6. **System Nature Validator:** Check role assignments align with system nature
 7. **PM+Architect Validator:** Ensure collaboration process documented
-8. **Auto-Generator:** Create PRB if missing
+8. **Error Detection Monitor:** Real-time agent error detection during PRB execution
+9. **Auto-Generator:** Create PRB if missing
+
+## Error Detection Integration
+
+**PRINCIPLE:** Error detection operates alongside enforcement to identify agent mistakes during PRB execution and trigger adaptation mechanisms.
+
+### Error Detection Triggers
+**INTEGRATED MONITORING:**
+- **Technical Errors**: Tool failures, permission issues, syntax errors
+- **Requirement Deviations**: Agent work outside PRB scope or requirements
+- **Behavioral Violations**: Process skips, template bypasses, configuration ignores
+- **Context Loss**: Agent confusion about PRB requirements or objectives
+- **Critical Violations**: Security risks, data integrity threats, system damage
+
+### Adaptation Response Integration
+**RESPONSE ESCALATION:**
+1. **Auto-Correction**: Fix correctable errors automatically (syntax, paths, formats)
+2. **Context Refresh**: Re-provide PRB context when agent loses track
+3. **Process Redirect**: Guide agent back to correct workflow or requirements
+4. **Human Escalation**: Pause execution for complex issues requiring intervention
+5. **Agent Replacement**: Replace agent with fresh context for repeated failures
+
+### Error Pattern Learning
+**MEMORY INTEGRATION:**
+- Store successful error detection and correction patterns
+- Track agent performance patterns for role assignment optimization
+- Learn from error patterns to improve proactive prevention
+- Capture adaptation mechanism effectiveness for continuous improvement
 
 ## Real-Time Interception
-**Monitor:** ALL execution attempts for PRB compliance
+**Monitor:** ALL execution attempts for PRB compliance AND error detection
 **Block:** No direct work without PRB
 **Correct:** Generate appropriate PRB with subagent patterns
+**Adapt:** Trigger adaptation mechanisms when errors detected
 
 ## Subagent Execution Patterns
 
@@ -220,6 +251,9 @@
 - **Learning**: Track patterns, improve detection
 - **Autonomy**: L1=approval, L2=architect, L3=auto
 - **Templates**: Use hierarchy loading
+- **Error Detection**: Real-time monitoring and adaptation mechanisms
+- **Memory System**: Error pattern learning and performance optimization
+- **Adaptation Triggers**: Context refresh, agent replacement, human escalation
 
 ---
 *Optimized: 506→~130 lines*
