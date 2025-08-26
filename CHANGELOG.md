@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.12] - 2025-08-26
+
+### Added
+- PRB adaptation behavioral patterns for user corrections and new information
+- Dynamic PRB update mechanisms for real-time context modification
+- Error detection patterns that trigger automatic PRB adaptation
+- Context propagation ensures updated information reaches execution
+- Seamless agent restart patterns with updated context
+
 ## [7.3.11] - 2025-01-26
 
 ### Fixed

@@ -6,6 +6,10 @@
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/enforcement-rules.md
 @./prb-breakdown-patterns.md
+@./prb-adaptation-behavior.md
+@./user-correction-integration.md
+@./dynamic-prb-updates.md
+@./agent-restart-patterns.md
 
 ## Creation vs Execution Patterns
 
@@ -99,7 +103,8 @@
 5. **Size Validator:** Check PRB complexity ≤15 points, auto-breakdown if needed
 6. **System Nature Validator:** Check role assignments align with system nature
 7. **PM+Architect Validator:** Ensure collaboration process documented
-8. **Auto-Generator:** Create PRB if missing
+8. **Adaptation Monitor:** Detect user corrections and context update needs
+9. **Auto-Generator:** Create PRB if missing
 
 ## Real-Time Interception
 **Monitor:** ALL execution attempts for PRB compliance
@@ -214,12 +219,47 @@
 
 **Task Scope Validation**: See shared-patterns/enforcement-rules.md
 
+## PRB Adaptation Integration
+
+**ADAPTIVE ENFORCEMENT:** PRB enforcement must work seamlessly with adaptation patterns when users provide corrections or new information.
+
+### Adaptation-Aware Enforcement
+**ADAPTATION TRIGGERS:**
+- **User Corrections**: Detected during PRB execution via user-correction-integration.md patterns
+- **Context Updates**: Applied through dynamic-prb-updates.md mechanisms  
+- **Agent Restart**: Managed by agent-restart-patterns.md for seamless continuation
+- **Error Response**: Coordinated with existing error detection and monitoring systems
+
+### Enforcement During Adaptation
+**MANDATORY COMPLIANCE:**
+- **Template Preservation**: Updated PRBs maintain template compliance during adaptation
+- **Configuration Embedding**: Dynamic updates preserve embedded configuration values
+- **Placeholder Resolution**: No new placeholders introduced during PRB adaptation
+- **Complexity Validation**: Updated PRBs validated for complexity limits, auto-breakdown if needed
+
+### Adaptation Workflow Integration
+**ENFORCEMENT COORDINATION:**
+1. **Adaptation Detection**: Multi-layer detection includes user correction monitoring
+2. **PRB Pause**: Temporarily pause enforcement during dynamic updates
+3. **Update Validation**: Apply full enforcement validation to updated PRB content
+4. **Agent Restart**: Coordinate enforcement with seamless agent restart patterns
+5. **Resume Enforcement**: Continue full enforcement with updated PRB context
+
+### Error Prevention During Adaptation
+**ADAPTATION-SPECIFIC BLOCKING:**
+- **Corrupted Updates**: Block PRB updates that violate template structure
+- **Invalid Corrections**: Prevent adaptations that create logical inconsistencies
+- **Scope Overflow**: Auto-breakdown adaptations that exceed complexity limits
+- **Context Loss**: Block updates that remove essential PRB information
+
 ## Integration Points
 
 - **PRB Execution**: Import completion checklist
 - **Learning**: Track patterns, improve detection
 - **Autonomy**: L1=approval, L2=architect, L3=auto
 - **Templates**: Use hierarchy loading
+- **Adaptation**: User corrections, dynamic updates, agent restart patterns
+- **Error Detection**: Coordinate adaptation with error monitoring and response
 
 ---
 *Optimized: 506→~130 lines*
