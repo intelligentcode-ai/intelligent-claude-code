@@ -66,6 +66,18 @@ decomposition:
     - component: "[INTEGRATION]"
       prb_type: "tiny"
       dependencies: ["[COMPONENT_1]", "[COMPONENT_2]"]
+  validation_enforcement:
+    mandatory_decomposition: true
+    blocking_requirements:
+      - "REQUIRED: Large PRBs MUST be broken into ≤15 point sub-PRBs"
+      - "REQUIRED: Each sub-component must have clear dependencies"
+      - "REQUIRED: Integration component must coordinate all parts"
+      - "REQUIRED: Sub-PRB naming must follow parent-child format"
+    sub_prb_limits:
+      - "All sub-PRBs must be ≤15 complexity points"
+      - "Sub-PRBs must use appropriate templates (medium/tiny)"
+      - "Dependencies must be explicitly documented"
+    error_message: "❌ Large PRBs MUST be decomposed into manageable sub-PRBs - direct execution FORBIDDEN"
 
 # Coordination Strategy
 coordination:
@@ -85,18 +97,52 @@ git_operations:
   commit_format: "[ID]: [DESCRIPTION]"
   privacy_filter: "[FROM_CONFIG]"
   coordination: "Merge sub-components to feature branch"
+  validation_enforcement:
+    mandatory_git_ops: true
+    blocking_requirements:
+      - "REQUIRED: Feature branch must be created for coordination"
+      - "REQUIRED: Sub-component branches must be managed"
+      - "REQUIRED: Commit format must follow [ID]: [DESCRIPTION] pattern"
+      - "REQUIRED: Privacy filter must be applied according to config"
+    disallowed_entries:
+      - "No git operations needed"
+      - "Skip git workflow"
+      - "Manual file changes only"
+    error_message: "❌ Large PRBs MUST follow git workflow - 'No git operations needed' is FORBIDDEN"
 
 # MANDATORY: Review Process
 review_process:
   type: "architectural_review"
   reviewer: "[PRE_ASSIGNED_ARCHITECT]"
   focus: "Component integration and system design"
+  validation_enforcement:
+    mandatory_review: true
+    blocking_requirements:
+      - "REQUIRED: Architectural review must be completed before merge"
+      - "REQUIRED: Component integration validation must pass"
+      - "REQUIRED: System design review must be documented"
+    disallowed_entries:
+      - "No review needed"
+      - "Review not required"
+      - "Skip architectural review"
+    error_message: "❌ Large PRBs MUST have architectural review - 'No review needed' is FORBIDDEN"
 
 # MANDATORY: Documentation Updates
 documentation_updates:
   changelog: "Document major feature addition"
   architecture_docs: "Update system architecture if needed"
   user_docs: "Update user-facing documentation"
+  validation_enforcement:
+    mandatory_docs: true
+    blocking_requirements:
+      - "REQUIRED: CHANGELOG must be updated with major feature addition"
+      - "REQUIRED: Architecture docs must be updated if system design changes"
+      - "REQUIRED: User documentation must reflect new functionality"
+    disallowed_entries:
+      - "No documentation needed"
+      - "Documentation not required"
+      - "Skip documentation updates"
+    error_message: "❌ Large PRBs MUST update documentation - 'No documentation needed' is FORBIDDEN"
 
 # Execution Strategy
 execution_strategy: |
@@ -108,10 +154,12 @@ execution_strategy: |
   
 # EXECUTION CHECKLIST
 execution_checklist: |
-  ☐ Feature branch created for coordination
-  ☐ Sub-PRBs generated with proper dependencies
-  ☐ Components executed in correct order
-  ☐ Integration completed and tested
-  ☐ Documentation updated comprehensively
-  ☐ Architectural review completed
+  ☐ Feature branch created for coordination (MANDATORY - validation enforced)
+  ☐ Sub-PRBs generated with proper dependencies (MANDATORY - decomposition enforced)
+  ☐ Components executed in correct order (MANDATORY - coordination validation)
+  ☐ Integration completed and tested (MANDATORY - integration validation)
+  ☐ Documentation updated comprehensively (MANDATORY - no "No documentation needed")
+  ☐ Architectural review completed (MANDATORY - no "Review not required")
+  ☐ Git operations followed properly (MANDATORY - no "No git operations needed")
+  ☐ All validation enforcement rules verified
   ☐ Pull request created with detailed description

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.2] - 2025-08-26
+
+### Fixed
+- Added validation enforcement to large and mega PRB templates
+- Implemented complex workflow validation with comprehensive blocking requirements
+- Completed BUG-022 validation gap fixes across all template complexity levels
+- Added sub-PRB coordination validation for large templates
+- Added architectural board review enforcement for mega templates
+- Enforced mandatory git operations, documentation updates, and SME reviews
+
 ## [7.3.1] - 2025-08-26
 
 ### Fixed
