@@ -31,7 +31,11 @@
 3. **Search Each Path:** Check each path in hierarchy order:
    - If template file exists at current path, load and return that template
    - If not found, continue to next path in hierarchy
-4. **Handle Not Found:** If template not found in any path, show error: "Template not found: {template_name}"
+4. **Load Project Context:** Parse CLAUDE.md from project root and .claude/ for context integration:
+   - Extract project_overview, work_location, key_context, system_features
+   - Gather system_nature, project boundaries, and behavioral constraints
+   - Prepare context values for placeholder resolution
+5. **Handle Not Found:** If template not found in any path, show error: "Template not found: {template_name}"
 
 ## Configuration Integration
 
