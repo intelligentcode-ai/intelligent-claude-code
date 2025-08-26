@@ -79,7 +79,7 @@ LEARN TO DISTINGUISH:
 - branch_protection: false (boolean)
 - default_branch: "main" (string)
 - default_branch: "master" (string)
-- project_root: "/Users/username/project" (absolute path)
+- project_root: "/absolute/path/to/project" (absolute path)
 
 @PM BEHAVIORAL PATTERN:
 1. Look at each configuration line

@@ -71,37 +71,14 @@
 
 ## Automatic Breakdown Process
 
-### Breakdown Algorithm
-**AUTOMATIC BREAKDOWN PROCESS:**
+### Breakdown Process
 
-**1. Complexity Analysis:**
-- Calculate total PRB complexity score
-- Identify complexity sources (files, lines, APIs, database, security)
-- Determine primary complexity drivers
-
-**2. Breakdown Strategy Selection:**
-- **Domain-driven:** If spanning multiple functional domains
-- **Layer-driven:** If spanning multiple architectural layers  
-- **Complexity-driven:** If high complexity from mixed sources
-- **Feature-driven:** If spanning multiple distinct features
-
-**3. Logical Split Point Identification:**
-- **Domain boundaries:** Authentication vs Authorization
-- **Layer boundaries:** Frontend vs Backend vs Database
-- **Feature boundaries:** User Management vs Permissions
-- **Technology boundaries:** API vs UI vs Database
-
-**4. Sub-PRB Generation:**
-- **Calculate sub-complexity:** Ensure each sub-PRB ≤15 points
-- **Generate naming:** Sequential numbering (PRB-001, PRB-002, etc.)
-- **Maintain relationships:** Document dependencies between sub-PRBs
-- **Validate completeness:** Ensure all original requirements covered
-
-**5. Dependency Management:**
-- **Execution order:** Define logical execution sequence
-- **Prerequisites:** Document what must be completed first
-- **Integration points:** Identify where sub-PRBs connect
-- **Testing coordination:** Ensure integration testing coverage
+**Algorithm Steps:**
+1. **Analyze complexity sources** and select breakdown strategy
+2. **Identify split boundaries** (domain, layer, feature, or technology)
+3. **Generate sub-PRBs** with sequential naming and ≤15 point validation
+4. **Document dependencies** and execution order
+5. **Validate completeness** of requirements coverage
 
 ### Breakdown Validation Rules
 
@@ -118,93 +95,19 @@
 - **Circular dependencies:** If sub-PRBs have circular dependencies, BLOCK
 - **Invalid naming:** If naming doesn't follow format, auto-correct or BLOCK
 
-## Breakdown Templates by Complexity
+## Breakdown Templates
 
-### 16-20 Points: Simple Split Pattern
-**Template: Two-Part Breakdown**
-```yaml
-original_complexity: 18 points
-breakdown_strategy: domain_split
-sub_prbs:
-  - name: "{PARENT}-PRB-001-{primary_domain}-{date}"
-    complexity: "10-12 points"
-    focus: "Primary domain implementation"
-  - name: "{PARENT}-PRB-002-{secondary_domain}-{date}"
-    complexity: "6-8 points" 
-    focus: "Secondary domain and integration"
-```
+**16-20 Points:** Two-part domain split (10-12 + 6-8 points)
+**21-30 Points:** Three-part layer split (database, API, frontend layers)
+**31-45 Points:** Four-part feature split (core + supporting + integration + testing)
+**46+ Points:** Epic-level breakdown (consider story-level decomposition first)
 
-### 21-30 Points: Layer Split Pattern
-**Template: Three-Part Breakdown**
-```yaml
-original_complexity: 25 points
-breakdown_strategy: layer_split
-sub_prbs:
-  - name: "{PARENT}-PRB-001-database-layer-{date}"
-    complexity: "8-10 points"
-    focus: "Database schema and operations"
-  - name: "{PARENT}-PRB-002-api-layer-{date}"
-    complexity: "10-12 points"
-    focus: "API endpoints and business logic"
-  - name: "{PARENT}-PRB-003-frontend-layer-{date}"
-    complexity: "5-8 points"
-    focus: "UI components and client logic"
-```
+## Common Patterns
 
-### 31-45 Points: Feature Split Pattern
-**Template: Four-Part Breakdown**
-```yaml
-original_complexity: 40 points
-breakdown_strategy: feature_split
-sub_prbs:
-  - name: "{PARENT}-PRB-001-core-feature-{date}"
-    complexity: "12-14 points"
-    focus: "Core feature implementation"
-  - name: "{PARENT}-PRB-002-supporting-features-{date}"
-    complexity: "10-12 points" 
-    focus: "Supporting feature implementations"
-  - name: "{PARENT}-PRB-003-integration-logic-{date}"
-    complexity: "8-10 points"
-    focus: "Feature integration and coordination"
-  - name: "{PARENT}-PRB-004-testing-validation-{date}"
-    complexity: "6-8 points"
-    focus: "Comprehensive testing and validation"
-```
-
-### 46+ Points: Epic Split Pattern
-**Template: Multi-Part Epic Breakdown**
-```yaml
-original_complexity: 60 points
-breakdown_strategy: epic_split
-approach: "Break into multiple stories first, then PRBs from each story"
-recommendation: "Consider if this should be broken down at STORY level instead"
-sub_prbs: "5-8 PRBs depending on epic scope"
-```
-
-## Common Breakdown Patterns
-
-### Authentication System Breakdown
-**Pattern: Authentication (25 points) → 3 PRBs**
-- **Auth-Backend (12 points):** JWT tokens, middleware, validation
-- **Auth-Frontend (8 points):** Login forms, session management  
-- **Auth-Integration (5 points):** Route protection, role management
-
-### API Integration Breakdown
-**Pattern: API Integration (22 points) → 3 PRBs**
-- **API-Client-Setup (7 points):** HTTP client, connection management
-- **Data-Processing (10 points):** Request/response handling, data transformation
-- **Error-Recovery (5 points):** Error handling, retry logic, fallback
-
-### Database Migration Breakdown
-**Pattern: Database Migration (18 points) → 2 PRBs**
-- **Schema-Changes (12 points):** Table modifications, index updates
-- **Data-Migration (6 points):** Data transformation, validation, rollback
-
-### Full-Stack Feature Breakdown
-**Pattern: Full-Stack Feature (28 points) → 3 PRBs**
-- **Backend-Implementation (12 points):** API, business logic, data layer
-- **Frontend-Implementation (10 points):** UI components, state management
-- **Integration-Testing (6 points):** End-to-end testing, validation
+**Authentication (25 pts):** Backend (12) + Frontend (8) + Integration (5)
+**API Integration (22 pts):** Client Setup (7) + Data Processing (10) + Error Handling (5)
+**Database Migration (18 pts):** Schema Changes (12) + Data Migration (6)
+**Full-Stack Feature (28 pts):** Backend (12) + Frontend (10) + Testing (6)
 
 ## Error Handling and Fallbacks
 

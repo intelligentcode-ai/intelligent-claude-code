@@ -62,18 +62,15 @@
 - Global configuration changes without explicit user request
 - Subagent working directories outside project boundaries
 
-**Boundary Validation Process:**
+**BOUNDARY VALIDATION RULES:**
+- **Block**: Unauthorized ~/.claude/ writes (except installation/global config)
+- **Block**: Operations outside project root (except authorized ~/.claude/ reads)
+- **Allow**: Operations within project boundaries
+- **Allow**: Authorized ~/.claude/ read operations for configuration
 
-**Steps to Validate Project Boundaries:**
-1. **Check Each File Operation:** Review all planned file operations in the work context
-2. **Block Unauthorized ~/.claude/ Writes:** 
-   - When operation writes to ~/.claude/ directory
-   - When operation is not installation or explicit global config
-   - Show error: "Write to ~/.claude/ forbidden"
-3. **Block External Directory Operations:**
-   - When operation path is outside project root and not ~/.claude/ directory
-   - Show error: "Operation outside project scope"
-4. **Allow Valid Operations:** Operations within project boundaries or authorized ~/.claude/ access proceed normally
+**ERROR MESSAGES:**
+- "Write to ~/.claude/ forbidden" for unauthorized global writes
+- "Operation outside project scope" for external directory operations
 
 ### Configuration Value Loading
 **REQUIRED**: All configuration values must be actual, not placeholders
@@ -84,11 +81,11 @@
 - "[PROJECT_ROOT]" → Use actual project root path
 - "[USER_REQUEST]" → Use actual user requirements
 
-**Configuration Loading Process:**
-1. Load config hierarchy: embedded → project → user → defaults
-2. Extract specific values: git_privacy, branch_protection, default_branch, autonomy_level
-3. Replace ALL placeholder values with actual values
-4. Validate no placeholders remain
+**CONFIGURATION LOADING:**
+- **Hierarchy**: embedded → project → user → defaults
+- **Key Values**: git_privacy, branch_protection, default_branch, autonomy_level
+- **Resolution**: Replace ALL placeholders with actual values
+- **Validation**: Ensure no placeholder patterns remain
 
 ### Critical File Identification
 **REQUIRED**: Relevant files with actual content samples
@@ -101,11 +98,11 @@
 - **Sample:** Actual content from file (first 200 chars)
 - **Relevance:** Why this file matters for the work
 
-**File Discovery Process:**
-1. Analyze work request for file types/patterns needed
-2. Search project for matching files
-3. Sample content from each relevant file
-4. Document purpose and relevance
+**FILE DISCOVERY:**
+- Analyze work request for relevant file types/patterns
+- Search project for matching files
+- Sample content from relevant files (first 200 chars)
+- Document file purpose and work relevance
 
 ### User Requirements Capture
 **REQUIRED**: Clear, specific user requirements
@@ -122,18 +119,18 @@
 ### CLAUDE.md Context Extraction
 **REQUIRED**: Project context from CLAUDE.md file
 
-**CLAUDE.md Parsing Process:**
-1. **Project Overview Extraction**: Parse "## Project Overview" section for system description
-2. **Work Location Detection**: Find work guidance, location constraints, and boundaries
-3. **Implementation Notes**: Extract key implementation patterns and requirements
-4. **System Nature Analysis**: Determine if AI-AGENTIC, CODE-BASED, or HYBRID from overview content
-5. **Constraint Identification**: Capture any project-specific constraints or limitations
+**CLAUDE.md PARSING:**
+- **Project Overview**: Parse "## Project Overview" section for system description
+- **Work Location**: Extract work guidance, constraints, and boundaries
+- **Implementation Notes**: Key patterns and requirements
+- **System Nature**: Determine AI-AGENTIC, CODE-BASED, or HYBRID
+- **Constraints**: Project-specific limitations and guidelines
 
-**Validation Requirements:**
-- **CLAUDE.md exists**: File must be present in project root
-- **Content extracted**: All relevant sections parsed and captured
-- **No placeholders**: All extracted content must be actual text, not template patterns
-- **Context completeness**: Project overview, work location, key context, and system features all captured
+**VALIDATION REQUIREMENTS:**
+- CLAUDE.md exists in project root
+- All relevant sections extracted
+- No placeholder patterns in extracted content
+- Complete context captured (overview, location, key context, features)
 
 ### Project Scope Boundary Validation
 **REQUIRED**: Enhanced validation of project scope boundaries and work constraints
@@ -144,18 +141,17 @@
 - **Feature Scope Compliance**: Work must align with documented system features and capabilities
 - **Implementation Constraints**: Work must respect documented implementation constraints
 
-**Boundary Validation Process:**
-1. **Extract Work Boundaries**: Parse CLAUDE.md work location and constraint sections
-2. **Validate Work Scope**: Ensure PRB work aligns with documented project scope
-3. **Check System Alignment**: Verify work type matches system nature (AI-AGENTIC behavioral patterns, CODE-BASED implementation, etc.)
-4. **Feature Compatibility**: Ensure work enhances or maintains documented system features
-5. **Constraint Compliance**: Verify work respects project-specific limitations and guidelines
+**PROJECT SCOPE VALIDATION:**
+- **Work Boundaries**: Align with CLAUDE.md documented scope
+- **System Alignment**: Work type matches system nature (AI-AGENTIC vs CODE-BASED)
+- **Feature Compatibility**: Work maintains/enhances documented features
+- **Constraint Compliance**: Respect project limitations and guidelines
 
-**Project Scope Violations:**
-- **SCOPE_BOUNDARY_VIOLATION**: Work extends beyond documented project boundaries
-- **SYSTEM_NATURE_MISMATCH**: Work type conflicts with identified system nature
-- **FEATURE_SCOPE_CONFLICT**: Work conflicts with documented system features
-- **CONSTRAINT_VIOLATION**: Work violates documented implementation constraints
+**SCOPE VIOLATIONS:**
+- **SCOPE_BOUNDARY_VIOLATION**: Work beyond project boundaries
+- **SYSTEM_NATURE_MISMATCH**: Work conflicts with system nature
+- **FEATURE_SCOPE_CONFLICT**: Work conflicts with system features
+- **CONSTRAINT_VIOLATION**: Work violates implementation constraints
 
 ## Validation Logic
 
@@ -166,10 +162,9 @@
 - Template patterns: "[AUTO]", "[PRIORITY_LEVEL]", "[ROLE]"
 
 **VALIDATION PROCESS**:
-1. Load template content
-2. Search for all "[...]" patterns
-3. Validate each pattern has been replaced with actual values
-4. Block if any placeholders remain
+- Load template content and scan for "[...]" patterns
+- Validate each pattern replaced with actual values
+- Block creation if any placeholders remain
 
 ### System Nature Validation
 **CHECK**:
@@ -214,10 +209,10 @@
 - `PROJECT_ROOT_INVALID`: "❌ Invalid: {path}"
 - `REQUIREMENTS_VAGUE`: "❌ Too generic"
 
-## Commands
-- `/icc-validate-context [template]`
-- `/icc-gather-context [request]`
-- `/icc-detect-system-nature`
+## Integration
+
+**AUTOMATIC VALIDATION:**
+Context validation integrated into PRB creation pipeline - ensures complete context before generation.
 
 ---
-*Optimized: 210→~40 lines*
+*Context validation patterns for intelligent-claude-code system*
