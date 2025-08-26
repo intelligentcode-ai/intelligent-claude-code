@@ -53,4 +53,4 @@
 - **Git:** L1=each command, L2=commits auto, L3=full auto
 
 ---
-*Optimized: 137→52 lines*
+*Autonomy patterns for intelligent-claude-code system*

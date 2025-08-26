@@ -120,10 +120,5 @@
 - `PROJECT_ROOT_INVALID`: "❌ Invalid: {path}"
 - `REQUIREMENTS_VAGUE`: "❌ Too generic"
 
-## Commands
-- `/icc-validate-context [template]`
-- `/icc-gather-context [request]`
-- `/icc-detect-system-nature`
-
 ---
-*Optimized: 210→~40 lines*
+*Context validation patterns for intelligent-claude-code system*

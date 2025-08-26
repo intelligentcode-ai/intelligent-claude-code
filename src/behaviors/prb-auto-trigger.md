@@ -7,8 +7,7 @@
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
-@./naming-enforcement-behavior.md
-@./prb-breakdown-patterns.md
+@./naming-numbering-system.md
 
 ## Detection → Memory → PRB → Execution
 
@@ -31,7 +30,7 @@
 **CRITICAL:** Auto-breakdown PRBs if complexity > 15 points:
 - **Detection:** After complexity calculation, check if score > 15
 - **Action:** AUTOMATIC BREAKDOWN into multiple PRBs ≤15 points each
-- **Process:** Use prb-breakdown-patterns.md for logical decomposition
+- **Process:** Use logical decomposition patterns for breakdown
 - **Result:** Generate multiple sequential PRBs under same parent
 - **Fallback:** If auto-breakdown fails, BLOCK with manual breakdown request
 
@@ -56,7 +55,7 @@
 2. **Gather** complete context (MANDATORY)
 3. **Search** memory/[topic]/ and best-practices/ (MANDATORY)
 4. **Score** complexity
-5. **SIZE CHECK** - Auto-breakdown if complexity > 15 points using prb-breakdown-patterns.md
+5. **SIZE CHECK** - Auto-breakdown if complexity > 15 points using logical decomposition
 6. **Load Template** from src/prb-templates/ hierarchy ONLY
 7. **Load Complete Configuration** at generation time
 8. **Resolve ALL Placeholders** with actual config values
@@ -103,4 +102,4 @@ Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 **Pattern**: All PRBs execute via subagents with complete embedded context
 
 ---
-*Optimized: 335→~75 lines*
+*PRB auto-trigger patterns for intelligent-claude-code system*
