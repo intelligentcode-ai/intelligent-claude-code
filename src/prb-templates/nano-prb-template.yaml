@@ -50,3 +50,45 @@ validation_checklist:
   - "No unintended side effects"
   - "Git privacy settings applied"
   - "Change pushed to remote"
+
+# MANDATORY: Validation Enforcement Section
+validation_enforcement:
+  mandatory_requirements:
+    git_operations:
+      - "Git branch creation (if required by branch_protection)"
+      - "Git commit with proper message format"
+      - "Git push to remote repository"
+      blocked_patterns:
+        - "No git operations needed"
+        - "Skip git workflow"
+        - "Direct push to main"
+        - "No commit required"
+      error_message: "❌ BLOCKED: Git operations are mandatory for all PRBs. No bypass patterns allowed."
+    
+    sme_review:
+      - "Self-review checklist completion"
+      - "Code quality validation"
+      - "Requirements verification"
+      blocked_patterns:
+        - "No review needed"
+        - "Skip validation"
+        - "Self-evident changes"
+        - "Too simple for review"
+      error_message: "❌ BLOCKED: SME review processes are mandatory. All changes require validation."
+    
+    documentation:
+      - "Inline comments for complex logic"
+      - "Update relevant documentation"
+      - "Maintain code clarity"
+      blocked_patterns:
+        - "No documentation needed"
+        - "Self-documenting code"
+        - "Skip comments"
+        - "Obvious implementation"
+      error_message: "❌ BLOCKED: Documentation updates are mandatory for all changes."
+  
+  enforcement_rules:
+    - "ALL validation steps must be explicitly completed"
+    - "NO bypass language or patterns allowed in execution"
+    - "MANDATORY git workflow compliance per configuration"
+    - "REQUIRED self-review completion before marking complete"
