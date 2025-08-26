@@ -16,6 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Enables natural interactions like "@PM what story next?" without PRB requirement
   - Maintains PRB enforcement for actual implementation work
 
+- BUG-026: Comprehensive cleanup of behavioral files to remove bloat and redundancies:
+  - Removed 3,377 lines of pseudo-code functions and bash scripts
+  - Eliminated hardcoded memory paths and non-existent command references
+  - Reduced file sizes by 40-80% while preserving all enforcement capabilities
+  - Cleaned 15+ behavioral files including enforcement-rules, validation tools, and integration files
+  - Streamlined to directive-based enforcement patterns
+  - Improved token efficiency and readability
+
 ## [7.3.9] - 2025-08-26
 
 ### Fixed
