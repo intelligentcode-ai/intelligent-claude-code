@@ -11,12 +11,18 @@
 | Configuration | Actual values | No placeholders |
 | Critical Files | With samples | Must be relevant |
 | User Requirements | Clear intent | Specific criteria |
+| Project Overview | From CLAUDE.md | Must be extracted |
+| Work Location | Boundaries from CLAUDE.md | Must be captured |
+| Key Implementation Notes | From CLAUDE.md | Must be included |
 
 ## Blocked Placeholders
 - `[FROM_CONFIG]` → Load actual value
 - `[PROJECT_ROOT]` → Use absolute path
 - `[ALL-SETTINGS]` → Load specific values
 - `[USER_REQUEST]` → Capture actual request
+- `[PROJECT_OVERVIEW]` → Extract from CLAUDE.md
+- `[WORK_LOCATION]` → Extract constraints from CLAUDE.md
+- `[KEY_NOTES]` → Extract implementation notes from CLAUDE.md
 
 **Detection Logic:**
 1. Scan project root and subdirectories
@@ -110,6 +116,22 @@
 - **Success Criteria:** Specific success criteria list
 - **Clarifications:** Any assumptions or clarifications
 - **Scope Limits:** What is NOT included
+
+### CLAUDE.md Context Extraction
+**REQUIRED**: Project context from CLAUDE.md file
+
+**CLAUDE.md Parsing Process:**
+1. **Project Overview Extraction**: Parse "## Project Overview" section for system description
+2. **Work Location Detection**: Find work guidance, location constraints, and boundaries
+3. **Implementation Notes**: Extract key implementation patterns and requirements
+4. **System Nature Analysis**: Determine if AI-AGENTIC, CODE-BASED, or HYBRID from overview content
+5. **Constraint Identification**: Capture any project-specific constraints or limitations
+
+**Validation Requirements:**
+- **CLAUDE.md exists**: File must be present in project root
+- **Content extracted**: All relevant sections parsed and captured
+- **No placeholders**: All extracted content must be actual text, not template patterns
+- **Context completeness**: Project overview, work location, and key notes all captured
 
 ## Validation Logic
 

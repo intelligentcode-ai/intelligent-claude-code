@@ -30,6 +30,9 @@
 | | `[FILE_SAMPLE:path]` | Content sample from path |
 | **Search** | `[MEMORY_SEARCH:topic]` | Top memory entries |
 | | `[BEST_PRACTICES:domain]` | Relevant practices |
+| **Project** | `[PROJECT_OVERVIEW]` | Project description from CLAUDE.md |
+| | `[WORK_LOCATION]` | Work constraints from CLAUDE.md |
+| | `[KEY_NOTES]` | Implementation notes from CLAUDE.md |
 
 ## Resolution Process
 
@@ -50,17 +53,26 @@
 - **critical_files:** Identify relevant files with content samples
 - **current_date:** Get current system date in YYYY-MM-DD format
 
-**3. Perform Searches:**
+**3. Parse CLAUDE.md Project Context:**
+- **project_overview:** Extract "## Project Overview" section content
+- **work_location:** Parse work guidance and location constraints
+- **key_notes:** Extract key implementation notes and patterns
+- **project_boundaries:** Identify scope constraints and limitations
+- **system_context:** Additional context for understanding project nature
+
+**4. Perform Searches:**
 - **memory_results:** Search memory directory for relevant patterns
 - **practices_results:** Search best-practices directory for applicable approaches
 
-**4. Replace All Placeholders:**
+**5. Replace All Placeholders:**
 - **Extract Placeholders:** Identify all "[...]" patterns in template content
 - **Resolve Each:** Replace placeholder with appropriate resolved value
 - **Update Template:** Apply resolved values to template content
+- **Project Context:** Replace [PROJECT_OVERVIEW], [WORK_LOCATION], [KEY_NOTES] with extracted content
 
-**5. Validate Resolution:**
+**6. Validate Resolution:**
 - **Check Completeness:** Scan for any remaining unresolved placeholders
+- **Validate Project Context:** Ensure all CLAUDE.md content properly embedded
 - **When unresolved found:** Report resolution error "Unresolved placeholders remaining"
 - **When complete:** Return fully resolved template content
 
@@ -75,6 +87,7 @@
 | **Configuration** | Hierarchy access | git_privacy, branch_protection, autonomy_level |
 | **System Analysis** | Project-wide access | Project root, system nature, critical files |
 | **Search Operations** | Directory traversal | Memory patterns, best practices, learning history |
+| **Project Context** | CLAUDE.md parsing | Project overview, work location, key notes |
 
 ## Blocking Mechanisms
 

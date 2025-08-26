@@ -97,6 +97,34 @@ autonomy_level=$(grep "autonomy_level:" $CONFIG_SOURCE | cut -d: -f2 | tr -d ' '
 #### Step 3: Gather Project Context
 **@PM Project Analysis Process:**
 
+**CLAUDE.md Project Context Extraction:**
+```bash
+# Parse CLAUDE.md for project overview and constraints
+CLAUDE_FILE="CLAUDE.md"
+if [ -f "$CLAUDE_FILE" ]; then
+    # Extract project overview section
+    PROJECT_OVERVIEW=$(sed -n '/^## Project Overview/,/^## /p' "$CLAUDE_FILE" | grep -v "^##" | tr '\n' ' ')
+    
+    # Extract system nature from overview
+    if echo "$PROJECT_OVERVIEW" | grep -q "AI-AGENTIC\|behavioral\|memory\|PRB"; then
+        SYSTEM_NATURE="MARKDOWN-BASED AI-AGENTIC SYSTEM"
+    elif echo "$PROJECT_OVERVIEW" | grep -q "code\|implementation\|API\|database"; then
+        SYSTEM_NATURE="CODE-BASED SYSTEM"
+    else
+        SYSTEM_NATURE="HYBRID SYSTEM"
+    fi
+    
+    # Extract work location constraints
+    WORK_LOCATION=$(sed -n '/### Work Location Guidelines/,/^###\|^## /p' "$CLAUDE_FILE" | grep -v "^#" | tr '\n' ' ')
+    
+    # Extract key implementation notes
+    KEY_NOTES=$(sed -n '/### Key Implementation Notes/,/^###\|^## /p' "$CLAUDE_FILE" | grep -v "^#" | tr '\n' ' ')
+    
+    # Extract project boundaries and constraints
+    PROJECT_BOUNDARIES=$(awk '/[Bb]oundary|[Cc]onstraint|[Ss]cope/,/^##|^$/ {print}' "$CLAUDE_FILE" | grep -v "^#" | head -3)
+fi
+```
+
 **Project Root Detection:**
 ```bash
 # Get absolute project root path
@@ -145,7 +173,12 @@ FEATURE_SCOPE=$(grep -A3 "Scope:" "$STORY_FILE" || echo "Standard feature implem
 sed "s/\[FROM_CONFIG\]/$git_privacy/g" template.yaml > temp1.yaml
 sed "s/\[PROJECT_ROOT\]/$PROJECT_ROOT/g" temp1.yaml > temp2.yaml  
 sed "s/\[CURRENT_DATE\]/$CURRENT_DATE/g" temp2.yaml > temp3.yaml
-sed "s/\[SYSTEM_NATURE\]/$SYSTEM_NATURE/g" temp3.yaml > resolved.yaml
+sed "s/\[SYSTEM_NATURE\]/$SYSTEM_NATURE/g" temp3.yaml > temp4.yaml
+
+# Replace project context placeholders with CLAUDE.md content
+sed "s/\[PROJECT_OVERVIEW\]/$PROJECT_OVERVIEW/g" temp4.yaml > temp5.yaml
+sed "s/\[WORK_LOCATION\]/$WORK_LOCATION/g" temp5.yaml > temp6.yaml
+sed "s/\[KEY_NOTES\]/$KEY_NOTES/g" temp6.yaml > resolved.yaml
 ```
 
 **Manual Replacement for Complex Placeholders:**
@@ -157,6 +190,9 @@ sed "s/\[SYSTEM_NATURE\]/$SYSTEM_NATURE/g" temp3.yaml > resolved.yaml
 - `[NEXT_NUMBER]` → Sequential PRB number for parent (001, 002, etc.)
 - `[TITLE]` → Descriptive title in lowercase-with-hyphens format
 - `[DESCRIPTION]` → Work description for title and branch naming
+- `[PROJECT_OVERVIEW]` → Extracted project overview from CLAUDE.md
+- `[WORK_LOCATION]` → Work location constraints from CLAUDE.md  
+- `[KEY_NOTES]` → Key implementation notes from CLAUDE.md
 
 #### Step 6: MANDATORY Validation
 **@PM Validation Checklist:**
@@ -180,6 +216,9 @@ fi
 - system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM" (NOT "[SYSTEM_NATURE]")
 - user_request: "Actual story text here..." (NOT "[USER_REQUEST]")
 - current_date: 2025-08-21 (NOT "[CURRENT_DATE]")
+- project_overview: "Actual project overview from CLAUDE.md..." (NOT "[PROJECT_OVERVIEW]")
+- work_location: "Actual work constraints from CLAUDE.md..." (NOT "[WORK_LOCATION]")
+- key_notes: "Actual implementation notes from CLAUDE.md..." (NOT "[KEY_NOTES]")
 
 **ABSOLUTE BLOCKING:** If ANY placeholder patterns [.*] remain, @PM MUST NOT create PRB.
 
