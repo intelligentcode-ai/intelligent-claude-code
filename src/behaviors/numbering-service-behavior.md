@@ -104,19 +104,6 @@ Scoping Rules:
 - Error if multiple matches: "Ambiguous parent reference: {parent_id}"
 - Success when exactly one valid parent is found
 
-## Performance & Error Handling
-
-### Efficient Number Tracking
-**Track Current Numbers:**
-- Keep track of highest number for each category
-- Store highest number for each parent work item
-- Remember recent directory scans for faster lookups
-
-### Smart Updates
-- **When Creating Files:** Update the stored highest number for that category/parent
-- **When Deleting Files:** Refresh stored numbers to ensure accuracy
-- **When Directory Changes:** Re-scan directories to get current state
-
 ## Error Handling
 
 ### Common Error Scenarios
@@ -152,15 +139,6 @@ Scoping Rules:
 ### With Memory System
 - **Pattern Storage:** Store numbering patterns and collision data
 - **Learning:** Improve numbering strategy based on usage patterns
-
-## Commands
-
-### Number Management Commands
-- `/icc-get-next-number [category] [parent_id]` - Get next available number
-- `/icc-validate-number [category] [number] [parent_id]` - Validate number is available
-- `/icc-renumber-category [category]` - Renumber all items in category (dangerous)
-- `/icc-number-gaps [category]` - Show gaps in numbering sequence
-- `/icc-max-numbers` - Display current max numbers for all categories
 
 ---
 *Sequential numbering service for intelligent-claude-code work items*

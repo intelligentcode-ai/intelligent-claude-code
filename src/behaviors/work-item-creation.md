@@ -48,25 +48,6 @@
 - Subagents accessing template hierarchy
 - Subagents performing memory searches for creation
 
-### Creation Violation Detection Process
-
-**Steps to Detect Creation Violations:**
-
-**1. Check Work Item Creation Attempts:**
-- **When:** Subagent attempts work item creation operations
-- **Operations:** create_story, create_bug, create_epic, create_prb
-- **Action:** Report creation violation "Subagents cannot create work items"
-
-**2. Check File Creation Patterns:**
-- **When:** Subagent performs file creation operations
-- **Directories:** stories/, bugs/, prbs/
-- **Action:** Report file creation violation "Work item files must be created by main agent"
-
-**3. Allow Valid Operations:**
-- **When:** Main agent performs creation operations
-- **When:** Subagents perform execution operations only
-- **Action:** Proceed with operation normally
-
 ### Blocking Actions
 **IMMEDIATE BLOCKS:**
 1. **STOP subagent execution** attempting work item creation
@@ -83,18 +64,6 @@
 3. **Memory Search Capability**: Query memory/ directories for patterns
 4. **Project Context Gathering**: Complete system nature and file analysis
 5. **Best Practices Integration**: Access to project best-practices/ directory
-
-### Template Resolution Process
-```
-MainAgentTemplateResolution(work_request):
-  1. **Load Configuration**: Get actual values from CLAUDE.md, config.md
-  2. **Detect System Nature**: Analyze project to determine MARKDOWN-BASED vs CODE-BASED
-  3. **Search Memory**: Query memory/[topic]/ for relevant patterns
-  4. **Search Best Practices**: Query best-practices/ for methodological approaches
-  5. **Gather Critical Files**: Find and sample relevant project files
-  6. **Resolve Placeholders**: Replace ALL "[FROM_CONFIG]", "[PROJECT_ROOT]" with actual values
-  7. **Generate Work Item**: Create with complete, resolved context
-```
 
 ### Subagent Context Limitations
 **Why subagents CANNOT create work items:**

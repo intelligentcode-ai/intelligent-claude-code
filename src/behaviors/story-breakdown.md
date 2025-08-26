@@ -51,29 +51,14 @@ When user says "@PM break down story X" or similar:
 **MANDATORY:** PM MUST analyze specific work type patterns:
 
 **Work Type Detection Patterns:**
-1. **Infrastructure/DevOps Keywords**:
-   - "deploy", "CI/CD", "container", "docker", "kubernetes", "scaling", "build pipeline"
-   
-2. **Security Work Keywords**:
-   - "security", "vulnerability", "compliance", "authentication", "authorization", "encrypt"
-   
-3. **Database Work Keywords**:
-   - "database", "schema", "migration", "query", "SQL", "performance", "index"
-   
-4. **Implementation Keywords**:
-   - "implement", "feature", "bug fix", "refactor", "code", "function", "API endpoint"
-   
-5. **AI/Behavioral Keywords**:
-   - "behavioral", "memory", "learning", "agent", "PRB", "pattern", "decision"
-   
-6. **Architecture Keywords**:
-   - "design", "architecture", "pattern", "structure", "framework", "system"
-   
-7. **Testing Keywords**:
-   - "test", "QA", "validation", "quality", "coverage", "automation"
-   
-8. **Documentation Keywords**:
-   - "documentation", "docs", "README", "guide", "manual", "API docs"
+1. **Infrastructure/DevOps Keywords**: "deploy", "CI/CD", "container", "docker", "kubernetes", "scaling", "build pipeline"
+2. **Security Work Keywords**: "security", "vulnerability", "compliance", "authentication", "authorization", "encrypt"
+3. **Database Work Keywords**: "database", "schema", "migration", "query", "SQL", "performance", "index"
+4. **Implementation Keywords**: "implement", "feature", "bug fix", "refactor", "code", "function", "API endpoint"
+5. **AI/Behavioral Keywords**: "behavioral", "memory", "learning", "agent", "PRB", "pattern", "decision"
+6. **Architecture Keywords**: "design", "architecture", "pattern", "structure", "framework", "system"
+7. **Testing Keywords**: "test", "QA", "validation", "quality", "coverage", "automation"
+8. **Documentation Keywords**: "documentation", "docs", "README", "guide", "manual", "API docs"
 
 **Combined Analysis Logic:**
 - Parse story requirements for work type keywords
@@ -85,27 +70,20 @@ When user says "@PM break down story X" or similar:
 ### Mandatory PM + Specialist Architect Collaboration
 **CRITICAL:** PM MUST collaborate with appropriate architect for ALL role assignments:
 
-1. **PM Analysis Phase**:
-   - Analyze work requirements and complexity
-   - Identify technical domains involved
-   - Determine coordination needs
+1. **PM Analysis Phase**: Analyze work requirements and complexity, identify technical domains involved, determine coordination needs
 
 2. **Dynamic Specialist Architect Creation**:
    - **Analyze Project Context:** Check CLAUDE.md, file structure, and requirements
    - **Detect Technology Stack:** Identify primary technologies and frameworks
-   - **ALWAYS Create Specialist Architects:**
-     - Create @[Domain]-Architect based on actual project needs
-     - Examples: @React-Architect, @Database-Architect, @Security-Architect, @AI-Architect, @Behavioral-Architect
-     - NEVER use generic @Architect - precision is mandatory
+   - **ALWAYS Create Specialist Architects**: Create @[Domain]-Architect based on actual project needs
+   - **Examples**: @React-Architect, @Database-Architect, @Security-Architect, @AI-Architect, @Behavioral-Architect
+   - **NEVER use generic @Architect** - precision is mandatory
    - **No Predefined Lists:** Specialists created dynamically from project context
    - **Universal System:** Works for ANY technology domain or project type
    - **Unlimited Specialist Creation:** ALWAYS create specialists when technology expertise is needed through PM + Architect behavioral patterns
    - **Subagent Integration:** Created specialists become available as subagents in .claude/agents/dynamic/
 
-3. **Collaborative Analysis**:
-   - PM + Selected Specialist Architect jointly evaluate requirements
-   - Create appropriate domain specialists based on precise needs
-   - Consider coordination complexity and dependencies
+3. **Collaborative Analysis**: PM + Selected Specialist Architect jointly evaluate requirements, create appropriate domain specialists based on precise needs, consider coordination complexity and dependencies
 
 4. **Two-Factor Analysis for Role Selection**:
    **CRITICAL:** Role assignment MUST consider both project scope AND specific work type:
@@ -125,7 +103,7 @@ When user says "@PM break down story X" or similar:
    - **Testing**: Quality assurance, test frameworks, validation
    - **Documentation**: Technical writing, API docs, user guides
    
-   **Decision Matrix Logic** (See role-assignment-matrix.md):
+   **Decision Matrix Logic**:
    ```
    Role = f(ProjectScope, WorkType) → Dynamic Specialist Creation
    
@@ -145,10 +123,7 @@ When user says "@PM break down story X" or similar:
    5. **Document Rationale**: Include analysis and specialist creation in PRB context
    6. **Validate Specialist**: Ensure specialist matches precise domain needs
 
-5. **Assignment Documentation**:
-   - Document specialist creation rationale in PRB
-   - Include domain matching and specialist definition
-   - Reference PM + Specialist Architect collaboration in PRB context
+5. **Assignment Documentation**: Document specialist creation rationale in PRB, include domain matching and specialist definition, reference PM + Specialist Architect collaboration in PRB context
 
 ## Story Selection Criteria
 

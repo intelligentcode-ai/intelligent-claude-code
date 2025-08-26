@@ -51,192 +51,34 @@
 3. **Load Template**: From src/prb-templates/ hierarchy ONLY - NO other sources
 4. **Load Configuration**: Read complete config hierarchy at generation time
 5. **Resolve ALL Placeholders**: Replace EVERY [PLACEHOLDER] with actual values
-   - [FROM_CONFIG] → actual config values (git_privacy: <ACTUAL_VALUE>, not "[FROM_CONFIG]")
-   - [PROJECT_ROOT] → actual project root path
-   - [CURRENT_DATE] → actual system date
-   - [ALL-SETTINGS] → actual configuration object
-   - [TECHNOLOGY_DOMAINS] → actual technology domains for unlimited specialist creation
 6. **Embed Complete Context**: All config values embedded in PRB complete_context
-7. **Embed Specialization Context**: Technology domains and unlimited specialist creation instructions embedded
-8. **Validate NO Placeholders**: Ensure ZERO unresolved placeholders remain
-9. **Validate All Sections**: Ensure ALL mandatory template sections present
-10. **Document Template Source**: Record template used in PRB metadata
-11. **Block Runtime Config**: Ensure NO config lookups needed during execution
+7. **Validate NO Placeholders**: Ensure ZERO unresolved placeholders remain
+8. **Validate All Sections**: Ensure ALL mandatory template sections present
+9. **Document Template Source**: Record template used in PRB metadata
+10. **Block Runtime Config**: Ensure NO config lookups needed during execution
 
 ### MANDATORY Placeholder Resolution Instructions
 
-**CRITICAL:** @PM MUST follow these exact steps to resolve ALL placeholders before PRB creation.
-
-#### Step 1: Load Template and Identify Placeholders
-**@PM Instructions:**
-1. Load selected template from src/prb-templates/
-2. Scan template content for ALL placeholder patterns: [TEXT_IN_BRACKETS]
-3. Create placeholder inventory: [FROM_CONFIG], [PROJECT_ROOT], [CURRENT_DATE], etc.
-4. BLOCK PRB creation until ALL placeholders identified
-
-#### Step 2: Gather Configuration Values 
-**@PM Configuration Collection Process:**
-
-**CLAUDE.md Configuration Loading:**
-```bash
-# Extract configuration from CLAUDE.md
-CONFIG_SOURCE="CLAUDE.md"
-git_privacy=$(grep "git_privacy:" $CONFIG_SOURCE | cut -d: -f2 | tr -d ' ')
-branch_protection=$(grep "branch_protection:" $CONFIG_SOURCE | cut -d: -f2 | tr -d ' ')
-default_branch=$(grep "default_branch:" $CONFIG_SOURCE | cut -d: -f2 | tr -d ' ')
-autonomy_level=$(grep "autonomy_level:" $CONFIG_SOURCE | cut -d: -f2 | tr -d ' ')
-```
-
-**@PM MUST extract these actual values:**
-- **git_privacy**: true/false (from CLAUDE.md or config hierarchy)
-- **branch_protection**: true/false (from configuration)
-- **default_branch**: "main"/"master"/"develop" (from configuration)
-- **autonomy_level**: "L1"/"L2"/"L3" (from configuration)
-- **branch_prefix**: "feature"/"bugfix"/"hotfix" (from configuration)
-
-#### Step 3: Gather Project Context
-**@PM Project Analysis Process:**
-
-**CLAUDE.md Project Context Extraction:**
-```bash
-# Parse CLAUDE.md for project overview and constraints
-CLAUDE_FILE="CLAUDE.md"
-if [ -f "$CLAUDE_FILE" ]; then
-    # Extract project overview section
-    PROJECT_OVERVIEW=$(sed -n '/^## Project Overview/,/^## /p' "$CLAUDE_FILE" | grep -v "^##" | tr '\n' ' ')
-    
-    # Extract system nature from overview
-    if echo "$PROJECT_OVERVIEW" | grep -q "AI-AGENTIC\|behavioral\|memory\|PRB"; then
-        SYSTEM_NATURE="MARKDOWN-BASED AI-AGENTIC SYSTEM"
-    elif echo "$PROJECT_OVERVIEW" | grep -q "code\|implementation\|API\|database"; then
-        SYSTEM_NATURE="CODE-BASED SYSTEM"
-    else
-        SYSTEM_NATURE="HYBRID SYSTEM"
-    fi
-    
-    # Extract work location constraints
-    WORK_LOCATION=$(sed -n '/### Work Location Guidelines/,/^###\|^## /p' "$CLAUDE_FILE" | grep -v "^#" | tr '\n' ' ')
-    
-    # Extract key implementation notes
-    KEY_NOTES=$(sed -n '/### Key Implementation Notes/,/^###\|^## /p' "$CLAUDE_FILE" | grep -v "^#" | tr '\n' ' ')
-    
-    # Extract project boundaries and constraints
-    PROJECT_BOUNDARIES=$(awk '/[Bb]oundary|[Cc]onstraint|[Ss]cope/,/^##|^$/ {print}' "$CLAUDE_FILE" | grep -v "^#" | head -3)
-fi
-```
-
-**Project Root Detection:**
-```bash
-# Get absolute project root path
-PROJECT_ROOT=$(pwd)
-echo "Project Root: $PROJECT_ROOT"
-```
-
-**System Nature Analysis:**
-```bash
-# Count file types to determine system nature
-MD_COUNT=$(find . -name "*.md" -type f | wc -l)
-CODE_COUNT=$(find . -name "*.js" -o -name "*.py" -o -name "*.java" -o -name "*.ts" | wc -l)
-
-if [ $MD_COUNT -gt $CODE_COUNT ]; then
-    SYSTEM_NATURE="MARKDOWN-BASED AI-AGENTIC SYSTEM"
-else
-    SYSTEM_NATURE="CODE-BASED SYSTEM"
-fi
-```
-
-**Current Date Generation:**
-```bash
-# Always get current date from system
-CURRENT_DATE=$(date +%Y-%m-%d)
-echo "Current Date: $CURRENT_DATE"
-```
-
-#### Step 4: Extract Story Requirements
-**@PM Story Analysis Process:**
-
-**Parent Story Reading:**
-```bash
-# Read parent story file
-STORY_FILE="stories/STORY-XXX-title-date.md"
-USER_REQUEST=$(cat "$STORY_FILE" | head -10)  # First 10 lines
-SUCCESS_CRITERIA=$(grep -A5 "Success:" "$STORY_FILE" || grep -A5 "Criteria:" "$STORY_FILE")
-FEATURE_SCOPE=$(grep -A3 "Scope:" "$STORY_FILE" || echo "Standard feature implementation")
-```
-
-#### Step 5: Execute Placeholder Replacement
-**@PM Replacement Process:**
-
-**Template Variable Substitution:**
-```bash
-# Replace ALL placeholders with actual values
-sed "s/\[FROM_CONFIG\]/$git_privacy/g" template.yaml > temp1.yaml
-sed "s/\[PROJECT_ROOT\]/$PROJECT_ROOT/g" temp1.yaml > temp2.yaml  
-sed "s/\[CURRENT_DATE\]/$CURRENT_DATE/g" temp2.yaml > temp3.yaml
-sed "s/\[SYSTEM_NATURE\]/$SYSTEM_NATURE/g" temp3.yaml > temp4.yaml
-
-# Replace project context placeholders with CLAUDE.md content
-sed "s/\[PROJECT_OVERVIEW\]/$PROJECT_OVERVIEW/g" temp4.yaml > temp5.yaml
-sed "s/\[WORK_LOCATION\]/$WORK_LOCATION/g" temp5.yaml > temp6.yaml
-sed "s/\[KEY_NOTES\]/$KEY_NOTES/g" temp6.yaml > resolved.yaml
-```
-
-**Manual Replacement for Complex Placeholders:**
-- `[USER_REQUEST]` → Copy exact story requirements from parent story file
-- `[SUCCESS_CRITERIA]` → Extract success criteria from story file
-- `[FEATURE_SCOPE]` → Define feature boundaries from story analysis
+**COMMON PLACEHOLDERS TO RESOLVE:**
+- `[FROM_CONFIG]` → Load actual config values (git_privacy: true/false, not "[FROM_CONFIG]")
+- `[PROJECT_ROOT]` → Actual project root path
+- `[CURRENT_DATE]` → System date ($(date +%Y-%m-%d))
+- `[SYSTEM_NATURE]` → "MARKDOWN-BASED AI-AGENTIC SYSTEM" or "CODE-BASED SYSTEM"
+- `[USER_REQUEST]` → Actual story requirements from parent story file
 - `[ROLE]` → Result of PM+Architect two-factor analysis
 - `[PARENT_ID]` → Parent story ID (STORY-001, BUG-005, etc.)
 - `[NEXT_NUMBER]` → Sequential PRB number for parent (001, 002, etc.)
 - `[TITLE]` → Descriptive title in lowercase-with-hyphens format
-- `[DESCRIPTION]` → Work description for title and branch naming
-- `[PROJECT_OVERVIEW]` → Extracted project overview from CLAUDE.md
-- `[WORK_LOCATION]` → Work location constraints from CLAUDE.md  
-- `[KEY_NOTES]` → Key implementation notes from CLAUDE.md
 
-#### Step 6: MANDATORY Validation
-**@PM Validation Checklist:**
-
-**Placeholder Validation Process:**
-```bash
-# Scan for any remaining placeholders
-REMAINING_PLACEHOLDERS=$(grep -o '\[.*\]' resolved.yaml | wc -l)
-if [ $REMAINING_PLACEHOLDERS -gt 0 ]; then
-    echo "❌ VALIDATION FAILED: $REMAINING_PLACEHOLDERS placeholders remain"
-    grep '\[.*\]' resolved.yaml  # Show remaining placeholders
-    exit 1
-else
-    echo "✅ VALIDATION PASSED: All placeholders resolved"
-fi
-```
-
+### MANDATORY Validation
 **@PM MUST verify these values are actual, not placeholders:**
 - git_privacy: true (NOT "[FROM_CONFIG]")
 - project_root: /absolute/path (NOT "[PROJECT_ROOT]") 
 - system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM" (NOT "[SYSTEM_NATURE]")
 - user_request: "Actual story text here..." (NOT "[USER_REQUEST]")
 - current_date: 2025-08-21 (NOT "[CURRENT_DATE]")
-- project_overview: "Actual project overview from CLAUDE.md..." (NOT "[PROJECT_OVERVIEW]")
-- work_location: "Actual work constraints from CLAUDE.md..." (NOT "[WORK_LOCATION]")
-- key_notes: "Actual implementation notes from CLAUDE.md..." (NOT "[KEY_NOTES]")
 
 **ABSOLUTE BLOCKING:** If ANY placeholder patterns [.*] remain, @PM MUST NOT create PRB.
-
-#### Step 7: Create Self-Contained PRB
-**@PM Final Creation:**
-1. Save resolved template as properly named PRB file
-2. Verify PRB contains NO placeholder patterns [.*]
-3. Confirm PRB can execute without external config lookups
-4. Document resolution process completion
-5. Ready for Task tool execution with embedded context
-
-**Quality Verification:**
-- Every placeholder replaced with actual value
-- Configuration values match project settings  
-- File paths are absolute and valid
-- Story requirements are specific and clear
-- Role assignment documented with rationale
-- Complete context embedded for execution
 
 ### Role Assignment Enforcement
 **MANDATORY:** PM + Architect collaboration for ALL role assignments:
@@ -267,29 +109,6 @@ fi
 
 **AUTOMATIC PLACEHOLDER SCANNING:**
 @PM and system MUST scan ALL PRB content before creation:
-
-```bash
-# Automatic placeholder detection in PRB content
-PLACEHOLDER_SCAN() {
-    local prb_file="$1"
-    
-    # Scan for any remaining placeholder patterns
-    PLACEHOLDERS_FOUND=$(grep -o '\[.*\]' "$prb_file" 2>/dev/null | sort -u)
-    PLACEHOLDER_COUNT=$(echo "$PLACEHOLDERS_FOUND" | wc -l)
-    
-    if [ ! -z "$PLACEHOLDERS_FOUND" ] && [ "$PLACEHOLDER_COUNT" -gt 0 ]; then
-        echo "❌ CRITICAL ERROR: Unresolved placeholders detected in PRB:"
-        echo "$PLACEHOLDERS_FOUND"
-        echo ""
-        echo "BLOCKED: PRB creation forbidden until ALL placeholders resolved"
-        echo "Required action: Follow Step-by-Step Placeholder Resolution Process"
-        return 1
-    else
-        echo "✅ VALIDATION PASSED: No placeholder patterns detected"
-        return 0
-    fi
-}
-```
 
 **ENFORCEMENT RULES:**
 1. **PRE-CREATION SCAN**: Every PRB MUST pass placeholder scan before file creation
@@ -325,30 +144,6 @@ PRB creation will remain blocked until all placeholders resolved.
 ### Subagent Protection Enforcement
 
 **CRITICAL:** Prevent unresolved placeholders from reaching Task tool subagents:
-
-**SUBAGENT CONTEXT VALIDATION:**
-```bash
-# Validate PRB context before Task tool execution
-VALIDATE_SUBAGENT_CONTEXT() {
-    local prb_content="$1"
-    
-    # Check for placeholder leakage to subagents
-    if echo "$prb_content" | grep -q '\[.*\]'; then
-        echo "❌ SUBAGENT PROTECTION VIOLATED: Placeholders detected in execution context"
-        echo "Task tool subagents cannot resolve placeholders - must be resolved in main agent"
-        echo "BLOCKING execution until placeholders resolved in main agent context"
-        return 1
-    fi
-    
-    # Verify self-contained context
-    if ! echo "$prb_content" | grep -q "git_privacy:.*true\|false"; then
-        echo "❌ INCOMPLETE CONTEXT: Configuration not embedded"
-        return 1
-    fi
-    
-    return 0
-}
-```
 
 **PROTECTION RULES:**
 1. **NO PLACEHOLDER INHERITANCE**: Subagents must receive fully resolved PRBs
