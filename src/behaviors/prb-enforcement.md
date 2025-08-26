@@ -19,6 +19,56 @@
 
 **Pattern**: Main agent creates complete PRB → Subagent executes with embedded context
 
+## IMMEDIATE EXECUTION BLOCKING
+
+**CRITICAL ENFORCEMENT:** ALL direct execution attempts MUST be IMMEDIATELY BLOCKED before any tool use.
+
+### Pre-Execution Validation (MANDATORY BEFORE EVERY TOOL)
+**SCAN EVERY REQUEST before tool execution:**
+1. **Work Intent Detection**: Scan for implementation, modification, creation patterns
+2. **PRB Context Validation**: Check if request is within established PRB context
+3. **Direct Execution Blocking**: Block ANY work attempt without PRB
+4. **Tool Use Validation**: Prevent Write, Edit, MultiEdit, Bash without PRB context
+
+### Violation Detection Patterns
+
+**IMMEDIATE BLOCK TRIGGERS:**
+- **File Operations**: Write, Edit, MultiEdit operations without PRB context
+- **State Modification**: Bash commands that modify system state (create, modify, delete)
+- **Implementation Language**: "implement", "create", "build", "fix", "update", "modify"
+- **Direct Instructions**: "make this change", "add this feature", "fix this bug"
+- **Workflow Bypassing**: "just do X", "quickly Y", "simple Z"
+
+**VIOLATION PATTERN EXAMPLES:**
+- "Edit the file to add X" → BLOCK → Generate PRB first
+- "Create a new component Y" → BLOCK → Generate PRB first
+- "Fix this bug in Z" → BLOCK → Generate PRB first
+- "Update the configuration" → BLOCK → Generate PRB first
+- "Run this command to install" → BLOCK → Generate PRB first
+
+### Pre-Tool-Use Validation Logic
+
+**MANDATORY VALIDATION BEFORE EVERY TOOL:**
+```
+BEFORE ANY TOOL USE:
+1. Parse user request for work intent patterns
+2. Check if current context has active PRB
+3. If work intent detected AND no PRB context:
+   → IMMEDIATE BLOCK with unmistakable error
+   → "❌ DIRECT EXECUTION BLOCKED: All work requires PRB"
+4. If PRB context exists:
+   → Allow tool execution within PRB scope
+```
+
+### Unmistakable Error Messages
+
+**CRYSTAL CLEAR BLOCKING MESSAGES:**
+- **DIRECT_EXECUTION_BLOCKED**: "❌ DIRECT EXECUTION BLOCKED: All work requires PRB. Use @Role pattern to generate PRB first."
+- **NO_PRB_CONTEXT**: "❌ NO ACTIVE PRB: This request requires PRB generation before execution."
+- **WORK_WITHOUT_PRB**: "❌ WORK ATTEMPT BLOCKED: Generate PRB using @Role pattern, then execute."
+- **BYPASS_ATTEMPT**: "❌ PRB BYPASS BLOCKED: No exceptions - all implementation requires PRB framework."
+- **TOOL_USE_VIOLATION**: "❌ TOOL USE BLOCKED: File/system operations require active PRB context."
+
 ## Detection & Blocking
 
 ### Priority 0: Template Enforcement (HIGHEST PRIORITY - ZERO TOLERANCE)
@@ -30,18 +80,24 @@
 - **Invalid template source** → IMMEDIATE BLOCK → "❌ Must use templates from src/prb-templates/ hierarchy ONLY"
 - **Config not embedded** → IMMEDIATE BLOCK → "❌ Configuration must be embedded at generation time"
 
-### Priority 1: Work Item Creation
+### Priority 1: Direct Execution Prevention (ZERO TOLERANCE)
+- **ANY file operations without PRB** → IMMEDIATE BLOCK → "❌ DIRECT EXECUTION BLOCKED: All work requires PRB"
+- **ANY bash commands without PRB** → IMMEDIATE BLOCK → "❌ TOOL USE BLOCKED: File/system operations require active PRB context"
+- **Work intent without PRB context** → IMMEDIATE BLOCK → "❌ WORK ATTEMPT BLOCKED: Generate PRB using @Role pattern, then execute"
+- **Implementation requests** → IMMEDIATE BLOCK → "❌ NO ACTIVE PRB: This request requires PRB generation before execution"
+
+### Priority 2: Work Item Creation
 - **Subagent creating work items** → BLOCK → "❌ Creation requires main agent"
 - **Missing PRB for work** → Generate PRB → Execute via subagent
 
-### Priority 2: Pattern Detection
+### Priority 3: Pattern Detection
 | Pattern | Detection | Action |
 |---------|-----------|--------|
 | @Role | All formats (@Role:, [@Role]) | Generate PRB → Subagent execution |
 | Work Items | STORY-XXX, BUG-XXX | Convert to PRB → Execute |
 | Direct Work | Code changes without PRB | Block → Generate PRB |
 
-### Priority 3: System Nature Validation
+### Priority 4: System Nature Validation
 - **AI-AGENTIC**: @AI-Engineer for behaviors, memory, PRBs
 - **CODE-BASED**: @Developer, @Backend-Tester for implementation
 - **Mismatch** → BLOCK → Enforce PM+Architect collaboration
@@ -105,9 +161,65 @@
 8. **Auto-Generator:** Create PRB if missing
 
 ## Real-Time Interception
-**Monitor:** ALL execution attempts for PRB compliance
-**Block:** No direct work without PRB
-**Correct:** Generate appropriate PRB with subagent patterns
+
+**COMPREHENSIVE MONITORING:** Every request undergoes immediate pre-execution analysis.
+
+### Universal Request Processing
+**EVERY USER REQUEST MUST PASS THROUGH:**
+1. **Work Intent Analysis**: Scan for implementation, modification, or creation patterns
+2. **PRB Context Check**: Verify active PRB exists for work requests
+3. **Tool Use Validation**: Block unauthorized file/system operations
+4. **Information vs Work Classification**: Allow information requests, block work attempts
+
+### Monitoring Scope
+**MONITOR ALL:**
+- File operations (Write, Edit, MultiEdit, Read with work intent)
+- System commands (Bash operations that modify state)
+- Work-related requests (implement, fix, create, update, build)
+- Direct instructions bypassing PRB framework
+- @Role mentions without PRB generation
+
+### Real-Time Blocking
+**IMMEDIATE BLOCKS:**
+- **No direct work without PRB** → Generate PRB first
+- **File modifications without PRB context** → Block tool use
+- **System changes without PRB** → Block bash commands
+- **Work bypassing PRB framework** → Force PRB generation
+
+### Information vs Work Classification
+
+**ALLOWED WITHOUT PRB (Information Requests):**
+- "Show me the current code in file X"
+- "What does this function do?"
+- "List the files in this directory"
+- "Check the status of the project"
+- "Read the documentation"
+- "Search for patterns in codebase"
+- "Analyze the structure"
+
+**BLOCKED WITHOUT PRB (Work Requests):**
+- "Edit file X to add Y"
+- "Create a new component"
+- "Fix this bug"
+- "Update the configuration"
+- "Install package X"
+- "Deploy to environment Y"
+- "Commit these changes"
+- "Build the application"
+
+**DETECTION LOGIC:**
+- **Read-Only Operations**: Allow when clearly informational
+- **State-Changing Operations**: Always require PRB
+- **Analysis vs Implementation**: Analysis allowed, implementation requires PRB
+- **"Show me" vs "Make it"**: Show allowed, make requires PRB
+
+### Auto-Correction Patterns
+**WHEN VIOLATIONS DETECTED:**
+1. **Immediate Block** → Stop execution before tool use
+2. **Clear Error Message** → Unmistakable PRB requirement explanation
+3. **Suggest Correction** → "@Role pattern to generate PRB first"
+4. **Pattern Recognition** → Log violation for pattern improvement
+5. **Context Preservation** → Save work request for PRB generation
 
 ## Subagent Execution Patterns
 
@@ -139,16 +251,46 @@
 **Dynamic Roles:** "Let's have @[Dynamic-Role] handle this"
 **Work Items:** "Fix TASK-123" or "Implement STORY-456"
 
+### Common Violation Scenarios
+
+**SCENARIO 1: Direct File Modification**
+- User: "Edit the package.json to add dependency X"
+- Block: ❌ DIRECT EXECUTION BLOCKED: All work requires PRB
+- Correction: "@AI-Engineer add dependency X to package.json"
+
+**SCENARIO 2: Quick Bug Fix**
+- User: "Just fix this typo in line 45"
+- Block: ❌ WORK ATTEMPT BLOCKED: Generate PRB using @Role pattern
+- Correction: "@Developer fix typo in line 45"
+
+**SCENARIO 3: Configuration Update**
+- User: "Update the config file with new settings"
+- Block: ❌ NO ACTIVE PRB: This request requires PRB generation
+- Correction: "@AI-Engineer update configuration with new settings"
+
+**SCENARIO 4: Build/Deploy Commands**
+- User: "Run npm build to compile"
+- Block: ❌ TOOL USE BLOCKED: System operations require PRB context
+- Correction: "@DevOps-Engineer build and deploy application"
+
+**SCENARIO 5: Multiple File Changes**
+- User: "Create these 3 components and update the routing"
+- Block: ❌ PRB BYPASS BLOCKED: Complex work requires PRB framework
+- Correction: "@Developer implement component system with routing"
+
 ### Edge Case Prevention  
 **Escaped Patterns:** \@Role → Do not trigger
 **Code Blocks:** @Role in code → Do not trigger
 **Documentation:** About @Role → Do not trigger  
 **Actual Work:** @Role for work → ALWAYS generate PRB
+**Information Questions:** Pure questions → Allow without PRB
+**Status Checks:** "What's the status?" → Allow without PRB
 
 ### L3 Autonomous Behavior
 **Detection:** Work attempt → Auto-generate PRB
 **Learning:** Track patterns → Improve template selection
 **Prevention:** Make PRB path easier than bypass attempts
+**User Education:** Show correct @Role patterns when blocking
 
 ## Settings Compliance Verification
 
