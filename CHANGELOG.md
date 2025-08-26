@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.0] - 2025-08-26
+
+### Added
+- **PM Agent**: Complete PM agent implementation for 14-agent virtual team
+- New file: src/agents/pm.md with comprehensive project management capabilities
+- PM agent enables Task tool deployment for @PM behavioral patterns
+- Story breakdown, work delegation, and team coordination functionality
+- Updated agents README.md to reflect complete 14-agent framework
+
+### Changed
+- Minor version bump (7.2 → 7.3) for new PM agent feature addition
+- Virtual team now complete with all 14 specialized agents ready for deployment
+
 ## [7.2.2] - 2025-08-25
 
 ### Fixed
@@ -14,12 +27,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated prb-auto-trigger.md from SIZE BLOCKING to SIZE BREAKDOWN rule
 - Enhanced prb-enforcement.md with Size Validator in multi-layer detection
 - Modified story-breakdown.md for automatic @PM size enforcement
+- **BUG-021**: Created missing PM agent definition to enable @PM deployment via Task tool
 
 ### Added
 - New file: src/behaviors/prb-breakdown-patterns.md with comprehensive breakdown logic
 - Domain-based, layer-based, feature-based, and epic-based splitting strategies
 - Automatic parent-child relationship tracking for sub-PRBs
 - Fallback mechanisms for breakdown failures
+- **New Agent**: src/agents/pm.md with project management and coordination capabilities
+- PM agent includes story breakdown, work delegation, and team coordination expertise
+- Updated agents README.md to reflect 14 core agents (was 13)
 
 ## [7.2.1] - 2025-08-21
 
