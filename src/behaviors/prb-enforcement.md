@@ -41,7 +41,23 @@
 | Work Items | STORY-XXX, BUG-XXX | Convert to PRB → Execute |
 | Direct Work | Code changes without PRB | Block → Generate PRB |
 
-### Priority 3: System Nature Validation
+### Priority 3: Documentation Compliance Enforcement
+- **Documentation skipping patterns** → IMMEDIATE BLOCK → "❌ Template documentation requirements are MANDATORY"
+- **Version bump omission** → IMMEDIATE BLOCK → "❌ Version bump required per template documentation section"
+- **CHANGELOG skip attempt** → IMMEDIATE BLOCK → "❌ CHANGELOG entry required per template"
+- **README update avoidance** → IMMEDIATE BLOCK → "❌ README updates required for user-facing changes per template"
+- **Documentation bypassing language** → IMMEDIATE BLOCK → "❌ No bypass allowed for template documentation requirements"
+
+**BLOCKED PHRASES:**
+- "No documentation needed" → BLOCK → Must follow template requirements
+- "Self-documenting code" → BLOCK → Template requires explicit documentation
+- "Skip CHANGELOG" → BLOCK → CHANGELOG entry mandatory per template
+- "Internal change, no docs" → BLOCK → All changes require documentation per template
+- "Documentation not affected" → BLOCK → Template determines documentation requirements
+- "Too technical for user docs" → BLOCK → Technical documentation still required
+- "Code speaks for itself" → BLOCK → Template documentation sections are mandatory
+
+### Priority 4: System Nature Validation
 - **AI-AGENTIC**: @AI-Engineer for behaviors, memory, PRBs
 - **CODE-BASED**: @Developer, @Backend-Tester for implementation
 - **Mismatch** → BLOCK → Enforce PM+Architect collaboration
@@ -58,6 +74,10 @@
 | **Invalid template source** | **IMMEDIATE BLOCK → Must use src/prb-templates/ hierarchy** |
 | **Config not embedded** | **IMMEDIATE BLOCK → Embed complete configuration at generation** |
 | **PRB too large (>15 points)** | **AUTOMATIC BREAKDOWN → Generate multiple PRBs ≤15 points using prb-breakdown-patterns.md** |
+| **Documentation skipping** | **IMMEDIATE BLOCK → Enforce ALL template documentation requirements** |
+| **Version bump missing** | **IMMEDIATE BLOCK → Execute version bump per template** |
+| **CHANGELOG omitted** | **IMMEDIATE BLOCK → Create CHANGELOG entry per template** |
+| **README updates skipped** | **IMMEDIATE BLOCK → Update README per template requirements** |
 | Missing PRB | Analyze → Generate from src/prb-templates/ → Execute |
 | Wrong template | Re-analyze complexity → Correct template from src/prb-templates/ |
 | Direct execution | Create PRB from src/prb-templates/ → Use subagent |
@@ -100,9 +120,10 @@
 3. **PRB Checker:** Validate PRB exists for work
 4. **Template Validator:** Ensure correct complexity template
 5. **Size Validator:** Check PRB complexity ≤15 points, auto-breakdown if needed
-6. **System Nature Validator:** Check role assignments align with system nature
-7. **PM+Architect Validator:** Ensure collaboration process documented
-8. **Auto-Generator:** Create PRB if missing
+6. **Documentation Validator:** Scan for documentation skipping patterns and enforce template requirements
+7. **System Nature Validator:** Check role assignments align with system nature
+8. **PM+Architect Validator:** Ensure collaboration process documented
+9. **Auto-Generator:** Create PRB if missing
 
 ## Real-Time Interception
 **Monitor:** ALL execution attempts for PRB compliance
@@ -199,13 +220,20 @@
 **False Completion Detection**: Monitor claims → Validate checklist → Block if incomplete
 
 **Required for Completion**:
-- [ ] All 6 PRB sections executed
+- [ ] All 9 PRB sections executed (including documentation)
 - [ ] Settings compliance verified
 - [ ] Requirements met
 - [ ] Review complete
 - [ ] Knowledge captured
+- [ ] **Documentation compliance validated**:
+  - [ ] Version bump completed per template
+  - [ ] CHANGELOG entry created per template
+  - [ ] README updates completed per template
+  - [ ] All template documentation requirements satisfied
 - [ ] Git operations clean
 - [ ] PRB moved to completed/
+
+**DOCUMENTATION VALIDATION**: PRBs cannot be marked complete without explicit verification of ALL template documentation requirements
 
 ## Project Scope Enforcement
 
