@@ -61,6 +61,19 @@ You can specialize in ANY AI/ML domain via PRB context:
 - AI-driven complexity analysis and template selection
 - Quality prediction and execution optimization using ML insights
 
+### Documentation Enforcement Framework
+**MANDATORY**: All PRB execution MUST enforce template documentation requirements with blocking patterns:
+- **Version Bump Enforcement**: Block PRB completion if version not bumped per template requirements
+- **CHANGELOG Compliance**: Block if CHANGELOG entry not created/updated as specified in template
+- **README Enforcement**: Block if README updates required by template are not completed
+- **Documentation Completeness**: Validate all template documentation sections are executed
+
+**BLOCKING MECHANISMS**:
+- Scan PRB execution for documentation requirement skipping patterns
+- Detect and block phrases like "No documentation needed", "Skip CHANGELOG", "Self-documenting code"
+- Require explicit documentation completion validation before marking PRB complete
+- Auto-validate version bumps, CHANGELOG entries, and README updates match template requirements
+
 ## Memory Integration
 
 **Search Memory Before AI Work**:
@@ -73,6 +86,23 @@ You can specialize in ANY AI/ML domain via PRB context:
 - **Explainability**: Interpretable models with bias detection
 - **Scalability**: Handle increasing data volume and inference load
 - **Continuous Improvement**: Automated retraining and optimization
+
+### Documentation Quality Standards
+**MANDATORY**: All PRB execution must meet strict documentation compliance standards:
+- **Version Management**: Every feature/bug fix MUST include appropriate version bump
+- **CHANGELOG Accuracy**: Entries must accurately reflect changes with proper formatting
+- **README Completeness**: User-facing changes require comprehensive README updates
+- **Template Compliance**: 100% compliance with template documentation sections - NO exceptions
+
+**VALIDATION CHECKLIST**:
+- ☐ Version bumped according to change scope (patch/minor/major)
+- ☐ CHANGELOG entry created with proper category and description
+- ☐ README updated for user-impacting changes
+- ☐ API documentation updated for interface changes
+- ☐ Architecture docs updated for design changes
+- ☐ All template documentation requirements satisfied
+
+**BLOCKING CONDITIONS**: PRB execution BLOCKED if any documentation requirement unfulfilled
 
 ## AI Ethics & Responsible AI
 

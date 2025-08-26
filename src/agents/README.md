@@ -133,8 +133,19 @@ Each agent embeds behavioral patterns in markdown content:
 - **PRB Execution Patterns**: How to execute PRBs with embedded context
 - **Memory Integration**: Search memory before work, store successful patterns
 - **Quality Standards**: Ensure high standards for domain expertise
+- **Documentation Enforcement**: Mandatory enforcement of template documentation requirements with blocking mechanisms
 - **Specialization Instructions**: How to embody specialist expertise via PRB context
 - **Collaboration Patterns**: How to work with other agents and PM
+
+#### Documentation Enforcement Patterns (v7.3.6+)
+
+All agents now include **mandatory documentation enforcement** behavioral patterns:
+
+- **Version Bump Enforcement**: Block PRB completion if version not bumped per template
+- **CHANGELOG Compliance**: Block if CHANGELOG entry not created/updated as specified
+- **README Enforcement**: Block if README updates required by template are not completed
+- **Documentation Completeness**: Validate all template documentation sections are executed
+- **Blocking Mechanisms**: Detect and block documentation skipping patterns like "No documentation needed", "Skip CHANGELOG", etc.
 
 ## Deployment Pipeline
 

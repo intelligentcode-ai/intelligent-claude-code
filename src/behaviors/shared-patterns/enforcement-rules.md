@@ -66,6 +66,27 @@
 2. **Check Validation Status:** Review completion checklist validation
 3. **Block Invalid Claims:** When checklist incomplete, block completion
 
+### Documentation Compliance Detection
+
+**Documentation Compliance Detection Process:**
+
+**BLOCKED Documentation Skipping Patterns:**
+- "No documentation needed" → BLOCK → Must follow template requirements
+- "Self-documenting code" → BLOCK → Template requires explicit documentation
+- "Skip CHANGELOG" → BLOCK → CHANGELOG entry mandatory per template
+- "Internal change, no docs" → BLOCK → All changes require documentation per template
+- "Documentation not affected" → BLOCK → Template determines documentation requirements
+- "Too technical for user docs" → BLOCK → Technical documentation still required
+- "Code speaks for itself" → BLOCK → Template documentation sections are mandatory
+- "No version bump needed" → BLOCK → Version management required per template
+- "Skip versioning" → BLOCK → Version bump mandatory per template
+
+**Detection Steps:**
+1. **Scan for Documentation Bypass Patterns:** Check text for documentation skipping language
+2. **Validate Template Requirements:** Ensure all template documentation sections are addressed
+3. **Block Documentation Skipping:** When bypass patterns detected, block with template enforcement message
+4. **Enforce Documentation Completion:** Require explicit validation of version bump, CHANGELOG, and README updates
+
 ## Error Messages
 
 ### Standard Errors
@@ -75,6 +96,13 @@
 - `SCOPE_VIOLATION`: "❌ Operation outside project boundaries"
 - `INCOMPLETE_PRB`: "❌ PRB missing required sections"
 
+### Documentation Compliance Errors
+- `DOCUMENTATION_SKIPPED`: "❌ Template documentation requirements are MANDATORY - no skipping allowed"
+- `VERSION_BUMP_MISSING`: "❌ Version bump required per template documentation section"
+- `CHANGELOG_OMITTED`: "❌ CHANGELOG entry required per template - no exceptions"
+- `README_UPDATES_SKIPPED`: "❌ README updates required for user-facing changes per template"
+- `DOCUMENTATION_BYPASS_BLOCKED`: "❌ No bypass language allowed for template documentation requirements"
+
 ### Recovery Actions
 | Error | Recovery |
 |-------|----------|
@@ -82,6 +110,10 @@
 | Wrong context | Redirect to appropriate context |
 | Role mismatch | Trigger PM+Architect process |
 | Scope violation | Constrain to project root |
+| Documentation skipped | Enforce template documentation requirements |
+| Version bump missing | Execute version bump per template |
+| CHANGELOG omitted | Create CHANGELOG entry per template |
+| README updates skipped | Update README per template requirements |
 
 ---
 *Shared enforcement patterns extracted from prb-enforcement.md*
