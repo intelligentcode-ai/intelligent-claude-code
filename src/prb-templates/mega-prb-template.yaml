@@ -12,6 +12,10 @@ requires_epic_decomposition: true
 complete_context:
   project_root: "[PROJECT_ROOT]"
   system_nature: "[SYSTEM_NATURE]"
+  project_overview: "[PROJECT_OVERVIEW]"
+  work_location: "[WORK_LOCATION]"
+  key_context: "[KEY_CONTEXT]"
+  system_features: "[SYSTEM_FEATURES]"
   configuration:
     git_privacy: "[FROM_CONFIG]"
     branch_protection: "[FROM_CONFIG]"
@@ -21,6 +25,8 @@ complete_context:
   impact_scope: "[ENTIRE_SYSTEM_AFFECTED]"
   risk_level: "[HIGH|CRITICAL]"
   rollback_required: true
+  coordination_complexity: "[SYSTEM_WIDE_COORDINATION_REQUIREMENTS]"
+  architectural_impact: "[ARCHITECTURAL_SYSTEM_CHANGES]"
   critical_files:
     - path: "[SYSTEM_CORE_1]"
       purpose: "[CORE_PURPOSE_1]"

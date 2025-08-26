@@ -39,6 +39,10 @@
 - `[FROM_CONFIG]` → Load actual config value
 - `[ALL-SETTINGS]` → Replace with specific configuration
 - `[PROJECT_ROOT]` → Use actual project root path
+- `[PROJECT_OVERVIEW]` → Extract from CLAUDE.md project description
+- `[WORK_LOCATION]` → Extract from CLAUDE.md work boundaries
+- `[KEY_CONTEXT]` → Extract from CLAUDE.md key context information
+- `[SYSTEM_FEATURES]` → Extract from CLAUDE.md system features
 - `[DYNAMIC_*]` → Replace with discovered content
 - `[REQUIREMENT_*]` → Replace with actual requirements
 - `[CURRENT_DATE]` → Use actual system date
@@ -69,7 +73,7 @@
    - **When section missing:** Block with error "❌ Missing mandatory template section: {section}"
 
 **3. Placeholder Resolution Check:**
-   - **Placeholder Patterns:** [FROM_CONFIG], [ALL-SETTINGS], [PROJECT_ROOT], [DYNAMIC_*, [REQUIREMENT_*, [CURRENT_DATE]
+   - **Placeholder Patterns:** [FROM_CONFIG], [ALL-SETTINGS], [PROJECT_ROOT], [PROJECT_OVERVIEW], [WORK_LOCATION], [KEY_CONTEXT], [SYSTEM_FEATURES], [DYNAMIC_*, [REQUIREMENT_*, [CURRENT_DATE]
    - **Pattern Detection:** Scan PRB content for any placeholder patterns
    - **When pattern found:** Block with error "❌ Unresolved placeholder: {pattern}"
 
@@ -79,11 +83,24 @@
    - **Specific Value Check:** Verify git_privacy is not "[FROM_CONFIG]"
    - **When not resolved:** Block with error "❌ git_privacy not resolved from config"
 
+**5. Project Context Validation:**
+   - **Project Boundaries:** Verify work_location specifies project boundaries
+   - **When not specified:** Block with error "❌ Work location boundaries not defined"
+   - **System Features:** Verify system_features describes actual system capabilities
+   - **When not specified:** Block with error "❌ System features not properly described"
+   - **Key Context:** Verify key_context contains essential project information
+   - **When not specified:** Block with error "❌ Key context not properly embedded"
+
 ### Template Section Validation
 **MANDATORY SECTIONS (ALL must be present):**
 
 **Complete Context Section:**
 - **project_root:** Absolute path (NOT "[PROJECT_ROOT]")
+- **system_nature:** Specific system type (NOT "[SYSTEM_NATURE]")
+- **project_overview:** Actual project description (NOT "[PROJECT_OVERVIEW]")
+- **work_location:** Specific work boundaries (NOT "[WORK_LOCATION]")
+- **key_context:** Essential project context (NOT "[KEY_CONTEXT]") 
+- **system_features:** Core system capabilities (NOT "[SYSTEM_FEATURES]")
 - **configuration.git_privacy:** Actual value (NOT "[FROM_CONFIG]")
 - **configuration.branch_protection:** Actual value (NOT "[FROM_CONFIG]") 
 - **configuration.default_branch:** Actual value (NOT "[FROM_CONFIG]")
