@@ -89,6 +89,64 @@ git_commit:
 git_push:
   action: "Push to remote repository"
 
+# MANDATORY: Validation Enforcement Section
+validation_enforcement:
+  mandatory_requirements:
+    git_operations:
+      - "Feature branch creation (if branch_protection enabled)"
+      - "Git commit with descriptive message following [ID]: [DESCRIPTION] format"
+      - "Git push to remote with proper branch handling"
+      - "Privacy filter applied to all commit messages"
+      blocked_patterns:
+        - "No git operations needed"
+        - "Skip git workflow"
+        - "Direct commit to main"
+        - "No branching required"
+        - "Simple change, no git process"
+      error_message: "❌ BLOCKED: Git operations are mandatory. Branch protection and commit standards must be followed."
+    
+    sme_review:
+      - "Self-review checklist completion with all items checked"
+      - "Code quality validation against project standards"
+      - "Functional requirements verification"
+      - "Technical standards compliance check"
+      blocked_patterns:
+        - "No review needed"
+        - "Skip validation steps"
+        - "Obvious changes"
+        - "Too small for review"
+        - "Self-evident implementation"
+      error_message: "❌ BLOCKED: SME review processes are mandatory for all PRBs regardless of size."
+    
+    documentation:
+      - "CHANGELOG entry required for all changes"
+      - "Inline code comments for complex logic added"
+      - "Affected documentation files updated"
+      - "API documentation updated if applicable"
+      blocked_patterns:
+        - "No documentation needed"
+        - "Self-documenting code"
+        - "Skip CHANGELOG"
+        - "No docs affected"
+        - "Too simple to document"
+      error_message: "❌ BLOCKED: Documentation updates are mandatory. CHANGELOG and code comments required."
+
+    version_management:
+      - "Version bump completed appropriately (patch level)"
+      - "Version consistency maintained across affected files"
+      blocked_patterns:
+        - "No version change needed"
+        - "Skip versioning"
+        - "Version not applicable"
+      error_message: "❌ BLOCKED: Version management is mandatory for all changes."
+  
+  enforcement_rules:
+    - "ALL 7 execution steps must be completed in order"
+    - "NO bypass language or skip patterns allowed"
+    - "MANDATORY git workflow compliance per project configuration"
+    - "REQUIRED documentation updates for every change"
+    - "VERSION bump mandatory for all modifications"
+
 # EXECUTION CHECKLIST
 execution_checklist: |
   ☐ Step 1 - Knowledge: Memory searched and patterns identified
