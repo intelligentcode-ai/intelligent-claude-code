@@ -5,10 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [7.3.9] - 2025-08-26
 
-### Added
-- BUG-020-PRB-003: Comprehensive real-time violation detection and auto-correction system
+### Fixed
+- BUG-020: Complete fix for PRB behavioral violations through three comprehensive PRBs:
+  - BUG-020-PRB-001: Strengthened PRB enforcement to prevent direct execution attempts
+  - BUG-020-PRB-002: Clarified @Role conversation vs agent deployment patterns
+  - BUG-020-PRB-003: Added comprehensive real-time violation detection and auto-correction
 - Created violation-detection-patterns.md with universal pre-tool validation
 - Enhanced enforcement-rules.md with real-time violation detection functions
 - Added tool-specific violation detection for Write, Edit, MultiEdit, and Bash tools
@@ -17,7 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added violation pattern tracking in memory/process-violations/ directory
 - Enhanced PRB enforcement with immediate blocking before tool execution
 - Implemented auto-correction workflows with role suggestion logic
-- Added comprehensive violation pattern learning and storage system
 
 ## [7.3.8] - 2025-08-26
 
