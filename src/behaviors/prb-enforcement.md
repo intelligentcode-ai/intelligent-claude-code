@@ -9,6 +9,7 @@
 @./work-item-creation.md
 @./placeholder-resolution.md
 @./prb-breakdown-patterns.md
+@./violation-detection-patterns.md
 
 ## Creation vs Execution Patterns
 
@@ -21,14 +22,22 @@
 
 ## IMMEDIATE EXECUTION BLOCKING
 
-**CRITICAL ENFORCEMENT:** ALL direct execution attempts MUST be IMMEDIATELY BLOCKED before any tool use.
+**CRITICAL ENFORCEMENT:** ALL direct execution attempts MUST be IMMEDIATELY BLOCKED before any tool use using real-time violation detection.
 
-### Pre-Execution Validation (MANDATORY BEFORE EVERY TOOL)
-**SCAN EVERY REQUEST before tool execution:**
-1. **Work Intent Detection**: Scan for implementation, modification, creation patterns
-2. **PRB Context Validation**: Check if request is within established PRB context
-3. **Direct Execution Blocking**: Block ANY work attempt without PRB
-4. **Tool Use Validation**: Prevent Write, Edit, MultiEdit, Bash without PRB context
+### Universal Pre-Tool Validation (MANDATORY BEFORE EVERY TOOL)
+**MANDATORY VALIDATION SEQUENCE before ANY tool execution:**
+1. **Request Analysis**: Parse user request using violation-detection-patterns.md logic
+2. **Intent Classification**: Determine if request is work, information, or mixed using work pattern detection
+3. **PRB Context Check**: Verify active PRB exists for work requests
+4. **Tool Authorization**: Validate tool usage against PRB permissions and scope
+5. **Immediate Blocking**: Block with unmistakable error messages if violations detected
+
+### Enhanced Violation Detection Integration
+**REAL-TIME MONITORING:** Every tool use passes through violation detection patterns:
+- **Write Tool**: Validated against PRB context and scope before file creation/modification
+- **Edit/MultiEdit Tools**: Checked for authorized file modifications within PRB boundaries
+- **Bash Tool**: State-changing commands blocked without PRB authorization
+- **All Tools**: Information requests allowed, work requests require PRB context
 
 ### Violation Detection Patterns
 
@@ -60,14 +69,62 @@ BEFORE ANY TOOL USE:
    → Allow tool execution within PRB scope
 ```
 
-### Unmistakable Error Messages
+### Unmistakable Error Messages with Auto-Correction Guidance
 
-**CRYSTAL CLEAR BLOCKING MESSAGES:**
-- **DIRECT_EXECUTION_BLOCKED**: "❌ DIRECT EXECUTION BLOCKED: All work requires PRB. Use @Role pattern to generate PRB first."
-- **NO_PRB_CONTEXT**: "❌ NO ACTIVE PRB: This request requires PRB generation before execution."
-- **WORK_WITHOUT_PRB**: "❌ WORK ATTEMPT BLOCKED: Generate PRB using @Role pattern, then execute."
-- **BYPASS_ATTEMPT**: "❌ PRB BYPASS BLOCKED: No exceptions - all implementation requires PRB framework."
-- **TOOL_USE_VIOLATION**: "❌ TOOL USE BLOCKED: File/system operations require active PRB context."
+**ENHANCED BLOCKING MESSAGES with specific correction guidance:**
+
+**DIRECT_EXECUTION_BLOCKED:**
+```
+❌ DIRECT EXECUTION BLOCKED: All work requires PRB
+
+This request attempts to perform work without an active PRB context.
+Every implementation, modification, or system change requires PRB framework.
+
+REQUIRED ACTION: Use @Role pattern to generate PRB first
+Example: @AI-Engineer implement this feature
+Then execute the generated PRB
+
+BLOCKED OPERATION: {operation_description}
+REASON: No active PRB context detected
+```
+
+**TOOL_USE_VIOLATION:**
+```
+❌ TOOL USE BLOCKED: File/system operations require PRB context
+
+Tool: {tool_name}
+Operation: {operation_description}  
+File/Target: {target}
+
+VIOLATION: Attempting to use {tool_name} without active PRB context
+REQUIREMENT: All file and system modifications require PRB authorization
+
+REQUIRED ACTION:
+1. Generate PRB using @Role pattern: @{suggested_role} {work_description}
+2. Execute the generated PRB with embedded context
+3. All operations will then be authorized within PRB scope
+```
+
+**WORK_WITHOUT_PRB:**
+```
+❌ WORK ATTEMPT BLOCKED: Generate PRB using @Role pattern
+
+Detected Work Intent: {work_indicators}
+Implementation Language: {detected_patterns}
+Current Context: No active PRB
+
+BLOCKING REASON: System detected implementation intent without PRB framework
+SAFETY MECHANISM: All work requires PRB generation before execution
+
+CORRECTION GUIDE:
+• For implementation: @Developer {task_description}
+• For infrastructure: @DevOps-Engineer {task_description}  
+• For AI/behavioral: @AI-Engineer {task_description}
+• For database work: @Database-Engineer {task_description}
+• For security: @Security-Engineer {task_description}
+
+The system will generate appropriate PRB and execute with full context.
+```
 
 ## Detection & Blocking
 
