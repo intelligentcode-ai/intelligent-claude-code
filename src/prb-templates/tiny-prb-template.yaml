@@ -11,6 +11,10 @@ title: "[ROLE] [DESCRIPTION]"
 complete_context:
   project_root: "[PROJECT_ROOT]"
   system_nature: "[SYSTEM_NATURE]"
+  project_overview: "[PROJECT_OVERVIEW]"
+  work_location: "[WORK_LOCATION]"
+  key_context: "[KEY_CONTEXT]"
+  system_features: "[SYSTEM_FEATURES]"
   configuration:
     git_privacy: "[FROM_CONFIG]"
     branch_protection: "[FROM_CONFIG]"

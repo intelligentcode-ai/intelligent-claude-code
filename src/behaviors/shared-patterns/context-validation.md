@@ -13,7 +13,8 @@
 | User Requirements | Clear intent | Specific criteria |
 | Project Overview | From CLAUDE.md | Must be extracted |
 | Work Location | Boundaries from CLAUDE.md | Must be captured |
-| Key Implementation Notes | From CLAUDE.md | Must be included |
+| Key Context | Implementation notes | Must be included |
+| System Features | Key features/capabilities | Must be documented |
 
 ## Blocked Placeholders
 - `[FROM_CONFIG]` → Load actual value
@@ -22,7 +23,8 @@
 - `[USER_REQUEST]` → Capture actual request
 - `[PROJECT_OVERVIEW]` → Extract from CLAUDE.md
 - `[WORK_LOCATION]` → Extract constraints from CLAUDE.md
-- `[KEY_NOTES]` → Extract implementation notes from CLAUDE.md
+- `[KEY_CONTEXT]` → Extract implementation notes from CLAUDE.md
+- `[SYSTEM_FEATURES]` → Extract key capabilities from CLAUDE.md
 
 **Detection Logic:**
 1. Scan project root and subdirectories
@@ -131,7 +133,29 @@
 - **CLAUDE.md exists**: File must be present in project root
 - **Content extracted**: All relevant sections parsed and captured
 - **No placeholders**: All extracted content must be actual text, not template patterns
-- **Context completeness**: Project overview, work location, and key notes all captured
+- **Context completeness**: Project overview, work location, key context, and system features all captured
+
+### Project Scope Boundary Validation
+**REQUIRED**: Enhanced validation of project scope boundaries and work constraints
+
+**Project Scope Validation Rules:**
+- **Work Location Enforcement**: All work must stay within defined project boundaries
+- **System Context Validation**: Work must align with identified system nature (AI-AGENTIC vs CODE-BASED)
+- **Feature Scope Compliance**: Work must align with documented system features and capabilities
+- **Implementation Constraints**: Work must respect documented implementation constraints
+
+**Boundary Validation Process:**
+1. **Extract Work Boundaries**: Parse CLAUDE.md work location and constraint sections
+2. **Validate Work Scope**: Ensure PRB work aligns with documented project scope
+3. **Check System Alignment**: Verify work type matches system nature (AI-AGENTIC behavioral patterns, CODE-BASED implementation, etc.)
+4. **Feature Compatibility**: Ensure work enhances or maintains documented system features
+5. **Constraint Compliance**: Verify work respects project-specific limitations and guidelines
+
+**Project Scope Violations:**
+- **SCOPE_BOUNDARY_VIOLATION**: Work extends beyond documented project boundaries
+- **SYSTEM_NATURE_MISMATCH**: Work type conflicts with identified system nature
+- **FEATURE_SCOPE_CONFLICT**: Work conflicts with documented system features
+- **CONSTRAINT_VIOLATION**: Work violates documented implementation constraints
 
 ## Validation Logic
 

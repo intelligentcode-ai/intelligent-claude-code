@@ -82,6 +82,10 @@
 **MANDATORY before generation**:
 - System nature (CODE/AI-AGENTIC)
 - Project root (absolute path)
+- Project overview (from CLAUDE.md)
+- Work location (project boundaries)
+- Key context (implementation notes)
+- System features (key capabilities)
 - Configuration (actual values)
 - Critical files (with samples)
 - User requirements (clear)
