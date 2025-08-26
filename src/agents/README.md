@@ -1,12 +1,12 @@
 # Agent Definitions
 
-This directory contains the 13 core Claude Code Subagent definitions with embedded behavioral patterns for the intelligent-claude-code virtual team system.
+This directory contains the 14 core Claude Code Subagent definitions with embedded behavioral patterns for the intelligent-claude-code virtual team system.
 
 ## Architecture Overview
 
 The intelligent-claude-code system implements a **hybrid agent architecture** that combines:
 
-1. **13 Core Generic Agents**: Handle any work via context specialization
+1. **14 Core Generic Agents**: Handle any work via context specialization
 2. **Dynamic Specialization**: Achieved through PRB context, not separate files
 3. **Unlimited Domain Coverage**: Any technology via specialized PRB content
 4. **Claude Code Native Integration**: Full compatibility with Claude Code Subagents
@@ -15,6 +15,7 @@ The intelligent-claude-code system implements a **hybrid agent architecture** th
 
 | Agent | Role | Specialization Capability |
 |-------|------|---------------------------|
+| **pm.md** | Project management and coordination | Any project domain via PRB context |
 | **architect.md** | System architecture and technical design | Any architectural domain via PRB context |
 | **developer.md** | Software implementation and feature development | Any technology stack via PRB context |
 | **system-engineer.md** | Infrastructure and system operations | Any cloud/infrastructure platform via PRB context |
@@ -28,7 +29,7 @@ The intelligent-claude-code system implements a **hybrid agent architecture** th
 | **requirements-engineer.md** | Requirements analysis and documentation | Any domain or industry via PRB context |
 | **user-role.md** | End-to-end testing and browser automation | Any testing framework via PRB context |
 
-**Note**: @PM remains in main agent scope for coordination and delegation responsibilities.
+**Note**: @PM operates as both main agent (for story breakdown and coordination) and subagent (for delegation and specialized PM tasks).
 
 ## Dynamic Specialization System
 
@@ -69,7 +70,7 @@ This approach enables specialization in **ANY** technology domain:
 The @PM and specialist architects determine when specialization is needed:
 
 1. **Work Analysis**: PM analyzes work requirements and technology stack
-2. **Capability Matching**: Compare to 13 core agents (≥70% = use core, <70% = specialize)
+2. **Capability Matching**: Compare to 14 core agents (≥70% = use core, <70% = specialize)
 3. **Specialization Decision**: PM + Domain Architect collaborate on specialization needs
 4. **PRB Generation**: Create PRB with embedded specialization context
 5. **Agent Execution**: Core agent receives PRB and operates as specialist
@@ -194,7 +195,7 @@ complete_context:
 ### Unlimited Scalability
 - **ANY Technology**: Support for emerging tech via PRB context
 - **NO Maintenance Overhead**: No need to maintain hundreds of specialist files
-- **Clean Architecture**: 13 generic agents + unlimited contextual specialization
+- **Clean Architecture**: 14 generic agents + unlimited contextual specialization
 
 ### Claude Code Native
 - **Perfect Compatibility**: Works seamlessly with Claude Code Subagents
