@@ -3,11 +3,8 @@
 **MANDATORY:** Use PRB system with MANDATORY templates for all work. Block manual creation and unresolved placeholders.
 
 ## Imports
-@./shared-patterns/template-loading.md
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/enforcement-rules.md
-@./work-item-creation.md
-@./placeholder-resolution.md
 @./prb-breakdown-patterns.md
 
 ## Creation vs Execution Patterns

@@ -126,16 +126,5 @@ Projects can customize templates by:
 - User templates: Personal customization, not version controlled
 - System templates: Managed by intelligent-claude-code installation
 
-## Commands
-
-### Template Management
-- `/icc-list-templates` - Show available templates in hierarchy order
-- `/icc-validate-template [name]` - Validate template structure
-- `/icc-load-template [complexity]` - Load template for complexity level
-- `/icc-template-hierarchy` - Show template search paths
-- `/icc-validate-context [template]` - Validate complete context in template
-- `/icc-check-placeholders [template]` - Check for placeholder values
-- `/icc-gather-context [work_request]` - Gather complete context before PRB generation
-
 ---
 *Template loading patterns for intelligent-claude-code system*

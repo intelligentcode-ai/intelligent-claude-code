@@ -188,9 +188,5 @@ Solution: Use main agent for work item creation with memory context
 - Configuration access patterns
 - Context gathering improvements
 
-### Memory Storage Location
-`memory/behavioral-patterns/work-item-creation.md` - Creation workflow patterns
-`memory/system-organization/creation-execution-separation.md` - Separation pattern learnings
-
 ---
 *Work item creation behavior for intelligent-claude-code system*

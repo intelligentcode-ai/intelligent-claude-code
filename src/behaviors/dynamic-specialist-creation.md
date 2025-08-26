@@ -103,16 +103,8 @@
 
 ### With Role Assignment Matrix
 **Enhanced Decision Logic:**
-```
-if (technology_expertise_needed):
-    domain = extract_domain(work_requirements)
-    role_type = determine_role_type(work_focus)
-    specialist_name = f"@{domain}-{role_type}"
-    create_dynamic_specialist(specialist_name, domain, role_type)
-    assign_work(specialist_name)
-else:
-    use_existing_role()
-```
+- If technology expertise needed: Extract domain, determine role type, create specialist
+- Otherwise: Use existing core role
 
 ### With PRB Creation
 **PRB Integration:**
@@ -164,10 +156,10 @@ else:
 - Template resolution improvements
 - Specialist assignment effectiveness
 
-**Memory Locations:**
-- `memory/system-design/dynamic-specialists.md` - Creation patterns
-- `memory/role-assignment/specialist-creation.md` - Assignment patterns
-- `memory/behavioral-patterns/domain-detection.md` - Detection improvements
+**Memory Storage:**
+- Store successful specialist creation patterns
+- Capture domain detection accuracy improvements
+- Document specialist assignment effectiveness
 
 ---
 *Dynamic specialist creation behavior for intelligent-claude-code system*

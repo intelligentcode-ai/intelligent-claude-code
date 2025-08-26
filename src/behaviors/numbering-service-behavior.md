@@ -22,19 +22,8 @@ To find what numbers are already used:
 - **BUG:** Check bugs/ directory for BUG-* files
 - **PRB:** Check prbs/ready/ and prbs/completed/ directories for *-PRB-* files
 
-### Commands to Find Next Available Numbers
-**Template for all categories:**
-```bash
-# General pattern: CATEGORY-NUMBER-title-date.extension
-HIGHEST=$(ls [directory] | grep "^[PATTERN]-" | sed 's/[PATTERN]-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
-NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
-echo "[PATTERN]-${NEXT}-title-$(date +%Y-%m-%d).[ext]"
-
-# Examples:
-# STORY: ls stories/ | grep "^STORY-" | sed 's/STORY-\([0-9]*\)-.*/\1/' | sort -n | tail -1
-# BUG: ls bugs/ | grep "^BUG-" | sed 's/BUG-\([0-9]*\)-.*/\1/' | sort -n | tail -1  
-# PRB: ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1
-```
+### Number Discovery Process
+**Find highest existing number by scanning directories for pattern matches and extracting numeric values**
 
 ## How to Get the Next Number
 

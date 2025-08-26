@@ -208,26 +208,12 @@ When @PM breaks down a story:
 10. **Ready for Execution:** Uses directory structure from configuration
 
 ### PRB Naming Instructions
-**MANDATORY:** When creating PRBs from stories, MUST follow these steps:
+**MANDATORY:** When creating PRBs from stories, follow standard naming format:
 
-**Get Current Date:**
-```bash
-CURRENT_DATE=$(date +%Y-%m-%d)
-```
-
-**Get Next PRB Number:**
-```bash
-# For PRBs under STORY-001
-HIGHEST=$(ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
-NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
-```
-
-**Generate PRB Name:**
-```bash
-PRB_NAME="STORY-001-PRB-${NEXT}-<descriptive-title>-${CURRENT_DATE}.prb.yaml"
-```
-
-**CRITICAL:** Always use system date command - NEVER hardcode specific dates.
+**Format:** `<STORY_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
+**Date:** Use current system date (YYYY-MM-DD) - NEVER hardcode dates
+**Number:** Sequential numbering within parent story scope
+**Title:** Descriptive title in lowercase-with-hyphens format
 
 ### Naming Validation Integration
 - **Parent Reference:** All PRBs must reference valid parent story ID
