@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.8] - 2025-08-26
+
+### Fixed
+- BUG-020-PRB-002: Clarified @Role conversation vs agent deployment patterns
+- Added EXECUTION CLARITY section to prb-execution.md with critical distinctions
+- Enhanced CLAUDE.md with execution model clarification and clear examples
+- Created comprehensive execution flow diagram showing correct vs incorrect patterns
+- Documented that @Role in conversation is planning/discussion, not execution
+- Clarified that ONLY execution path is: Work Request → PRB Creation → Task Tool → Agent
+- Added validation checklist and common misunderstanding corrections
+- Enhanced system boundary documentation between main agent and task tool contexts
+
 ## [7.3.7] - 2025-08-26
 
 ### Fixed

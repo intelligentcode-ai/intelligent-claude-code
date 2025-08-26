@@ -149,6 +149,25 @@ The system adapts to YOUR structure via CLAUDE.md configuration!
 - Essential commands PROVIDE core functionality when @Role patterns are insufficient
 - @Role patterns are PRIMARY interaction method, commands are supporting functions
 
+**EXECUTION MODEL CLARIFICATION:**
+
+**@Role in Conversation vs Agent Execution:**
+- **@Role Mentions in Conversation**: Discussing roles, planning work, asking questions about roles
+  - Example: "What should @Developer work on next?" (Discussion only)
+  - Example: "Can @PM break this down?" (Planning conversation)
+  - Result: NO execution happens - purely conversational planning
+
+**ONLY Execution Path: Work Request → PRB Creation → Task Tool → Agent:**
+- **Process**: Work request → Main agent creates PRB → Task tool invocation → Agent executes
+- **Example**: User says "Fix the auth bug" → Main agent creates PRB → Task tool → @Developer executes
+- **Example**: User says "Remove unused files" → Main agent creates PRB → Task tool → @AI-Engineer executes
+- **Critical**: Agent execution ONLY happens through Task tool with complete PRB context
+
+**NEVER Valid: Direct @Role Execution Without PRB:**
+- **BLOCKED**: @Role mentions that attempt immediate execution without PRB creation
+- **BLOCKED**: Bypassing PRB creation and jumping straight to agent work
+- **BLOCKED**: Agent deployment without Task tool and self-contained context
+
 ### Key Architectural Patterns
 
 1. **@Role Communication Pattern**: Primary interaction through natural @Role mentions, not commands

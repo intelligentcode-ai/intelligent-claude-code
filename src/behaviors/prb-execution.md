@@ -7,13 +7,54 @@
 @./shared-patterns/template-loading.md
 @./shared-patterns/execution-validation.md
 
+## EXECUTION CLARITY
+
+**CRITICAL DISTINCTION:** Clear separation between conversation and execution patterns.
+
+### @Role in Conversation vs Agent Deployment
+
+**@Role in Conversation (Discussion/Planning):**
+- **Purpose**: Discussing, planning, coordinating work
+- **Context**: Natural conversation about what needs to be done
+- **Examples**: 
+  - "What should @Developer focus on?"
+  - "Can @PM help prioritize this?"
+  - "@Architect should we use microservices?"
+- **Result**: NO execution happens - purely conversational
+
+**Task Tool + PRB = ONLY Execution Path:**
+- **Purpose**: ACTUAL execution of work with full context
+- **Context**: Self-contained PRB with embedded configuration
+- **Process**: Create PRB → Task tool → Agent executes
+- **Examples**:
+  - User: "Remove files" → Create PRB → Task tool → Agent executes
+  - User: "@PM break down" → Create PRBs → Task tool → Agents execute
+  - System generates PRB → Task tool invocation → Specialist agent execution
+
+**NEVER VALID: Direct @Role Execution:**
+- **BLOCKED**: @Role mentions that bypass PRB creation
+- **BLOCKED**: Direct agent invocation without Task tool
+- **BLOCKED**: Execution without self-contained PRB context
+
+### Correct Execution Flow
+```
+Work Request → PRB Creation (Main Agent) → Task Tool Invocation → Agent Execution
+```
+
+### Incorrect Patterns (BLOCKED)
+```
+❌ Work Request → Direct @Role mention → Immediate execution
+❌ @Role conversation → Bypass PRB creation → Direct work
+❌ Agent deployment → Without Task tool → Context-less execution
+```
+
 ## Subagent Execution
 
 **PATTERN:** PRBs execute via subagents with complete embedded context.
 
 ### Subagent Invocation
-**Standard Pattern:** Direct @Role invocation creates appropriate subagent:
-- Pattern: Direct @Role invocation creates role-specific subagent
+**Standard Pattern:** Task tool invocation with PRB creates appropriate subagent:
+- Pattern: Task tool + PRB creates role-specific subagent with embedded context
 - Benefits: Role-specific capability, context preservation, specialized execution
 - Context: Complete PRB context embedded, no runtime lookups needed
 
