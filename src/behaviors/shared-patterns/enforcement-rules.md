@@ -37,19 +37,69 @@
 
 ## Detection Functions
 
+### Real-Time Violation Detection
+
+**UNIVERSAL PRE-TOOL VALIDATION:**
+Every tool use MUST pass through violation detection before execution:
+
+```
+MANDATORY VALIDATION SEQUENCE:
+1. Parse user request for work intent indicators
+2. Check current context for active PRB
+3. If work intent detected AND no PRB context → IMMEDIATE BLOCK
+4. If information request → Allow execution
+5. If PRB context exists → Validate scope and proceed
+```
+
 ### Work Pattern Detection
 
 **Work Pattern Detection Process:**
 
-**Detected Patterns:**
-- **Role Patterns:** @Role mentions (like @Developer, @AI-Engineer)
-- **Work Items:** STORY/BUG/EPIC/TASK/PRB references with numbers
-- **Action Verbs:** implement, fix, create, update, modify
+**WORK INTENT INDICATORS:**
+- **Action Verbs:** implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
+- **Direct Instructions:** "make this change", "add this feature", "edit the file", "update the config"
+- **File Operations:** "create file X", "edit file Y", "delete file Z"
+- **System Changes:** "install package", "configure service", "deploy application"
+- **Code Modifications:** "add function", "fix bug", "refactor code", "optimize performance"
+
+**INFORMATION REQUEST INDICATORS:**
+- **Query Verbs:** show, display, read, list, check, analyze, explain, describe, find, search
+- **Status Requests:** "what's the status", "show me the current", "check the logs"
+- **Analysis Requests:** "analyze the code", "explain this function", "review the architecture"
 
 **Detection Steps:**
-1. **Scan Text:** Review input text for pattern matches
-2. **Match Patterns:** Check against known work pattern types
-3. **Trigger PRB Generation:** When work patterns detected, require PRB creation
+1. **Scan Text:** Review input text for work vs information patterns
+2. **Classify Intent:** Determine if request is work, information, or mixed
+3. **Check PRB Context:** Verify active PRB exists for work requests
+4. **Block or Allow:** Block work without PRB, allow information requests
+
+### Tool-Specific Violation Detection
+
+**WRITE/EDIT TOOL VIOLATIONS:**
+- Using Write/Edit tools without active PRB context
+- Creating/modifying files outside PRB scope
+- Configuration changes without PRB authorization
+- Any file operations for implementation purposes
+
+**BASH TOOL VIOLATIONS:**
+- State-changing commands without PRB context (install, mkdir, rm, git operations)
+- System configuration changes without PRB
+- Any bash operations that modify system state
+
+**VIOLATION DETECTION LOGIC:**
+```
+validate_tool_use(tool, operation, target):
+    if not has_active_prb() and is_work_operation(operation):
+        return "BLOCK_NO_PRB_CONTEXT"
+    
+    if has_active_prb() and not prb_authorizes(operation, target):
+        return "BLOCK_OUTSIDE_PRB_SCOPE"
+    
+    if is_information_request(operation):
+        return "ALLOW_INFORMATION"
+    
+    return "ALLOW_AUTHORIZED_WORK"
+```
 
 ### False Completion Detection
 
@@ -68,7 +118,53 @@
 
 ## Error Messages
 
-### Standard Errors
+### Unmistakable Violation Error Messages
+
+**DIRECT_EXECUTION_BLOCKED:**
+```
+❌ DIRECT EXECUTION BLOCKED: All work requires PRB
+
+This request attempts to perform work without an active PRB context.
+Every implementation, modification, or system change requires PRB framework.
+
+REQUIRED ACTION: Use @Role pattern to generate PRB first
+Example: @AI-Engineer implement this feature
+
+BLOCKED OPERATION: {operation_description}
+REASON: No active PRB context detected
+```
+
+**TOOL_USE_VIOLATION:**
+```
+❌ TOOL USE BLOCKED: File/system operations require PRB context
+
+Tool: {tool_name}
+Operation: {operation_description}
+Target: {target}
+
+VIOLATION: Attempting to use {tool_name} without active PRB context
+REQUIREMENT: All file and system modifications require PRB authorization
+
+REQUIRED ACTION:
+1. Generate PRB: @{suggested_role} {work_description}
+2. Execute the generated PRB with embedded context
+```
+
+**WORK_WITHOUT_PRB:**
+```
+❌ WORK ATTEMPT BLOCKED: Generate PRB using @Role pattern
+
+Detected Work Intent: {work_indicators}
+Current Context: No active PRB
+
+CORRECTION GUIDE:
+• For implementation: @Developer {task_description}
+• For infrastructure: @DevOps-Engineer {task_description}
+• For AI/behavioral: @AI-Engineer {task_description}
+• For database work: @Database-Engineer {task_description}
+```
+
+### Standard System Errors
 - `SUBAGENT_REQUIRED`: "❌ PRB execution requires subagent"
 - `CREATION_BLOCKED`: "❌ Work items must be created by main agent"
 - `ROLE_MISMATCH`: "❌ Role {role} invalid for {system_type}"
