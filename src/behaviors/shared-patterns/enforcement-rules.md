@@ -44,11 +44,12 @@ Every tool use MUST pass through violation detection before execution:
 
 ```
 MANDATORY VALIDATION SEQUENCE:
-1. Parse user request for work intent indicators
+1. Parse user request for work intent indicators and question patterns
 2. Check current context for active PRB
-3. If work intent detected AND no PRB context → IMMEDIATE BLOCK
-4. If information request → Allow execution
-5. If PRB context exists → Validate scope and proceed
+3. If question patterns detected (@Role questions, planning queries) → ALLOW EXECUTION
+4. If work intent detected AND no PRB context → IMMEDIATE BLOCK
+5. If information request → Allow execution
+6. If PRB context exists → Validate scope and proceed
 ```
 
 ### Work Pattern Detection
@@ -67,11 +68,18 @@ MANDATORY VALIDATION SEQUENCE:
 - **Status Requests:** "what's the status", "show me the current", "check the logs"
 - **Analysis Requests:** "analyze the code", "explain this function", "review the architecture"
 
+**ENHANCED QUESTION INDICATORS:**
+- **Role Questions:** "@PM what...", "@Architect should...", "@Role can...", "@Role how..."
+- **Planning Questions:** "what story next", "what should we work on", "which approach"
+- **Design Questions:** "should we use", "what pattern", "which architecture"
+- **Status Questions:** "what's the status", "how are we doing", "what's next"
+
 **Detection Steps:**
-1. **Scan Text:** Review input text for work vs information patterns
-2. **Classify Intent:** Determine if request is work, information, or mixed
-3. **Check PRB Context:** Verify active PRB exists for work requests
-4. **Block or Allow:** Block work without PRB, allow information requests
+1. **Scan Text:** Review input text for work vs information vs question patterns
+2. **Priority Check:** Questions take priority over work indicators
+3. **Classify Intent:** Determine if request is work, information, question, or mixed
+4. **Check PRB Context:** Verify active PRB exists for work requests only
+5. **Block or Allow:** Block work without PRB, allow information requests and questions
 
 ### Tool-Specific Violation Detection
 
