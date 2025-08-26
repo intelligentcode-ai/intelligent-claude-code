@@ -53,39 +53,28 @@
 ## MANDATORY Template-First Generation Flow (ZERO EXCEPTIONS)
 
 1. **Detect** work requirement
-2. **Validate** Subagent mode if @Role
-3. **Gather** complete context (MANDATORY)
-4. **Search** memory/[topic]/ (MANDATORY)
-5. **Search** best-practices/ (MANDATORY)
-6. **Score** complexity
-7. **SIZE CHECK** - Auto-breakdown if complexity > 15 points using prb-breakdown-patterns.md
-8. **MANDATORY: Load Template** from src/prb-templates/ hierarchy ONLY
-9. **MANDATORY: Load Complete Configuration** at generation time
-10. **MANDATORY: Resolve ALL Placeholders** with actual config values
-   - [FROM_CONFIG] → git_privacy: <ACTUAL_VALUE> (not "[FROM_CONFIG]")
-   - [PROJECT_ROOT] → <ACTUAL_PROJECT_ROOT_PATH>
-   - [CURRENT_DATE] → <ACTUAL_SYSTEM_DATE>
-   - [ALL-SETTINGS] → complete configuration object
-11. **MANDATORY: Embed Complete Context** - all config in PRB
-12. **MANDATORY: Validate NO Placeholders** - ZERO unresolved values
-13. **MANDATORY: Validate Template Completeness** - ALL sections required
-14. **Generate** compliant name from template
-15. **Create** PRB using complete resolved template structure
-16. **Validate** NO runtime config dependencies
-17. **Document** template source in metadata
-18. **Execute** via subagent if needed
+2. **Gather** complete context (MANDATORY)
+3. **Search** memory/[topic]/ and best-practices/ (MANDATORY)
+4. **Score** complexity
+5. **SIZE CHECK** - Auto-breakdown if complexity > 15 points using prb-breakdown-patterns.md
+6. **Load Template** from src/prb-templates/ hierarchy ONLY
+7. **Load Complete Configuration** at generation time
+8. **Resolve ALL Placeholders** with actual config values
+   - [FROM_CONFIG] → actual values (not placeholders)
+   - [PROJECT_ROOT] → absolute project path
+   - [CURRENT_DATE] → system date
+9. **Embed Complete Context** - all config in PRB
+10. **Validate NO Placeholders** - ZERO unresolved values
+11. **Generate** compliant name and create PRB
+12. **Execute** via subagent if needed
 
-**ABSOLUTE ENFORCEMENT:** Steps 8-17 are MANDATORY - NO bypassing, NO exceptions, NO runtime config lookups.
+**ABSOLUTE ENFORCEMENT:** ALL steps are MANDATORY - NO bypassing, NO exceptions, NO runtime config lookups.
 
 ## Context Requirements
 
 **MANDATORY before generation**:
 - System nature (CODE/AI-AGENTIC)
 - Project root (absolute path)
-- Project overview (from CLAUDE.md)
-- Work location (project boundaries)
-- Key context (implementation notes)
-- System features (key capabilities)
 - Configuration (actual values)
 - Critical files (with samples)
 - User requirements (clear)
