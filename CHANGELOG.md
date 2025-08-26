@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.10] - 2025-01-26
+
+### Fixed
+- BUG-025: Fixed over-aggressive blocking of direct questions and @Role interactions:
+  - Enhanced violation detection to properly distinguish questions from work requests
+  - Added question pattern recognition for natural Q&A interactions
+  - Updated enforcement rules to prioritize question detection over work indicators
+  - Refined error messages to clarify allowed vs blocked operations
+  - Enables natural interactions like "@PM what story next?" without PRB requirement
+  - Maintains PRB enforcement for actual implementation work
+
 ## [7.3.9] - 2025-08-26
 
 ### Fixed

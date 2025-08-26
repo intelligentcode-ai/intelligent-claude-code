@@ -29,10 +29,69 @@ UNIVERSAL PRE-TOOL VALIDATION SEQUENCE:
 - **Code Modifications**: "add function", "fix bug", "refactor code", "optimize performance"
 
 **INFORMATION REQUEST INDICATORS:**
-- **Query Verbs**: show, display, read, list, check, analyze, explain, describe, find, search
-- **Status Requests**: "what's the status", "show me the current", "check the logs"
+- **Query Verbs**: show, display, read, list, check, analyze, explain, describe, find, search, what, how, why, should, can, will
+- **Question Patterns**: "what is...", "how does...", "why should...", "what should...", "can we...", "will this..."
+- **Status Requests**: "what's the status", "show me the current", "check the logs", "what's next"
 - **Analysis Requests**: "analyze the code", "explain this function", "review the architecture"
 - **Documentation Requests**: "show documentation", "list available commands", "explain the process"
+- **Role Questions**: "@PM what...", "@Architect should...", "@Role can...", "@Role how...", "@Role why..."
+- **Planning Questions**: "what story next", "what should we work on", "which approach", "what do you think"
+- **Design Questions**: "should we use", "what pattern", "which architecture", "how should we"
+- **Consultation Questions**: "would you recommend", "do you suggest", "what's the best"
+
+### Enhanced Question Detection Functions
+
+**QUESTION_PATTERN_DETECTION:**
+```
+extract_question_patterns(user_input):
+    question_patterns = [
+        r"what\s+(is|are|should|would|will|can|do)",
+        r"how\s+(does|do|should|would|will|can|to)",
+        r"why\s+(does|do|should|would|will|is|are)",
+        r"should\s+(we|I|this|that)",
+        r"can\s+(we|you|I|this|that)",
+        r"will\s+(this|that|we|you|I)",
+        r"would\s+(you|this|that|we)",
+        r"which\s+(approach|pattern|method|way)",
+        r"what's\s+(next|the\s+status|best|recommended)"
+    ]
+    
+    for pattern in question_patterns:
+        if re.search(pattern, user_input, re.IGNORECASE):
+            return True
+    return False
+
+detect_role_questions(user_input):
+    # Detect @Role followed by question words
+    role_question_patterns = [
+        r"@\w+\s+(what|how|why|should|can|will|would|which)",
+        r"@\w+\s+.*\?",  # @Role followed by anything ending with ?
+        r"@PM\s+what\s+(story|next|should)",
+        r"@Architect\s+(should|what|how|would|can)",
+        r"@\w+\s+(do\s+you\s+think|recommend|suggest)"
+    ]
+    
+    for pattern in role_question_patterns:
+        if re.search(pattern, user_input, re.IGNORECASE):
+            return True
+    return False
+
+is_implementation_directive(user_input):
+    # Check if it's a direct command to do work (vs question about work)
+    directive_patterns = [
+        r"(implement|create|build|fix|update|modify)\s+",
+        r"(make|do|perform)\s+this\s+(change|update|fix)",
+        r"(edit|change|update)\s+the\s+file",
+        r"(install|deploy|configure)\s+",
+        r"just\s+(do|make|create|fix)",
+        r"go\s+ahead\s+and\s+(do|make|create)"
+    ]
+    
+    for pattern in directive_patterns:
+        if re.search(pattern, user_input, re.IGNORECASE):
+            return True
+    return False
+```
 
 ### Tool-Specific Violation Patterns
 
@@ -67,28 +126,41 @@ analyze_request(user_input):
     info_indicators = extract_info_patterns(user_input) 
     tool_operations = detect_tool_usage_intent(user_input)
     
-    # Step 2: Classify request type
-    if work_indicators and not info_indicators:
+    # Step 2: Enhanced classification with question priority
+    question_patterns = extract_question_patterns(user_input)
+    role_questions = detect_role_questions(user_input)
+    
+    # Step 2a: Question patterns take priority
+    if question_patterns or role_questions:
+        if work_indicators and not is_implementation_directive(user_input):
+            return "PLANNING_QUESTION"  # Questions about work, not work itself
+        elif not work_indicators:
+            return "INFORMATION_REQUEST"
+    
+    # Step 2b: Standard classification for non-questions
+    if work_indicators and not info_indicators and not question_patterns:
         return "WORK_REQUEST"
     elif info_indicators and not work_indicators:
         return "INFORMATION_REQUEST"
     elif work_indicators and info_indicators:
         return "MIXED_REQUEST"  # Requires careful analysis
     else:
-        return "UNCLEAR_REQUEST"  # Default to safe blocking
+        return "INFORMATION_REQUEST"  # Default to allowing information requests
         
     # Step 3: Check PRB context
     prb_context = check_active_prb_context()
     
-    # Step 4: Make blocking decision
+    # Step 4: Enhanced blocking decision with question support
     if request_type == "WORK_REQUEST" and not prb_context:
         return "BLOCK_EXECUTION"
     elif request_type == "INFORMATION_REQUEST":
         return "ALLOW_EXECUTION"
+    elif request_type == "PLANNING_QUESTION":
+        return "ALLOW_EXECUTION"  # Allow questions about work
     elif request_type == "MIXED_REQUEST":
         return "EVALUATE_COMPONENTS"  # Separate work from info
     else:
-        return "BLOCK_EXECUTION"  # Safe default
+        return "ALLOW_EXECUTION"  # Default to allowing (was blocking)
 ```
 
 ### Tool-Specific Detection
@@ -211,21 +283,42 @@ validate_prb_context(operation, target):
 
 ## Error Messages and Auto-Correction
 
+### Non-Blocking Scenarios (DO NOT BLOCK)
+
+**ALLOWED INTERACTIONS - NO PRB REQUIRED:**
+- **Q&A with Roles**: "@PM what story next?", "@Architect should we use X?"
+- **Information Requests**: "What is...", "How does...", "Show me..."
+- **Status Queries**: "What's the current status?", "How are we doing?"
+- **Planning Questions**: "What should we work on?", "Which approach?"
+- **Design Consultation**: "Would you recommend...?", "What's the best...?"
+- **Analysis Requests**: "Explain this code", "Review this architecture"
+
+**RECOGNITION PATTERNS:**
+- Questions starting with what, how, why, should, can, will, would
+- @Role followed by question words
+- Requests ending with question marks
+- Consultation and advice-seeking language
+
 ### Unmistakable Error Messages
 
 **DIRECT_EXECUTION_BLOCKED:**
 ```
-❌ DIRECT EXECUTION BLOCKED: All work requires PRB
+❌ DIRECT EXECUTION BLOCKED: Implementation work requires PRB
 
-This request attempts to perform work without an active PRB context.
-Every implementation, modification, or system change requires PRB framework.
+This request attempts to perform implementation work without an active PRB context.
+Implementation, modification, and system changes require PRB framework.
+
+BLOCKED OPERATION: {operation_description}
+REASON: No active PRB context detected
 
 REQUIRED ACTION: Use @Role pattern to generate PRB first
 Example: @AI-Engineer implement this feature
 Then execute the generated PRB
 
-BLOCKED OPERATION: {operation_description}
-REASON: No active PRB context detected
+NOTE: Questions and information requests are always allowed:
+• "@PM what story next?" → Allowed
+• "What is the current status?" → Allowed  
+• "How does this component work?" → Allowed
 ```
 
 **TOOL_USE_VIOLATION:**

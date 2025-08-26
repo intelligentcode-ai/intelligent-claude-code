@@ -48,7 +48,14 @@
 - **Direct Instructions**: "make this change", "add this feature", "fix this bug"
 - **Workflow Bypassing**: "just do X", "quickly Y", "simple Z"
 
-**VIOLATION PATTERN EXAMPLES:**
+**ALLOWED QUESTION PATTERNS:**
+- "@PM what story next?" → ALLOW → Natural Q&A interaction
+- "@Architect should we use microservices?" → ALLOW → Design consultation
+- "What is the current status?" → ALLOW → Information request
+- "How does this component work?" → ALLOW → Analysis request
+- "Can you explain this approach?" → ALLOW → Learning interaction
+
+**VIOLATION PATTERN EXAMPLES (WORK WITHOUT PRB):**
 - "Edit the file to add X" → BLOCK → Generate PRB first
 - "Create a new component Y" → BLOCK → Generate PRB first
 - "Fix this bug in Z" → BLOCK → Generate PRB first
@@ -60,13 +67,16 @@
 **MANDATORY VALIDATION BEFORE EVERY TOOL:**
 ```
 BEFORE ANY TOOL USE:
-1. Parse user request for work intent patterns
-2. Check if current context has active PRB
-3. If work intent detected AND no PRB context:
+1. Parse user request for work intent patterns AND question patterns
+2. Check if request contains questions (@Role questions, planning queries)
+3. If question patterns detected:
+   → ALLOW EXECUTION → Natural Q&A interaction
+4. If work intent detected AND no PRB context:
    → IMMEDIATE BLOCK with unmistakable error
    → "❌ DIRECT EXECUTION BLOCKED: All work requires PRB"
-4. If PRB context exists:
+5. If PRB context exists:
    → Allow tool execution within PRB scope
+6. Default: Allow information requests
 ```
 
 ### Unmistakable Error Messages with Auto-Correction Guidance
