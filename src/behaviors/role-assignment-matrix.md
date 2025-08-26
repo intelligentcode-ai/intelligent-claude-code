@@ -1,16 +1,42 @@
 # Role Assignment Decision Matrix
 
-**MANDATORY:** Use two-factor analysis for ALL role assignments. Auto-correct single-factor violations.
+**MANDATORY:** Use two-factor analysis for ALL role assignments with structured thinking integration. Auto-correct single-factor violations.
 
-**PURPOSE:** Systematic role selection based on project scope AND work type
+**PURPOSE:** Systematic role selection based on project scope AND work type using structured thinking for optimal decisions
 
-## Core Principle
+## Imports
+@./structured-thinking-integration.md
+@./complexity-recognition-patterns.md
+@./systematic-analysis-patterns.md
 
-**Role = f(ProjectScope, WorkType)**
+## Core Principle with Structured Thinking
 
-Role assignment MUST consider both factors:
-- **Factor 1:** Project Scope (system nature)
-- **Factor 2:** Work Type (specific task patterns)
+**Role = f(ProjectScope, WorkType) + StructuredAnalysis**
+
+**ENHANCED ROLE ASSIGNMENT PROCESS:**
+Role assignment MUST use structured thinking for complex decisions:
+
+### STRUCTURED THINKING INTEGRATION (MANDATORY)
+
+**COMPLEXITY-BASED THINKING ACTIVATION:**
+- **High Complexity Role Decisions** (9+ complexity points): Use Ultrathinking with comprehensive analysis
+- **Medium Complexity Role Decisions** (4-8 complexity points): Use Sequential Thinking with systematic evaluation
+- **Standard Role Decisions** (0-3 complexity points): Use systematic checklist approach
+
+**SYSTEMATIC ANALYSIS FOR ROLE ASSIGNMENT:**
+All role assignment decisions MUST apply systematic analysis framework:
+
+1. **Requirements Analysis**: Define specific expertise and coordination needs
+2. **Context Assessment**: Evaluate project scope, team capabilities, and constraints  
+3. **Option Generation**: Consider multiple role assignment alternatives
+4. **Impact Evaluation**: Assess effectiveness and efficiency of each option
+5. **Decision Recommendation**: Select optimal role assignment with clear rationale
+
+**TWO-FACTOR ANALYSIS ENHANCEMENT:**
+Role assignment MUST consider both factors with structured reasoning:
+- **Factor 1:** Project Scope (system nature) - analyzed systematically
+- **Factor 2:** Work Type (specific task patterns) - evaluated comprehensively
+- **Integration:** Combined analysis using structured thinking frameworks
 
 ## Two-Factor Decision Matrix
 

@@ -2,7 +2,12 @@
 
 **MANDATORY:** Create domain-specific specialists ALWAYS when technology expertise is needed.
 
-**PURPOSE:** Enable unlimited automatic creation of specialized subagents for ANY technology domain.
+**PURPOSE:** Enable unlimited automatic creation of specialized subagents for ANY technology domain using structured thinking for optimal decisions.
+
+## Imports
+@./structured-thinking-integration.md
+@./complexity-recognition-patterns.md
+@./systematic-analysis-patterns.md
 
 ## Core Principle: Unlimited Specialist Discovery
 
@@ -12,12 +17,31 @@
 
 ## Specialist Creation Process
 
-### 1. Technology Analysis
-**Detection Logic:**
-1. **Parse Work Requirements**: Extract technology stack and domain needs
-2. **Identify Technology Domains**: Determine specific technology expertise required
-3. **ALWAYS Create Specialists**: Create domain-specific specialists when technology expertise is needed
-4. **Domain Identification**: Identify specific domain expertise needed for optimal execution
+### 1. Technology Analysis with Structured Thinking
+
+**MANDATORY STRUCTURED APPROACH:**
+Before creating specialists, apply systematic analysis for optimal specialist decisions:
+
+**COMPLEXITY ASSESSMENT:**
+- Assess domain expertise complexity using complexity-recognition-patterns.md
+- High complexity specialist creation decisions require Ultrathinking
+- Medium complexity decisions use Sequential Thinking
+- Document decision rationale using structured analysis
+
+**SYSTEMATIC ANALYSIS INTEGRATION:**
+- Apply Specialist Creation Decision Framework from systematic-analysis-patterns.md
+- Use structured thinking to evaluate specialist vs existing role trade-offs
+- Systematic analysis of domain requirements, team capabilities, and long-term needs
+
+**Enhanced Detection Logic with Structured Thinking:**
+1. **Parse Work Requirements**: Extract technology stack and domain needs using systematic approach
+2. **Assess Complexity**: Calculate complexity of specialist creation decision using recognition patterns
+3. **Activate Thinking Mode**: Use Sequential or Ultrathinking based on complexity assessment  
+4. **Systematic Analysis**: Apply specialist creation decision framework for comprehensive evaluation
+5. **Identify Technology Domains**: Determine specific technology expertise required through structured analysis
+6. **Evaluate Options**: Compare specialist creation vs existing role alternatives systematically
+7. **Make Decision**: Create domain-specific specialists based on structured analysis results
+8. **Document Rationale**: Include systematic analysis reasoning in specialist creation documentation
 
 ### 2. Dynamic Specialist Generation
 **Creation Steps:**

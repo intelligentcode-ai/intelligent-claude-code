@@ -7,20 +7,41 @@
 ## Imports
 @./dynamic-specialist-creation.md
 @./prb-breakdown-patterns.md
+@./structured-thinking-integration.md
+@./complexity-recognition-patterns.md
+@./systematic-analysis-patterns.md
 
 ## Core Process
 
 **CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT subagent).
 
 When user says "@PM break down story X" or similar:
+
+## STRUCTURED THINKING INTEGRATION (MANDATORY)
+
+**COMPLEXITY ASSESSMENT FIRST**: Before proceeding with breakdown, @PM MUST assess story complexity:
+- Use complexity-recognition-patterns.md to calculate complexity score
+- Activate appropriate thinking mode based on complexity level
+- Apply systematic-analysis-patterns.md framework for complex stories
+
+**THINKING MODE ACTIVATION:**
+- **High Complexity (9+ points)**: Activate Ultrathinking for comprehensive analysis
+- **Medium Complexity (4-8 points)**: Activate Sequential Thinking for systematic approach
+- **Low Complexity (0-3 points)**: Use systematic checklist for consistency
+
+## ENHANCED PROCESS WITH STRUCTURED THINKING
+
 1. **@PM reads story**: Understands business goals and requirements
-2. **@PM analyzes project scope**: Detects system nature and technology context
-3. **@PM analyzes work type**: Identifies specific work patterns and requirements
-4. **@PM selects specialist architect**: Chooses domain-specific architect based on two-factor analysis
-5. **@PM + Specialist Architect collaborate**: Apply decision matrix for role selection
-6. **@PM + Architect assign roles**: Use two-factor analysis to determine correct specialist roles
-7. **@PM creates PRBs**: Generates PRBs with documented role assignment rationale (MAIN AGENT ONLY)
-8. **Story selection**: @PM + Architect select next story based on priorities/complexity
+2. **@PM assesses complexity**: Uses complexity recognition patterns to determine story complexity score
+3. **@PM activates thinking mode**: Sequential thinking or Ultrathinking based on complexity assessment
+4. **@PM conducts systematic analysis**: Applies PM story analysis framework from systematic-analysis-patterns.md
+5. **@PM analyzes project scope**: Detects system nature and technology context using structured approach
+6. **@PM analyzes work type**: Identifies specific work patterns and requirements with systematic evaluation
+7. **@PM selects specialist architect**: Chooses domain-specific architect based on structured two-factor analysis
+8. **@PM + Specialist Architect collaborate**: Apply decision matrix for role selection with systematic reasoning
+9. **@PM + Architect assign roles**: Use enhanced two-factor analysis to determine correct specialist roles
+10. **@PM creates PRBs**: Generates PRBs with documented role assignment rationale and systematic analysis (MAIN AGENT ONLY)
+11. **Story selection**: @PM + Architect select next story based on priorities/complexity using structured evaluation
 
 **SEPARATION ENFORCEMENT:** 
 - **CREATION**: @PM + Architect work in main agent context with full project access
