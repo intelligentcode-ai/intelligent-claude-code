@@ -27,4 +27,4 @@
 Patterns provide consistency across behaviors while avoiding duplication.
 
 ---
-*Optimized: 109→25 lines*
+*Shared behavioral patterns for intelligent-claude-code system*

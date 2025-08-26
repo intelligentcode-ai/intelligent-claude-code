@@ -12,11 +12,10 @@
 ## Role System Enforcement
 
 ### Role-System Alignment
-| System Type | Valid Roles | Invalid Roles |
-|-------------|------------|---------------|
-| AI-AGENTIC | @AI-Engineer, @PM | @Database-Engineer for behaviors |
-| CODE-BASED | @Developer, @Backend-Tester | @AI-Engineer for code impl |
-| HYBRID | Joint assessment required | Single role decision |
+**DYNAMIC DECISION PROCESS**: Role assignments determined through PM + Architect collaboration using two-factor analysis:
+- **Factor 1**: Project scope/system nature (AI-AGENTIC/CODE-BASED/HYBRID)
+- **Factor 2**: Work type analysis (infrastructure, security, database, implementation, etc.)
+- **Process**: PM analyzes requirements → Creates specialist architect → Joint role assignment with documented rationale
 
 ### PM+Architect Collaboration
 1. PM analyzes requirements

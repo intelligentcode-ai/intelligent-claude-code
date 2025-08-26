@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.2] - 2025-08-26
+
+### Fixed
+- Remove non-existent command references from behavioral patterns
+- Replace hardcoded role assignments with dynamic two-factor analysis
+- Clean optimization comments from behavioral files
+
+## [7.4.1] - 2025-08-26
+
+### Fixed
+- Removed broken imports from consolidation cleanup
+- Fixed technical error: PRBs execute via AGENTS (not Task tool)
+- Cleaned up references to deleted behavioral pattern files
+- Updated import references to point to existing files
+- Corrected technical terminology consistency across all behavioral patterns
+
+## [7.3.13] - 2025-01-26
+
+### Added
+- Sequential thinking integration for role behavioral patterns
+- Complexity recognition patterns that trigger structured thinking
+- Ultrathinking integration for optimal approach discovery
+- Systematic analysis patterns for @PM, @Architect, and specialist roles
+- Reduced user intervention through enhanced upfront thinking
+- Structured thinking frameworks for complex decision scenarios
+- Automatic complexity assessment that mandates appropriate thinking modes
+
+### Enhanced
+- Story breakdown behavior with mandatory structured thinking integration
+- Dynamic specialist creation with systematic analysis for optimal decisions
+- Role assignment matrix with complexity-based thinking activation
+- Main agent role operations with systematic analysis before solution proposals
+
+## [7.3.12] - 2025-08-26
+
+### Added
+- PRB adaptation behavioral patterns for user corrections and new information
+- Dynamic PRB update mechanisms for real-time context modification
+- Error detection patterns that trigger automatic PRB adaptation
+- Context propagation ensures updated information reaches execution
+- Seamless agent restart patterns with updated context
+
 ## [7.3.11] - 2025-01-26
 
 ### Fixed
