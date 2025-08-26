@@ -121,6 +121,90 @@ pull_request:
     [TESTING_PERFORMED]
   reviewer: "[PRE_ASSIGNED_SME]"
 
+# MANDATORY: Validation Enforcement Section
+validation_enforcement:
+  mandatory_requirements:
+    git_operations:
+      - "Feature branch creation with proper naming convention"
+      - "Git commit with detailed message following [ID]: [DESCRIPTION] format"
+      - "Git push to feature branch (never directly to main/default)"
+      - "Pull request creation with comprehensive description"
+      - "Privacy filter applied to all git operations"
+      blocked_patterns:
+        - "No git operations needed"
+        - "Skip git workflow"
+        - "Direct push to main"
+        - "No branching required"
+        - "No PR needed"
+        - "Simple merge"
+        - "Direct commit acceptable"
+      error_message: "❌ BLOCKED: Full git workflow with branch protection is mandatory for medium PRBs."
+    
+    sme_review:
+      - "Complete technical review checklist with all items verified"
+      - "Multi-file coordination validation"
+      - "Feature completeness assessment"
+      - "Code quality and pattern compliance verification"
+      - "Configuration compliance check"
+      - "Integration testing validation"
+      blocked_patterns:
+        - "No review needed"
+        - "Skip validation steps"
+        - "Obvious implementation"
+        - "Self-evident changes"
+        - "Internal change only"
+        - "Too straightforward for review"
+        - "Developer discretion"
+      error_message: "❌ BLOCKED: Comprehensive SME review is mandatory for all medium complexity PRBs."
+    
+    documentation:
+      - "CHANGELOG entry with detailed feature description required"
+      - "README/API documentation updates for user-facing changes"
+      - "Architecture documentation updates if system design affected"
+      - "Inline code documentation for complex logic"
+      - "Integration guides updated if new dependencies introduced"
+      blocked_patterns:
+        - "No documentation needed"
+        - "Self-documenting code"
+        - "Skip CHANGELOG"
+        - "Internal change, no docs"
+        - "Documentation not affected"
+        - "Too technical for user docs"
+        - "Code speaks for itself"
+      error_message: "❌ BLOCKED: Comprehensive documentation updates are mandatory for medium PRBs."
+
+    pull_request_review:
+      - "Assigned SME reviewer must be specified (not generic)"
+      - "Pull request description must include summary, changes, and testing"
+      - "All PR template sections must be completed"
+      - "Integration testing results must be documented"
+      blocked_patterns:
+        - "No reviewer assignment needed"
+        - "Any developer can review"
+        - "Self-review sufficient"
+        - "Skip PR template"
+        - "Minimal description acceptable"
+      error_message: "❌ BLOCKED: Proper SME reviewer assignment and comprehensive PR documentation required."
+
+    version_management:
+      - "Appropriate version bump (patch/minor) based on change scope"
+      - "Version consistency maintained across all affected components"
+      - "Breaking change assessment completed"
+      blocked_patterns:
+        - "No version change needed"
+        - "Skip versioning"
+        - "Version not applicable"
+        - "Internal change, no version impact"
+      error_message: "❌ BLOCKED: Version management is mandatory for all feature-level changes."
+  
+  enforcement_rules:
+    - "ALL 9 execution steps must be completed in sequential order"
+    - "NO bypass language, skip patterns, or discretionary exceptions allowed"
+    - "MANDATORY full git workflow with feature branch and PR process"
+    - "REQUIRED comprehensive SME review with assigned domain expert"
+    - "MANDATORY documentation updates for all user-impacting changes"
+    - "ENFORCED pull request process with proper reviewer assignment"
+
 # EXECUTION CHECKLIST
 execution_checklist: |
   ☐ Step 1 - Git Branch: Feature branch created and checked out
