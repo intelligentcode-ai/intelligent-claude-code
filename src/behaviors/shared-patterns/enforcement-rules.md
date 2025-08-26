@@ -4,20 +4,12 @@
 
 ## Subagent Scope Validation
 
-**Subagent Scope Validation Process:**
-
-1. **Check Working Directory:**
-   - When subagent working directory starts with ~/.claude/
-   - Block execution and show error: "❌ Cannot use ~/.claude/ as working directory"
-
-2. **Check File Operations:**
-   - Review each file path in subagent context
-   - When file path starts with ~/.claude/ and operation is not installation
-   - Block execution and show error: "❌ References forbidden ~/.claude/ path"
-
-3. **Allow Valid Operations:**
-   - Subagents with project root working directories proceed
-   - Subagents with valid file operations within project scope proceed
+**Subagent Scope Validation Rules:**
+- **Block**: Working directories starting with ~/.claude/
+- **Block**: File operations to ~/.claude/ (except installation)
+- **Allow**: Project root working directories
+- **Allow**: File operations within project scope
+- **Error Messages**: Clear scope violation messages
 
 ## Role System Enforcement
 
@@ -54,32 +46,27 @@ MANDATORY VALIDATION SEQUENCE:
 
 ### Work Pattern Detection
 
-**Work Pattern Detection Process:**
+**Work Pattern Detection:**
 
-**WORK INTENT INDICATORS:**
-- **Action Verbs:** implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
-- **Direct Instructions:** "make this change", "add this feature", "edit the file", "update the config"
-- **File Operations:** "create file X", "edit file Y", "delete file Z"
-- **System Changes:** "install package", "configure service", "deploy application"
-- **Code Modifications:** "add function", "fix bug", "refactor code", "optimize performance"
+**WORK INDICATORS:**
+- **Action Verbs**: implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
+- **Direct Instructions**: "make this change", "add this feature", "edit the file", "update the config"
+- **File Operations**: "create file X", "edit file Y", "delete file Z"
+- **System Changes**: "install package", "configure service", "deploy application"
+- **Code Modifications**: "add function", "fix bug", "refactor code", "optimize performance"
 
-**INFORMATION REQUEST INDICATORS:**
-- **Query Verbs:** show, display, read, list, check, analyze, explain, describe, find, search
-- **Status Requests:** "what's the status", "show me the current", "check the logs"
-- **Analysis Requests:** "analyze the code", "explain this function", "review the architecture"
+**INFORMATION INDICATORS:**
+- **Query Verbs**: show, display, read, list, check, analyze, explain, describe, find, search
+- **Status Requests**: "what's the status", "show me the current", "check the logs"
+- **Analysis Requests**: "analyze the code", "explain this function", "review the architecture"
 
-**ENHANCED QUESTION INDICATORS:**
-- **Role Questions:** "@PM what...", "@Architect should...", "@Role can...", "@Role how..."
-- **Planning Questions:** "what story next", "what should we work on", "which approach"
-- **Design Questions:** "should we use", "what pattern", "which architecture"
-- **Status Questions:** "what's the status", "how are we doing", "what's next"
+**QUESTION INDICATORS:**
+- **Role Questions**: "@PM what...", "@Architect should...", "@Role can...", "@Role how..."
+- **Planning Questions**: "what story next", "what should we work on", "which approach"
+- **Design Questions**: "should we use", "what pattern", "which architecture"
+- **Status Questions**: "what's the status", "how are we doing", "what's next"
 
-**Detection Steps:**
-1. **Scan Text:** Review input text for work vs information vs question patterns
-2. **Priority Check:** Questions take priority over work indicators
-3. **Classify Intent:** Determine if request is work, information, question, or mixed
-4. **Check PRB Context:** Verify active PRB exists for work requests only
-5. **Block or Allow:** Block work without PRB, allow information requests and questions
+**DETECTION PRIORITY:** Questions > Information > Work (Questions always allowed)
 
 ### Tool-Specific Violation Detection
 
@@ -94,56 +81,30 @@ MANDATORY VALIDATION SEQUENCE:
 - System configuration changes without PRB
 - Any bash operations that modify system state
 
-**VIOLATION DETECTION LOGIC:**
-```
-validate_tool_use(tool, operation, target):
-    if not has_active_prb() and is_work_operation(operation):
-        return "BLOCK_NO_PRB_CONTEXT"
-    
-    if has_active_prb() and not prb_authorizes(operation, target):
-        return "BLOCK_OUTSIDE_PRB_SCOPE"
-    
-    if is_information_request(operation):
-        return "ALLOW_INFORMATION"
-    
-    return "ALLOW_AUTHORIZED_WORK"
-```
+**VIOLATION DETECTION RESULTS:**
+- **BLOCK_NO_PRB_CONTEXT**: Work operation without active PRB
+- **BLOCK_OUTSIDE_PRB_SCOPE**: Operation outside PRB authorization
+- **ALLOW_INFORMATION**: Information requests always allowed
+- **ALLOW_AUTHORIZED_WORK**: Work within PRB scope permitted
 
 ### False Completion Detection
 
-**False Completion Detection Process:**
-
-**Completion Triggers:**
-- Text contains "PRB COMPLETE"
-- Text contains "Task finished"
-- Text contains "Work done"
-- Text contains "Completed"
-
-**Validation Steps:**
-1. **Detect Completion Claims:** Scan for completion trigger phrases
-2. **Check Validation Status:** Review completion checklist validation
-3. **Block Invalid Claims:** When checklist incomplete, block completion
+**False Completion Detection:**
+- **Trigger Phrases**: "PRB COMPLETE", "Task finished", "Work done", "Completed"
+- **Validation Required**: Must verify completion checklist before allowing completion claims
+- **Block Invalid Claims**: Incomplete checklists block completion
 
 ### Documentation Compliance Detection
 
-**Documentation Compliance Detection Process:**
+**Documentation Compliance Detection:**
 
-**BLOCKED Documentation Skipping Patterns:**
-- "No documentation needed" → BLOCK → Must follow template requirements
-- "Self-documenting code" → BLOCK → Template requires explicit documentation
-- "Skip CHANGELOG" → BLOCK → CHANGELOG entry mandatory per template
-- "Internal change, no docs" → BLOCK → All changes require documentation per template
-- "Documentation not affected" → BLOCK → Template determines documentation requirements
-- "Too technical for user docs" → BLOCK → Technical documentation still required
-- "Code speaks for itself" → BLOCK → Template documentation sections are mandatory
-- "No version bump needed" → BLOCK → Version management required per template
-- "Skip versioning" → BLOCK → Version bump mandatory per template
+**BLOCKED Bypass Patterns:**
+- "No documentation needed", "Self-documenting code", "Skip CHANGELOG"
+- "Internal change, no docs", "Documentation not affected"
+- "Too technical for user docs", "Code speaks for itself"
+- "No version bump needed", "Skip versioning"
 
-**Detection Steps:**
-1. **Scan for Documentation Bypass Patterns:** Check text for documentation skipping language
-2. **Validate Template Requirements:** Ensure all template documentation sections are addressed
-3. **Block Documentation Skipping:** When bypass patterns detected, block with template enforcement message
-4. **Enforce Documentation Completion:** Require explicit validation of version bump, CHANGELOG, and README updates
+**ENFORCEMENT**: Template documentation requirements are mandatory - no exceptions
 
 ## Error Messages
 
@@ -215,9 +176,6 @@ CORRECTION GUIDE:
 | Role mismatch | Trigger PM+Architect process |
 | Scope violation | Constrain to project root |
 | Documentation skipped | Enforce template documentation requirements |
-| Version bump missing | Execute version bump per template |
-| CHANGELOG omitted | Create CHANGELOG entry per template |
-| README updates skipped | Update README per template requirements |
 
 ---
 *Shared enforcement patterns extracted from prb-enforcement.md*

@@ -22,20 +22,11 @@
 
 ### Template Loading Process
 
-**Steps to Load Template by Complexity Level:**
-1. **Determine Template Name:** Build template filename as "{complexity_level}-prb-template.yaml"
-2. **Create Search Path List:** Build hierarchy of paths to search:
-   - Project configured template path (via get_project_path)
-   - Project .claude/prb-templates directory  
-   - User global ~/.claude/prb-templates directory
-3. **Search Each Path:** Check each path in hierarchy order:
-   - If template file exists at current path, load and return that template
-   - If not found, continue to next path in hierarchy
-4. **Load Project Context:** Parse CLAUDE.md from project root and .claude/ for context integration:
-   - Extract project_overview, work_location, key_context, system_features
-   - Gather system_nature, project boundaries, and behavioral constraints
-   - Prepare context values for placeholder resolution
-5. **Handle Not Found:** If template not found in any path, show error: "Template not found: {template_name}"
+**Loading Logic:**
+1. **Determine Template:** Select based on complexity score (0-2: nano, 3-5: tiny, 6-15: medium, 16-30: large, 30+: mega)
+2. **Search Hierarchy:** Check paths in priority order until template found
+3. **Load and Validate:** Ensure template has required sections and valid structure
+4. **Return Template:** Provide template content for placeholder resolution
 
 ## Configuration Integration
 
@@ -79,14 +70,11 @@ Projects can override any template by placing it in their configured template di
 ## Template Management
 
 ### Template Loading
-- **Template Files**: Loaded from configuration hierarchy as needed
-- **Directory Checks**: Validate path existence during access
-- **Template Validation**: Validate structure during loading
-
-### Template Updates
-- File modification triggers reload during next access
-- Directory structure changes detected during path validation
-- Configuration updates affecting template paths handled dynamically
+**Loading Behavior:**
+- Templates loaded on-demand from hierarchy
+- Path validation ensures directory access
+- Structure validation confirms template integrity
+- Configuration changes trigger path re-evaluation
 
 ## Integration Points
 
@@ -126,16 +114,13 @@ Projects can customize templates by:
 - User templates: Personal customization, not version controlled
 - System templates: Managed by intelligent-claude-code installation
 
-## Commands
+## Template Operations
 
-### Template Management
-- `/icc-list-templates` - Show available templates in hierarchy order
-- `/icc-validate-template [name]` - Validate template structure
-- `/icc-load-template [complexity]` - Load template for complexity level
-- `/icc-template-hierarchy` - Show template search paths
-- `/icc-validate-context [template]` - Validate complete context in template
-- `/icc-check-placeholders [template]` - Check for placeholder values
-- `/icc-gather-context [work_request]` - Gather complete context before PRB generation
+**Automated Integration:**
+- Template loading integrated with PRB creation
+- Hierarchy search automated during template selection
+- Validation built into loading process
+- Context gathering handled by main agent during PRB generation
 
 ---
 *Template loading patterns for intelligent-claude-code system*

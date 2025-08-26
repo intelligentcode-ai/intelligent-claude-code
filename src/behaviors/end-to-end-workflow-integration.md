@@ -74,7 +74,7 @@
    - Extract autonomy_level: "L2" (string)
 
 3. PROJECT CONTEXT ANALYSIS:
-   - Project root: /Users/ksamaschke/Work/Engineering/intelligent-claude-code
+   - Project root: /absolute/path/to/project
    - File count: 50+ .md files in behaviors/, 5 code files
    - Classification: "MARKDOWN-BASED AI-AGENTIC SYSTEM"
    - Critical files: src/behaviors/, src/prb-templates/
@@ -107,7 +107,7 @@ BATCH 3: Configuration Values (All [FROM_CONFIG] Replacements)
 ☑ autonomy_level: "[FROM_CONFIG]" → autonomy_level: "L2"
 
 BATCH 4: Project Context
-☑ [PROJECT_ROOT] → "/Users/ksamaschke/Work/Engineering/intelligent-claude-code"
+☑ [PROJECT_ROOT] → "/absolute/path/to/project"
 ☑ [SYSTEM_NATURE] → "MARKDOWN-BASED AI-AGENTIC SYSTEM"
 
 BATCH 5: Story-Specific Content
@@ -160,7 +160,7 @@ VALIDATION SCAN 2: Configuration Type Check
 - git_privacy: true (boolean, not string) ✅
 - branch_protection: true (boolean, not string) ✅
 - default_branch: "main" (quoted string) ✅
-- project_root: "/Users/..." (absolute path) ✅
+- project_root: "/absolute/path/to/project" (absolute path) ✅
 - Status: PASS - All configs properly typed ✅
 
 VALIDATION SCAN 3: Content Authenticity Check

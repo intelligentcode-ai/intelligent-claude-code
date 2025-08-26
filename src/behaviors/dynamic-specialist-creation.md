@@ -52,22 +52,9 @@
 
 ## Domain Detection Patterns
 
-### Technology Stack Detection
-**File Pattern Analysis:**
-- **React**: .jsx, .tsx, package.json with react dependencies
-- **AWS**: terraform files with aws provider, .aws configs
-- **Docker**: Dockerfile, docker-compose.yml, container configs
-- **Database**: .sql files, migrations, database.yml
-- **Mobile**: .swift, .kt, mobile app structures
-- **ML/AI**: .py with ML libraries, model files, jupyter notebooks
-
-**Keyword Analysis:**
-- **DevOps**: "deployment", "pipeline", "container", "orchestration"
-- **Security**: "authentication", "encryption", "vulnerability", "compliance"
-- **Database**: "schema", "migration", "query", "index", "transaction"
-- **Frontend**: "component", "UI", "UX", "responsive", "accessibility"
-- **Backend**: "API", "service", "middleware", "microservice"
-- **Infrastructure**: "cloud", "scale", "load balancer", "CDN"
+### Technology Detection
+**File Patterns:** React (.jsx/.tsx), AWS (terraform), Docker, Database (.sql), Mobile (.swift/.kt), ML/AI (.py)
+**Keywords:** DevOps, Security, Database, Frontend, Backend, Infrastructure
 
 ## Subagent File Creation
 
@@ -76,20 +63,9 @@
 **Format**: Markdown with YAML frontmatter
 **Template**: Based on dynamic-specialist-template.md
 
-### Template Placeholder Resolution
-**Required Replacements:**
-- `[DOMAIN]`: Specific technology/domain (e.g., "React", "AWS", "Machine Learning")
-- `[ROLE_TYPE]`: Role type (Developer, Engineer, Architect, Specialist)
-- `[DOMAIN_DESCRIPTION]`: Comprehensive domain description
-- `[DOMAIN_EXPERTISE]`: Bulleted list of specific expertise areas
-
-### System Prompt Customization
-**Domain-Specific Elements:**
-1. **Technology Expertise**: Deep knowledge of domain tools and frameworks
-2. **Best Practices**: Industry standards and patterns for the domain
-3. **Security Considerations**: Domain-specific security patterns
-4. **Performance Optimization**: Domain-appropriate performance metrics
-5. **Integration Patterns**: How domain integrates with other technologies
+### Template Customization
+**Replacements:** [DOMAIN], [ROLE_TYPE], [DOMAIN_DESCRIPTION], [DOMAIN_EXPERTISE]
+**Elements:** Technology expertise, best practices, security, performance, integration patterns
 
 ## Integration Points
 
@@ -102,17 +78,7 @@
 5. **PRB Assignment**: Assign work to newly created specialist
 
 ### With Role Assignment Matrix
-**Enhanced Decision Logic:**
-```
-if (technology_expertise_needed):
-    domain = extract_domain(work_requirements)
-    role_type = determine_role_type(work_focus)
-    specialist_name = f"@{domain}-{role_type}"
-    create_dynamic_specialist(specialist_name, domain, role_type)
-    assign_work(specialist_name)
-else:
-    use_existing_role()
-```
+**Decision Logic:** Extract domain → Determine role type → Create specialist → Assign work
 
 ### With PRB Creation
 **PRB Integration:**
@@ -141,19 +107,9 @@ else:
 
 ## Error Handling
 
-### Creation Failures
-**Error Scenarios:**
-- **DOMAIN_NOT_RECOGNIZED**: Unknown or invalid domain
-- **TEMPLATE_RESOLUTION_FAILED**: Cannot resolve placeholders
-- **FILE_CREATION_ERROR**: Cannot write subagent file
-- **NAME_CONFLICT**: Specialist name already exists
-- **INVALID_ROLE_TYPE**: Unsupported role type
-
-**Recovery Actions:**
-- **Fallback to Generic**: Use closest existing core role
-- **Manual Creation**: Request user input for specialist details
-- **Alternative Naming**: Use different naming pattern
-- **Error Documentation**: Log creation failures for improvement
+### Error Handling
+**Scenarios:** Domain not recognized, template resolution failed, file creation error, name conflict
+**Recovery:** Fallback to generic role, manual creation, alternative naming, error logging
 
 ## Memory Integration
 

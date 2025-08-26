@@ -39,59 +39,13 @@ UNIVERSAL PRE-TOOL VALIDATION SEQUENCE:
 - **Design Questions**: "should we use", "what pattern", "which architecture", "how should we"
 - **Consultation Questions**: "would you recommend", "do you suggest", "what's the best"
 
-### Enhanced Question Detection Functions
+### Question Detection Patterns
 
-**QUESTION_PATTERN_DETECTION:**
-```
-extract_question_patterns(user_input):
-    question_patterns = [
-        r"what\s+(is|are|should|would|will|can|do)",
-        r"how\s+(does|do|should|would|will|can|to)",
-        r"why\s+(does|do|should|would|will|is|are)",
-        r"should\s+(we|I|this|that)",
-        r"can\s+(we|you|I|this|that)",
-        r"will\s+(this|that|we|you|I)",
-        r"would\s+(you|this|that|we)",
-        r"which\s+(approach|pattern|method|way)",
-        r"what's\s+(next|the\s+status|best|recommended)"
-    ]
-    
-    for pattern in question_patterns:
-        if re.search(pattern, user_input, re.IGNORECASE):
-            return True
-    return False
-
-detect_role_questions(user_input):
-    # Detect @Role followed by question words
-    role_question_patterns = [
-        r"@\w+\s+(what|how|why|should|can|will|would|which)",
-        r"@\w+\s+.*\?",  # @Role followed by anything ending with ?
-        r"@PM\s+what\s+(story|next|should)",
-        r"@Architect\s+(should|what|how|would|can)",
-        r"@\w+\s+(do\s+you\s+think|recommend|suggest)"
-    ]
-    
-    for pattern in role_question_patterns:
-        if re.search(pattern, user_input, re.IGNORECASE):
-            return True
-    return False
-
-is_implementation_directive(user_input):
-    # Check if it's a direct command to do work (vs question about work)
-    directive_patterns = [
-        r"(implement|create|build|fix|update|modify)\s+",
-        r"(make|do|perform)\s+this\s+(change|update|fix)",
-        r"(edit|change|update)\s+the\s+file",
-        r"(install|deploy|configure)\s+",
-        r"just\s+(do|make|create|fix)",
-        r"go\s+ahead\s+and\s+(do|make|create)"
-    ]
-    
-    for pattern in directive_patterns:
-        if re.search(pattern, user_input, re.IGNORECASE):
-            return True
-    return False
-```
+**ENHANCED QUESTION RECOGNITION:**
+- **Question Words**: what, how, why, should, can, will, would, which patterns
+- **Role Questions**: @Role followed by question indicators
+- **Implementation Directives**: Direct commands to perform work (not questions about work)
+- **Planning Questions**: Questions about work direction and decisions
 
 ### Tool-Specific Violation Patterns
 
@@ -114,129 +68,35 @@ is_implementation_directive(user_input):
 - Git operations without PRB authorization
 - File system modifications without PRB context
 
-## Violation Detection Functions
+## Request Analysis Patterns
 
-### Universal Request Analysis
+### Universal Request Classification
 
-**REQUEST_ANALYSIS_PROCESS:**
-```
-analyze_request(user_input):
-    # Step 1: Extract intent patterns
-    work_indicators = extract_work_patterns(user_input)
-    info_indicators = extract_info_patterns(user_input) 
-    tool_operations = detect_tool_usage_intent(user_input)
-    
-    # Step 2: Enhanced classification with question priority
-    question_patterns = extract_question_patterns(user_input)
-    role_questions = detect_role_questions(user_input)
-    
-    # Step 2a: Question patterns take priority
-    if question_patterns or role_questions:
-        if work_indicators and not is_implementation_directive(user_input):
-            return "PLANNING_QUESTION"  # Questions about work, not work itself
-        elif not work_indicators:
-            return "INFORMATION_REQUEST"
-    
-    # Step 2b: Standard classification for non-questions
-    if work_indicators and not info_indicators and not question_patterns:
-        return "WORK_REQUEST"
-    elif info_indicators and not work_indicators:
-        return "INFORMATION_REQUEST"
-    elif work_indicators and info_indicators:
-        return "MIXED_REQUEST"  # Requires careful analysis
-    else:
-        return "INFORMATION_REQUEST"  # Default to allowing information requests
-        
-    # Step 3: Check PRB context
-    prb_context = check_active_prb_context()
-    
-    # Step 4: Enhanced blocking decision with question support
-    if request_type == "WORK_REQUEST" and not prb_context:
-        return "BLOCK_EXECUTION"
-    elif request_type == "INFORMATION_REQUEST":
-        return "ALLOW_EXECUTION"
-    elif request_type == "PLANNING_QUESTION":
-        return "ALLOW_EXECUTION"  # Allow questions about work
-    elif request_type == "MIXED_REQUEST":
-        return "EVALUATE_COMPONENTS"  # Separate work from info
-    else:
-        return "ALLOW_EXECUTION"  # Default to allowing (was blocking)
-```
+**REQUEST CLASSIFICATION LOGIC:**
+1. **Question Priority**: Questions always take precedence over work indicators
+2. **Intent Detection**: Distinguish between information requests, planning questions, and work directives  
+3. **Context Validation**: Check PRB context only for actual work requests
+4. **Default Allow**: Information requests and questions allowed without PRB
 
-### Tool-Specific Detection
+**CLASSIFICATION TYPES:**
+- **WORK_REQUEST**: Implementation directives requiring PRB context
+- **INFORMATION_REQUEST**: Status, analysis, documentation requests
+- **PLANNING_QUESTION**: Questions about work direction and strategy
+- **MIXED_REQUEST**: Requires component separation
 
-**WRITE_TOOL_VALIDATION:**
-```
-validate_write_operation(file_path, content, context):
-    # Check for PRB context
-    if not has_active_prb():
-        return block_with_error("WRITE_WITHOUT_PRB")
-    
-    # Check if file creation is implementation work
-    if is_implementation_content(content):
-        if not prb_allows_file_creation(file_path):
-            return block_with_error("FILE_OUTSIDE_PRB_SCOPE")
-    
-    # Check for configuration changes
-    if is_configuration_file(file_path):
-        if not prb_allows_config_changes():
-            return block_with_error("CONFIG_CHANGE_WITHOUT_PRB")
-    
-    return "ALLOW_OPERATION"
-```
+### Tool-Specific Validation Patterns
 
-**EDIT_TOOL_VALIDATION:**
-```
-validate_edit_operation(file_path, changes, context):
-    # Check for PRB context
-    if not has_active_prb():
-        return block_with_error("EDIT_WITHOUT_PRB")
-    
-    # Check if changes are implementation work
-    if contains_implementation_changes(changes):
-        if not prb_covers_file(file_path):
-            return block_with_error("EDIT_OUTSIDE_PRB_SCOPE")
-    
-    # Check for critical file modifications
-    if is_critical_system_file(file_path):
-        if not prb_allows_system_changes():
-            return block_with_error("SYSTEM_FILE_CHANGE_WITHOUT_PRB")
-    
-    return "ALLOW_OPERATION"
-```
+**WRITE/EDIT TOOL VALIDATION:**
+- Block file creation/modification without active PRB context
+- Validate operations against PRB scope and authorization
+- Allow documentation and information operations
+- Block configuration changes outside PRB scope
 
-**BASH_TOOL_VALIDATION:**
-```
-validate_bash_operation(command, context):
-    # Check for state-changing operations
-    state_changing_commands = [
-        "npm install", "pip install", "apt install",
-        "mkdir", "rm", "mv", "cp",
-        "git add", "git commit", "git push",
-        "systemctl", "service", "docker",
-        "chmod", "chown", "ln"
-    ]
-    
-    if any(cmd in command for cmd in state_changing_commands):
-        if not has_active_prb():
-            return block_with_error("STATE_CHANGE_WITHOUT_PRB")
-        
-        if not prb_allows_system_operations():
-            return block_with_error("SYSTEM_OP_OUTSIDE_PRB_SCOPE")
-    
-    # Allow read-only operations
-    readonly_commands = [
-        "ls", "cat", "grep", "find", "ps",
-        "git status", "git log", "git diff",
-        "npm list", "pip list"
-    ]
-    
-    if any(cmd in command for cmd in readonly_commands):
-        return "ALLOW_OPERATION"
-    
-    # Default to blocking for safety
-    return block_with_error("UNKNOWN_COMMAND_WITHOUT_PRB")
-```
+**BASH TOOL VALIDATION:**
+- **State-Changing Commands**: npm/pip install, mkdir, rm, git operations, system services
+- **Read-Only Commands**: ls, cat, grep, find, git status/log/diff
+- **Default Blocking**: Unknown commands blocked for safety without PRB
+- **PRB Authorization**: System operations require PRB permission
 
 ## Real-Time Monitoring System
 
@@ -253,33 +113,19 @@ validate_bash_operation(command, context):
 
 ### Context State Management
 
-**PRB_CONTEXT_TRACKING:**
-```
-PRB Context State:
-- active_prb_id: Currently executing PRB identifier
-- prb_scope: Authorized files, directories, and operations
-- prb_permissions: Allowed tools and system operations
-- work_boundaries: Defined limits of current PRB work
-- completion_criteria: Success criteria for PRB completion
-```
+**PRB CONTEXT ELEMENTS:**
+- **Active PRB ID**: Currently executing PRB identifier
+- **Authorized Scope**: Permitted files, directories, and operations
+- **Tool Permissions**: Allowed tools and system operations
+- **Work Boundaries**: Defined limits of current PRB work
+- **Completion Criteria**: Success criteria for PRB completion
 
-**CONTEXT_VALIDATION:**
-```
-validate_prb_context(operation, target):
-    if not active_prb_id:
-        return "NO_PRB_CONTEXT"
-    
-    if target not in prb_scope.authorized_files:
-        return "OUTSIDE_PRB_SCOPE"
-    
-    if operation not in prb_permissions.allowed_operations:
-        return "UNAUTHORIZED_OPERATION"
-    
-    if violates_work_boundaries(operation, target):
-        return "BOUNDARY_VIOLATION"
-    
-    return "AUTHORIZED"
-```
+**CONTEXT VALIDATION RESULTS:**
+- **NO_PRB_CONTEXT**: No active PRB for work operations
+- **OUTSIDE_PRB_SCOPE**: Target not in authorized scope
+- **UNAUTHORIZED_OPERATION**: Operation not permitted
+- **BOUNDARY_VIOLATION**: Violates defined work boundaries
+- **AUTHORIZED**: Operation permitted within PRB context
 
 ## Error Messages and Auto-Correction
 
@@ -377,89 +223,46 @@ CORRECTION GUIDE:
 The system will generate appropriate PRB and execute with full context.
 ```
 
-### Auto-Correction Workflows
+### Auto-Correction Patterns
 
-**VIOLATION_CORRECTION_PROCESS:**
-```
-correct_violation(violation_type, context):
-    # Step 1: Stop current execution
-    halt_tool_execution()
-    
-    # Step 2: Display unmistakable error
-    display_error_message(violation_type, context)
-    
-    # Step 3: Provide specific guidance
-    suggest_role = determine_appropriate_role(context.work_type)
-    suggest_pattern = generate_role_pattern(suggest_role, context.work_description)
-    
-    # Step 4: Preserve context for PRB generation
-    store_work_context(context)
-    
-    # Step 5: Guide to correct workflow
-    display_correction_guidance(suggest_pattern)
-    
-    # Step 6: Track violation for learning
-    log_violation_pattern(violation_type, context)
-```
+**VIOLATION CORRECTION PROCESS:**
+1. **Stop Execution**: Halt current tool execution immediately
+2. **Display Error**: Show unmistakable violation error message
+3. **Suggest Role**: Recommend appropriate @Role for the work type
+4. **Preserve Context**: Store work context for PRB generation
+5. **Guide Workflow**: Provide correct @Role pattern guidance
+6. **Track Learning**: Log violation pattern for system improvement
 
-**ROLE_SUGGESTION_LOGIC:**
-```
-determine_appropriate_role(work_context):
-    work_type = analyze_work_type(work_context)
-    
-    role_mapping = {
-        "file_operations": "@Developer",
-        "system_config": "@System-Engineer", 
-        "deployment": "@DevOps-Engineer",
-        "database": "@Database-Engineer",
-        "security": "@Security-Engineer",
-        "ai_behavioral": "@AI-Engineer",
-        "testing": "@QA-Engineer",
-        "architecture": "@Architect",
-        "documentation": "@Requirements-Engineer"
-    }
-    
-    return role_mapping.get(work_type, "@Developer")  # Default to Developer
-```
+**ROLE SUGGESTION MAPPING:**
+- **File Operations**: @Developer
+- **System Config**: @System-Engineer
+- **Deployment**: @DevOps-Engineer
+- **Database**: @Database-Engineer
+- **Security**: @Security-Engineer
+- **AI/Behavioral**: @AI-Engineer
+- **Testing**: @QA-Engineer
+- **Architecture**: @Architect
+- **Documentation**: @Requirements-Engineer
 
 ## Violation Pattern Learning
 
-### Pattern Capture and Storage
+### Pattern Learning
 
-**VIOLATION_TRACKING:**
-```
-violation_entry = {
-    "timestamp": current_timestamp(),
-    "violation_type": violation_type,
-    "user_request": original_request,
-    "detected_patterns": work_patterns,
-    "tool_attempted": attempted_tool,
-    "context": execution_context,
-    "correction_applied": correction_action,
-    "user_response": user_correction_taken
-}
+**VIOLATION TRACKING ELEMENTS:**
+- **Timestamp**: When violation occurred
+- **Violation Type**: Category of violation detected
+- **User Request**: Original request that triggered violation
+- **Detected Patterns**: Work patterns that indicated violation
+- **Tool Attempted**: Which tool was blocked
+- **Context**: Execution context at time of violation
+- **Correction Applied**: What correction guidance was provided
+- **User Response**: Whether user followed correction guidance
 
-store_violation_pattern(violation_entry, "memory/process-violations/")
-```
-
-**LEARNING_IMPROVEMENT:**
-```
-analyze_violation_patterns():
-    # Load recent violations
-    violations = load_violations_from_memory()
-    
-    # Identify common patterns
-    common_violations = identify_frequent_patterns(violations)
-    
-    # Improve detection accuracy
-    update_detection_patterns(common_violations)
-    
-    # Enhance error messages
-    refine_error_messages(user_feedback)
-    
-    # Update role suggestions
-    optimize_role_mapping(successful_corrections)
-```
+**LEARNING IMPROVEMENT AREAS:**
+- **Common Patterns**: Identify frequently occurring violations
+- **Detection Accuracy**: Reduce false positives and negatives
+- **Error Messages**: Improve clarity and actionability
+- **Role Suggestions**: Optimize role recommendations for work types
 
 ### Pattern Storage Location
 
