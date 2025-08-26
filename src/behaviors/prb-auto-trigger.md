@@ -102,4 +102,4 @@ Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 **Pattern**: All PRBs execute via subagents with complete embedded context
 
 ---
-*Optimized: 335→~75 lines*
+*PRB auto-trigger patterns for intelligent-claude-code system*
