@@ -236,3 +236,7 @@ Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
+- ALWAYS use neutral language in PRs, MRs, Releases, Commits!
+- ALWAYS respect GIT PRIVACY settings!
+- ALWAYS retrieve and RESPECT the scope of the project when creating PRBs!
+- Bug-Fixes only yield build number changes.
