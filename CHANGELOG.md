@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.5] - 2025-08-26
+
+### Fixed
+- Integrated template system with CLAUDE.md project context loading
+- All PRB templates now include complete project boundaries and behavioral constraints
+- Template enforcement validates project context completeness
+- Added project context fields (project_overview, work_location, key_context, system_features) to nano and mega templates
+- Enhanced template loading process to parse CLAUDE.md for context integration
+- Complete template system integration ensuring proper system boundaries across all complexity levels
+
 ## [7.3.4] - 2025-08-26
 
 ### Enhanced
