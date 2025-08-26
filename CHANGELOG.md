@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.4] - 2025-08-26
+
+### Enhanced
+- PRB templates now include project overview and work location context
+- Context validation enforces project scope boundaries
+- Added system features embedding to complete_context sections
+- Enhanced project boundary validation with comprehensive scope checking
+- Updated PRB auto-trigger to require project context fields
+- Added project scope violation detection and blocking
+
 ## [7.3.3] - 2025-08-26
 
 ### Fixed
