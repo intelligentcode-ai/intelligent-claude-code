@@ -22,12 +22,19 @@ To find what numbers are already used:
 - **BUG:** Check bugs/ directory for BUG-* files
 - **PRB:** Check prbs/ready/ and prbs/completed/ directories for *-PRB-* files
 
-### Number Discovery Process
-**Pattern matching for each category:**
-- Scan configured directories for existing files
-- Extract numbers using category-specific patterns  
-- Find highest number and increment
-- Apply zero-padding format (001, 002, etc.)
+### Commands to Find Next Available Numbers
+**Template for all categories:**
+```bash
+# General pattern: CATEGORY-NUMBER-title-date.extension
+HIGHEST=$(ls [directory] | grep "^[PATTERN]-" | sed 's/[PATTERN]-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
+echo "[PATTERN]-${NEXT}-title-$(date +%Y-%m-%d).[ext]"
+
+# Examples:
+# STORY: ls stories/ | grep "^STORY-" | sed 's/STORY-\([0-9]*\)-.*/\1/' | sort -n | tail -1
+# BUG: ls bugs/ | grep "^BUG-" | sed 's/BUG-\([0-9]*\)-.*/\1/' | sort -n | tail -1  
+# PRB: ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1
+```
 
 ## How to Get the Next Number
 
@@ -45,10 +52,13 @@ To find what numbers are already used:
 ## Finding the Right Directories
 
 ### Directory Configuration
-Each category uses configured directory paths with defaults:
-- **EPIC/STORY**: story_path ("stories")
-- **BUG**: bug_path ("bugs")  
-- **PRB**: prb_path/ready and prb_path/completed ("prbs")
+
+| Category | Directories | Configuration |
+|----------|-------------|---------------|
+| **EPIC** | story_path | "stories" (default) |
+| **STORY** | story_path, story_path/drafts | "stories" (default) |
+| **BUG** | bug_path | "bugs" (default) |
+| **PRB** | prb_path/ready, prb_path/completed | "prbs" (default) |
 
 ## Number Formatting Rules
 
@@ -66,38 +76,66 @@ Each category uses configured directory paths with defaults:
 ## Parent-Child Relationships
 
 ### PRB Numbering Under Parents
-**Scoping Rules:**
+```
+Examples:
+- STORY-001-PRB-001-implementation-YYYY-MM-DD.prb.yaml
+- STORY-001-PRB-002-testing-YYYY-MM-DD.prb.yaml
+- BUG-005-PRB-001-bug-fix-YYYY-MM-DD.prb.yaml
+
+Scoping Rules:
 - Each parent starts PRB numbering at 001
 - PRB numbers are independent between parents
-- Format: PARENT-ID-PRB-NUMBER-title-date.prb.yaml
+- STORY-001-PRB-001 and STORY-002-PRB-001 can coexist
+```
 
-### Parent Validation
-**Requirements:**
-- Parent work item must exist before creating child PRB
-- Parent ID must be unambiguous (exactly one match)
-- Search appropriate directories for parent pattern
+### Parent Validation Process
+
+**Purpose:** Verify that parent work item exists before creating child PRB
+
+**Steps to Validate Parent Reference:**
+1. **Parse Parent ID:** Extract the category and number from the parent work item ID
+2. **Search for Parent:** Look in appropriate directories for files matching the parent pattern
+3. **Verify Existence:** Confirm exactly one matching parent file exists
+
+**Validation Rules:**
+- Parent must exist in the correct directory for its category
+- Parent ID must be unambiguous (only one file should match)
+- Error if no parent found: "Parent not found: {parent_id}"
+- Error if multiple matches: "Ambiguous parent reference: {parent_id}"
+- Success when exactly one valid parent is found
 
 ## Performance & Error Handling
 
 ### Efficient Number Tracking
-- Track highest number for each category/parent
-- Cache recent directory scans for performance
-- Update counters on file operations
+**Track Current Numbers:**
+- Keep track of highest number for each category
+- Store highest number for each parent work item
+- Remember recent directory scans for faster lookups
+
+### Smart Updates
+- **When Creating Files:** Update the stored highest number for that category/parent
+- **When Deleting Files:** Refresh stored numbers to ensure accuracy
+- **When Directory Changes:** Re-scan directories to get current state
 
 ## Error Handling
 
-### Error Scenarios
-- **INVALID_CATEGORY**: Not EPIC, STORY, BUG, or PRB
-- **PARENT_NOT_FOUND**: Referenced parent doesn't exist
-- **DIRECTORY_ACCESS_ERROR**: Cannot read directories
-- **NUMBER_COLLISION**: Cannot generate unique number
-- **FORMAT_ERROR**: Cannot parse existing filename
+### Common Error Scenarios
 
-### Recovery Strategies
-- Auto-create missing directories
-- Retry number generation (up to 10 attempts)
-- Suggest similar names for missing parents
-- Log malformed filenames and continue
+**Types of Errors You Might Encounter:**
+- **INVALID_CATEGORY:** Work item category not recognized (must be EPIC, STORY, BUG, or PRB)
+- **PARENT_NOT_FOUND:** Referenced parent work item doesn't exist in the system
+- **DIRECTORY_ACCESS_ERROR:** Cannot read work item directories (permission or path issues)
+- **NUMBER_COLLISION:** Cannot generate a unique number after multiple attempts
+- **FORMAT_ERROR:** Cannot parse number from existing filename format
+
+### Error Recovery
+
+**How to Handle Different Error Types:**
+- **INVALID_CATEGORY:** Check against the allowed categories list (EPIC, STORY, BUG, PRB)
+- **PARENT_NOT_FOUND:** Search with similar names to suggest corrections
+- **DIRECTORY_ACCESS:** Create missing directories and check file permissions
+- **NUMBER_COLLISION:** Try again with the next available numbers (up to 10 attempts)
+- **FORMAT_ERROR:** Log the malformed filename and continue scanning other files
 
 ## Integration Points
 
@@ -115,10 +153,14 @@ Each category uses configured directory paths with defaults:
 - **Pattern Storage:** Store numbering patterns and collision data
 - **Learning:** Improve numbering strategy based on usage patterns
 
-## Integration
-- Number validation with naming enforcement
-- Number generation for file operations
-- Pattern storage for memory system learning
+## Commands
+
+### Number Management Commands
+- `/icc-get-next-number [category] [parent_id]` - Get next available number
+- `/icc-validate-number [category] [number] [parent_id]` - Validate number is available
+- `/icc-renumber-category [category]` - Renumber all items in category (dangerous)
+- `/icc-number-gaps [category]` - Show gaps in numbering sequence
+- `/icc-max-numbers` - Display current max numbers for all categories
 
 ---
 *Sequential numbering service for intelligent-claude-code work items*

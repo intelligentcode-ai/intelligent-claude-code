@@ -31,17 +31,54 @@ When user says "@PM break down story X" or similar:
 ### Factor 1: Project Scope Analysis
 **MANDATORY:** PM MUST detect project scope/system nature:
 
-**Scope Detection:**
-- **System Nature:** AI-AGENTIC vs CODE-BASED vs HYBRID (from CLAUDE.md)
-- **Technology Stack:** File patterns and framework dependencies
+**Scope Detection Patterns:**
+1. **System Nature Analysis**:
+   - Check CLAUDE.md complete_context.system_nature field
+   - **AI-AGENTIC SYSTEM**: Behavioral patterns, memory operations, PRB frameworks
+   - **CODE-BASED SYSTEM**: Implementation, databases, APIs, infrastructure
+   - **HYBRID SYSTEM**: Both code and behavioral patterns
+
+2. **Technology Stack Detection**:
+   - **AI/Behavioral Systems:** .md files, behavioral patterns, agentic frameworks
+   - **React Applications:** .jsx, .tsx files, package.json with React dependencies
+   - **Database Systems:** .sql files, migration folders, database config
+   - **Infrastructure:** Dockerfile, k8s manifests, terraform files
+   - **Security:** Security policies, compliance docs, vulnerability assessments
+   - **APIs:** OpenAPI specs, REST/GraphQL schemas, microservice patterns
+   - **Mobile:** .swift, .kt files, mobile-specific frameworks
 
 ### Factor 2: Work Type Analysis
 **MANDATORY:** PM MUST analyze specific work type patterns:
 
-**Work Type Detection:**
-- Infrastructure/DevOps, Security, Database, Implementation
-- AI/Behavioral, Architecture, Testing, Documentation
-- Parse keywords and match to specialist domain expertise
+**Work Type Detection Patterns:**
+1. **Infrastructure/DevOps Keywords**:
+   - "deploy", "CI/CD", "container", "docker", "kubernetes", "scaling", "build pipeline"
+   
+2. **Security Work Keywords**:
+   - "security", "vulnerability", "compliance", "authentication", "authorization", "encrypt"
+   
+3. **Database Work Keywords**:
+   - "database", "schema", "migration", "query", "SQL", "performance", "index"
+   
+4. **Implementation Keywords**:
+   - "implement", "feature", "bug fix", "refactor", "code", "function", "API endpoint"
+   
+5. **AI/Behavioral Keywords**:
+   - "behavioral", "memory", "learning", "agent", "PRB", "pattern", "decision"
+   
+6. **Architecture Keywords**:
+   - "design", "architecture", "pattern", "structure", "framework", "system"
+   
+7. **Testing Keywords**:
+   - "test", "QA", "validation", "quality", "coverage", "automation"
+   
+8. **Documentation Keywords**:
+   - "documentation", "docs", "README", "guide", "manual", "API docs"
+
+**Combined Analysis Logic:**
+- Parse story requirements for work type keywords
+- Match work type to specialist domain expertise  
+- Cross-reference with project scope for final role selection
 
 ## Role Assignment Process
 
@@ -88,10 +125,17 @@ When user says "@PM break down story X" or similar:
    - **Testing**: Quality assurance, test frameworks, validation
    - **Documentation**: Technical writing, API docs, user guides
    
-   **Decision Matrix:** Role = f(ProjectScope, WorkType) → Dynamic Specialist Creation
-   - AI-AGENTIC + DevOps → @DevOps-Engineer via PM + @DevOps-Architect
-   - CODE-BASED + Implementation → @[Technology]-Developer via PM + @Code-Architect
-   - Any scope + Database → @Database-Engineer via PM + @Database-Architect
+   **Decision Matrix Logic** (See role-assignment-matrix.md):
+   ```
+   Role = f(ProjectScope, WorkType) → Dynamic Specialist Creation
+   
+   Examples:
+   - AI-AGENTIC + DevOps work → Create @DevOps-Engineer via PM + @DevOps-Architect
+   - AI-AGENTIC + AI patterns → Create @[Domain]-AI-Engineer via PM + @AI-Architect  
+   - AI-AGENTIC + Security → Create @Security-Engineer via PM + @Security-Architect
+   - CODE-BASED + Implementation → Create @[Technology]-Developer via PM + @Code-Architect
+   - Any scope + Database → Create @Database-Engineer via PM + @Database-Architect
+   ```
    
    **Selection Process**:
    1. **Identify Project Scope**: Check system_nature in complete_context
@@ -165,7 +209,14 @@ User simply says:
 6. **Validate each PRB**: Ensure every generated PRB is ≤15 points
 7. **FAIL-SAFE**: If auto-breakdown fails, BLOCK with manual breakdown request
 
-**Split Examples:** Authentication (25 pts) → Backend (12) + Frontend (10); API Integration (20 pts) → Client (8) + Models (7) + Testing (9)
+**Examples of splits:**
+- **Authentication Story (25 points)**: 
+  - PRB-001: Backend auth setup (12 points)
+  - PRB-002: Frontend login UI (10 points)
+- **API Integration (20 points)**:
+  - PRB-001: API client setup (8 points) 
+  - PRB-002: Data models and validation (7 points)
+  - PRB-003: Error handling and tests (9 points)
 
 ### Standard PRB Creation Process
 
@@ -181,9 +232,27 @@ When @PM breaks down a story:
 9. **BLOCK on Failure:** If auto-breakdown fails to create PRBs ≤15 points, BLOCK with error
 10. **Ready for Execution:** Uses directory structure from configuration
 
-### PRB Naming
-**Format:** `<STORY_ID>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
-**Validation:** Parent reference, sequential numbers, format compliance
+### PRB Naming Instructions
+**MANDATORY:** When creating PRBs from stories, MUST follow these steps:
+
+**Get Current Date:**
+```bash
+CURRENT_DATE=$(date +%Y-%m-%d)
+```
+
+**Get Next PRB Number:**
+```bash
+# For PRBs under STORY-001
+HIGHEST=$(ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
+NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
+```
+
+**Generate PRB Name:**
+```bash
+PRB_NAME="STORY-001-PRB-${NEXT}-<descriptive-title>-${CURRENT_DATE}.prb.yaml"
+```
+
+**CRITICAL:** Always use system date command - NEVER hardcode specific dates.
 
 ### Naming Validation Integration
 - **Parent Reference:** All PRBs must reference valid parent story ID
@@ -201,10 +270,19 @@ When asked "what's next?", @PM and Architect:
 4. Recommend next story with rationale
 5. Can immediately break it down if requested
 
-## Integration
+## Directory Integration
 
-**Imports:** directory-structure.md, template-loading.md, naming-enforcement-behavior.md
-**Paths:** Configured story_path and prb_path with auto-creation
+Imports:
+@./directory-structure.md
+@./shared-patterns/template-loading.md
+@./naming-enforcement-behavior.md
+@./work-item-creation.md
+@./placeholder-resolution.md
+
+Uses configured paths:
+- get_project_path("story_path") for stories
+- get_project_path("prb_path") for PRBs
+- ensure_directory() to create missing paths
 
 ---
 *Story breakdown behavior for intelligent-claude-code system*

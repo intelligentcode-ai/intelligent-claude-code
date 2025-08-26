@@ -30,9 +30,27 @@ project_root/
 
 ## Configuration Override
 
-**Main Paths:** story_path, bug_path, prb_path, memory_path, docs_path, src_path, test_path, config_path, prb_template_path
-**Subdirectories:** story_drafts, bug_open/completed, prb_ready/completed
-**Defaults:** stories/, bugs/, prbs/, memory/, docs/, src/, tests/, config/, prb-templates/
+In CLAUDE.md or config.md:
+```yaml
+# Directory Configuration
+directory_structure:
+  story_path: "user-stories"      # Default: "stories"
+  bug_path: "issues"             # Default: "bugs"
+  prb_path: "requirements"        # Default: "prbs"
+  memory_path: "knowledge-base"   # Default: "memory"
+  docs_path: "documentation"      # Default: "docs"
+  src_path: "source"             # Default: "src"
+  test_path: "test-suite"        # Default: "tests"
+  config_path: "settings"        # Default: "config"
+  prb_template_path: "templates" # Default: "prb-templates"
+  
+  # Subdirectories
+  story_drafts: "wip"            # Default: "drafts"
+  bug_open: "active"             # Default: "open"
+  bug_completed: "resolved"      # Default: "completed"
+  prb_ready: "backlog"           # Default: "ready"
+  prb_completed: "done"          # Default: "completed"
+```
 
 ## Behavioral Rules
 
@@ -41,20 +59,59 @@ project_root/
 - Preserves existing content
 - Creates README.md in each directory explaining purpose
 
-### Integration
+### Path Resolution
+1. Check configuration for custom paths
+2. Use defaults if not configured
+3. Create if missing
+4. All paths relative to project root
 
-**Path Resolution:** Check config → Use defaults → Create if missing → All relative to project root
-**Story Breakdown:** Stories from story_path, drafts from story_path/story_drafts
-**Bug Lifecycle:** Open bugs from bug_path/bug_open, completed to bug_path/bug_completed
-**PRB System:** Created in prb_path/prb_ready, completed to prb_path/prb_completed
-**Memory System:** Stored in memory_path/[topic], search all subdirectories
-**Templates:** Loaded from prb_template_path with hierarchy fallback
+### Integration Points
 
-## Path Functions
+#### With Story Breakdown
+- Stories read from configured story_path
+- Drafts in story_path/story_drafts
+- Auto-create if missing
 
-**Access:** get_project_path() returns configured or default paths
-**Creation:** ensure_directory() creates missing paths including parents
-**Locations:** Stories, bugs, PRBs, memory, docs, templates use configured paths
+#### With Bug Lifecycle System
+- Bugs read from configured bug_path/bug_open
+- Completed moved to bug_path/bug_completed
+- Automatic lifecycle transitions via PRB integration
+
+#### With PRB System
+- PRBs created in prb_path/prb_ready
+- Completed moved to prb_path/prb_completed
+- References use configured paths
+
+#### With Memory System
+- Memories stored in memory_path/[topic]
+- Search includes all subdirectories
+- Respects configured structure
+
+#### With PRB Template System
+- Templates loaded from prb_template_path
+- Hierarchy: project → .claude → ~/.claude
+- Auto-create if missing
+
+## Path Access Functions
+
+### Get Configured Path
+```
+path = get_project_path("story_path", "stories")  # Returns configured or default
+draft_path = get_project_path("story_drafts", "drafts", parent="story_path")
+```
+
+### Ensure Directory Exists
+```
+ensure_directory(path)  # Creates if missing, including parents
+```
+
+### Standard Locations
+- **Stories**: `{story_path}/` and `{story_path}/{story_drafts}/`
+- **Bugs**: `{bug_path}/{bug_open}/` and `{bug_path}/{bug_completed}/`
+- **PRBs**: `{prb_path}/{prb_ready}/` and `{prb_path}/{prb_completed}/`
+- **Memory**: `{memory_path}/[topic]/`
+- **Docs**: `{docs_path}/[category]/`
+- **Templates**: `{prb_template_path}/` with hierarchy fallback
 
 ## Naming Standards
 
@@ -88,7 +145,16 @@ All work items MUST follow consistent naming format:
 
 ## Auto-Documentation
 
-**README Creation:** Automatic README.md in created directories explaining purpose and structure
+When creating directories, add README:
+```markdown
+# {Directory} Directory
+
+This directory contains {purpose}.
+Path configured as: {config_key}
+
+## Structure
+{subdirectory_explanation}
+```
 
 ---
 *Directory structure behavior for intelligent-claude-code system*

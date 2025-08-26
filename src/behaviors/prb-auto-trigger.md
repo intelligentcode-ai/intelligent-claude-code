@@ -50,30 +50,45 @@
 - ❌ NO runtime config lookups allowed
 - ❌ Complete configuration MUST be embedded in PRB
 
-## Template-First Generation Flow
+## MANDATORY Template-First Generation Flow (ZERO EXCEPTIONS)
 
-**Context & Analysis Phase:**
-1. Detect work requirement → Validate subagent mode if @Role
-2. Gather complete context → Search memory/[topic]/ and best-practices/
-3. Score complexity → Auto-breakdown if >15 points
+1. **Detect** work requirement
+2. **Validate** Subagent mode if @Role
+3. **Gather** complete context (MANDATORY)
+4. **Search** memory/[topic]/ (MANDATORY)
+5. **Search** best-practices/ (MANDATORY)
+6. **Score** complexity
+7. **SIZE CHECK** - Auto-breakdown if complexity > 15 points using prb-breakdown-patterns.md
+8. **MANDATORY: Load Template** from src/prb-templates/ hierarchy ONLY
+9. **MANDATORY: Load Complete Configuration** at generation time
+10. **MANDATORY: Resolve ALL Placeholders** with actual config values
+   - [FROM_CONFIG] → git_privacy: <ACTUAL_VALUE> (not "[FROM_CONFIG]")
+   - [PROJECT_ROOT] → <ACTUAL_PROJECT_ROOT_PATH>
+   - [CURRENT_DATE] → <ACTUAL_SYSTEM_DATE>
+   - [ALL-SETTINGS] → complete configuration object
+11. **MANDATORY: Embed Complete Context** - all config in PRB
+12. **MANDATORY: Validate NO Placeholders** - ZERO unresolved values
+13. **MANDATORY: Validate Template Completeness** - ALL sections required
+14. **Generate** compliant name from template
+15. **Create** PRB using complete resolved template structure
+16. **Validate** NO runtime config dependencies
+17. **Document** template source in metadata
+18. **Execute** via subagent if needed
 
-**Template Resolution Phase:**
-4. Load template from src/prb-templates/ hierarchy
-5. Load complete configuration at generation time
-6. Resolve ALL placeholders with actual values
-7. Embed complete context in PRB
-8. Validate zero unresolved placeholders and template completeness
-
-**Creation & Execution Phase:**
-9. Generate compliant name → Create PRB with resolved structure
-10. Document template source → Execute via subagent if needed
+**ABSOLUTE ENFORCEMENT:** Steps 8-17 are MANDATORY - NO bypassing, NO exceptions, NO runtime config lookups.
 
 ## Context Requirements
 
-**Context Requirements:**
-- System nature, project root, configuration values
-- Critical files with samples, clear user requirements
-- Project overview and boundaries from CLAUDE.md
+**MANDATORY before generation**:
+- System nature (CODE/AI-AGENTIC)
+- Project root (absolute path)
+- Project overview (from CLAUDE.md)
+- Work location (project boundaries)
+- Key context (implementation notes)
+- System features (key capabilities)
+- Configuration (actual values)
+- Critical files (with samples)
+- User requirements (clear)
 
 **IMMEDIATE BLOCKING:**
 - Context incomplete → Cannot generate PRB
@@ -84,11 +99,19 @@
 - Missing template sections → Must use complete templates
 - **PRB too large** → Complexity > 15 points triggers automatic breakdown into smaller PRBs
 
-## Execution Rules
+## Naming
 
-**Naming:** `<PARENT>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
-**Triggers:** Work requests, @Role mentions, natural language work patterns
-**Execution:** All PRBs execute via subagents with embedded context
+Format: `<PARENT>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
+Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
+
+## Critical Triggers
+
+**MUST Trigger**: Work requests, @Role mentions, natural language work patterns
+**MUST NOT**: Information queries, status checks, reading only
+
+## Subagent Execution
+
+**Pattern**: All PRBs execute via subagents with complete embedded context
 
 ---
 *Optimized: 335→~75 lines*

@@ -48,16 +48,24 @@
 - Subagents accessing template hierarchy
 - Subagents performing memory searches for creation
 
-### Creation Violation Detection
-**Monitor for violations:**
-- Subagent attempts to create work item files
-- File creation in work item directories (stories/, bugs/, prbs/)
-- Template or memory access from subagent context
+### Creation Violation Detection Process
 
-**Actions:**
-- Block subagent creation immediately
-- Redirect to main agent with clear error
-- Allow only execution operations for subagents
+**Steps to Detect Creation Violations:**
+
+**1. Check Work Item Creation Attempts:**
+- **When:** Subagent attempts work item creation operations
+- **Operations:** create_story, create_bug, create_epic, create_prb
+- **Action:** Report creation violation "Subagents cannot create work items"
+
+**2. Check File Creation Patterns:**
+- **When:** Subagent performs file creation operations
+- **Directories:** stories/, bugs/, prbs/
+- **Action:** Report file creation violation "Work item files must be created by main agent"
+
+**3. Allow Valid Operations:**
+- **When:** Main agent performs creation operations
+- **When:** Subagents perform execution operations only
+- **Action:** Proceed with operation normally
 
 ### Blocking Actions
 **IMMEDIATE BLOCKS:**
@@ -76,32 +84,45 @@
 4. **Project Context Gathering**: Complete system nature and file analysis
 5. **Best Practices Integration**: Access to project best-practices/ directory
 
-### Template Resolution Requirements
-**Main agent capabilities for creation:**
-1. Load configuration hierarchy (CLAUDE.md, config.md)
-2. Detect system nature (MARKDOWN-BASED vs CODE-BASED)
-3. Search memory patterns and best practices
-4. Gather critical project files and context
-5. Resolve all template placeholders with actual values
-6. Generate complete, self-contained work items
+### Template Resolution Process
+```
+MainAgentTemplateResolution(work_request):
+  1. **Load Configuration**: Get actual values from CLAUDE.md, config.md
+  2. **Detect System Nature**: Analyze project to determine MARKDOWN-BASED vs CODE-BASED
+  3. **Search Memory**: Query memory/[topic]/ for relevant patterns
+  4. **Search Best Practices**: Query best-practices/ for methodological approaches
+  5. **Gather Critical Files**: Find and sample relevant project files
+  6. **Resolve Placeholders**: Replace ALL "[FROM_CONFIG]", "[PROJECT_ROOT]" with actual values
+  7. **Generate Work Item**: Create with complete, resolved context
+```
 
-### Subagent Limitations
-**Why subagents cannot create work items:**
-- Limited to task-specific scope
-- No configuration hierarchy access
+### Subagent Context Limitations
+**Why subagents CANNOT create work items:**
+```
+Subagent Context Limitations:
+- Task-specific working scope
+- No access to full configuration hierarchy  
 - Cannot traverse template hierarchy
-- Isolated from memory and best practices
+- Isolated from memory search functions
+- Cannot access best-practices/ directory
+- No project-wide context gathering
 - Cannot resolve complex placeholders
+```
 
 ## Enforcement Mechanisms
 
 ### Pre-Creation Validation
-**Required context for work item creation:**
-- Main agent execution context
-- Full configuration hierarchy access
-- Template hierarchy availability
-- Memory search and best practices access
-- Complete project context gathering capability
+**MANDATORY checks before any work item creation:**
+```markdown
+PRE-CREATION VALIDATION CHECKLIST:
+☐ Execution context is main agent (NOT subagent)
+☐ Full configuration hierarchy accessible
+☐ Template hierarchy accessible (project → .claude → ~/.claude)
+☐ Memory search functions available
+☐ Best practices directory accessible
+☐ Project root and context available
+☐ Placeholder resolution capability confirmed
+```
 
 ### Real-Time Monitoring
 **MONITOR for creation violations:**
@@ -145,26 +166,46 @@
 
 ## Error Messages
 
-### Error Messages
-- **CREATION BLOCKED**: Subagents cannot create work items
-- **TEMPLATE ACCESS DENIED**: Template resolution requires main agent
-- **PLACEHOLDER RESOLUTION FAILED**: Configuration not available to subagent
-- **MEMORY SEARCH BLOCKED**: Creation requires main agent memory access
+### Creation Violation Errors
+```
+❌ CREATION BLOCKED: Subagents cannot create work items
+Reason: Work items require full context only available to main agent
+Solution: Use main agent for creation, subagents for execution only
+
+❌ TEMPLATE ACCESS DENIED: Subagents cannot access template hierarchy
+Reason: Template resolution requires main agent configuration access
+Solution: Create work items in main agent context
+
+❌ PLACEHOLDER RESOLUTION FAILED: Subagents cannot resolve "[FROM_CONFIG]"
+Reason: Configuration hierarchy not available in subagent context
+Solution: Main agent must handle template placeholder resolution
+
+❌ MEMORY SEARCH BLOCKED: Subagents cannot perform creation memory searches
+Reason: Creation requires main agent memory access capabilities
+Solution: Use main agent for work item creation with memory context
+```
 
 ## Correct Workflows
 
-### Correct Workflow
-1. **User Request**: Main agent detects work need
-2. **Main Agent Creation**: Creates work item with full context
-   - Gathers complete project context
-   - Searches memory and best practices
+### Correct Creation → Execution Flow
+```
+1. USER REQUEST → Main agent detects work need
+2. MAIN AGENT → Creates appropriate work item (Story/Bug/EPIC/PRB)
+   - Gathers full context
+   - Searches memory and best practices  
    - Resolves all template placeholders
-3. **Subagent Execution**: Executes self-contained PRB
-   - Receives complete resolved context
+   - Uses configuration hierarchy
+3. SUBAGENT → Executes completed PRB
+   - Receives self-contained PRB with resolved context
+   - Performs implementation work
    - No creation responsibilities
+```
 
 ### Workflow Validation
-- Clear separation between creation and execution phases
+**VALIDATE each workflow step:**
+- Creation phase: Main agent context confirmed
+- Execution phase: Subagent context confirmed
+- No context mixing between phases
 - Complete context passed from creation to execution
 - No placeholder values reach execution phase
 

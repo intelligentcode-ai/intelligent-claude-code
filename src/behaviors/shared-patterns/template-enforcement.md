@@ -198,28 +198,41 @@
 ## Configuration Embedding Process
 
 ### Generation-Time Resolution
-**RESOLUTION PROCESS:**
-1. **Load Configuration Hierarchy**: Gather embedded, project, user, and system defaults
-2. **Resolve Placeholders**: Replace all template placeholders with actual values
-3. **Embed Complete Context**: Set configuration and project context in PRB
-4. **Validate Resolution**: Ensure no placeholder patterns remain
+**PRB Template Resolution Process:**
 
-**PLACEHOLDER RESOLUTION:**
-- [FROM_CONFIG] → Actual config values
-- [PROJECT_ROOT] → Actual project root path
-- [CURRENT_DATE] → Current system date
-- [PROJECT_OVERVIEW] → CLAUDE.md project description
-- [WORK_LOCATION] → Project work boundaries
+**1. Load Configuration Hierarchy:**
+   - Load complete configuration hierarchy from all sources
+   - Gather embedded, project, user, and system defaults
+
+**2. Resolve All Placeholders:**
+   - Replace "[FROM_CONFIG_git_privacy]" with actual config.git_privacy value
+   - Replace "[FROM_CONFIG_branch_protection]" with actual config.branch_protection value
+   - Replace "[FROM_CONFIG_default_branch]" with actual config.default_branch value
+   - Replace "[PROJECT_ROOT]" with actual work_context.project_root path
+   - Replace "[CURRENT_DATE]" with current system date
+
+**3. Embed Complete Context:**
+   - Set resolved_content.complete_context.configuration to loaded config
+   - Set resolved_content.complete_context.project_root to work context project root
+
+**4. Validate Resolution Complete:**
+   - Scan resolved content for any remaining placeholders
+   - When placeholders detected: Block with error "❌ Unresolved placeholders detected"
 
 ### Configuration Validation
-**BEFORE/AFTER RESOLUTION:**
-- **Before**: git_privacy: "[FROM_CONFIG]"
-- **After**: git_privacy: true/false (actual value)
+**Embedded Configuration Validation:**
 
-**VALIDATION REQUIREMENT:**
-- All configuration placeholders must be resolved to actual values
-- No "[FROM_CONFIG]" patterns allowed in final PRB
-- Complete configuration embedded in complete_context section
+**Template BEFORE Resolution:**
+- **complete_context.configuration.git_privacy:** "[FROM_CONFIG]"
+- **complete_context.configuration.branch_protection:** "[FROM_CONFIG]"
+
+**Template AFTER Resolution:**
+- **complete_context.configuration.git_privacy:** Actual value from config
+- **complete_context.configuration.branch_protection:** Actual value from config
+- **complete_context.configuration.default_branch:** Actual value from config
+- **complete_context.configuration.autonomy_level:** Actual value from config
+
+**BLOCK if any "[FROM_CONFIG]" remains after resolution**
 
 ## Integration Requirements
 
@@ -244,17 +257,17 @@
 - Complete self-contained execution context
 - All settings pre-resolved and embedded
 
-## Integration
+## Validation Commands
 
-**AUTOMATIC ENFORCEMENT:**
-All template enforcement integrated into PRB creation pipeline - no manual validation needed.
+**ENFORCEMENT COMMANDS:**
+- `/validate-template-usage [prb-path]` - Check template compliance
+- `/check-placeholder-resolution [prb-path]` - Verify all placeholders resolved
+- `/validate-embedded-config [prb-path]` - Check configuration embedding
+- `/block-manual-creation` - Enable manual creation blocking
+- `/enforce-template-hierarchy` - Validate template source paths
 
-**VALIDATION POINTS:**
-- Template compliance checking
-- Placeholder resolution verification
-- Configuration embedding validation
-- Manual creation blocking
-- Template source path validation
+**INTEGRATION:**
+All enforcement automatically integrated into PRB creation pipeline - NO manual validation needed.
 
 ---
 *Template enforcement with mandatory placeholder resolution and embedded configuration*
