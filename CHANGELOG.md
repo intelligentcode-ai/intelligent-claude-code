@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.3.2] - 2025-08-26
 
 ### Fixed
-- Added mandatory validation enforcement to PRB templates
+- Added mandatory validation enforcement to PRB templates (nano, tiny, medium)
+- Added validation enforcement to large and mega PRB templates
 - Blocked bypass patterns like 'No git operations needed' and 'Skip validation'
 - Enforced SME review requirements across all template complexity levels
+- Implemented complex workflow validation with comprehensive blocking requirements
+- Added sub-PRB coordination validation for large templates
+- Added architectural board review enforcement for mega templates
 - Added comprehensive error messages for validation violations
 - Strengthened git workflow compliance and documentation requirements
+- Completed BUG-022 validation gap fixes across all template complexity levels
 
 ## [7.3.1] - 2025-08-26
 

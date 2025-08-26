@@ -74,6 +74,24 @@ epic_decomposition:
       prb_type: "large"
       scope: "[SYSTEM_INTEGRATION]"
       dependencies: ["[PHASE_1]", "[PHASE_2]"]
+  validation_enforcement:
+    mandatory_epic_decomposition: true
+    blocking_requirements:
+      - "REQUIRED: Mega PRBs MUST be broken into Large PRB phases"
+      - "REQUIRED: Each phase must have clear scope and dependencies"
+      - "REQUIRED: Integration phase must coordinate all phases"
+      - "REQUIRED: Phase naming must follow epic-phase format"
+      - "REQUIRED: System-wide changes must follow phased approach"
+    phase_limits:
+      - "All phases must be Large PRBs (16-30 points)"
+      - "Phases must use large-prb-template.yaml"
+      - "Dependencies must be explicitly documented"
+      - "Integration phase is mandatory for system coordination"
+    epic_requirements:
+      - "Minimum 2 phases required for epic decomposition"
+      - "Maximum 5 phases recommended for manageable coordination"
+      - "Each phase must validate before next phase begins"
+    error_message: "❌ Mega PRBs MUST be decomposed into coordinated phases - direct execution FORBIDDEN"
 
 # Risk Management
 risk_management:
@@ -99,6 +117,20 @@ git_operations:
   commit_format: "[ID]: [DESCRIPTION]"
   privacy_filter: "[FROM_CONFIG]"
   coordination: "Merge phases to epic branch systematically"
+  validation_enforcement:
+    mandatory_git_ops: true
+    blocking_requirements:
+      - "REQUIRED: Epic branch must be created for system-wide coordination"
+      - "REQUIRED: Phase branches must be managed systematically"
+      - "REQUIRED: Commit format must follow [ID]: [DESCRIPTION] pattern"
+      - "REQUIRED: Privacy filter must be applied according to config"
+      - "REQUIRED: System-wide changes must follow epic workflow"
+    disallowed_entries:
+      - "No git operations needed"
+      - "Skip git workflow"
+      - "Manual system changes only"
+      - "Direct system modifications"
+    error_message: "❌ Mega PRBs MUST follow epic git workflow - 'No git operations needed' is FORBIDDEN"
 
 # MANDATORY: Review Process
 review_process:
@@ -106,6 +138,25 @@ review_process:
   reviewer: "[SYSTEM_ARCHITECT]"
   focus: "System-wide impact and architectural integrity"
   stakeholders: "[KEY_STAKEHOLDERS]"
+  validation_enforcement:
+    mandatory_board_review: true
+    blocking_requirements:
+      - "REQUIRED: Architectural board review must be completed before merge"
+      - "REQUIRED: System-wide impact assessment must be documented"
+      - "REQUIRED: Key stakeholders must approve system changes"
+      - "REQUIRED: Architectural integrity must be validated"
+      - "REQUIRED: System architect approval is mandatory"
+    disallowed_entries:
+      - "No review needed"
+      - "Review not required"
+      - "Skip architectural board review"
+      - "Internal review only"
+    error_message: "❌ Mega PRBs MUST have architectural board review - 'No review needed' is FORBIDDEN"
+    stakeholder_requirements:
+      - "System architect approval required"
+      - "Technical lead approval required"
+      - "Security review if applicable"
+      - "Performance impact assessment"
 
 # MANDATORY: Documentation Updates
 documentation_updates:
@@ -113,6 +164,25 @@ documentation_updates:
   architecture_docs: "Complete architecture documentation update"
   user_docs: "Comprehensive user documentation overhaul"
   migration_guide: "Provide migration path for users"
+  validation_enforcement:
+    mandatory_comprehensive_docs: true
+    blocking_requirements:
+      - "REQUIRED: CHANGELOG must document all major system changes"
+      - "REQUIRED: Architecture docs must be completely updated"
+      - "REQUIRED: User documentation must be comprehensively overhauled"
+      - "REQUIRED: Migration guide must be provided for users"
+      - "REQUIRED: System-wide documentation must be synchronized"
+    disallowed_entries:
+      - "No documentation needed"
+      - "Documentation not required"
+      - "Skip documentation updates"
+      - "Minimal documentation only"
+    error_message: "❌ Mega PRBs MUST have comprehensive documentation - 'No documentation needed' is FORBIDDEN"
+    documentation_scope:
+      - "System architecture overhaul documentation"
+      - "User impact and migration documentation"
+      - "Developer onboarding updates"
+      - "API and integration documentation updates"
 
 # Execution Strategy
 execution_strategy: |
@@ -126,11 +196,15 @@ execution_strategy: |
   
 # EXECUTION CHECKLIST
 execution_checklist: |
-  ☐ Epic branch created for system coordination
-  ☐ Phase 1 Large PRBs executed with validation
-  ☐ Phase 2 Large PRBs executed building on Phase 1
-  ☐ Integration Large PRBs executed for system unification
-  ☐ Comprehensive system testing completed
-  ☐ Documentation completely updated with migration guide
-  ☐ Architectural board review completed
+  ☐ Epic branch created for system coordination (MANDATORY - validation enforced)
+  ☐ Epic decomposition completed into phases (MANDATORY - no direct execution)
+  ☐ Phase 1 Large PRBs executed with validation (MANDATORY - phased approach)
+  ☐ Phase 2 Large PRBs executed building on Phase 1 (MANDATORY - dependency validation)
+  ☐ Integration Large PRBs executed for system unification (MANDATORY - coordination)
+  ☐ Comprehensive system testing completed (MANDATORY - system validation)
+  ☐ Documentation completely updated with migration guide (MANDATORY - no "No documentation needed")
+  ☐ Architectural board review completed (MANDATORY - no "Review not required")
+  ☐ Git operations followed epic workflow (MANDATORY - no "No git operations needed")
+  ☐ All stakeholder approvals obtained (MANDATORY - validation enforced)
+  ☐ All validation enforcement rules verified
   ☐ Staged rollout plan executed with rollback capability
