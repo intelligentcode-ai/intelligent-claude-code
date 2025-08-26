@@ -22,19 +22,8 @@ To find what numbers are already used:
 - **BUG:** Check bugs/ directory for BUG-* files
 - **PRB:** Check prbs/ready/ and prbs/completed/ directories for *-PRB-* files
 
-### Commands to Find Next Available Numbers
-**Template for all categories:**
-```bash
-# General pattern: CATEGORY-NUMBER-title-date.extension
-HIGHEST=$(ls [directory] | grep "^[PATTERN]-" | sed 's/[PATTERN]-\([0-9]*\)-.*/\1/' | sort -n | tail -1)
-NEXT=$(printf "%03d" $((10#$HIGHEST + 1)))
-echo "[PATTERN]-${NEXT}-title-$(date +%Y-%m-%d).[ext]"
-
-# Examples:
-# STORY: ls stories/ | grep "^STORY-" | sed 's/STORY-\([0-9]*\)-.*/\1/' | sort -n | tail -1
-# BUG: ls bugs/ | grep "^BUG-" | sed 's/BUG-\([0-9]*\)-.*/\1/' | sort -n | tail -1  
-# PRB: ls prbs/ready/ prbs/completed/ | grep "^STORY-001-PRB-" | sed 's/.*-PRB-\([0-9]*\)-.*/\1/' | sort -n | tail -1
-```
+### Number Discovery Process
+**Find highest existing number by scanning directories for pattern matches and extracting numeric values**
 
 ## How to Get the Next Number
 
@@ -104,19 +93,6 @@ Scoping Rules:
 - Error if multiple matches: "Ambiguous parent reference: {parent_id}"
 - Success when exactly one valid parent is found
 
-## Performance & Error Handling
-
-### Efficient Number Tracking
-**Track Current Numbers:**
-- Keep track of highest number for each category
-- Store highest number for each parent work item
-- Remember recent directory scans for faster lookups
-
-### Smart Updates
-- **When Creating Files:** Update the stored highest number for that category/parent
-- **When Deleting Files:** Refresh stored numbers to ensure accuracy
-- **When Directory Changes:** Re-scan directories to get current state
-
 ## Error Handling
 
 ### Common Error Scenarios
@@ -152,15 +128,6 @@ Scoping Rules:
 ### With Memory System
 - **Pattern Storage:** Store numbering patterns and collision data
 - **Learning:** Improve numbering strategy based on usage patterns
-
-## Commands
-
-### Number Management Commands
-- `/icc-get-next-number [category] [parent_id]` - Get next available number
-- `/icc-validate-number [category] [number] [parent_id]` - Validate number is available
-- `/icc-renumber-category [category]` - Renumber all items in category (dangerous)
-- `/icc-number-gaps [category]` - Show gaps in numbering sequence
-- `/icc-max-numbers` - Display current max numbers for all categories
 
 ---
 *Sequential numbering service for intelligent-claude-code work items*
