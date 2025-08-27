@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.6] - 2025-08-27
+
+### Fixed
+- Implemented automatic PRB creation system for work requests
+- Enhanced template selection and context embedding automation
+- Integrated work detection with seamless PRB generation
+- Added intelligent work intent recognition with semantic analysis
+- Automated complete context gathering and placeholder resolution
+- Streamlined work-to-PRB-to-execution pipeline with full automation
+
 ## [7.4.5] - 2025-08-27
 
 ### Fixed
