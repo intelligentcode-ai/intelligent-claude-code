@@ -48,10 +48,11 @@
 
 ### Auto-Breakdown Process
 1. **Analyze complexity:** Calculate total story complexity points
-2. **AUTO-BREAKDOWN:** If >15 points, use logical decomposition
-3. **Generate sub-PRBs:** Each ≤15 points with specific focus
-4. **Sequential numbering:** Under same parent with dependencies documented
-5. **FAIL-SAFE:** If auto-breakdown fails, BLOCK with manual breakdown request
+2. **Sequential thinking:** If complexity >10 points, use mcp__sequential-thinking__sequentialthinking for structured analysis
+3. **AUTO-BREAKDOWN:** If >15 points, use logical decomposition
+4. **Generate sub-PRBs:** Each ≤15 points with specific focus
+5. **Sequential numbering:** Under same parent with dependencies documented
+6. **FAIL-SAFE:** If auto-breakdown fails, BLOCK with manual breakdown request
 
 ## Story Selection Criteria
 
