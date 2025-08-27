@@ -201,6 +201,17 @@ validation_enforcement:
         - "Internal change, no version impact"
       error_message: "❌ BLOCKED: Version management is mandatory for all feature-level changes."
   
+  workflow:
+    version_bump: "[WORKFLOW_VERSION_BUMP]"
+    version_type: "[WORKFLOW_VERSION_TYPE]"
+    changelog_required: "[WORKFLOW_CHANGELOG_REQUIRED]"
+    pr_required: "[WORKFLOW_PR_REQUIRED]"
+    merge_strategy: "[WORKFLOW_MERGE_STRATEGY]"
+    release_automation: "[WORKFLOW_RELEASE_AUTOMATION]"
+    auto_merge: "[WORKFLOW_AUTO_MERGE]"
+    coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
+    breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
+  
   enforcement_rules:
     - "ALL 9 execution steps must be completed in sequential order"
     - "NO bypass language, skip patterns, or discretionary exceptions allowed"

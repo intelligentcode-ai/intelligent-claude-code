@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.13] - 2025-08-27
+
+### Added
+- Workflow configuration initialization in icc-init-system (BUG-042)
+- Documentation for workflow configuration feature in README
+
+## [7.4.12] - 2025-08-27
+
+### Added
+- Workflow configuration system per PRB size (BUG-041)
+- Automatic workflow instructions in PRBs
+- Version bump, CHANGELOG, PR, and release automation settings
+- Workflow section placeholders in all 5 PRB templates (nano, tiny, medium, large, mega)
+- Enhanced prb-auto-trigger.md to read and embed workflow settings during PRB generation
+
 ## [7.4.11] - 2025-08-27
 
 ### Fixed
