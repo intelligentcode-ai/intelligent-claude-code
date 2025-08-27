@@ -205,6 +205,58 @@ The system uses Product Requirement Blueprints for single-pass execution with fu
 - Behavioral overrides
 - External documentation sources
 
+## Workflow Configuration
+
+### Workflow Settings by PRB Size
+
+```yaml
+workflow_settings:
+  nano:
+    version_bump: false
+    changelog_required: false
+    pr_required: false
+    merge_strategy: "direct_commit"
+    release_automation: false
+  
+  tiny:
+    version_bump: true
+    version_type: "patch"
+    changelog_required: true
+    pr_required: false
+    merge_strategy: "direct_commit"
+    release_automation: false
+  
+  medium:
+    version_bump: true
+    version_type: "minor"
+    changelog_required: true
+    pr_required: true
+    merge_strategy: "feature_branch"
+    release_automation: true
+    auto_merge: false
+  
+  large:
+    version_bump: true
+    version_type: "minor"
+    changelog_required: true
+    pr_required: true
+    merge_strategy: "feature_branch"
+    release_automation: true
+    auto_merge: false
+    coordination_required: true
+  
+  mega:
+    version_bump: true
+    version_type: "major"
+    changelog_required: true
+    pr_required: true
+    merge_strategy: "feature_branch"
+    release_automation: true
+    auto_merge: false
+    coordination_required: true
+    breaking_change_assessment: true
+```
+
 ## Testing
 
 Run the comprehensive test suite:

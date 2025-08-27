@@ -53,11 +53,34 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 6. **Auto-breakdown** if complexity > 15 points
 7. **Load Template** from src/prb-templates/ 
 8. **Load Configuration** at generation time
-9. **Resolve ALL Placeholders** with actual config values
-10. **Embed Complete Context** - all config in PRB
-11. **Validate NO Placeholders** - ZERO unresolved values
-12. **Generate** compliant name and create PRB
-13. **Execute** via subagent
+9. **Load Workflow Settings** from CLAUDE.md workflow_settings per PRB size (nano/tiny/medium/large/mega)
+10. **Resolve ALL Placeholders** with actual config values and workflow settings
+11. **Embed Complete Context** - all config in PRB
+12. **Validate NO Placeholders** - ZERO unresolved values
+13. **Generate** compliant name and create PRB
+14. **Execute** via subagent
+
+## Workflow Placeholder Resolution
+
+**MANDATORY**: All workflow placeholders in templates MUST be resolved with actual workflow_settings values from CLAUDE.md:
+
+**Workflow Placeholders:**
+- `[WORKFLOW_VERSION_BUMP]` → workflow_settings.[size].version_bump value (true/false)
+- `[WORKFLOW_VERSION_TYPE]` → workflow_settings.[size].version_type value (patch/minor/major)
+- `[WORKFLOW_CHANGELOG_REQUIRED]` → workflow_settings.[size].changelog_required value (true/false)
+- `[WORKFLOW_PR_REQUIRED]` → workflow_settings.[size].pr_required value (true/false)
+- `[WORKFLOW_MERGE_STRATEGY]` → workflow_settings.[size].merge_strategy value (direct_commit/feature_branch)
+- `[WORKFLOW_RELEASE_AUTOMATION]` → workflow_settings.[size].release_automation value (true/false)
+- `[WORKFLOW_AUTO_MERGE]` → workflow_settings.[size].auto_merge value (true/false)
+- `[WORKFLOW_COORDINATION_REQUIRED]` → workflow_settings.[size].coordination_required value (true/false)
+- `[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]` → workflow_settings.[size].breaking_change_assessment value (true/false)
+
+**Size Mapping:**
+- nano-prb-template.yaml → workflow_settings.nano.*
+- tiny-prb-template.yaml → workflow_settings.tiny.*
+- medium-prb-template.yaml → workflow_settings.medium.*
+- large-prb-template.yaml → workflow_settings.large.*
+- mega-prb-template.yaml → workflow_settings.mega.*
 
 ## Context Requirements
 

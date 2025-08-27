@@ -91,6 +91,17 @@ validation_enforcement:
         - "Obvious implementation"
       error_message: "❌ BLOCKED: Documentation updates are mandatory for all changes."
   
+  workflow:
+    version_bump: "[WORKFLOW_VERSION_BUMP]"
+    version_type: "[WORKFLOW_VERSION_TYPE]"
+    changelog_required: "[WORKFLOW_CHANGELOG_REQUIRED]"
+    pr_required: "[WORKFLOW_PR_REQUIRED]"
+    merge_strategy: "[WORKFLOW_MERGE_STRATEGY]"
+    release_automation: "[WORKFLOW_RELEASE_AUTOMATION]"
+    auto_merge: "[WORKFLOW_AUTO_MERGE]"
+    coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
+    breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
+  
   enforcement_rules:
     - "ALL validation steps must be explicitly completed"
     - "NO bypass language or patterns allowed in execution"
