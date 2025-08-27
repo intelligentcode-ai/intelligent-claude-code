@@ -12,9 +12,22 @@
 **CREATION:** Main agent (Stories/Bugs/EPICs/PRBs, templates, config)
 **EXECUTION:** Subagent (PRB implementation, file ops, git)
 
-### Detection & Blocking
-**WORK INTENT:** implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
-**INFORMATION REQUEST:** Questions with what, how, why, should, can, will + @Role questions
+### Detection & Blocking with Conversation Preservation
+**WORK INTENT (PRB Required):** implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
+**INFORMATION REQUEST (Direct Response):** Questions with what, how, why, should, can, will + @Role questions
+
+### Conversation Preservation Exceptions
+**NATURAL @Role QUERIES** - Allow direct responses without PRB triggers:
+- **Planning discussions:** "@PM what story should we work on next?"
+- **Status inquiries:** "@Developer what's the current state of the auth system?"
+- **Architectural consultations:** "@Architect how should we approach the database design?"
+- **Educational queries:** "@Security-Engineer what are the best practices for API security?"
+- **Collaborative exploration:** "@AI-Engineer what do you think about this approach?"
+
+**WORK COMMANDS** - Still trigger PRB creation:
+- **Implementation demands:** "@Developer implement the user authentication system"
+- **System changes:** "@DevOps-Engineer deploy the application to staging"
+- **Bug fixes:** "@AI-Engineer fix the memory storage issue"
 
 ### Template Enforcement (ZERO TOLERANCE)
 - Manual PRB creation → BLOCK → "Use src/prb-templates/"

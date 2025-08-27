@@ -70,11 +70,31 @@
 - Stories/Bugs define **WHAT** needs to be done
 - PRBs define **WHO** does it and **HOW**
 
-## Simple Invocation
+## Natural Conversation Patterns
 
-- "@PM break down the authentication story"
-- "@PM what story should we work on next?"
-- "@PM analyze the stories and create PRBs"
+### Questions and Planning (Direct Response, No PRB)
+**NATURAL @PM INTERACTIONS** - These flow naturally without triggering PRBs:
+- **Story selection queries:** "@PM what story should we work on next?"
+- **Planning discussions:** "@PM what's our current development priority?"
+- **Status requests:** "@PM how many stories are ready for development?"
+- **Strategic questions:** "@PM which stories would give us the most user value?"
+- **Collaborative planning:** "@PM should we focus on the authentication or the API first?"
+- **Educational queries:** "@PM how do you typically break down complex stories?"
+- **Exploration:** "@PM what would happen if we tackled the database story first?"
+
+### Work Commands (Trigger PRB Creation)
+**WORK ASSIGNMENT PATTERNS** - These create PRBs for execution:
+- **Story breakdown commands:** "@PM break down the authentication story"
+- **Analysis requests:** "@PM analyze STORY-001 and create PRBs"
+- **Implementation assignments:** "@PM create PRBs for the user management story"
+- **Work coordination:** "@PM break down all high-priority stories"
+
+### Conversation Context Recognition
+**CONVERSATIONAL FLOW PRESERVATION:**
+- Follow-up questions after explanations continue natural conversation
+- Strategic planning discussions don't trigger immediate PRB creation
+- Status updates and progress queries get direct responses
+- Educational exchanges about methodologies flow naturally
 
 ---
 *Story breakdown with architect collaboration and auto-sizing*
