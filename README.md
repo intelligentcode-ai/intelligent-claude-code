@@ -24,7 +24,7 @@ make install
 Complete virtual development team with 14+ specialized agent roles that work together autonomously. Each agent has deep domain expertise and behavioral patterns optimized for their specialty.
 
 ### 🎯 PRB-Driven Execution
-Self-contained blueprints replace complex workflows. Each PRB includes everything needed for single-pass execution: context, standards, examples, validation, and agent coordination.
+Self-contained blueprints replace complex workflows. Each PRB includes everything needed for single-pass execution: context, standards, examples, validation, and automatic agent invocation. PRBs automatically identify the appropriate specialist agent and execute via Task tool for complete isolation and quality assurance.
 
 ### 👥 14+ Specialist Agent Roles  
 **Core Agents:**
