@@ -92,10 +92,34 @@
 Format: `<PARENT>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
 Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 
+## Intelligent ASK vs DEMAND Classification
+
+### Query Pattern Recognition (Direct Response)
+**ASK INDICATORS** - Questions that get direct responses without PRB triggers:
+- **Question words:** what, how, why, who, when, where, which, should, can, could, would, will
+- **Soft queries:** "explain", "describe", "tell me about", "show me", "help me understand"
+- **Exploratory language:** "what if", "should we", "could we", "would it be better"
+- **Status requests:** "what's the status", "how are things", "what's next"
+- **@Role questions:** "@PM what story should we work on?", "@Architect how should we design?"
+
+### Command Pattern Recognition (PRB Trigger)
+**DEMAND INDICATORS** - Commands that trigger PRB creation:
+- **Action imperatives:** implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
+- **Decisive language:** "let's", "we need to", "go ahead and", "please implement", "start working on"
+- **Work assignments:** "build the API", "fix this bug", "deploy the system", "create the database"
+- **Hard demands:** "make this change", "add this feature", "remove this code"
+
+### Context Analysis Patterns
+**CONVERSATION CONTEXT** - Additional factors for intelligent classification:
+- **Follow-up questions:** After explanations, questions continue conversation flow
+- **Planning discussions:** Strategic conversations about future work (no immediate action)
+- **Educational queries:** Learning about concepts, patterns, or approaches
+- **Collaborative exploration:** "What do you think about...", "How would you approach..."
+
 ## Critical Triggers
 
-**MUST Trigger**: Work requests, @Role mentions, natural language work patterns
-**MUST NOT**: Information queries, status checks, reading only
+**MUST Trigger**: Work commands, decisive language, implementation demands
+**MUST NOT**: Questions, explanations, status queries, exploratory discussions, educational requests
 
 ## Subagent Execution
 

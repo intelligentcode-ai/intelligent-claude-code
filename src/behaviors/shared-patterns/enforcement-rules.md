@@ -25,18 +25,27 @@
 
 ## Detection Functions
 
-### Work Pattern Detection
-**MANDATORY:** Block work without active PRB context
+### Work Pattern Detection with Query Classification
+**MANDATORY:** Block work without active PRB context, allow natural queries
 
-**Work Intent Indicators:**
-- Action verbs: implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
-- File operations, system changes, code modifications
+**Work Intent Indicators (PRB Required):**
+- **Action imperatives:** implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
+- **Decisive commands:** "let's implement", "we need to build", "go ahead and fix", "start working on"
+- **File operations:** system changes, code modifications, deployment actions
+- **Work assignments:** specific implementation tasks with deliverable expectations
 
-**Information Request Indicators:**
-- Query verbs: show, display, read, list, check, analyze, explain, describe, find, search
-- @Role questions, planning queries, status requests
+**Information Request Indicators (Direct Response):**
+- **Query words:** what, how, why, who, when, where, which, should, can, could, would, will
+- **Soft exploration:** show, display, read, list, check, analyze, explain, describe, find, search
+- **@Role questions:** "@PM what story next?", "@Architect how should we design?", "@Developer what's the status?"
+- **Educational queries:** "help me understand", "tell me about", "explain how"
+- **Planning discussions:** strategic conversations without immediate action demands
 
-**Detection Logic:** Work intent + no PRB = IMMEDIATE BLOCK
+**Enhanced Detection Logic:**
+- **Work commands + no PRB = IMMEDIATE BLOCK**
+- **Questions + @Role mentions = Direct response (no PRB)**
+- **Exploratory discussions + planning = Natural conversation flow**
+- **Educational requests + status queries = Direct engagement**
 
 ### Tool-Specific Violations
 - **Write/Edit:** Block without active PRB context
