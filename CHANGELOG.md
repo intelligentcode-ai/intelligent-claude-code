@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.4.15] - 2025-08-27
 
 ### Fixed
+- BUG-037: Corrected default configuration to professional standards (PM active, git privacy, PR enforcement)
 - BUG-036: Disabled automatic file generation, requires explicit user request
 - BUG-035: Fixed autonomy level configuration to read from and persist to CLAUDE.md
 - Added autonomy level reading from CLAUDE.md on system initialization
