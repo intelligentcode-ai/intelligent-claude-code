@@ -80,13 +80,14 @@ All templates successfully loaded ✅
 2. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
 3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
 4. **Activate PRB System**: Enable PRB-driven execution system
-5. **Initialize Progress Reporting**: Activate clean completion tracking
-6. **Setup Learning System**: Enable PRB learning and pattern capture
-7. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
-8. **Validate System**: Verify all components operational and ready
-9. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration
-10. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
-11. **Validate Enforcement**: Check self-correcting patterns are active
+5. **Initialize Workflow Settings**: Create default workflow configuration if missing from CLAUDE.md
+6. **Initialize Progress Reporting**: Activate clean completion tracking
+7. **Setup Learning System**: Enable PRB learning and pattern capture
+8. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
+9. **Validate System**: Verify all components operational and ready
+10. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration
+11. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
+12. **Validate Enforcement**: Check self-correcting patterns are active
 
 ## Autonomy Levels
 - **L1 (Manual)**: User approval required for ALL actions
@@ -98,6 +99,7 @@ All templates successfully loaded ✅
 - ✅ Memory system operational  
 - ✅ Role definitions loaded
 - ✅ PRB system active
+- ✅ Workflow settings initialized
 - ✅ Progress reporting operational
 - ✅ Learning system active
 - ✅ Tool integrations configured
@@ -109,6 +111,7 @@ All templates successfully loaded ✅
 - **MEMORY_INIT_FAILED**: "⚠️ Warning: Memory system unavailable. Using file-based fallback"
 - **ROLE_LOAD_FAILED**: "❌ Error: Failed to load role definitions. Check specialists.md"
 - **PRB_INIT_FAILED**: "❌ Error: PRB system failed to initialize"
+- **WORKFLOW_INIT_FAILED**: "⚠️ Warning: Workflow settings initialization failed. Using defaults"
 - **TOOL_INIT_FAILED**: "⚠️ Warning: Some tools unavailable. Using fallbacks"
 - **INVALID_AUTONOMY**: "❌ Error: Autonomy level must be L1, L2, or L3"
 - **SYSTEM_BUSY**: "⏳ System busy. Current operation must complete first"
@@ -123,3 +126,17 @@ When initializing memory system:
 - Creates memory/index.md for quick memory lookup
 - All memories are version-controlled (not in .gitignore)
 - Memories are embedded directly into PRBs during generation
+
+## Workflow Settings Initialization
+When initializing workflow settings:
+- Checks if workflow_settings exists in CLAUDE.md
+- If missing, creates default workflow configuration for all PRB sizes
+- Workflow settings control version bumping, changelog requirements, PR creation, and merge strategies
+- Default configuration:
+  - **nano**: No version bump, no changelog, direct commit
+  - **tiny**: Patch version bump, changelog required, direct commit  
+  - **medium**: Minor version bump, changelog + PR required, feature branch
+  - **large**: Minor version bump, changelog + PR + coordination required, feature branch
+  - **mega**: Major version bump, changelog + PR + coordination + breaking change assessment, feature branch
+- Settings are automatically applied during PRB template resolution
+- Can be customized per-project by editing CLAUDE.md workflow_settings section
