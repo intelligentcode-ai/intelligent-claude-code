@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.11] - 2025-08-27
+
+### Fixed
+- **BUG-029**: Added sequential thinking triggers for main scope roles
+- **BUG-034**: Activated sequential thinking that was integrated but unused since v7.3.13
+- Added minimal triggers (2 lines total) to story-breakdown.md and prb-auto-trigger.md
+- Complex tasks (>5 points) now automatically use structured thinking
+- No new behavioral patterns - architectural precision with minimal change
+
 ## [7.4.10] - 2025-08-27
 
 ### Fixed
