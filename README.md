@@ -217,6 +217,37 @@ prb_configuration:
 memory_configuration:
   external_path: "~/claude-memory"    # External memory location
   # Or use project-local (default): "./memory/"
+
+# Workflow configuration - customize per PRB size
+workflow_settings:
+  nano:
+    version_bump: false           # No version changes for trivial fixes
+    changelog_required: false     # No changelog for trivial changes
+    pr_required: false           # Direct commit for simple changes
+  tiny:
+    version_bump: true           # Patch version bumps
+    version_type: "patch"        # For small features/fixes
+    changelog_required: true     # Document all changes
+    pr_required: false          # Direct commit allowed
+  medium:
+    version_bump: true          # Minor version bumps for features
+    version_type: "minor"       
+    changelog_required: true
+    pr_required: true           # Require pull request review
+    merge_strategy: "feature_branch"
+  large:
+    version_bump: true
+    version_type: "minor"
+    changelog_required: true
+    pr_required: true
+    coordination_required: true  # Multi-agent coordination needed
+  mega:
+    version_bump: true
+    version_type: "major"       # Major versions for breaking changes
+    changelog_required: true
+    pr_required: true
+    coordination_required: true
+    breaking_change_assessment: true
 ```
 
 ## Memory Configuration
@@ -243,6 +274,38 @@ memory_configuration:
 - **Sharing**: Use same memory across multiple projects  
 - **Git Integration**: When `.git` exists in memory path, system auto-commits changes
 - **Flexibility**: Store anywhere accessible to the AI agents
+
+## Workflow Configuration
+
+Control how the system handles different PRB sizes with fine-grained workflow settings:
+
+### Per-Size Configuration
+The system automatically applies different workflows based on PRB complexity:
+
+- **Nano (0-2 points)**: Trivial fixes with minimal process overhead
+- **Tiny (3-5 points)**: Small changes with basic versioning and documentation
+- **Medium (6-15 points)**: Standard features requiring review and proper branching
+- **Large (16-30 points)**: Complex features needing coordination and careful review
+- **Mega (30+ points)**: Major system changes with breaking change assessment
+
+### Customizable Settings
+Each size level supports these workflow controls:
+
+- **version_bump**: Enable/disable automatic version bumping
+- **version_type**: patch/minor/major version increment type
+- **changelog_required**: Require CHANGELOG.md entries
+- **pr_required**: Require pull request for changes
+- **merge_strategy**: direct_commit or feature_branch
+- **release_automation**: Enable automated releases
+- **coordination_required**: Multi-agent coordination needed
+- **breaking_change_assessment**: Assess breaking changes
+
+### Automatic Initialization
+When running `/icc-init-system`, the system:
+- Checks if workflow_settings exist in your CLAUDE.md
+- Creates sensible defaults if missing
+- Allows full customization per project needs
+- Applies settings automatically during PRB execution
 
 ## Directory Structure
 
