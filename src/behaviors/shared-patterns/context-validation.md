@@ -114,11 +114,49 @@
 - **BLOCK**: Role assignments that conflict with detected system nature
 - **ENFORCE**: PM + Architect collaboration for role selection
 
+## Context Evaluation Functions for PRB Triggering
+
+### Intent Clarity Assessment
+**CONTEXT EVALUATION PROCESS:**
+1. **Language Pattern Analysis:** Scan for definitive vs exploratory language
+2. **Request Specificity Check:** Assess how concrete vs abstract the request is
+3. **Conversation Continuity:** Evaluate if request builds on previous discussion
+4. **Urgency Indicators:** Detect immediate action vs future planning language
+
+**CLARITY SCORING FACTORS:**
+- **High Clarity:** Specific deliverables, clear scope, definitive language
+- **Medium Clarity:** Some specifics but missing key details or mixed signals
+- **Low Clarity:** Abstract concepts, exploratory language, open-ended questions
+
+### Conversation History Analysis
+**CONTEXT INTELLIGENCE FUNCTIONS:**
+- **Track Conversation Flow:** Monitor progression from question → discussion → decision → action
+- **Identify Pattern Shifts:** Detect when conversation moves from exploration to work assignment
+- **Assess Follow-up Context:** Determine if current request continues previous thread
+- **Evaluate Intent Evolution:** Track how user intent has developed through conversation
+
+### Smart Escalation Decision Matrix
+**CONTEXT-DRIVEN DECISIONS:**
+- **Clear Work Intent + High Context Clarity** → Immediate PRB generation
+- **Query Pattern + Any Context Level** → Direct conversational response
+- **Mixed Signals + Low Clarity** → Clarification dialogue: "Are you asking me to implement this or explain it?"
+- **Ambiguous Intent + Conversation History** → Use history to inform decision
+- **Educational Patterns + @Role Mention** → Natural conversation flow without PRB
+
+### Context Validation for Triggering
+**PRB TRIGGERING VALIDATION:**
+- **Intent Confidence:** Must exceed 80% confidence threshold for work patterns
+- **Context Completeness:** All required context elements identified before PRB creation
+- **Conversation Coherence:** Ensure PRB generation aligns with conversation flow
+- **Ambiguity Resolution:** Force clarification before PRB for unclear intents
+
 ## Error Handling
 - `PLACEHOLDER_DETECTED`: "❌ Contains: {list}"
 - `SYSTEM_NATURE_MISSING`: "❌ Not identified"
 - `PROJECT_ROOT_INVALID`: "❌ Invalid: {path}"
 - `REQUIREMENTS_VAGUE`: "❌ Too generic"
+- `CONTEXT_UNCLEAR`: "❌ Intent unclear - need clarification before PRB"
+- `CONVERSATION_MISMATCH`: "❌ Request doesn't align with conversation context"
 
 ---
 *Context validation patterns for intelligent-claude-code system*

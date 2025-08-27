@@ -92,10 +92,45 @@
 Format: `<PARENT>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
 Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 
+## Context-Aware PRB Triggering Logic
+
+### Context Analysis for Intelligent Decisions
+**CONVERSATION HISTORY EVALUATION:**
+- **Previous exchanges:** Consider flow and continuity of conversation
+- **Question sequences:** Follow-up questions indicate continuing discussion vs new work
+- **Intent progression:** Track escalation from inquiry to decision to action
+- **Ambiguity assessment:** Clear commands vs unclear exploratory statements
+
+### Intelligent Decision Thresholds
+**CONTEXT CLARITY FACTORS:**
+- **High Clarity + Work Intent** = Immediate PRB trigger
+- **High Clarity + Query Intent** = Direct response
+- **Low Clarity + Mixed Signals** = Clarification dialogue before PRB
+- **Ambiguous Context + @Role** = Natural conversation flow
+
+**INTENT CONFIDENCE SCORING:**
+- **Definitive commands:** "implement", "build", "fix" → High confidence PRB trigger
+- **Exploratory questions:** "what if", "should we", "how about" → Low confidence, continue conversation
+- **Status queries:** "what's the status", "how are things" → Direct response
+- **Mixed patterns:** Use context history to resolve ambiguity
+
+### Context-Driven Decision Process
+**EVALUATION SEQUENCE:**
+1. **Parse Current Request:** Identify core intent and language patterns
+2. **Analyze Conversation History:** Review previous 2-3 exchanges for context
+3. **Assess Intent Clarity:** Determine confidence level in work vs query classification
+4. **Apply Context Intelligence:** Use conversation flow to inform decision
+5. **Execute Decision:** PRB generation, direct response, or clarification request
+
+**SMART ESCALATION PATTERNS:**
+- **Uncertain Intent** → "I want to make sure I understand - are you asking me to [implement/explain] this?"
+- **Context Mismatch** → Continue natural conversation until intent becomes clear
+- **Progressive Clarity** → Allow conversation to naturally evolve toward clear work assignments
+
 ## Critical Triggers
 
-**MUST Trigger**: Work requests, @Role mentions, natural language work patterns
-**MUST NOT**: Information queries, status checks, reading only
+**MUST Trigger**: Clear work commands with definitive language and high context confidence
+**MUST NOT**: Questions, exploratory discussions, ambiguous requests without context clarification
 
 ## Subagent Execution
 
