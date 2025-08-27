@@ -130,6 +130,42 @@ BLOCKED ADDITIONS: [list any prevented scope expansion]
 - **Show information** → Display requested information only
 - **Status inquiry** → Current status only, no recommendations
 
+## File Generation Control
+
+### Automatic File Generation Prevention
+**MANDATORY:** Block all automatic file generation. Files created ONLY on explicit user request.
+
+#### Blocked Automatic Generation Patterns
+**BLOCK ALL AUTOMATIC:**
+- Summary file creation
+- Temporary file generation
+- Documentation files without explicit request
+- Report files without user direction
+- Analysis output files
+- Configuration backups without request
+
+**BLOCKING MECHANISM:**
+```
+❌ FILE GENERATION BLOCKED: Automatic file creation forbidden
+USER REQUEST: [analyze request for file creation intent]
+ALLOWED: Read, analyze, display information only
+BLOCKED: Creating files without explicit "create file" request
+```
+
+#### File Creation Intent Detection
+**EXPLICIT FILE CREATION REQUESTS (ALLOW):**
+- "Create a file..."
+- "Write to file..."
+- "Generate a [filename]..."
+- "Save this to..."
+- Direct file creation commands with specific names
+
+**AUTOMATIC GENERATION (BLOCK):**
+- Summary generation without file request
+- Temporary file creation for analysis
+- Documentation generation as side effect
+- Report creation without explicit instruction
+
 ## Quality Gates
 **Pre-Creation:** Template compliance, context completeness, role assignment
 **Runtime:** Execution monitoring, quality maintenance, adaptation handling
