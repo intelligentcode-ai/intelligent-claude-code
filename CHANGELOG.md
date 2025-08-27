@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.9] - 2025-08-27
+
+### Fixed
+- **BUG-038-PRB-004**: Implemented balanced query vs command detection
+- Enhanced natural conversation flow by distinguishing questions from work commands
+- Added ASK vs DEMAND classification to preserve planning discussions while maintaining strong PRB enforcement
+- Updated enforcement-rules.md with query classification patterns
+- Enhanced prb-auto-trigger.md with balanced detection logic
+- Improved prb-enforcement.md with conversational patterns support
+
 ## [7.4.8] - 2025-08-27
 
 ### Fixed

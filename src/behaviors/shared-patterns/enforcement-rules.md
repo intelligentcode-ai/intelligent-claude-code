@@ -158,6 +158,56 @@ FUNCTION: classify_role_mention(user_input, role_mention)
 - Pure knowledge-seeking patterns without implementation intent
 - Architecture discussions without development commitment
 
+## Query Classification
+
+**MANDATORY:** Distinguish between questions (ALLOW THROUGH) and commands (TRIGGER PRB) for balanced natural conversation.
+
+### Question Word Patterns (ALLOW THROUGH)
+**QUESTION INDICATORS:**
+- **What:** what is, what are, what should, what would, what's the
+- **How:** how does, how would, how can, how should, how is
+- **Why:** why does, why is, why should, why would
+- **Should:** should we, should I, should the, should this
+- **Can:** can you, can we, can this, can the
+- **Will:** will you, will this, will we, will it
+- **Which:** which one, which way, which approach, which option
+
+### Soft Exploration Verbs (ALLOW THROUGH)
+**CONSULTATION PATTERNS:**
+- **Advice Seeking:** recommend, suggest, advise, propose, think
+- **Status Inquiry:** status, progress, current, ongoing, state
+- **Planning Discussion:** strategy, approach, plan, consider, evaluate
+- **Knowledge Seeking:** understand, learn, know, realize, grasp
+
+### Enhanced Question vs Command Logic
+```
+FUNCTION: classify_question_vs_command(user_input)
+1. Scan for question words at start of input or after @Role
+2. Check for soft exploration verbs vs hard action verbs
+3. Analyze sentence structure (interrogative vs imperative)
+4. Consider context markers (discussion vs execution)
+
+Examples:
+- "@PM what story should we work on next?" → QUESTION (allow through)
+- "@PM implement the auth story" → COMMAND (trigger PRB)
+- "@Architect how should we design this?" → QUESTION (allow through)
+- "@Architect design the API structure" → COMMAND (trigger PRB)
+- "What is the status of deployment?" → QUESTION (allow through)
+- "Deploy the application to production" → COMMAND (trigger PRB)
+```
+
+### Natural Conversation Preservation
+**CRITICAL:** Questions and discussions must flow naturally without PRB interruption.
+
+**CONVERSATIONAL PATTERNS (ALLOW THROUGH):**
+- Planning and strategy discussions
+- Status updates and progress inquiries  
+- Knowledge sharing and explanation requests
+- Architecture consultations and reviews
+- @Role advisory requests without implementation commitment
+- "What do you think about..." discussions
+- "How would you handle..." consultations
+
 **Enhanced Detection Logic with Main Scope Blocking:** 
 ```
 FUNCTION: main_scope_execution_guard(user_input, context)

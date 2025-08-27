@@ -68,6 +68,11 @@ BLOCKING REASON: Maintains architectural integrity and execution traceability
 - Status inquiries (what's the status, how is progress)
 - Planning discussions without implementation commitment
 - Architecture consultations without immediate execution
+- **Question patterns:** Questions starting with what, how, why, should, can, will
+- **@Role consultations:** "@PM what story next?", "@Architect how would you design?"
+- **Advisory requests:** "What do you think?", "How would you handle this?"
+- **Soft exploration:** recommend, suggest, advise, propose, consider, evaluate
+- **Knowledge seeking:** explain, describe, understand, learn, clarify, know
 
 ## Auto-Correction
 | Violation | Action |

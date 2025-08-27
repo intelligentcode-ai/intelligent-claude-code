@@ -256,6 +256,67 @@ Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 - **Analysis Requests**: analyze this, examine that, review the following
 - **Architecture Discussions**: design patterns, system architecture (without implementation)
 
+## ASK vs DEMAND Classification
+
+**MANDATORY:** Balanced detection distinguishing questions (ASK - allow through) from commands (DEMAND - trigger PRB).
+
+### ASK Indicators (ALLOW THROUGH - No PRB)
+**QUESTION PATTERNS:**
+- **Question words:** what, how, why, should, can, will, which, where, when
+- **@Role consultations:** "@PM what story next?", "@Architect how would you design this?"
+- **Status inquiries:** "What's the current progress?", "How is the deployment?"
+- **Advisory requests:** "What do you think?", "How would you approach this?"
+- **Planning discussions:** "Should we implement X?", "Which approach is better?"
+
+**SOFT EXPLORATION VERBS:**
+- **Consultation:** recommend, suggest, advise, propose, think, consider
+- **Knowledge seeking:** explain, describe, understand, learn, clarify
+- **Status checking:** status, progress, current, ongoing, state, condition
+- **Analysis:** analyze, review, examine, evaluate, assess
+
+### DEMAND Indicators (TRIGGER PRB)
+**COMMAND PATTERNS:**
+- **Direct imperatives:** "@Developer implement X", "@DevOps deploy Y"
+- **Work assignments:** "Fix the bug", "Build the feature", "Deploy the app"
+- **Implementation language:** "We need to implement", "Let's build", "Time to deploy"
+- **Action commitments:** "Please create", "Go ahead and fix", "Start working on"
+
+**HARD ACTION VERBS:**
+- **Implementation:** implement, create, build, develop, code, program, write
+- **Modification:** fix, update, modify, change, refactor, optimize, enhance
+- **Operations:** deploy, install, configure, setup, migrate, provision, scale
+- **Maintenance:** delete, remove, clean, purge, archive, reorganize
+
+### Enhanced Classification Algorithm
+```
+FUNCTION: classify_ask_vs_demand(user_input, role_context)
+1. SCAN for question indicators at start or after @Role mentions
+2. CHECK for soft exploration vs hard action verb patterns
+3. ANALYZE sentence structure (interrogative "?" vs imperative "!")
+4. EVALUATE context markers (discussion vs execution intent)
+5. CLASSIFY as ASK (allow through) or DEMAND (trigger PRB)
+
+Classification Examples:
+- "@PM what story should we work on next?" → ASK (natural conversation)
+- "@PM break down the authentication story" → DEMAND (work request)
+- "@Architect how should we structure the API?" → ASK (consultation)  
+- "@Architect design the user authentication system" → DEMAND (work assignment)
+- "What's the status of the deployment?" → ASK (information request)
+- "Deploy the application to staging environment" → DEMAND (operation request)
+- "How would @Developer approach this bug?" → ASK (advisory discussion)
+- "@Developer fix the login authentication issue" → DEMAND (bug fix assignment)
+```
+
+### Critical Trigger Rules
+**MUST Trigger PRB:** Work commands (DEMAND), @Role work assignments, implementation commitments
+**MUST NOT Trigger PRB:** Questions (ASK), information queries, status checks, consultations, planning discussions
+
+**Balanced Detection Priority:**
+1. **Question Detection First:** Check for ASK patterns before work detection
+2. **Command Detection Second:** Apply DEMAND patterns for work requests
+3. **Context Preservation:** Maintain natural conversation flow for planning
+4. **Work Enforcement:** Strong PRB creation for actual implementation tasks
+
 ### Next-Generation User Experience Revolution
 **COMPLETELY INVISIBLE & INTELLIGENT AUTOMATION:**
 - **Natural Language Interface**: Users describe work in conversational language → System translates to executable PRBs
