@@ -15,6 +15,8 @@ The **Product Requirement Blueprint (PRB)** system replaces complex multi-step w
 7. **Systematic Validation** - Evidence-based completion verification with comprehensive checks
 8. **Template Enforcement** - Mandatory template usage with zero-tolerance blocking
 9. **Configuration Embedding** - Complete config resolution at generation time, no runtime lookups
+10. **Automatic Generation** - Revolutionary zero-touch PRB creation with intelligent work detection
+11. **Seamless Execution** - Work requests automatically trigger PRB generation and specialist execution
 
 ## How It Works
 

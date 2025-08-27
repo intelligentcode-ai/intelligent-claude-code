@@ -106,43 +106,49 @@ stories/
 - **Agent Coordination**: Collaborative execution across specialized agent team
 - **Next Selection**: Agent team considers dependencies, risk, current application state
 
-<<<<<<< HEAD
-## Key Commands & Agent Interactions
+## Automatic PRB System
 
+**Complete Automation Pipeline:** Work requests automatically trigger PRB creation and execution with no manual steps required.
+
+### Automatic PRB Generation
+- **Work Detection**: Intelligent recognition of implementation vs information requests
+- **Template Selection**: Automatic complexity scoring and template selection (Nano→Mega)
+- **Context Integration**: Complete project context, configuration, and memory patterns embedded
+- **Placeholder Resolution**: All configuration values resolved during generation (no runtime lookups)
+- **Quality Validation**: Generated PRBs meet all template requirements and validation standards
+
+### Seamless Work Flow
 ```bash
-# System Initialization
-/icc-init-system              # Initialize agent system
+# Natural Work Requests → Automatic PRB Creation → Subagent Execution
+@PM Build a [project]         # Auto-creates project setup PRBs with specialist assignments
+@Developer Implement auth     # Auto-generates implementation PRB with complete context
+@AI-Engineer optimize system  # Auto-creates optimization PRB with behavioral patterns
+"Fix the login bug"          # Auto-detects work intent, creates bug fix PRB
+"Setup CI/CD pipeline"       # Auto-creates infrastructure PRB with DevOps specialist
+```
 
-# Agent Interaction Commands
-@PM Build a [project]         # Start any project with PM agent coordination
-@Architect Design the API     # Request architecture design from architect agent
-@Developer Implement auth     # Assign implementation task to developer agent
-@Security-Engineer Review     # Request security review from security agent
+**Intelligent Classification:**
+- **Work Triggers** (Auto-PRB): implement, create, build, fix, deploy, configure, setup
+- **Information Requests** (No PRB): show, explain, what is, status, how does
 
-# Story & PRB Management
-@PM break down [story]        # Convert story to PRBs with agent assignments
-@PM what story next?          # Agent-driven story selection with priorities
-/icc-create-prb               # Generate PRB with agent coordination
+### Enhanced Automation Features
+- **Context Awareness**: Auto-detects project type (CODE/AI-AGENTIC/HYBRID) and adjusts patterns
+- **Dependency Analysis**: Auto-identifies prerequisite work and creates sequential PRBs
+- **Size Management**: Auto-breakdown of complex work into multiple ≤15 point PRBs
+- **Role Assignment**: Auto-selects appropriate specialists based on work type and technology domain
+- **Memory Integration**: Auto-searches applicable patterns and embeds learnings in PRBs
 
-# Memory & Learning (Cross-Agent)
-/icc-store-memory            # Save learnings shared across agents (auto-prunes)
-/icc-search-memory           # Search agent knowledge base
-
-# Advanced Agent Operations
-# Agents automatically create specialists when needed - no manual commands required
-=======
 ## Essential Commands (Lean System)
 
 ```bash
 /icc-init-system              # Initialize virtual team system
 /icc-get-setting [key]        # Access configuration values
 /icc-search-memory [query]    # Search stored learnings
->>>>>>> feature/enhance-pm-placeholder-process
 ```
 
 **Everything else is automatic:**
-- PRB generation happens on work detection
-- Specialist creation via <70% capability matching
+- PRB generation happens on work detection with complete automation
+- Specialist creation via technology domain analysis
 - Memory storage during PRB execution  
 - Story management through @PM natural language
 
