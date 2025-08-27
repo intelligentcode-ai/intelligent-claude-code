@@ -32,9 +32,28 @@
 - template_validation (true/false)
 - complexity_override (true/false)
 
+## System Defaults (Professional Standards)
+
+### Professional Default Values
+```yaml
+# Git Settings (Professional Security Standards)
+git_privacy: true                  # Strip AI mentions from commits
+branch_protection: true            # Protect main branch
+require_pr_for_main: true          # Require pull requests for main
+
+# Autonomy Settings (Professional Team Standards)
+autonomy_level: L2                 # Balanced control and efficiency
+pm_always_active: true            # Always activate PM role
+blocking_enabled: true            # Enable enforcement blocking
+
+# Team Settings (Professional Collaboration)
+specialist_creation: true         # Allow dynamic specialist creation
+role_validation: true            # Validate role assignments
+```
+
 ## Loading Process
 1. Load configuration from hierarchy
-2. Load system defaults
+2. Load system defaults (professional standards above)
 3. Merge user global (~/.claude/config.md - system-wide only)
 4. Merge project (./config.md or .claude/config.md if explicitly configured)
 5. Apply embedded overrides
