@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.14] - 2025-08-27
+
+### Fixed
+- BUG-033: Added execution precision controls to prevent overshooting user requests
+- Implemented proportional response rules where simple requests get simple responses
+- Added scope expansion blocking patterns to prevent automatic feature expansion
+- Enhanced prb-enforcement.md with request-response complexity alignment
+
 ## [7.4.13] - 2025-08-27
 
 ### Added
