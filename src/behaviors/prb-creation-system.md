@@ -4,27 +4,34 @@
 
 ## Automatic PRB Generation
 
-### Seamless Work-to-PRB Conversion
-**CRITICAL:** When work intent is detected, system AUTOMATICALLY generates PRB:
-- **Immediate Detection**: Work requests trigger instant PRB creation
-- **Template Selection**: Complexity analysis auto-selects appropriate template
-- **Context Gathering**: Complete project context loaded automatically
-- **Placeholder Resolution**: All configuration values embedded during generation
-- **Self-Contained PRBs**: Generated PRBs require no runtime lookups
+### Real-Time Work Detection & Instant PRB Creation
+**CRITICAL:** System operates in continuous detection mode with ZERO manual PRB creation:
+- **Microsecond Detection**: Work intent triggers immediate PRB generation pipeline
+- **Intelligent Classification**: Advanced pattern recognition distinguishes work vs information requests
+- **Automatic Template Matching**: Complexity scoring auto-selects optimal PRB template
+- **Complete Context Assembly**: Full project context gathered and embedded automatically
+- **Zero-Config PRBs**: All placeholders resolved, no runtime dependencies
+- **Instant Execution Ready**: PRBs generated with complete Task tool context
 
-### Automatic Generation Triggers
-**INSTANT PRB CREATION for:**
-- Work requests with implementation intent (implement, create, build, fix)
-- @Role work assignments (@Developer implement X, @DevOps-Engineer deploy Y)
-- Story breakdown requests (break down STORY-001)
-- Bug fix requests (fix authentication issue)
-- System modification requests (configure CI/CD, setup database)
+### Enhanced Automatic Detection Patterns
+**GUARANTEED PRB CREATION (Zero Manual Steps):**
+- **Implementation Language**: implement, create, build, develop, code, program, write
+- **Modification Language**: fix, update, modify, change, refactor, optimize, enhance, improve
+- **@Role Work Assignments**: @Developer implement auth, @AI-Engineer optimize behavior
+- **Story Processing**: break down STORY-001, implement user authentication
+- **Bug Resolution**: fix database connection, resolve memory leak
+- **System Operations**: deploy to staging, configure CI/CD, setup monitoring
+- **Integration Tasks**: connect API, integrate service, setup webhook
+- **Maintenance Work**: clean deprecated code, remove unused files, archive old data
+- **Infrastructure**: provision resources, setup environment, configure deployment
 
-**NO PRB CREATION for:**
-- Information queries (show, display, explain, what is)
-- Status requests (what's the status of, how are we doing)
-- Planning discussions without implementation commitment
-- @Role consultations (what should we do, how would you approach)
+**INTELLIGENT NON-TRIGGERS (Information/Planning Only):**
+- **Query Language**: show, display, read, list, check, analyze, examine, explain, describe
+- **Status Language**: what's the status, how are we doing, current progress, ongoing work
+- **Planning Language**: should we, what if, how about, what's the best approach
+- **@Role Consultations**: @Role what would you recommend, how would you handle this
+- **Architecture Discussions**: design patterns, system architecture (without implementation intent)
+- **Knowledge Requests**: explain concept, describe process, define terminology
 
 ## Core Creation Rules
 
@@ -54,20 +61,23 @@
 
 ## Creation Process
 
-### Automatic Template-First Generation
-**SEAMLESS 12-STEP AUTOMATIC PROCESS:**
-1. **Auto-Detect Work**: Parse user input for implementation intent patterns
-2. **Gather Context**: Load complete project context (CLAUDE.md, system nature, critical files)
-3. **Search Memory**: Auto-search memory/[topic]/ for relevant patterns and learnings
-4. **Calculate Complexity**: Files + Lines + APIs + Security + Coordination scoring
-5. **Auto-Breakdown Check**: If >15 points, automatically decompose into smaller PRBs
-6. **Select Template**: Use complexity score to auto-select from src/prb-templates/
-7. **Load Template**: From src/prb-templates/ hierarchy with complete structure
-8. **Load Configuration**: Complete config hierarchy resolution at generation time
-9. **Resolve Placeholders**: Replace ALL placeholders with actual config values
-10. **Embed Context**: All config values and project context embedded in PRB
-11. **Validate Completeness**: ZERO unresolved placeholders, complete context
-12. **Generate & Create**: Compliant naming format and file creation with resolved content
+### Lightning-Fast Automatic Generation Pipeline
+**SEAMLESS 15-STEP INSTANT AUTOMATION (Complete Zero-Touch Process):**
+1. **Microsecond Detection**: Real-time parsing of user input with advanced NLP pattern recognition
+2. **Intent Classification**: AI-powered work vs information classification with confidence scoring
+3. **Context Assembly**: Instant loading of complete project context (CLAUDE.md, system nature, file structure)
+4. **Memory Integration**: Auto-search memory/[topic]/ and best-practices/ for applicable patterns
+5. **Complexity Calculation**: Enhanced scoring algorithm (files + lines + APIs + security + coordination + dependencies)
+6. **Auto-Breakdown Logic**: If >15 points, intelligent decomposition into logical work units ≤15 points each
+7. **Template Auto-Selection**: Complexity score mapping to optimal src/prb-templates/ template
+8. **Template Loading**: Complete template structure loaded with all mandatory sections
+9. **Configuration Resolution**: Full config hierarchy loaded with actual values from all sources
+10. **Placeholder Elimination**: Replace ALL [FROM_CONFIG], [PROJECT_ROOT], [CURRENT_DATE] with actual values
+11. **Context Embedding**: Complete project context, user requirements, success criteria embedded
+12. **Quality Validation**: ZERO placeholders, complete sections, proper role assignments verified
+13. **Naming Compliance**: Auto-generate compliant naming with sequential numbering
+14. **File Creation**: Generate PRB file with complete resolved content in appropriate directory
+15. **Execution Trigger**: Auto-invoke Task tool for immediate subagent execution if required
 
 ### Automatic Context Integration
 **PRBs AUTOMATICALLY INCLUDE:**
@@ -133,13 +143,24 @@
 - Role assignment verification (appropriate specialists for system nature)
 - Size validation (auto-breakdown if complexity exceeds limits)
 
-### Seamless User Experience
-**TRANSPARENT AUTOMATION:**
-- Users make work requests → System automatically creates appropriate PRBs
-- No manual PRB creation steps required → Fully automated generation process
-- Complete context gathering → No user prompting for missing information
-- Intelligent template selection → No complexity calculation required from user
-- Automatic role assignment → Appropriate specialists selected based on work type
+### Revolutionary User Experience
+**COMPLETELY INVISIBLE AUTOMATION:**
+- **Natural Language Input**: Users simply describe work needs in plain English
+- **Zero Manual Steps**: No PRB creation, template selection, or configuration required
+- **Instant Results**: Work requests automatically become executable PRBs in milliseconds
+- **Complete Context**: All project information automatically gathered and embedded
+- **Perfect Specialization**: Optimal role assignments and specialist creation without user input
+- **Immediate Execution**: PRBs automatically trigger Task tool subagent execution
+- **Quality Guaranteed**: All validation, compliance, and best practices automatically enforced
+
+### Advanced Automation Capabilities
+**INTELLIGENT SYSTEM BEHAVIOR:**
+- **Predictive Context**: Anticipate context needs based on work type and project patterns
+- **Dependency Resolution**: Automatically identify and include prerequisite work items
+- **Risk Assessment**: Auto-flag potential issues and include mitigation strategies
+- **Quality Standards**: Apply project-specific standards without manual configuration
+- **Performance Optimization**: Learn from execution patterns to improve generation accuracy
+- **Error Prevention**: Proactive detection and resolution of common configuration issues
 
 ---
 *Comprehensive PRB and work item creation system*
