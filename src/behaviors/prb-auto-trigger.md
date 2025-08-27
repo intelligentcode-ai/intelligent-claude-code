@@ -49,14 +49,15 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 2. **Gather** complete context (MANDATORY)
 3. **Search** memory/[topic]/ and best-practices/ (MANDATORY)
 4. **Score** complexity
-5. **Auto-breakdown** if complexity > 15 points
-6. **Load Template** from src/prb-templates/ 
-7. **Load Configuration** at generation time
-8. **Resolve ALL Placeholders** with actual config values
-9. **Embed Complete Context** - all config in PRB
-10. **Validate NO Placeholders** - ZERO unresolved values
-11. **Generate** compliant name and create PRB
-12. **Execute** via subagent
+5. **Sequential thinking** if complexity > 5 points, use mcp__sequential-thinking__sequentialthinking for structured PRB design
+6. **Auto-breakdown** if complexity > 15 points
+7. **Load Template** from src/prb-templates/ 
+8. **Load Configuration** at generation time
+9. **Resolve ALL Placeholders** with actual config values
+10. **Embed Complete Context** - all config in PRB
+11. **Validate NO Placeholders** - ZERO unresolved values
+12. **Generate** compliant name and create PRB
+13. **Execute** via subagent
 
 ## Context Requirements
 
