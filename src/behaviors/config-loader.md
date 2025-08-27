@@ -64,6 +64,14 @@
 - Invalidate cache on file changes
 - Key based on file timestamps and content hash
 
+**Configuration Persistence:**
+- Persist autonomy_level and l3_settings changes to CLAUDE.md
+- Update CLAUDE.md while preserving existing content and formatting
+- Use YAML frontmatter or dedicated configuration section
+- Validate configuration before writing to prevent corruption
+- Create backup before modification for rollback capability
+- Invalidate cache after successful persistence
+
 ## Integration Patterns
 
 ### API Usage
@@ -78,6 +86,20 @@
 - Checks both project root and .claude/ locations
 - Merges with configuration hierarchy
 - Enables context-aware behavioral decisions
+
+### Autonomy Level Persistence
+- Read autonomy_level from CLAUDE.md on system initialization
+- Persist autonomy_level changes back to CLAUDE.md for session preservation
+- Support autonomy configuration in CLAUDE.md format:
+  ```yaml
+  autonomy_level: L2
+  l3_settings:
+    max_parallel: 5
+    auto_discover: true
+    continue_on_error: true
+  ```
+- Automatically create autonomy configuration section if missing
+- Preserve user preferences across sessions and system restarts
 
 ---
 *Config loader for intelligent-claude-code system*

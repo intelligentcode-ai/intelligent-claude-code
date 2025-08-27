@@ -10,7 +10,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 `/icc-init-system [autonomy_level] [pm_active]`
 
 **Arguments:**
-- `autonomy_level` - Optional: L1, L2, L3 (default: from config)
+- `autonomy_level` - Optional: L1, L2, L3 (default: from CLAUDE.md, fallback to L2)
 - `pm_active` - Optional: true/false for PM always active (default: from config)
 
 **Examples:**
@@ -77,22 +77,33 @@ All templates successfully loaded ✅
 
 ## Core Actions
 1. **Load Configuration**: Apply configuration hierarchy (embedded → project → user → system defaults)
-2. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
-3. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
-4. **Activate PRB System**: Enable PRB-driven execution system
-5. **Initialize Workflow Settings**: Create default workflow configuration if missing from CLAUDE.md
-6. **Initialize Progress Reporting**: Activate clean completion tracking
-7. **Setup Learning System**: Enable PRB learning and pattern capture
-8. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
-9. **Validate System**: Verify all components operational and ready
-10. **Apply Autonomy Level**: Set L1/L2/L3 mode based on configuration
-11. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
-12. **Validate Enforcement**: Check self-correcting patterns are active
+2. **Read Autonomy Level**: Load autonomy_level from CLAUDE.md, create if missing
+3. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
+4. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
+5. **Activate PRB System**: Enable PRB-driven execution system
+6. **Initialize Workflow Settings**: Create default workflow configuration if missing from CLAUDE.md
+7. **Initialize Progress Reporting**: Activate clean completion tracking
+8. **Setup Learning System**: Enable PRB learning and pattern capture
+9. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
+10. **Validate System**: Verify all components operational and ready
+11. **Apply Autonomy Level**: Set L1/L2/L3 mode based on loaded/provided configuration
+12. **Persist Autonomy Changes**: Write autonomy_level changes back to CLAUDE.md for session preservation
+13. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
+14. **Validate Enforcement**: Check self-correcting patterns are active
 
 ## Autonomy Levels
 - **L1 (Manual)**: User approval required for ALL actions
 - **L2 (Architect)**: Architect approval for technical decisions, auto-proceed for routine
 - **L3 (Autonomous)**: Full autonomous execution, only stops for critical issues
+
+## Autonomy Persistence
+When autonomy_level is provided as parameter:
+1. **Read Current**: Load existing autonomy_level from CLAUDE.md
+2. **Compare**: Check if provided level differs from current
+3. **Update**: If different, update CLAUDE.md with new autonomy_level
+4. **Preserve**: Maintain existing l3_settings if changing to/from L3
+5. **Validate**: Ensure CLAUDE.md remains well-formed after changes
+6. **Cache Invalidation**: Clear configuration cache to reflect changes
 
 ## System Validation Checklist
 - ✅ Configuration loaded and applied
