@@ -3,7 +3,7 @@
 @../roles/specialists.md
 @../behaviors/learning-team-automation.md
 @../behaviors/config-loader.md
-@../behaviors/prb-creation-mandates.md
+@../behaviors/prb-creation-system.md
 @../behaviors/prb-enforcement.md
 @../behaviors/prb-auto-trigger.md
 @../behaviors/story-breakdown.md
