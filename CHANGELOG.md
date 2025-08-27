@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.15] - 2025-08-27
+
+### Fixed
+- BUG-035: Fixed autonomy level configuration to read from and persist to CLAUDE.md
+- Added autonomy level reading from CLAUDE.md on system initialization
+- Implemented autonomy level persistence mechanism to preserve user preferences across sessions
+- Enhanced config-loader.md with autonomy persistence functionality
+- Updated icc-init-system.md to use and persist autonomy level changes
+
 ## [7.4.14] - 2025-08-27
 
 ### Fixed
