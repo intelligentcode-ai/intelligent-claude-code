@@ -92,10 +92,109 @@
 Format: `<PARENT>-PRB-<NUMBER>-<TITLE>-<DATE>.prb.yaml`
 Get number: `ls prbs/ready/ | grep "^PARENT-PRB-" | sort -V | tail -1`
 
+## Work Detection Patterns
+
+### Comprehensive Work Intent Detection
+**MANDATORY:** Automatically detect work requests and trigger PRB generation
+
+**Work Intent Detection Algorithm:**
+1. **Analyze User Input**: Scan for action-oriented language patterns
+2. **Classify Intent Type**: Work vs Information vs Planning
+3. **Trigger Assessment**: Determine if PRB creation is required
+4. **Context Validation**: Ensure sufficient context for PRB generation
+
+### Work Intent Indicators (TRIGGER PRB CREATION)
+
+**Primary Action Verbs:**
+- **Implementation**: implement, create, build, develop, code, write, program
+- **Modification**: fix, update, modify, change, refactor, optimize, enhance
+- **System Operations**: deploy, install, configure, setup, migrate, provision
+- **Maintenance**: delete, remove, clean, purge, archive, reorganize
+
+**Compound Work Patterns:**
+- "Add [feature/functionality]" → Implementation work
+- "Fix [bug/issue]" → Bug fix work  
+- "Update [component/system]" → Enhancement work
+- "Deploy [service/application]" → Operations work
+- "Configure [setting/system]" → Configuration work
+- "Setup [environment/tool]" → Infrastructure work
+- "Integrate [service/API]" → Integration work
+- "Optimize [performance/code]" → Performance work
+
+**Context-Based Work Detection:**
+- File operations with modification intent
+- System changes with implementation requirements
+- Code modifications with functional changes
+- Infrastructure changes with deployment requirements
+
+### Information Request Indicators (DO NOT TRIGGER PRB)
+
+**Query Verbs:**
+- **Investigation**: show, display, read, list, check, analyze, examine, inspect
+- **Knowledge**: explain, describe, define, clarify, understand, learn
+- **Discovery**: find, search, locate, identify, discover, explore
+- **Status**: status, state, condition, progress, current, ongoing
+
+**Question Patterns:**
+- "What is/are [subject]?" → Information query
+- "How does [system/process] work?" → Knowledge request
+- "Why [condition/behavior]?" → Understanding request
+- "Should we [approach/decision]?" → Planning discussion
+- "Can you [show/explain]?" → Information request
+- "@Role questions" → Role consultation, not execution
+
+**Planning and Discussion Indicators:**
+- Strategy discussions without implementation commitment
+- Architecture planning without immediate development
+- Requirements gathering without execution intent
+- Review requests without modification requirements
+
+### Enhanced @Role Pattern Detection
+
+**@Role Work Assignment Patterns (TRIGGER PRB):**
+- "@Role implement [feature]" → Direct work assignment
+- "@Role fix [issue]" → Bug fix assignment
+- "@Role deploy [system]" → Operations assignment  
+- "@Role optimize [component]" → Enhancement assignment
+
+**@Role Information Patterns (DO NOT TRIGGER PRB):**
+- "@Role what should we do about [situation]?" → Consultation
+- "@Role how would you approach [problem]?" → Planning discussion
+- "@Role can you explain [concept]?" → Knowledge request
+- "@Role what's the status of [work]?" → Status inquiry
+
+### Natural Language Work Detection
+
+**Story/Task Breakdown Patterns (TRIGGER PRB):**
+- "Break down [STORY-XXX]" → Story decomposition work
+- "Create specialist for [domain]" → Specialist creation work
+- "Implement [user story]" → Story implementation work
+- "Execute [PRB file]" → PRB execution work
+
+**Advanced Pattern Recognition:**
+- **Imperative Language**: Commands and directives requiring action
+- **Future Tense with Action**: "We need to implement", "Let's build"  
+- **Problem-Solution Language**: "This issue needs fixing", "We should add"
+- **Deadline Language**: "Deploy by [date]", "Implement before [milestone]"
+
 ## Critical Triggers
 
-**MUST Trigger**: Work requests, @Role mentions, natural language work patterns
-**MUST NOT**: Information queries, status checks, reading only
+**MUST Trigger PRB Creation:**
+- Work requests with implementation intent
+- @Role mentions with work assignments
+- Natural language work patterns with action requirements
+- File modification requests with functional changes
+- System deployment and configuration requests
+- Bug fixes and enhancement requests
+- Integration and optimization tasks
+
+**MUST NOT Trigger PRB Creation:**
+- Information queries and knowledge requests  
+- Status checks and progress inquiries
+- Planning discussions and strategy conversations
+- @Role consultations without execution intent
+- Read-only operations and analysis requests
+- Architecture discussions without implementation commitment
 
 ## Subagent Execution
 
