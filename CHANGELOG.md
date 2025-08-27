@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.5] - 2025-08-27
+
+### Fixed
+- Implemented main scope execution blocking patterns
+- Enhanced architectural enforcement with mandatory PRB creation
+- Added comprehensive blocking mechanisms with clear error guidance
+- Strengthened tool access validation requiring active PRB execution context
+- Improved error messaging with specific @Role pattern redirection guidance
+- Enhanced work intent detection with architectural violation prevention
+
 ## [7.4.4] - 2025-08-27
 
 ### Fixed

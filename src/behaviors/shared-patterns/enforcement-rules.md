@@ -28,6 +28,34 @@
 ### Work Pattern Detection
 **MANDATORY:** Block work without active PRB context
 
+#### Main Scope Execution Blocking
+**CRITICAL ARCHITECTURAL ENFORCEMENT:** All work execution MUST occur in subagent context via PRB pattern.
+
+**BLOCKING MECHANISM:**
+```
+FUNCTION: enforce_main_scope_blocking(user_input, execution_context)
+1. Detect work intent using advanced classification
+2. Verify active PRB context exists
+3. Check execution scope (main vs subagent)
+4. BLOCK if main scope execution detected
+5. Provide mandatory PRB creation guidance
+
+BLOCKING CONDITIONS:
+- Work intent detected AND no active PRB context
+- Direct execution attempt in main scope
+- Tool usage (Edit/Write/Bash) without PRB authorization
+- File operations outside PRB execution flow
+```
+
+**MANDATORY ERROR RESPONSES:**
+```
+❌ MAIN SCOPE EXECUTION BLOCKED
+Violation: Work execution attempted in main scope without PRB
+Required: Generate PRB using @Role pattern before proceeding
+Architecture: User Request → PRB Creation → Subagent Execution
+Recovery: Use @Role pattern to trigger proper PRB generation flow
+```
+
 #### Advanced Work Intent Classification
 
 **Primary Work Intent Detection:**
@@ -130,21 +158,72 @@ FUNCTION: classify_role_mention(user_input, role_mention)
 - Pure knowledge-seeking patterns without implementation intent
 - Architecture discussions without development commitment
 
-**Detection Logic:** 
+**Enhanced Detection Logic with Main Scope Blocking:** 
 ```
-IF (work_intent_detected AND no_active_PRB) THEN
-    IMMEDIATE_BLOCK("❌ All work requires PRB - use @Role pattern")
+FUNCTION: main_scope_execution_guard(user_input, context)
+1. Analyze input for work intent patterns
+2. Check for active PRB execution context
+3. Verify execution scope (main vs subagent)
+4. Apply comprehensive blocking logic
+
+IF (work_intent_detected AND no_active_PRB AND main_scope) THEN
+    IMMEDIATE_BLOCK("❌ MAIN SCOPE EXECUTION BLOCKED - PRB required")
+    PROVIDE_GUIDANCE("Use @Role pattern to generate PRB first")
+    PREVENT_TOOL_ACCESS(Edit, Write, Bash, MultiEdit)
+    REDIRECT_TO_PRB_CREATION()
+ELSE IF (tool_usage_detected AND no_PRB_authorization) THEN
+    BLOCK_TOOL_ACCESS("❌ Tool usage requires active PRB context")
+    ENFORCE_ARCHITECTURAL_PATTERN()
 ELSE IF (information_request AND no_work_context) THEN
     ALLOW_INFORMATION_RESPONSE()
-ELSE IF (compound_pattern) THEN
+ELSE IF (compound_pattern WITH work_component) THEN
     PRIORITIZE_WORK_COMPONENT()
-    TRIGGER_PRB_IF_WORK_PRIMARY()
+    TRIGGER_MANDATORY_PRB_CREATION()
+    BLOCK_DIRECT_EXECUTION()
 END IF
 ```
 
+**Architectural Enforcement Priorities:**
+1. **PRIMARY:** Block all main scope work execution
+2. **SECONDARY:** Enforce PRB creation before work
+3. **TERTIARY:** Guide users to proper @Role patterns
+4. **FALLBACK:** Provide clear recovery instructions
+
 ### Tool-Specific Violations
-- **Write/Edit:** Block without active PRB context
-- **Bash:** Block state-changing commands without PRB context
+
+#### Comprehensive Tool Access Blocking
+**CRITICAL:** All file modification and system operation tools MUST be blocked in main scope execution.
+
+**BLOCKED TOOLS IN MAIN SCOPE:**
+- **Edit/MultiEdit:** File modification without active PRB authorization
+- **Write:** File creation without PRB context and subagent execution
+- **Bash:** System commands without PRB authorization (except read-only)
+- **Creation Tools:** Any tool creating/modifying project files
+
+**TOOL BLOCKING LOGIC:**
+```
+FUNCTION: validate_tool_access(tool_name, context)
+1. Check for active PRB execution context
+2. Verify subagent execution scope
+3. Validate tool authorization in PRB
+4. BLOCK if main scope execution detected
+
+BLOCKING CONDITIONS:
+- Tool usage attempted in main scope without PRB
+- File operations outside authorized PRB context
+- System modifications without subagent execution
+- State-changing operations without PRB approval
+
+ERROR RESPONSE:
+"❌ TOOL ACCESS BLOCKED: {tool_name} requires active PRB execution context
+Required: Execute work through @Role pattern → PRB creation → Subagent execution
+Architecture: Tools only accessible within authorized PRB execution scope"
+```
+
+**EXCEPTION HANDLING:**
+- **Read operations:** Always allowed for information gathering
+- **LS/Glob/Grep:** Allowed for investigation and analysis
+- **Non-modifying operations:** Permitted for system exploration
 
 ### False Completion Detection
 **Block completion claims without checklist validation**
