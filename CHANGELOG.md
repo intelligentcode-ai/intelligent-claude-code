@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.10] - 2025-08-27
+
+### Fixed
+- **BUG-039**: Refactored bloated prb-auto-trigger.md from 374 to 128 lines (65.7% reduction)
+- **BUG-040**: Refactored bloated enforcement-rules.md from 299 to 96 lines (67.8% reduction)
+- Removed all marketing language and 'HYPER-INTELLIGENT' fluff
+- Consolidated duplicate patterns and verbose pseudocode
+- Preserved ASK vs DEMAND classification for balanced detection
+
 ## [7.4.8] - 2025-08-27
 
 ### Fixed
