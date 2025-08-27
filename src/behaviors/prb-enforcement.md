@@ -89,10 +89,51 @@ BLOCKING REASON: Maintains architectural integrity and execution traceability
 **CODE-BASED:** @Developer, @Backend-Tester for implementation
 **Mismatch:** Enforce PM+Architect collaboration
 
+## Execution Precision Controls
+
+### Proportional Response Rules
+**MANDATORY:** Response complexity must match request complexity. Prevent overshooting user intent.
+
+#### Simple Request Detection
+**SIMPLE REQUEST INDICATORS:**
+- Single action verbs (fix, show, create, update)
+- Specific target mentioned (fix this bug, show status)
+- No additional scope implied
+- Direct, focused intent
+
+#### Simple Response Requirements
+**FOR SIMPLE REQUESTS:**
+- Perform ONLY the requested action
+- Do NOT expand scope automatically
+- Do NOT add unrequested features
+- Do NOT include related improvements unless explicitly asked
+
+#### Scope Expansion Blocking
+**BLOCK AUTOMATIC SCOPE EXPANSION:**
+- "While I'm at it, I'll also..."
+- "This would be a good time to..."
+- "I notice we could also..."
+- "Let me also improve..."
+
+**BLOCKING PATTERN:**
+```
+❌ SCOPE EXPANSION BLOCKED: Performing only requested actions
+USER REQUEST: [specific action]
+SYSTEM RESPONSE: [exact match to request only]
+BLOCKED ADDITIONS: [list any prevented scope expansion]
+```
+
+#### Proportional Complexity Matching
+**REQUEST-RESPONSE ALIGNMENT:**
+- **Single file change** → Single file modification only
+- **Simple bug fix** → Fix the specific bug only
+- **Show information** → Display requested information only
+- **Status inquiry** → Current status only, no recommendations
+
 ## Quality Gates
 **Pre-Creation:** Template compliance, context completeness, role assignment
 **Runtime:** Execution monitoring, quality maintenance, adaptation handling
 **Post-Execution:** Completion verification, quality assessment, learning capture
 
 ---
-*Core PRB enforcement with blocking and auto-correction*
+*Core PRB enforcement with blocking, auto-correction, and execution precision controls*
