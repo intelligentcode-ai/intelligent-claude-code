@@ -5,12 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.8] - 2025-08-27
+
+### Fixed
+- **BUG-032-PRB-004**: Implemented automatic agent invocation system for PRB execution
+- Enhanced Task tool integration with proper agent selection
+- Completed end-to-end work detection to agent execution workflow
+
+## [7.4.7] - 2025-08-27
+
+### Fixed
+- Implemented automatic PRB creation system for work requests
+- Enhanced template selection and context embedding automation
+- Integrated work detection with seamless PRB generation
+
+## [7.4.6] - 2025-08-27
+
+### Fixed
+- Implemented automatic PRB creation system for work requests
+- Enhanced template selection and context embedding automation
+- Integrated work detection with seamless PRB generation
+- Added intelligent work intent recognition with semantic analysis
+- Automated complete context gathering and placeholder resolution
+- Streamlined work-to-PRB-to-execution pipeline with full automation
+
+## [7.4.5] - 2025-08-27
+
+### Fixed
+- Implemented main scope execution blocking patterns
+- Enhanced architectural enforcement with mandatory PRB creation
+- Added comprehensive blocking mechanisms with clear error guidance
+- Strengthened tool access validation requiring active PRB execution context
+- Improved error messaging with specific @Role pattern redirection guidance
+- Enhanced work intent detection with architectural violation prevention
+
 ## [7.4.4] - 2025-08-27
 
 ### Fixed
-- Implemented automatic agent invocation system for PRB execution
-- Enhanced Task tool integration with proper agent selection
-- Completed end-to-end work detection to agent execution workflow
+- Enhanced work detection patterns for automatic PRB triggering
+- Improved classification between work requests and information queries
+- Strengthened behavioral pattern detection accuracy with comprehensive algorithms
+- Added advanced work intent classification with context-based decision logic
+- Implemented compound pattern detection for mixed work and information requests
+- Enhanced @Role pattern classification to distinguish assignments from consultations
 
 ## [7.4.3] - 2025-08-27
 

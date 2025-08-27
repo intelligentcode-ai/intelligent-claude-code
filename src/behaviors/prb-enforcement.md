@@ -23,11 +23,51 @@
 - Wrong template source → BLOCK → "Use src/prb-templates/ only"
 
 ### Direct Execution Blocking
+
+#### Main Scope Execution Prevention
+**MANDATORY:** ALL work execution must follow PRB+agent pattern. Direct main scope execution is BLOCKED.
+
 ```
-❌ DIRECT EXECUTION BLOCKED: Implementation work requires PRB
+❌ MAIN SCOPE EXECUTION BLOCKED: All work requires PRB+agent execution
+VIOLATION: Detected work intent without active PRB context
 REQUIRED ACTION: Use @Role pattern to generate PRB first
-Example: @AI-Engineer implement this feature
+
+Examples:
+- @AI-Engineer implement this feature
+- @Developer fix this bug  
+- @DevOps-Engineer deploy the application
+- @Database-Engineer optimize queries
+
+Process: User Request → PRB Generation → Agent Execution
 ```
+
+#### Comprehensive Blocking Patterns
+**BLOCK ALL:** Main scope implementation attempts
+- Direct file creation/modification without PRB
+- Direct system configuration without PRB
+- Direct deployment operations without PRB
+- Direct code changes without PRB
+
+**ERROR MESSAGING:**
+```
+❌ ARCHITECTURE VIOLATION: Main scope work execution forbidden
+SYSTEM DESIGN: Work requests → PRB creation → Subagent execution
+CORRECTIVE ACTION: Generate PRB using @Role pattern before proceeding
+BLOCKING REASON: Maintains architectural integrity and execution traceability
+```
+
+#### Implementation Commitment Detection
+**TRIGGER BLOCKING FOR:**
+- Action verbs indicating work commitment (implement, create, build, fix, deploy)
+- File operation requests (create file, modify file, configure system)
+- @Role assignments with work context (@Role implement/fix/deploy)
+- System modification requests (install, update, configure, setup)
+
+**ALLOW THROUGH:**
+- Pure information requests (show, explain, describe, analyze)
+- Status inquiries (what's the status, how is progress)
+- Planning discussions without implementation commitment
+- Architecture consultations without immediate execution
 
 ## Auto-Correction
 | Violation | Action |
