@@ -1,6 +1,37 @@
 # Execution Validation Patterns
 
-**PURPOSE:** Shared validation patterns for PRB execution
+**PURPOSE:** Shared validation patterns for PRB execution with automatic agent invocation and execution isolation enforcement
+
+## Agent Invocation Validation
+
+### Automatic Agent Selection
+**MANDATORY CHECKS:**
+- PRB work type analysis completed
+- Appropriate agent specialization identified
+- Dynamic specialist creation when technology expertise required
+- Agent assignment documented in PRB context
+
+### Task Tool Execution Validation
+**EXECUTION ISOLATION CHECKS:**
+- Task tool invocation pattern followed correctly
+- Complete PRB context passed to subagent
+- No runtime configuration lookups attempted
+- Self-contained execution environment verified
+- Agent operates within defined project boundaries
+
+### Agent Execution Monitoring
+**DURING EXECUTION:**
+- Agent stays within assigned PRB scope
+- Quality standards maintained throughout execution
+- Progress tracking through execution checklist
+- Context preservation without external dependencies
+
+### Post-Execution Agent Validation
+**COMPLETION VERIFICATION:**
+- All PRB requirements satisfied by agent
+- Agent execution quality standards met
+- Learning patterns captured from agent execution
+- Agent results properly integrated with main system
 
 ## Detailed Validation Checklists
 
