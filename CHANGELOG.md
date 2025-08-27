@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.4] - 2025-08-27
+
+### Fixed
+- Enhanced work detection patterns for automatic PRB triggering
+- Improved classification between work requests and information queries
+- Strengthened behavioral pattern detection accuracy with comprehensive algorithms
+- Added advanced work intent classification with context-based decision logic
+- Implemented compound pattern detection for mixed work and information requests
+- Enhanced @Role pattern classification to distinguish assignments from consultations
+
 ## [7.4.3] - 2025-08-27
 
 ### Fixed
