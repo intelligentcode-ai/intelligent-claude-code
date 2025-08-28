@@ -69,6 +69,58 @@ BLOCKING REASON: Maintains architectural integrity and execution traceability
 - Planning discussions without implementation commitment
 - Architecture consultations without immediate execution
 
+### Tool-Level Main Scope Blocking
+
+**MANDATORY:** Block file modification tools (Edit/Write/MultiEdit) in main scope when work patterns are detected.
+
+#### Blocked Tools for Work Intent
+**BLOCKED TOOLS IN MAIN SCOPE:**
+- `Edit` tool for file modifications
+- `MultiEdit` tool for multi-file changes
+- `Write` tool for file creation
+- `Bash` tool for system modifications (except read-only operations)
+
+**BLOCKING CONDITIONS:**
+- Work intent detected (implement, create, build, fix, update, modify, delete, install, deploy, configure, setup)
+- Main scope execution context (not in active PRB subagent)
+- File modification attempt without PRB authorization
+
+**BLOCKING MECHANISM:**
+```
+❌ TOOL ACCESS BLOCKED: Work execution requires PRB authorization
+VIOLATION: Attempted [Edit/Write/MultiEdit] without active PRB context
+DETECTED INTENT: [work pattern detected]
+REQUIRED ACTION: Generate PRB first using @Role pattern
+
+Examples:
+- User: "Fix the authentication bug" → Block Edit tool → Generate PRB
+- User: "Create a new configuration file" → Block Write tool → Generate PRB
+- User: "Update the documentation" → Block MultiEdit tool → Generate PRB
+
+Process: Work Request → PRB Generation → Tool Authorization → Subagent Execution
+```
+
+#### Tool Authorization Context
+**AUTHORIZED TOOL USAGE:**
+- Read operations (Read, LS, Glob, Grep) - always allowed
+- Non-modifying system operations (status checks, information gathering)
+- Configuration loading and validation
+- Memory search operations
+
+**UNAUTHORIZED TOOL USAGE:**
+- File modifications without PRB context
+- System changes without PRB authorization
+- Direct implementation attempts in main scope
+- Bypassing PRB workflow through tool usage
+
+#### Automatic PRB Generation Trigger
+**WHEN TOOLS BLOCKED:** Immediately trigger automatic PRB generation
+1. **Detect Blocked Tool Usage:** Work intent + tool request in main scope
+2. **Capture Work Context:** Extract user intent and requirements
+3. **Auto-Generate PRB:** Create appropriate PRB with complete context
+4. **Execute via Subagent:** Deploy PRB through Task tool to authorized agent
+5. **Complete Work:** Agent executes with full tool authorization
+
 ## Auto-Correction
 | Violation | Action |
 |-----------|--------|

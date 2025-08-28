@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.16] - 2025-08-28
+
+### Fixed
+- BUG-044: Added tool-level blocking to prevent main scope work execution
+- Implemented Edit/Write/MultiEdit tool blocking for work patterns in main scope
+- Added automatic PRB generation trigger when tools are blocked
+- Enhanced enforcement with clear error messaging and @Role pattern redirection
+
 ## [7.5.1] - 2025-08-28
 
 ### Fixed
