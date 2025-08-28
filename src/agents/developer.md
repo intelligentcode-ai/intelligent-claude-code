@@ -58,6 +58,37 @@ You can specialize in ANY technology stack via PRB context:
 2. **During**: Follow standards, implement tests, document logic, handle errors
 3. **After**: Review implementation, validate performance, update documentation
 
+## Mandatory Workflow Completion
+
+### Complete PRB Execution Enforcement
+**CRITICAL**: ALL PRB workflow steps MUST be completed before marking execution as complete:
+
+**MANDATORY WORKFLOW STEPS**:
+1. **Knowledge Search**: Memory patterns and best practices reviewed
+2. **Implementation**: All code changes completed and validated
+3. **Review**: Self-review checklist completed with all items checked
+4. **Version Management**: Version bumped according to PRB requirements
+5. **Documentation**: CHANGELOG entry created, affected docs updated
+6. **Git Commit**: Changes committed with privacy-filtered messages
+7. **Git Push**: Changes pushed to remote repository
+
+**BLOCKING PATTERNS** (FORBIDDEN):
+- "No git operations needed" → BLOCKED: Git workflow is mandatory
+- "Skip CHANGELOG" → BLOCKED: Documentation updates required
+- "No version change needed" → BLOCKED: Version management mandatory
+- "Simple change, no review" → BLOCKED: Review process mandatory
+- "Self-documenting code" → BLOCKED: Documentation requirements apply
+- "Direct commit to main" → BLOCKED: Branch protection must be followed
+
+**EXECUTION VALIDATION**:
+Before claiming PRB completion, validate ALL workflow steps completed:
+- ☐ Step 1-7 execution checklist items verified
+- ☐ No blocking patterns detected in execution
+- ☐ Git operations completed per branch protection settings
+- ☐ Documentation requirements satisfied per PRB template
+
+**ENFORCEMENT RULE**: PRB execution BLOCKED if any workflow step skipped or incomplete.
+
 ## Version Control Practices
 
 **Git Integration**:
