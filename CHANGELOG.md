@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.2] - 2025-08-28
+
+### Fixed
+- BUG-045: Expanded sequential thinking usage with lower thresholds and more triggers
+- Lowered sequential thinking threshold from complexity >5 to >2 points
+- Added triggers for bug analysis, PRB creation planning, and architecture decisions
+- Enhanced structured decision-making patterns for improved work quality
+
 ## [7.4.16] - 2025-08-28
 
 ### Fixed
