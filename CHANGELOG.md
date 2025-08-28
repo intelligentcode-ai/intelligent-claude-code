@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.5.2] - 2025-08-28
+## [7.4.18] - 2025-08-28
 
 ### Fixed
 - BUG-045: Expanded sequential thinking usage with lower thresholds and more triggers
@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added triggers for bug analysis, PRB creation planning, and architecture decisions
 - Enhanced structured decision-making patterns for improved work quality
 
-## [7.4.16] - 2025-08-28
+## [7.4.17] - 2025-08-28
 
 ### Fixed
 - BUG-044: Added tool-level blocking to prevent main scope work execution
@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added automatic PRB generation trigger when tools are blocked
 - Enhanced enforcement with clear error messaging and @Role pattern redirection
 
-## [7.5.1] - 2025-08-28
+## [7.4.16] - 2025-08-28
 
 ### Fixed
 - BUG-043: Enforced complete PRB workflow execution in agents
