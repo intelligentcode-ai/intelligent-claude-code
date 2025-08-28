@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.1] - 2025-08-28
+
+### Fixed
+- BUG-043: Enforced complete PRB workflow execution in agents
+- Added mandatory workflow completion enforcement to ai-engineer and developer agents
+- Blocked incomplete workflow patterns with comprehensive validation requirements
+- Ensured all 7 workflow steps (knowledge, implementation, review, version, documentation, commit, push) are mandatory
+
 ## [7.4.15] - 2025-08-27
 
 ### Fixed
