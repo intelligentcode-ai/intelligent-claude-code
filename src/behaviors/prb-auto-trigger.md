@@ -49,7 +49,7 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 2. **Gather** complete context (MANDATORY)
 3. **Search** memory/[topic]/ and best-practices/ (MANDATORY)
 4. **Score** complexity
-5. **Sequential thinking** if complexity > 5 points, use mcp__sequential-thinking__sequentialthinking for structured PRB design
+5. **Sequential thinking** if complexity > 2 points, use mcp__sequential-thinking__sequentialthinking for structured PRB design
 6. **Auto-breakdown** if complexity > 15 points
 7. **Load Template** from src/prb-templates/ 
 8. **Load Configuration** at generation time
@@ -82,6 +82,24 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 - large-prb-template.yaml → workflow_settings.large.*
 - mega-prb-template.yaml → workflow_settings.mega.*
 
+## Enhanced Sequential Thinking Triggers
+
+**MANDATORY**: Use sequential thinking for structured analysis when:
+- **Complexity Threshold**: Any work scoring > 2 points (lowered from > 5)
+- **Bug Investigation**: All bug analysis regardless of complexity score
+- **PRB Planning**: Multi-step PRB creation and breakdown scenarios
+- **Architecture Evaluation**: Design decisions with multiple factors or trade-offs
+- **Risk Assessment**: Security, performance, or technical risk evaluation
+- **Integration Analysis**: Cross-component or cross-system coordination needs
+
+**Sequential Thinking Pattern**:
+1. **Problem Definition**: Clear articulation of the challenge or decision
+2. **Context Analysis**: Relevant factors, constraints, and requirements  
+3. **Option Generation**: Multiple approaches or solutions
+4. **Impact Assessment**: Trade-offs, risks, and benefits evaluation
+5. **Decision Rationale**: Structured reasoning for chosen approach
+6. **Implementation Planning**: Step-by-step execution strategy
+
 ## Context Requirements
 
 **MANDATORY before generation**:
@@ -100,6 +118,9 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 - **Maintenance**: delete, remove, clean, purge, archive, reorganize
 - **@Role Work**: "@Developer implement X", "@DevOps deploy Y"
 - **Story/Task**: "Break down STORY-XXX", "Execute PRB-file"
+- **Bug Analysis**: All bug investigation and resolution patterns
+- **PRB Creation Planning**: Structured analysis for complex PRB generation
+- **Architecture Decisions**: Design choices requiring structured evaluation
 
 **Information Request Indicators (DO NOT TRIGGER PRB):**
 - **Query**: show, display, read, list, check, analyze, examine, inspect
