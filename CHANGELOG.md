@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.20] - 2025-08-29
+
+### Added
+- PRB template extension system (prb-extensions.yaml) enabling project-specific template customization
+- AI-powered intelligent merging of extensions with base templates
+- Support for 'all:' section for universal additions across all PRB sizes
+- Size-specific extensions (nano:, tiny:, medium:, large:, mega:) for targeted customization
+- Override marker (!override) for explicit value replacement in extensions
+- Comprehensive documentation and examples for extension system usage
+- Backward compatibility maintained for projects without extensions
+
 ## [7.4.19] - 2025-08-29
 
 ### Added
