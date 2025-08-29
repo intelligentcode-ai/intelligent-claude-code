@@ -3,11 +3,22 @@
 **MANDATORY:** Auto-detect work and generate PRB using templates from src/prb-templates/ with complete placeholder resolution.
 
 ## Imports
+@./shared-patterns/behavioral-decision-matrix.md
 @./shared-patterns/template-loading.md
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./naming-numbering-system.md
+
+## Behavioral Decision Integration
+
+**MANDATORY:** All trigger decisions follow behavioral-decision-matrix.md precedence hierarchy:
+1. **@Role Direct Execution** → Immediate PRB generation for role work assignments
+2. **Work→PRB Generation** → All implementation intent triggers PRB regardless of complexity
+3. **Simple Information Direct** → Context score ≤8 allows direct response
+4. **Complex→PRB Analysis** → Context score ≥9 requires structured PRB analysis
+
+**Context Evaluation:** Use context-based complexity scoring, not keyword matching for trigger decisions.
 
 ## Detection → Memory → PRB → Execution
 

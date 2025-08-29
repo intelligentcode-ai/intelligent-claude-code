@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.21] - 2025-08-29
+
+### Added
+- L3 autonomous mode configuration with full autonomous execution capability
+- Enhanced L3 settings: max_parallel=5, auto_discover=true, continue_on_error=true
+- Context-based behavioral decision matrix (behavioral-decision-matrix.md) for consistent pattern following
+- Four-tier decision hierarchy: @Role direct → Work→PRB → Simple info direct → Complex→PRB
+- Context-based complexity evaluation system replacing keyword-based detection
+- Token-efficient decision checklist for real-time behavioral choices
+- Integration with prb-enforcement.md and prb-auto-trigger.md for consistent decision making
+- Resolution of contradictions between existing behavioral patterns
+
+### Fixed
+- Behavioral pattern inconsistencies between enforcement and auto-trigger logic
+- Conflicting guidance for @Role mentions and work intent classification
+- Missing context evaluation for complexity assessment in decision making
+
 ## [7.4.20] - 2025-08-29
 
 ### Added
