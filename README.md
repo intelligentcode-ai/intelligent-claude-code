@@ -4,11 +4,27 @@ Transform Claude Code into an intelligent development team with 14+ specialized 
 
 ## Quick Start (30 seconds)
 
+### Linux/macOS
 ```bash
 # Install
 git clone https://github.com/intelligentcode-ai/intelligent-claude-code.git
 cd intelligent-claude-code
 make install
+
+# Initialize
+/icc-init-system
+
+# Start working with agents
+@PM Build a user authentication system
+# System: Generates PRB → Creates specialist agents → Agents execute → Work completes
+```
+
+### Windows
+```powershell
+# Install
+git clone https://github.com/intelligentcode-ai/intelligent-claude-code.git
+cd intelligent-claude-code
+.\install.ps1 install
 
 # Initialize
 /icc-init-system
@@ -156,6 +172,7 @@ stories/
 
 Install with automatic MCP server configuration:
 
+### Linux/macOS
 ```bash
 # Create MCP configuration
 cat > config/mcps.json << 'EOF'
@@ -183,6 +200,36 @@ EOF
 
 # Install with MCP integration
 make install MCP_CONFIG=./config/mcps.json
+```
+
+### Windows
+```powershell
+# Create MCP configuration
+@'
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "playwright": {
+      "command": "npx", 
+      "args": ["-y", "@modelcontextprotocol/server-playwright"]
+    },
+    "custom-api": {
+      "command": "node",
+      "args": ["/path/to/custom-mcp.js"],
+      "env": {
+        "API_KEY": "${OPENAI_API_KEY}",
+        "DATABASE_URL": "${DB_CONNECTION}"
+      }
+    }
+  }
+}
+'@ | Out-File -FilePath config/mcps.json -Encoding utf8
+
+# Install with MCP integration
+.\install.ps1 install -McpConfig ./config/mcps.json
 ```
 
 ### Environment Variable Support

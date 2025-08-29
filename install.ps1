@@ -1,0 +1,438 @@
+# Intelligent Claude Code - Windows PowerShell Installation Script
+# Equivalent functionality to the Linux Makefile for Windows systems
+
+param(
+    [string]$Action = "help",
+    [string]$TargetPath = "",
+    [string]$McpConfig = "",
+    [switch]$Force = $false
+)
+
+# Global variables
+$ErrorActionPreference = "Stop"
+$SourceDir = Join-Path $PSScriptRoot "src"
+
+function Show-Help {
+    Write-Host "Intelligent Claude Code - Windows Installation" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Usage:" -ForegroundColor Yellow
+    Write-Host "  .\install.ps1 install [-TargetPath <path>] [-McpConfig <path>]"
+    Write-Host "  .\install.ps1 uninstall [-TargetPath <path>] [-Force]"
+    Write-Host "  .\install.ps1 test"
+    Write-Host "  .\install.ps1 clean"
+    Write-Host "  .\install.ps1 help"
+    Write-Host ""
+    Write-Host "Parameters:" -ForegroundColor Yellow
+    Write-Host "  -TargetPath  - Target path (omit for user scope ~\.claude\)"
+    Write-Host "  -McpConfig   - Path to MCP servers configuration JSON file"
+    Write-Host "  -Force       - Force complete removal including user data (uninstall only)"
+    Write-Host ""
+    Write-Host "Examples:" -ForegroundColor Green
+    Write-Host "  .\install.ps1 install                                    # Local user scope"
+    Write-Host "  .\install.ps1 install -TargetPath C:\MyProject          # Local project"
+    Write-Host "  .\install.ps1 install -McpConfig .\config\mcps.json     # Local with MCP servers"
+    Write-Host "  .\install.ps1 uninstall                                 # Conservative uninstall"
+    Write-Host "  .\install.ps1 uninstall -Force                          # Force uninstall (remove all)"
+    Write-Host "  .\install.ps1 test                                      # Test installation"
+}
+
+function Test-Prerequisites {
+    Write-Host "Checking prerequisites..." -ForegroundColor Yellow
+    
+    # Check if source directory exists
+    if (-not (Test-Path $SourceDir)) {
+        throw "ERROR: Source directory not found at: $SourceDir"
+    }
+    
+    # Check PowerShell version (requires 5.0+)
+    if ($PSVersionTable.PSVersion.Major -lt 5) {
+        throw "ERROR: PowerShell 5.0 or higher required. Current version: $($PSVersionTable.PSVersion)"
+    }
+    
+    Write-Host "✅ Prerequisites check passed!" -ForegroundColor Green
+}
+
+function Get-InstallPaths {
+    param([string]$TargetPath)
+    
+    if ($TargetPath) {
+        $ResolvedTarget = Resolve-Path $TargetPath -ErrorAction SilentlyContinue
+        if (-not $ResolvedTarget) {
+            # Create target path if it doesn't exist
+            New-Item -Path $TargetPath -ItemType Directory -Force | Out-Null
+            $ResolvedTarget = Resolve-Path $TargetPath
+        }
+        $InstallPath = Join-Path $ResolvedTarget ".claude"
+        $ProjectPath = $ResolvedTarget
+        $Scope = "project"
+    } else {
+        $InstallPath = Join-Path $env:USERPROFILE ".claude"
+        $ProjectPath = ""
+        $Scope = "user"
+    }
+    
+    return @{
+        InstallPath = $InstallPath
+        ProjectPath = $ProjectPath
+        Scope = $Scope
+    }
+}
+
+function Copy-DirectoryRecursive {
+    param(
+        [string]$Source,
+        [string]$Destination
+    )
+    
+    if (-not (Test-Path $Source)) {
+        Write-Warning "Source path does not exist: $Source"
+        return
+    }
+    
+    # Create destination directory if it doesn't exist
+    if (-not (Test-Path $Destination)) {
+        New-Item -Path $Destination -ItemType Directory -Force | Out-Null
+    }
+    
+    # Copy all items recursively
+    Get-ChildItem -Path $Source -Recurse | ForEach-Object {
+        $RelativePath = $_.FullName.Substring($Source.Length + 1)
+        $DestPath = Join-Path $Destination $RelativePath
+        
+        if ($_.PSIsContainer) {
+            if (-not (Test-Path $DestPath)) {
+                New-Item -Path $DestPath -ItemType Directory -Force | Out-Null
+            }
+        } else {
+            Copy-Item -Path $_.FullName -Destination $DestPath -Force
+        }
+    }
+}
+
+function Install-IntelligentClaudeCode {
+    param(
+        [string]$TargetPath,
+        [string]$McpConfig
+    )
+    
+    Test-Prerequisites
+    
+    $Paths = Get-InstallPaths -TargetPath $TargetPath
+    Write-Host "Installing to: $($Paths.InstallPath)" -ForegroundColor Cyan
+    
+    # Create installation directory
+    if (-not (Test-Path $Paths.InstallPath)) {
+        New-Item -Path $Paths.InstallPath -ItemType Directory -Force | Out-Null
+    }
+    
+    # Copy source files
+    Write-Host "Copying source files..." -ForegroundColor Yellow
+    
+    $DirectoriesToCopy = @("agents", "behaviors", "commands", "modes", "prb-templates", "utils")
+    
+    foreach ($Dir in $DirectoriesToCopy) {
+        $SourcePath = Join-Path $SourceDir $Dir
+        $DestPath = Join-Path $Paths.InstallPath $Dir
+        
+        if (Test-Path $SourcePath) {
+            Write-Host "  Copying $Dir..." -ForegroundColor Gray
+            Copy-DirectoryRecursive -Source $SourcePath -Destination $DestPath
+        } else {
+            Write-Warning "Source directory not found: $SourcePath"
+        }
+    }
+    
+    # Handle CLAUDE.md based on scope
+    $ClaudemdPath = if ($Paths.Scope -eq "project") { 
+        Join-Path $Paths.ProjectPath "CLAUDE.md" 
+    } else { 
+        Join-Path $Paths.InstallPath "CLAUDE.md" 
+    }
+    
+    $ImportLine = "@~/.claude/modes/virtual-team.md"
+    
+    if (Test-Path $ClaudemdPath) {
+        # Check if import line already exists
+        $Content = Get-Content $ClaudemdPath -Raw -ErrorAction SilentlyContinue
+        if ($Content -notmatch [regex]::Escape($ImportLine)) {
+            Write-Host "Adding import line to existing CLAUDE.md..." -ForegroundColor Yellow
+            Add-Content -Path $ClaudemdPath -Value "`n$ImportLine" -Encoding UTF8
+        }
+    } else {
+        Write-Host "Creating CLAUDE.md with import line..." -ForegroundColor Yellow
+        Set-Content -Path $ClaudemdPath -Value $ImportLine -Encoding UTF8
+    }
+    
+    # Create essential directories
+    $DirsToCreate = @("memory", "prbs", "stories\drafts")
+    foreach ($Dir in $DirsToCreate) {
+        $DirPath = Join-Path $Paths.InstallPath $Dir
+        if (-not (Test-Path $DirPath)) {
+            New-Item -Path $DirPath -ItemType Directory -Force | Out-Null
+        }
+    }
+    
+    # Install MCP configuration if provided
+    if ($McpConfig -and (Test-Path $McpConfig)) {
+        Write-Host "Installing MCP configuration..." -ForegroundColor Yellow
+        Install-McpConfiguration -McpConfigPath $McpConfig -InstallPath $Paths.InstallPath
+    }
+    
+    Write-Host "✅ Installation completed successfully!" -ForegroundColor Green
+}
+
+function Install-McpConfiguration {
+    param(
+        [string]$McpConfigPath,
+        [string]$InstallPath
+    )
+    
+    try {
+        # Validate JSON syntax
+        $McpConfig = Get-Content $McpConfigPath -Raw | ConvertFrom-Json
+        
+        $SettingsPath = Join-Path $InstallPath "settings.json"
+        $BackupPath = "$SettingsPath.backup"
+        
+        # Backup existing settings if they exist
+        if (Test-Path $SettingsPath) {
+            Copy-Item $SettingsPath $BackupPath -Force
+            Write-Host "  Backed up existing settings to: $BackupPath" -ForegroundColor Gray
+        }
+        
+        # Create or update settings.json
+        $Settings = if (Test-Path $SettingsPath) {
+            Get-Content $SettingsPath -Raw | ConvertFrom-Json
+        } else {
+            @{}
+        }
+        
+        # Add MCP servers configuration
+        if (-not $Settings.mcpServers) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "mcpServers" -Value @{}
+        }
+        
+        # Merge MCP configuration
+        foreach ($ServerName in $McpConfig.PSObject.Properties.Name) {
+            $Settings.mcpServers | Add-Member -MemberType NoteProperty -Name $ServerName -Value $McpConfig.$ServerName -Force
+        }
+        
+        # Save updated settings
+        $Settings | ConvertTo-Json -Depth 10 | Set-Content $SettingsPath -Encoding UTF8
+        
+        Write-Host "  ✅ MCP configuration installed successfully!" -ForegroundColor Green
+        
+    } catch {
+        Write-Error "Failed to install MCP configuration: $($_.Exception.Message)"
+        
+        # Restore backup if it exists
+        if (Test-Path $BackupPath) {
+            Copy-Item $BackupPath $SettingsPath -Force
+            Write-Host "  Restored settings from backup" -ForegroundColor Yellow
+        }
+        throw
+    }
+}
+
+function Uninstall-IntelligentClaudeCode {
+    param(
+        [string]$TargetPath,
+        [switch]$Force
+    )
+    
+    $Paths = Get-InstallPaths -TargetPath $TargetPath
+    Write-Host "Uninstalling from: $($Paths.InstallPath)" -ForegroundColor Cyan
+    
+    if (-not (Test-Path $Paths.InstallPath)) {
+        Write-Host "Nothing to uninstall - installation directory not found." -ForegroundColor Yellow
+        return
+    }
+    
+    if ($Force) {
+        Write-Host "Force uninstall - removing entire .claude directory..." -ForegroundColor Red
+        Remove-Item -Path $Paths.InstallPath -Recurse -Force
+    } else {
+        Write-Host "Conservative uninstall - preserving user data..." -ForegroundColor Yellow
+        
+        # Remove system directories but preserve user data
+        $SystemDirs = @("agents", "behaviors", "commands", "modes", "prb-templates", "utils")
+        
+        foreach ($Dir in $SystemDirs) {
+            $DirPath = Join-Path $Paths.InstallPath $Dir
+            if (Test-Path $DirPath) {
+                Write-Host "  Removing $Dir..." -ForegroundColor Gray
+                Remove-Item -Path $DirPath -Recurse -Force
+            }
+        }
+        
+        # Remove system files but keep user files
+        $SystemFiles = @("settings.json.backup")
+        foreach ($File in $SystemFiles) {
+            $FilePath = Join-Path $Paths.InstallPath $File
+            if (Test-Path $FilePath) {
+                Remove-Item -Path $FilePath -Force
+            }
+        }
+    }
+    
+    # Remove import line from CLAUDE.md if it exists
+    $ClaudemdPath = if ($Paths.Scope -eq "project") { 
+        Join-Path $Paths.ProjectPath "CLAUDE.md" 
+    } else { 
+        Join-Path $Paths.InstallPath "CLAUDE.md" 
+    }
+    
+    if (Test-Path $ClaudemdPath) {
+        $Content = Get-Content $ClaudemdPath
+        $ImportLine = "@~/.claude/modes/virtual-team.md"
+        $UpdatedContent = $Content | Where-Object { $_ -ne $ImportLine }
+        
+        if ($UpdatedContent.Count -lt $Content.Count) {
+            Write-Host "Removing import line from CLAUDE.md..." -ForegroundColor Yellow
+            Set-Content -Path $ClaudemdPath -Value $UpdatedContent -Encoding UTF8
+        }
+    }
+    
+    Write-Host "✅ Uninstall completed!" -ForegroundColor Green
+}
+
+function Test-Installation {
+    Write-Host "Testing installation..." -ForegroundColor Cyan
+    
+    $TestDir = "test-install"
+    
+    try {
+        # Clean any existing test directory
+        if (Test-Path $TestDir) {
+            Remove-Item -Path $TestDir -Recurse -Force
+        }
+        
+        Write-Host "Testing installation..." -ForegroundColor Yellow
+        New-Item -Path $TestDir -ItemType Directory -Force | Out-Null
+        Install-IntelligentClaudeCode -TargetPath $TestDir
+        
+        Write-Host "Verifying installation..." -ForegroundColor Yellow
+        $TestPaths = @(
+            "$TestDir\CLAUDE.md",
+            "$TestDir\.claude\modes\virtual-team.md",
+            "$TestDir\.claude\agents\architect.md",
+            "$TestDir\.claude\agents\developer.md",
+            "$TestDir\.claude\agents\ai-engineer.md",
+            "$TestDir\.claude\prb-templates\medium-prb-template.yaml"
+        )
+        
+        foreach ($Path in $TestPaths) {
+            if (-not (Test-Path $Path)) {
+                throw "FAIL: Required file not found: $Path"
+            }
+        }
+        
+        # Check import line
+        $ClaudemdContent = Get-Content "$TestDir\CLAUDE.md" -Raw
+        if ($ClaudemdContent -notmatch [regex]::Escape("@~/.claude/modes/virtual-team.md")) {
+            throw "FAIL: Import line not found in CLAUDE.md"
+        }
+        
+        Write-Host "✅ Installation tests passed!" -ForegroundColor Green
+        
+        Write-Host "Testing idempotency..." -ForegroundColor Yellow
+        Install-IntelligentClaudeCode -TargetPath $TestDir
+        Write-Host "✅ Idempotency test passed!" -ForegroundColor Green
+        
+        Write-Host "Testing conservative uninstall..." -ForegroundColor Yellow
+        Uninstall-IntelligentClaudeCode -TargetPath $TestDir
+        
+        $UninstallChecks = @(
+            "$TestDir\.claude\modes",
+            "$TestDir\.claude\behaviors",
+            "$TestDir\.claude\agents"
+        )
+        
+        foreach ($Path in $UninstallChecks) {
+            if (Test-Path $Path) {
+                throw "FAIL: Directory not removed during uninstall: $Path"
+            }
+        }
+        
+        Write-Host "✅ Conservative uninstall test passed!" -ForegroundColor Green
+        
+        Write-Host "Testing force uninstall..." -ForegroundColor Yellow
+        Install-IntelligentClaudeCode -TargetPath $TestDir
+        Uninstall-IntelligentClaudeCode -TargetPath $TestDir -Force
+        
+        if (Test-Path "$TestDir\.claude") {
+            throw "FAIL: .claude directory not removed during force uninstall"
+        }
+        
+        Write-Host "✅ Force uninstall test passed!" -ForegroundColor Green
+        
+        Write-Host "Testing install after uninstall..." -ForegroundColor Yellow
+        Install-IntelligentClaudeCode -TargetPath $TestDir
+        
+        if (-not (Test-Path "$TestDir\CLAUDE.md")) {
+            throw "FAIL: Reinstall failed"
+        }
+        
+        Write-Host "✅ Reinstall test passed!" -ForegroundColor Green
+        Write-Host "✅ All tests passed!" -ForegroundColor Green
+        
+    } finally {
+        # Clean up test directory
+        if (Test-Path $TestDir) {
+            Remove-Item -Path $TestDir -Recurse -Force
+        }
+    }
+}
+
+function Clean-TestFiles {
+    Write-Host "Cleaning test installations and temporary files..." -ForegroundColor Yellow
+    
+    # Remove test directories
+    Get-ChildItem -Path . -Directory -Name "test-*" | ForEach-Object {
+        Remove-Item -Path $_ -Recurse -Force
+        Write-Host "  Removed: $_" -ForegroundColor Gray
+    }
+    
+    # Clean temporary PowerShell files
+    $TempPath = $env:TEMP
+    Get-ChildItem -Path $TempPath -Directory -Name "tmp*" -ErrorAction SilentlyContinue | 
+        Where-Object { $_.CreationTime -lt (Get-Date).AddHours(-1) } |
+        ForEach-Object {
+            try {
+                Remove-Item -Path $_.FullName -Recurse -Force
+                Write-Host "  Cleaned temp: $($_.Name)" -ForegroundColor Gray
+            } catch {
+                # Ignore errors for locked temp files
+            }
+        }
+    
+    Write-Host "✅ Test directories removed" -ForegroundColor Green
+    Write-Host "✅ Temporary files cleaned" -ForegroundColor Green
+}
+
+# Main execution logic
+try {
+    switch ($Action.ToLower()) {
+        "install" {
+            Install-IntelligentClaudeCode -TargetPath $TargetPath -McpConfig $McpConfig
+        }
+        "uninstall" {
+            Uninstall-IntelligentClaudeCode -TargetPath $TargetPath -Force:$Force
+        }
+        "test" {
+            Test-Installation
+        }
+        "clean" {
+            Clean-TestFiles
+        }
+        "help" {
+            Show-Help
+        }
+        default {
+            Show-Help
+        }
+    }
+} catch {
+    Write-Error "Operation failed: $($_.Exception.Message)"
+    exit 1
+}
