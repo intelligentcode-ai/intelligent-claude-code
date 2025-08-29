@@ -6,6 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, command chain coordination, behavioral framework guidance, and PRB-driven execution. This repository contains the configuration templates, behavioral patterns, and installation system for the virtual team enhancement.
 
+## System Configuration
+
+```yaml
+autonomy_level: L3
+l3_settings:
+  max_parallel: 5
+  auto_discover: true
+  continue_on_error: true
+```
+
 ## System Usage
 
 ### Installation and Setup
