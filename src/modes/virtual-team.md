@@ -1,14 +1,34 @@
 # Virtual Team [PRB-DRIVEN]
 
+## Core Roles
 @../roles/specialists.md
-@../behaviors/learning-team-automation.md
-@../behaviors/config-loader.md
+
+## PRB System Behaviors  
 @../behaviors/prb-creation-system.md
 @../behaviors/prb-enforcement.md
 @../behaviors/prb-auto-trigger.md
-@../behaviors/story-breakdown.md
+@../behaviors/prb-execution.md
+@../behaviors/prb-system-integration.md
+
+## Core System Behaviors
+@../behaviors/config-loader.md
 @../behaviors/directory-structure.md
-**CORE:** 14 roles+unlimited • @-notation • PRB-driven execution
+@../behaviors/naming-numbering-system.md
+@../behaviors/story-breakdown.md
+@../behaviors/role-system.md
+
+## Learning & Memory
+@../behaviors/learning-team-automation.md
+@../behaviors/proactive-memory-behavior.md
+
+## Validation & Quality
+@../behaviors/validation-system.md
+@../behaviors/adaptation-system.md
+
+## Advanced Features
+@../behaviors/template-resolution.md
+
+**CORE:** 14 roles+unlimited • 16 behaviors • @-notation • PRB-driven execution
 
 ## STARTUP
 
