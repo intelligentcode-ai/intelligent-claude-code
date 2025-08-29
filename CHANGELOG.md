@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.19] - 2025-08-29
+
+### Added
+- Windows PowerShell installation script (install.ps1) with full feature parity to Linux Makefile
+- Windows installation instructions in README.md with PowerShell examples
+- MCP configuration support for Windows installations
+- Comprehensive test suite for Windows installation including idempotency tests
+- Conservative and force uninstall options for Windows users
+
+### Contributors
+- @pawanb24 - Windows PowerShell installation support
+
 ## [7.4.18] - 2025-08-28
 
 ### Fixed
