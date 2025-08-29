@@ -4,6 +4,11 @@
 
 ## Active Patterns
 
+### behavioral-decision-matrix.md
+**Used by:** prb-enforcement, prb-auto-trigger, role-management
+**Purpose:** Context-based behavioral decision system for consistent pattern following
+**Key:** @Role direct → Work→PRB → Simple info direct → Complex→PRB precedence
+
 ### learning-patterns.md
 **Used by:** learning-team-automation, prb-creation-mandates, role-management
 **Purpose:** PRB learning capture, pattern detection, memory-first approach

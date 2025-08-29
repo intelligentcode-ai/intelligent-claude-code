@@ -3,6 +3,7 @@
 **MANDATORY:** Use PRB system with templates for all work. Block direct execution.
 
 ## Imports
+@./shared-patterns/behavioral-decision-matrix.md
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/enforcement-rules.md
 
