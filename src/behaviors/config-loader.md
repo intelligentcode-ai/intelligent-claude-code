@@ -11,6 +11,7 @@
 @./shared-patterns/configuration-patterns.md
 @./shared-patterns/autonomy-patterns.md
 @./shared-patterns/mcp-configuration-patterns.md
+@./shared-patterns/installation-path-detection.md
 
 ## Operation
 
@@ -40,7 +41,7 @@
 ### Loading Process
 1. Check cache validity (5 min TTL)
 2. Load system defaults
-3. Merge user global config (~/.claude/config.md - system-wide only)
+3. Merge user global config ({get_install_path()}/config.md - installation-wide only)
 4. Merge project config (./config.md default, or .claude/config.md if user configured)
 5. Apply embedded overrides (from PRBs)
 6. Return merged settings

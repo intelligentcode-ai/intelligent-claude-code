@@ -2,6 +2,10 @@
 
 **PURPOSE:** Shared validation patterns for PRB execution with automatic agent invocation and execution isolation enforcement
 
+## Imports
+
+@./installation-path-detection.md
+
 ## Agent Invocation Validation
 
 ### Automatic Agent Selection
@@ -91,7 +95,7 @@
 
 1. **Identify Project Root:** Determine the current project root directory
 2. **Review Each Operation:**
-   - **Check ~/.claude/ Writes:** When operation writes to ~/.claude/ and is not installation, block with scope violation error
+   - **Check Installation Path Writes:** When operation writes to {get_install_path()}/ and is not installation, block with scope violation error
    - **Check Project Boundaries:** When operation is outside project root, block with boundary error
 3. **Allow Valid Operations:** Operations within project boundaries proceed normally
 
