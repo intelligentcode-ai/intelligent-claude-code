@@ -16,6 +16,37 @@
 7. **@PM creates PRBs:** MAIN AGENT ONLY with documented rationale
 8. **Story selection:** Priority/complexity-based selection
 
+## Issue Tracker Integration
+
+### Check for MCP Issue Tracking
+```
+1. Load mcp_integrations.issue_tracking from CLAUDE.md
+2. If enabled and provider configured:
+   - Create issues in external system
+   - Optionally maintain file copy
+3. Else:
+   - Use file-based stories/bugs (default)
+```
+
+### External Issue Creation Pattern
+```
+IF mcp_integrations.issue_tracking.enabled:
+  provider = mcp_integrations.issue_tracking.provider
+  
+  FOR each story/bug:
+    IF provider = "mcp__github":
+      create_github_issue(title, description, labels)
+    ELIF provider = "mcp__gitlab":
+      create_gitlab_issue(title, description, labels)
+    ELIF provider = "mcp__jira":
+      create_jira_issue(type, summary, description)
+    
+    IF config.maintain_file_copy:
+      also_create_file_based()
+ELSE:
+  create_file_based_only()
+```
+
 ## Two-Factor Analysis Process
 
 ### Factor 1: Project Scope Analysis
@@ -54,6 +85,27 @@
 5. **Sequential numbering:** Under same parent with dependencies documented
 6. **FAIL-SAFE:** If auto-breakdown fails, BLOCK with manual breakdown request
 
+### Issue Tracker Sync
+
+When creating PRBs from stories:
+1. Check if story has external issue ID
+2. If yes:
+   - Link PRB to external issue
+   - Update issue status to "In Progress"
+3. On PRB completion:
+   - Update external issue status
+   - Add completion comment
+
+### Issue Metadata Storage
+```yaml
+# In story/bug file header:
+external_issue:
+  provider: "mcp__github"
+  issue_id: "123"
+  url: "https://github.com/owner/repo/issues/123"
+  status: "in_progress"
+```
+
 ## Story Selection Criteria
 
 @PM and Architect consider:
@@ -76,6 +128,32 @@
 - "@PM break down the authentication story"
 - "@PM what story should we work on next?"
 - "@PM analyze the stories and create PRBs"
+
+## Provider-Specific Patterns
+
+### GitHub Issues
+```
+- Use mcp__github__create_issue
+- Set labels: ["story", "prb-required"]
+- Assign to project board if configured
+- Link related PRs
+```
+
+### GitLab Issues
+```
+- Use mcp__gitlab__create_issue
+- Set labels and milestone
+- Assign to iteration
+- Track time estimates
+```
+
+### Jira Issues
+```
+- Use mcp__jira__create_issue
+- Set issue type (Story/Bug/Task)
+- Link to Epic if applicable
+- Set sprint assignment
+```
 
 ---
 *Story breakdown with architect collaboration and auto-sizing*
