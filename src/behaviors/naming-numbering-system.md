@@ -2,6 +2,9 @@
 
 **MANDATORY:** Consistent naming format and sequential numbering for all work items.
 
+## Imports
+@./shared-patterns/enforcement-rules.md
+
 ## Standard Naming Format
 
 ### Format Rules

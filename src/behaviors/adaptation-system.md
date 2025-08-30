@@ -2,6 +2,11 @@
 
 **MANDATORY:** Dynamic PRB adaptation, user correction integration, and seamless agent restart patterns.
 
+## Imports
+@./shared-patterns/learning-patterns.md
+@./shared-patterns/best-practices-integration.md
+@./shared-patterns/context-validation.md
+
 ## Core Adaptation Principles
 
 ### Dynamic PRB Updates
