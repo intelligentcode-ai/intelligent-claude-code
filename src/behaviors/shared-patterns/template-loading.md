@@ -48,12 +48,6 @@ medium:
     type: "!override minor"  # Override with !override marker
 ```
 
-**Extension Benefits:**
-- No template copying required
-- Automatic base template updates
-- Clean separation of customizations
-- AI-powered intelligent merging
-
 ## Extension Merging Rules
 
 **INTELLIGENT MERGING:**
@@ -74,10 +68,6 @@ medium:
 - Search next in hierarchy
 - Show error if none found in any path
 
-**Extension Issues:**
-- Continue with base template if extension missing
-- Show specific errors for syntax or merge conflicts
-
 **Template Validation:**
 - YAML structure validation
 - Required fields verification
@@ -89,13 +79,6 @@ medium:
 **Missing Directories**: Auto-created with system defaults
 **Template Installation**: System templates to installation path
 **Project Override**: Local templates preserved during updates
-
-## Template Management
-
-**Template Loading**: From hierarchy as needed
-**Directory Validation**: Check paths during access
-**Template Updates**: Reload on file modification
-**Dynamic Configuration**: Handle path changes
 
 ## Integration Points
 

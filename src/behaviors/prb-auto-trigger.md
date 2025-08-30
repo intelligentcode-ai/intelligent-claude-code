@@ -8,11 +8,6 @@
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
-@./shared-patterns/continuation-work-patterns.md
-@./shared-patterns/prb-queue-management.md
-@./shared-patterns/extension-loading-patterns.md
-@./shared-patterns/extension-merging-patterns.md
-@./shared-patterns/mcp-resolution-patterns.md
 @./naming-numbering-system.md
 
 ## Behavioral Decision Integration
@@ -22,8 +17,6 @@
 2. **Work→PRB Generation** → All implementation intent triggers PRB regardless of complexity
 3. **Simple Information Direct** → Context score ≤8 allows direct response
 4. **Complex→PRB Analysis** → Context score ≥9 requires structured PRB analysis
-
-**Context Evaluation:** Use context-based complexity scoring, not keyword matching.
 
 ## Detection Patterns
 
@@ -61,16 +54,12 @@
 3. **Score** complexity
 4. **Auto-breakdown** if complexity > 15 points
 5. **Load Template** from hierarchy
-6. **Load Extensions** from prb-extensions.yaml (if exists)
-7. **Load Configuration** at generation time
-8. **Load Workflow Settings** from CLAUDE.md
-9. **Merge Extensions** with base template
-10. **Resolve MCP Placeholders** with actual configuration values
-11. **Resolve ALL Placeholders** with actual values
-12. **Embed Complete Context** in PRB
-13. **Validate NO Placeholders** remain
-14. **Generate** compliant name and create PRB
-15. **Execute** via subagent
+6. **Load Configuration** at generation time
+7. **Resolve ALL Placeholders** with actual values
+8. **Embed Complete Context** in PRB
+9. **Validate NO Placeholders** remain
+10. **Generate** compliant name and create PRB
+11. **Execute** via subagent
 
 ## Workflow Placeholder Resolution
 
@@ -84,26 +73,7 @@
 - `[WORKFLOW_MERGE_STRATEGY]` → actual direct_commit/feature_branch value
 
 **Size Mapping:**
-- nano-prb-template.yaml → workflow_settings.nano.*
-- tiny-prb-template.yaml → workflow_settings.tiny.*
-- medium-prb-template.yaml → workflow_settings.medium.*
-- large-prb-template.yaml → workflow_settings.large.*
-- mega-prb-template.yaml → workflow_settings.mega.*
-
-## Extension and MCP Integration
-
-**Template Extension Processing:**
-- Load prb-extensions.yaml from project root or .claude/ directory
-- Apply universal `all:` extensions to every template size
-- Apply size-specific extensions (nano/tiny/medium/large/mega) to matching templates
-- Use additive merging by default, `!override` marker for replacements
-- Handle missing extension files gracefully (continue with base templates)
-
-**MCP Placeholder Resolution:**
-- Resolve `[MCP_MEMORY_ENABLED]`, `[MCP_ISSUE_ENABLED]`, `[MCP_DOCS_ENABLED]` with configuration values
-- Resolve `[MCP_MEMORY_PROVIDER]`, `[MCP_ISSUE_PROVIDER]`, `[MCP_DOCS_PROVIDER]` with provider names
-- Default to `false` and `"file-based"` when mcp_integrations not configured
-- Apply resolution before final placeholder validation
+- nano/tiny/medium/large/mega → workflow_settings.[size].*
 
 ## Context Requirements
 
