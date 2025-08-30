@@ -9,8 +9,8 @@
 ## Subagent Scope Validation
 
 ### Scope Rules
-- **Block:** Subagent working directory starting with {get_install_path()}/
-- **Block:** File operations to {get_install_path()}/ (except installation)
+- **Block:** Subagent working directory starting with installation path
+- **Block:** File operations to installation directory (except installation)
 - **Allow:** Project root working directories and project file operations
 
 ## Role System Enforcement

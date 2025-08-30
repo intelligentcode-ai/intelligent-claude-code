@@ -41,15 +41,14 @@
 - AI/Behavioral: Agentic patterns, memory systems, behavioral frameworks
 
 ### Decision Matrix
-```
-Role = f(ProjectScope, WorkType) + Architect Collaboration
 
-Examples:
-- AI-AGENTIC + DevOps → @DevOps-Engineer via @DevOps-Architect
-- AI-AGENTIC + AI patterns → @AI-Engineer via @AI-Architect  
-- CODE-BASED + Implementation → @[Tech]-Developer via @Code-Architect
-- Any scope + Database → @Database-Engineer via @Database-Architect
-```
+**Role Selection Pattern:** Project scope and work type analysis combined with architect collaboration
+
+**Assignment Examples:**
+- **AI-AGENTIC + DevOps**: @DevOps-Engineer via @DevOps-Architect
+- **AI-AGENTIC + AI patterns**: @AI-Engineer via @AI-Architect  
+- **CODE-BASED + Implementation**: @[Tech]-Developer via @Code-Architect
+- **Any scope + Database**: @Database-Engineer via @Database-Architect
 
 ### Assignment Process
 1. **PM Analysis**: Analyze requirements and identify technology domains

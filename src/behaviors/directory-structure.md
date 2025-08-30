@@ -4,39 +4,34 @@
 
 ## Default Structure
 
-```yaml
-project_root/
-├── stories/              # User stories (configurable: story_path)
-│   └── drafts/          # WIP stories
-├── bugs/                 # Bug reports (configurable: bug_path)
-│   ├── open/            # Active bugs
-│   └── completed/       # Fixed bugs
-├── prbs/                # PRBs (configurable: prb_path)
-│   ├── ready/           # Ready to execute
-│   └── completed/       # Executed PRBs
-├── memory/              # Learning storage (configurable: memory_path)
-├── docs/                # Documentation (configurable: docs_path)
-├── src/                 # Source code (configurable: src_path)
-├── tests/               # Tests (configurable: test_path)
-├── config/              # Configuration (configurable: config_path)
-└── prb-templates/       # PRB templates (configurable: prb_template_path)
-```
+**Project Root Organization:**
+- **stories/** - User stories (configurable: story_path)
+  - **drafts/** - Work-in-progress stories
+- **bugs/** - Bug reports (configurable: bug_path)
+  - **open/** - Active bugs
+  - **completed/** - Fixed bugs
+- **prbs/** - PRBs (configurable: prb_path)
+  - **ready/** - Ready to execute
+  - **completed/** - Executed PRBs
+- **memory/** - Learning storage (configurable: memory_path)
+- **docs/** - Documentation (configurable: docs_path)
+- **src/** - Source code (configurable: src_path)
+- **tests/** - Tests (configurable: test_path)
+- **config/** - Configuration (configurable: config_path)
+- **prb-templates/** - PRB templates (configurable: prb_template_path)
 
 ## Configuration Override
 
-In CLAUDE.md or config.md:
-```yaml
-directory_structure:
-  story_path: "user-stories"      # Default: "stories"
-  bug_path: "issues"             # Default: "bugs"  
-  prb_path: "requirements"        # Default: "prbs"
-  memory_path: "knowledge-base"   # Default: "memory"
-  docs_path: "documentation"      # Default: "docs"
-  src_path: "source"             # Default: "src"
-  test_path: "test-suite"        # Default: "tests"
-  config_path: "settings"        # Default: "config"
-  prb_template_path: "templates" # Default: "prb-templates"
-```
+**Configuration Override Example:**
+- **story_path**: "user-stories" (Default: "stories")
+- **bug_path**: "issues" (Default: "bugs")  
+- **prb_path**: "requirements" (Default: "prbs")
+- **memory_path**: "knowledge-base" (Default: "memory")
+- **docs_path**: "documentation" (Default: "docs")
+- **src_path**: "source" (Default: "src")
+- **test_path**: "test-suite" (Default: "tests")
+- **config_path**: "settings" (Default: "config")
+- **prb_template_path**: "templates" (Default: "prb-templates")
 
 ## Behavioral Rules
 
@@ -59,11 +54,9 @@ directory_structure:
 
 ## Path Access Functions
 
-### Get Configured Path
-```
-path = get_project_path("story_path", "stories")
-draft_path = get_project_path("story_drafts", "drafts", parent="story_path")
-```
+### Get Configured Path Pattern
+- **Path Resolution**: Use get_project_path function with setting key and default value
+- **Parent Path**: Support nested paths with parent reference for sub-directories
 
 ### Standard Locations
 - **Stories:** `{story_path}/` and `{story_path}/{story_drafts}/`

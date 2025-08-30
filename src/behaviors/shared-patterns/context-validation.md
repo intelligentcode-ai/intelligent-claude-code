@@ -2,10 +2,6 @@
 
 **MANDATORY:** Complete context before PRB generation.
 
-## Imports
-
-@./installation-path-detection.md
-
 ## Required Context
 
 | Element | Requirement | Validation |
@@ -22,7 +18,8 @@
 - `[ALL-SETTINGS]` → Load specific values
 - `[USER_REQUEST]` → Capture actual request
 
-**Detection Logic:**
+### System Nature Detection
+**DETECTION LOGIC:**
 1. Scan project root and subdirectories
 2. Count file types: code vs markdown/config
 3. Determine primary type based on majority
@@ -39,9 +36,9 @@
 ### Project Boundary Validation
 **REQUIRED**: All file operations must respect project boundaries
 - **ALLOWED SCOPE**: Only operations within project root directory and subdirectories
-- **BLOCKED SCOPE**: Write operations to {get_install_path()}/ during normal execution
-- **EXCEPTION SCOPE**: {get_install_path()}/ read operations for configuration loading
-- **INSTALLATION SCOPE**: {get_install_path()}/ write operations only during installation or explicit global config changes
+- **BLOCKED SCOPE**: Write operations to installation path during normal execution
+- **EXCEPTION SCOPE**: Installation path read operations for configuration loading
+- **INSTALLATION SCOPE**: Installation path write operations only during installation or explicit global config changes
 
 ### Configuration Value Loading
 **REQUIRED**: All configuration values must be actual, not placeholders
@@ -58,20 +55,20 @@
 **File Reference Structure:**
 
 **Critical Files Format:**
-- **Path:** Absolute path to file
-- **Purpose:** Specific purpose for this work
-- **Sample:** Actual content from file (first 200 chars)
-- **Relevance:** Why this file matters for the work
+- **Path**: Absolute path to file
+- **Purpose**: Specific purpose for this work
+- **Sample**: Actual content from file (first 200 chars)
+- **Relevance**: Why this file matters for the work
 
 ### User Requirements Capture
 **REQUIRED**: Clear, specific user requirements
 
 **User Requirements Format:**
-- **Original Request:** Exact user words/request
-- **Work Type:** implementation/fix/enhancement/refactor
-- **Success Criteria:** Specific success criteria list
-- **Clarifications:** Any assumptions or clarifications
-- **Scope Limits:** What is NOT included
+- **Original Request**: Exact user words/request
+- **Work Type**: implementation/fix/enhancement/refactor
+- **Success Criteria**: Specific success criteria list
+- **Clarifications**: Any assumptions or clarifications
+- **Scope Limits**: What is NOT included
 
 ## Validation Logic
 
@@ -119,10 +116,10 @@
 - **ENFORCE**: PM + Architect collaboration for role selection
 
 ## Error Handling
-- `PLACEHOLDER_DETECTED`: "❌ Contains: {list}"
-- `SYSTEM_NATURE_MISSING`: "❌ Not identified"
-- `PROJECT_ROOT_INVALID`: "❌ Invalid: {path}"
-- `REQUIREMENTS_VAGUE`: "❌ Too generic"
+- `PLACEHOLDER_DETECTED`: "Contains: list"
+- `SYSTEM_NATURE_MISSING`: "Not identified"
+- `PROJECT_ROOT_INVALID`: "Invalid: path"
+- `REQUIREMENTS_VAGUE`: "Too generic"
 
 ---
 *Context validation patterns for intelligent-claude-code system*
