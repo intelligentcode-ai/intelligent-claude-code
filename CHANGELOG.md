@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.4] - 2025-08-30
+
+### Enhanced
+- Refactored prb-queue-management.md from 285 to 46 lines (83.9% reduction)
+- Consolidated queue states into compact table format with clear dispatch rules
+- Simplified conflict detection and dependency resolution to essential behavioral logic
+- Preserved all functionality while dramatically improving conciseness and readability
+- Removed verbose YAML examples and implementation details, focusing on decision patterns
+
 ## [7.6.3] - 2025-08-30
 
 ### Enhanced
