@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.0] - 2025-08-30
+
+### Added
+- MCP (Model Context Protocol) configuration schema for CLAUDE.md integration
+- MCP provider detection patterns for memory, issue tracking, and documentation operations
+- Comprehensive fallback system ensuring file-based operations as guaranteed default
+- Provider interface standards for memory, issue tracking, and documentation MCP servers
+- Configuration validation rules and schema compliance checking
+- Integration with config-loader.md for MCP configuration loading and caching
+- Graceful degradation patterns with error handling and logging
+
+### Enhanced
+- Memory operations with MCP provider detection and automatic fallback
+- Configuration loading system with MCP integration support
+- Project extensibility through optional MCP server configuration
+- Backward compatibility guarantee preserving existing file-based workflows
+
 ## [7.5.1] - 2025-08-30
 
 ### Added
