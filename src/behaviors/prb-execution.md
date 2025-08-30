@@ -4,6 +4,7 @@
 
 ## Imports
 @./shared-patterns/non-blocking-task-patterns.md
+@./shared-patterns/prb-queue-management.md
 
 ## PRB Execution Flow
 
