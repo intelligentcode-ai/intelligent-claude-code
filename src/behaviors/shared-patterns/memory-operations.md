@@ -1,6 +1,10 @@
 # Memory Operations
 
-**MANDATORY:** Version-controlled memory in project.
+**MANDATORY:** Version-controlled memory in project with MCP integration support. Auto-correct violations.
+
+## Imports
+
+@./mcp-configuration-patterns.md
 
 ## Structure
 
@@ -22,12 +26,14 @@
 
 ### StoreInMemory Pattern
 1. **Security Validation**: Apply security checklist - BLOCK if sensitive data detected
-2. **Path Resolution**: Check for external_path configuration, use configured path or default to ./memory/
-3. Determine topic/subtopic path within memory base directory
-4. Add entry at TOP of file (newest first for precedence)
-5. Auto-prune if >10 entries or >5KB
-6. Archive old entries to [memory_base]/archive/[topic]/[year].md
-7. Update [memory_base]/index.md
+2. **MCP Provider Detection**: Check for mcp_integrations.memory configuration
+3. **Provider Selection**: Use MCP provider if enabled, fallback to file-based
+4. **Path Resolution**: Check for external_path configuration, use configured path or default to ./memory/
+5. Determine topic/subtopic path within memory base directory
+6. Add entry at TOP of file (newest first for precedence)
+7. Auto-prune if >10 entries or >5KB
+8. Archive old entries to [memory_base]/archive/[topic]/[year].md
+9. Update [memory_base]/index.md
 
 ### Memory Base Path Resolution
 
@@ -58,19 +64,23 @@
 3. **If Clean:** Allow storage to proceed normally
 
 ### SearchMemory Pattern
-1. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
-2. Parse query for keywords/context
-3. Check index for quick filtering
-4. Search within topic files in [memory_base]/[topic]/
-5. Score by: keyword match + recency + context match
-6. Return top matches for PRB embedding
+1. **MCP Provider Detection**: Check for mcp_integrations.memory configuration
+2. **Provider Selection**: Use MCP provider if enabled, fallback to file-based
+3. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
+4. Parse query for keywords/context
+5. Check index for quick filtering
+6. Search within topic files in [memory_base]/[topic]/
+7. Score by: keyword match + recency + context match
+8. Return top matches for PRB embedding
 
 ### LoadFromMemory Pattern
-1. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
-2. Read topic file from [memory_base]/[topic]/
-3. Parse markdown entries
-4. Update access stats
-5. Store for efficient retrieval
+1. **MCP Provider Detection**: Check for mcp_integrations.memory configuration
+2. **Provider Selection**: Use MCP provider if enabled, fallback to file-based
+3. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
+4. Read topic file from [memory_base]/[topic]/
+5. Parse markdown entries
+6. Update access stats
+7. Store for efficient retrieval
 
 ## Pruning
 - Threshold: 10 entries or 5KB
