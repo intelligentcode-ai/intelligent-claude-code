@@ -73,11 +73,6 @@
 - Faster path resolution
 - Improved system responsiveness
 
-**CACHE VALIDATION:**
-- Timestamp-based expiration
-- Environment variable change detection
-- Installation modification detection
-
 ## Error Handling
 
 ### Missing Installation
