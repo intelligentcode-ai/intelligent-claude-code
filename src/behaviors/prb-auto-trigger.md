@@ -8,6 +8,7 @@
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
+@./shared-patterns/workflow-resolution-patterns.md
 @./naming-numbering-system.md
 
 ## Behavioral Decision Integration
@@ -51,29 +52,51 @@
 **PRB Generation Steps:**
 1. **Detect** work requirement
 2. **Search** memory for patterns (MANDATORY)
-3. **Score** complexity
+3. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
 4. **Auto-breakdown** if complexity > 15 points
 5. **Load Template** from hierarchy
 6. **Load Configuration** at generation time
-7. **Resolve ALL Placeholders** with actual values
-8. **Embed Complete Context** in PRB
-9. **Validate NO Placeholders** remain
-10. **Generate** compliant name and create PRB
-11. **Execute** via subagent
+7. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
+8. **Resolve Configuration Placeholders** with actual config values
+9. **Resolve Workflow Placeholders** with actual workflow_settings values
+10. **Embed Complete Context** in PRB with resolved workflow instructions
+11. **Validate NO Placeholders** remain (including workflow placeholders)
+12. **Generate** compliant name and create PRB
+13. **Execute** via subagent
 
 ## Workflow Placeholder Resolution
 
-**MANDATORY**: All workflow placeholders resolved with actual workflow_settings values:
+**MANDATORY**: All workflow placeholders resolved with actual workflow_settings values from CLAUDE.md:
 
-**Common Workflow Placeholders:**
-- `[WORKFLOW_VERSION_BUMP]` → actual true/false value
-- `[WORKFLOW_VERSION_TYPE]` → actual patch/minor/major value  
-- `[WORKFLOW_CHANGELOG_REQUIRED]` → actual true/false value
-- `[WORKFLOW_PR_REQUIRED]` → actual true/false value
-- `[WORKFLOW_MERGE_STRATEGY]` → actual direct_commit/feature_branch value
+**Workflow Placeholder Resolution Process:**
+1. **Load CLAUDE.md workflow_settings** for determined PRB size
+2. **Map ALL workflow placeholders** to actual values from workflow_settings.[size]
+3. **Resolve PR creation sections** when pr_required=true
+4. **Embed explicit git commands** based on merge_strategy
+5. **Include complete workflow instructions** in PRB
 
-**Size Mapping:**
-- nano/tiny/medium/large/mega → workflow_settings.[size].*
+**All Workflow Placeholders:**
+- `[WORKFLOW_VERSION_BUMP]` → workflow_settings.[size].version_bump (true/false)
+- `[WORKFLOW_VERSION_TYPE]` → workflow_settings.[size].version_type (patch/minor/major)
+- `[WORKFLOW_CHANGELOG_REQUIRED]` → workflow_settings.[size].changelog_required (true/false)
+- `[WORKFLOW_PR_REQUIRED]` → workflow_settings.[size].pr_required (true/false)
+- `[WORKFLOW_MERGE_STRATEGY]` → workflow_settings.[size].merge_strategy (direct_commit/feature_branch)
+- `[WORKFLOW_RELEASE_AUTOMATION]` → workflow_settings.[size].release_automation (true/false)
+- `[WORKFLOW_AUTO_MERGE]` → workflow_settings.[size].auto_merge (true/false)
+- `[WORKFLOW_COORDINATION_REQUIRED]` → workflow_settings.[size].coordination_required (true/false)
+
+**PR Creation Resolution (when pr_required=true):**
+- Replace `[PR_ID]` with actual PRB identifier
+- Replace `[FEATURE_DESCRIPTION]` with actual work description
+- Include EXPLICIT PR creation commands: `gh pr create --title "[PR_ID]" --body "..."`
+- Add complete feature branch workflow when merge_strategy="feature_branch"
+
+**Size to Settings Mapping:**
+- nano-prb-template.yaml → workflow_settings.nano.*
+- tiny-prb-template.yaml → workflow_settings.tiny.*
+- medium-prb-template.yaml → workflow_settings.medium.*
+- large-prb-template.yaml → workflow_settings.large.*
+- mega-prb-template.yaml → workflow_settings.mega.*
 
 ## Context Requirements
 
