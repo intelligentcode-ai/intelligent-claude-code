@@ -1,6 +1,6 @@
 # PRB Auto-Trigger
 
-**MANDATORY:** Auto-detect work and generate PRB using templates from template hierarchy with complete placeholder resolution.
+**MANDATORY:** Auto-detect work and generate PRB using templates from hierarchy with complete placeholder resolution.
 
 ## Imports
 @./shared-patterns/behavioral-decision-matrix.md
@@ -14,106 +14,68 @@
 
 ## Behavioral Decision Integration
 
-**MANDATORY:** All trigger decisions follow behavioral-decision-matrix.md precedence hierarchy:
+**MANDATORY:** All trigger decisions follow behavioral-decision-matrix.md precedence:
 1. **@Role Direct Execution** → Immediate PRB generation for role work assignments
 2. **Work→PRB Generation** → All implementation intent triggers PRB regardless of complexity
 3. **Simple Information Direct** → Context score ≤8 allows direct response
 4. **Complex→PRB Analysis** → Context score ≥9 requires structured PRB analysis
 
-**Context Evaluation:** Use context-based complexity scoring, not keyword matching for trigger decisions.
+**Context Evaluation:** Use context-based complexity scoring, not keyword matching.
 
-## Detection → Memory → PRB → Execution
+## Detection Patterns
 
 | Trigger | Pattern | Action |
 |---------|---------|--------|
 | PRB File | *.prb.yaml | Execute existing |
 | Work Request | Implementation intent | Generate PRB |
 | @Role | @Role mention | PRB + Subagent execution |
-| Natural Language | "break down STORY-X", "create specialist for Y" | Generate PRB |
-
-## Automatic Validation Chain
-
-### Post-Code-Change Validation
-**MANDATORY:** After ANY PRB that modifies code/configuration:
-1. **Detect completion**: PRB with code changes completed
-2. **Generate validation PRB**: 
-   - Title: "Validate [parent PRB title]"
-   - Role: @QA-Engineer or @Backend-Tester
-   - Include: Test scope, files changed, validation criteria
-3. **Auto-execute**: Trigger via Task tool immediately
-
-### Post-Failure Fix Generation  
-**MANDATORY:** After ANY validation PRB reports failures:
-1. **Detect failure**: Validation PRB returns errors/failures
-2. **Generate fix PRB**:
-   - Title: "Fix validation failures from [parent PRB]"
-   - Role: Same as original implementation role
-   - Include: Error messages, stack traces, failed tests
-3. **Auto-execute**: Trigger via Task tool immediately
-
-### Continuation Detection
-**MANDATORY:** Recognize continuation work patterns:
-- Test commands after code changes → Validation PRB
-- Fix attempts after errors → Fix PRB
-- Build commands after fixes → Build PRB
-- Deploy after successful build → Deploy PRB
+| Natural Language | "break down STORY-X" | Generate PRB |
 
 ## Complexity Scoring
 
-**Auto-calculation**:
+**Auto-calculation Points:**
 - Files: 1=1pt, 2-5=3pts, 6-20=5pts, 20+=10pts
 - Lines: <10=1pt, <50=2pts, <200=4pts, 200+=8pts
 - External APIs: 3pts each
 - Database/Security: 4-5pts
 
-**SIZE BREAKDOWN RULE:**
-Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points each.
+**Template Selection:**
+| Score | Template |
+|-------|----------|
+| 0-2 | nano-prb-template.yaml |
+| 3-5 | tiny-prb-template.yaml |
+| 6-15 | medium-prb-template.yaml |
+| 16-30 | large-prb-template.yaml |
+| 30+ | mega-prb-template.yaml |
 
-**Template Selection from template hierarchy:**
-| Score | Template | Resolution Required |
-|-------|----------|-------------------|
-| 0-2 | nano-prb-template.yaml | ALL placeholders → actual values |
-| 3-5 | tiny-prb-template.yaml | ALL placeholders → actual values |
-| 6-15 | medium-prb-template.yaml | ALL placeholders → actual values |
-| 16-30 | large-prb-template.yaml | ALL placeholders → actual values |
-| 30+ | mega-prb-template.yaml | ALL placeholders → actual values |
-
-**ENFORCEMENT:**
-- Every PRB MUST use these templates
-- ALL placeholders MUST be resolved at generation time
-- Complete configuration MUST be embedded in PRB
+**SIZE BREAKDOWN RULE:** Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points each.
 
 ## Template-First Generation Flow
 
+**PRB Generation Steps:**
 1. **Detect** work requirement
-2. **Gather** complete context (MANDATORY)
-3. **Search** memory/[topic]/ and best-practices/ (MANDATORY)
-4. **Score** complexity
-5. **Sequential thinking** if complexity > 2 points, use mcp__sequential-thinking__sequentialthinking for structured PRB design
-6. **Auto-breakdown** if complexity > 15 points
-7. **Load Template** from template hierarchy 
-8. **Load Configuration** at generation time
-9. **Load Workflow Settings** from CLAUDE.md workflow_settings per PRB size (nano/tiny/medium/large/mega)
-10. **Resolve ALL Placeholders** with actual config values and workflow settings
-11. **Embed Complete Context** - all config in PRB
-12. **Validate NO Placeholders** - ZERO unresolved values
-13. **Generate** compliant name and create PRB
-14. **Execute** via subagent
+2. **Search** memory for patterns (MANDATORY)
+3. **Score** complexity
+4. **Auto-breakdown** if complexity > 15 points
+5. **Load Template** from hierarchy
+6. **Load Configuration** at generation time
+7. **Load Workflow Settings** from CLAUDE.md
+8. **Resolve ALL Placeholders** with actual values
+9. **Embed Complete Context** in PRB
+10. **Validate NO Placeholders** remain
+11. **Generate** compliant name and create PRB
+12. **Execute** via subagent
 
 ## Workflow Placeholder Resolution
 
-**MANDATORY**: All workflow placeholders in templates MUST be resolved with actual workflow_settings values from CLAUDE.md:
+**MANDATORY**: All workflow placeholders resolved with actual workflow_settings values:
 
-**Workflow Placeholders:**
-- `[WORKFLOW_VERSION_BUMP]` → workflow_settings.[size].version_bump value (true/false)
-- `[WORKFLOW_VERSION_TYPE]` → workflow_settings.[size].version_type value (patch/minor/major)
-- `[WORKFLOW_CHANGELOG_REQUIRED]` → workflow_settings.[size].changelog_required value (true/false)
-- `[WORKFLOW_PR_REQUIRED]` → workflow_settings.[size].pr_required value (true/false)
-- `[WORKFLOW_MERGE_STRATEGY]` → workflow_settings.[size].merge_strategy value (direct_commit/feature_branch)
-- `[WORKFLOW_RELEASE_AUTOMATION]` → workflow_settings.[size].release_automation value (true/false)
-- `[WORKFLOW_AUTO_MERGE]` → workflow_settings.[size].auto_merge value (true/false)
-- `[WORKFLOW_COORDINATION_REQUIRED]` → workflow_settings.[size].coordination_required value (true/false)
-- `[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]` → workflow_settings.[size].breaking_change_assessment value (true/false)
+**Common Workflow Placeholders:**
+- `[WORKFLOW_VERSION_BUMP]` → actual true/false value
+- `[WORKFLOW_VERSION_TYPE]` → actual patch/minor/major value  
+- `[WORKFLOW_CHANGELOG_REQUIRED]` → actual true/false value
+- `[WORKFLOW_PR_REQUIRED]` → actual true/false value
+- `[WORKFLOW_MERGE_STRATEGY]` → actual direct_commit/feature_branch value
 
 **Size Mapping:**
 - nano-prb-template.yaml → workflow_settings.nano.*
@@ -122,27 +84,9 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 - large-prb-template.yaml → workflow_settings.large.*
 - mega-prb-template.yaml → workflow_settings.mega.*
 
-## Enhanced Sequential Thinking Triggers
-
-**MANDATORY**: Use sequential thinking for structured analysis when:
-- **Complexity Threshold**: Any work scoring > 2 points (lowered from > 5)
-- **Bug Investigation**: All bug analysis regardless of complexity score
-- **PRB Planning**: Multi-step PRB creation and breakdown scenarios
-- **Architecture Evaluation**: Design decisions with multiple factors or trade-offs
-- **Risk Assessment**: Security, performance, or technical risk evaluation
-- **Integration Analysis**: Cross-component or cross-system coordination needs
-
-**Sequential Thinking Pattern**:
-1. **Problem Definition**: Clear articulation of the challenge or decision
-2. **Context Analysis**: Relevant factors, constraints, and requirements  
-3. **Option Generation**: Multiple approaches or solutions
-4. **Impact Assessment**: Trade-offs, risks, and benefits evaluation
-5. **Decision Rationale**: Structured reasoning for chosen approach
-6. **Implementation Planning**: Step-by-step execution strategy
-
 ## Context Requirements
 
-**MANDATORY before generation**:
+**MANDATORY before generation:**
 - System nature (CODE/AI-AGENTIC)
 - Project root (absolute path)
 - Configuration (actual values)
@@ -151,69 +95,40 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 
 ## Work Detection Patterns
 
-**Work Intent Indicators (TRIGGER PRB CREATION):**
-- **Implementation**: implement, create, build, develop, code, write, program
-- **Modification**: fix, update, modify, change, refactor, optimize, enhance  
-- **Operations**: deploy, install, configure, setup, migrate, provision
-- **Maintenance**: delete, remove, clean, purge, archive, reorganize
+**Work Intent (TRIGGER PRB):**
+- **Implementation**: implement, create, build, develop, code, write
+- **Modification**: fix, update, modify, change, refactor, optimize
+- **Operations**: deploy, install, configure, setup, migrate
+- **Maintenance**: delete, remove, clean, purge, archive
 - **@Role Work**: "@Developer implement X", "@DevOps deploy Y"
 - **Story/Task**: "Break down STORY-XXX", "Execute PRB-file"
-- **Bug Analysis**: All bug investigation and resolution patterns
-- **PRB Creation Planning**: Structured analysis for complex PRB generation
-- **Architecture Decisions**: Design choices requiring structured evaluation
 
-**Continuation Work Indicators (ALWAYS TRIGGER PRB):**
-- **Post-Code Testing**: Any test command after code changes
-- **Post-Error Fixes**: Any fix attempt after error detection
-- **Post-Fix Validation**: Any validation after fixes
-- **Chain Operations**: Operations that logically follow previous work
-
-**Information Request Indicators (DO NOT TRIGGER PRB):**
-- **Query**: show, display, read, list, check, analyze, examine, inspect
-- **Knowledge**: explain, describe, define, clarify, understand, learn  
-- **Status**: status, state, condition, progress, current, ongoing
+**Information Request (NO PRB):**
+- **Query**: show, display, read, list, check, analyze
+- **Knowledge**: explain, describe, define, clarify, understand
+- **Status**: status, state, condition, progress, current
 - **@Role Questions**: "@PM what story next?", "@Architect how to design?"
-- **Planning**: Strategy discussions without implementation commitment
 
 ## ASK vs DEMAND Classification
 
-**MANDATORY:** Balanced detection distinguishing questions (ASK - allow through) from commands (DEMAND - trigger PRB).
+**ASK Indicators (ALLOW THROUGH):**
+- Question words: what, how, why, should, can, will
+- @Role consultations: "@PM what story next?"
+- Status inquiries: "What's the current progress?"
+- Advisory requests: "What do you think?"
 
-### ASK Indicators (ALLOW THROUGH - No PRB)
-**QUESTION PATTERNS:**
-- Question words: what, how, why, should, can, will, which, where, when
-- @Role consultations: "@PM what story next?", "@Architect how would you design this?"
-- Status inquiries: "What's the current progress?", "How is the deployment?"
-- Advisory requests: "What do you think?", "How would you approach this?"
+**DEMAND Indicators (TRIGGER PRB):**
+- Direct imperatives: "@Developer implement X"
+- Work assignments: "Fix the bug", "Build the feature"
+- Action commitments: "Please create", "Go ahead and fix"
 
-**SOFT EXPLORATION VERBS:**
-- Consultation: recommend, suggest, advise, propose, think, consider
-- Knowledge seeking: explain, describe, understand, learn, clarify  
-- Status checking: status, progress, current, ongoing, state, condition
+## Classification Process
 
-### DEMAND Indicators (TRIGGER PRB)
-**COMMAND PATTERNS:**
-- Direct imperatives: "@Developer implement X", "@DevOps deploy Y"
-- Work assignments: "Fix the bug", "Build the feature", "Deploy the app"
-- Action commitments: "Please create", "Go ahead and fix", "Start working on"
-
-**HARD ACTION VERBS:**
-- Implementation: implement, create, build, develop, code, program, write
-- Modification: fix, update, modify, change, refactor, optimize, enhance
-- Operations: deploy, install, configure, setup, migrate, provision
-- Maintenance: delete, remove, clean, purge, archive, reorganize
-
-### Classification Process
-1. **Question Detection First**: Check for ASK patterns before work detection
-2. **Command Detection Second**: Apply DEMAND patterns for work requests  
-3. **Context Preservation**: Maintain natural conversation flow for planning
-4. **Work Enforcement**: Strong PRB creation for actual implementation tasks
-
-**Examples:**
-- "@PM what story should we work on next?" → ASK (conversation)
-- "@PM break down the authentication story" → DEMAND (work request)
-- "What's the status?" → ASK (information request)
-- "Deploy the application" → DEMAND (operation request)
+**Balanced Detection:**
+1. **Question Detection First**: Check for ASK patterns
+2. **Command Detection Second**: Apply DEMAND patterns for work requests
+3. **Context Preservation**: Maintain conversation flow for planning
+4. **Work Enforcement**: Strong PRB creation for implementation tasks
 
 ---
 *PRB auto-trigger with template-first generation and ASK vs DEMAND classification*

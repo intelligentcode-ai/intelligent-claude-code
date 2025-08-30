@@ -45,10 +45,12 @@
 - Tool usage (Edit/Write/Bash) without PRB authorization
 - File operations outside PRB execution flow
 
-### Work Intent Categories
-**WORK PATTERNS (TRIGGER PRB):** implement, create, build, fix, update, modify, deploy, install, configure, delete, remove, file operations
+### Work Intent Categories (ULTRA-COMPREHENSIVE)
+**WORK PATTERNS (TRIGGER PRB IMMEDIATELY):** ALL action verbs including fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor, create, add, insert, generate, build, make, write, implement, develop, delete, remove, clean, purge, clear, eliminate, drop, deploy, install, configure, setup, run, execute, start, stop, restart, migrate, backup, restore, sync, merge, commit, push, pull, move, copy, rename, edit, append, replace
 
-**INFORMATION PATTERNS (ALLOW THROUGH):** show, display, read, list, check, analyze, explain, describe, find, search, status inquiries, What/How/Why/Should/Can questions
+**SUBTLE WORK PATTERNS (ALSO BLOCKED):** "Let me...", "I'll...", "Going to...", "Need to...", "Should...", "Will...", "Quick...", "Simple...", "Just..."
+
+**INFORMATION PATTERNS (ALLOW THROUGH):** Pure show, display, read, list, check, analyze, explain, describe, find, search, status inquiries, What/How/Why/Should/Can questions WITHOUT work commitment or action implications
 
 ### @Role Pattern Classification
 **@Role Work Assignments (TRIGGER PRB):** "@Role implement/fix/deploy/build [item]" → Direct assignments
@@ -64,11 +66,12 @@
 
 **CONVERSATIONAL PATTERNS (ALLOW THROUGH):** Planning discussions, status inquiries, knowledge sharing, architecture consultations, @Role advisory requests
 
-**DETECTION LOGIC:** 
-- Work intent + no active PRB + main scope → IMMEDIATE BLOCK
-- Tool usage + no PRB authorization → BLOCK TOOL ACCESS
-- Information request + no work context → ALLOW
-- Compound pattern with work component → PRIORITIZE WORK, TRIGGER PRB
+**ULTRA-STRICT DETECTION LOGIC:** 
+- ANY work intent + no active PRB + main scope → NUCLEAR BLOCK IMMEDIATELY
+- ANY tool usage for modification + no PRB authorization → ABSOLUTE TOOL DENIAL
+- Pure information request + zero work context → ALLOW CAUTIOUSLY
+- ANY compound pattern with work component → PRIORITIZE WORK, FORCE PRB GENERATION
+- Subtle work indicators detected → TREAT AS FULL WORK REQUEST
 
 ### Tool-Specific Violations
 **BLOCKED TOOLS IN MAIN SCOPE:** Edit/MultiEdit/Write (file modification), Bash (system commands except read-only), Creation tools
@@ -80,14 +83,16 @@
 
 ## Error Messages
 
-### Standard Errors
-- `SUBAGENT_REQUIRED`: "❌ PRB execution requires subagent"
-- `CREATION_BLOCKED`: "❌ Work items must be created by main agent"
-- `ROLE_MISMATCH`: "❌ Role {role} invalid for {system_type}"
-- `SCOPE_VIOLATION`: "❌ Operation outside project boundaries"
-- `DIRECT_EXECUTION_BLOCKED`: "❌ All work requires PRB - use @Role pattern"
-- `MAIN_SCOPE_EXECUTION_BLOCKED`: "❌ Work execution attempted in main scope without PRB"
-- `TOOL_ACCESS_BLOCKED`: "❌ Tool usage requires active PRB execution context"
+### Nuclear Error Messages
+- `SUBAGENT_REQUIRED`: "🚫 PRB execution MUST use subagent - main scope FORBIDDEN"
+- `CREATION_BLOCKED`: "⛔ Work items MUST be created by main agent - NO EXCEPTIONS"
+- `ROLE_MISMATCH`: "❌ Role {role} INVALID for {system_type} - ARCHITECTURAL VIOLATION"
+- `SCOPE_VIOLATION`: "🔒 Operation outside project boundaries - ABSOLUTELY FORBIDDEN"
+- `DIRECT_EXECUTION_BLOCKED`: "🚫 ALL work REQUIRES PRB - use @Role pattern - NO SHORTCUTS"
+- `MAIN_SCOPE_EXECUTION_BLOCKED`: "⛔ Main scope work execution ABSOLUTELY FORBIDDEN - PRB+Agent MANDATORY"
+- `TOOL_ACCESS_BLOCKED`: "🔒 Tool usage REQUIRES active PRB execution context - NO EXCEPTIONS"
+- `WORK_PATTERN_DETECTED`: "🚫 Work pattern detected in main scope - PRB GENERATION REQUIRED"
+- `ARCHITECTURAL_VIOLATION`: "⛔ ARCHITECTURAL INTEGRITY COMPROMISED - PRB+Agent pattern NON-NEGOTIABLE"
 
 ### Recovery Actions
 | Error | Recovery |
