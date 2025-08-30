@@ -8,6 +8,7 @@
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
+@./shared-patterns/continuation-work-patterns.md
 @./naming-numbering-system.md
 
 ## Behavioral Decision Integration
