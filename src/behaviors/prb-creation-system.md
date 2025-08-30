@@ -45,7 +45,7 @@
 **BLOCKED:** AGENTS CANNOT create work items due to isolated context limitations.
 
 ### Template Requirements
-**MANDATORY:** Every PRB MUST use appropriate template from `src/prb-templates/`:
+**MANDATORY:** Every PRB MUST use appropriate template from template hierarchy:
 - `nano-prb-template.yaml` (0-2 points): Simple changes
 - `tiny-prb-template.yaml` (3-5 points): Single-file work
 - `medium-prb-template.yaml` (6-15 points): Multi-file features
@@ -69,7 +69,7 @@
 4. **Memory Integration**: Auto-search memory/[topic]/ and best-practices/ for applicable patterns
 5. **Complexity Calculation**: Enhanced scoring algorithm (files + lines + APIs + security + coordination + dependencies)
 6. **Auto-Breakdown Logic**: If >15 points, intelligent decomposition into logical work units ≤15 points each
-7. **Template Auto-Selection**: Complexity score mapping to optimal src/prb-templates/ template
+7. **Template Auto-Selection**: Complexity score mapping to optimal template from hierarchy
 8. **Template Loading**: Complete template structure loaded with all mandatory sections
 9. **Configuration Resolution**: Full config hierarchy loaded with actual values from all sources
 10. **Placeholder Elimination**: Replace ALL [FROM_CONFIG], [PROJECT_ROOT], [CURRENT_DATE] with actual values
@@ -132,7 +132,7 @@
 - Manual PRB creation without templates → "❌ TEMPLATE REQUIRED: PRB creation without template FORBIDDEN"
 - Unresolved placeholders in PRB → "❌ PLACEHOLDER UNRESOLVED: All placeholders must be resolved at generation"
 - Runtime config dependencies → "❌ RUNTIME LOOKUP FORBIDDEN: All config must be embedded in PRB"
-- Template source violations → "❌ INVALID TEMPLATE SOURCE: Must use src/prb-templates/ hierarchy only"
+- Template source violations → "❌ INVALID TEMPLATE SOURCE: Must use template hierarchy only"
 
 ### Automatic Quality Assurance
 **PRE-CREATION VALIDATION:**
