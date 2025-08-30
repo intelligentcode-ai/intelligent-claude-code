@@ -22,7 +22,7 @@
 ## Integration Components
 
 ### Template Integration
-- Load from `src/prb-templates/` hierarchy
+- Load from template hierarchy
 - Complete placeholder resolution required
 - Automatic complexity-based selection
 - Quality validation before creation
