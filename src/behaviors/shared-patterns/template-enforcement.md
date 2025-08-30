@@ -1,11 +1,11 @@
 # Template Enforcement Patterns
 
-**MANDATORY:** ALL PRB creation MUST use templates from src/prb-templates/ with COMPLETE placeholder resolution. NO exceptions.
+**MANDATORY:** ALL PRB creation MUST use templates from hierarchy with COMPLETE placeholder resolution. NO exceptions.
 
 ## Core Enforcement Rules
 
 ### Template Requirements
-**TEMPLATE SOURCE:** Only templates from `src/prb-templates/`:
+**TEMPLATE SOURCE:** Only templates from hierarchy:
 - `nano-prb-template.yaml` (0-2 points)
 - `tiny-prb-template.yaml` (3-5 points) 
 - `medium-prb-template.yaml` (6-15 points)
@@ -24,7 +24,7 @@
 
 ## Error Messages
 
-**TEMPLATE_REQUIRED:** "❌ PRB creation without template FORBIDDEN - use src/prb-templates/"
+**TEMPLATE_REQUIRED:** "❌ PRB creation without template FORBIDDEN - use template hierarchy"
 **PLACEHOLDER_UNRESOLVED:** "❌ Unresolved placeholder: {placeholder} - resolve during generation"
 **RUNTIME_CONFIG_FORBIDDEN:** "❌ Runtime config lookup forbidden - embed values in PRB"
 

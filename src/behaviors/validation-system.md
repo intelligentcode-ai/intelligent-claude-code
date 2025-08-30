@@ -6,7 +6,7 @@
 
 ### Template Validation
 **PRE-CREATION CHECKS:**
-- Template source from `src/prb-templates/` only
+- Template source from hierarchy only
 - Complete placeholder resolution (zero `[.*]` patterns)
 - Complexity-appropriate template selection
 - Configuration values embedded (no runtime lookups)

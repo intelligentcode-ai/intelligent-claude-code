@@ -28,7 +28,7 @@
 | **Project** | `[PROJECT_OVERVIEW]` | Project description from CLAUDE.md |
 
 ### Template Source
-**MANDATORY:** Only use templates from `src/prb-templates/`:
+**MANDATORY:** Only use templates from hierarchy:
 - `nano-prb-template.yaml` (0-2 points)
 - `tiny-prb-template.yaml` (3-5 points)
 - `medium-prb-template.yaml` (6-15 points)
