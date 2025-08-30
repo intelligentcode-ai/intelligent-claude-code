@@ -9,6 +9,7 @@
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./shared-patterns/continuation-work-patterns.md
+@./shared-patterns/prb-queue-management.md
 @./naming-numbering-system.md
 
 ## Behavioral Decision Integration

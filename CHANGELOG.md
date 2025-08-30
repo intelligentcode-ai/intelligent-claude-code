@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.1] - 2025-08-30
+
+### Added
+- PRB queue management system with behavioral patterns for parallel execution
+- Queue state lifecycle tracking (queued → running → completed → failed → blocked)
+- Capacity enforcement system respecting max_parallel from L3 autonomy settings
+- File conflict prevention through behavioral locking patterns
+- Dependency resolution system for chained PRB execution
+- Auto-dispatch behavioral patterns triggering queued PRBs when capacity available
+- Background Task tool integration with agent handle management
+- Priority-based queue management with HIGH → MEDIUM → LOW ordering
+
+### Enhanced
+- PRB execution behavior with queue management integration
+- PRB auto-trigger system with queue management support
+- Memory system with queue management patterns and performance tracking
+- L3 autonomous mode with true parallel execution capacity management
+
 ## [7.5.0] - 2025-08-30
 
 ### Added
