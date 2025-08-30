@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.2] - 2025-08-30
+
+### Fixed
+- Remove GitHub-specific hardcoding from workflow enforcement patterns, making them platform-agnostic for GitLab, Bitbucket, and other git platforms
+
 ## [7.7.1] - 2025-08-30
 
 ### Fixed
