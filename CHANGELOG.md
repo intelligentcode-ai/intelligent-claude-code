@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.0] - 2025-08-30
+
+### Added
+- Non-blocking Task tool invocation patterns for parallel agent execution
+- Agent handle tracking and status monitoring system
+- Background execution decision criteria and capacity management
+- Parallel execution coordination with conflict detection
+- L3 autonomous mode support for true parallel agent execution
+
+### Enhanced
+- PRB execution behavior with non-blocking Task tool integration
+- Agent registry management for background execution tracking
+- Status monitoring patterns for background agents
+
 ## [7.4.21] - 2025-08-29
 
 ### Added
