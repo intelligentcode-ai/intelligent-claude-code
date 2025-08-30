@@ -1,148 +1,112 @@
-# Best-Practices Integration Patterns
+# Best Practices Integration
 
-**MANDATORY:** Use best-practices auto-discovery during PRB generation. Auto-correct violations.
+**MANDATORY:** Load and apply project best practices patterns.
 
-**PURPOSE:** Automatically discover and inject methodological approaches into PRBs
+## Purpose
 
-## Auto-Discovery Process
+Integrate project-specific best practices, coding standards, and architectural patterns into PRB execution for consistent quality and style adherence.
 
-### Search Pattern
-1. **Analyze Work Request**: Extract keywords, work type, complexity level
-2. **Scan best-practices/**: Search all subdirectories for relevant practice files
-3. **Score Relevance**: Match keywords, work type, complexity to practice metadata
-4. **Select Top Practices**: Choose 2-3 most relevant practices (max 800 tokens)
-5. **Inject Content**: Replace template placeholders with dynamic practice content
+## Best Practices Loading
 
-### Practice File Structure
-```markdown
-# Practice Name
+### Search Paths
+**ORDERED HIERARCHY (First Found Wins):**
+1. **Project Docs**: CLAUDE.md configured best_practices_paths
+2. **Standard Locations**: docs/best-practices/, docs/standards/, docs/guidelines/
+3. **Project Root**: best-practices.md, coding-standards.md, guidelines.md
 
-**Type:** [development|architecture|operations|security|quality|collaboration]
-**Applies To:** [complexity_levels, work_types]
-**Keywords:** keyword1, keyword2, keyword3
+### Loading Process
+1. **Path Resolution**: Use configured paths or search standard locations
+2. **File Discovery**: Find relevant practice documents
+3. **Content Parsing**: Extract practices, standards, and guidelines
+4. **Category Organization**: Group by type (coding, architecture, process, security)
+5. **Validation Rules**: Extract validation criteria and requirements
 
-## Description
-Brief description of the practice
+## Practice Categories
 
-## Implementation
-Specific guidance for this practice
+### Coding Standards
+- **Style Guidelines**: Formatting, naming conventions, code organization
+- **Quality Standards**: Complexity limits, test coverage, documentation requirements
+- **Language Patterns**: Preferred patterns, anti-patterns, best practices
 
-## Quality Gates
-- [ ] Checklist item 1
-- [ ] Checklist item 2
+### Architecture Patterns
+- **Design Patterns**: Preferred architectural approaches
+- **Component Structure**: Module organization and dependencies
+- **Integration Patterns**: Service communication and data flow
 
-## Examples
-Code or configuration examples
-```
+### Process Standards
+- **Workflow Requirements**: Version control, review processes
+- **Documentation Standards**: Required documentation and formats
+- **Testing Requirements**: Test types, coverage, validation
 
-### Discovery Process
+### Security Guidelines
+- **Security Patterns**: Authentication, authorization, data protection
+- **Compliance Requirements**: Regulatory and organizational requirements
+- **Risk Mitigation**: Security best practices and controls
 
-**Steps to Find Relevant Best Practices:**
-1. **Extract Keywords:** Pull key terms from the work request
-2. **Scan Best Practices:** Look through all files in best-practices/ directory
-3. **Score Each Practice:** Calculate relevance score for each practice:
-   - **Keyword Match:** If practice keywords match request terms, add 3 points
-   - **Work Type Match:** If practice applies to this work type, add 2 points
-   - **Complexity Match:** If practice applies to this complexity level, add 1 point
-   - **Recent Usage:** If practice was used recently, add 0.5 points
-4. **Select Top Practices:** Sort by score and select the top 3 most relevant practices
-5. **Format for Use:** Prepare selected practices for injection into PRB template
+## PRB Integration
 
-## Template Placeholder Replacement
+### Practice Application
+**AUTOMATIC INTEGRATION:** Best practices automatically applied during PRB execution:
+- **Quality Checks**: Validate against coding standards
+- **Pattern Enforcement**: Apply architectural patterns
+- **Process Compliance**: Ensure workflow requirements met
+- **Security Validation**: Apply security guidelines
 
-### Standard Placeholders
-- `[PROJECT_CODING_STYLE]` → Discovered coding practices
-- `[ARCHITECTURE_CONSTRAINTS]` → Relevant architectural practices
-- `[QUALITY_STANDARDS]` → Applicable quality practices
-- `[SECURITY_REQUIREMENTS]` → Security practice guidelines
-- `[OPERATIONS_APPROACH]` → DevOps/GitOps practices
-- `[COLLABORATION_STYLE]` → Team coordination practices
+### Context Embedding
+**PRB ENHANCEMENT:** Relevant practices embedded in PRBs:
+- **Applicable Standards**: Only relevant practices for work type
+- **Validation Criteria**: Specific quality gates and requirements
+- **Pattern References**: Links to detailed guidelines and examples
 
-### Dynamic Injection Process
-1. **Load Template**: Load PRB template with placeholders
-2. **Discover Practices**: Run auto-discovery for work request
-3. **Map Placeholders**: Match discovered practices to template placeholders
-4. **Replace Content**: Inject practice content into template
-5. **Validate Result**: Ensure no placeholders remain
+## Validation Integration
 
-## Integration Points
+### Pre-Execution Validation
+**QUALITY GATES:** Validate PRB against applicable best practices:
+- **Standard Compliance**: Ensure adherence to coding standards
+- **Pattern Validation**: Verify architectural pattern usage
+- **Process Requirements**: Confirm workflow compliance
 
-### With PRB Generation
-- Called during PRB auto-trigger after memory search
-- Embeds discovered practices into PRB complete_context
-- Replaces template placeholders with actual practice content
+### Execution Monitoring
+**CONTINUOUS VALIDATION:** Monitor execution against practices:
+- **Quality Metrics**: Track adherence to standards
+- **Pattern Usage**: Verify correct pattern implementation
+- **Process Compliance**: Ensure workflow requirements met
 
-### With Template System
-- Works with all PRB templates (Nano through Mega)
-- Uses template hierarchy for practice discovery
-- Respects project-specific practice overrides
+### Post-Execution Review
+**COMPLETION VALIDATION:** Final validation against practices:
+- **Standards Adherence**: Confirm final output meets standards
+- **Pattern Implementation**: Verify correct pattern usage
+- **Documentation Completeness**: Ensure required documentation
 
-### With Memory System
-- Complementary to memory search (practices vs. learnings)
-- Both embedded in PRB for complete context
-- No runtime lookups needed during execution
+## Configuration
 
-## Practice Organization
-
-### Directory Structure
-```
-best-practices/
-├── development/     # TDD, Clean Code, SOLID principles
-├── architecture/    # Design patterns, architectural principles
-├── operations/      # DevOps, GitOps, Infrastructure as Code
-├── security/        # DevSecOps, security practices
-├── quality/         # Quality assurance methodologies
-└── collaboration/   # Team practices and coordination
+### Best Practices Paths
+**CLAUDE.md Configuration:**
+```yaml
+best_practices_paths:
+  - "docs/coding-standards/"
+  - "docs/architecture-patterns/"
+  - "docs/security-guidelines/"
 ```
 
 ### Practice Categories
-- **Development**: Coding practices, testing approaches, code quality
-- **Architecture**: Design patterns, system architecture, technical debt
-- **Operations**: Deployment, monitoring, infrastructure management
-- **Security**: Security reviews, compliance, vulnerability management
-- **Quality**: Testing strategies, quality gates, validation processes
-- **Collaboration**: Team coordination, code reviews, knowledge sharing
+**Organized Application:** Practices applied based on work context:
+- **Code Changes**: Coding standards and quality requirements
+- **Architecture Work**: Architecture patterns and design guidelines
+- **Security Changes**: Security guidelines and compliance requirements
+- **Process Work**: Workflow and documentation requirements
 
 ## Error Handling
 
-### Missing Practices
-- **NO_PRACTICES_FOUND**: Use template defaults, log for improvement
-- **INVALID_PRACTICE_FORMAT**: Skip malformed practices, continue with others
-- **PRACTICE_ACCESS_ERROR**: Log error, continue with available practices
+**MISSING PRACTICES**: Continue with system defaults if project practices not found
+**INVALID FORMAT**: Log errors and use available valid practices
+**LOADING FAILURES**: Graceful degradation with system standards
 
-### Placeholder Resolution
-- **UNRESOLVED_PLACEHOLDERS**: Replace with generic guidance
-- **MULTIPLE_MATCHES**: Use highest scored practice
-- **CONFLICTING_PRACTICES**: Prefer project-specific over system defaults
+## Memory Integration
 
-## Performance Optimization
-
-### Caching Strategy
-- **Practice Index**: Cache practice metadata for 15 minutes
-- **Keyword Extraction**: Cache work request analysis for 5 minutes
-- **Discovery Results**: Cache per work request for session
-
-### Search Optimization
-- **Metadata Index**: Pre-index practice metadata for fast lookup
-- **Keyword Matching**: Use efficient string matching algorithms
-- **File Scanning**: Only scan modified files on subsequent runs
-
-## Usage Examples
-
-### GitOps Work Request
-**Request**: "Deploy application using GitOps"
-**Discovered**: operations/gitops-practices.md
-**Injected**: GitOps deployment patterns and quality gates
-
-### Clean Architecture Enhancement
-**Request**: "Refactor to Clean Architecture"
-**Discovered**: architecture/clean-architecture.md, development/clean-code-practices.md
-**Injected**: Clean Architecture principles and code quality standards
-
-### Security Review
-**Request**: "Security review for authentication"
-**Discovered**: security/devsecops-integration.md, security/auth-security.md
-**Injected**: Security review checklist and authentication best practices
+**PRACTICE PATTERNS**: Store successful practice applications
+**VIOLATION PATTERNS**: Learn from practice violations and corrections
+**IMPROVEMENT TRACKING**: Track practice adherence improvements over time
 
 ---
-*Best-practices integration patterns for intelligent-claude-code system*
+*Best practices integration for consistent quality and standards*
