@@ -2,6 +2,13 @@
 
 **MANDATORY:** All PRB and work item creation via main agent with template compliance and placeholder resolution.
 
+## Imports
+@./shared-patterns/template-enforcement.md
+@./shared-patterns/template-loading.md
+@./shared-patterns/memory-operations.md
+@./shared-patterns/context-validation.md
+@./shared-patterns/behavioral-decision-matrix.md
+
 ## Automatic PRB Generation
 
 ### Real-Time Work Detection & Instant PRB Creation

@@ -2,6 +2,14 @@
 
 **MANDATORY:** Unified PRB system with breakdown, validation, execution, and adaptation patterns.
 
+## Imports
+@./shared-patterns/template-loading.md
+@./shared-patterns/template-enforcement.md
+@./shared-patterns/context-validation.md
+@./shared-patterns/execution-validation.md
+@./shared-patterns/behavioral-decision-matrix.md
+@./shared-patterns/memory-operations.md
+
 ## Core PRB Lifecycle
 
 ### Creation & Breakdown
