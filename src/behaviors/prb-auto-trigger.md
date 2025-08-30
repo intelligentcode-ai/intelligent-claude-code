@@ -1,6 +1,6 @@
 # PRB Auto-Trigger
 
-**MANDATORY:** Auto-detect work and generate PRB using templates from src/prb-templates/ with complete placeholder resolution.
+**MANDATORY:** Auto-detect work and generate PRB using templates from template hierarchy with complete placeholder resolution.
 
 ## Imports
 @./shared-patterns/behavioral-decision-matrix.md
@@ -69,7 +69,7 @@
 **SIZE BREAKDOWN RULE:**
 Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points each.
 
-**Template Selection from src/prb-templates/**:
+**Template Selection from template hierarchy:**
 | Score | Template | Resolution Required |
 |-------|----------|-------------------|
 | 0-2 | nano-prb-template.yaml | ALL placeholders → actual values |
@@ -91,7 +91,7 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 4. **Score** complexity
 5. **Sequential thinking** if complexity > 2 points, use mcp__sequential-thinking__sequentialthinking for structured PRB design
 6. **Auto-breakdown** if complexity > 15 points
-7. **Load Template** from src/prb-templates/ 
+7. **Load Template** from template hierarchy 
 8. **Load Configuration** at generation time
 9. **Load Workflow Settings** from CLAUDE.md workflow_settings per PRB size (nano/tiny/medium/large/mega)
 10. **Resolve ALL Placeholders** with actual config values and workflow settings
