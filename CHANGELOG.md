@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.1] - 2025-08-30
+
+### Fixed
+- **CRITICAL**: Removed all code/pseudo-code patterns from behavioral system files
+- **CRITICAL**: Shortened all behavioral files to 125-line maximum requirement
+- Eliminated if/then, function(), and programming syntax from markdown behavioral patterns
+- Converted code syntax to natural language behavioral statements
+- Fixed code contamination violations throughout AI behavioral system
+- Maintained all functionality while ensuring markdown-only behavioral language
+- Created BUG-055 documenting project scope enforcement issues
+
+### Changed
+- prb-enforcement.md: 256→119 lines with code pattern removal
+- template-loading.md: 274→134 lines with pseudo-code elimination
+- prb-auto-trigger.md: 218→133 lines with syntax conversion
+- prb-execution.md: 180→126 lines with behavioral language
+- prb-creation-system.md: 165→134 lines with code cleanup
+- memory-operations.md: 164→79 lines with natural patterns
+- All behavioral files now use natural markdown language instead of code
+
 ## [7.6.6] - 2025-08-30
 
 ### Added
