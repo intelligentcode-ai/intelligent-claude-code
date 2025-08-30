@@ -6,6 +6,7 @@
 @./shared-patterns/behavioral-decision-matrix.md
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/enforcement-rules.md
+@./shared-patterns/continuation-work-patterns.md
 
 ## Core Rules
 
