@@ -1,6 +1,7 @@
 # Tiny PRB Template - Simple Changes (3-5 points)  
 # For single-file modifications and straightforward features
 
+git_privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: tiny-prb
 complexity: simple
@@ -49,6 +50,14 @@ requirements:
 # ========================================
 # EXECUTION PROCESS: 7 CLEAR STEPS
 # ========================================
+
+execution_notes: |
+  CRITICAL: When git_privacy is true, strip ALL AI mentions from:
+  - Commit messages (remove "AI", "Claude", "agent", etc.)
+  - PR descriptions
+  - Release notes
+  - Any git-visible text
+  Use clean, professional language in all git operations.
 
 ## STEP 1: KNOWLEDGE
 knowledge_search:

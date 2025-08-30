@@ -1,6 +1,7 @@
 # Medium PRB Template - Standard Features (6-15 points)
 # For multi-file features and moderate complexity implementations
 
+git_privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: medium-prb
 complexity: standard
@@ -57,6 +58,14 @@ requirements:
 # ========================================
 # EXECUTION PROCESS: 9 CLEAR STEPS
 # ========================================
+
+execution_notes: |
+  CRITICAL: When git_privacy is true, strip ALL AI mentions from:
+  - Commit messages (remove "AI", "Claude", "agent", etc.)
+  - PR descriptions
+  - Release notes
+  - Any git-visible text
+  Use clean, professional language in all git operations.
 
 ## STEP 1: GIT BRANCH
 branch_creation:
