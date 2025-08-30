@@ -6,6 +6,17 @@
 
 @./mcp-configuration-patterns.md
 
+## MCP Provider Detection
+
+**Check for MCP Memory Provider:**
+```
+1. Load mcp_integrations.memory from CLAUDE.md
+2. If enabled and provider specified:
+   - Use MCP provider for operations
+3. Else:
+   - Use file-based storage (default)
+```
+
 ## Structure
 
 **Memory Directory Organization:**
@@ -25,15 +36,25 @@
 ## Operations
 
 ### StoreInMemory Pattern
-1. **Security Validation**: Apply security checklist - BLOCK if sensitive data detected
-2. **MCP Provider Detection**: Check for mcp_integrations.memory configuration
-3. **Provider Selection**: Use MCP provider if enabled, fallback to file-based
-4. **Path Resolution**: Check for external_path configuration, use configured path or default to ./memory/
-5. Determine topic/subtopic path within memory base directory
-6. Add entry at TOP of file (newest first for precedence)
-7. Auto-prune if >10 entries or >5KB
-8. Archive old entries to [memory_base]/archive/[topic]/[year].md
-9. Update [memory_base]/index.md
+1. **Check MCP Configuration**: 
+   - IF mcp_integrations.memory.enabled = true:
+     - Use mcp__memory__create_entities or configured provider
+     - Pass topic as entity name
+     - Pass content as observation
+   - ELSE: Continue with file-based storage
+2. **Security Validation**: Apply security checklist - BLOCK if sensitive data detected
+3. **Provider Routing**:
+   - MCP: Call provider's store method
+   - File: Original file-based logic
+4. **Error Handling**: 
+   - If MCP fails, fall back to file-based
+   - Log MCP failures for visibility
+5. **Path Resolution**: Check for external_path configuration, use configured path or default to ./memory/ (file-based only)
+6. Determine topic/subtopic path within memory base directory (file-based only)
+7. Add entry at TOP of file (newest first for precedence) (file-based only)
+8. Auto-prune if >10 entries or >5KB (file-based only)
+9. Archive old entries to [memory_base]/archive/[topic]/[year].md (file-based only)
+10. Update [memory_base]/index.md (file-based only)
 
 ### Memory Base Path Resolution
 
@@ -64,33 +85,81 @@
 3. **If Clean:** Allow storage to proceed normally
 
 ### SearchMemory Pattern
-1. **MCP Provider Detection**: Check for mcp_integrations.memory configuration
-2. **Provider Selection**: Use MCP provider if enabled, fallback to file-based
-3. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
-4. Parse query for keywords/context
-5. Check index for quick filtering
-6. Search within topic files in [memory_base]/[topic]/
-7. Score by: keyword match + recency + context match
-8. Return top matches for PRB embedding
+1. **Check MCP Configuration**:
+   - IF mcp_integrations.memory.enabled = true:
+     - Use mcp__memory__search_nodes or configured provider
+     - Pass query to provider search
+   - ELSE: Continue with file-based search
+2. **Provider Routing**:
+   - MCP: Call provider's search method
+   - File: Original file-based search
+3. **Result Handling**:
+   - Normalize results from different providers
+   - Return consistent format to PRBs
+4. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern (file-based only)
+5. Parse query for keywords/context (file-based only)
+6. Check index for quick filtering (file-based only)
+7. Search within topic files in [memory_base]/[topic]/ (file-based only)
+8. Score by: keyword match + recency + context match (file-based only)
+9. Return top matches for PRB embedding
 
 ### LoadFromMemory Pattern
-1. **MCP Provider Detection**: Check for mcp_integrations.memory configuration
-2. **Provider Selection**: Use MCP provider if enabled, fallback to file-based
-3. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
-4. Read topic file from [memory_base]/[topic]/
-5. Parse markdown entries
-6. Update access stats
-7. Store for efficient retrieval
+1. **Check MCP Configuration**:
+   - IF mcp_integrations.memory.enabled = true:
+     - Use configured MCP provider for loading
+     - Pass topic/subtopic identifiers to provider
+   - ELSE: Continue with file-based loading
+2. **Provider Routing**:
+   - MCP: Call provider's load/get method
+   - File: Original file-based loading
+3. **Result Handling**:
+   - Normalize results from different providers
+   - Return consistent format
+4. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern (file-based only)
+5. Read topic file from [memory_base]/[topic]/ (file-based only)
+6. Parse markdown entries (file-based only)
+7. Update access stats (file-based only)
+8. Store for efficient retrieval (file-based only)
+
+## Provider Abstraction Layer
+
+### Memory Provider Interface
+```
+store_memory(topic, content, metadata)
+search_memory(query, filters)
+get_memory(topic, subtopic)
+update_memory(id, content)
+delete_memory(id)
+```
+
+### Provider Routing
+```
+IF mcp_provider configured:
+  route_to_mcp_provider()
+ELSE:
+  route_to_file_based()
+```
+
+### Error Recovery
+```
+TRY:
+  execute_mcp_operation()
+CATCH:
+  log_error()
+  fallback_to_file_based()
+```
 
 ## Pruning
-- Threshold: 10 entries or 5KB
-- Archive: memory/archive/[topic]/[year].md
-- Keep: Most recent 5-10
+- Threshold: 10 entries or 5KB (file-based only)
+- Archive: memory/archive/[topic]/[year].md (file-based only)
+- Keep: Most recent 5-10 (file-based only)
+- MCP providers handle their own pruning strategies
 
 ## PRB Integration
 - Embed 2-3 most relevant (max 1000 tokens)
 - Selection: topic match + recency
 - No runtime lookups needed
+- Consistent format regardless of provider
 
 ---
 *Memory operations patterns for intelligent-claude-code system*
