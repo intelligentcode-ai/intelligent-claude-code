@@ -15,9 +15,10 @@
 **CREATION:** Main agent (Stories/Bugs/EPICs/PRBs, templates, config)
 **EXECUTION:** Subagent (PRB implementation, file ops, git)
 
-### Work Pattern Detection
-**WORK INTENT:** Action verbs requiring PRB - implement, create, build, fix, update, modify, deploy, install, configure, delete, remove
-**INFORMATION REQUEST:** Pure questions using what, how, why, should, can, will + @Role consultations without work commitment
+### Detection & Blocking
+**WORK INTENT (ULTRA-STRICT):** ALL action verbs including fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor, create, add, insert, generate, build, make, write, implement, develop, delete, remove, clean, purge, clear, eliminate, drop, deploy, install, configure, setup, run, execute, start, stop, restart, migrate, backup, restore, sync, merge, commit, push, pull
+
+**INFORMATION REQUEST:** Pure questions with what, how, why, should, can, will + @Role consultations WITHOUT work commitment
 
 ### Template Enforcement
 - Manual PRB creation → BLOCKED → "Use template hierarchy"
@@ -27,7 +28,8 @@
 
 ### Main Scope Work Blocking
 
-**NUCLEAR ENFORCEMENT:** ZERO TOLERANCE for main scope work execution.
+#### Main Scope Execution Prevention (NUCLEAR ENFORCEMENT)
+**MANDATORY:** ZERO TOLERANCE for main scope work execution. ALL work execution must follow PRB+agent pattern.
 
 **BLOCKED ACTIONS:** All work execution in main scope including:
 - Direct file operations without PRB
@@ -37,13 +39,30 @@
 
 **ERROR MESSAGE:**
 ```
-MAIN SCOPE EXECUTION BLOCKED
+🚫 MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN 🚫
+VIOLATION: Direct work execution detected in main scope
 ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
-REQUIRED ACTION: Generate PRB using @Role pattern first
+
+DETECTED PATTERN: [specific pattern detected]
+BLOCKED ACTION: [attempted action]
+
+THIS IS NOT NEGOTIABLE:
+- Main scope = PRB creation ONLY
+- Subagent = Work execution ONLY
+- No exceptions, no workarounds, no compromises
+
+MANDATORY PROCESS:
+1. User Request → PRB Generation (main scope)
+2. PRB → Task Tool → Agent Execution (subagent)
+
+REQUIRED ACTION: Generate PRB using @Role pattern FIRST
 ```
 
-### Tool Access Control
+### Tool-Level Main Scope Blocking
 
+**MANDATORY:** Block file modification tools (Edit/Write/MultiEdit) in main scope when work patterns are detected.
+
+#### Blocked Tools for Work Intent
 **BLOCKED TOOLS IN MAIN SCOPE:**
 - Edit, MultiEdit, Write tools for modifications
 - Bash tool for system changes (read-only allowed)
@@ -53,17 +72,26 @@ REQUIRED ACTION: Generate PRB using @Role pattern first
 - Main scope context (not in active PRB)
 - No PRB authorization
 
-**AUTHORIZED TOOLS:**
-- Read operations (Read, LS, Glob, Grep) always allowed
-- Configuration loading and memory search
+**NUCLEAR TOOL BLOCKING:**
+```
+⛔ TOOL ACCESS ABSOLUTELY DENIED ⛔
+TOOL: [Edit/Write/MultiEdit/Bash]
+CONTEXT: Main scope work execution attempt
+VIOLATION: Tool usage without active PRB context
 
-### Auto-Generation Trigger
+ARCHITECTURAL RULE: Tools reserved EXCLUSIVELY for authorized subagent execution
+BLOCKING REASON: Maintains PRB-driven execution pattern
 
-**WHEN BLOCKED:** Automatically trigger PRB generation
-1. Detect blocked work attempt
-2. Capture user requirements
-3. Generate appropriate PRB
-4. Execute via Task tool subagent
+DETECTED PATTERN: [work pattern detected]
+BLOCKED ACTION: [attempted action]
+
+MANDATORY RECOVERY PROCESS:
+1. Create PRB using @Role pattern
+2. Deploy PRB via Task tool to authorized agent
+3. Agent executes with FULL tool authorization
+
+NO EXCEPTIONS - NO SHORTCUTS - NO COMPROMISES
+```
 
 ## Auto-Correction Patterns
 
@@ -87,27 +115,6 @@ REQUIRED ACTION: Generate PRB using @Role pattern first
 **AI-AGENTIC:** @AI-Engineer for behaviors, memory, PRBs
 **CODE-BASED:** @Developer, @Backend-Tester for implementation
 **HYBRID:** PM+Architect collaboration for role selection
-
-## Execution Controls
-
-### Proportional Response
-**MANDATORY:** Match response complexity to request complexity
-
-**SIMPLE REQUESTS:** Single action, specific target, focused intent
-**SIMPLE RESPONSE:** Perform only requested action, no scope expansion
-
-**BLOCKED EXPANSION:**
-- "While I'm at it..." patterns
-- Unrequested improvements
-- Automatic feature additions
-
-### File Generation Control
-
-**BLOCKED:** Automatic file generation without explicit request
-**ALLOWED:** Only when user explicitly requests file creation
-
-**EXPLICIT REQUESTS:** "Create file...", "Write to file...", "Generate filename..."
-**BLOCKED AUTOMATIC:** Summary files, temporary files, documentation without request
 
 ## Quality Gates
 

@@ -86,7 +86,7 @@
 ### Nuclear Error Messages
 - `SUBAGENT_REQUIRED`: "🚫 PRB execution MUST use subagent - main scope FORBIDDEN"
 - `CREATION_BLOCKED`: "⛔ Work items MUST be created by main agent - NO EXCEPTIONS"
-- `ROLE_MISMATCH`: "❌ Role invalid for system type - ARCHITECTURAL VIOLATION"
+- `ROLE_MISMATCH`: "❌ Role {role} INVALID for {system_type} - ARCHITECTURAL VIOLATION"
 - `SCOPE_VIOLATION`: "🔒 Operation outside project boundaries - ABSOLUTELY FORBIDDEN"
 - `DIRECT_EXECUTION_BLOCKED`: "🚫 ALL work REQUIRES PRB - use @Role pattern - NO SHORTCUTS"
 - `MAIN_SCOPE_EXECUTION_BLOCKED`: "⛔ Main scope work execution ABSOLUTELY FORBIDDEN - PRB+Agent MANDATORY"
