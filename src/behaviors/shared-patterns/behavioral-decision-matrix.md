@@ -44,18 +44,17 @@
 - **Investigation**: Requiring analysis, research, structured thinking
 
 **STEP 2: Complexity Scoring**
-```
-Context Factors (1-3 points each):
-- scope_breadth: narrow/medium/broad
-- investigation_depth: surface/moderate/deep
-- decision_complexity: none/simple/complex
-- coordination_needs: individual/team/system
-- implementation_scope: info/single/multiple
 
-Total Score: 5-15 points
-Simple: 5-8 points → Direct response
-Complex: 9-15 points → PRB generation
-```
+**Context Factors Assessment:**
+- **Scope Breadth**: Narrow scopes receive lower complexity scores, broad system-wide scopes receive higher scores
+- **Investigation Depth**: Surface-level information requests receive lower scores, deep analysis requirements receive higher scores
+- **Decision Complexity**: Simple or no decisions receive lower scores, complex trade-offs receive higher scores
+- **Coordination Needs**: Individual responses receive lower scores, multi-role coordination receives higher scores
+- **Implementation Scope**: Information-only receives lower scores, multiple implementations receive higher scores
+
+**Scoring Guidelines:**
+- **Simple Context (5-8 total points)**: Direct response appropriate for focused, surface-level requests
+- **Complex Context (9-15 total points)**: PRB generation required for broad, deep, or multi-faceted work
 
 **STEP 3: Context Overrides**
 - **@Role Direct**: Always bypasses complexity scoring
