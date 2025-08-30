@@ -2,6 +2,7 @@
 # For simple one-line fixes, typos, and minimal adjustments
 
 # === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
+git_privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 title: "[ROLE] [DESCRIPTION]"
 type: nano-prb
@@ -42,6 +43,14 @@ target_file: "[TARGET_FILE]"
 change_needed: "[WHAT_TO_CHANGE]"
 
 # === EXECUTION PATTERN (KEEP AS-IS) ===
+execution_notes: |
+  CRITICAL: When git_privacy is true, strip ALL AI mentions from:
+  - Commit messages (remove "AI", "Claude", "agent", etc.)
+  - PR descriptions
+  - Release notes
+  - Any git-visible text
+  Use clean, professional language in all git operations.
+
 execution_steps:
   - "Check memory/[TOPIC]/ for similar patterns"
   - "Make the specified change to target file"

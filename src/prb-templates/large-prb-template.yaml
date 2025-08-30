@@ -1,6 +1,7 @@
 # Large PRB Template - Complex Features (16-30 points)
 # For sophisticated multi-component features requiring coordination
 
+git_privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: large-prb
 complexity: complex
@@ -56,6 +57,15 @@ requirements:
   technical:
     - "Multi-component integration"
     - "Complex feature coordination"
+
+# Git Privacy Execution Notes
+execution_notes: |
+  CRITICAL: When git_privacy is true, strip ALL AI mentions from:
+  - Commit messages (remove "AI", "Claude", "agent", etc.)
+  - PR descriptions
+  - Release notes
+  - Any git-visible text
+  Use clean, professional language in all git operations.
 
 # Sub-PRB Decomposition Strategy
 decomposition:

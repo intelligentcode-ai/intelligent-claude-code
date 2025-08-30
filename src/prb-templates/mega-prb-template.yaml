@@ -1,6 +1,7 @@
 # Mega PRB Template - System-Wide Changes (30+ points)
 # For major system overhauls and architectural changes
 
+git_privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: mega-prb
 complexity: system-wide
@@ -63,6 +64,15 @@ requirements:
     - "System-wide architecture changes"
     - "Multi-system integration"
     - "Backward compatibility management"
+
+# Git Privacy Execution Notes
+execution_notes: |
+  CRITICAL: When git_privacy is true, strip ALL AI mentions from:
+  - Commit messages (remove "AI", "Claude", "agent", etc.)
+  - PR descriptions
+  - Release notes
+  - Any git-visible text
+  Use clean, professional language in all git operations.
 
 # Epic Decomposition Strategy
 epic_decomposition:
