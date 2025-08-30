@@ -27,53 +27,39 @@ workflow:
 **PR Creation Process:**
 1. **Check PR Required:** Scan workflow.pr_required setting in PRB
 2. **Create Feature Branch:** If pr_required=true, MUST use feature_branch strategy
-3. **Create Pull Request:** After git push, IMMEDIATELY create PR
-4. **Include PR URL:** Add PR URL to completion report
-5. **Block Completion:** If pr_required=true but no PR created, BLOCK PRB completion
+3. **Create Pull/Merge Request:** After git push, create PR/MR using platform tools
+4. **Include PR/MR URL:** Add PR/MR URL to completion report
+5. **Block Completion:** If pr_required=true but no PR/MR created, BLOCK PRB completion
 
-**PR Creation Command Pattern:**
-```bash
-gh pr create --title "[PRB-ID]: [Description]" --body "[PR_DESCRIPTION]"
-```
+**Platform-Agnostic PR Creation Pattern:**
+Create pull/merge request using platform-appropriate method:
+- **GitHub:** gh pr create --title "[PRB-ID]: [Description]" --body "[PR_DESCRIPTION]"
+- **GitLab:** glab mr create --title "[PRB-ID]: [Description]" --description "[MR_DESCRIPTION]"
+- **Bitbucket:** Use web interface or bb pr create with appropriate parameters
+- **Generic Git:** Use platform's standard PR/MR creation mechanism
 
 ### Workflow Compliance Checklist
 
 **BEFORE MARKING PRB COMPLETE:**
 - ☐ Check workflow.pr_required setting
-- ☐ If pr_required=true, verify PR was created
+- ☐ If pr_required=true, verify PR/MR was created
 - ☐ Verify merge_strategy matches workflow setting
 - ☐ Check version_bump compliance if required
 - ☐ Validate changelog_required compliance
-- ☐ Include PR URL in completion report if PR created
+- ☐ Include PR/MR URL in completion report if PR/MR created
 
 ### Blocking Patterns (IMMEDIATE STOP)
 
-**PR CREATION VIOLATIONS:**
-- **BLOCKED:** "No PR needed for this change" when workflow.pr_required=true
+**PR/MR CREATION VIOLATIONS:**
+- **BLOCKED:** "No PR/MR needed for this change" when workflow.pr_required=true
 - **BLOCKED:** "Direct commit acceptable" when workflow.merge_strategy=feature_branch
-- **BLOCKED:** Completing PRB without PR when workflow.pr_required=true
+- **BLOCKED:** Completing PRB without PR/MR when workflow.pr_required=true
 - **BLOCKED:** Using direct_commit strategy when workflow requires feature_branch
 
-**Error Messages:**
+**Error Message:**
 ```
-❌ WORKFLOW VIOLATION: PR required but not created
-WORKFLOW SETTING: pr_required=true
-REQUIRED ACTION: Create pull request before marking PRB complete
-BLOCKING REASON: Workflow settings mandate PR creation for this complexity level
-```
-
-### Completion Reporting Enhancement
-
-**MANDATORY COMPLETION REPORT SECTIONS:**
-
-**Workflow Compliance Report:**
-```markdown
-## Workflow Compliance
-- Version Bump: [COMPLETED/SKIPPED] (Required: [workflow.version_bump])
-- Changelog Entry: [COMPLETED/SKIPPED] (Required: [workflow.changelog_required])
-- Pull Request: [COMPLETED/SKIPPED] (Required: [workflow.pr_required])
-- PR URL: [URL] (if PR created)
-- Merge Strategy: [USED_STRATEGY] (Required: [workflow.merge_strategy])
+❌ WORKFLOW VIOLATION: PR/MR required but not created
+REQUIRED ACTION: Create pull/merge request before marking PRB complete
 ```
 
 ### Agent Behavioral Integration
@@ -84,19 +70,6 @@ BLOCKING REASON: Workflow settings mandate PR creation for this complexity level
 3. **Validate Compliance:** Check each workflow requirement is met
 4. **Block Violations:** Stop execution if workflow requirements not followed
 5. **Report Compliance:** Include workflow compliance in completion report
-
-### Complex Workflow Requirements
-
-**MEDIUM/LARGE/MEGA PRBS (pr_required=true):**
-- MANDATORY feature branch creation
-- MANDATORY pull request creation
-- MANDATORY PR URL in completion report
-- BLOCKED direct commits to main/default branch
-
-**NANO/TINY PRBS (pr_required=false):**
-- Allowed direct commits to main/default branch
-- No PR creation required
-- Still follow version_bump and changelog_required settings
 
 ---
 *Workflow enforcement patterns ensuring agents follow embedded workflow settings*
