@@ -39,21 +39,20 @@
 ## System Defaults (Professional Standards)
 
 ### Professional Default Values
-```yaml
-# Git Settings (Professional Security Standards)
-git_privacy: true                  # Strip AI mentions from commits
-branch_protection: true            # Protect main branch
-require_pr_for_main: true          # Require pull requests for main
 
-# Autonomy Settings (Professional Team Standards)
-autonomy_level: L2                 # Balanced control and efficiency
-pm_always_active: true            # Always activate PM role
-blocking_enabled: true            # Enable enforcement blocking
+**Git Settings (Professional Security Standards):**
+- **git_privacy**: Enable AI mention stripping from commits
+- **branch_protection**: Enable main branch protection
+- **require_pr_for_main**: Require pull requests for main branch changes
 
-# Team Settings (Professional Collaboration)
-specialist_creation: true         # Allow dynamic specialist creation
-role_validation: true            # Validate role assignments
-```
+**Autonomy Settings (Professional Team Standards):**
+- **autonomy_level**: Use L2 for balanced control and efficiency
+- **pm_always_active**: Always activate PM role
+- **blocking_enabled**: Enable enforcement blocking
+
+**Team Settings (Professional Collaboration):**
+- **specialist_creation**: Allow dynamic specialist creation
+- **role_validation**: Validate role assignments
 
 ## Loading Process
 1. Load configuration from hierarchy
