@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.0] - 2025-08-30
+
+### Added
+- **CRITICAL**: Implemented ULTRA-STRICT main scope work blocking with ZERO TOLERANCE
+- Nuclear enforcement patterns for architectural integrity protection
+- Enhanced workflow enforcement with platform-agnostic PR creation patterns
+- MCP extensions and prb-extensions.yaml integration for behavioral system
+- Comprehensive shared pattern validation and inclusion checking
+- Workflow setting embedding in PRBs for complete self-contained execution
+
+### Fixed
+- **CRITICAL**: All PRBs now self-contained with embedded workflow settings
+- **CRITICAL**: Workflow PR creation now enforced when workflow.pr_required=true
+- **CRITICAL**: Removed ALL GitHub-specific hardcoding for multi-platform support
+- **CRITICAL**: Main scope execution blocking strengthened with nuclear enforcement
+- **CRITICAL**: All behavioral files shortened to 125-line maximum
+- **CRITICAL**: Complete removal of code/pseudo-code patterns from behavioral files
+- Placeholder resolution system for [WORKFLOW_*] patterns in PRBs
+- Behavioral decision matrix with context-based complexity scoring
+- Template enforcement patterns with complete validation
+
+### Changed
+- prb-enforcement.md: Enhanced with ultra-strict detection patterns and nuclear blocking
+- main-scope-blocking.md: New shared pattern with comprehensive work detection
+- workflow-enforcement-patterns.md: New shared pattern for platform-agnostic workflows
+- All behavioral files: Shortened and cleaned of code contamination
+- PRB templates: Now include workflow setting placeholders for resolution
+
 ## [7.7.1] - 2025-08-30
 
 ### Fixed
