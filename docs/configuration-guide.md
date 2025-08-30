@@ -406,4 +406,392 @@ dynamic_specialists:
   memory_integration: true                # Specialists contribute to memory system
 ```
 
-This configuration guide provides comprehensive coverage of memory path, agent system, template resolution, and dynamic specialist configuration options in the Intelligent Claude Code system.
+## MCP Integration Configuration
+
+The Model Context Protocol (MCP) integration allows projects to connect with external systems while maintaining robust file-based fallbacks.
+
+### Complete MCP Configuration Schema
+
+Configure MCP integrations in your project's `CLAUDE.md` file:
+
+```yaml
+mcp_integrations:
+  memory:
+    provider: "mcp__memory"         # Provider identifier
+    enabled: true                   # Enable/disable integration
+    fallback: "file-based"          # Always file-based for reliability
+    config:                         # Provider-specific configuration
+      graph_database: "neo4j"
+      retention_days: 90
+      database_url: "${NEO4J_URI}"   # Environment variables supported
+      username: "${NEO4J_USER}"
+      password: "${NEO4J_PASSWORD}"
+  
+  issue_tracking:
+    provider: "mcp__github"         # Built-in GitHub provider
+    enabled: true
+    fallback: "file-based"
+    project: "owner/repository"     # Required for issue providers
+    config:
+      labels: ["ai-generated", "intelligent-claude-code"]
+      default_assignee: "username"
+      board_id: "project-board-123"
+      milestone: "Sprint 2024.1"
+  
+  documentation:
+    provider: "mcp__confluence"     # Custom documentation provider
+    enabled: true
+    fallback: "file-based"
+    config:
+      space_key: "ENGINEERING"
+      parent_page: "API Documentation"
+      base_path: "docs/"
+      auto_publish: true
+```
+
+### MCP Provider Types
+
+#### Memory Providers
+Handle learning storage and retrieval operations:
+- **mcp__memory**: Built-in memory provider with graph database support
+- **Operations**: create_entities, search_nodes, get_relations, update_observation
+- **Fallback**: Uses `memory/` directory structure with topic organization
+
+#### Issue Tracking Providers
+Connect with external issue tracking systems:
+- **mcp__github**: GitHub issues integration
+- **mcp__jira**: Jira project management
+- **mcp__gitlab**: GitLab issue tracking
+- **Fallback**: Uses `stories/` and `bugs/` directory structure
+
+#### Documentation Providers
+Integrate with documentation platforms:
+- **mcp__confluence**: Atlassian Confluence integration
+- **user-custom-mcp**: Custom documentation providers
+- **Fallback**: Uses `docs/` directory structure
+
+### MCP Server Configuration
+
+Create `config/mcps.json` with your MCP server definitions:
+
+```json
+{
+  "mcpServers": {
+    "memory": {
+      "command": "python",
+      "args": ["-m", "mcp_memory_server"],
+      "env": {
+        "NEO4J_URI": "bolt://localhost:7687",
+        "NEO4J_USER": "neo4j",
+        "NEO4J_PASSWORD": "password"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "your-github-token"
+      }
+    }
+  }
+}
+```
+
+### Installation with MCP Support
+
+```bash
+# Create MCP configuration
+cat > config/mcps.json << 'EOF'
+# ... your MCP servers configuration ...
+EOF
+
+# Install with MCP integration
+make install MCP_CONFIG=./config/mcps.json
+```
+
+### MCP Fallback Behavior
+
+**IMPORTANT**: All MCP operations have file-based fallbacks to ensure reliability:
+
+1. **Try Primary**: Configured MCP provider
+2. **Use Fallback**: File-based operations if MCP unavailable
+3. **Log Degradation**: Warning for visibility
+
+This means projects work perfectly without MCP servers - they're purely optional enhancements.
+
+## Template Extension Configuration
+
+The PRB Template Extensions system allows projects to customize PRB templates without copying entire template files.
+
+### Basic Template Extension Configuration
+
+Create a `prb-extensions.yaml` file in your project root:
+
+```yaml
+# Universal extensions - applied to ALL template sizes
+all:
+  # Add new requirements to every PRB
+  requirements:
+    functional:
+      - "Follow project-specific business rules"
+    processual:
+      - "Run project linting before completion"
+      - "Execute custom validation scripts"  
+      - "Update project documentation"
+    technical:
+      - "Follow project coding standards"
+      - "Use established project patterns"
+  
+  # Add completely new sections
+  custom_validation:
+    - "Project-specific quality gates"
+    - "Custom testing requirements"
+    - "Security compliance checks"
+  
+  # Extend existing workflow settings
+  workflow_additions:
+    notify_teams: ["development", "qa", "security"]
+    custom_checks: true
+    slack_notifications: true
+```
+
+### Size-Specific Template Extensions
+
+```yaml
+# Nano-specific extensions (0-2 points)
+nano:
+  workflow:
+    changelog_required: "!override false"  # Skip changelog for nano changes
+    review_required: "!override false"     # Skip review for trivial changes
+
+# Tiny-specific extensions (3-5 points)  
+tiny:
+  version_bump:
+    type: "!override patch"               # Always patch for tiny changes
+  validation_steps:
+    - "Run unit tests"
+    - "Check code style"
+
+# Medium-specific extensions (6-15 points)
+medium:
+  review_checklist:
+    - "Integration test coverage > 70%"
+    - "API contract validation"
+    - "Performance impact assessment"
+  
+  implementation:
+    coordination_required: true
+    breaking_change_assessment: true
+
+# Large-specific extensions (16-30 points)
+large:
+  planning_requirements:
+    - "Architecture review completed"
+    - "Cross-team coordination planned"
+    - "Rollback strategy defined"
+  
+  validation:
+    load_testing: true
+    security_review: true
+    stakeholder_approval: true
+
+# Mega-specific extensions (30+ points)
+mega:
+  governance:
+    executive_approval: true
+    change_advisory_board: true
+    business_impact_assessment: true
+  
+  risk_management:
+    disaster_recovery_plan: true
+    communication_plan: true
+    phased_rollout: true
+```
+
+### Template Extension File Locations
+
+The system searches for template extensions in this order:
+1. **`{project_root}/prb-extensions.yaml`** (recommended)
+2. **`{project_root}/.claude/prb-extensions.yaml`** (alternative)
+
+### Override Syntax
+
+Use the `!override` prefix to replace base template values:
+- **`"!override false"`**: Force false value
+- **`"!override patch"`**: Force specific string value
+- **`"!override true"`**: Force true value
+
+## Dynamic Path Resolution
+
+The system uses intelligent path resolution to locate installation and configuration files dynamically.
+
+### Installation Path Detection
+
+The system detects installation location in this priority order:
+1. **Project Scope**: `{project_root}/.claude/` (project-specific installation)
+2. **Environment Variable**: `CLAUDE_INSTALL_PATH` environment variable
+3. **User Scope**: `~/.claude/` (global user installation)
+4. **Error**: Report installation not detected if none found
+
+### Path Resolution Functions
+
+#### get_install_path()
+- **Purpose**: Returns actual installation directory
+- **Caching**: 5-minute TTL for performance
+- **Returns**: Absolute path to installation base
+
+#### get_project_path(setting_key, default_value)
+- **Purpose**: Resolves project-specific paths with configuration override support
+- **Examples**:
+  - `get_project_path("story_path", "stories")` → Uses configured story directory
+  - `get_project_path("memory_path", "memory")` → Uses configured memory directory
+  - `get_project_path("prb_template_path", "prb-templates")` → Uses configured template directory
+
+#### Dynamic Configuration Loading
+- **Template Paths**: Project → User → System template hierarchy
+- **Memory Paths**: External → Project → Default path resolution
+- **Config Paths**: Embedded → Project → User → System defaults
+
+### Path Resolution Examples
+
+```yaml
+# In CLAUDE.md or config.md
+directory_structure:
+  story_path: "user-stories"          # Custom story directory
+  bug_path: "issues"                  # Custom bug directory  
+  prb_path: "requirements"            # Custom PRB directory
+  memory_path: "knowledge-base"       # Custom memory directory
+  prb_template_path: "custom-templates" # Custom template directory
+
+# System automatically resolves:
+# get_project_path("story_path", "stories") → "user-stories"
+# get_project_path("prb_template_path", "prb-templates") → "custom-templates"
+```
+
+## Complete Settings Reference
+
+### Configuration Hierarchy Settings
+
+| Setting Category | Setting Key | Type | Default Value | Description |
+|------------------|-------------|------|---------------|-------------|
+| **Git Settings** | `git_privacy` | boolean | `true` | Strip AI mentions from commits |
+| | `branch_protection` | boolean | `true` | Protect main branch from direct pushes |
+| | `default_branch` | string | `"main"` | Default branch name |
+| | `require_pr_for_main` | boolean | `true` | Require pull requests for main branch |
+| **Autonomy Settings** | `autonomy_level` | string | `"L2"` | L1=Manual, L2=Guided, L3=Autonomous |
+| | `pm_always_active` | boolean | `true` | Always activate PM role |
+| | `blocking_enabled` | boolean | `true` | Enable enforcement blocking |
+| **L3 Autonomous Settings** | `l3_settings.max_parallel_tasks` | number | `5` | Concurrent task limit |
+| | `l3_settings.auto_discover_work` | boolean | `true` | Auto-discover PLANNED/IN_PROGRESS |
+| | `l3_settings.continue_on_error` | boolean | `true` | Continue on task failures |
+| | `l3_settings.memory_improvement` | boolean | `true` | Continuous memory improvement |
+
+### Team and Agent Settings
+
+| Setting Category | Setting Key | Type | Default Value | Description |
+|------------------|-------------|------|---------------|-------------|
+| **Agent Configuration** | `agent_configuration.specialist_creation` | boolean | `true` | Allow unlimited specialist creation |
+| | `agent_configuration.expertise_threshold` | string | `"when_needed"` | Specialist creation trigger |
+| | `agent_configuration.storage_location` | string | `".claude/agents/dynamic/"` | Dynamic specialist storage |
+| **Communication** | `communication.direct_agent_calls` | boolean | `true` | Enable @Agent mentions |
+| | `communication.task_tool_integration` | boolean | `true` | Use Task tool for subagents |
+| | `communication.context_preservation` | boolean | `true` | Preserve context across agents |
+| **Team Settings** | `default_reviewer` | string | `"@Architect"` | Default code reviewer role |
+| | `role_validation` | boolean | `true` | Validate role assignments |
+
+### Template and PRB Settings
+
+| Setting Category | Setting Key | Type | Default Value | Description |
+|------------------|-------------|------|---------------|-------------|
+| **Template Configuration** | `template_configuration.mandatory_templates` | boolean | `true` | Block manual PRB creation |
+| | `template_configuration.placeholder_resolution` | string | `"generation_time"` | When to resolve placeholders |
+| | `template_configuration.config_embedding` | boolean | `true` | Embed complete config in PRBs |
+| | `template_configuration.template_source` | string | `"src/prb-templates/"` | Required template source |
+| **Template Validation** | `validation.block_unresolved_placeholders` | boolean | `true` | Block [FROM_CONFIG] in PRBs |
+| | `validation.require_complete_context` | boolean | `true` | Require complete_context section |
+| | `validation.enforce_template_sections` | boolean | `true` | All mandatory sections required |
+| **Runtime Behavior** | `runtime.config_lookups_blocked` | boolean | `true` | Block runtime config access |
+| | `runtime.self_contained_execution` | boolean | `true` | PRBs must be self-contained |
+
+### Directory Structure Settings
+
+| Setting Category | Setting Key | Type | Default Value | Description |
+|------------------|-------------|------|---------------|-------------|
+| **Directory Paths** | `directory_structure.story_path` | string | `"stories"` | Story directory name |
+| | `directory_structure.bug_path` | string | `"bugs"` | Bug directory name |
+| | `directory_structure.prb_path` | string | `"prbs"` | PRB directory name |
+| | `directory_structure.memory_path` | string | `"memory"` | Memory directory name |
+| | `directory_structure.docs_path` | string | `"docs"` | Documentation directory |
+| | `directory_structure.src_path` | string | `"src"` | Source code directory |
+| | `directory_structure.test_path` | string | `"tests"` | Test directory name |
+| | `directory_structure.config_path` | string | `"config"` | Configuration directory |
+| | `directory_structure.prb_template_path` | string | `"prb-templates"` | Template directory name |
+
+### Memory Configuration Settings
+
+| Setting Category | Setting Key | Type | Default Value | Description |
+|------------------|-------------|------|---------------|-------------|
+| **Memory Paths** | `memory_configuration.external_path` | string | `null` | External memory storage path |
+| **Memory Behavior** | `memory_configuration.auto_commit` | boolean | `true` | Auto-commit memory changes |
+| | `memory_configuration.git_integration` | boolean | `true` | Enable Git integration |
+| | `memory_configuration.retention_policy` | string | `"unlimited"` | Memory retention policy |
+
+### MCP Integration Settings
+
+| Setting Category | Setting Key | Type | Default Value | Description |
+|------------------|-------------|------|---------------|-------------|
+| **Memory Provider** | `mcp_integrations.memory.enabled` | boolean | `false` | Enable MCP memory provider |
+| | `mcp_integrations.memory.provider` | string | `null` | Memory provider identifier |
+| | `mcp_integrations.memory.fallback` | string | `"file-based"` | Fallback strategy |
+| **Issue Tracking** | `mcp_integrations.issue_tracking.enabled` | boolean | `false` | Enable issue tracking provider |
+| | `mcp_integrations.issue_tracking.provider` | string | `null` | Issue provider identifier |
+| | `mcp_integrations.issue_tracking.project` | string | `null` | Target project/repository |
+| **Documentation** | `mcp_integrations.documentation.enabled` | boolean | `false` | Enable documentation provider |
+| | `mcp_integrations.documentation.provider` | string | `null` | Documentation provider |
+| | `mcp_integrations.documentation.config` | object | `{}` | Provider-specific config |
+
+### Workflow Settings by PRB Size
+
+| PRB Size | Version Bump | Changelog | PR Required | Merge Strategy | Release Automation |
+|----------|-------------|-----------|-------------|----------------|--------------------|
+| **Nano (0-2 pts)** | `false` | `false` | `false` | `direct_commit` | `false` |
+| **Tiny (3-5 pts)** | `true` (patch) | `true` | `false` | `direct_commit` | `false` |
+| **Medium (6-15 pts)** | `true` (minor) | `true` | `true` | `feature_branch` | `true` |
+| **Large (16-30 pts)** | `true` (minor) | `true` | `true` | `feature_branch` | `true` |
+| **Mega (30+ pts)** | `true` (major) | `true` | `true` | `feature_branch` | `true` |
+
+## Configuration Usage Examples
+
+### Access Configuration Values
+
+```bash
+# Get specific setting values
+/icc-get-setting git_privacy                    # Returns: true
+/icc-get-setting autonomy_level                 # Returns: L2
+/icc-get-setting mcp_integrations.memory.enabled # Returns: false
+/icc-get-setting directory_structure.story_path  # Returns: stories
+```
+
+### Environment-Specific Configuration
+
+```yaml
+# Development environment
+automy_level: "L3"                    # High autonomy for development
+git_privacy: false                     # Allow AI attribution
+mcp_integrations:
+  memory:
+    enabled: true
+    provider: "mcp__memory"
+    config:
+      database_url: "bolt://localhost:7687"
+```
+
+```yaml
+# Production environment  
+automy_level: "L1"                    # Manual approval required
+git_privacy: true                      # Strip AI mentions
+branch_protection: true                # Protect main branch
+require_pr_for_main: true             # Require pull requests
+```
+
+This configuration guide provides comprehensive coverage of all configuration options including MCP integration, template extensions, dynamic path resolution, and complete settings reference for the Intelligent Claude Code system.

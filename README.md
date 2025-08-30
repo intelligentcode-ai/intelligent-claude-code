@@ -373,12 +373,49 @@ Work in YOUR structure - system adapts!
 
 ## Documentation
 
+### Getting Started
 - **[Documentation Index](docs/index.md)** - Start here!
-- [Virtual Team Guide](docs/virtual-team-guide.md) - Meet the 14+ agent roles and dynamic specialist creation
+- [Installation Guide](docs/installation-guide.md) - Complete installation instructions
 - [User Guide](docs/user-guide.md) - Complete agent system usage guide
-- [Commands Reference](docs/commands-reference.md) - All commands and agent interactions explained
+- [Virtual Team Guide](docs/virtual-team-guide.md) - Meet the 14+ agent roles and dynamic specialist creation
+
+### Core System Guides
 - [PRB System Guide](docs/prb-system-guide.md) - How PRBs work with agent coordination
-- [Project Configuration](docs/project-configuration.md) - Setup guide for agent-driven projects
+- [Configuration Guide](docs/configuration-guide.md) - Complete configuration reference
+- [Commands Reference](docs/commands-reference.md) - All commands and agent interactions explained
+
+### Advanced Features
+- **[Template Extensions Guide](docs/template-extensions.md)** - Customize PRB templates without copying entire files
+- **[MCP Integration Guide](docs/mcp-integration.md)** - Connect with external systems (GitHub, databases, etc.)
+- [PRB Templates Guide](docs/prb-templates-guide.md) - Deep dive into PRB template system
+- [Best Practices Guide](docs/best-practices-guide.md) - Proven patterns and methodologies
+
+### Quick Examples
+**Template Extensions** - Add project-specific requirements to any PRB:
+```yaml
+# prb-extensions.yaml
+all:
+  requirements:
+    processual:
+      - "Run ESLint validation"
+      - "Execute security scan"
+medium:
+  review_checklist:
+    - "Integration test coverage > 80%"
+```
+
+**MCP Integration** - Connect with external systems:
+```yaml
+# In CLAUDE.md
+mcp_integrations:
+  issue_tracking:
+    provider: "mcp__github"
+    project: "your-org/your-repo"
+  memory:
+    provider: "mcp__memory"
+    config:
+      database_url: "${NEO4J_URI}"
+```
 
 ## Why PRBs with Agents?
 
