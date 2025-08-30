@@ -2,6 +2,11 @@
 
 **MANDATORY:** All PRB templates require complete placeholder resolution and validation before creation.
 
+## Imports
+@./shared-patterns/template-loading.md
+@./shared-patterns/template-enforcement.md
+@./shared-patterns/context-validation.md
+
 ## Core Rules
 
 ### Main Agent Context Required

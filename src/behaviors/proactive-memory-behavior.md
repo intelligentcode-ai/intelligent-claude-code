@@ -2,6 +2,10 @@
 
 **MANDATORY:** Check memory before asking users. Auto-generate memory proactively.
 
+## Imports
+@./shared-patterns/memory-operations.md
+@./shared-patterns/learning-patterns.md
+
 ## Core Principle: Memory-First Approach
 
 **FUNDAMENTAL RULE:** Check memory BEFORE asking users for any information that could be previously learned.

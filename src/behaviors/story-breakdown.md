@@ -2,6 +2,11 @@
 
 **MANDATORY:** @PM breaks down stories into PRBs with architect collaboration.
 
+## Imports
+@./shared-patterns/template-loading.md
+@./shared-patterns/context-validation.md
+@./shared-patterns/behavioral-decision-matrix.md
+
 ## Core Process
 
 **CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT subagent).

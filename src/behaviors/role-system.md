@@ -2,6 +2,10 @@
 
 **MANDATORY:** Comprehensive role management with assignment matrix, dynamic specialists, and management patterns.
 
+## Imports
+@./shared-patterns/enforcement-rules.md
+@./shared-patterns/behavioral-decision-matrix.md
+
 ## Core Role Framework
 
 ### 14 Core Roles
