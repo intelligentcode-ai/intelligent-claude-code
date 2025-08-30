@@ -10,6 +10,7 @@
 
 @./shared-patterns/configuration-patterns.md
 @./shared-patterns/autonomy-patterns.md
+@./shared-patterns/mcp-configuration-patterns.md
 
 ## Operation
 
@@ -100,6 +101,27 @@
   ```
 - Automatically create autonomy configuration section if missing
 - Preserve user preferences across sessions and system restarts
+
+## MCP Configuration Loading
+
+### MCP Integration Support
+- Check for mcp_integrations section in CLAUDE.md during configuration loading
+- Validate MCP configuration schema against defined patterns
+- Store MCP settings in configuration hierarchy with standard caching
+- Make MCP configuration available to behaviors via standard configuration access
+
+### MCP Configuration Processing
+**Integration with Standard Loading:**
+1. **Parse MCP Section:** Extract mcp_integrations from CLAUDE.md YAML frontmatter
+2. **Schema Validation:** Validate against mcp-configuration-patterns.md schema
+3. **Provider Verification:** Check if configured MCP providers are available
+4. **Configuration Storage:** Store in configuration cache with standard TTL
+5. **Access Enablement:** Make available via icc-get-setting command with dot notation
+
+**Configuration Access Examples:**
+- `icc-get-setting mcp_integrations.memory.enabled`
+- `icc-get-setting mcp_integrations.issue_tracking.provider`
+- `icc-get-setting mcp_integrations.documentation.config.base_path`
 
 ---
 *Config loader for intelligent-claude-code system*
