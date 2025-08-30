@@ -6,6 +6,7 @@
 @./shared-patterns/behavioral-decision-matrix.md
 @./shared-patterns/template-enforcement.md
 @./shared-patterns/enforcement-rules.md
+@./shared-patterns/main-scope-blocking.md
 @./shared-patterns/continuation-work-patterns.md
 
 ## Core Rules
@@ -15,8 +16,9 @@
 **EXECUTION:** Subagent (PRB implementation, file ops, git)
 
 ### Detection & Blocking
-**WORK INTENT:** implement, create, build, fix, update, modify, delete, install, deploy, configure, setup
-**INFORMATION REQUEST:** Questions with what, how, why, should, can, will + @Role questions
+**WORK INTENT (ULTRA-STRICT):** ALL action verbs including fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor, create, add, insert, generate, build, make, write, implement, develop, delete, remove, clean, purge, clear, eliminate, drop, deploy, install, configure, setup, run, execute, start, stop, restart, migrate, backup, restore, sync, merge, commit, push, pull
+
+**INFORMATION REQUEST:** Pure questions with what, how, why, should, can, will + @Role consultations WITHOUT work commitment
 
 ### Template Enforcement (ZERO TOLERANCE)
 - Manual PRB creation → BLOCK → "Use template hierarchy"
@@ -26,50 +28,70 @@
 
 ### Direct Execution Blocking
 
-#### Main Scope Execution Prevention
-**MANDATORY:** ALL work execution must follow PRB+agent pattern. Direct main scope execution is BLOCKED.
+#### Main Scope Execution Prevention (NUCLEAR ENFORCEMENT)
+**MANDATORY:** ZERO TOLERANCE for main scope work execution. ALL work execution must follow PRB+agent pattern.
 
 ```
-❌ MAIN SCOPE EXECUTION BLOCKED: All work requires PRB+agent execution
-VIOLATION: Detected work intent without active PRB context
-REQUIRED ACTION: Use @Role pattern to generate PRB first
+🚫 MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN 🚫
+VIOLATION: Direct work execution detected in main scope
+ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
 
-Examples:
-- @AI-Engineer implement this feature
-- @Developer fix this bug  
-- @DevOps-Engineer deploy the application
-- @Database-Engineer optimize queries
+DETECTED PATTERN: [specific pattern detected]
+BLOCKED ACTION: [attempted action]
 
-Process: User Request → PRB Generation → Agent Execution
+THIS IS NOT NEGOTIABLE:
+- Main scope = PRB creation ONLY
+- Subagent = Work execution ONLY
+- No exceptions, no workarounds, no compromises
+
+MANDATORY PROCESS:
+1. User Request → PRB Generation (main scope)
+2. PRB → Task Tool → Agent Execution (subagent)
+
+REQUIRED ACTION: Generate PRB using @Role pattern FIRST
 ```
 
-#### Comprehensive Blocking Patterns
-**BLOCK ALL:** Main scope implementation attempts
-- Direct file creation/modification without PRB
-- Direct system configuration without PRB
-- Direct deployment operations without PRB
-- Direct code changes without PRB
+#### Comprehensive Blocking Patterns (ULTRA-AGGRESSIVE)
+**BLOCK EVERYTHING:** Main scope work attempts including:
+- Direct file creation/modification/deletion without PRB
+- Direct system configuration/installation without PRB
+- Direct deployment/service operations without PRB
+- Direct code changes/fixes/improvements without PRB
+- Direct bug fixes/adjustments/corrections without PRB
+- Direct cleanup/optimization/refactoring without PRB
+- ANY action verb + target object combination
 
-**ERROR MESSAGING:**
+**ULTRA-STRICT ERROR MESSAGING:**
 ```
-❌ ARCHITECTURE VIOLATION: Main scope work execution forbidden
-SYSTEM DESIGN: Work requests → PRB creation → Subagent execution
-CORRECTIVE ACTION: Generate PRB using @Role pattern before proceeding
-BLOCKING REASON: Maintains architectural integrity and execution traceability
+⛔ ARCHITECTURAL PROTECTION ENGAGED ⛔
+VIOLATION: Main scope work execution attempt detected
+SYSTEM RULE: ZERO TOLERANCE for direct work execution
+
+BLOCKED PATTERN: [detected work pattern]
+ARCHITECTURAL INTEGRITY: PRB+Agent pattern is NON-NEGOTIABLE
+
+RECOVERY PROCESS:
+1. Generate PRB using @Role pattern
+2. Deploy via Task tool to authorized agent
+3. Agent executes with full tool authorization
+
+BLOCKING REASON: Maintains absolute architectural integrity and execution traceability
 ```
 
-#### Implementation Commitment Detection
-**TRIGGER BLOCKING FOR:**
-- Action verbs indicating work commitment (implement, create, build, fix, deploy)
-- File operation requests (create file, modify file, configure system)
-- @Role assignments with work context (@Role implement/fix/deploy)
-- System modification requests (install, update, configure, setup)
+#### Implementation Commitment Detection (COMPREHENSIVE)
+**TRIGGER IMMEDIATE BLOCKING FOR:**
+- ANY action verbs indicating work commitment (ALL verbs from ultra-strict list)
+- File operation requests (create, modify, delete, move, copy file)
+- @Role assignments with work context (@Role implement/fix/deploy/update/change)
+- System modification requests (install, update, configure, setup, restart)
+- Subtle work indicators ("Let me fix...", "I'll update...", "Going to change...")
+- Quick fix attempts ("Just need to...", "Quick adjustment...", "Simple change...")
 
-**ALLOW THROUGH:**
-- Pure information requests (show, explain, describe, analyze)
-- Status inquiries (what's the status, how is progress)
-- Planning discussions without implementation commitment
-- Architecture consultations without immediate execution
+**ALLOW THROUGH ONLY:**
+- Pure information requests without work implications (show, explain, describe, analyze)
+- Status inquiries with no action intent (what's the status, how is progress)
+- Planning discussions explicitly without implementation commitment
+- @Role consultations (what/how/why patterns) without work assignment
 
 ### Tool-Level Main Scope Blocking
 
@@ -87,19 +109,25 @@ BLOCKING REASON: Maintains architectural integrity and execution traceability
 - Main scope execution context (not in active PRB subagent)
 - File modification attempt without PRB authorization
 
-**BLOCKING MECHANISM:**
+**NUCLEAR TOOL BLOCKING:**
 ```
-❌ TOOL ACCESS BLOCKED: Work execution requires PRB authorization
-VIOLATION: Attempted [Edit/Write/MultiEdit] without active PRB context
-DETECTED INTENT: [work pattern detected]
-REQUIRED ACTION: Generate PRB first using @Role pattern
+⛔ TOOL ACCESS ABSOLUTELY DENIED ⛔
+TOOL: [Edit/Write/MultiEdit/Bash]
+CONTEXT: Main scope work execution attempt
+VIOLATION: Tool usage without active PRB context
 
-Examples:
-- User: "Fix the authentication bug" → Block Edit tool → Generate PRB
-- User: "Create a new configuration file" → Block Write tool → Generate PRB
-- User: "Update the documentation" → Block MultiEdit tool → Generate PRB
+ARCHITECTURAL RULE: Tools reserved EXCLUSIVELY for authorized subagent execution
+BLOCKING REASON: Maintains PRB-driven execution pattern
 
-Process: Work Request → PRB Generation → Tool Authorization → Subagent Execution
+DETECTED PATTERN: [work pattern detected]
+BLOCKED ACTION: [attempted action]
+
+MANDATORY RECOVERY PROCESS:
+1. Create PRB using @Role pattern
+2. Deploy PRB via Task tool to authorized agent
+3. Agent executes with FULL tool authorization
+
+NO EXCEPTIONS - NO SHORTCUTS - NO COMPROMISES
 ```
 
 #### Tool Authorization Context
