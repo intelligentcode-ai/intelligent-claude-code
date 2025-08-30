@@ -6,32 +6,28 @@
 
 ### Real-Time Work Detection & Instant PRB Creation
 **CRITICAL:** System operates in continuous detection mode with ZERO manual PRB creation:
-- **Microsecond Detection**: Work intent triggers immediate PRB generation pipeline
-- **Intelligent Classification**: Advanced pattern recognition distinguishes work vs information requests
-- **Automatic Template Matching**: Complexity scoring auto-selects optimal PRB template
-- **Complete Context Assembly**: Full project context gathered and embedded automatically
-- **Zero-Config PRBs**: All placeholders resolved, no runtime dependencies
-- **Instant Execution Ready**: PRBs generated with complete Task tool context
+- **Work intent triggers immediate PRB generation**
+- **Pattern recognition distinguishes work vs information requests**
+- **Complexity scoring auto-selects optimal template**
+- **Full project context gathered and embedded automatically**
+- **All placeholders resolved, no runtime dependencies**
+- **PRBs generated with complete Task tool context**
 
 ### Enhanced Automatic Detection Patterns
-**GUARANTEED PRB CREATION (Zero Manual Steps):**
-- **Implementation Language**: implement, create, build, develop, code, program, write
-- **Modification Language**: fix, update, modify, change, refactor, optimize, enhance, improve
-- **@Role Work Assignments**: @Developer implement auth, @AI-Engineer optimize behavior
+**GUARANTEED PRB CREATION:**
+- **Implementation**: implement, create, build, develop, code, program, write
+- **Modification**: fix, update, modify, change, refactor, optimize, enhance
+- **@Role Work**: @Developer implement auth, @AI-Engineer optimize behavior
 - **Story Processing**: break down STORY-001, implement user authentication
-- **Bug Resolution**: fix database connection, resolve memory leak
-- **System Operations**: deploy to staging, configure CI/CD, setup monitoring
-- **Integration Tasks**: connect API, integrate service, setup webhook
-- **Maintenance Work**: clean deprecated code, remove unused files, archive old data
-- **Infrastructure**: provision resources, setup environment, configure deployment
+- **Operations**: deploy, configure CI/CD, setup monitoring, provision resources
+- **Maintenance**: clean deprecated code, remove unused files, archive data
 
-**INTELLIGENT NON-TRIGGERS (Information/Planning Only):**
-- **Query Language**: show, display, read, list, check, analyze, examine, explain, describe
-- **Status Language**: what's the status, how are we doing, current progress, ongoing work
-- **Planning Language**: should we, what if, how about, what's the best approach
-- **@Role Consultations**: @Role what would you recommend, how would you handle this
-- **Architecture Discussions**: design patterns, system architecture (without implementation intent)
-- **Knowledge Requests**: explain concept, describe process, define terminology
+**INTELLIGENT NON-TRIGGERS:**
+- **Query**: show, display, read, list, check, analyze, examine, explain, describe
+- **Status**: what's the status, current progress, ongoing work
+- **Planning**: should we, what if, how about, what's the best approach
+- **@Role Consultations**: @Role what would you recommend, how would you handle
+- **Knowledge**: explain concept, describe process, define terminology
 
 ## Core Creation Rules
 
@@ -62,39 +58,32 @@
 ## Creation Process
 
 ### Lightning-Fast Automatic Generation Pipeline
-**SEAMLESS 12-STEP INSTANT AUTOMATION (Complete Zero-Touch Process):**
-1. **Microsecond Detection**: Real-time parsing with advanced NLP pattern recognition
-2. **Intent Classification**: AI-powered work vs information classification
-3. **Context Assembly**: Instant loading of complete project context
+**SEAMLESS 12-STEP INSTANT AUTOMATION:**
+1. **Detection**: Real-time parsing with NLP pattern recognition
+2. **Intent Classification**: Work vs information classification
+3. **Context Assembly**: Complete project context loading
 4. **Memory Integration**: Auto-search memory for applicable patterns
 5. **Complexity Calculation**: Enhanced scoring algorithm
-6. **Auto-Breakdown Logic**: If >15 points, intelligent decomposition
-7. **Template Auto-Selection**: Complexity score mapping to optimal template
+6. **Auto-Breakdown**: If >15 points, intelligent decomposition
+7. **Template Selection**: Complexity score mapping to optimal template
 8. **Template Loading**: Complete template structure loaded
-9. **Configuration Resolution**: Full config hierarchy loaded with actual values
+9. **Configuration Resolution**: Full config hierarchy with actual values
 10. **Placeholder Elimination**: Replace ALL placeholders with actual values
 11. **Context Embedding**: Complete project context embedded
 12. **Quality Validation**: ZERO placeholders, complete sections verified
 
 ### Automatic Context Integration
 **PRBs AUTOMATICALLY INCLUDE:**
-- **Project Context**: System nature, project root, key constraints from CLAUDE.md
+- **Project Context**: System nature, project root, constraints from CLAUDE.md
 - **Configuration Values**: All relevant settings from config hierarchy
 - **Critical Files**: Relevant files with actual content samples and purposes
 - **Memory Patterns**: Applicable learnings and successful patterns
 - **User Requirements**: Clear requirements with success criteria and scope limits
-- **Role Assignment**: Appropriate specialist roles based on work type and system nature
+- **Role Assignment**: Appropriate specialist roles based on work type
 
-### Size Enforcement
+### Size Enforcement & Validation
 **AUTO-BREAKDOWN:** If complexity >15 points, automatically break into smaller PRBs ≤15 points each
-
-### Validation
-**MANDATORY CHECKS:**
-- Template source compliance
-- Zero placeholder patterns
-- Complete context embedding
-- Naming format compliance
-- Parent reference validation (for PRBs)
+**MANDATORY CHECKS:** Template compliance, zero placeholders, complete context, naming format, parent reference
 
 ## Creation vs Execution Separation
 
@@ -125,10 +114,10 @@
 
 ### Blocking Patterns (IMMEDIATE STOP)
 **HARD BLOCKS:**
-- Subagent PRB creation attempts → "CREATION BLOCKED: Work items must be created by main agent"
-- Manual PRB creation without templates → "TEMPLATE REQUIRED: PRB creation without template FORBIDDEN"
-- Unresolved placeholders in PRB → "PLACEHOLDER UNRESOLVED: All placeholders must be resolved at generation"
-- Runtime config dependencies → "RUNTIME LOOKUP FORBIDDEN: All config must be embedded in PRB"
+- Subagent PRB creation → "CREATION BLOCKED: Work items must be created by main agent"
+- Manual PRB without templates → "TEMPLATE REQUIRED: PRB creation without template FORBIDDEN"
+- Unresolved placeholders → "PLACEHOLDER UNRESOLVED: All placeholders must be resolved"
+- Runtime config dependencies → "RUNTIME LOOKUP FORBIDDEN: All config must be embedded"
 
 ---
 *Comprehensive PRB and work item creation system*
