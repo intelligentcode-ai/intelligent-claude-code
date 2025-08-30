@@ -202,6 +202,46 @@ workflow:
   coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
   breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
 
+# MCP Operations Extension Points
+mcp_operations:
+  memory:
+    condition: "[MCP_MEMORY_ENABLED]"
+    provider: "[MCP_MEMORY_PROVIDER]"
+    operations:
+      - action: store_learning
+        topic: "[LEARNING_TOPIC]"
+        content: "[LEARNING_CONTENT]"
+    fallback: "file-based"
+  
+  issue_tracking:
+    condition: "[MCP_ISSUE_ENABLED]"
+    provider: "[MCP_ISSUE_PROVIDER]"
+    operations:
+      - action: create_issue
+        type: "[ISSUE_TYPE]"
+        title: "[ISSUE_TITLE]"
+        description: "[ISSUE_DESCRIPTION]"
+    fallback: "file-based"
+  
+  documentation:
+    condition: "[MCP_DOCS_ENABLED]"
+    provider: "[MCP_DOCS_PROVIDER]"
+    operations:
+      - action: generate_docs
+        path: "[DOC_PATH]"
+        content: "[DOC_CONTENT]"
+    fallback: "file-based"
+
+# MCP Placeholder Resolution Notes
+# During PRB generation, resolve these placeholders:
+# [MCP_MEMORY_ENABLED] → Check mcp_integrations.memory.enabled
+# [MCP_MEMORY_PROVIDER] → Get mcp_integrations.memory.provider
+# [MCP_ISSUE_ENABLED] → Check mcp_integrations.issue_tracking.enabled
+# [MCP_ISSUE_PROVIDER] → Get mcp_integrations.issue_tracking.provider
+# [MCP_DOCS_ENABLED] → Check mcp_integrations.documentation.enabled
+# [MCP_DOCS_PROVIDER] → Get mcp_integrations.documentation.provider
+# If not configured, set to false/"file-based"
+
 # Execution Strategy
 execution_strategy: |
   1. Create epic branch for system-wide coordination

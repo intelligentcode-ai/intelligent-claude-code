@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.1] - 2025-08-30
+
+### Enhanced
+- PRB templates with conditional MCP operation routing and provider extension points
+- All PRB templates (nano, tiny, medium, large, mega) now include mcp_operations sections
+- Conditional execution patterns that check MCP configuration and route to appropriate providers
+- Comprehensive placeholder resolution documentation for MCP configuration values
+- Backward compatibility maintained with file-based fallbacks as guaranteed defaults
+
 ## [7.6.0] - 2025-08-30
 
 ### Added
