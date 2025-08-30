@@ -9,10 +9,11 @@
 ## Core Decision Hierarchy
 
 **PRECEDENCE ORDER (Highest→Lowest):**
-1. **@Role Direct Execution** - Direct role assignments with work context
-2. **Work→PRB Generation** - Work intent patterns requiring structured execution
-3. **Simple Information Direct** - Straightforward information requests
-4. **Complex→PRB Analysis** - Complex investigation requiring structured analysis
+1. **Continuation Work** - Work that follows from PRB completion
+2. **@Role Direct Execution** - Direct role assignments with work context
+3. **Work→PRB Generation** - Work intent patterns requiring structured execution
+4. **Simple Information Direct** - Straightforward information requests
+5. **Complex→PRB Analysis** - Complex investigation requiring structured analysis
 
 ## Context-Based Complexity Evaluation
 
@@ -60,10 +61,35 @@ Complex: 9-15 points → PRB generation
 - **@Role Direct:** Always bypasses complexity scoring
 - **Explicit Work Request:** Always triggers PRB regardless of complexity
 - **User Preference:** Respect explicit "just tell me" vs "implement this"
+- **CONTINUATION WORK OVERRIDE:** If work follows from PRB completion (validation after code, fix after test failure), ALWAYS classify as complex regardless of command simplicity
 
 ## Decision Logic Matrix
 
-### 1. @Role Direct Execution (HIGHEST PRECEDENCE)
+### 1. Continuation Work (HIGHEST PRECEDENCE)
+
+**PATTERN:** Work that follows from PRB completion
+
+**TRIGGERS:**
+- Validation after code changes (npm test, pytest, make test, lint, typecheck, build verification)
+- Fixes after test failures (ANY code change after error detection)
+- Re-validation after fixes (retest, rebuild, re-verify)
+- CI/CD after validation (build, deploy, release operations)
+- Testing: npm test, pytest, make test, any test command
+- Validation: lint, typecheck, build verification
+- Fixes: ANY code change after error detection
+- CI/CD: build, deploy, release operations
+
+**ACTION:** ALWAYS generate PRB regardless of perceived complexity
+**RATIONALE:** Work that follows from PRB completion represents continuation of the implementation cycle and must maintain the PRB execution pattern for proper tracking, learning, and delegation
+
+**IMPLEMENTATION:**
+```yaml
+if: continuation_work_detected
+then: generate_prb() → task_tool_execution()
+bypass: complexity_evaluation, simplicity_overrides
+```
+
+### 2. @Role Direct Execution (HIGH PRECEDENCE)
 
 **PATTERN:** "@Role [direct work assignment]"
 
@@ -82,7 +108,7 @@ then: generate_prb() → task_tool_execution()
 bypass: complexity_evaluation, information_checks
 ```
 
-### 2. Work→PRB Generation (HIGH PRECEDENCE)
+### 3. Work→PRB Generation (HIGH PRECEDENCE)
 
 **PATTERN:** Work intent without explicit role assignment
 
@@ -91,6 +117,10 @@ bypass: complexity_evaluation, information_checks
 - Modification: fix, update, modify, change, refactor, enhance  
 - Operations: deploy, install, configure, setup, migrate
 - Maintenance: delete, remove, clean, archive
+- Testing: npm test, pytest, make test, any test command
+- Validation: lint, typecheck, build verification
+- Fixes: ANY code change after error detection
+- CI/CD: build, deploy, release operations
 
 **CONTEXT EVALUATION:**
 - **Any Scope:** Work intent always triggers PRB generation
@@ -106,7 +136,7 @@ then: analyze_complexity() → select_template() → generate_prb()
 bypass: direct_response_options
 ```
 
-### 3. Simple Information Direct (MEDIUM PRECEDENCE)
+### 4. Simple Information Direct (MEDIUM PRECEDENCE)
 
 **PATTERN:** Information requests with simple context
 
@@ -134,7 +164,7 @@ then: search_memory() → direct_response()
 exclude: work_intent, complex_analysis_needs
 ```
 
-### 4. Complex→PRB Analysis (TRIGGER PRECEDENCE)
+### 5. Complex→PRB Analysis (TRIGGER PRECEDENCE)
 
 **PATTERN:** Information requests requiring structured investigation
 
@@ -191,11 +221,12 @@ rationale: "Complex analysis benefits from PRB structure"
 ### For Claude Behavioral Processing
 
 **DECISION SEQUENCE:**
-1. **Check @Role Direct:** Is this a direct role work assignment?
-2. **Check Work Intent:** Does this contain implementation/modification intent?
-3. **Evaluate Context Complexity:** Score context factors 1-15
-4. **Apply Decision Logic:** Use matrix based on precedence and complexity
-5. **Execute Action:** PRB generation, direct response, or structured analysis
+1. **Check Continuation Work:** Is this work following from PRB completion?
+2. **Check @Role Direct:** Is this a direct role work assignment?
+3. **Check Work Intent:** Does this contain implementation/modification intent?
+4. **Evaluate Context Complexity:** Score context factors 1-15
+5. **Apply Decision Logic:** Use matrix based on precedence and complexity
+6. **Execute Action:** PRB generation, direct response, or structured analysis
 
 **ERROR PREVENTION:**
 - **Never bypass work→PRB** for implementation intent
@@ -207,8 +238,9 @@ rationale: "Complex analysis benefits from PRB structure"
 
 **QUICK DECISION CHECKLIST:**
 ```yaml
+continuation_work (test/validate/fix after PRB)? → PRB generation
 @Role + work_verb + target? → PRB generation
-work_verb (implement/fix/deploy)? → PRB generation  
+work_verb (implement/fix/deploy/test/validate)? → PRB generation  
 info_request + simple_context? → Direct response
 info_request + complex_context? → Investigation PRB
 ```

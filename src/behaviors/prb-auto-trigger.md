@@ -29,6 +29,33 @@
 | @Role | @Role mention | PRB + Subagent execution |
 | Natural Language | "break down STORY-X", "create specialist for Y" | Generate PRB |
 
+## Automatic Validation Chain
+
+### Post-Code-Change Validation
+**MANDATORY:** After ANY PRB that modifies code/configuration:
+1. **Detect completion**: PRB with code changes completed
+2. **Generate validation PRB**: 
+   - Title: "Validate [parent PRB title]"
+   - Role: @QA-Engineer or @Backend-Tester
+   - Include: Test scope, files changed, validation criteria
+3. **Auto-execute**: Trigger via Task tool immediately
+
+### Post-Failure Fix Generation  
+**MANDATORY:** After ANY validation PRB reports failures:
+1. **Detect failure**: Validation PRB returns errors/failures
+2. **Generate fix PRB**:
+   - Title: "Fix validation failures from [parent PRB]"
+   - Role: Same as original implementation role
+   - Include: Error messages, stack traces, failed tests
+3. **Auto-execute**: Trigger via Task tool immediately
+
+### Continuation Detection
+**MANDATORY:** Recognize continuation work patterns:
+- Test commands after code changes → Validation PRB
+- Fix attempts after errors → Fix PRB
+- Build commands after fixes → Build PRB
+- Deploy after successful build → Deploy PRB
+
 ## Complexity Scoring
 
 **Auto-calculation**:
@@ -132,6 +159,12 @@ Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points ea
 - **Bug Analysis**: All bug investigation and resolution patterns
 - **PRB Creation Planning**: Structured analysis for complex PRB generation
 - **Architecture Decisions**: Design choices requiring structured evaluation
+
+**Continuation Work Indicators (ALWAYS TRIGGER PRB):**
+- **Post-Code Testing**: Any test command after code changes
+- **Post-Error Fixes**: Any fix attempt after error detection
+- **Post-Fix Validation**: Any validation after fixes
+- **Chain Operations**: Operations that logically follow previous work
 
 **Information Request Indicators (DO NOT TRIGGER PRB):**
 - **Query**: show, display, read, list, check, analyze, examine, inspect
