@@ -2,6 +2,11 @@
 
 **MANDATORY:** Comprehensive validation for templates, processes, integration, and execution quality.
 
+## Imports
+@./shared-patterns/context-validation.md
+@./shared-patterns/execution-validation.md
+@./shared-patterns/template-enforcement.md
+
 ## Core Validation Framework
 
 ### Template Validation

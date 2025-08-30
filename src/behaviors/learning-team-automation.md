@@ -2,6 +2,10 @@
 
 **MANDATORY:** Use learnings and auto-correct violations.
 
+## Imports
+@./shared-patterns/memory-operations.md
+@./shared-patterns/learning-patterns.md
+
 ## Core Learning Process
 
 **PRB-DRIVEN EXECUTION:** Active learning tracking with proactive memory generation

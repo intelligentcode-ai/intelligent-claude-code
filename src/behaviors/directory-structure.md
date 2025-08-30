@@ -2,6 +2,9 @@
 
 **MANDATORY:** Projects follow configurable directory structure. Auto-create missing directories.
 
+## Imports
+@./shared-patterns/configuration-patterns.md
+
 ## Default Structure
 
 **Project Root Organization:**
