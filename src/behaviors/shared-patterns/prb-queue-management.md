@@ -29,7 +29,7 @@
 
 ## Background Execution
 
-**Dispatch:** `Task(subagent_type='general-purpose', run_in_background=true)` → store prb_id, agent_handle, start_time, files_locked
+**Dispatch Pattern:** Use Task tool with general-purpose subagent and background execution, then store tracking information including PRB ID, agent handle, start time, and file locks
 **Monitor:** Every 2-5min → check agent status → process completions/failures → cleanup resources → trigger next dispatch → update stats
 
 ## Queue Health & Recovery

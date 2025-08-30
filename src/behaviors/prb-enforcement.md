@@ -20,17 +20,24 @@
 
 **INFORMATION REQUEST:** Pure questions with what, how, why, should, can, will + @Role consultations WITHOUT work commitment
 
-### Template Enforcement (ZERO TOLERANCE)
-- Manual PRB creation → BLOCK → "Use template hierarchy"
-- Unresolved placeholders → BLOCK → "Resolve all placeholders"
-- Runtime config lookup → BLOCK → "Embed config values"
-- Wrong template source → BLOCK → "Use template hierarchy only"
+### Template Enforcement
+- Manual PRB creation → BLOCKED → "Use template hierarchy"
+- Unresolved placeholders → BLOCKED → "Resolve all placeholders" 
+- Runtime config lookup → BLOCKED → "Embed config values"
+- Wrong template source → BLOCKED → "Use template hierarchy only"
 
-### Direct Execution Blocking
+### Main Scope Work Blocking
 
 #### Main Scope Execution Prevention (NUCLEAR ENFORCEMENT)
 **MANDATORY:** ZERO TOLERANCE for main scope work execution. ALL work execution must follow PRB+agent pattern.
 
+**BLOCKED ACTIONS:** All work execution in main scope including:
+- Direct file operations without PRB
+- System configuration without PRB
+- Code changes without PRB
+- Any implementation without PRB context
+
+**ERROR MESSAGE:**
 ```
 🚫 MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN 🚫
 VIOLATION: Direct work execution detected in main scope
@@ -51,63 +58,19 @@ MANDATORY PROCESS:
 REQUIRED ACTION: Generate PRB using @Role pattern FIRST
 ```
 
-#### Comprehensive Blocking Patterns (ULTRA-AGGRESSIVE)
-**BLOCK EVERYTHING:** Main scope work attempts including:
-- Direct file creation/modification/deletion without PRB
-- Direct system configuration/installation without PRB
-- Direct deployment/service operations without PRB
-- Direct code changes/fixes/improvements without PRB
-- Direct bug fixes/adjustments/corrections without PRB
-- Direct cleanup/optimization/refactoring without PRB
-- ANY action verb + target object combination
-
-**ULTRA-STRICT ERROR MESSAGING:**
-```
-⛔ ARCHITECTURAL PROTECTION ENGAGED ⛔
-VIOLATION: Main scope work execution attempt detected
-SYSTEM RULE: ZERO TOLERANCE for direct work execution
-
-BLOCKED PATTERN: [detected work pattern]
-ARCHITECTURAL INTEGRITY: PRB+Agent pattern is NON-NEGOTIABLE
-
-RECOVERY PROCESS:
-1. Generate PRB using @Role pattern
-2. Deploy via Task tool to authorized agent
-3. Agent executes with full tool authorization
-
-BLOCKING REASON: Maintains absolute architectural integrity and execution traceability
-```
-
-#### Implementation Commitment Detection (COMPREHENSIVE)
-**TRIGGER IMMEDIATE BLOCKING FOR:**
-- ANY action verbs indicating work commitment (ALL verbs from ultra-strict list)
-- File operation requests (create, modify, delete, move, copy file)
-- @Role assignments with work context (@Role implement/fix/deploy/update/change)
-- System modification requests (install, update, configure, setup, restart)
-- Subtle work indicators ("Let me fix...", "I'll update...", "Going to change...")
-- Quick fix attempts ("Just need to...", "Quick adjustment...", "Simple change...")
-
-**ALLOW THROUGH ONLY:**
-- Pure information requests without work implications (show, explain, describe, analyze)
-- Status inquiries with no action intent (what's the status, how is progress)
-- Planning discussions explicitly without implementation commitment
-- @Role consultations (what/how/why patterns) without work assignment
-
 ### Tool-Level Main Scope Blocking
 
 **MANDATORY:** Block file modification tools (Edit/Write/MultiEdit) in main scope when work patterns are detected.
 
 #### Blocked Tools for Work Intent
 **BLOCKED TOOLS IN MAIN SCOPE:**
-- `Edit` tool for file modifications
-- `MultiEdit` tool for multi-file changes
-- `Write` tool for file creation
-- `Bash` tool for system modifications (except read-only operations)
+- Edit, MultiEdit, Write tools for modifications
+- Bash tool for system changes (read-only allowed)
 
 **BLOCKING CONDITIONS:**
-- Work intent detected (implement, create, build, fix, update, modify, delete, install, deploy, configure, setup)
-- Main scope execution context (not in active PRB subagent)
-- File modification attempt without PRB authorization
+- Work intent detected
+- Main scope context (not in active PRB)
+- No PRB authorization
 
 **NUCLEAR TOOL BLOCKING:**
 ```
@@ -130,128 +93,34 @@ MANDATORY RECOVERY PROCESS:
 NO EXCEPTIONS - NO SHORTCUTS - NO COMPROMISES
 ```
 
-#### Tool Authorization Context
-**AUTHORIZED TOOL USAGE:**
-- Read operations (Read, LS, Glob, Grep) - always allowed
-- Non-modifying system operations (status checks, information gathering)
-- Configuration loading and validation
-- Memory search operations
+## Auto-Correction Patterns
 
-**UNAUTHORIZED TOOL USAGE:**
-- File modifications without PRB context
-- System changes without PRB authorization
-- Direct implementation attempts in main scope
-- Bypassing PRB workflow through tool usage
-
-#### Automatic PRB Generation Trigger
-**WHEN TOOLS BLOCKED:** Immediately trigger automatic PRB generation
-1. **Detect Blocked Tool Usage:** Work intent + tool request in main scope
-2. **Capture Work Context:** Extract user intent and requirements
-3. **Auto-Generate PRB:** Create appropriate PRB with complete context
-4. **Execute via Subagent:** Deploy PRB through Task tool to authorized agent
-5. **Complete Work:** Agent executes with full tool authorization
-
-## Auto-Correction
 | Violation | Action |
 |-----------|--------|
 | Manual PRB creation | Force template usage |
 | Missing template sections | Load complete template |
-| Unresolved placeholders | Resolve all placeholders |
+| Unresolved placeholders | Resolve placeholders |
 | Runtime config lookup | Embed config values |
-| PRB >15 points | Auto-breakdown |
+| PRB exceeds 15 points | Auto-breakdown |
 | Wrong role assignment | PM+Architect collaboration |
 
-## Pattern Detection
+## Pattern Detection Rules
+
 **@Role mentions** → Generate PRB → Subagent execution
-**Work items (STORY-XXX, BUG-XXX)** → Convert to PRB → Execute
+**Work items** → Convert to PRB → Execute
 **Direct work** → Block → Generate PRB
 
 ## System Nature Validation
+
 **AI-AGENTIC:** @AI-Engineer for behaviors, memory, PRBs
 **CODE-BASED:** @Developer, @Backend-Tester for implementation
-**Mismatch:** Enforce PM+Architect collaboration
-
-## Execution Precision Controls
-
-### Proportional Response Rules
-**MANDATORY:** Response complexity must match request complexity. Prevent overshooting user intent.
-
-#### Simple Request Detection
-**SIMPLE REQUEST INDICATORS:**
-- Single action verbs (fix, show, create, update)
-- Specific target mentioned (fix this bug, show status)
-- No additional scope implied
-- Direct, focused intent
-
-#### Simple Response Requirements
-**FOR SIMPLE REQUESTS:**
-- Perform ONLY the requested action
-- Do NOT expand scope automatically
-- Do NOT add unrequested features
-- Do NOT include related improvements unless explicitly asked
-
-#### Scope Expansion Blocking
-**BLOCK AUTOMATIC SCOPE EXPANSION:**
-- "While I'm at it, I'll also..."
-- "This would be a good time to..."
-- "I notice we could also..."
-- "Let me also improve..."
-
-**BLOCKING PATTERN:**
-```
-❌ SCOPE EXPANSION BLOCKED: Performing only requested actions
-USER REQUEST: [specific action]
-SYSTEM RESPONSE: [exact match to request only]
-BLOCKED ADDITIONS: [list any prevented scope expansion]
-```
-
-#### Proportional Complexity Matching
-**REQUEST-RESPONSE ALIGNMENT:**
-- **Single file change** → Single file modification only
-- **Simple bug fix** → Fix the specific bug only
-- **Show information** → Display requested information only
-- **Status inquiry** → Current status only, no recommendations
-
-## File Generation Control
-
-### Automatic File Generation Prevention
-**MANDATORY:** Block all automatic file generation. Files created ONLY on explicit user request.
-
-#### Blocked Automatic Generation Patterns
-**BLOCK ALL AUTOMATIC:**
-- Summary file creation
-- Temporary file generation
-- Documentation files without explicit request
-- Report files without user direction
-- Analysis output files
-- Configuration backups without request
-
-**BLOCKING MECHANISM:**
-```
-❌ FILE GENERATION BLOCKED: Automatic file creation forbidden
-USER REQUEST: [analyze request for file creation intent]
-ALLOWED: Read, analyze, display information only
-BLOCKED: Creating files without explicit "create file" request
-```
-
-#### File Creation Intent Detection
-**EXPLICIT FILE CREATION REQUESTS (ALLOW):**
-- "Create a file..."
-- "Write to file..."
-- "Generate a [filename]..."
-- "Save this to..."
-- Direct file creation commands with specific names
-
-**AUTOMATIC GENERATION (BLOCK):**
-- Summary generation without file request
-- Temporary file creation for analysis
-- Documentation generation as side effect
-- Report creation without explicit instruction
+**HYBRID:** PM+Architect collaboration for role selection
 
 ## Quality Gates
+
 **Pre-Creation:** Template compliance, context completeness, role assignment
-**Runtime:** Execution monitoring, quality maintenance, adaptation handling
-**Post-Execution:** Completion verification, quality assessment, learning capture
+**Runtime:** Execution monitoring, quality maintenance
+**Post-Execution:** Completion verification, learning capture
 
 ---
 *Core PRB enforcement with blocking, auto-correction, and execution precision controls*
