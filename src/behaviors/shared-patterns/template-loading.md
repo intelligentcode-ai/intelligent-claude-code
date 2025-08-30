@@ -4,12 +4,16 @@
 
 **PURPOSE:** Define hierarchical template loading with project override support
 
+## Imports
+
+@./installation-path-detection.md
+
 ## Template Hierarchy
 
 **Search Order (Highest→Lowest Priority):**
 1. **Project Templates**: `{project_root}/{prb_template_path}/`
 2. **Project Claude Templates**: `{project_root}/.claude/prb-templates/`
-3. **User Global Templates**: `~/.claude/prb-templates/`
+3. **Installation Templates**: `{get_install_path()}/prb-templates/`
 
 ## Template Files
 
@@ -27,7 +31,7 @@
 2. **Create Search Path List:** Build hierarchy of paths to search:
    - Project configured template path (via get_project_path)
    - Project .claude/prb-templates directory  
-   - User global ~/.claude/prb-templates directory
+   - Installation templates directory ({get_install_path()}/prb-templates/)
 3. **Search Each Path:** Check each path in hierarchy order:
    - If template file exists at current path, load and return that template
    - If not found, continue to next path in hierarchy
@@ -193,7 +197,7 @@ Projects can override any template by placing it in their configured template di
 - Create README explaining hierarchy
 
 ### Template Installation
-- System templates installed to `~/.claude/prb-templates/`
+- System templates installed to `{get_install_path()}/prb-templates/`
 - Projects can override by copying to local template directory
 - Modifications preserved during system updates
 

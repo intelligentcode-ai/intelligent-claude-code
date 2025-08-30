@@ -2,11 +2,15 @@
 
 **MANDATORY:** Use configuration hierarchy. Auto-correct violations.
 
+## Imports
+
+@./installation-path-detection.md
+
 ## Configuration Hierarchy
 **Priority (Highest→Lowest):**
 1. Embedded config (in PRBs)
 2. Project config (./config.md - default, or .claude/config.md if user demands)
-3. User global (~/.claude/config.md - system-wide only)
+3. Installation global ({get_install_path()}/config.md - installation-wide only)
 4. System defaults
 
 ## Settings Structure
@@ -54,7 +58,7 @@ role_validation: true            # Validate role assignments
 ## Loading Process
 1. Load configuration from hierarchy
 2. Load system defaults (professional standards above)
-3. Merge user global (~/.claude/config.md - system-wide only)
+3. Merge installation global ({get_install_path()}/config.md - installation-wide only)
 4. Merge project (./config.md or .claude/config.md if explicitly configured)
 5. Apply embedded overrides
 6. Return merged settings

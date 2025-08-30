@@ -2,6 +2,10 @@
 
 Initialize the intelligent-claude-code virtual team system with configuration loading and role activation.
 
+## Imports
+
+@../behaviors/shared-patterns/installation-path-detection.md
+
 ## Behavior
 System bootstrap operation that loads configuration, initializes memory, activates roles,
 and prepares the virtual team for work. Can be run by any role or automatically on startup.
@@ -25,7 +29,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 When running `/icc-init-system`, the system displays progress through these phases:
 
 ### 🧠 RELOADING SYSTEM BEHAVIORS
-Loading all behavioral patterns from ~/.claude/behaviors/:
+Loading all behavioral patterns from {get_install_path()}/behaviors/:
   ✓ config-loader.md - Configuration hierarchy management
   ✓ directory-structure.md - Project structure enforcement
   ✓ learning-team-automation.md - PRB learning and pattern capture
@@ -40,13 +44,13 @@ Loading all behavioral patterns from ~/.claude/behaviors/:
 All behaviors successfully reloaded ✅
 
 ### 📋 RELOADING PRB TEMPLATES
-Loading all templates from ~/.claude/prb-templates/:
+Loading all templates from {get_install_path()}/prb-templates/:
   ✓ nano-prb-template.yaml - Trivial changes (0-2 points)
   ✓ tiny-prb-template.yaml - Simple single-file (3-5 points)
   ✓ medium-prb-template.yaml - Multi-file features (6-15 points)
   ✓ large-prb-template.yaml - Complex coordination (16-30 points)
   ✓ mega-prb-template.yaml - System-wide changes (30+ points)
-Template hierarchy: Project → .claude → ~/.claude
+Template hierarchy: Project → .claude → {get_install_path()}
 All templates successfully loaded ✅
 
 ### 🎯 PROJECT SCOPE REMINDER
@@ -118,7 +122,7 @@ When autonomy_level is provided as parameter:
 - ✅ Enforcement validation active
 
 ## Error Handling
-- **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration. Check ~/.claude/config.md"
+- **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration. Check {get_install_path()}/config.md"
 - **MEMORY_INIT_FAILED**: "⚠️ Warning: Memory system unavailable. Using file-based fallback"
 - **ROLE_LOAD_FAILED**: "❌ Error: Failed to load role definitions. Check specialists.md"
 - **PRB_INIT_FAILED**: "❌ Error: PRB system failed to initialize"

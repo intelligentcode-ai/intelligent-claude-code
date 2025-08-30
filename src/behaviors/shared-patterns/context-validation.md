@@ -2,6 +2,10 @@
 
 **MANDATORY:** Complete context before PRB generation.
 
+## Imports
+
+@./installation-path-detection.md
+
 ## Required Context
 
 | Element | Requirement | Validation |
@@ -35,9 +39,9 @@
 ### Project Boundary Validation
 **REQUIRED**: All file operations must respect project boundaries
 - **ALLOWED SCOPE**: Only operations within project root directory and subdirectories
-- **BLOCKED SCOPE**: Write operations to ~/.claude/ during normal execution
-- **EXCEPTION SCOPE**: ~/.claude/ read operations for configuration loading
-- **INSTALLATION SCOPE**: ~/.claude/ write operations only during installation or explicit global config changes
+- **BLOCKED SCOPE**: Write operations to {get_install_path()}/ during normal execution
+- **EXCEPTION SCOPE**: {get_install_path()}/ read operations for configuration loading
+- **INSTALLATION SCOPE**: {get_install_path()}/ write operations only during installation or explicit global config changes
 
 ### Configuration Value Loading
 **REQUIRED**: All configuration values must be actual, not placeholders

@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.6] - 2025-08-30
+
+### Added
+- Comprehensive template extensions documentation (docs/template-extensions.md)
+- Real-world examples for frontend, backend, DevOps, and documentation projects
+- Complete prb-extensions.yaml structure reference with all customization options
+- AI-powered intelligent merging explanation with additive and override patterns
+- Migration guide from template copying to extension-based customization
+- Troubleshooting section with specific error patterns and solutions
+- Best practices for when to use extensions vs template copying
+- Performance optimization guidance for large extension files
+
 ## [7.6.5] - 2025-08-30
 
 ### Enhanced

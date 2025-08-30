@@ -2,11 +2,15 @@
 
 **MANDATORY:** Shared enforcement patterns and validation functions
 
+## Imports
+
+@./installation-path-detection.md
+
 ## Subagent Scope Validation
 
 ### Scope Rules
-- **Block:** Subagent working directory starting with ~/.claude/
-- **Block:** File operations to ~/.claude/ (except installation)
+- **Block:** Subagent working directory starting with {get_install_path()}/
+- **Block:** File operations to {get_install_path()}/ (except installation)
 - **Allow:** Project root working directories and project file operations
 
 ## Role System Enforcement
