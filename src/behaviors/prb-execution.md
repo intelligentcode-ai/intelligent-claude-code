@@ -2,6 +2,9 @@
 
 **MANDATORY:** All PRBs execute via automatic agent invocation with Task tool - enforce completion checklist and auto-correct false completion claims.
 
+## Imports
+@./shared-patterns/non-blocking-task-patterns.md
+
 ## PRB Execution Flow
 
 **Complete Flow:**
@@ -37,12 +40,13 @@
 - **Expertise Level:** All specialists operate with 10+ years domain expertise
 
 ### Task Tool Integration
-**MANDATORY PATTERN:** All PRB execution via Task tool subagents:
+**MANDATORY PATTERN:** All PRB execution via Task tool subagents with non-blocking support:
 
 <!-- IMPLEMENTATION NOTE: Task tool creates isolated execution environment for each
      agent, ensuring complete context passing and preventing configuration lookups
      at runtime. This maintains PRB self-containment and execution reliability. -->
 
+#### Standard Blocking Execution
 ```markdown
 Task(
     subagent_type='general-purpose',
@@ -51,19 +55,65 @@ Task(
 )
 ```
 
+#### Non-Blocking Execution Pattern
+**For Parallel Execution (L3 Mode):**
+```markdown
+Task(
+    subagent_type='general-purpose',
+    description='Execute [PRB-ID]: [brief_description]',
+    prompt='[Complete PRB context with embedded configuration]',
+    run_in_background=true
+)
+```
+
+**Non-Blocking Decision Criteria:**
+- **Use Non-Blocking When:**
+  - L3 autonomous mode with max_parallel > 1
+  - Independent PRBs without dependencies
+  - Long-running tasks (>2 minutes expected)
+  - Available parallel capacity exists
+  
+**Use Blocking When:**
+- L1/L2 modes requiring approval
+- Dependent PRBs needing previous results
+- Critical operations requiring immediate feedback
+- At max_parallel capacity threshold
+
+#### Background Agent Tracking
+**Agent Handle Management:**
+```yaml
+parallel_execution:
+  current_running: [count]
+  max_capacity: [from_config]
+  agent_registry:
+    - handle: [agent_id]
+      prb_id: [prb_id]  
+      start_time: [timestamp]
+      status: running|completed|error
+```
+
+**Status Monitoring Pattern:**
+1. Store agent handle on background launch
+2. Periodically check agent status (every 2-5 minutes)
+3. Process completion or handle errors
+4. Clean up completed agents from registry
+5. Auto-dispatch queued PRBs when slots available
+
 **EXECUTION ISOLATION:**
 - Complete PRB context passed to agent
 - No runtime configuration lookups
 - Self-contained execution environment
 - Agent operates with full project context
+- Background execution maintains same isolation guarantees
 
 ## Execution Clarity
 
 ### PRB Execution Patterns
 **AUTOMATIC AGENT INVOCATION:** PRBs trigger appropriate agent selection and Task tool execution
+**PARALLEL EXECUTION:** Non-blocking Task tool enables parallel agent execution (L3 mode)
 **SUBAGENT EXECUTION:** All PRBs execute via AGENTS with embedded context
 **SELF-CONTAINED:** No external config lookups or runtime dependencies
-**COMPLETION TRACKING:** Mandatory checklist validation
+**COMPLETION TRACKING:** Mandatory checklist validation with background status monitoring
 
 ### Context Requirements
 **PRB MUST CONTAIN:**
