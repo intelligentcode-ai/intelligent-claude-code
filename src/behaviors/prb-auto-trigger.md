@@ -10,6 +10,9 @@
 @./shared-patterns/context-validation.md
 @./shared-patterns/continuation-work-patterns.md
 @./shared-patterns/prb-queue-management.md
+@./shared-patterns/extension-loading-patterns.md
+@./shared-patterns/extension-merging-patterns.md
+@./shared-patterns/mcp-resolution-patterns.md
 @./naming-numbering-system.md
 
 ## Behavioral Decision Integration
@@ -58,13 +61,16 @@
 3. **Score** complexity
 4. **Auto-breakdown** if complexity > 15 points
 5. **Load Template** from hierarchy
-6. **Load Configuration** at generation time
-7. **Load Workflow Settings** from CLAUDE.md
-8. **Resolve ALL Placeholders** with actual values
-9. **Embed Complete Context** in PRB
-10. **Validate NO Placeholders** remain
-11. **Generate** compliant name and create PRB
-12. **Execute** via subagent
+6. **Load Extensions** from prb-extensions.yaml (if exists)
+7. **Load Configuration** at generation time
+8. **Load Workflow Settings** from CLAUDE.md
+9. **Merge Extensions** with base template
+10. **Resolve MCP Placeholders** with actual configuration values
+11. **Resolve ALL Placeholders** with actual values
+12. **Embed Complete Context** in PRB
+13. **Validate NO Placeholders** remain
+14. **Generate** compliant name and create PRB
+15. **Execute** via subagent
 
 ## Workflow Placeholder Resolution
 
@@ -83,6 +89,21 @@
 - medium-prb-template.yaml → workflow_settings.medium.*
 - large-prb-template.yaml → workflow_settings.large.*
 - mega-prb-template.yaml → workflow_settings.mega.*
+
+## Extension and MCP Integration
+
+**Template Extension Processing:**
+- Load prb-extensions.yaml from project root or .claude/ directory
+- Apply universal `all:` extensions to every template size
+- Apply size-specific extensions (nano/tiny/medium/large/mega) to matching templates
+- Use additive merging by default, `!override` marker for replacements
+- Handle missing extension files gracefully (continue with base templates)
+
+**MCP Placeholder Resolution:**
+- Resolve `[MCP_MEMORY_ENABLED]`, `[MCP_ISSUE_ENABLED]`, `[MCP_DOCS_ENABLED]` with configuration values
+- Resolve `[MCP_MEMORY_PROVIDER]`, `[MCP_ISSUE_PROVIDER]`, `[MCP_DOCS_PROVIDER]` with provider names
+- Default to `false` and `"file-based"` when mcp_integrations not configured
+- Apply resolution before final placeholder validation
 
 ## Context Requirements
 
