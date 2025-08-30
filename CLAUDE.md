@@ -321,3 +321,5 @@ NEVER proactively create documentation files (*.md) or README files. Only create
 - ALWAYS respect GIT PRIVACY settings!
 - ALWAYS retrieve and RESPECT the scope of the project when creating PRBs!
 - Bug-Fixes only yield build number changes.
+- No behavioural file should be longer than 125 lines!
+- NO CODE OR PSEUDO-CODE WHATSOEVER!
