@@ -19,10 +19,10 @@
 **INFORMATION REQUEST:** Questions with what, how, why, should, can, will + @Role questions
 
 ### Template Enforcement (ZERO TOLERANCE)
-- Manual PRB creation → BLOCK → "Use src/prb-templates/"
+- Manual PRB creation → BLOCK → "Use template hierarchy"
 - Unresolved placeholders → BLOCK → "Resolve all placeholders"
 - Runtime config lookup → BLOCK → "Embed config values"
-- Wrong template source → BLOCK → "Use src/prb-templates/ only"
+- Wrong template source → BLOCK → "Use template hierarchy only"
 
 ### Direct Execution Blocking
 
