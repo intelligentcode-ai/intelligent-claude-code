@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.2] - 2025-08-30
+
+### Enhanced
+- Story breakdown behavior with MCP issue tracker integration patterns
+- External issue creation support for GitHub, GitLab, and Jira via MCP servers
+- Bidirectional status synchronization between file-based and external issue systems
+- Provider-specific patterns and metadata storage for external issue tracking
+- File-based system remains default with opt-in external integration
+
 ## [7.6.1] - 2025-08-30
 
 ### Enhanced
