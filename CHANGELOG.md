@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.9.0] - 2025-09-01
+
+### Added
+- **CRITICAL**: Implemented missing Sequential Thinking behavioral pattern (109 lines)
+- **CRITICAL**: Implemented missing Ultrathinking behavioral pattern (118 lines) 
+- **CRITICAL**: PM nuclear work blocking with zero-tolerance enforcement
+- New pm-role-enforcement.md shared pattern for PM delegation compliance
+- Analytical frameworks integration in virtual-team.md
+- Sequential analysis integration in PRB generation workflow
+
+### Fixed
+- **CRITICAL**: BUG-061 - PM roles now blocked from all direct work execution
+- **CRITICAL**: BUG-062 - Sequential thinking and ultrathinking patterns now fully implemented
+- PM validation-to-fix violations completely eliminated
+- story-breakdown.md reference to mcp__sequential-thinking__sequentialthinking now supported
+- Complete analytical framework coverage for complex problem solving
+
+### Changed
+- Enhanced story-breakdown.md with PM work prohibition patterns
+- Updated virtual-team.md from 16 to 18 behavioral patterns
+- Strengthened behavioral-decision-matrix.md with analytical framework integration
+- Enhanced prb-auto-trigger.md with sequential analysis integration
+
 ## [7.8.1] - 2025-09-01
 
 ### Fixed
