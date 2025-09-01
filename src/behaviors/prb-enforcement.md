@@ -8,6 +8,7 @@
 @./shared-patterns/enforcement-rules.md
 @./shared-patterns/main-scope-blocking.md
 @./shared-patterns/continuation-work-patterns.md
+@./shared-patterns/pm-role-enforcement.md
 
 ## Core Rules
 

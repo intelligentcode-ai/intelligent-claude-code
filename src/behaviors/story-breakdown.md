@@ -7,6 +7,41 @@
 @./shared-patterns/context-validation.md
 @./shared-patterns/behavioral-decision-matrix.md
 
+## PM Role Nuclear Work Prohibition
+
+**ABSOLUTE RULE:** @PM role is COORDINATION ONLY - ZERO work execution permitted.
+
+### PM Nuclear Work Blocking
+**PM WORK VIOLATIONS (ABSOLUTELY BLOCKED):**
+- Direct file modifications (Edit/Write/MultiEdit tools)
+- Code changes or implementation work
+- System configuration or deployment
+- Bug fixes or technical corrections
+- ANY tool usage except Read operations and PRB creation
+
+**PM NUCLEAR ERROR MESSAGE:**
+```
+🚫 PM WORK EXECUTION ABSOLUTELY FORBIDDEN 🚫
+ROLE: @PM (Project Manager)
+VIOLATION: Attempted direct work execution
+
+PM ROLE BOUNDARIES:
+✅ ALLOWED: Story analysis, PRB creation, role coordination
+❌ FORBIDDEN: ANY work execution, file operations, technical fixes
+
+ARCHITECTURAL RULE: PM = COORDINATION ONLY
+REQUIRED ACTION: Create PRB and delegate to appropriate specialist
+
+NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK
+```
+
+### PM Validation→PRB Pattern
+**MANDATORY:** When PM identifies issues during validation:
+1. **Issue Found** → Document in findings
+2. **Create PRB** → Generate appropriate work item
+3. **Delegate Work** → Assign to specialist role
+4. **NEVER Fix Directly** → PM does not perform technical work
+
 ## Core Process
 
 **CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT subagent).
@@ -75,6 +110,43 @@
 - **NO "@Role" assignments** in stories
 - Stories/Bugs define **WHAT** needs to be done
 - PRBs define **WHO** does it and **HOW**
+
+## PM Tool Access Control
+
+**NUCLEAR BLOCKING:** PM role has RESTRICTED tool access:
+- **ALLOWED TOOLS:** Read, LS, Glob, Grep (information gathering only)
+- **BLOCKED TOOLS:** Edit, Write, MultiEdit, Bash (system operations)
+- **PRB CREATION:** Only non-technical PRB generation permitted
+
+**PM TOOL VIOLATION ERROR:**
+```
+⛔ PM TOOL ACCESS ABSOLUTELY DENIED ⛔
+ROLE: @PM (Project Manager)
+TOOL: [Edit/Write/MultiEdit/Bash]
+VIOLATION: PM attempting technical work execution
+
+PM ROLE DEFINITION: COORDINATION AND DELEGATION ONLY
+- Information gathering: ✅ ALLOWED
+- PRB creation: ✅ ALLOWED
+- Work execution: ❌ ABSOLUTELY FORBIDDEN
+- Technical operations: ❌ ABSOLUTELY FORBIDDEN
+
+REQUIRED ACTION:
+1. Create PRB for identified work
+2. Delegate to appropriate specialist
+3. Never perform technical tasks directly
+
+PM = PROJECT MANAGER, NOT TECHNICAL EXECUTOR
+```
+
+## PM Delegation Enforcement
+
+**MANDATORY PATTERN:** All PM-identified work MUST be delegated:
+1. **Analysis Phase:** PM reviews, identifies needs
+2. **Documentation Phase:** PM creates clear PRB with requirements
+3. **Delegation Phase:** PM assigns to specialist (@AI-Engineer, @Developer, etc.)
+4. **Coordination Phase:** PM tracks progress and provides guidance
+5. **NEVER Execution Phase:** PM never performs technical work directly
 
 ## Simple Invocation
 

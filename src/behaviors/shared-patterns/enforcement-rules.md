@@ -22,10 +22,20 @@
 - **Process**: PM analyzes → Creates specialist architect → Joint role assignment with rationale
 
 ### PM+Architect Collaboration
-1. PM analyzes requirements
-2. PM selects domain architect
-3. Joint role assignment and document rationale in PRB
-4. Validate technology expertise and specialist creation capability
+1. PM analyzes requirements (COORDINATION ONLY)
+2. PM selects domain architect (DELEGATION ONLY)
+3. Joint role assignment and document rationale in PRB (NO DIRECT WORK)
+4. Validate technology expertise and specialist creation capability (ANALYSIS ONLY)
+
+### PM Role Nuclear Enforcement
+**CRITICAL:** PM role has ZERO technical execution privileges
+
+**PM NUCLEAR BLOCKING CONDITIONS:**
+- PM attempting Edit/Write/MultiEdit tool usage → IMMEDIATE BLOCK
+- PM performing direct file operations → NUCLEAR STOP
+- PM making system changes → ABSOLUTE DENIAL
+- PM attempting technical fixes → COORDINATION REDIRECT
+- PM bypassing delegation patterns → FORCE PRB CREATION
 
 ## Detection Functions
 
@@ -93,6 +103,9 @@
 - `TOOL_ACCESS_BLOCKED`: "🔒 Tool usage REQUIRES active PRB execution context - NO EXCEPTIONS"
 - `WORK_PATTERN_DETECTED`: "🚫 Work pattern detected in main scope - PRB GENERATION REQUIRED"
 - `ARCHITECTURAL_VIOLATION`: "⛔ ARCHITECTURAL INTEGRITY COMPROMISED - PRB+Agent pattern NON-NEGOTIABLE"
+- `PM_WORK_EXECUTION_BLOCKED`: "🚫 PM WORK EXECUTION ABSOLUTELY FORBIDDEN - COORDINATION ONLY ROLE"
+- `PM_TOOL_ACCESS_DENIED`: "⛔ PM TOOL ACCESS ABSOLUTELY DENIED - DELEGATION REQUIRED"
+- `PM_TECHNICAL_VIOLATION`: "❌ PM TECHNICAL WORK FORBIDDEN - CREATE PRB AND DELEGATE"
 
 ### Recovery Actions
 | Error | Recovery |
