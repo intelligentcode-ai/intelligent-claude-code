@@ -25,10 +25,14 @@
 @../behaviors/validation-system.md
 @../behaviors/adaptation-system.md
 
+## Analytical Frameworks
+@../behaviors/sequential-thinking.md
+@../behaviors/ultrathinking.md
+
 ## Advanced Features
 @../behaviors/template-resolution.md
 
-**CORE:** 14 roles+unlimited • 16 behaviors • @-notation • PRB-driven execution
+**CORE:** 14 roles+unlimited • 18 behaviors • @-notation • PRB-driven execution
 
 ## STARTUP
 
