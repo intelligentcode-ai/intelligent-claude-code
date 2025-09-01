@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.1] - 2025-09-01
+
+### Fixed
+- **CRITICAL**: Implemented PM role nuclear work blocking to prevent direct work execution violations
+- Enhanced story-breakdown behavior with absolute PM work prohibition patterns
+- Added PM-specific tool access control and violation detection
+- Created pm-role-enforcement.md shared pattern for nuclear PM blocking
+- Integrated PM validation→PRB pattern to enforce coordination-only role requirements
+
 ## [7.8.0] - 2025-08-30
 
 ### Added
