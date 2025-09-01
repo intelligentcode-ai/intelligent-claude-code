@@ -10,6 +10,8 @@
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./shared-patterns/workflow-resolution-patterns.md
+@./shared-patterns/best-practices-integration.md
+@./shared-patterns/best-practices-operations.md
 @./naming-numbering-system.md
 
 ## Behavioral Decision Integration
@@ -53,18 +55,19 @@
 **PRB Generation Steps:**
 1. **Detect** work requirement
 2. **Search** memory for patterns (MANDATORY)
-3. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
-4. **Sequential Analysis** if complexity > 2 points (structured thinking)
-5. **Auto-breakdown** if complexity > 15 points
-6. **Load Template** from hierarchy
-7. **Load Configuration** at generation time
-8. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
-9. **Resolve Configuration Placeholders** with actual config values
-10. **Resolve Workflow Placeholders** with actual workflow_settings values
-11. **Embed Complete Context** in PRB with resolved workflow instructions
-12. **Validate NO Placeholders** remain (including workflow placeholders)
-13. **Generate** compliant name and create PRB
-14. **Execute** via subagent
+3. **Search** best-practices for applicable patterns (MANDATORY)
+4. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
+5. **Sequential Analysis** if complexity > 2 points (structured thinking)
+6. **Auto-breakdown** if complexity > 15 points
+7. **Load Template** from hierarchy
+8. **Load Configuration** at generation time
+9. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
+10. **Resolve Configuration Placeholders** with actual config values
+11. **Resolve Workflow Placeholders** with actual workflow_settings values
+12. **Embed Complete Context** in PRB with resolved workflow instructions and best-practices
+13. **Validate NO Placeholders** remain (including workflow placeholders)
+14. **Generate** compliant name and create PRB
+15. **Execute** via subagent
 
 ## Workflow Placeholder Resolution
 

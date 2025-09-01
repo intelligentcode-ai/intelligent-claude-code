@@ -5,6 +5,7 @@
 ## Imports
 @./shared-patterns/memory-operations.md
 @./shared-patterns/learning-patterns.md
+@./shared-patterns/best-practices-operations.md
 
 ## Core Learning Process
 
@@ -14,6 +15,12 @@
 **STORE PATTERNS:** Successful PRB execution patterns
 **STORAGE LOCATION:** memory/[topic]/[subtopic].md
 **LEARNING TYPES:** Process improvements, knowledge transfers, issue prevention
+
+### Best-Practices Generation
+**AUTO-GENERATE:** Best-practices from successful patterns with broad applicability
+**STORAGE LOCATION:** best-practices/[category]/[practice-name].md  
+**CATEGORIES:** architecture, collaboration, development, git, operations, quality, security
+**TRIGGER CRITERIA:** Pattern used successfully 3+ times, broad applicability confirmed
 
 ### Learning Application
 **REFERENCE PATTERNS:**
@@ -47,8 +54,9 @@
 - **Frequency Patterns:** Same question asked 2+ times
 - **Configuration Discovery:** New paths, settings, access methods
 - **Problem-Solution Pairs:** Reusable solutions
-- **Workflow Optimization:** Broadly applicable improvements
+- **Workflow Optimization:** Broadly applicable improvements  
 - **Tool Integration:** Successfully integrated tools/services
+- **Best-Practice Patterns:** Repeated successful patterns qualifying for best-practice promotion
 
 ### Auto-Store Triggers
 ```markdown
