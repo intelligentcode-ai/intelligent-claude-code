@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.11.0] - 2025-09-01
+
+### Added
+- **CRITICAL**: Implemented best-practices search and generation in PRB system
+- Best-practices directory integration with PRB generation flow
+- Automatic best-practices search during PRB creation (step 3 in generation flow)
+- Work type to best-practices directory mapping (architecture, development, security, etc.)
+- Pattern promotion from successful memory patterns to reusable best-practices
+- New best-practices-operations.md shared pattern for systematic operations
+- Token-optimized best-practices embedding in PRB context (max 1000 tokens)
+- Relevance scoring for best-practices selection based on work context
+- Auto-generation of best-practices from patterns used 3+ times successfully
+
+### Enhanced
+- Updated prb-auto-trigger.md with mandatory best-practices search integration
+- Enhanced prb-creation-system.md with best-practices context embedding
+- Improved learning-team-automation.md with best-practices generation from successful patterns
+- Updated best-practices-integration.md with project directory structure support
+- Added comprehensive work type analysis and directory mapping logic
+
 ## [7.10.0] - 2025-09-01
 
 ### Fixed
