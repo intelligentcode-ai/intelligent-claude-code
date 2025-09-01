@@ -8,6 +8,7 @@
 @./shared-patterns/memory-operations.md
 @./shared-patterns/context-validation.md
 @./shared-patterns/behavioral-decision-matrix.md
+@./shared-patterns/best-practices-integration.md
 
 ## Automatic PRB Generation
 
@@ -70,6 +71,7 @@
 2. **Intent Classification**: Work vs information classification
 3. **Context Assembly**: Complete project context loading
 4. **Memory Integration**: Auto-search memory for applicable patterns
+4b. **Best-Practices Integration**: Auto-search best-practices for relevant standards
 5. **Complexity Calculation**: Enhanced scoring algorithm
 6. **Auto-Breakdown**: If >15 points, intelligent decomposition
 7. **Template Selection**: Complexity score mapping to optimal template
@@ -85,6 +87,7 @@
 - **Configuration Values**: All relevant settings from config hierarchy
 - **Critical Files**: Relevant files with actual content samples and purposes
 - **Memory Patterns**: Applicable learnings and successful patterns
+- **Best-Practices**: Relevant standards, guidelines, and quality patterns
 - **User Requirements**: Clear requirements with success criteria and scope limits
 - **Role Assignment**: Appropriate specialist roles based on work type
 
