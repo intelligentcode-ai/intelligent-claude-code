@@ -3,6 +3,7 @@
 **MANDATORY:** Auto-detect work and generate PRB using templates from hierarchy with complete placeholder resolution.
 
 ## Imports
+@./sequential-thinking.md
 @./shared-patterns/behavioral-decision-matrix.md
 @./shared-patterns/template-loading.md
 @./shared-patterns/template-enforcement.md
@@ -53,16 +54,17 @@
 1. **Detect** work requirement
 2. **Search** memory for patterns (MANDATORY)
 3. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
-4. **Auto-breakdown** if complexity > 15 points
-5. **Load Template** from hierarchy
-6. **Load Configuration** at generation time
-7. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
-8. **Resolve Configuration Placeholders** with actual config values
-9. **Resolve Workflow Placeholders** with actual workflow_settings values
-10. **Embed Complete Context** in PRB with resolved workflow instructions
-11. **Validate NO Placeholders** remain (including workflow placeholders)
-12. **Generate** compliant name and create PRB
-13. **Execute** via subagent
+4. **Sequential Analysis** if complexity > 2 points (structured thinking)
+5. **Auto-breakdown** if complexity > 15 points
+6. **Load Template** from hierarchy
+7. **Load Configuration** at generation time
+8. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
+9. **Resolve Configuration Placeholders** with actual config values
+10. **Resolve Workflow Placeholders** with actual workflow_settings values
+11. **Embed Complete Context** in PRB with resolved workflow instructions
+12. **Validate NO Placeholders** remain (including workflow placeholders)
+13. **Generate** compliant name and create PRB
+14. **Execute** via subagent
 
 ## Workflow Placeholder Resolution
 
