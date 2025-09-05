@@ -21,6 +21,7 @@
     - name: Display installation target
       debug:
         msg: "Installing to: {{ install_path }}"
+      when: ansible_verbosity >= 1
     
     - name: Include intelligent-claude-code role
       include_role:
