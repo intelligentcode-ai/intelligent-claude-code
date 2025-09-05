@@ -1,12 +1,12 @@
 ---
-# Create backup of existing settings.json before making changes
+# Create backup of existing claude.json before making changes
 
 - name: Set default settings path
   set_fact:
-    settings_json_path: "{{ ansible_env.HOME }}/.config/claude/settings.json"
+    settings_json_path: "{{ ansible_env.HOME }}/.claude.json"
   when: settings_json_path is not defined
 
-- name: Check if settings.json exists
+- name: Check if claude.json exists
   stat:
     path: "{{ settings_json_path }}"
   register: settings_file_stat
@@ -15,7 +15,7 @@
   set_fact:
     settings_backup_file: "{{ settings_json_path }}.backup.{{ ansible_date_time.epoch }}"
 
-- name: Create backup of existing settings.json
+- name: Create backup of existing claude.json
   copy:
     src: "{{ settings_json_path }}"
     dest: "{{ settings_backup_file }}"
@@ -27,7 +27,7 @@
 
 - name: Handle backup creation failure
   set_fact:
-    mcp_integration_error: "Failed to create backup of settings.json"
+    mcp_integration_error: "Failed to create backup of claude.json"
   when: 
     - settings_file_stat.stat.exists
     - backup_result is defined
@@ -38,14 +38,14 @@
     current_settings: {}
   when: not settings_file_stat.stat.exists
 
-- name: Read current settings.json if exists
+- name: Read current claude.json if exists
   slurp:
     src: "{{ settings_json_path }}"
   register: current_settings_raw
   when: settings_file_stat.stat.exists
   failed_when: false
 
-- name: Parse existing settings.json
+- name: Parse existing claude.json
   set_fact:
     current_settings: "{{ current_settings_raw.content | b64decode | from_json }}"
   when: 
@@ -54,11 +54,11 @@
   failed_when: false
   register: settings_parse_result
 
-- name: Handle corrupted settings.json
+- name: Handle corrupted claude.json
   block:
     - name: Log corrupted settings warning
       debug:
-        msg: "Warning: Existing settings.json is corrupted. Using backup and creating fresh settings."
+        msg: "Warning: Existing claude.json is corrupted. Using backup and creating fresh settings."
     
     - name: Initialize empty settings for corrupted file
       set_fact:

@@ -34,5 +34,5 @@
       include_role:
         name: mcp-integration
       vars:
-        settings_json_path: "{{ install_path }}/settings.json"
+        settings_json_path: "{{ ansible_env.HOME }}/.claude.json"
       when: mcp_config_file != '' and mcp_config_file is defined
