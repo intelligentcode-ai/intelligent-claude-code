@@ -28,14 +28,7 @@
       vars:
         var_name_match: "{{ item | regex_search('\\$\\{([^}]+)\\}', '\\1') }}"
         var_name: "{{ var_name_match[0] if var_name_match else '' }}"
-        resolved_arg: >-
-          {%- if var_name_match and var_name in loaded_env_vars -%}
-            {{- item | regex_replace('\\$\\{' + var_name + '\\}', loaded_env_vars[var_name]) -}}
-          {%- elif var_name_match and lookup('env', var_name) -%}
-            {{- item | regex_replace('\\$\\{' + var_name + '\\}', lookup('env', var_name)) -}}
-          {%- else -%}
-            {{- item -}}
-          {%- endif -%}
+        resolved_arg: "{{ item | regex_replace('\\$\\{' + var_name + '\\}', loaded_env_vars[var_name]) if (var_name_match and var_name in loaded_env_vars) else (item | regex_replace('\\$\\{' + var_name + '\\}', lookup('env', var_name)) if (var_name_match and lookup('env', var_name)) else item) }}"
       loop: "{{ mcp_config.args | default([]) }}"
 
     - name: Debug variable resolution
@@ -60,14 +53,7 @@
       vars:
         var_name_match: "{{ item.value | regex_search('\\$\\{([^}]+)\\}', '\\1') }}"
         var_name: "{{ var_name_match[0] if var_name_match else '' }}"
-        resolved_value: >-
-          {%- if var_name_match and var_name in loaded_env_vars -%}
-            {{- item.value | regex_replace('\\$\\{' + var_name + '\\}', loaded_env_vars[var_name]) -}}
-          {%- elif var_name_match and lookup('env', var_name) -%}
-            {{- item.value | regex_replace('\\$\\{' + var_name + '\\}', lookup('env', var_name)) -}}
-          {%- else -%}
-            {{- item.value -}}
-          {%- endif -%}
+        resolved_value: "{{ item.value | regex_replace('\\$\\{' + var_name + '\\}', loaded_env_vars[var_name]) if (var_name_match and var_name in loaded_env_vars) else (item.value | regex_replace('\\$\\{' + var_name + '\\}', lookup('env', var_name)) if (var_name_match and lookup('env', var_name)) else item.value) }}"
       loop: "{{ mcp_config.env | dict2items }}"
 
     - name: Add processed environment to config
