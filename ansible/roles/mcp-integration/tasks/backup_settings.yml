@@ -28,7 +28,10 @@
 - name: Handle backup creation failure
   set_fact:
     mcp_integration_error: "Failed to create backup of settings.json"
-  when: backup_result.failed and settings_file_stat.stat.exists
+  when: 
+    - settings_file_stat.stat.exists
+    - backup_result is defined
+    - backup_result.failed
 
 - name: Initialize empty settings if file doesn't exist
   set_fact:
