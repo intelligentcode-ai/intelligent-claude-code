@@ -12,7 +12,7 @@ help:
 	@echo "Intelligent Claude Code - Installation"
 	@echo ""
 	@echo "Usage:"
-	@echo "  make install   [HOST=ip] [USER=user] [TARGET_PATH=/path] [MCP_CONFIG=/path/to/mcps.json] [KEY=~/.ssh/id_rsa | PASS=password]"
+	@echo "  make install   [HOST=ip] [USER=user] [TARGET_PATH=/path] [MCP_CONFIG=/path/to/mcps.json] [ENV_FILE=/path/to/.env] [KEY=~/.ssh/id_rsa | PASS=password]"
 	@echo "  make uninstall [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password] [FORCE=true]"
 	@echo "  make test                        # Run installation tests"
 	@echo ""
@@ -21,6 +21,7 @@ help:
 	@echo "  USER - Remote username (required for remote installation)"
 	@echo "  TARGET_PATH - Target path (omit for user scope ~/.claude/)"  
 	@echo "  MCP_CONFIG - Path to MCP servers configuration JSON file"
+	@echo "  ENV_FILE - Path to .env file with environment variables"
 	@echo "  KEY  - SSH key for remote (default: ~/.ssh/id_rsa)"
 	@echo "  PASS - SSH password for remote (alternative to KEY)"
 	@echo "  FORCE - Force complete removal including user data (uninstall only)"
@@ -29,6 +30,7 @@ help:
 	@echo "  make install                     # Local user scope"
 	@echo "  make install TARGET_PATH=/project       # Local project"
 	@echo "  make install MCP_CONFIG=./config/mcps.json  # Local with MCP servers"
+	@echo "  make install MCP_CONFIG=./config/mcps.json ENV_FILE=.env  # With environment file"
 	@echo "  make install HOST=192.168.1.110 USER=ubuntu  # Remote user scope (SSH key)"
 	@echo "  make install HOST=ip USER=user PASS=pwd    # Remote with password"
 	@echo "  make install HOST=ip USER=user TARGET_PATH=/proj  # Remote project"
@@ -85,7 +87,8 @@ install:
 			-c local \
 			-e "ansible_shell_type=sh" \
 			-e "target_path=$(TARGET_PATH)" \
-			-e "mcp_config_file=$(MCP_CONFIG)"; \
+			-e "mcp_config_file=$(MCP_CONFIG)" \
+			-e "env_file=$(ENV_FILE)"; \
 	else \
 		if [ -z "$(USER)" ]; then \
 			echo "ERROR: USER parameter required for remote installation!"; \
@@ -99,14 +102,16 @@ install:
 				-i "$(USER)@$(HOST)," \
 				-k -e "ansible_ssh_pass=$(PASS)" \
 				-e "target_path=$(TARGET_PATH)" \
-				-e "mcp_config_file=$(MCP_CONFIG)"; \
+				-e "mcp_config_file=$(MCP_CONFIG)" \
+				-e "env_file=$(ENV_FILE)"; \
 		else \
 			echo "Using SSH key authentication..."; \
 			$(ANSIBLE_PLAYBOOK) -v ansible/install.yml \
 				-i "$(USER)@$(HOST)," \
 				-e "ansible_ssh_private_key_file=$(KEY)" \
 				-e "target_path=$(TARGET_PATH)" \
-				-e "mcp_config_file=$(MCP_CONFIG)"; \
+				-e "mcp_config_file=$(MCP_CONFIG)" \
+				-e "env_file=$(ENV_FILE)"; \
 		fi \
 	fi
 
