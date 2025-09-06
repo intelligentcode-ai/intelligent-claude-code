@@ -56,7 +56,7 @@
 - name: Display modes preservation notice
   debug:
     msg: "Mode files preserved: {{ claude_install_path }}/modes/ already exists - keeping user modifications"
-  when: modes_copy_result.failed
+  when: modes_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy behavior files
   copy:
@@ -69,7 +69,7 @@
 - name: Display behaviors preservation notice
   debug:
     msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
-  when: behaviors_copy_result.failed
+  when: behaviors_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy commands directory
   copy:
@@ -82,7 +82,7 @@
 - name: Display commands preservation notice
   debug:
     msg: "Commands directory preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
-  when: commands_copy_result.failed
+  when: commands_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy roles directory
   copy:
@@ -95,7 +95,7 @@
 - name: Display roles preservation notice
   debug:
     msg: "Roles directory preserved: {{ claude_install_path }}/roles/ already exists - keeping user modifications"
-  when: roles_copy_result.failed
+  when: roles_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy agents directory
   copy:
@@ -108,7 +108,7 @@
 - name: Display agents preservation notice
   debug:
     msg: "Agents directory preserved: {{ claude_install_path }}/agents/ already exists - keeping user modifications"
-  when: agents_copy_result.failed
+  when: agents_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy PRB templates directory
   copy:
@@ -121,7 +121,7 @@
 - name: Display PRB templates preservation notice
   debug:
     msg: "PRB templates directory preserved: {{ claude_install_path }}/prb-templates/ already exists - keeping user modifications"
-  when: prb_templates_copy_result.failed
+  when: prb_templates_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy VERSION file
   copy:
@@ -134,7 +134,7 @@
 - name: Display VERSION preservation notice
   debug:
     msg: "VERSION file preserved: {{ claude_install_path }}/VERSION already exists - keeping user modifications"
-  when: version_copy_result.failed
+  when: version_copy_result.failed and ansible_verbosity >= 1
 
 - name: Check if config.md exists
   stat:
@@ -151,7 +151,7 @@
 - name: Display config preservation notice
   debug:
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
-  when: config_md_exists.stat.exists
+  when: config_md_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
 
@@ -165,12 +165,7 @@
 - name: Display installation summary
   debug:
     msg:
-      - "Installation complete!"
-      - "Location: {{ claude_install_path }}"
-      - "Mode: Enhanced Virtual Team (14 core roles + unlimited dynamic specialists)"
-      - "Core Roles: @PM, @Architect, @Developer, @User-Role, @System/DevOps/Database/Security/AI/Web/QA/Frontend/Backend-Engineers, @Requirements-Engineer"
-      - "Agent Definitions: Core agent behavioral patterns deployed to agents/ directory"
-      - "Features: Memory Bank (λ=0.1), User-Role (Puppeteer), Anti-Panic, Task Format Enforcement"
-      - "Activation: @-notation for specialized roles (@PM, @Architect, @Developer, @User-Role, etc.)"
-      - "Architecture: 5-module clustered system with Level 3 autonomy"
-      - "{{ 'Update mode: Files forcefully updated' if (update_mode is defined and update_mode | bool) else 'Preservation mode: User modifications preserved' }}"
+      - "✅ Installation complete!"
+      - "📍 Location: {{ claude_install_path }}"
+      - "🤖 Virtual Team: 14 core roles + unlimited specialists"
+      - "🚀 Use @Role communication to activate team members"
