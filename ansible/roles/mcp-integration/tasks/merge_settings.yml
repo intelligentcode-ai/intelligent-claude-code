@@ -1,5 +1,5 @@
 ---
-# Merge processed MCP servers into existing settings.json
+# Merge processed MCP servers into existing claude.json
 
 - name: Initialize mcpServers in current settings if not exists
   set_fact:

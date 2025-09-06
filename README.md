@@ -184,7 +184,7 @@ cat > config/mcps.json << 'EOF'
     },
     "playwright": {
       "command": "npx", 
-      "args": ["-y", "@modelcontextprotocol/server-playwright"]
+      "args": ["@playwright/mcp@latest"]
     },
     "custom-api": {
       "command": "node",
@@ -214,7 +214,7 @@ make install MCP_CONFIG=./config/mcps.json
     },
     "playwright": {
       "command": "npx", 
-      "args": ["-y", "@modelcontextprotocol/server-playwright"]
+      "args": ["@playwright/mcp@latest"]
     },
     "custom-api": {
       "command": "node",

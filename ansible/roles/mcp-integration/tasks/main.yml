@@ -9,6 +9,9 @@
 - name: Create backup of existing settings
   include_tasks: backup_settings.yml
 
+- name: Load environment variables from .env file
+  include_tasks: load_env.yml
+
 - name: Process MCP configuration
   include_tasks: process_config.yml
   when: mcp_config_file is defined

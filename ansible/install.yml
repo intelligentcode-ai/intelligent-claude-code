@@ -21,6 +21,7 @@
     - name: Display installation target
       debug:
         msg: "Installing to: {{ install_path }}"
+      when: ansible_verbosity >= 1
     
     - name: Include intelligent-claude-code role
       include_role:
@@ -34,5 +35,5 @@
       include_role:
         name: mcp-integration
       vars:
-        settings_json_path: "{{ install_path }}/settings.json"
+        settings_json_path: "{{ ansible_env.HOME }}/.claude.json"
       when: mcp_config_file != '' and mcp_config_file is defined
