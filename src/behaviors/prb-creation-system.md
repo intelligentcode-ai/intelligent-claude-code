@@ -66,20 +66,21 @@
 ## Creation Process
 
 ### Lightning-Fast Automatic Generation Pipeline
-**SEAMLESS 12-STEP INSTANT AUTOMATION:**
+**SEAMLESS 13-STEP INSTANT AUTOMATION WITH SEQUENTIAL THINKING:**
 1. **Detection**: Real-time parsing with NLP pattern recognition
 2. **Intent Classification**: Work vs information classification
 3. **Context Assembly**: Complete project context loading
 4. **Memory Integration**: Auto-search memory for applicable patterns
 4b. **Best-Practices Integration**: Auto-search best-practices for relevant standards
-5. **Complexity Calculation**: Enhanced scoring algorithm
-6. **Auto-Breakdown**: If >15 points, intelligent decomposition
-7. **Template Selection**: Complexity score mapping to optimal template
-8. **Template Loading**: Complete template structure loaded
-9. **Configuration Resolution**: Full config hierarchy with actual values
-10. **Placeholder Elimination**: Replace ALL placeholders with actual values
-11. **Context Embedding**: Complete project context embedded
-12. **Quality Validation**: ZERO placeholders, complete sections verified
+5. **Sequential Thinking**: ALWAYS apply sequential thinking with project context for ALL work requests
+6. **Complexity Calculation**: Enhanced scoring algorithm with sequential analysis
+7. **Auto-Breakdown**: If >15 points, intelligent decomposition with sequential thinking
+8. **Template Selection**: Complexity score mapping to optimal template
+9. **Template Loading**: Complete template structure loaded
+10. **Configuration Resolution**: Full config hierarchy with actual values
+11. **Placeholder Elimination**: Replace ALL placeholders with actual values
+12. **Context Embedding**: Complete project context embedded with sequential thinking results
+13. **Quality Validation**: ZERO placeholders, complete sections verified
 
 ### Automatic Context Integration
 **PRBs AUTOMATICALLY INCLUDE:**

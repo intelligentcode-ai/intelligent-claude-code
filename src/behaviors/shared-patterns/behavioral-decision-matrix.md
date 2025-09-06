@@ -92,11 +92,11 @@
 **CONTEXT REQUIREMENTS**: Any factor = 3 OR total_context_score ≥9
 **ACTION**: Generate investigation PRB → Structured analysis via appropriate agent
 
-### 6. Sequential Thinking Integration (ANALYTICAL ENHANCEMENT)
-**PATTERN**: Structured analytical thinking for complex problems
-**TRIGGERS**: Complexity >2 points, Story breakdown >10 points, Bug investigation, Multi-factor decisions
-**ACTION**: Apply sequential thinking framework → Enhanced analysis quality
-**INTEGRATION**: Sequential thinking enhances other decision patterns without replacing them
+### 6. Sequential Thinking Integration (LIBERAL ANALYTICAL ENHANCEMENT)
+**PATTERN**: Structured analytical thinking for ANY multi-step reasoning
+**TRIGGERS**: ANY multi-step process, ALL user requests requiring analysis, Simple task planning, Story breakdown >10 points, Bug investigation, Multi-factor decisions, Request understanding
+**ACTION**: Apply sequential thinking framework LIBERALLY → Enhanced analysis quality with project context
+**INTEGRATION**: Sequential thinking enhances ALL decision patterns with project scope awareness
 
 ### 7. Ultrathinking Integration (STRATEGIC ENHANCEMENT) 
 **PATTERN**: Deep analytical reasoning for ultra-complex scenarios
@@ -113,9 +113,9 @@
 2. **Check @Role Direct**: Is this a direct role work assignment?
 3. **Check Work Intent**: Does this contain implementation/modification intent?
 4. **Evaluate Context Complexity**: Score context factors 1-15
-5. **Apply Analytical Framework**: Sequential thinking >2 points, Ultrathinking for strategic decisions
+5. **Apply Analytical Framework**: Sequential thinking LIBERALLY for ANY multi-step reasoning with project context, Ultrathinking for strategic decisions
 6. **Apply Decision Logic**: Use matrix based on precedence and complexity
-7. **Execute Action**: PRB generation, direct response, or structured analysis
+7. **Execute Action**: PRB generation, direct response, or structured analysis with sequential thinking
 
 **ERROR PREVENTION:**
 - Never bypass work→PRB for implementation intent

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.14.0] - 2025-09-06
+
+### Enhanced
+- Sequential thinking triggers liberalized for any multi-step reasoning
+- Project context now always included in sequential thinking analysis
+- Behavioral decision matrix updated to route more scenarios to sequential thinking
+- PRB generation enhanced with mandatory sequential thinking step
+- MCP tool integration enhanced with project scope awareness
+- Liberal automatic activation for ALL multi-step reasoning processes
+
 ## [7.13.0] - 2025-09-06
 
 ### Fixed
