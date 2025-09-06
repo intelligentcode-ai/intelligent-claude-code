@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.11.2] - 2025-09-06
+
+### Fixed
+- Fixed Playwright MCP server configuration to use correct package `@playwright/mcp@latest`
+- Fixed GitHub MCP server by adding missing `-y` flag for automatic npm package installation
+- Fixed Python-based MCP servers (pdf-reader, document-operations) by using full path to uv with correct syntax
+- Updated README.md with correct Playwright MCP server package in examples
+
 ## [7.11.0] - 2025-09-01
 
 ### Added
