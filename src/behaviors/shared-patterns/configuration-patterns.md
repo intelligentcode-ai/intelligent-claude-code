@@ -33,7 +33,7 @@
 - role_validation (true/false)
 
 ### PRB Settings
-- prb_template_path (prb-templates/.claude/prb-templates)
+- prb_template_path (default: prb-templates)
 - template_validation (true/false)
 - complexity_override (true/false)
 

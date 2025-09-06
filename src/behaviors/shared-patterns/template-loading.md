@@ -10,7 +10,8 @@
 
 **Search Order (Highest→Lowest Priority):**
 1. **Project Templates**: Project root prb_template_path
-2. **Installation Templates**: Installation prb-templates/
+2. **Project Claude Templates**: Project .claude/prb-templates/
+3. **Installation Templates**: Installation prb-templates/
 
 ## Standard Templates
 
