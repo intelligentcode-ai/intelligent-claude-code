@@ -7,6 +7,12 @@
 @./shared-patterns/context-validation.md
 @./shared-patterns/behavioral-decision-matrix.md
 
+## COMPACT-RESISTANT PM ENFORCEMENT
+
+**ULTRA-SHORT CORE:** PM=COORDINATION-ONLY (NO WORK EXECUTION EVER)
+
+**CONTEXT-CHECKPOINT:** PM→PRB→DELEGATE (NEVER PM→WORK)
+
 ## PM Role Nuclear Work Prohibition
 
 **ABSOLUTE RULE:** @PM role is COORDINATION ONLY - ZERO work execution permitted.
@@ -45,6 +51,9 @@
 **CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT subagent).
 
 ### Breakdown Flow
+
+**CHECKPOINT-REMINDER:** PM=COORDINATION-ONLY, PM→PRB→DELEGATE
+
 1. **@PM reads story**: Business goals and requirements
 2. **@PM analyzes project scope**: System nature and technology context
 3. **@PM analyzes work type**: Specific work patterns and requirements

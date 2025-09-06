@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.7] - 2025-09-06
+
+### Fixed
+- BUG-069: Implement compact-resistant behavioral enforcement patterns to survive context compression
+- Added COMPACT-RESISTANT markers to critical enforcement sections
+- Implemented CHECKPOINT patterns for rule re-injection at decision points
+- Created ULTRA-SHORT reminders (PM=COORDINATION-ONLY) that survive summarization
+- Added context monitoring sections for reinforcement detection
+- Enhanced behavioral pattern persistence through Claude Code AUTO-COMPACT compression
+
 ## [7.15.6] - 2025-09-06
 
 ### Fixed
