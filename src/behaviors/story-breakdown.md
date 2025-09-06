@@ -113,31 +113,42 @@ NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK
 
 ## PM Tool Access Control
 
-**NUCLEAR BLOCKING:** PM role has RESTRICTED tool access:
+**NUCLEAR BLOCKING:** PM role has RESTRICTED tool access with AGGRESSIVE detection:
 - **ALLOWED TOOLS:** Read, LS, Glob, Grep (information gathering only)
 - **BLOCKED TOOLS:** Edit, Write, MultiEdit, Bash (system operations)
 - **PRB CREATION:** Only non-technical PRB generation permitted
+- **DETECTION:** Ultra-aggressive work pattern detection for PM violations
 
 **PM TOOL VIOLATION ERROR:**
 ```
-⛔ PM TOOL ACCESS ABSOLUTELY DENIED ⛔
+🚫 PM TOOL ACCESS ABSOLUTELY DENIED 🚫
 ROLE: @PM (Project Manager)
 TOOL: [Edit/Write/MultiEdit/Bash]
 VIOLATION: PM attempting technical work execution
 
-PM ROLE DEFINITION: COORDINATION AND DELEGATION ONLY
+⛔ ARCHITECTURAL VIOLATION: PM EXECUTING WORK DIRECTLY ⛔
+PM ROLE BOUNDARIES:
 - Information gathering: ✅ ALLOWED
-- PRB creation: ✅ ALLOWED
+- PRB creation: ✅ ALLOWED  
 - Work execution: ❌ ABSOLUTELY FORBIDDEN
 - Technical operations: ❌ ABSOLUTELY FORBIDDEN
+- File modifications: ❌ NUCLEAR BLOCKED
+- System changes: ❌ NUCLEAR BLOCKED
 
-REQUIRED ACTION:
-1. Create PRB for identified work
-2. Delegate to appropriate specialist
-3. Never perform technical tasks directly
+MANDATORY RECOVERY PROCESS:
+1. Create PRB with clear requirements
+2. Delegate to appropriate specialist (@AI-Engineer, @Developer, etc.)
+3. Deploy via Task tool to authorized agent
+4. NEVER perform technical work directly
 
-PM = PROJECT MANAGER, NOT TECHNICAL EXECUTOR
+PM = COORDINATION ONLY - NO TECHNICAL EXECUTION
 ```
+
+**AGGRESSIVE PM WORK DETECTION:**
+- **Work Intent Patterns:** "Let me fix", "I'll update", "Going to change", "Need to modify"
+- **Direct Action Attempts:** Any Edit/Write/MultiEdit tool usage by PM role
+- **Bypass Patterns:** "Quick change", "Simple fix", "Just need to..."
+- **IMMEDIATE BLOCKING:** All detected patterns trigger nuclear PRB creation requirement
 
 ## PM Delegation Enforcement
 

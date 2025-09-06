@@ -34,6 +34,13 @@
 - PM attempting technical fixes
 - PM bypassing delegation patterns
 
+**AGGRESSIVE VIOLATION DETECTION:**
+- **Work Intent Language:** "Let me fix", "I'll implement", "Going to update", "Need to change"
+- **Direct Action Verbs:** PM using implement, modify, create, fix, update, deploy, configure
+- **Tool Access Attempts:** Any modification tool access by PM role
+- **Delegation Bypass:** PM attempting direct execution without PRB creation
+- **Scope Creep:** PM expanding beyond coordination into technical execution
+
 ### PM Nuclear Error Messages
 
 **PRIMARY PM VIOLATION:**
@@ -108,6 +115,12 @@ PM COORDINATES - PM DOES NOT EXECUTE
 - "Creating PRB for specialist" → CORRECT
 - "Assigning to @Role for execution" → CORRECT
 - "Delegating technical work" → CORRECT
+
+**NUCLEAR DETECTION TRIGGERS:**
+- **Pattern Analysis:** Real-time scanning of PM communications for work intent
+- **Tool Access Monitoring:** Immediate blocking of PM modification tool attempts  
+- **Behavioral Analysis:** Context analysis to detect PM scope violations
+- **Auto-Correction:** Immediate redirection to PRB creation for all violations
 
 ## PM Recovery Patterns
 

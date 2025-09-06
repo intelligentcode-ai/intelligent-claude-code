@@ -108,6 +108,14 @@ COMPLIANCE REQUIRED: Follow PRB+Agent pattern without deviation
 - Help text changes
 - Version updates
 
+### PM Role Operations (NUCLEAR BLOCKED)
+- PM attempting any Edit/Write/MultiEdit operations
+- PM trying to fix bugs directly
+- PM implementing features without delegation
+- PM performing system configurations
+- PM bypassing PRB creation process
+- PM executing technical work in any form
+
 ## DETECTION TRIGGERS
 
 ### Context Analysis
@@ -116,6 +124,16 @@ COMPLIANCE REQUIRED: Follow PRB+Agent pattern without deviation
 - Tool usage + no PRB authorization = BLOCK
 - Action verb + target object = BLOCK
 - Implementation language + specific task = BLOCK
+- PM role + ANY work attempt = NUCLEAR BLOCK
+- PM role + tool access attempt = NUCLEAR BLOCK
+
+### PM-Specific Detection
+**ULTRA-AGGRESSIVE PM BLOCKING:**
+- PM + "Let me fix" = NUCLEAR BLOCK
+- PM + "I'll implement" = NUCLEAR BLOCK  
+- PM + Edit/Write/MultiEdit tool = NUCLEAR BLOCK
+- PM + any technical action verb = NUCLEAR BLOCK
+- PM bypassing delegation = NUCLEAR BLOCK
 
 ### Pattern Scoring
 **WORK DETECTION SCORING:**
