@@ -14,22 +14,26 @@
 
 ## Sequential Thinking Triggers
 
-**MANDATORY:** Apply sequential thinking patterns when:
-- **Complexity Threshold:** Any work scoring >2 complexity points (lowered from >5)
+**MANDATORY:** Apply sequential thinking patterns LIBERALLY for:
+- **Any Multi-Step Reasoning:** ANY request involving multiple considerations or steps
+- **Request Analysis:** Understanding user requests with project context
+- **Simple Task Planning:** Even straightforward tasks benefit from structured thinking
 - **Story Breakdown:** Multi-factor story analysis with >10 total points
 - **Bug Investigation:** All bug analysis requiring root cause identification
 - **PRB Planning:** Multi-step PRB creation and breakdown scenarios
 - **Architecture Evaluation:** Design decisions with multiple factors or trade-offs
 - **Risk Assessment:** Security, performance, or technical risk evaluation
 - **Integration Analysis:** Cross-component or cross-system coordination needs
+- **Context Understanding:** Any situation requiring project scope awareness
 
 ## MCP Sequential Thinking Integration
 
-**Tool Integration:** Use `mcp__sequential-thinking__sequentialthinking` for structured analysis:
-- **Systematic Reasoning:** Step-by-step problem decomposition
-- **Multi-Factor Analysis:** Weighted decision matrices and trade-off evaluation
-- **Risk Assessment:** Structured risk identification and mitigation planning
-- **Solution Comparison:** Objective evaluation of multiple approaches
+**Tool Integration:** Use `mcp__sequential-thinking__sequentialthinking` for structured analysis with PROJECT CONTEXT:
+- **Systematic Reasoning:** Step-by-step problem decomposition with intelligent-claude-code project scope
+- **Multi-Factor Analysis:** Weighted decision matrices within AI-AGENTIC system context
+- **Risk Assessment:** Structured risk identification for behavioral pattern system
+- **Solution Comparison:** Objective evaluation with project constraints and goals
+- **Project Context Injection:** ALWAYS include system nature (AI-AGENTIC), project root, and work boundaries
 
 ## Sequential Thinking Framework
 
@@ -86,12 +90,16 @@
 ## Behavioral Rules
 
 ### Activation Rules
-**AUTOMATIC ACTIVATION:** Sequential thinking automatically activates for:
+**LIBERAL AUTOMATIC ACTIVATION:** Sequential thinking automatically activates for:
+- ANY multi-step reasoning or decision-making process
+- ALL user request analysis to understand scope and context
+- Simple task planning that benefits from structured approach
 - Complex story breakdown requiring multi-factor analysis
 - Bug investigation requiring systematic root cause analysis
-- PRB creation for work items scoring >2 complexity points
+- ALL PRB creation regardless of complexity (not just >2 points)
 - Architecture decisions involving multiple technology choices
 - Risk assessments requiring structured evaluation
+- Understanding work requests within project boundaries
 
 ### Analysis Depth
 **PROPORTIONAL RESPONSE:** Analysis depth matches problem complexity:
