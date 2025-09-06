@@ -9,11 +9,11 @@
   block:
     - name: Display .env file path
       debug:
-        msg: "Loading environment variables from: {{ env_file }}"
+        msg: "Loading environment variables from: {{ env_file | expanduser }}"
 
     - name: Check if .env file exists
       stat:
-        path: "{{ env_file }}"
+        path: "{{ env_file | expanduser }}"
       register: env_file_stat
 
     - name: Fail if .env file doesn't exist
@@ -23,7 +23,7 @@
 
     - name: Read .env file contents
       slurp:
-        src: "{{ env_file }}"
+        src: "{{ env_file | expanduser }}"
       register: env_file_content
 
     - name: Parse .env file with shell script
@@ -42,7 +42,7 @@
             fi
             echo "${key}=${value}"
           fi
-        done < "{{ env_file }}"
+        done < "{{ env_file | expanduser }}"
       register: parsed_env_output
       changed_when: false
 
