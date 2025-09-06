@@ -7,18 +7,16 @@
 ### Workflow Settings Detection
 **MANDATORY:** All agents MUST check workflow section in PRBs:
 
-```yaml
-workflow:
-  version_bump: true/false
-  version_type: patch/minor/major
-  changelog_required: true/false
-  pr_required: true/false
-  merge_strategy: direct_commit/feature_branch
-  release_automation: true/false
-  auto_merge: true/false
-  coordination_required: true/false
-  breaking_change_assessment: true/false
-```
+**Workflow Section Structure:**
+- version_bump: true/false
+- version_type: patch/minor/major
+- changelog_required: true/false
+- pr_required: true/false
+- merge_strategy: direct_commit/feature_branch
+- release_automation: true/false
+- auto_merge: true/false
+- coordination_required: true/false
+- breaking_change_assessment: true/false
 
 ### PR Creation Enforcement
 
@@ -57,10 +55,8 @@ Create pull/merge request using platform-appropriate method:
 - **BLOCKED:** Using direct_commit strategy when workflow requires feature_branch
 
 **Error Message:**
-```
-❌ WORKFLOW VIOLATION: PR/MR required but not created
-REQUIRED ACTION: Create pull/merge request before marking PRB complete
-```
+**WORKFLOW VIOLATION:** PR/MR required but not created
+**REQUIRED ACTION:** Create pull/merge request before marking PRB complete
 
 ### Agent Behavioral Integration
 

@@ -12,6 +12,26 @@
 4. **Resolve Placeholders**: Replace ALL workflow placeholders with actual values
 5. **Validate Resolution**: Ensure NO workflow placeholders remain unresolved
 
+**Example workflow_settings in CLAUDE.md:**
+```yaml
+workflow_settings:
+  tiny:
+    version_bump: true
+    version_type: "patch"
+    changelog_required: true
+    pr_required: false
+    merge_strategy: "direct_commit"
+    release_automation: false
+  medium:
+    version_bump: true
+    version_type: "minor"
+    changelog_required: true
+    pr_required: true
+    merge_strategy: "feature_branch"
+    release_automation: true
+    auto_merge: false
+```
+
 ### Placeholder Resolution Map
 
 **Standard Workflow Placeholders:**

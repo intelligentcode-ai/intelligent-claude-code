@@ -49,15 +49,10 @@ Its complexity CANNOT be predetermined because it depends on results.
 
 ## Common Continuation Chains
 
-```
-Feature Implementation
-└── Validation (continuation)
-    ├── Success → Build (continuation)
-    │   └── Deploy (continuation)
-    └── Failure → Fix (continuation)
-        └── Re-validation (continuation)
-            └── [Repeat until success]
-```
+**Feature Implementation Chain:**
+- Feature Implementation → Validation (continuation)
+  - Success → Build (continuation) → Deploy (continuation)
+  - Failure → Fix (continuation) → Re-validation (continuation) → Repeat until success
 
 ## Blocking Patterns
 

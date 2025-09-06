@@ -18,11 +18,9 @@ Gets setting value from configuration hierarchy with dot notation support.
 - `default_value` - Optional: Default if not found
 
 **Examples:**
-```
-/icc-get-setting git_privacy
-/icc-get-setting autonomy_level L2
-/icc-get-setting team.default_reviewer @Architect
-```
+- Get git privacy setting: /icc-get-setting git_privacy
+- Get autonomy level with default: /icc-get-setting autonomy_level L2
+- Get default reviewer setting: /icc-get-setting team.default_reviewer @Architect
 
 ## Core Actions
 
@@ -33,13 +31,15 @@ Gets setting value from configuration hierarchy with dot notation support.
    - Installation config ({get_install_path()}/config.md)
    - System defaults
 3. Support dot notation for nested values
-4. Return first found value or default
-5. Cache result for performance
+4. Validate critical settings (git_privacy MUST be boolean)
+5. Return first found value or default
+6. Cache result for performance
 
 ## Dot Notation Support
 
 **Examples:**
-- "git_privacy" → boolean value
+- "git_privacy" → boolean value (CRITICAL for git operations)
+- "privacy_patterns" → array of AI mention patterns
 - "team.default_reviewer" → role value
 - "l3_settings.max_parallel" → numeric value
 

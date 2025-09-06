@@ -34,43 +34,46 @@
 - PM attempting technical fixes
 - PM bypassing delegation patterns
 
+**AGGRESSIVE VIOLATION DETECTION:**
+- **Work Intent Language:** "Let me fix", "I'll implement", "Going to update", "Need to change"
+- **Direct Action Verbs:** PM using implement, modify, create, fix, update, deploy, configure
+- **Tool Access Attempts:** Any modification tool access by PM role
+- **Delegation Bypass:** PM attempting direct execution without PRB creation
+- **Scope Creep:** PM expanding beyond coordination into technical execution
+
 ### PM Nuclear Error Messages
 
 **PRIMARY PM VIOLATION:**
-```
-🚫 PM WORK EXECUTION ABSOLUTELY FORBIDDEN 🚫
-ROLE: @PM (Project Manager)
-VIOLATION: Attempted direct work execution
+**PM WORK EXECUTION ABSOLUTELY FORBIDDEN**
+- ROLE: @PM (Project Manager)
+- VIOLATION: Attempted direct work execution
 
-PM ROLE BOUNDARIES:
-✅ ALLOWED: Analysis, PRB creation, delegation, coordination
-❌ FORBIDDEN: ANY technical work, file operations, system changes
+**PM ROLE BOUNDARIES:**
+- ALLOWED: Analysis, PRB creation, delegation, coordination
+- FORBIDDEN: ANY technical work, file operations, system changes
 
-ARCHITECTURAL PRINCIPLE: PM = COORDINATION ONLY
-REQUIRED ACTION: Create PRB and delegate to appropriate specialist
+**ARCHITECTURAL PRINCIPLE:** PM = COORDINATION ONLY
+**REQUIRED ACTION:** Create PRB and delegate to appropriate specialist
 
-NO EXCEPTIONS - PM IS NOT A TECHNICAL EXECUTOR
-```
+**NO EXCEPTIONS - PM IS NOT A TECHNICAL EXECUTOR**
 
 **PM TOOL ACCESS VIOLATION:**
-```
-⛔ PM TOOL ACCESS ABSOLUTELY DENIED ⛔
-ROLE: @PM (Project Manager)
-TOOL: [Edit/Write/MultiEdit/Bash]
-VIOLATION: PM attempting unauthorized tool usage
+**PM TOOL ACCESS ABSOLUTELY DENIED**
+- ROLE: @PM (Project Manager)
+- TOOL: [Edit/Write/MultiEdit/Bash]
+- VIOLATION: PM attempting unauthorized tool usage
 
-PM TOOL PRIVILEGES:
-✅ ALLOWED: Read, LS, Glob, Grep (information gathering)
-❌ BLOCKED: All modification and execution tools
+**PM TOOL PRIVILEGES:**
+- ALLOWED: Read, LS, Glob, Grep (information gathering)
+- BLOCKED: All modification and execution tools
 
-ROLE DEFINITION: PROJECT MANAGER, NOT IMPLEMENTER
-REQUIRED ACTION:
+**ROLE DEFINITION:** PROJECT MANAGER, NOT IMPLEMENTER
+**REQUIRED ACTION:**
 1. Create PRB with clear requirements
 2. Assign to specialist role (@AI-Engineer, @Developer, etc.)
 3. Never perform technical work directly
 
-PM COORDINATES - PM DOES NOT EXECUTE
-```
+**PM COORDINATES - PM DOES NOT EXECUTE**
 
 ## PM Validation→PRB Pattern
 
@@ -109,6 +112,12 @@ PM COORDINATES - PM DOES NOT EXECUTE
 - "Assigning to @Role for execution" → CORRECT
 - "Delegating technical work" → CORRECT
 
+**NUCLEAR DETECTION TRIGGERS:**
+- **Pattern Analysis:** Real-time scanning of PM communications for work intent
+- **Tool Access Monitoring:** Immediate blocking of PM modification tool attempts  
+- **Behavioral Analysis:** Context analysis to detect PM scope violations
+- **Auto-Correction:** Immediate redirection to PRB creation for all violations
+
 ## PM Recovery Patterns
 
 ### Violation Recovery Process
@@ -121,13 +130,11 @@ PM COORDINATES - PM DOES NOT EXECUTE
 
 ### PM Behavioral Correction
 **PM attempting work → BLOCK + REDIRECT:**
-```
-DETECTED: PM work attempt
-BLOCKED: Direct execution 
-REDIRECTED: PRB creation process
-ASSIGNED: Appropriate specialist role
-RESULT: Proper delegation maintained
-```
+1. DETECTED: PM work attempt
+2. BLOCKED: Direct execution 
+3. REDIRECTED: PRB creation process
+4. ASSIGNED: Appropriate specialist role
+5. RESULT: Proper delegation maintained
 
 ## Integration with Enforcement Systems
 

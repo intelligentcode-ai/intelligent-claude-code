@@ -20,20 +20,18 @@
 - ANY tool usage except Read operations and PRB creation
 
 **PM NUCLEAR ERROR MESSAGE:**
-```
-🚫 PM WORK EXECUTION ABSOLUTELY FORBIDDEN 🚫
-ROLE: @PM (Project Manager)
-VIOLATION: Attempted direct work execution
+**PM WORK EXECUTION ABSOLUTELY FORBIDDEN**
+- ROLE: @PM (Project Manager)
+- VIOLATION: Attempted direct work execution
 
-PM ROLE BOUNDARIES:
-✅ ALLOWED: Story analysis, PRB creation, role coordination
-❌ FORBIDDEN: ANY work execution, file operations, technical fixes
+**PM ROLE BOUNDARIES:**
+- ALLOWED: Story analysis, PRB creation, role coordination
+- FORBIDDEN: ANY work execution, file operations, technical fixes
 
-ARCHITECTURAL RULE: PM = COORDINATION ONLY
-REQUIRED ACTION: Create PRB and delegate to appropriate specialist
+**ARCHITECTURAL RULE:** PM = COORDINATION ONLY
+**REQUIRED ACTION:** Create PRB and delegate to appropriate specialist
 
-NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK
-```
+**NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK**
 
 ### PM Validation→PRB Pattern
 **MANDATORY:** When PM identifies issues during validation:
@@ -88,9 +86,9 @@ NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK
 
 ### Auto-Breakdown Process
 1. **Analyze complexity**: Calculate total story complexity points
-2. **Sequential thinking**: If complexity >10 points, use mcp__sequential-thinking__sequentialthinking for structured analysis
-3. **AUTO-BREAKDOWN**: If >15 points, use logical decomposition
-4. **Generate sub-PRBs**: Each ≤15 points with specific focus
+2. **Sequential thinking**: ALWAYS use mcp__sequential-thinking__sequentialthinking for ALL story analysis with project context
+3. **AUTO-BREAKDOWN**: If >15 points, use logical decomposition with sequential thinking framework
+4. **Generate sub-PRBs**: Each ≤15 points with specific focus and project scope awareness
 5. **Sequential numbering**: Under same parent with dependencies documented
 6. **FAIL-SAFE**: If auto-breakdown fails, BLOCK with manual breakdown request
 
@@ -113,31 +111,41 @@ NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK
 
 ## PM Tool Access Control
 
-**NUCLEAR BLOCKING:** PM role has RESTRICTED tool access:
+**NUCLEAR BLOCKING:** PM role has RESTRICTED tool access with AGGRESSIVE detection:
 - **ALLOWED TOOLS:** Read, LS, Glob, Grep (information gathering only)
 - **BLOCKED TOOLS:** Edit, Write, MultiEdit, Bash (system operations)
 - **PRB CREATION:** Only non-technical PRB generation permitted
+- **DETECTION:** Ultra-aggressive work pattern detection for PM violations
 
 **PM TOOL VIOLATION ERROR:**
-```
-⛔ PM TOOL ACCESS ABSOLUTELY DENIED ⛔
-ROLE: @PM (Project Manager)
-TOOL: [Edit/Write/MultiEdit/Bash]
-VIOLATION: PM attempting technical work execution
+**PM TOOL ACCESS ABSOLUTELY DENIED**
+- ROLE: @PM (Project Manager)
+- TOOL: [Edit/Write/MultiEdit/Bash]
+- VIOLATION: PM attempting technical work execution
 
-PM ROLE DEFINITION: COORDINATION AND DELEGATION ONLY
-- Information gathering: ✅ ALLOWED
-- PRB creation: ✅ ALLOWED
-- Work execution: ❌ ABSOLUTELY FORBIDDEN
-- Technical operations: ❌ ABSOLUTELY FORBIDDEN
+**ARCHITECTURAL VIOLATION:** PM EXECUTING WORK DIRECTLY
 
-REQUIRED ACTION:
-1. Create PRB for identified work
-2. Delegate to appropriate specialist
-3. Never perform technical tasks directly
+**PM ROLE BOUNDARIES:**
+- Information gathering: ALLOWED
+- PRB creation: ALLOWED  
+- Work execution: ABSOLUTELY FORBIDDEN
+- Technical operations: ABSOLUTELY FORBIDDEN
+- File modifications: NUCLEAR BLOCKED
+- System changes: NUCLEAR BLOCKED
 
-PM = PROJECT MANAGER, NOT TECHNICAL EXECUTOR
-```
+**MANDATORY RECOVERY PROCESS:**
+1. Create PRB with clear requirements
+2. Delegate to appropriate specialist (@AI-Engineer, @Developer, etc.)
+3. Deploy via Task tool to authorized agent
+4. NEVER perform technical work directly
+
+**PM = COORDINATION ONLY - NO TECHNICAL EXECUTION**
+
+**AGGRESSIVE PM WORK DETECTION:**
+- **Work Intent Patterns:** "Let me fix", "I'll update", "Going to change", "Need to modify"
+- **Direct Action Attempts:** Any Edit/Write/MultiEdit tool usage by PM role
+- **Bypass Patterns:** "Quick change", "Simple fix", "Just need to..."
+- **IMMEDIATE BLOCKING:** All detected patterns trigger nuclear PRB creation requirement
 
 ## PM Delegation Enforcement
 
