@@ -20,20 +20,18 @@
 - ANY tool usage except Read operations and PRB creation
 
 **PM NUCLEAR ERROR MESSAGE:**
-```
-🚫 PM WORK EXECUTION ABSOLUTELY FORBIDDEN 🚫
-ROLE: @PM (Project Manager)
-VIOLATION: Attempted direct work execution
+**PM WORK EXECUTION ABSOLUTELY FORBIDDEN**
+- ROLE: @PM (Project Manager)
+- VIOLATION: Attempted direct work execution
 
-PM ROLE BOUNDARIES:
-✅ ALLOWED: Story analysis, PRB creation, role coordination
-❌ FORBIDDEN: ANY work execution, file operations, technical fixes
+**PM ROLE BOUNDARIES:**
+- ALLOWED: Story analysis, PRB creation, role coordination
+- FORBIDDEN: ANY work execution, file operations, technical fixes
 
-ARCHITECTURAL RULE: PM = COORDINATION ONLY
-REQUIRED ACTION: Create PRB and delegate to appropriate specialist
+**ARCHITECTURAL RULE:** PM = COORDINATION ONLY
+**REQUIRED ACTION:** Create PRB and delegate to appropriate specialist
 
-NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK
-```
+**NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK**
 
 ### PM Validation→PRB Pattern
 **MANDATORY:** When PM identifies issues during validation:
@@ -120,29 +118,28 @@ NO EXCEPTIONS - NO SHORTCUTS - NO TECHNICAL WORK
 - **DETECTION:** Ultra-aggressive work pattern detection for PM violations
 
 **PM TOOL VIOLATION ERROR:**
-```
-🚫 PM TOOL ACCESS ABSOLUTELY DENIED 🚫
-ROLE: @PM (Project Manager)
-TOOL: [Edit/Write/MultiEdit/Bash]
-VIOLATION: PM attempting technical work execution
+**PM TOOL ACCESS ABSOLUTELY DENIED**
+- ROLE: @PM (Project Manager)
+- TOOL: [Edit/Write/MultiEdit/Bash]
+- VIOLATION: PM attempting technical work execution
 
-⛔ ARCHITECTURAL VIOLATION: PM EXECUTING WORK DIRECTLY ⛔
-PM ROLE BOUNDARIES:
-- Information gathering: ✅ ALLOWED
-- PRB creation: ✅ ALLOWED  
-- Work execution: ❌ ABSOLUTELY FORBIDDEN
-- Technical operations: ❌ ABSOLUTELY FORBIDDEN
-- File modifications: ❌ NUCLEAR BLOCKED
-- System changes: ❌ NUCLEAR BLOCKED
+**ARCHITECTURAL VIOLATION:** PM EXECUTING WORK DIRECTLY
 
-MANDATORY RECOVERY PROCESS:
+**PM ROLE BOUNDARIES:**
+- Information gathering: ALLOWED
+- PRB creation: ALLOWED  
+- Work execution: ABSOLUTELY FORBIDDEN
+- Technical operations: ABSOLUTELY FORBIDDEN
+- File modifications: NUCLEAR BLOCKED
+- System changes: NUCLEAR BLOCKED
+
+**MANDATORY RECOVERY PROCESS:**
 1. Create PRB with clear requirements
 2. Delegate to appropriate specialist (@AI-Engineer, @Developer, etc.)
 3. Deploy via Task tool to authorized agent
 4. NEVER perform technical work directly
 
-PM = COORDINATION ONLY - NO TECHNICAL EXECUTION
-```
+**PM = COORDINATION ONLY - NO TECHNICAL EXECUTION**
 
 **AGGRESSIVE PM WORK DETECTION:**
 - **Work Intent Patterns:** "Let me fix", "I'll update", "Going to change", "Need to modify"

@@ -39,12 +39,9 @@
 
 ## Example
 
-```bash
-/icc-search-memory "oauth2 authentication error handling"
-```
+Search command: /icc-search-memory "oauth2 authentication error handling"
 
-**Output:**
-```
+**Sample Output:**
 Found 3 relevant memories:
 
 1. OAuth2 Token Refresh (Score: 9.2)
@@ -61,7 +58,6 @@ Found 3 relevant memories:
    Location: memory/errors/http-status-codes.md
    "Common HTTP error codes and handling strategies..."
    Tags: [error-handling, http, best-practices]
-```
 
 ## Search Tips
 - Use quotes for exact phrases: "token refresh"

@@ -35,48 +35,41 @@
 ## NUCLEAR BLOCKING MESSAGES
 
 ### Primary Violation Message
-```
-🚫 MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN 🚫
-VIOLATION: Direct work execution detected in main scope
-ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
+**MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN**
+- VIOLATION: Direct work execution detected in main scope
+- ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
+- DETECTED PATTERN: [specific pattern detected]
+- BLOCKED ACTION: [attempted action]
 
-DETECTED PATTERN: [specific pattern detected]
-BLOCKED ACTION: [attempted action]
-
-MANDATORY PROCESS:
+**MANDATORY PROCESS:**
 1. User Request → PRB Generation (main scope)
 2. PRB → Task Tool → Agent Execution (subagent)
 3. NO EXCEPTIONS, NO SHORTCUTS, NO COMPROMISES
 
-REQUIRED ACTION: Generate PRB using @Role pattern FIRST
-```
+**REQUIRED ACTION:** Generate PRB using @Role pattern FIRST
 
 ### Tool Blocking Message
-```
-⛔ TOOL ACCESS DENIED ⛔
-TOOL: [Edit/Write/MultiEdit/Bash]
-CONTEXT: Main scope work execution attempt
-VIOLATION: Tool usage without active PRB context
+**TOOL ACCESS DENIED**
+- TOOL: [Edit/Write/MultiEdit/Bash]
+- CONTEXT: Main scope work execution attempt
+- VIOLATION: Tool usage without active PRB context
 
-ARCHITECTURAL INTEGRITY: Tools reserved for authorized subagent execution
-BLOCKING REASON: Maintains PRB-driven execution pattern
+**ARCHITECTURAL INTEGRITY:** Tools reserved for authorized subagent execution
+**BLOCKING REASON:** Maintains PRB-driven execution pattern
 
-RECOVERY: Create PRB → Deploy via Task tool → Agent executes with tool authorization
-```
+**RECOVERY:** Create PRB → Deploy via Task tool → Agent executes with tool authorization
 
 ### Escalation Message
-```
-🔒 ARCHITECTURE PROTECTION ENGAGED 🔒
-REPEATED VIOLATION: Multiple main scope execution attempts detected
-SYSTEM STATUS: Maximum enforcement mode activated
+**ARCHITECTURE PROTECTION ENGAGED**
+- REPEATED VIOLATION: Multiple main scope execution attempts detected
+- SYSTEM STATUS: Maximum enforcement mode activated
 
-THIS IS NOT NEGOTIABLE:
+**THIS IS NOT NEGOTIABLE:**
 - Main scope = PRB creation ONLY
 - Subagent = Work execution ONLY
 - No exceptions, no workarounds, no compromises
 
-COMPLIANCE REQUIRED: Follow PRB+Agent pattern without deviation
-```
+**COMPLIANCE REQUIRED:** Follow PRB+Agent pattern without deviation
 
 ## COMPREHENSIVE WORK CATEGORIES
 

@@ -6,46 +6,22 @@
 
 ## Configuration Schema
 
-```yaml
-mcp_integrations:
-  memory:
-    provider: "mcp__memory"
-    enabled: true
-    fallback: "file-based"
-    config: {}
-  issue_tracking:
-    provider: "mcp__github"
-    enabled: true
-    fallback: "file-based"
-    project: "owner/repo"
-    config: {}
-  documentation:
-    provider: "user-custom-mcp"
-    enabled: true
-    fallback: "file-based"
-    config:
-      base_path: "docs/"
-```
+**MCP Integrations Configuration Structure:**
+- **memory:** provider: "mcp__memory", enabled: true, fallback: "file-based", config: {}
+- **issue_tracking:** provider: "mcp__github", enabled: true, fallback: "file-based", project: "owner/repo", config: {}
+- **documentation:** provider: "user-custom-mcp", enabled: true, fallback: "file-based", config: { base_path: "docs/" }
 
 ## Detection Pattern
 
 **MANDATORY:** All behaviors MUST check for MCP configuration before operations
 
-```markdown
-## Universal Provider Selection Pattern
-IF mcp_integrations.[operation].enabled = true:
-  AND mcp_integrations.[operation].provider exists:
-    TRY specified MCP provider
-    IF provider_available:
-      USE MCP provider with config
-    ELSE:
-      LOG degradation warning
-      USE file-based fallback
-  ELSE:
-    USE file-based default
-ELSE:
-  USE file-based default
-```
+**Universal Provider Selection Pattern:**
+1. Check if mcp_integrations.[operation].enabled = true
+2. If enabled AND provider exists:
+   - Try specified MCP provider
+   - If provider available: Use MCP provider with config
+   - Else: Log degradation warning, use file-based fallback
+3. Otherwise: Use file-based default
 
 ## Fallback Hierarchy
 

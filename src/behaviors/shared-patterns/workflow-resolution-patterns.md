@@ -73,24 +73,16 @@
 
 ### PR Creation Command Resolution
 **WHEN pr_required=true, STEP 9 MUST INCLUDE:**
-```bash
-# Create feature branch pull request
-git push -u origin [BRANCH_NAME]
-gh pr create --title "[PRB_ID]: [FEATURE_DESCRIPTION]" --body "$(cat <<'EOF'
-## Summary
-[FEATURE_OVERVIEW]
 
-## Changes Made
-- [CHANGE_1]
-- [CHANGE_2]
+**Pull Request Creation Commands:**
+1. Push feature branch to remote: git push -u origin [BRANCH_NAME]
+2. Create PR using GitHub CLI: gh pr create --title "[PRB_ID]: [FEATURE_DESCRIPTION]" --body "[PR_DESCRIPTION]"
 
-## Testing
-[TESTING_PERFORMED]
-
-Generated with Claude Code
-EOF
-)"
-```
+**PR Description Template:**
+- Summary: [FEATURE_OVERVIEW]
+- Changes Made: [CHANGE_1], [CHANGE_2]
+- Testing: [TESTING_PERFORMED]
+- Generated with Claude Code
 
 **WHEN pr_required=false:**
 - Skip STEP 9 entirely OR include note "PR creation skipped per workflow settings"

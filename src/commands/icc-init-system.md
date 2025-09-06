@@ -21,11 +21,9 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 - `pm_active` - Optional: true/false for PM always active (default: from config)
 
 **Examples:**
-```
-/icc-init-system
-/icc-init-system L3
-/icc-init-system L2 true
-```
+- Initialize system with default settings: /icc-init-system
+- Set autonomy level to L3: /icc-init-system L3  
+- Set autonomy level L2 with PM active: /icc-init-system L2 true
 
 ## Initialization Output
 

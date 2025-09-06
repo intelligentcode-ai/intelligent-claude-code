@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.1] - 2025-01-06
+
+### Fixed
+- Remove all pseudo-code from system files per CLAUDE.md requirements
+- Replace code blocks with markdown behavioral descriptions
+- Maintain system functionality through clear behavioral patterns
+- Transform enforcement messages from code blocks to structured markdown
+- Complete system compliance with markdown-based AI-agentic requirements
+
 ## [7.15.0] - 2025-09-06
 
 ### Added
