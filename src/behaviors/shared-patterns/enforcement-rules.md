@@ -37,6 +37,13 @@
 - PM attempting technical fixes → COORDINATION REDIRECT
 - PM bypassing delegation patterns → FORCE PRB CREATION
 
+**ENHANCED PM VIOLATION DETECTION:**
+- PM + work intent language → IMMEDIATE PRB CREATION REQUIRED
+- PM + ANY action verb (fix, implement, modify, etc.) → NUCLEAR BLOCK
+- PM + file path mention + action context → ABSOLUTE BLOCK
+- PM + system command attempts → NUCLEAR STOP
+- PM + "Let me/I'll/Going to [action]" → IMMEDIATE VIOLATION
+
 ## Detection Functions
 
 ### Work Pattern Detection
@@ -114,6 +121,16 @@
 | Wrong context | Redirect to appropriate context |
 | Role mismatch | Trigger PM+Architect process |
 | Scope violation | Constrain to project root |
+| PM work violation | Nuclear block + force PRB creation + specialist assignment |
+| PM tool access | Immediate denial + delegation guidance |
+
+### PM Behavioral Integration
+**NUCLEAR ENFORCEMENT MECHANISMS:**
+- **Real-time Pattern Scanning:** Continuous monitoring for PM work intent patterns
+- **Tool Access Control:** Immediate blocking of PM modification tool attempts
+- **Automatic PRB Generation:** Force PRB creation when PM work detected
+- **Specialist Assignment:** Auto-assign appropriate specialist after PRB creation
+- **Violation Recovery:** Immediate redirection to delegation patterns
 
 ---
 *Shared enforcement patterns for intelligent-claude-code*
