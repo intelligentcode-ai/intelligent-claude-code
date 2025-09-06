@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.2] - 2025-01-06
+
+### Fixed
+- Enforce 150-line limit on all behavior files per CLAUDE.md requirements
+- Split oversized behaviors into shared patterns
+- Maintain functionality through pattern imports
+- Improve behavioral system modularity
+- Extract execution summary validation patterns
+- Modularize main scope blocking patterns  
+- Split agents documentation into focused files
+- Reorganize init system command patterns
+
 ## [7.15.1] - 2025-01-06
 
 ### Fixed
