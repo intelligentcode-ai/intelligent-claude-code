@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.0] - 2025-09-06
+
+### Added
+- Comprehensive PRB execution summary pattern with mandatory 9-step validation checklists
+- execution-summary.md behavioral pattern for transparent execution reporting
+- Mandatory execution summary enforcement in prb-execution.md
+- Complete functional requirements, success criteria, and git operations validation
+- Files modified tracking and next steps guidance in all PRB completions
+- Enhanced execution transparency and accountability through structured summaries
+
 ## [7.14.0] - 2025-09-06
 
 ### Enhanced
