@@ -111,11 +111,12 @@ Integrate project-specific best practices, coding standards, and architectural p
 
 ### Best Practices Paths
 **CLAUDE.md Configuration:**
-
-**best_practices_paths Configuration:**
-- "docs/coding-standards/"
-- "docs/architecture-patterns/"  
-- "docs/security-guidelines/"
+```yaml
+best_practices_paths:
+  - "docs/coding-standards/"
+  - "docs/architecture-patterns/"
+  - "docs/security-guidelines/"
+```
 
 ### Practice Categories
 **Organized Application:** Practices applied based on work context:

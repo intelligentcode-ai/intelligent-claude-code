@@ -6,10 +6,26 @@
 
 ## Configuration Schema
 
-**MCP Integrations Configuration Structure:**
-- **memory:** provider: "mcp__memory", enabled: true, fallback: "file-based", config: {}
-- **issue_tracking:** provider: "mcp__github", enabled: true, fallback: "file-based", project: "owner/repo", config: {}
-- **documentation:** provider: "user-custom-mcp", enabled: true, fallback: "file-based", config: { base_path: "docs/" }
+```yaml
+mcp_integrations:
+  memory:
+    provider: "mcp__memory"
+    enabled: true
+    fallback: "file-based"
+    config: {}
+  issue_tracking:
+    provider: "mcp__github"
+    enabled: true
+    fallback: "file-based"
+    project: "owner/repo"
+    config: {}
+  documentation:
+    provider: "user-custom-mcp"
+    enabled: true
+    fallback: "file-based"
+    config:
+      base_path: "docs/"
+```
 
 ## Detection Pattern
 
