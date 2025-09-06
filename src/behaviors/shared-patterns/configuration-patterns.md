@@ -16,10 +16,11 @@
 ## Settings Structure
 
 ### Git Settings
-- git_privacy (true/false)
+- git_privacy (true/false) - MANDATORY validation before git operations
 - branch_protection (true/false)
 - default_branch (main/master/develop)
 - require_pr_for_main (true/false)
+- privacy_patterns (array) - AI mention patterns to filter
 
 ### Autonomy Settings
 - autonomy_level (L1/L2/L3)
@@ -41,7 +42,8 @@
 ### Professional Default Values
 
 **Git Settings (Professional Security Standards):**
-- **git_privacy**: Enable AI mention stripping from commits
+- **git_privacy**: Enable AI mention stripping from commits (MANDATORY validation)
+- **privacy_patterns**: ["AI", "Claude", "agent", "Generated with Claude Code", "Co-Authored-By: Claude"]
 - **branch_protection**: Enable main branch protection
 - **require_pr_for_main**: Require pull requests for main branch changes
 
