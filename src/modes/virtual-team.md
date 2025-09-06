@@ -10,6 +10,11 @@
 @../behaviors/prb-execution.md
 @../behaviors/prb-system-integration.md
 
+## Shared Pattern Dependencies
+@../behaviors/shared-patterns/summary-validation-patterns.md
+@../behaviors/shared-patterns/pm-role-blocking-patterns.md
+@../behaviors/shared-patterns/work-detection-patterns.md
+
 ## Core System Behaviors
 @../behaviors/config-loader.md
 @../behaviors/directory-structure.md
@@ -32,7 +37,7 @@
 ## Advanced Features
 @../behaviors/template-resolution.md
 
-**CORE:** 14 roles+unlimited • 18 behaviors • @-notation • PRB-driven execution
+**CORE:** 14 roles+unlimited • 21 behaviors • @-notation • PRB-driven execution
 
 ## STARTUP
 
