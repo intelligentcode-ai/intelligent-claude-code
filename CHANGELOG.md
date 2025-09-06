@@ -5,6 +5,79 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.4] - 2025-09-06
+
+### Fixed
+- Integrated missing shared patterns into virtual-team.md to resolve system dependencies
+- Added summary-validation-patterns.md, pm-role-blocking-patterns.md, and work-detection-patterns.md imports
+- Updated behavior count from 18 to 21 in core summary
+
+## [7.15.3] - 2025-01-06
+
+### Fixed
+- Restored YAML configuration examples in behavioral patterns for better user understanding
+
+## [7.15.2] - 2025-01-06
+
+### Fixed
+- Enforce 150-line limit on all behavior files per CLAUDE.md requirements
+- Split oversized behaviors into shared patterns
+- Maintain functionality through pattern imports
+- Improve behavioral system modularity
+- Extract execution summary validation patterns
+- Modularize main scope blocking patterns  
+- Split agents documentation into focused files
+- Reorganize init system command patterns
+
+## [7.15.1] - 2025-01-06
+
+### Fixed
+- Remove all pseudo-code from system files per CLAUDE.md requirements
+- Replace code blocks with markdown behavioral descriptions
+- Maintain system functionality through clear behavioral patterns
+- Transform enforcement messages from code blocks to structured markdown
+- Complete system compliance with markdown-based AI-agentic requirements
+
+## [7.15.0] - 2025-09-06
+
+### Added
+- Comprehensive PRB execution summary pattern with mandatory 9-step validation checklists
+- execution-summary.md behavioral pattern for transparent execution reporting
+- Mandatory execution summary enforcement in prb-execution.md
+- Complete functional requirements, success criteria, and git operations validation
+- Files modified tracking and next steps guidance in all PRB completions
+- Enhanced execution transparency and accountability through structured summaries
+
+## [7.14.0] - 2025-09-06
+
+### Enhanced
+- Sequential thinking triggers liberalized for any multi-step reasoning
+- Project context now always included in sequential thinking analysis
+- Behavioral decision matrix updated to route more scenarios to sequential thinking
+- PRB generation enhanced with mandatory sequential thinking step
+- MCP tool integration enhanced with project scope awareness
+- Liberal automatic activation for ALL multi-step reasoning processes
+
+## [7.13.0] - 2025-09-06
+
+### Fixed
+- BUG-065: Git privacy setting validation and enforcement implemented
+- Enhanced AI mention filtering for professional git operations
+- Improved configuration loading for git_privacy setting
+- Added mandatory privacy validation before ALL git operations
+- Enhanced PRB templates with comprehensive AI mention filtering
+- Strengthened professional git standards compliance
+
+## [7.12.0] - 2025-09-06
+
+### Fixed
+- BUG-064: PM role nuclear work blocking enforcement implemented
+- Enhanced PM role architectural violation prevention with ultra-aggressive detection
+- Improved main scope execution blocking for PM work attempts
+- Strengthened PM tool access restrictions with nuclear messaging
+- Added PM-specific detection patterns to main-scope-blocking.md
+- Enhanced PM behavioral integration in enforcement-rules.md
+
 ## [7.11.2] - 2025-09-06
 
 ### Fixed

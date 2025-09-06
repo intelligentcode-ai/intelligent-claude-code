@@ -31,21 +31,13 @@ mcp_integrations:
 
 **MANDATORY:** All behaviors MUST check for MCP configuration before operations
 
-```markdown
-## Universal Provider Selection Pattern
-IF mcp_integrations.[operation].enabled = true:
-  AND mcp_integrations.[operation].provider exists:
-    TRY specified MCP provider
-    IF provider_available:
-      USE MCP provider with config
-    ELSE:
-      LOG degradation warning
-      USE file-based fallback
-  ELSE:
-    USE file-based default
-ELSE:
-  USE file-based default
-```
+**Universal Provider Selection Pattern:**
+1. Check if mcp_integrations.[operation].enabled = true
+2. If enabled AND provider exists:
+   - Try specified MCP provider
+   - If provider available: Use MCP provider with config
+   - Else: Log degradation warning, use file-based fallback
+3. Otherwise: Use file-based default
 
 ## Fallback Hierarchy
 

@@ -57,7 +57,7 @@
 2. **Search** memory for patterns (MANDATORY)
 3. **Search** best-practices for applicable patterns (MANDATORY)
 4. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
-5. **Sequential Analysis** if complexity > 2 points (structured thinking)
+5. **Sequential Analysis** ALWAYS (structured thinking with project context for ALL work)
 6. **Auto-breakdown** if complexity > 15 points
 7. **Load Template** from hierarchy
 8. **Load Configuration** at generation time

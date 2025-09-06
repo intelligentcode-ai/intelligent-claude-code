@@ -39,25 +39,22 @@
 - Any implementation without PRB context
 
 **ERROR MESSAGE:**
-```
-🚫 MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN 🚫
-VIOLATION: Direct work execution detected in main scope
-ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
+**MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN**
+- VIOLATION: Direct work execution detected in main scope
+- ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
+- DETECTED PATTERN: [specific pattern detected]
+- BLOCKED ACTION: [attempted action]
 
-DETECTED PATTERN: [specific pattern detected]
-BLOCKED ACTION: [attempted action]
-
-THIS IS NOT NEGOTIABLE:
+**THIS IS NOT NEGOTIABLE:**
 - Main scope = PRB creation ONLY
 - Subagent = Work execution ONLY
 - No exceptions, no workarounds, no compromises
 
-MANDATORY PROCESS:
+**MANDATORY PROCESS:**
 1. User Request → PRB Generation (main scope)
 2. PRB → Task Tool → Agent Execution (subagent)
 
-REQUIRED ACTION: Generate PRB using @Role pattern FIRST
-```
+**REQUIRED ACTION:** Generate PRB using @Role pattern FIRST
 
 ### Tool-Level Main Scope Blocking
 
@@ -74,25 +71,23 @@ REQUIRED ACTION: Generate PRB using @Role pattern FIRST
 - No PRB authorization
 
 **NUCLEAR TOOL BLOCKING:**
-```
-⛔ TOOL ACCESS ABSOLUTELY DENIED ⛔
-TOOL: [Edit/Write/MultiEdit/Bash]
-CONTEXT: Main scope work execution attempt
-VIOLATION: Tool usage without active PRB context
+**TOOL ACCESS ABSOLUTELY DENIED**
+- TOOL: [Edit/Write/MultiEdit/Bash]
+- CONTEXT: Main scope work execution attempt
+- VIOLATION: Tool usage without active PRB context
 
-ARCHITECTURAL RULE: Tools reserved EXCLUSIVELY for authorized subagent execution
-BLOCKING REASON: Maintains PRB-driven execution pattern
+**ARCHITECTURAL RULE:** Tools reserved EXCLUSIVELY for authorized subagent execution
+**BLOCKING REASON:** Maintains PRB-driven execution pattern
 
-DETECTED PATTERN: [work pattern detected]
-BLOCKED ACTION: [attempted action]
+**DETECTED PATTERN:** [work pattern detected]
+**BLOCKED ACTION:** [attempted action]
 
-MANDATORY RECOVERY PROCESS:
+**MANDATORY RECOVERY PROCESS:**
 1. Create PRB using @Role pattern
 2. Deploy PRB via Task tool to authorized agent
 3. Agent executes with FULL tool authorization
 
-NO EXCEPTIONS - NO SHORTCUTS - NO COMPROMISES
-```
+**NO EXCEPTIONS - NO SHORTCUTS - NO COMPROMISES**
 
 ## Auto-Correction Patterns
 
