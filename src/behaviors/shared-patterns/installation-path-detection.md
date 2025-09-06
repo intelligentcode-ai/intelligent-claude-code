@@ -39,7 +39,6 @@
 ### Template Path Resolution
 **TEMPLATE HIERARCHY:**
 - Project templates: project_root/prb_template_path
-- Project .claude templates: project_root/.claude/prb-templates/  
 - Installation templates: detected_path/prb-templates/
 
 ### Behavior Path Resolution
