@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Remove hardcoded template paths that break user-scope installations
-- Fix template hierarchy to properly use detected installation path instead of assuming project-relative .claude/ directory
+- Fix template hierarchy to properly use detected installation path instead of hardcoded .claude/prb-templates/ references
 - Ensure compatibility with user-scope ~/.claude/ installations and $CLAUDE_INSTALL_PATH
-- Correct template loading patterns to include full hierarchy: project → project/.claude/ → installation
+- Simplify template loading hierarchy to: project → installation (removing invalid project/.claude/ hardcoded path)
 
 ## [7.15.4] - 2025-09-06
 
