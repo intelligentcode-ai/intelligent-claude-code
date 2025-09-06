@@ -2,15 +2,6 @@
 
 This directory contains the 14 core Claude Code Subagent definitions with embedded behavioral patterns for the intelligent-claude-code virtual team system.
 
-## Architecture Overview
-
-The intelligent-claude-code system implements a **hybrid agent architecture** that combines:
-
-1. **14 Core Generic Agents**: Handle any work via context specialization
-2. **Dynamic Specialization**: Achieved through PRB context, not separate files
-3. **Unlimited Domain Coverage**: Any technology via specialized PRB content
-4. **Claude Code Native Integration**: Full compatibility with Claude Code Subagents
-
 ## Core Agent Definitions
 
 | Agent | Role | Specialization Capability |
@@ -31,209 +22,38 @@ The intelligent-claude-code system implements a **hybrid agent architecture** th
 
 **Note**: @PM operates as both main agent (for story breakdown and coordination) and subagent (for delegation and specialized PM tasks).
 
-## Dynamic Specialization System
+## Key Features
 
-### How Specialization Works
+- **14 Core Generic Agents**: Handle any work via context specialization
+- **Dynamic Specialization**: Achieved through PRB context, not separate files
+- **Unlimited Domain Coverage**: Any technology via specialized PRB content
+- **Claude Code Native Integration**: Full compatibility with Claude Code Subagents
 
-Instead of creating separate specialist agent files, the system achieves unlimited specialization through **PRB context injection**:
+## Documentation
 
-```yaml
-# PRB Example with React Specialization
-complete_context:
-  specialization: |
-    You are acting as React Developer with 10+ years experience.
-    You are expert in:
-    - React 18+ with hooks and modern patterns
-    - TypeScript integration and type safety
-    - State management with Redux Toolkit
-    - Component architecture and reusability
-    - Performance optimization and code splitting
-```
+- **[ARCHITECTURE.md](ARCHITECTURE.md)**: Dynamic specialization system and technology coverage
+- **[INTEGRATION.md](INTEGRATION.md)**: Claude Code native integration and behavioral patterns
+- **[DEPLOYMENT.md](DEPLOYMENT.md)**: Deployment pipeline and usage patterns
 
-When the **developer.md** agent receives this PRB, it fully embodies the React specialist expertise.
-
-### Universal Domain Coverage
-
-This approach enables specialization in **ANY** technology domain:
-
-- **Frontend**: React, Vue, Angular, Svelte, TypeScript, JavaScript
-- **Backend**: Node.js, Python, Java, Go, Rust, C#, PHP
-- **Mobile**: React Native, Flutter, iOS (Swift), Android (Kotlin)
-- **Cloud**: AWS, Azure, GCP, multi-cloud architectures
-- **Database**: PostgreSQL, MongoDB, Redis, Elasticsearch, Cassandra
-- **AI/ML**: TensorFlow, PyTorch, scikit-learn, Hugging Face
-- **DevOps**: Docker, Kubernetes, Jenkins, GitHub Actions, Terraform
-- **And ANY emerging technology via PRB context**
-
-### PM + Architect Dynamic Creation Process
-
-The @PM and specialist architects determine when specialization is needed:
-
-1. **Work Analysis**: PM analyzes work requirements and technology stack
-2. **Capability Matching**: Compare to 14 core agents (≥70% = use core, <70% = specialize)
-3. **Specialization Decision**: PM + Domain Architect collaborate on specialization needs
-4. **PRB Generation**: Create PRB with embedded specialization context
-5. **Agent Execution**: Core agent receives PRB and operates as specialist
-
-### Examples of Dynamic Specialization
-
-```markdown
-## React Frontend Project
-PM Analysis: "This requires React expertise with Redux, TypeScript, and modern hooks"
-Decision: <70% match with core developer → Create React specialization
-PRB Context: "Act as React Developer with 10+ years experience..."
-Execution: developer.md agent becomes React specialist for this PRB
-
-## AWS Infrastructure Project  
-PM Analysis: "This requires AWS expertise with EKS, RDS, and CloudFormation"
-Decision: <70% match with core system-engineer → Create AWS specialization
-PRB Context: "Act as AWS Solutions Architect with deep infrastructure expertise..."
-Execution: system-engineer.md agent becomes AWS specialist for this PRB
-
-## Machine Learning Project
-PM Analysis: "This requires ML expertise with PyTorch, computer vision, and model deployment"
-Decision: <70% match with core ai-engineer → Create ML specialization
-PRB Context: "Act as Machine Learning Engineer with computer vision expertise..."
-Execution: ai-engineer.md agent becomes ML specialist for this PRB
-```
-
-## Claude Code Integration
-
-### File Format Compliance
-
-All agent files follow **Claude Code native Subagents format**:
-
-```yaml
----
-name: agent-name
-description: Specialist description with domain expertise
-tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
----
-
-# Agent markdown content with behavioral patterns and specialization capability
-```
-
-### YAML Frontmatter Rules
-
-**ONLY 3 fields allowed** (per Claude Code specification):
-- ✅ `name`: Agent identifier (lowercase, hyphenated)
-- ✅ `description`: Specialist description and expertise area
-- ✅ `tools`: Available tools for the agent
-
-**FORBIDDEN fields** (will cause Claude Code to reject):
-- ❌ `version`, `category`, `color`, `emoji`  
-- ❌ `capabilities`, `working_directories`
-- ❌ `specializations`, `domains`
-- ❌ Any custom fields beyond name, description, tools
-
-### Behavioral Pattern Encapsulation
-
-Each agent embeds behavioral patterns in markdown content:
-
-- **PRB Execution Patterns**: How to execute PRBs with embedded context
-- **Memory Integration**: Search memory before work, store successful patterns
-- **Quality Standards**: Ensure high standards for domain expertise
-- **Documentation Enforcement**: Mandatory enforcement of template documentation requirements with blocking mechanisms
-- **Specialization Instructions**: How to embody specialist expertise via PRB context
-- **Collaboration Patterns**: How to work with other agents and PM
-
-#### Documentation Enforcement Patterns (v7.3.6+)
-
-All agents now include **mandatory documentation enforcement** behavioral patterns:
-
-- **Version Bump Enforcement**: Block PRB completion if version not bumped per template
-- **CHANGELOG Compliance**: Block if CHANGELOG entry not created/updated as specified
-- **README Enforcement**: Block if README updates required by template are not completed
-- **Documentation Completeness**: Validate all template documentation sections are executed
-- **Blocking Mechanisms**: Detect and block documentation skipping patterns like "No documentation needed", "Skip CHANGELOG", etc.
-
-## Deployment Pipeline
-
-### Source → Deployment Flow
-
-```
-src/agents/*.md 
-  ↓ (Makefile build)
-templates/agents/*.md 
-  ↓ (Ansible deployment)  
-user_config/agents/*.md
-  ↓ (Claude Code native)
-Available as Subagents
-```
-
-### Installation Integration
-
-The agents integrate with existing intelligent-claude-code infrastructure:
+## Quick Start
 
 1. **Development**: Edit agent definitions in `src/agents/`
 2. **Build**: `make install` copies to installation templates
 3. **Deploy**: Ansible deploys to user's configured agent directory
 4. **Usage**: Claude Code loads agents as native Subagents
 
-## Usage Patterns
-
-### Natural Agent Invocation
+## Usage Examples
 
 ```markdown
-# Instead of complex command scaffolding:
-OLD: /icc-create-specialist react-developer && /icc-execute-with-specialist
-
-# Use natural agent communication:
-NEW: @Developer implement React authentication with modern hooks
+# Natural agent communication:
+@Developer implement React authentication with modern hooks
+@DevOps deploy to production environment
+@AI-Engineer optimize behavioral patterns
 
 # PM automatically determines specialization and creates PRB with context
-# Developer agent receives PRB and operates as React specialist
+# Agents receive PRB and operate as specialists for the work
 ```
-
-### PRB-Driven Execution
-
-```markdown
-# PM creates PRB with specialization:
-@PM break down authentication story
-
-# PM generates PRB like:
-STORY-001-PRB-001-react-auth-implementation.prb.yaml
-
-# With embedded context:
-complete_context:
-  specialization: "React Developer with hooks expertise..."
-  
-# Developer agent executes PRB with full React specialization
-```
-
-## Benefits of This Architecture
-
-### Unlimited Scalability
-- **ANY Technology**: Support for emerging tech via PRB context
-- **NO Maintenance Overhead**: No need to maintain hundreds of specialist files
-- **Clean Architecture**: 14 generic agents + unlimited contextual specialization
-
-### Claude Code Native
-- **Perfect Compatibility**: Works seamlessly with Claude Code Subagents
-- **Future-Proof**: Aligns with Claude Code's evolution
-- **Performance Optimized**: Native context management and delegation
-
-### Intelligent Coordination
-- **PM Orchestration**: PM determines specialization needs intelligently
-- **Architect Collaboration**: Domain architects guide specialization decisions
-- **Quality Assurance**: Embedded behavioral patterns ensure consistent quality
-
-### Maintainability
-- **Single Source of Truth**: One agent file per core role
-- **Version Controlled**: All definitions tracked in git
-- **Documentation Integrated**: Behavioral patterns embedded in agent definitions
-
-## Migration from Task Tool
-
-This system provides a **smooth migration path** from the current Task tool approach:
-
-1. **Phase 1**: Deploy core agents alongside existing Task tool system
-2. **Phase 2**: Update PRB generation to include agent specialization context  
-3. **Phase 3**: Migrate execution from Task tool to native Subagents
-4. **Phase 4**: Remove Task tool scaffolding and obsolete commands
-
-The architecture ensures **backward compatibility** during transition while providing the foundation for unlimited specialist creation and Claude Code native integration.
 
 ---
 
-**Next Steps**: These agent definitions are ready for deployment via the existing Makefile/Ansible infrastructure and integration with Claude Code native Subagents.
+*14 core agents with unlimited specialization via PRB context*
