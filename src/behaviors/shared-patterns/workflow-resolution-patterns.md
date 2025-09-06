@@ -12,6 +12,26 @@
 4. **Resolve Placeholders**: Replace ALL workflow placeholders with actual values
 5. **Validate Resolution**: Ensure NO workflow placeholders remain unresolved
 
+**Example workflow_settings in CLAUDE.md:**
+```yaml
+workflow_settings:
+  tiny:
+    version_bump: true
+    version_type: "patch"
+    changelog_required: true
+    pr_required: false
+    merge_strategy: "direct_commit"
+    release_automation: false
+  medium:
+    version_bump: true
+    version_type: "minor"
+    changelog_required: true
+    pr_required: true
+    merge_strategy: "feature_branch"
+    release_automation: true
+    auto_merge: false
+```
+
 ### Placeholder Resolution Map
 
 **Standard Workflow Placeholders:**
@@ -73,16 +93,24 @@
 
 ### PR Creation Command Resolution
 **WHEN pr_required=true, STEP 9 MUST INCLUDE:**
+```bash
+# Create feature branch pull request
+git push -u origin [BRANCH_NAME]
+gh pr create --title "[PRB_ID]: [FEATURE_DESCRIPTION]" --body "$(cat <<'EOF'
+## Summary
+[FEATURE_OVERVIEW]
 
-**Pull Request Creation Commands:**
-1. Push feature branch to remote: git push -u origin [BRANCH_NAME]
-2. Create PR using GitHub CLI: gh pr create --title "[PRB_ID]: [FEATURE_DESCRIPTION]" --body "[PR_DESCRIPTION]"
+## Changes Made
+- [CHANGE_1]
+- [CHANGE_2]
 
-**PR Description Template:**
-- Summary: [FEATURE_OVERVIEW]
-- Changes Made: [CHANGE_1], [CHANGE_2]
-- Testing: [TESTING_PERFORMED]
-- Generated with Claude Code
+## Testing
+[TESTING_PERFORMED]
+
+Generated with Claude Code
+EOF
+)"
+```
 
 **WHEN pr_required=false:**
 - Skip STEP 9 entirely OR include note "PR creation skipped per workflow settings"
