@@ -44,40 +44,36 @@
 ### PM Nuclear Error Messages
 
 **PRIMARY PM VIOLATION:**
-```
-🚫 PM WORK EXECUTION ABSOLUTELY FORBIDDEN 🚫
-ROLE: @PM (Project Manager)
-VIOLATION: Attempted direct work execution
+**PM WORK EXECUTION ABSOLUTELY FORBIDDEN**
+- ROLE: @PM (Project Manager)
+- VIOLATION: Attempted direct work execution
 
-PM ROLE BOUNDARIES:
-✅ ALLOWED: Analysis, PRB creation, delegation, coordination
-❌ FORBIDDEN: ANY technical work, file operations, system changes
+**PM ROLE BOUNDARIES:**
+- ALLOWED: Analysis, PRB creation, delegation, coordination
+- FORBIDDEN: ANY technical work, file operations, system changes
 
-ARCHITECTURAL PRINCIPLE: PM = COORDINATION ONLY
-REQUIRED ACTION: Create PRB and delegate to appropriate specialist
+**ARCHITECTURAL PRINCIPLE:** PM = COORDINATION ONLY
+**REQUIRED ACTION:** Create PRB and delegate to appropriate specialist
 
-NO EXCEPTIONS - PM IS NOT A TECHNICAL EXECUTOR
-```
+**NO EXCEPTIONS - PM IS NOT A TECHNICAL EXECUTOR**
 
 **PM TOOL ACCESS VIOLATION:**
-```
-⛔ PM TOOL ACCESS ABSOLUTELY DENIED ⛔
-ROLE: @PM (Project Manager)
-TOOL: [Edit/Write/MultiEdit/Bash]
-VIOLATION: PM attempting unauthorized tool usage
+**PM TOOL ACCESS ABSOLUTELY DENIED**
+- ROLE: @PM (Project Manager)
+- TOOL: [Edit/Write/MultiEdit/Bash]
+- VIOLATION: PM attempting unauthorized tool usage
 
-PM TOOL PRIVILEGES:
-✅ ALLOWED: Read, LS, Glob, Grep (information gathering)
-❌ BLOCKED: All modification and execution tools
+**PM TOOL PRIVILEGES:**
+- ALLOWED: Read, LS, Glob, Grep (information gathering)
+- BLOCKED: All modification and execution tools
 
-ROLE DEFINITION: PROJECT MANAGER, NOT IMPLEMENTER
-REQUIRED ACTION:
+**ROLE DEFINITION:** PROJECT MANAGER, NOT IMPLEMENTER
+**REQUIRED ACTION:**
 1. Create PRB with clear requirements
 2. Assign to specialist role (@AI-Engineer, @Developer, etc.)
 3. Never perform technical work directly
 
-PM COORDINATES - PM DOES NOT EXECUTE
-```
+**PM COORDINATES - PM DOES NOT EXECUTE**
 
 ## PM Validation→PRB Pattern
 
@@ -134,13 +130,11 @@ PM COORDINATES - PM DOES NOT EXECUTE
 
 ### PM Behavioral Correction
 **PM attempting work → BLOCK + REDIRECT:**
-```
-DETECTED: PM work attempt
-BLOCKED: Direct execution 
-REDIRECTED: PRB creation process
-ASSIGNED: Appropriate specialist role
-RESULT: Proper delegation maintained
-```
+1. DETECTED: PM work attempt
+2. BLOCKED: Direct execution 
+3. REDIRECTED: PRB creation process
+4. ASSIGNED: Appropriate specialist role
+5. RESULT: Proper delegation maintained
 
 ## Integration with Enforcement Systems
 

@@ -16,12 +16,10 @@
 - **Dates:** YYYY-MM-DD format using `$(date +%Y-%m-%d)`
 
 ### Valid Examples
-```
-EPIC-001-virtual-team-enhancement-2025-08-26.md
-STORY-001-user-authentication-2025-08-26.md
-BUG-005-naming-format-inconsistency-2025-08-26.md
-STORY-001-PRB-001-implement-auth-backend-2025-08-26.prb.yaml
-```
+- EPIC-001-virtual-team-enhancement-2025-08-26.md
+- STORY-001-user-authentication-2025-08-26.md
+- BUG-005-naming-format-inconsistency-2025-08-26.md
+- STORY-001-PRB-001-implement-auth-backend-2025-08-26.prb.yaml
 
 ## Sequential Numbering
 
@@ -60,17 +58,10 @@ STORY-001-PRB-001-implement-auth-backend-2025-08-26.prb.yaml
 - Parent validation and reference
 
 ### Error Handling
-```
-❌ NAMING VALIDATION FAILED
-File: {proposed_name}
-Errors:
-- INVALID_CATEGORY: Category not in allowed list
-- INVALID_NUMBER_FORMAT: Number not zero-padded
-- INVALID_TITLE_FORMAT: Title contains invalid characters
-- PARENT_NOT_FOUND: Referenced parent doesn't exist
-
-Suggested Correction: {auto_corrected_name}
-```
+**NAMING VALIDATION FAILED**
+- File: {proposed_name}
+- Errors: INVALID_CATEGORY (Category not in allowed list), INVALID_NUMBER_FORMAT (Number not zero-padded), INVALID_TITLE_FORMAT (Title contains invalid characters), PARENT_NOT_FOUND (Referenced parent doesn't exist)
+- Suggested Correction: {auto_corrected_name}
 
 ## Integration
 

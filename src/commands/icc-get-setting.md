@@ -18,11 +18,9 @@ Gets setting value from configuration hierarchy with dot notation support.
 - `default_value` - Optional: Default if not found
 
 **Examples:**
-```
-/icc-get-setting git_privacy
-/icc-get-setting autonomy_level L2
-/icc-get-setting team.default_reviewer @Architect
-```
+- Get git privacy setting: /icc-get-setting git_privacy
+- Get autonomy level with default: /icc-get-setting autonomy_level L2
+- Get default reviewer setting: /icc-get-setting team.default_reviewer @Architect
 
 ## Core Actions
 

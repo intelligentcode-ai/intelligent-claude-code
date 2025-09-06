@@ -59,15 +59,13 @@
 - **Best-Practice Patterns:** Repeated successful patterns qualifying for best-practice promotion
 
 ### Auto-Store Triggers
-```markdown
-IMMEDIATE Storage Required:
-☐ User provides path/configuration information
-☐ Authentication/credential access pattern discovered
-☐ Complex problem resolution
-☐ Repeatable workflow process
-☐ Working tool configuration
-☐ Issue solution preventing future problems
-```
+**IMMEDIATE Storage Required:**
+- User provides path/configuration information
+- Authentication/credential access pattern discovered
+- Complex problem resolution
+- Repeatable workflow process
+- Working tool configuration
+- Issue solution preventing future problems
 
 ### Security-Aware Storage
 **PROACTIVE PATTERNS:**
