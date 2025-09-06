@@ -66,9 +66,12 @@
 **DOCUMENTATION:** Updates per PRB requirements
 
 ### Git Operations
-**PRIVACY FILTERING:** Strip AI mentions when git_privacy enabled
-**COMMIT MESSAGES:** Professional, descriptive commit messages
+**PRE-OPERATION PRIVACY VALIDATION:** Check git_privacy setting before ALL git operations
+**PRIVACY FILTERING:** Strip AI mentions when git_privacy=true from commit messages, PR descriptions, releases
+**AI MENTION PATTERNS:** Remove "AI", "Claude", "agent", "Generated with Claude Code", co-author attributions
+**COMMIT MESSAGES:** Professional, descriptive commit messages with no AI references
 **BRANCH STRATEGY:** Per workflow settings (direct_commit/feature_branch)
+**VALIDATION ENFORCEMENT:** Block git operations if privacy setting not validated
 
 ## Agent Coordination
 
@@ -93,6 +96,7 @@
 **INCOMPLETE CONTEXT:** Block execution, require context completion
 **SCOPE VIOLATIONS:** Prevent work outside project boundaries
 **CONFIGURATION ERRORS:** Validate embedded configuration
+**PRIVACY VIOLATIONS:** Block git operations without git_privacy validation
 
 ## Completion Validation
 
