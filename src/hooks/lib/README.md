@@ -64,6 +64,51 @@ Classifies user intent based on tool and context.
 }
 ```
 
+### `validateAction(tool, parameters, context)` (NEW)
+
+Validates if an action is allowed based on intent classification and configuration patterns.
+
+**Parameters:**
+- `tool` (string): Tool name being invoked
+- `parameters` (object): Tool parameters
+- `context` (string): Additional context (user message, conversation)
+
+**Returns:**
+```javascript
+{
+  decision: 'allow|warn|block|require_prb',
+  message: 'Action status message',
+  intent: 'research|qa|planning|work',
+  confidence: 0.0-1.0,
+  violations: {
+    tool: boolean,
+    parameters: ['param=value', ...],
+    paths: ['/path1', '/path2', ...]
+  },
+  enforcement: 'allow|warn|block|require_prb_context',
+  timing: 0.xxx
+}
+```
+
+### `requiresPrbContext(tool, parameters)`
+
+Checks if a specific tool and parameter combination requires PRB context.
+
+**Parameters:**
+- `tool` (string): Tool name
+- `parameters` (object): Tool parameters
+
+**Returns:** `Promise<boolean>` - True if PRB context is required
+
+### `getEnforcementAction(intentType)`
+
+Gets enforcement action for a specific intent type.
+
+**Parameters:**
+- `intentType` (string): Intent type (research, qa, planning, work)
+
+**Returns:** `Promise<string>` - Enforcement action
+
 ### `isWorkIntent(classification, threshold = 0.3)`
 
 Determines if classification indicates work intent requiring PRB execution.
@@ -83,10 +128,10 @@ Determines if classification indicates work intent requiring PRB execution.
 ## Usage Example
 
 ```javascript
-const classifier = require('./intent-classifier');
+const { classifyIntent, validateAction, requiresPrbContext } = require('./intent-classifier');
 
-// Example: Code modification (work intent)
-const result = classifier.classifyIntent(
+// Example 1: Basic intent classification
+const result = classifyIntent(
   'Edit',
   { file_path: '/src/auth.js' },
   'Fix the authentication bug'
@@ -95,7 +140,28 @@ const result = classifier.classifyIntent(
 console.log(result);
 // { intent: 'work', confidence: 0.8, timing: 0.008, scores: {...} }
 
-if (classifier.isWorkIntent(result)) {
+// Example 2: Full action validation with pattern configuration
+const validation = await validateAction(
+  'Edit',
+  { file_path: '/src/auth.js' },
+  'Fix the authentication bug'
+);
+
+console.log(validation);
+// {
+//   decision: 'require_prb',
+//   message: 'Action requires PRB+agent execution',
+//   intent: 'work',
+//   confidence: 0.8,
+//   violations: { tool: true, parameters: [], paths: [] },
+//   enforcement: 'require_prb_context'
+// }
+
+// Example 3: Check PRB requirement
+const needsPrb = await requiresPrbContext('Read', { file_path: '/docs/README.md' });
+console.log('Needs PRB:', needsPrb); // false
+
+if (validation.decision === 'require_prb') {
   console.log('BLOCKED: Requires PRB execution');
 } else {
   console.log('ALLOWED: Can proceed in main scope');
@@ -116,6 +182,59 @@ Tests include:
 - Edge case handling
 - Error conditions
 - Function validation
+
+## Pattern Configuration System
+
+The intent classifier now includes a powerful pattern configuration system that enables fine-grained control over tool and parameter allowances for each intent type.
+
+### Configuration Structure
+
+The system uses a JSON configuration file (`config/intent-patterns.json`) that defines:
+- **Tool Allowances**: Explicit lists of allowed/blocked tools per intent
+- **Parameter Patterns**: Regex patterns for validating tool parameters
+- **Path Patterns**: File path restrictions and allowances
+- **Enforcement Actions**: How violations are handled (allow/warn/block/require_prb)
+
+### Environment Variable Overrides
+
+```bash
+export HOOK_DEBUG_MODE=true      # Enable debug logging
+export HOOK_STRICT_MODE=true     # Enable stricter enforcement
+export HOOK_DEFAULT_ENFORCEMENT=block  # Override default enforcement
+```
+
+### Example Configuration Snippet
+
+```json
+{
+  "intents": {
+    "research": {
+      "allowed_tools": ["Read", "Grep", "Glob", "WebSearch"],
+      "blocked_tools": ["Edit", "Write", "MultiEdit"],
+      "parameter_patterns": {
+        "allowed": ["^/.*\\.(md|txt|json)$"],
+        "blocked": ["\\b(rm|delete|drop)\\b"]
+      },
+      "enforcement": "allow"
+    },
+    "work": {
+      "allowed_tools": [],
+      "blocked_tools": ["Edit", "Write", "MultiEdit", "Bash"],
+      "enforcement": "require_prb_context"
+    }
+  }
+}
+```
+
+### Features
+
+- **Hot Reloading**: Configuration changes detected automatically
+- **Caching**: 5-minute TTL for performance optimization  
+- **Schema Validation**: Comprehensive validation on load
+- **Fallback Defaults**: Graceful degradation if configuration unavailable
+- **Pattern Matching**: Flexible regex-based parameter and path validation
+
+For detailed configuration usage, see [`config-usage.md`](./config-usage.md).
 
 ## Integration
 

@@ -11,6 +11,8 @@
  * - work: Implementing, fixing, modifying code (BLOCKED in main scope)
  */
 
+const configLoader = require('./config-loader');
+
 /**
  * Work intent patterns from behavioral analysis
  */
@@ -85,6 +87,52 @@ const WORK_FILE_PATTERNS = [
 ];
 
 /**
+ * Load external memory path from CLAUDE.md if configured
+ */
+function getExternalMemoryPath() {
+  const fs = require('fs');
+  const path = require('path');
+  
+  try {
+    const claudeMdPath = path.join(process.cwd(), 'CLAUDE.md');
+    if (fs.existsSync(claudeMdPath)) {
+      const content = fs.readFileSync(claudeMdPath, 'utf8');
+      // Extract external_path from memory_configuration
+      const match = content.match(/memory_configuration:\s*\n\s*external_path:\s*["']([^"']+)["']/);
+      if (match) {
+        let externalPath = match[1];
+        // Expand ~ to home directory
+        if (externalPath.startsWith('~')) {
+          externalPath = path.join(require('os').homedir(), externalPath.slice(1));
+        }
+        return externalPath;
+      }
+    }
+  } catch (error) {
+    // Ignore errors, use default behavior
+  }
+  return null;
+}
+
+/**
+ * Check if file path is memory-related (project or external)
+ */
+function isMemoryPath(filePath) {
+  // Check project memory path
+  if (filePath.includes('/memory/')) {
+    return true;
+  }
+  
+  // Check external memory path
+  const externalMemoryPath = getExternalMemoryPath();
+  if (externalMemoryPath && filePath.startsWith(externalMemoryPath)) {
+    return true;
+  }
+  
+  return false;
+}
+
+/**
  * Classifies user intent based on tool usage, parameters, and context
  * 
  * @param {string} tool - Tool name being invoked
@@ -139,7 +187,8 @@ function classifyIntent(tool, parameters = {}, context = '') {
     
     // Strong planning indicators override work classification
     if (filePath.includes('.prb.') || filePath.includes('/stories/') || 
-        filePath.includes('/docs/') || filePath.includes('/plans/')) {
+        filePath.includes('/docs/') || filePath.includes('/plans/') ||
+        isMemoryPath(filePath)) {
       scores.planning += 0.7;
       scores.work += 0.2; // Still some work, but planning dominates
     } else {
@@ -330,8 +379,160 @@ function isReadOnlyCommand(command) {
   return false; // Default to work if unsure
 }
 
+/**
+ * Validates if an action is allowed based on intent classification and configuration
+ * 
+ * @param {string} tool - Tool name being invoked
+ * @param {object} parameters - Tool parameters
+ * @param {string} context - Additional context (user message, conversation context)
+ * @returns {Promise<object>} Validation result with decision and enforcement action
+ */
+async function validateAction(tool, parameters = {}, context = '') {
+  const startTime = process.hrtime.bigint();
+  
+  try {
+    // First classify the intent
+    const classification = classifyIntent(tool, parameters, context);
+    const { intent, confidence } = classification;
+    
+    // Get configuration for the classified intent
+    const intentConfig = await configLoader.getIntentConfig(intent);
+    
+    // Check tool allowance
+    const isToolAllowed = await configLoader.isToolAllowed(intent, tool);
+    
+    // Check parameter patterns
+    let parameterViolations = [];
+    if (parameters) {
+      for (const [key, value] of Object.entries(parameters)) {
+        const paramString = `${key}=${value}`;
+        const isParamAllowed = await configLoader.isParameterAllowed(intent, paramString);
+        if (!isParamAllowed) {
+          parameterViolations.push(`${key}=${value}`);
+        }
+      }
+    }
+    
+    // Check file path patterns
+    let pathViolations = [];
+    const filePaths = [];
+    
+    // Extract file paths from parameters
+    if (parameters.file_path) filePaths.push(parameters.file_path);
+    if (parameters.path) filePaths.push(parameters.path);
+    if (parameters.pattern && parameters.pattern.includes('/')) filePaths.push(parameters.pattern);
+    
+    for (const filePath of filePaths) {
+      const isPathAllowed = await configLoader.isPathAllowed(intent, filePath);
+      if (!isPathAllowed) {
+        pathViolations.push(filePath);
+      }
+    }
+    
+    // Determine overall decision
+    const hasViolations = !isToolAllowed || parameterViolations.length > 0 || pathViolations.length > 0;
+    const enforcement = await configLoader.getEnforcement(intent);
+    
+    let decision = 'allow';
+    let message = '';
+    
+    if (hasViolations) {
+      switch (enforcement) {
+        case 'allow':
+          decision = 'allow';
+          message = 'Action allowed despite pattern violations';
+          break;
+        case 'warn':
+          decision = 'warn';
+          message = 'Action allowed with warnings';
+          break;
+        case 'block':
+          decision = 'block';
+          message = 'Action blocked due to policy violations';
+          break;
+        case 'require_prb_context':
+          decision = 'require_prb';
+          message = 'Action requires PRB+agent execution';
+          break;
+        default:
+          decision = 'warn';
+          message = 'Unknown enforcement policy, defaulting to warn';
+      }
+    }
+    
+    const endTime = process.hrtime.bigint();
+    const timingMs = Number(endTime - startTime) / 1_000_000;
+    
+    return {
+      decision,
+      message,
+      intent: classification.intent,
+      confidence: classification.confidence,
+      violations: {
+        tool: !isToolAllowed,
+        parameters: parameterViolations,
+        paths: pathViolations
+      },
+      enforcement,
+      timing: Math.round(timingMs * 100) / 100
+    };
+    
+  } catch (error) {
+    console.error('Error during action validation:', error.message);
+    
+    // Fallback to basic classification
+    const classification = classifyIntent(tool, parameters, context);
+    return {
+      decision: classification.intent === 'work' ? 'require_prb' : 'allow',
+      message: 'Validation error, using basic classification',
+      intent: classification.intent,
+      confidence: classification.confidence,
+      violations: { tool: false, parameters: [], paths: [] },
+      enforcement: 'warn',
+      timing: 0,
+      error: error.message
+    };
+  }
+}
+
+/**
+ * Checks if a specific tool and parameter combination requires PRB context
+ * 
+ * @param {string} tool - Tool name
+ * @param {object} parameters - Tool parameters
+ * @returns {Promise<boolean>} True if PRB context is required
+ */
+async function requiresPrbContext(tool, parameters = {}) {
+  try {
+    const validation = await validateAction(tool, parameters);
+    return validation.decision === 'require_prb' || validation.intent === 'work';
+  } catch (error) {
+    console.error('Error checking PRB context requirement:', error.message);
+    // Default to requiring PRB for work tools
+    return WORK_TOOLS.has(tool);
+  }
+}
+
+/**
+ * Gets enforcement action for a specific intent type
+ * 
+ * @param {string} intentType - Intent type (research, qa, planning, work)
+ * @returns {Promise<string>} Enforcement action
+ */
+async function getEnforcementAction(intentType) {
+  try {
+    return await configLoader.getEnforcement(intentType);
+  } catch (error) {
+    console.error('Error getting enforcement action:', error.message);
+    return 'warn'; // Safe default
+  }
+}
+
 module.exports = {
   classifyIntent,
+  validateAction,
+  requiresPrbContext,
+  getEnforcementAction,
   isWorkIntent,
   isReadOnlyCommand,
   
