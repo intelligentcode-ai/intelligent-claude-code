@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.8] - 2025-09-07
+
+### Added
+- STORY-001-PRB-001: Intent classification engine for behavioral enforcement
+- High-performance Node.js classifier distinguishing research vs work intent
+- 95.2% accuracy on test scenarios with <5ms performance target achieved
+- Support for 4 intent categories: research, qa, planning, work
+- Comprehensive test suite with 21 accuracy scenarios and edge case testing
+- Integration patterns for main scope blocking and PRB execution enforcement
+- Tool-based classification for Edit, Write, Read, Grep, Glob, Bash operations
+- Context analysis for @Role patterns, question detection, and work verbs
+- File path analysis for code vs documentation vs planning files
+- Command analysis for read-only vs modification operations
+
 ## [7.15.7] - 2025-09-06
 
 ### Fixed
