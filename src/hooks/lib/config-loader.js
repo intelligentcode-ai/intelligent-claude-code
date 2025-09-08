@@ -56,9 +56,26 @@ class ConfigCache {
 class ConfigLoader {
   constructor() {
     this.cache = new ConfigCache();
-    this.configPath = path.join(__dirname, '../config/intent-patterns.json');
+    this.configPath = this._resolveConfigPath();
     this.watchedFiles = new Set();
     this.watchers = new Map();
+  }
+
+  /**
+   * Resolve config path based on project vs user scope
+   * @private
+   */
+  _resolveConfigPath() {
+    // Check for project scope first
+    if (process.env.CLAUDE_PROJECT_DIR) {
+      const projectConfigPath = path.join(process.env.CLAUDE_PROJECT_DIR, '.claude', 'hooks', 'config', 'intent-patterns.json');
+      if (fs.existsSync(projectConfigPath)) {
+        return projectConfigPath;
+      }
+    }
+    
+    // Fall back to relative path (works for both user and project installations)
+    return path.join(__dirname, '../config/intent-patterns.json');
   }
 
   /**

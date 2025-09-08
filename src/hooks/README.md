@@ -11,6 +11,38 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
 
 ## Installation
 
+### Project-Level Installation (Recommended)
+
+1. Copy hook files to your project's `.claude` directory:
+   ```bash
+   mkdir -p .claude/hooks
+   cp -r src/hooks/* .claude/hooks/
+   ```
+
+2. Set the project directory environment variable:
+   ```bash
+   export CLAUDE_PROJECT_DIR=$(pwd)
+   ```
+
+3. Add hook configuration to Claude Code settings.json:
+   ```json
+   {
+     "hooks": {
+       "PreToolUse": [{
+         "matcher": "*",
+         "hooks": [{
+           "type": "command",
+           "command": "node .claude/hooks/pre-tool-use.js",
+           "timeout": 15000,
+           "failureMode": "allow"
+         }]
+       }]
+     }
+   }
+   ```
+
+### User-Level Installation (Fallback)
+
 1. Copy all hook files to Claude's hook directory:
    ```bash
    mkdir -p ~/.claude/hooks
@@ -36,6 +68,12 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
 
 3. Restart Claude Code to activate the hooks
 
+### Environment Variables
+
+- **`CLAUDE_PROJECT_DIR`**: Set to project root directory for project-level hook installation
+- When set, hooks will use project-specific paths for logs and configuration
+- Without this variable, hooks fall back to user-level paths (`~/.claude/`)
+
 ## Behavior
 
 ### Allowed Operations
@@ -56,7 +94,8 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
 - Mode: Fail open (allow on errors to prevent breaking Claude)
 
 ### Logging
-- Violations logged to: `~/.claude/logs/violations-YYYY-MM-DD.log`
+- **Project-level**: Violations logged to: `$CLAUDE_PROJECT_DIR/.claude/logs/violations-YYYY-MM-DD.log`
+- **User-level**: Violations logged to: `~/.claude/logs/violations-YYYY-MM-DD.log`
 - Format: JSON lines with timestamp, tool, intent, confidence
 - Retention: Daily rotation, manual cleanup
 

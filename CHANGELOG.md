@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.10] - 2025-01-08
+
+### Fixed
+- BUG-069-PRB-003: Enhanced hook installation documentation for comprehensive project and user scope support
+- Updated INSTALLATION.md to clearly document both project-level (recommended) and user-level installation methods
+- Added verification instructions for both installation types with proper environment variable usage
+- Improved logging location documentation to show project vs user scope paths
+- Validated backward compatibility with existing user-level installations
+
+## [7.15.9] - 2025-01-08
+
+### Fixed
+- BUG-069-PRB-003: Fixed hook scope violations to properly support project-level hooks
+- ViolationLogger now uses CLAUDE_PROJECT_DIR environment variable for project-relative log paths
+- ConfigLoader supports both project and user scope with proper path resolution
+- Updated hook installation documentation for both project-level and user-level deployment
+- Environment variable support for CLAUDE_PROJECT_DIR to enable project boundaries
+- Backward compatibility maintained with user scope as fallback when CLAUDE_PROJECT_DIR not set
+
 ## [7.15.8] - 2025-01-08
 
 ### Fixed

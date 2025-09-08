@@ -29,8 +29,23 @@ const PERFORMANCE_THRESHOLD = 10; // ms
  */
 class ViolationLogger {
   constructor() {
-    this.logDir = path.join(process.env.HOME || '/tmp', '.claude', 'logs');
+    // Use project scope when available, fall back to user scope
+    this.logDir = this._resolveLogDirectory();
     this.ensureLogDir();
+  }
+
+  /**
+   * Resolve log directory based on project vs user scope
+   * @private
+   */
+  _resolveLogDirectory() {
+    // Check for project scope first
+    if (process.env.CLAUDE_PROJECT_DIR) {
+      return path.join(process.env.CLAUDE_PROJECT_DIR, '.claude', 'logs');
+    }
+    
+    // Fall back to user scope
+    return path.join(process.env.HOME || '/tmp', '.claude', 'logs');
   }
 
   ensureLogDir() {
