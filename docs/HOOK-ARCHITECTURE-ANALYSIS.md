@@ -36,9 +36,9 @@ This document analyzes how Claude Code's hook system can enforce the intelligent
 | Hook Type | Capability | Enforcement Level |
 |-----------|------------|-------------------|
 | **PreToolUse** | Block tool usage | **STRONG** - Can return exit code 2 |
-| **UserPromptSubmit** | Modify user prompts | **WEAK** - Can add warnings |
+| **UserPromptSubmit** | Modify prompts + Detect compaction | **MEDIUM** - Can trigger reload |
 | **PostToolUse** | Log/audit actions | **PASSIVE** - After the fact |
-| **SessionStart** | Initialize context | **WEAK** - Set initial state |
+| **SessionStart** | Auto-reload behaviors | **STRONG** - Can trigger /icc-init-system |
 | **SessionEnd** | Cleanup/save state | **PASSIVE** - Session cleanup |
 
 ### What Hooks CANNOT Do ❌
@@ -62,26 +62,39 @@ This document analyzes how Claude Code's hook system can enforce the intelligent
 - Memory operations follow security patterns
 ```
 
-### Layer 2: Guidance Layer (UserPromptSubmit)
-**Purpose**: Guide Claude toward correct behavior
+### Layer 2: Guidance & Recovery Layer (UserPromptSubmit)
+**Purpose**: Guide Claude and recover from context compaction
 
 ```javascript
+// Detects & Counters:
+- Context compaction indicators
+- Weakened behavioral enforcement
+- Missing critical patterns
+- Accumulated violations
+
 // Injects:
+- Behavioral reload triggers (/icc-init-system)
+- Reinforcement checkpoints
 - Role reminders for @PM mentions
 - PRB creation prompts for work patterns
 - Memory check reminders
 - Sequential thinking triggers
 ```
 
-### Layer 3: State Management (SessionStart/End)
-**Purpose**: Maintain behavioral context
+### Layer 3: Auto-Initialization (SessionStart)
+**Purpose**: Automatic behavioral loading and state management
 
 ```javascript
+// Auto-triggers:
+- /icc-init-system on new sessions
+- Reload when CLAUDE.md changes
+- Periodic reload (configurable interval)
+- Compaction recovery
+
 // Manages:
-- Load behavioral patterns on start
-- Track PRB execution state
-- Store learning patterns
-- Save session context
+- Session state tracking
+- Reload marker creation
+- Behavioral pattern initialization
 ```
 
 ### Layer 4: Audit Layer (PostToolUse)
@@ -93,6 +106,47 @@ This document analyzes how Claude Code's hook system can enforce the intelligent
 - Successful patterns
 - Performance metrics
 - Learning opportunities
+```
+
+## Context Compaction Detection & Recovery
+
+### Compaction Detection Mechanisms
+
+| Detection Method | Trigger | Confidence | Action |
+|-----------------|---------|------------|--------|
+| **Explicit Indicators** | "summarized from previous", "ran out of context" | HIGH | Immediate reload |
+| **Pattern Loss** | >70% critical patterns missing | MEDIUM | Reinforcement injection |
+| **Behavioral Decay** | Markers decrease over conversation | LOW | Monitor and reinforce |
+| **Violation Accumulation** | >3 enforcement failures | HIGH | Trigger reload |
+
+### Recovery Strategies
+
+1. **Immediate Reload** (High Confidence)
+   - Prepend `/icc-init-system` to user prompt
+   - Command recognized and executed by Claude
+   - Full behavioral pattern reload triggered
+   - Reset enforcement state with cooldown
+
+2. **Reinforcement Injection** (Medium Confidence)
+   - Inject core rules reminder text
+   - Strengthen enforcement language
+   - Monitor for improvement
+   - No command execution needed
+
+3. **Periodic Reinforcement** (Preventive)
+   - Every N prompts inject rules
+   - Maintain behavioral strength
+   - Prevent gradual decay
+   - Pure text reminders only
+
+### Compaction-Resistant Patterns
+
+```javascript
+// Ultra-short reminders that survive summarization:
+"PM=COORDINATION-ONLY"
+"WORK→PRB→AGENT" 
+"MAIN≠WORK"
+"TOOLS→AGENTS-ONLY"
 ```
 
 ## Implementation Mapping

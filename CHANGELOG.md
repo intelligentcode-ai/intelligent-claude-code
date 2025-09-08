@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.15.8] - 2025-09-07
+## [7.15.8] - 2025-01-08
+
+### Fixed
+- BUG-069-PRB-002: Added hook deployment to Ansible installation tasks
+- Hooks directory now created during installation with proper subdirectory copying
+- Hook scripts made executable during installation process
+- Settings.json template created for hook registration
+- Added logs directory creation for violation logging
+- Installation summary updated to indicate behavioral hooks are active
+
+## [7.15.7] - 2025-09-07
 
 ### Added
 - STORY-001-PRB-001: Intent classification engine for behavioral enforcement

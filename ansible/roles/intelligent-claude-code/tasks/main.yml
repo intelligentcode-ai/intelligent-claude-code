@@ -21,6 +21,8 @@
     - "{{ claude_install_path }}/roles"
     - "{{ claude_install_path }}/agents"
     - "{{ claude_install_path }}/prb-templates"
+    - "{{ claude_install_path }}/hooks"
+    - "{{ claude_install_path }}/logs"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -123,6 +125,43 @@
     msg: "PRB templates directory preserved: {{ claude_install_path }}/prb-templates/ already exists - keeping user modifications"
   when: prb_templates_copy_result.failed and ansible_verbosity >= 1
 
+- name: Copy hooks directory
+  copy:
+    src: "{{ playbook_dir }}/../src/hooks/"
+    dest: "{{ claude_install_path }}/hooks/"
+    mode: preserve
+    force: yes
+  register: hooks_copy_result
+
+- name: Ensure hooks subdirectories are copied
+  copy:
+    src: "{{ playbook_dir }}/../src/hooks/{{ item }}/"
+    dest: "{{ claude_install_path }}/hooks/{{ item }}/"
+    mode: preserve
+    force: yes
+  loop:
+    - lib
+    - config
+    - coverage
+    - tests
+  ignore_errors: yes
+
+- name: Display hooks preservation notice
+  debug:
+    msg: "Hooks directory preserved: {{ claude_install_path }}/hooks/ already exists - keeping user modifications"
+  when: hooks_copy_result.failed and ansible_verbosity >= 1
+
+- name: Make hook scripts executable
+  file:
+    path: "{{ claude_install_path }}/hooks/{{ item }}"
+    mode: '0755'
+  loop:
+    - pre-tool-use.js
+    - test-hook-integration.js
+    - run-all-tests.js
+    - validate-tests.js
+  ignore_errors: yes
+
 - name: Copy VERSION file
   copy:
     src: "{{ playbook_dir }}/../src/VERSION"
@@ -153,6 +192,23 @@
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
   when: config_md_exists.stat.exists and ansible_verbosity >= 1
 
+- name: Check if settings.json exists
+  stat:
+    path: "{{ claude_install_path }}/settings.json"
+  register: settings_json_exists
+
+- name: Create settings.json with hook registration (ONLY if not exists)
+  template:
+    src: settings.json.j2
+    dest: "{{ claude_install_path }}/settings.json"
+    mode: '0644'
+  when: not settings_json_exists.stat.exists
+
+- name: Display settings preservation notice
+  debug:
+    msg: "Settings file preserved: {{ claude_install_path }}/settings.json already exists - keeping user settings"
+  when: settings_json_exists.stat.exists and ansible_verbosity >= 1
+
 # badges.md file removed - scoring system simplified to clean progress reporting
 
 # learning-callouts.md file removed - integrated into learning-team-automation.md system
@@ -168,4 +224,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
+      - "🔒 Behavioral Hooks: Pre-tool-use enforcement active"
       - "🚀 Use @Role communication to activate team members"
