@@ -1,6 +1,6 @@
-# PRB Auto-Trigger
+# AgentTask Auto-Trigger
 
-**MANDATORY:** Auto-detect work and generate PRB using templates from hierarchy with complete placeholder resolution.
+**MANDATORY:** Auto-detect work and generate AgentTask using templates from hierarchy with complete placeholder resolution.
 
 ## Imports
 @./sequential-thinking.md

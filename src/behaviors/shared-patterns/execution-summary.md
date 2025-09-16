@@ -121,7 +121,7 @@ Provide transparent, comprehensive summaries at the end of every PRB execution t
 - execution-validation.md patterns for validation checklists
 - workflow-enforcement-patterns.md for git operations compliance
 - context-validation.md for scope and boundary validation
-- prb-execution.md for mandatory completion requirements
+- agenttask-execution.md for mandatory completion requirements
 
 ## Integration Points
 

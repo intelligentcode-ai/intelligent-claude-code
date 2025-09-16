@@ -1,6 +1,6 @@
-# PRB Execution
+# AgentTask Execution
 
-**MANDATORY:** Execute PRBs with complete context through specialized agents.
+**MANDATORY:** Execute AgentTasks with complete context through specialized agents.
 
 ## Imports
 @./shared-patterns/context-validation.md

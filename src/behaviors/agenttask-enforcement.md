@@ -1,6 +1,6 @@
-# PRB Enforcement
+# AgentTask Enforcement
 
-**MANDATORY:** Use PRB system with templates for all work. Block direct execution.
+**MANDATORY:** Use AgentTask system with templates for all work. Block direct execution.
 
 ## COMPACT-RESISTANT CORE ENFORCEMENT
 

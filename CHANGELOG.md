@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.21.0] - 2025-01-16
+
+### Changed
+- STORY-003-PRB-001: Renamed core behavioral files from PRB to AgentTask terminology
+- Renamed 5 core behavioral files: prb-creation-system.md, prb-auto-trigger.md, prb-execution.md, prb-enforcement.md, prb-system-integration.md
+- Updated all headers from "PRB" to "AgentTask" in renamed files
+- Fixed cross-file references and imports to use new AgentTask filenames
+- Updated virtual-team.md imports to reference new AgentTask behavioral files
+- Updated icc-init-system.md documentation to reflect new AgentTask file names
+- Preserved git history through proper git mv operations
+
 ## [7.20.0] - 2025-01-16
 
 ### Enhanced

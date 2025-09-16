@@ -1,6 +1,6 @@
-# PRB Creation System
+# AgentTask Creation System
 
-**MANDATORY:** All PRB and work item creation via main agent with template compliance and placeholder resolution.
+**MANDATORY:** All AgentTask and work item creation via main agent with template compliance and placeholder resolution.
 
 ## Imports
 @./shared-patterns/template-enforcement.md
