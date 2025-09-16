@@ -38,6 +38,13 @@ const RESEARCH_TOOLS = new Set([
 
 /**
  * Agent execution and planning tools (ALWAYS ALLOWED - these ARE the AgentTask+agent pattern!)
+ *
+ * CRITICAL UNDERSTANDING:
+ * - Task tool CREATES subagents - this IS the correct AgentTask+agent implementation
+ * - TodoWrite manages planning and task orchestration
+ * - ExitPlanMode handles agent lifecycle management
+ *
+ * These tools implement the architectural pattern: Main scope creates AgentTasks → Task tool creates agents → Agents do work
  */
 const AGENT_TOOLS = new Set([
   'Task', 'TodoWrite', 'ExitPlanMode'
@@ -167,11 +174,8 @@ function classifyIntent(tool, parameters = {}, context = '') {
     work: 0.0
   };
   
-  // Agent tools are ALWAYS allowed - they ARE the AgentTask+agent pattern!
-  if (AGENT_TOOLS.has(tool)) {
-    scores.planning += 0.9;  // Strong planning intent for agent execution
-    scores.work = 0.0;       // NEVER classify as work - this IS the approved pattern
-  }
+  // Check if this is an agent tool - if so, classification is final
+  const isAgentTool = AGENT_TOOLS.has(tool);
   
   // Tool-based classification (primary signal)
   if (RESEARCH_TOOLS.has(tool)) {
@@ -298,13 +302,24 @@ function classifyIntent(tool, parameters = {}, context = '') {
       contextLower.includes('examine') || contextLower.includes('review')) {
     scores.research += 0.2;
   }
-  
-  // Normalize scores to sum to 1.0
-  const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
-  if (totalScore > 0) {
-    Object.keys(scores).forEach(key => {
-      scores[key] = Math.min(scores[key] / totalScore, 1.0);
-    });
+
+  // FINAL AGENT TOOL CLASSIFICATION - Override all other scoring
+  // Task tool CREATES subagents - this IS the correct behavior, not a violation!
+  if (isAgentTool) {
+    scores.planning = 1.0;   // Maximum planning score - these ARE orchestration tools
+    scores.work = 0.0;       // NEVER classify as work - this IS the approved pattern
+    scores.research = 0.0;   // Clear classification - these are planning tools
+    scores.qa = 0.0;         // Clear classification - these are planning tools
+  }
+
+  // Normalize scores to sum to 1.0 (except for agent tools which are already correct)
+  if (!isAgentTool) {
+    const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+    if (totalScore > 0) {
+      Object.keys(scores).forEach(key => {
+        scores[key] = Math.min(scores[key] / totalScore, 1.0);
+      });
+    }
   }
   
   // Find highest scoring intent
@@ -548,10 +563,11 @@ module.exports = {
   getEnforcementAction,
   isWorkIntent,
   isReadOnlyCommand,
-  
-  // Export constants for testing
+
+  // Export constants for testing and system integration
   WORK_VERBS,
   RESEARCH_TOOLS,
+  AGENT_TOOLS,    // CRITICAL: Export agent tools for hook system integration
   WORK_TOOLS,
   QA_PATTERNS,
   PLANNING_PATTERNS,

@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.4] - 2025-01-16
+
+### Fixed
+- Critical hook scope detection logic error where Task tool was incorrectly flagged as work instead of orchestration
+- Task tool now correctly classified as planning with 1.0 confidence - Task creates subagents and IS the AgentTask+agent pattern
+- AGENT_TOOLS constant properly exported from intent-classifier module for system integration
+- Hook logic now properly distinguishes between work tools (Edit/Write/MultiEdit) and orchestration tools (Task/TodoWrite/ExitPlanMode)
+- Behavioral enforcement system correctly implements: Main scope creates AgentTasks → Task tool creates agents → Agents do work
+
 ## [8.1.3] - 2025-01-16
 
 ### Fixed
