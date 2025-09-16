@@ -12,7 +12,7 @@
 
 **Standard Memory Entry Format:**
 - **Header:** ## YYYY-MM-DD: Title
-- **Context:** Task/PRB reference
+- **Context:** Task/AgentTask reference
 - **Problem:** What went wrong
 - **Solution:** How fixed
 - **Code:** [if applicable]
@@ -59,9 +59,9 @@
    - **Keyword match**: Direct term matches (work type, technical domains, problem patterns)
    - **Recency**: Newer patterns weighted higher for current relevance
    - **Context relevance**: Similar problem/solution pattern matches
-   - **Success indicators**: Patterns from successful PRB executions
+   - **Success indicators**: Patterns from successful AgentTask executions
 6. **Pattern Selection**: Return top 2-3 most relevant patterns (max 1000 tokens total)
-7. **PRB Embedding**: Patterns embedded directly in PRB context for self-contained execution
+7. **AgentTask Embedding**: Patterns embedded directly in AgentTask context for self-contained execution
 
 ### LoadFromMemory Pattern
 1. **Path Resolution**: Determine memory base path
@@ -75,56 +75,56 @@
 - Archive: memory/archive/[topic]/[year].md
 - Keep: Most recent 5-10
 
-## PRB Integration
+## AgentTask Integration
 
-### Memory-First PRB Generation
-**MANDATORY:** All PRB creation MUST implement memory-first approach:
+### Memory-First AgentTask Generation
+**MANDATORY:** All AgentTask creation MUST implement memory-first approach:
 - **Search BEFORE template loading**: Memory search happens before template selection
-- **Embed patterns directly**: Include 2-3 most relevant patterns in PRB context
+- **Embed patterns directly**: Include 2-3 most relevant patterns in AgentTask context
 - **Token limit**: Maximum 1000 tokens from memory patterns total
 - **Selection criteria**: Topic match + recency + context relevance + success indicators
-- **Self-contained execution**: NO runtime memory lookups during PRB execution
+- **Self-contained execution**: NO runtime memory lookups during AgentTask execution
 
 ### Memory Pattern Embedding Process
-1. **SearchMemory execution**: Run during PRB creation in main agent context
+1. **SearchMemory execution**: Run during AgentTask creation in main agent context
 2. **Pattern extraction**: Extract relevant learning entries from memory files
-3. **Context integration**: Include patterns in PRB complete_context section
+3. **Context integration**: Include patterns in AgentTask complete_context section
 4. **Validation**: Ensure no `[MEMORY_SEARCH:topic]` placeholders remain
-5. **Execution reference**: Agents apply embedded patterns during PRB execution
+5. **Execution reference**: Agents apply embedded patterns during AgentTask execution
 
-### Memory Application in PRB Execution
+### Memory Application in AgentTask Execution
 - **Pattern reference**: "Based on embedded memory pattern: [pattern summary]"
 - **Learning application**: Apply proven approaches from embedded context
 - **Issue prevention**: Avoid known problems documented in embedded patterns
 - **Success replication**: Follow successful patterns from embedded learnings
 
-### PRB Completion Memory Storage
-**MANDATORY:** All PRB completions MUST automatically store execution learnings:
+### AgentTask Completion Memory Storage
+**MANDATORY:** All AgentTask completions MUST automatically store execution learnings:
 
 **Automatic Storage Triggers:**
-- **Step 9 of PRB Execution**: Memory storage is mandatory step in execution flow
+- **Step 9 of AgentTask Execution**: Memory storage is mandatory step in execution flow
 - **Successful Pattern Completion**: Store approaches that worked effectively
 - **Error Resolution**: Document problems encountered and solutions applied
 - **Configuration Discovery**: Store new tool configurations and settings
 - **Process Optimization**: Capture workflow improvements and efficiency gains
 
-**Topic Selection for PRB Storage:**
+**Topic Selection for AgentTask Storage:**
 - **implementation/[domain]**: Implementation patterns, coding approaches, integration solutions
 - **debugging/[technology]**: Error patterns, troubleshooting steps, resolution techniques
 - **configuration/[tool]**: Tool settings, configuration discoveries, setup patterns
 - **optimization/[area]**: Performance improvements, efficiency techniques, resource optimization
 - **process/[workflow]**: Workflow enhancements, automation patterns, productivity improvements
 
-**PRB Context Format:**
-- **Header**: ## YYYY-MM-DD: PRB-XXX - [Brief description]
-- **PRB Reference**: PRB identifier and completion context
+**AgentTask Context Format:**
+- **Header**: ## YYYY-MM-DD: AgentTask-XXX - [Brief description]
+- **AgentTask Reference**: AgentTask identifier and completion context
 - **Pattern Type**: Implementation/Debugging/Configuration/Optimization/Process
 - **Problem/Situation**: What was being addressed
 - **Solution/Approach**: How it was resolved or implemented
 - **Outcome**: Results, success metrics, lessons learned
 - **Reusability**: When this pattern applies to future work
 
-**Security Validation for PRB Storage:**
+**Security Validation for AgentTask Storage:**
 - Apply standard StoreInMemory security checklist
 - Focus on patterns and approaches, not sensitive data
 - Store methods and processes, not credentials or keys

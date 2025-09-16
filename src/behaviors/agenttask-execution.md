@@ -7,7 +7,7 @@
 @./shared-patterns/execution-validation.md
 @./shared-patterns/execution-summary.md
 @./shared-patterns/workflow-enforcement-patterns.md
-@./shared-patterns/prb-queue-management.md
+@./shared-patterns/agenttask-queue-management.md
 
 ## Execution Workflow
 

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.21.1] - 2025-01-16
+
+### Changed
+- STORY-003-PRB-002: Updated shared patterns files for AgentTask terminology
+- Renamed prb-queue-management.md to agenttask-queue-management.md
+- Updated all PRB references to AgentTask in shared patterns files
+- Fixed queue terminology and execution patterns in agenttask-queue-management.md
+- Updated execution-summary.md, execution-validation.md, memory-operations.md with AgentTask terminology
+- Updated workflow-enforcement-patterns.md and workflow-resolution-patterns.md with AgentTask terminology
+- Fixed import references to use new agenttask-queue-management.md filename
+
 ## [7.21.0] - 2025-01-16
 
 ### Changed
