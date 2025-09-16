@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.3] - 2025-01-16
+
+### Fixed
+- Critical production error in PreToolUse hook where convertClaudeCodeInput function was not exported in module.exports
+- PreToolUse hook now properly processes Claude Code JSON input format with convertClaudeCodeInput function
+- Behavioral enforcement system fully restored and functional after fixing missing function export
+- Hook system can now handle both legacy and Claude Code specific PreToolUse JSON formats
+
 ## [8.0.2] - 2025-01-16
 
 ### Fixed
