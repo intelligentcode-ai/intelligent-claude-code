@@ -37,6 +37,13 @@ const RESEARCH_TOOLS = new Set([
 ]);
 
 /**
+ * Agent execution and planning tools (ALWAYS ALLOWED - these ARE the AgentTask+agent pattern!)
+ */
+const AGENT_TOOLS = new Set([
+  'Task', 'TodoWrite', 'ExitPlanMode'
+]);
+
+/**
  * Modification tools that indicate work intent
  */
 const WORK_TOOLS = new Set([
@@ -159,6 +166,12 @@ function classifyIntent(tool, parameters = {}, context = '') {
     planning: 0.0,
     work: 0.0
   };
+  
+  // Agent tools are ALWAYS allowed - they ARE the AgentTask+agent pattern!
+  if (AGENT_TOOLS.has(tool)) {
+    scores.planning += 0.9;  // Strong planning intent for agent execution
+    scores.work = 0.0;       // NEVER classify as work - this IS the approved pattern
+  }
   
   // Tool-based classification (primary signal)
   if (RESEARCH_TOOLS.has(tool)) {
