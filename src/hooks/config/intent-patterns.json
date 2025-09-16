@@ -83,7 +83,7 @@
         },
         "planning": {
           "type": "object",
-          "description": "Creating PRBs, architectural discussions - allowed in main scope",
+          "description": "Creating AgentTasks, architectural discussions - allowed in main scope",
           "properties": {
             "allowed_tools": { "$ref": "#/properties/intents/properties/research/properties/allowed_tools" },
             "blocked_tools": { "$ref": "#/properties/intents/properties/research/properties/blocked_tools" },
@@ -247,7 +247,7 @@
         ],
         "parameter_patterns": {
           "allowed": [
-            "^/.*/prbs/.*\\.prb\\.yaml$",
+            "^/.*/agenttasks/.*\\.agenttask\\.yaml$",
             "^/.*/stories/.*\\.md$",
             "\\b(plan|design|architect|break\\s+down)\\b"
           ],
@@ -258,7 +258,7 @@
         },
         "path_patterns": {
           "allowed": [
-            "^/.*/prbs/.*$",
+            "^/.*/agenttasks/.*$",
             "^/.*/stories/.*$", 
             "^/.*/docs/.*$",
             "^/.*\\.(md|yaml|yml)$"
@@ -269,7 +269,7 @@
           ]
         },
         "context_requires": [
-          "prb_context",
+          "agenttask_context",
           "architectural_planning"
         ],
         "enforcement": "allow"
@@ -297,7 +297,7 @@
           ]
         },
         "context_requires": [
-          "prb_context",
+          "agenttask_context",
           "agent_execution"
         ],
         "enforcement": "require_prb_context"

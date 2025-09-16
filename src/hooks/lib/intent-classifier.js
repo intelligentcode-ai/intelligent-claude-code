@@ -2,12 +2,12 @@
  * Intent Classification Engine for intelligent-claude-code
  * 
  * Classifies user intents based on tool usage, parameters, and context to determine
- * if actions should be allowed in main scope or require PRB+agent execution.
- * 
+ * if actions should be allowed in main scope or require AgentTask+agent execution.
+ *
  * Intent Categories:
  * - research: Reading, searching, analyzing (ALLOWED in main scope)
- * - qa: Answering questions, explaining (ALLOWED in main scope)  
- * - planning: Creating PRBs, architectural discussions (ALLOWED in main scope)
+ * - qa: Answering questions, explaining (ALLOWED in main scope)
+ * - planning: Creating AgentTasks, architectural discussions (ALLOWED in main scope)
  * - work: Implementing, fixing, modifying code (BLOCKED in main scope)
  */
 
@@ -186,7 +186,7 @@ function classifyIntent(tool, parameters = {}, context = '') {
     const filePath = parameters.file_path || '';
     
     // Strong planning indicators override work classification
-    if (filePath.includes('.prb.') || filePath.includes('/stories/') || 
+    if (filePath.includes('.agenttask.') || filePath.includes('/stories/') ||
         filePath.includes('/docs/') || filePath.includes('/plans/') ||
         isMemoryPath(filePath)) {
       scores.planning += 0.7;
@@ -217,7 +217,7 @@ function classifyIntent(tool, parameters = {}, context = '') {
   scores.planning += Math.min(planningMatches * 0.2, 0.6);
   
   // Strong planning context indicators
-  if (allContent.includes('create prb') || allContent.includes('create story') ||
+  if (allContent.includes('create agenttask') || allContent.includes('create story') ||
       allContent.includes('architecture') || allContent.includes('design')) {
     scores.planning += 0.3;
   }
@@ -452,7 +452,7 @@ async function validateAction(tool, parameters = {}, context = '') {
           break;
         case 'require_prb_context':
           decision = 'require_prb';
-          message = 'Action requires PRB+agent execution';
+          message = 'Action requires AgentTask+agent execution';
           break;
         default:
           decision = 'warn';
@@ -508,7 +508,7 @@ async function requiresPrbContext(tool, parameters = {}) {
     return validation.decision === 'require_prb' || validation.intent === 'work';
   } catch (error) {
     console.error('Error checking PRB context requirement:', error.message);
-    // Default to requiring PRB for work tools
+    // Default to requiring AgentTask for work tools
     return WORK_TOOLS.has(tool);
   }
 }
