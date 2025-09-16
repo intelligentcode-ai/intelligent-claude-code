@@ -20,7 +20,9 @@
     - "{{ claude_install_path }}/commands"
     - "{{ claude_install_path }}/roles"
     - "{{ claude_install_path }}/agents"
-    - "{{ claude_install_path }}/prb-templates"
+    - "{{ claude_install_path }}/agenttask-templates"
+    - "{{ claude_install_path }}/hooks"
+    - "{{ claude_install_path }}/logs"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -35,7 +37,7 @@
   when: claude_md_exists.stat.exists
 
 - name: Handle graceful integration for existing CLAUDE.md
-  include_tasks: graceful_integration.yml
+  ansible.builtin.import_tasks: graceful_integration.yml
   when: claude_md_exists.stat.exists
 
 - name: Create new CLAUDE.md for fresh installation
@@ -110,18 +112,59 @@
     msg: "Agents directory preserved: {{ claude_install_path }}/agents/ already exists - keeping user modifications"
   when: agents_copy_result.failed and ansible_verbosity >= 1
 
-- name: Copy PRB templates directory
+- name: Copy AgentTask templates directory
   copy:
-    src: "{{ playbook_dir }}/../src/prb-templates/"
-    dest: "{{ claude_install_path }}/prb-templates/"
+    src: "{{ playbook_dir }}/../src/agenttask-templates/"
+    dest: "{{ claude_install_path }}/agenttask-templates/"
     mode: '0644'
     force: yes
-  register: prb_templates_copy_result
+  register: agenttask_templates_copy_result
 
-- name: Display PRB templates preservation notice
+- name: Display AgentTask templates preservation notice
   debug:
-    msg: "PRB templates directory preserved: {{ claude_install_path }}/prb-templates/ already exists - keeping user modifications"
-  when: prb_templates_copy_result.failed and ansible_verbosity >= 1
+    msg: "AgentTask templates directory preserved: {{ claude_install_path }}/agenttask-templates/ already exists - keeping user modifications"
+  when: agenttask_templates_copy_result.failed and ansible_verbosity >= 1
+
+- name: Copy hooks directory
+  synchronize:
+    src: "{{ playbook_dir }}/../src/hooks/"
+    dest: "{{ claude_install_path }}/hooks/"
+    recursive: yes
+    delete: no
+    rsync_opts:
+      - "--exclude=node_modules/"
+      - "--exclude=package-lock.json"
+  delegate_to: localhost
+  register: hooks_copy_result
+
+- name: Ensure hooks subdirectories are copied
+  copy:
+    src: "{{ playbook_dir }}/../src/hooks/{{ item }}/"
+    dest: "{{ claude_install_path }}/hooks/{{ item }}/"
+    mode: preserve
+    force: yes
+  loop:
+    - lib
+    - config
+    - coverage
+    - tests
+  ignore_errors: yes
+
+- name: Display hooks preservation notice
+  debug:
+    msg: "Hooks directory preserved: {{ claude_install_path }}/hooks/ already exists - keeping user modifications"
+  when: hooks_copy_result.failed and ansible_verbosity >= 1
+
+- name: Make hook scripts executable
+  file:
+    path: "{{ claude_install_path }}/hooks/{{ item }}"
+    mode: '0755'
+  loop:
+    - pre-tool-use.js
+    - test-hook-integration.js
+    - run-all-tests.js
+    - validate-tests.js
+  ignore_errors: yes
 
 - name: Copy VERSION file
   copy:
@@ -153,12 +196,56 @@
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
   when: config_md_exists.stat.exists and ansible_verbosity >= 1
 
+- name: Check if settings.json exists
+  stat:
+    path: "{{ claude_install_path }}/settings.json"
+  register: settings_json_exists
+
+- name: Create settings.json with hook registration (ONLY if not exists)
+  template:
+    src: settings.json.j2
+    dest: "{{ claude_install_path }}/settings.json"
+    mode: '0644'
+  when: not settings_json_exists.stat.exists
+
+- name: Merge hooks into existing settings.json
+  block:
+    - name: Read existing settings.json
+      slurp:
+        src: "{{ claude_install_path }}/settings.json"
+      register: existing_settings
+
+    - name: Parse existing settings as JSON
+      set_fact:
+        settings_data: "{{ existing_settings.content | b64decode | from_json }}"
+
+    - name: Add hooks section to existing settings
+      set_fact:
+        merged_settings: "{{ settings_data | combine({'hooks': {'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/pre-tool-use.js', 'timeout': 15000, 'failureMode': 'allow'}]}]}}, recursive=True) }}"
+
+    - name: Write merged settings.json
+      copy:
+        content: "{{ merged_settings | to_nice_json(indent=2) }}"
+        dest: "{{ claude_install_path }}/settings.json"
+        mode: '0644'
+
+    - name: Report hook registration
+      debug:
+        msg: "Hooks merged into existing settings.json - behavioral enforcement active"
+
+  when: settings_json_exists.stat.exists
+
+- name: Display settings creation notice
+  debug:
+    msg: "Settings file created with hook registration - behavioral enforcement active"
+  when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
+
 # badges.md file removed - scoring system simplified to clean progress reporting
 
 # learning-callouts.md file removed - integrated into learning-team-automation.md system
 
 - name: Handle project-specific integration
-  include_tasks: project_integration.yml
+  ansible.builtin.import_tasks: project_integration.yml
   when: claude_scope == "project"
 
 
@@ -168,4 +255,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
+      - "🔒 Behavioral Hooks: Pre-tool-use enforcement active"
       - "🚀 Use @Role communication to activate team members"

@@ -7,6 +7,12 @@
 @./shared-patterns/context-validation.md
 @./shared-patterns/behavioral-decision-matrix.md
 
+## COMPACT-RESISTANT PM ENFORCEMENT
+
+**ULTRA-SHORT CORE:** PM=COORDINATION-ONLY (NO WORK EXECUTION EVER)
+
+**CONTEXT-CHECKPOINT:** PM→PRB→DELEGATE (NEVER PM→WORK)
+
 ## PM Role Nuclear Work Prohibition
 
 **ABSOLUTE RULE:** @PM role is COORDINATION ONLY - ZERO work execution permitted.
@@ -45,6 +51,9 @@
 **CRITICAL:** @PM story breakdown operates in MAIN AGENT context only (NOT subagent).
 
 ### Breakdown Flow
+
+**CHECKPOINT-REMINDER:** PM=COORDINATION-ONLY, PM→PRB→DELEGATE
+
 1. **@PM reads story**: Business goals and requirements
 2. **@PM analyzes project scope**: System nature and technology context
 3. **@PM analyzes work type**: Specific work patterns and requirements
@@ -79,16 +88,17 @@
 
 ## PRB Generation with Size Limits
 
-### Size Management (MANDATORY)
-**Single PRB**: Story analysis ≤15 points → Create one PRB
-**Multiple PRBs**: Story analysis >15 points → Auto-breakdown into multiple PRBs ≤15 points each
+### Size Management (AGGRESSIVE BREAKDOWN ENFORCED)
+**MANDATORY:** ALL stories broken into nano/tiny PRBs ≤5 points ONLY
+**NO LARGE PRBS:** All work broken into multiple nano/tiny PRBs ≤5 points each
+**Maximum PRB Size:** 5 points (tiny) - NO exceptions
 **Sequential numbering**: PRB-001, PRB-002, PRB-003 under same parent story
 
 ### Auto-Breakdown Process
 1. **Analyze complexity**: Calculate total story complexity points
 2. **Sequential thinking**: ALWAYS use mcp__sequential-thinking__sequentialthinking for ALL story analysis with project context
-3. **AUTO-BREAKDOWN**: If >15 points, use logical decomposition with sequential thinking framework
-4. **Generate sub-PRBs**: Each ≤15 points with specific focus and project scope awareness
+3. **AGGRESSIVE BREAKDOWN**: ALWAYS decompose into nano/tiny PRBs ≤5 points using sequential thinking framework
+4. **Generate sub-PRBs**: Each ≤5 points (nano/tiny) with specific focus and project scope awareness
 5. **Sequential numbering**: Under same parent with dependencies documented
 6. **FAIL-SAFE**: If auto-breakdown fails, BLOCK with manual breakdown request
 
@@ -162,5 +172,18 @@
 - "@PM what story should we work on next?"
 - "@PM analyze the stories and create PRBs"
 
+## Aggressive Breakdown Enforcement
+
+**BLOCKED ACTIONS (IMMEDIATE STOP):**
+- Creating PRBs >5 points → "SIZE LIMIT ENFORCED: Maximum PRB size is 5 points (tiny)"
+- Medium/Large PRB generation → "TEMPLATE BLOCKED: Only nano/tiny PRBs permitted from stories"
+- Bypassing nano/tiny restriction → "BREAKDOWN MANDATORY: All PRBs must be ≤5 points"
+- Single large PRB from story → "AGGRESSIVE BREAKDOWN REQUIRED: Split into multiple nano/tiny PRBs"
+
+**ENFORCEMENT MESSAGES:**
+- "STORY BREAKDOWN: Creating multiple nano/tiny PRBs ≤5 points each"
+- "SIZE RESTRICTION: PRB creation limited to nano (0-2) and tiny (3-5) points only"
+- "DECOMPOSITION ENFORCED: Story broken into X nano/tiny PRBs for manageable execution"
+
 ---
-*Story breakdown with architect collaboration and auto-sizing*
+*Story breakdown with aggressive enforcement and nano/tiny PRB restrictions*

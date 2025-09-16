@@ -1,13 +1,12 @@
 ---
 # Graceful integration with existing CLAUDE.md
 
-- name: Check if already integrated
-  lineinfile:
-    path: "{{ claude_install_path }}/CLAUDE.md"
-    line: "@~/.claude/modes/virtual-team.md"
-    state: present
-  check_mode: yes
-  register: import_check
+- name: Check existing CLAUDE.md content
+  ansible.builtin.command:
+    cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ claude_install_path }}/CLAUDE.md"
+  register: grep_result
+  failed_when: false
+  changed_when: false
 
 - name: Integrate with existing CLAUDE.md
   block:
@@ -21,20 +20,20 @@
         content: |
           # Virtual Development Team
           @~/.claude/modes/virtual-team.md
-          
+
           <!-- Existing project configuration preserved below -->
-          
+
           {{ existing_content.content | b64decode }}
         dest: "{{ claude_install_path }}/CLAUDE.md"
         mode: '0644'
-    
+
     - name: Report graceful integration
       debug:
         msg: "Gracefully integrated with existing CLAUDE.md - all content preserved"
-  
-  when: import_check.changed
+
+  when: grep_result.rc != 0
 
 - name: Skip integration if already present
   debug:
     msg: "Already integrated - import line found in CLAUDE.md"
-  when: not import_check.changed
+  when: grep_result.rc == 0

@@ -48,7 +48,7 @@
 - **l3_settings.continue_on_error:** true
 
 ## Integration
-- **PRBs:** L1=approval before, L2=architect review, L3=auto
+- **AgentTasks:** L1=approval before, L2=architect review, L3=auto
 - **Memory:** L1=confirm storage, L2=oversight, L3=auto
 - **Git:** L1=each command, L2=commits auto, L3=full auto
 

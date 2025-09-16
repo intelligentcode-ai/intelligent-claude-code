@@ -17,7 +17,7 @@
 - ✓ CLAUDE.md found and validated
 - ✓ Project structure confirmed
 - ✓ Installation path resolved
-- ✓ Critical directories accessible: src/, memory/, prbs/
+- ✓ Critical directories accessible: src/, memory/, agenttasks/
 
 **Recovery State Assessment:**
 - ℹ️ Context State: [FRESH_START | CONTEXT_RECOVERY]

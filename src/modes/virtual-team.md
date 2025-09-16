@@ -3,12 +3,12 @@
 ## Core Roles
 @../roles/specialists.md
 
-## PRB System Behaviors  
-@../behaviors/prb-creation-system.md
-@../behaviors/prb-enforcement.md
-@../behaviors/prb-auto-trigger.md
-@../behaviors/prb-execution.md
-@../behaviors/prb-system-integration.md
+## AgentTask System Behaviors
+@../behaviors/agenttask-creation-system.md
+@../behaviors/agenttask-enforcement.md
+@../behaviors/agenttask-auto-trigger.md
+@../behaviors/agenttask-execution.md
+@../behaviors/agenttask-system-integration.md
 
 ## Shared Pattern Dependencies
 @../behaviors/shared-patterns/summary-validation-patterns.md

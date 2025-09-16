@@ -1,9 +1,9 @@
-# Mega PRB Template - System-Wide Changes (30+ points)
+# Mega AgentTask Template - System-Wide Changes (30+ points)
 # For major system overhauls and architectural changes
 
 git_privacy: [GIT_PRIVACY_SETTING]
-id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
-type: mega-prb
+id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+type: mega-agenttask
 complexity: system-wide
 priority: "[PRIORITY_LEVEL]"
 title: "[ROLE] [DESCRIPTION]"
@@ -79,38 +79,38 @@ execution_notes: |
 
 # Epic Decomposition Strategy
 epic_decomposition:
-  approach: "Break into Large PRBs, then Medium/Tiny sub-PRBs"
+  approach: "Break into Large AgentTasks, then Medium/Tiny sub-AgentTasks"
   major_phases:
     - phase: "[PHASE_1]"
-      prb_type: "large"
+      agenttask_type: "large"
       scope: "[PHASE_1_SCOPE]"
       dependencies: []
     - phase: "[PHASE_2]"
-      prb_type: "large" 
+      agenttask_type: "large" 
       scope: "[PHASE_2_SCOPE]"
       dependencies: ["[PHASE_1]"]
     - phase: "[INTEGRATION]"
-      prb_type: "large"
+      agenttask_type: "large"
       scope: "[SYSTEM_INTEGRATION]"
       dependencies: ["[PHASE_1]", "[PHASE_2]"]
   validation_enforcement:
     mandatory_epic_decomposition: true
     blocking_requirements:
-      - "REQUIRED: Mega PRBs MUST be broken into Large PRB phases"
+      - "REQUIRED: Mega AgentTasks MUST be broken into Large AgentTask phases"
       - "REQUIRED: Each phase must have clear scope and dependencies"
       - "REQUIRED: Integration phase must coordinate all phases"
       - "REQUIRED: Phase naming must follow epic-phase format"
       - "REQUIRED: System-wide changes must follow phased approach"
     phase_limits:
-      - "All phases must be Large PRBs (16-30 points)"
-      - "Phases must use large-prb-template.yaml"
+      - "All phases must be Large AgentTasks (16-30 points)"
+      - "Phases must use large-agenttask-template.yaml"
       - "Dependencies must be explicitly documented"
       - "Integration phase is mandatory for system coordination"
     epic_requirements:
       - "Minimum 2 phases required for epic decomposition"
       - "Maximum 5 phases recommended for manageable coordination"
       - "Each phase must validate before next phase begins"
-    error_message: "❌ Mega PRBs MUST be decomposed into coordinated phases - direct execution FORBIDDEN"
+    error_message: "❌ Mega AgentTasks MUST be decomposed into coordinated phases - direct execution FORBIDDEN"
 
 # Risk Management
 risk_management:
@@ -149,7 +149,7 @@ git_operations:
       - "Skip git workflow"
       - "Manual system changes only"
       - "Direct system modifications"
-    error_message: "❌ Mega PRBs MUST follow epic git workflow - 'No git operations needed' is FORBIDDEN"
+    error_message: "❌ Mega AgentTasks MUST follow epic git workflow - 'No git operations needed' is FORBIDDEN"
 
 # MANDATORY: Review Process
 review_process:
@@ -170,7 +170,7 @@ review_process:
       - "Review not required"
       - "Skip architectural board review"
       - "Internal review only"
-    error_message: "❌ Mega PRBs MUST have architectural board review - 'No review needed' is FORBIDDEN"
+    error_message: "❌ Mega AgentTasks MUST have architectural board review - 'No review needed' is FORBIDDEN"
     stakeholder_requirements:
       - "System architect approval required"
       - "Technical lead approval required"
@@ -196,7 +196,7 @@ documentation_updates:
       - "Documentation not required"
       - "Skip documentation updates"
       - "Minimal documentation only"
-    error_message: "❌ Mega PRBs MUST have comprehensive documentation - 'No documentation needed' is FORBIDDEN"
+    error_message: "❌ Mega AgentTasks MUST have comprehensive documentation - 'No documentation needed' is FORBIDDEN"
     documentation_scope:
       - "System architecture overhaul documentation"
       - "User impact and migration documentation"
@@ -246,7 +246,7 @@ mcp_operations:
     fallback: "file-based"
 
 # MCP Placeholder Resolution Notes
-# During PRB generation, resolve these placeholders:
+# During AgentTask generation, resolve these placeholders:
 # [MCP_MEMORY_ENABLED] → Check mcp_integrations.memory.enabled
 # [MCP_MEMORY_PROVIDER] → Get mcp_integrations.memory.provider
 # [MCP_ISSUE_ENABLED] → Check mcp_integrations.issue_tracking.enabled

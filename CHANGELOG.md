@@ -5,6 +5,164 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.18.0] - 2025-01-16
+
+### Changed
+- STORY-003-PRB-004: Completed final AgentTask template rename
+- Renamed prb-templates/ directory to agenttask-templates/
+- Renamed all template files from *-prb-template.yaml to *-agenttask-template.yaml
+- Updated template content to use AgentTask terminology instead of PRB references
+- Updated Ansible deployment to install agenttask-templates/ directory
+- Updated all template error messages and placeholders for AgentTask consistency
+
+## [7.21.2] - 2025-01-16
+
+### Changed
+- Renamed directory structure from prbs/ to agenttasks/ for AgentTask terminology alignment
+- Updated all configuration references from prb_path to agenttask_path
+- Modified hook scripts to recognize .agenttask.yaml files and /agenttasks/ directory
+- Updated behavioral documentation to reflect AgentTask terminology
+- Preserved all existing AgentTask files during directory rename
+
+## [7.21.1] - 2025-01-16
+
+### Changed
+- STORY-003-PRB-002: Updated shared patterns files for AgentTask terminology
+- Renamed prb-queue-management.md to agenttask-queue-management.md
+- Updated all PRB references to AgentTask in shared patterns files
+- Fixed queue terminology and execution patterns in agenttask-queue-management.md
+- Updated execution-summary.md, execution-validation.md, memory-operations.md with AgentTask terminology
+- Updated workflow-enforcement-patterns.md and workflow-resolution-patterns.md with AgentTask terminology
+- Fixed import references to use new agenttask-queue-management.md filename
+
+## [7.21.0] - 2025-01-16
+
+### Changed
+- STORY-003-PRB-001: Renamed core behavioral files from PRB to AgentTask terminology
+- Renamed 5 core behavioral files: prb-creation-system.md, prb-auto-trigger.md, prb-execution.md, prb-enforcement.md, prb-system-integration.md
+- Updated all headers from "PRB" to "AgentTask" in renamed files
+- Fixed cross-file references and imports to use new AgentTask filenames
+- Updated virtual-team.md imports to reference new AgentTask behavioral files
+- Updated icc-init-system.md documentation to reflect new AgentTask file names
+- Preserved git history through proper git mv operations
+
+## [7.20.0] - 2025-01-16
+
+### Enhanced
+- BUG-072-PRB-001: Implemented aggressive breakdown enforcement to ensure manageable task decomposition
+- Enforced MANDATORY story creation for all work ≥6 points before PRB generation
+- Limited PRB creation to nano (0-2 points) and tiny (3-5 points) templates only
+- Blocked medium, large, and mega PRB template usage to prevent oversized tasks
+- Updated prb-auto-trigger.md with aggressive breakdown rules and size restrictions
+- Enhanced prb-creation-system.md with story-first enforcement for ≥6 point work
+- Strengthened story-breakdown.md to ensure all PRBs are ≤5 points maximum
+- Added comprehensive blocking patterns to prevent bypass of breakdown requirements
+- Implemented enforcement messages to guide users through proper decomposition workflow
+- Created fail-safe mechanisms ensuring all complex work follows Story→tiny PRB pattern
+
+## [7.19.0] - 2025-01-16
+
+### Enhanced
+- BUG-071-PRB-001: Implemented PRB deduplication checking to prevent duplicate work creation
+- Added mandatory Step 0 duplicate check to prb-creation-system.md before all PRB generation
+- Enhanced prb-auto-trigger.md with deduplication detection before template loading
+- Implemented 70% similarity threshold using weighted scoring algorithm (description 40%, scope 30%, context 20%, parent 10%)
+- Added update-existing pattern to enhance existing PRBs instead of creating duplicates
+- Created comprehensive similarity scoring for work descriptions, technical scope, and context alignment
+- Added user notification system for existing PRB reuse with enhancement details
+- Enhanced blocking patterns and auto-correction for duplicate creation attempts
+- Updated context requirements to include mandatory duplicate check completion
+
+## [7.18.0] - 2025-01-16
+
+### Enhanced
+- BUG-070-PRB-003: Implemented hook-based enforcement for memory consultation and storage
+- Enhanced pre-tool-use.js with memory consultation requirements before PRB creation
+- Created post-tool-use.js hook for automatic memory storage reminders after PRB execution
+- Added MemoryEnforcement class with 5-minute consultation window validation
+- Implemented memory search detection through violation logs and file operations
+- Added comprehensive memory opportunity detection for domain knowledge, solution patterns, and issue resolution
+- Updated settings-example.json to include PostToolUse hook configuration
+- Enhanced hook README with memory enforcement documentation and usage guidelines
+- Added memory violation logging and compliance tracking for analysis
+- Created test suite for memory enforcement functionality validation
+
+## [7.17.0] - 2025-01-16
+
+### Enhanced
+- BUG-070-PRB-002: Implemented automatic memory storage after PRB execution
+- Enhanced prb-execution.md with mandatory memory storage as Step 9 in execution flow
+- Updated execution-summary.md to include memory storage in 10-step checklist and require memory storage documentation
+- Strengthened learning-team-automation.md with specific PRB completion triggers for automatic pattern capture
+- Enhanced memory-operations.md with comprehensive PRB completion storage guidance and topic selection rules
+- Added automatic storage triggers for successful patterns, error resolutions, configuration discoveries, and process optimizations
+- Implemented security validation and proper topic organization for PRB execution learnings
+- Documented memory storage format and examples for consistent pattern capture across all PRB completions
+
+## [7.16.0] - 2025-01-16
+
+### Enhanced
+- BUG-070-PRB-001: Integrated memory consultation into PRB generation flow
+- Enhanced prb-creation-system.md with mandatory memory-first approach and detailed SearchMemory integration
+- Updated prb-auto-trigger.md to enforce memory search before template loading with comprehensive pattern embedding
+- Strengthened memory-operations.md with detailed PRB integration process and validation rules
+- Added memory search validation and blocking patterns to prevent runtime memory lookups
+- Documented memory pattern embedding process for self-contained PRB execution
+- Implemented memory-first principle throughout PRB generation pipeline
+
+## [7.15.10] - 2025-01-08
+
+### Fixed
+- BUG-069-PRB-003: Enhanced hook installation documentation for comprehensive project and user scope support
+- Updated INSTALLATION.md to clearly document both project-level (recommended) and user-level installation methods
+- Added verification instructions for both installation types with proper environment variable usage
+- Improved logging location documentation to show project vs user scope paths
+- Validated backward compatibility with existing user-level installations
+
+## [7.15.9] - 2025-01-08
+
+### Fixed
+- BUG-069-PRB-003: Fixed hook scope violations to properly support project-level hooks
+- ViolationLogger now uses CLAUDE_PROJECT_DIR environment variable for project-relative log paths
+- ConfigLoader supports both project and user scope with proper path resolution
+- Updated hook installation documentation for both project-level and user-level deployment
+- Environment variable support for CLAUDE_PROJECT_DIR to enable project boundaries
+- Backward compatibility maintained with user scope as fallback when CLAUDE_PROJECT_DIR not set
+
+## [7.15.8] - 2025-01-08
+
+### Fixed
+- BUG-069-PRB-002: Added hook deployment to Ansible installation tasks
+- Hooks directory now created during installation with proper subdirectory copying
+- Hook scripts made executable during installation process
+- Settings.json template created for hook registration
+- Added logs directory creation for violation logging
+- Installation summary updated to indicate behavioral hooks are active
+
+## [7.15.7] - 2025-09-07
+
+### Added
+- STORY-001-PRB-001: Intent classification engine for behavioral enforcement
+- High-performance Node.js classifier distinguishing research vs work intent
+- 95.2% accuracy on test scenarios with <5ms performance target achieved
+- Support for 4 intent categories: research, qa, planning, work
+- Comprehensive test suite with 21 accuracy scenarios and edge case testing
+- Integration patterns for main scope blocking and PRB execution enforcement
+- Tool-based classification for Edit, Write, Read, Grep, Glob, Bash operations
+- Context analysis for @Role patterns, question detection, and work verbs
+- File path analysis for code vs documentation vs planning files
+- Command analysis for read-only vs modification operations
+
+## [7.15.7] - 2025-09-06
+
+### Fixed
+- BUG-069: Implement compact-resistant behavioral enforcement patterns to survive context compression
+- Added COMPACT-RESISTANT markers to critical enforcement sections
+- Implemented CHECKPOINT patterns for rule re-injection at decision points
+- Created ULTRA-SHORT reminders (PM=COORDINATION-ONLY) that survive summarization
+- Added context monitoring sections for reinforcement detection
+- Enhanced behavioral pattern persistence through Claude Code AUTO-COMPACT compression
+
 ## [7.15.6] - 2025-09-06
 
 ### Fixed

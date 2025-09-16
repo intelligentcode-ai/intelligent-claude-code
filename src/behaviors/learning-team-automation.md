@@ -81,6 +81,37 @@
 **Learning Capture:** Check embedded learnings → Apply during execution → Store new patterns
 **Learning Application:** Scan for reference patterns → Track usage → Apply proven approaches
 
+### PRB Completion Memory Storage
+**MANDATORY:** All PRB completions trigger automatic memory storage:
+
+**PRB Completion Triggers:**
+- **Successful PRB Execution**: Automatically store successful implementation patterns
+- **Error Resolution**: Document problems encountered and solutions applied
+- **New Tool Integration**: Capture working configurations and tool usage patterns
+- **Performance Optimization**: Store optimization techniques and results
+- **Process Improvement**: Document workflow enhancements and efficiency gains
+
+**Automatic Storage Process:**
+1. **Execution Analysis**: Scan PRB execution for patterns worth capturing
+2. **Topic Assignment**: Determine appropriate memory topic based on:
+   - Work type (implementation, configuration, debugging, optimization)
+   - Technology domain (behavioral, security, database, infrastructure)
+   - Problem category (error resolution, integration, performance)
+3. **Pattern Extraction**: Extract reusable patterns from execution:
+   - Successful approaches that worked well
+   - Error solutions that resolved specific problems
+   - Configuration discoveries that enable new capabilities
+   - Process improvements that increase efficiency
+4. **Security Validation**: Apply StoreInMemory security checklist before storage
+5. **Memory Storage**: Store using StoreInMemory pattern with PRB context
+6. **Index Update**: Update memory index for future discoverability
+
+**Storage Examples:**
+- **implementation/[technology]**: "PRB-123: Implemented authentication using [approach], handles [scenarios]"
+- **debugging/[domain]**: "PRB-124: Resolved [error] in [component] by [solution], prevents [issue]"
+- **configuration/[tool]**: "PRB-125: Configured [tool] with [settings], enables [capability]"
+- **optimization/[area]**: "PRB-126: Optimized [component] using [technique], improved [metric] by [amount]"
+
 ### Enhanced Auto-Application
 1. **Query Intent Analysis:** Parse user needs
 2. **Memory Search:** Auto-search relevant topics
