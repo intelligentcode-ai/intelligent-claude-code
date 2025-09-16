@@ -1,9 +1,9 @@
-# Large PRB Template - Complex Features (16-30 points)
+# Large AgentTask Template - Complex Features (16-30 points)
 # For sophisticated multi-component features requiring coordination
 
 git_privacy: [GIT_PRIVACY_SETTING]
-id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
-type: large-prb
+id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+type: large-agenttask
 complexity: complex
 priority: "[PRIORITY_LEVEL]"
 title: "[ROLE] [DESCRIPTION]"
@@ -70,31 +70,31 @@ execution_notes: |
   3. Use clean, professional language in all git operations
   4. Block git operations if privacy setting not validated
 
-# Sub-PRB Decomposition Strategy
+# Sub-AgentTask Decomposition Strategy
 decomposition:
-  approach: "Break into Medium/Tiny PRBs for manageable execution"
+  approach: "Break into Medium/Tiny AgentTasks for manageable execution"
   sub_components:
     - component: "[COMPONENT_1]"
-      prb_type: "medium"
+      agenttask_type: "medium"
       dependencies: []
     - component: "[COMPONENT_2]" 
-      prb_type: "medium"
+      agenttask_type: "medium"
       dependencies: ["[COMPONENT_1]"]
     - component: "[INTEGRATION]"
-      prb_type: "tiny"
+      agenttask_type: "tiny"
       dependencies: ["[COMPONENT_1]", "[COMPONENT_2]"]
   validation_enforcement:
     mandatory_decomposition: true
     blocking_requirements:
-      - "REQUIRED: Large PRBs MUST be broken into ≤15 point sub-PRBs"
+      - "REQUIRED: Large AgentTasks MUST be broken into ≤15 point sub-AgentTasks"
       - "REQUIRED: Each sub-component must have clear dependencies"
       - "REQUIRED: Integration component must coordinate all parts"
-      - "REQUIRED: Sub-PRB naming must follow parent-child format"
-    sub_prb_limits:
-      - "All sub-PRBs must be ≤15 complexity points"
-      - "Sub-PRBs must use appropriate templates (medium/tiny)"
+      - "REQUIRED: Sub-AgentTask naming must follow parent-child format"
+    sub_agenttask_limits:
+      - "All sub-AgentTasks must be ≤15 complexity points"
+      - "Sub-AgentTasks must use appropriate templates (medium/tiny)"
       - "Dependencies must be explicitly documented"
-    error_message: "❌ Large PRBs MUST be decomposed into manageable sub-PRBs - direct execution FORBIDDEN"
+    error_message: "❌ Large AgentTasks MUST be decomposed into manageable sub-AgentTasks - direct execution FORBIDDEN"
 
 # Coordination Strategy
 coordination:
@@ -125,7 +125,7 @@ git_operations:
       - "No git operations needed"
       - "Skip git workflow"
       - "Manual file changes only"
-    error_message: "❌ Large PRBs MUST follow git workflow - 'No git operations needed' is FORBIDDEN"
+    error_message: "❌ Large AgentTasks MUST follow git workflow - 'No git operations needed' is FORBIDDEN"
 
 # MANDATORY: Review Process
 review_process:
@@ -142,7 +142,7 @@ review_process:
       - "No review needed"
       - "Review not required"
       - "Skip architectural review"
-    error_message: "❌ Large PRBs MUST have architectural review - 'No review needed' is FORBIDDEN"
+    error_message: "❌ Large AgentTasks MUST have architectural review - 'No review needed' is FORBIDDEN"
 
 # MANDATORY: Documentation Updates
 documentation_updates:
@@ -159,7 +159,7 @@ documentation_updates:
       - "No documentation needed"
       - "Documentation not required"
       - "Skip documentation updates"
-    error_message: "❌ Large PRBs MUST update documentation - 'No documentation needed' is FORBIDDEN"
+    error_message: "❌ Large AgentTasks MUST update documentation - 'No documentation needed' is FORBIDDEN"
 
 # MANDATORY: Workflow Configuration
 workflow:
@@ -204,7 +204,7 @@ mcp_operations:
     fallback: "file-based"
 
 # MCP Placeholder Resolution Notes
-# During PRB generation, resolve these placeholders:
+# During AgentTask generation, resolve these placeholders:
 # [MCP_MEMORY_ENABLED] → Check mcp_integrations.memory.enabled
 # [MCP_MEMORY_PROVIDER] → Get mcp_integrations.memory.provider
 # [MCP_ISSUE_ENABLED] → Check mcp_integrations.issue_tracking.enabled
@@ -216,7 +216,7 @@ mcp_operations:
 # Execution Strategy
 execution_strategy: |
   1. Create feature branch for overall coordination
-  2. Generate and execute sub-PRBs in dependency order
+  2. Generate and execute sub-AgentTasks in dependency order
   3. Integrate components on feature branch
   4. Comprehensive testing and validation
   5. Update documentation and create pull request
@@ -224,7 +224,7 @@ execution_strategy: |
 # EXECUTION CHECKLIST
 execution_checklist: |
   ☐ Feature branch created for coordination (MANDATORY - validation enforced)
-  ☐ Sub-PRBs generated with proper dependencies (MANDATORY - decomposition enforced)
+  ☐ Sub-AgentTasks generated with proper dependencies (MANDATORY - decomposition enforced)
   ☐ Components executed in correct order (MANDATORY - coordination validation)
   ☐ Integration completed and tested (MANDATORY - integration validation)
   ☐ Documentation updated comprehensively (MANDATORY - no "No documentation needed")

@@ -1,9 +1,9 @@
-# Medium PRB Template - Standard Features (6-15 points)
+# Medium AgentTask Template - Standard Features (6-15 points)
 # For multi-file features and moderate complexity implementations
 
 git_privacy: [GIT_PRIVACY_SETTING]
-id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
-type: medium-prb
+id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+type: medium-agenttask
 complexity: standard
 priority: "[PRIORITY_LEVEL]"
 title: "[ROLE] [DESCRIPTION]"
@@ -154,7 +154,7 @@ validation_enforcement:
         - "No PR needed"
         - "Simple merge"
         - "Direct commit acceptable"
-      error_message: "❌ BLOCKED: Full git workflow with branch protection is mandatory for medium PRBs."
+      error_message: "❌ BLOCKED: Full git workflow with branch protection is mandatory for medium AgentTasks."
     
     sme_review:
       - "Complete technical review checklist with all items verified"
@@ -171,7 +171,7 @@ validation_enforcement:
         - "Internal change only"
         - "Too straightforward for review"
         - "Developer discretion"
-      error_message: "❌ BLOCKED: Comprehensive SME review is mandatory for all medium complexity PRBs."
+      error_message: "❌ BLOCKED: Comprehensive SME review is mandatory for all medium complexity AgentTasks."
     
     documentation:
       - "CHANGELOG entry with detailed feature description required"
@@ -187,7 +187,7 @@ validation_enforcement:
         - "Documentation not affected"
         - "Too technical for user docs"
         - "Code speaks for itself"
-      error_message: "❌ BLOCKED: Comprehensive documentation updates are mandatory for medium PRBs."
+      error_message: "❌ BLOCKED: Comprehensive documentation updates are mandatory for medium AgentTasks."
 
     pull_request_review:
       - "Assigned SME reviewer must be specified (not generic)"
@@ -263,7 +263,7 @@ mcp_operations:
     fallback: "file-based"
 
 # MCP Placeholder Resolution Notes
-# During PRB generation, resolve these placeholders:
+# During AgentTask generation, resolve these placeholders:
 # [MCP_MEMORY_ENABLED] → Check mcp_integrations.memory.enabled
 # [MCP_MEMORY_PROVIDER] → Get mcp_integrations.memory.provider
 # [MCP_ISSUE_ENABLED] → Check mcp_integrations.issue_tracking.enabled

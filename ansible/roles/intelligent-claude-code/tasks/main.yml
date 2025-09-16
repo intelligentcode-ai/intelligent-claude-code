@@ -20,7 +20,7 @@
     - "{{ claude_install_path }}/commands"
     - "{{ claude_install_path }}/roles"
     - "{{ claude_install_path }}/agents"
-    - "{{ claude_install_path }}/prb-templates"
+    - "{{ claude_install_path }}/agenttask-templates"
     - "{{ claude_install_path }}/hooks"
     - "{{ claude_install_path }}/logs"
 
@@ -112,18 +112,18 @@
     msg: "Agents directory preserved: {{ claude_install_path }}/agents/ already exists - keeping user modifications"
   when: agents_copy_result.failed and ansible_verbosity >= 1
 
-- name: Copy PRB templates directory
+- name: Copy AgentTask templates directory
   copy:
-    src: "{{ playbook_dir }}/../src/prb-templates/"
-    dest: "{{ claude_install_path }}/prb-templates/"
+    src: "{{ playbook_dir }}/../src/agenttask-templates/"
+    dest: "{{ claude_install_path }}/agenttask-templates/"
     mode: '0644'
     force: yes
-  register: prb_templates_copy_result
+  register: agenttask_templates_copy_result
 
-- name: Display PRB templates preservation notice
+- name: Display AgentTask templates preservation notice
   debug:
-    msg: "PRB templates directory preserved: {{ claude_install_path }}/prb-templates/ already exists - keeping user modifications"
-  when: prb_templates_copy_result.failed and ansible_verbosity >= 1
+    msg: "AgentTask templates directory preserved: {{ claude_install_path }}/agenttask-templates/ already exists - keeping user modifications"
+  when: agenttask_templates_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy hooks directory
   copy:

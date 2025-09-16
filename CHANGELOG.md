@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.18.0] - 2025-01-16
+
+### Changed
+- STORY-003-PRB-004: Completed final AgentTask template rename
+- Renamed prb-templates/ directory to agenttask-templates/
+- Renamed all template files from *-prb-template.yaml to *-agenttask-template.yaml
+- Updated template content to use AgentTask terminology instead of PRB references
+- Updated Ansible deployment to install agenttask-templates/ directory
+- Updated all template error messages and placeholders for AgentTask consistency
+
 ## [7.21.2] - 2025-01-16
 
 ### Changed
