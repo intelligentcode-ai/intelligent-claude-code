@@ -21,6 +21,7 @@
 6. **Documentation**: Update version, changelog, documentation
 7. **Git Operations**: Commit and push with privacy filtering
 8. **Completion**: Mark PRB as completed with mandatory comprehensive execution summary
+9. **Memory Storage**: Automatically store execution learnings and patterns
 
 ### Agent Deployment
 **AGENT SELECTION:** Based on PRB role assignments and work type
@@ -117,10 +118,39 @@
 - Clear next steps guidance and follow-up actions
 - NO PRB completion without full execution summary
 
+### Automatic Memory Storage (Step 9)
+**MANDATORY:** All PRB completions MUST automatically store execution learnings:
+
+**Memory Storage Triggers:**
+- **Successful Patterns**: Implementation approaches that worked well
+- **Issue Resolutions**: Problems encountered and solutions applied
+- **Configuration Discoveries**: New settings, paths, or tool configurations
+- **Optimization Techniques**: Performance improvements and efficiency gains
+- **Integration Solutions**: Successful cross-component or cross-system integrations
+
+**Storage Process:**
+1. **Learning Extraction**: Identify patterns worth capturing from execution
+2. **Topic Determination**: Select appropriate memory topic based on work type
+3. **Security Validation**: Apply StoreInMemory security checklist
+4. **Pattern Storage**: Use StoreInMemory pattern with execution context
+5. **Index Update**: Update memory index for discoverability
+
+**What To Store:**
+- **Successful Approaches**: "PRB-XXX: Used [approach] for [problem], resulted in [outcome]"
+- **Error Solutions**: "PRB-XXX: Encountered [error], resolved with [solution]"
+- **Configuration Patterns**: "PRB-XXX: Found [tool/setting] at [location], enables [capability]"
+- **Process Improvements**: "PRB-XXX: Applied [process], improved [metric] by [amount]"
+
+**What NOT To Store:**
+- Sensitive credentials, tokens, or keys
+- Project-specific details that don't generalize
+- Temporary states or one-time configurations
+- Personal information or private data
+
 ### Learning Integration
-**PATTERN CAPTURE:** Store successful execution patterns
-**ISSUE PREVENTION:** Document and prevent recurring issues
-**KNOWLEDGE TRANSFER:** Update memory with learnings
+**PATTERN CAPTURE:** Store successful execution patterns automatically via Step 9
+**ISSUE PREVENTION:** Document and prevent recurring issues through memory storage
+**KNOWLEDGE TRANSFER:** Update memory with learnings after every PRB completion
 
 ## Integration Points
 

@@ -98,5 +98,37 @@
 - **Issue prevention**: Avoid known problems documented in embedded patterns
 - **Success replication**: Follow successful patterns from embedded learnings
 
+### PRB Completion Memory Storage
+**MANDATORY:** All PRB completions MUST automatically store execution learnings:
+
+**Automatic Storage Triggers:**
+- **Step 9 of PRB Execution**: Memory storage is mandatory step in execution flow
+- **Successful Pattern Completion**: Store approaches that worked effectively
+- **Error Resolution**: Document problems encountered and solutions applied
+- **Configuration Discovery**: Store new tool configurations and settings
+- **Process Optimization**: Capture workflow improvements and efficiency gains
+
+**Topic Selection for PRB Storage:**
+- **implementation/[domain]**: Implementation patterns, coding approaches, integration solutions
+- **debugging/[technology]**: Error patterns, troubleshooting steps, resolution techniques
+- **configuration/[tool]**: Tool settings, configuration discoveries, setup patterns
+- **optimization/[area]**: Performance improvements, efficiency techniques, resource optimization
+- **process/[workflow]**: Workflow enhancements, automation patterns, productivity improvements
+
+**PRB Context Format:**
+- **Header**: ## YYYY-MM-DD: PRB-XXX - [Brief description]
+- **PRB Reference**: PRB identifier and completion context
+- **Pattern Type**: Implementation/Debugging/Configuration/Optimization/Process
+- **Problem/Situation**: What was being addressed
+- **Solution/Approach**: How it was resolved or implemented
+- **Outcome**: Results, success metrics, lessons learned
+- **Reusability**: When this pattern applies to future work
+
+**Security Validation for PRB Storage:**
+- Apply standard StoreInMemory security checklist
+- Focus on patterns and approaches, not sensitive data
+- Store methods and processes, not credentials or keys
+- Ensure patterns are broadly applicable, not project-specific secrets
+
 ---
 *Memory operations patterns for intelligent-claude-code system*
