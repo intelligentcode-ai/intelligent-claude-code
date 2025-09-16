@@ -145,9 +145,6 @@
     force: yes
   loop:
     - lib
-    - config
-    - coverage
-    - tests
   ignore_errors: yes
 
 - name: Display hooks preservation notice
@@ -164,14 +161,6 @@
     - post-tool-use.js
   ignore_errors: yes
 
-- name: Make test utility scripts executable (if they exist)
-  file:
-    path: "{{ claude_install_path }}/hooks/{{ item }}"
-    mode: '0755'
-  loop:
-    - run-all-tests.js
-    - validate-tests.js
-  ignore_errors: yes
 
 - name: Copy VERSION file
   copy:

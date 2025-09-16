@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.5] - 2025-01-16
+
+### Changed
+- Clean up Ansible playbook to remove obsolete test directories and scripts after hook system conversion
+- Remove references to config, coverage, and tests directories in hook deployment tasks
+- Remove executable permissions setting for non-existent test utility scripts
+
 ## [8.1.4] - 2025-01-16
 
 ### Fixed
