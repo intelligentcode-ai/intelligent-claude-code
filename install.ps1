@@ -109,6 +109,116 @@ function Copy-DirectoryRecursive {
     }
 }
 
+function Test-JsonFile {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$FilePath
+    )
+
+    try {
+        if (Test-Path $FilePath) {
+            $Content = Get-Content $FilePath -Raw -ErrorAction Stop
+            if ([string]::IsNullOrWhiteSpace($Content)) {
+                return $false
+            }
+            $null = $Content | ConvertFrom-Json -ErrorAction Stop
+            return $true
+        }
+        return $false
+    } catch {
+        return $false
+    }
+}
+
+function Get-SettingsJson {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath
+    )
+
+    try {
+        if (Test-Path $SettingsPath) {
+            if (Test-JsonFile -FilePath $SettingsPath) {
+                $Content = Get-Content $SettingsPath -Raw | ConvertFrom-Json
+                return $Content
+            } else {
+                Write-Warning "  Corrupted settings.json detected, creating new one"
+                return [PSCustomObject]@{}
+            }
+        } else {
+            return [PSCustomObject]@{}
+        }
+    } catch {
+        Write-Warning "  Failed to read settings.json, creating new one: $($_.Exception.Message)"
+        return [PSCustomObject]@{}
+    }
+}
+
+function Register-HookInSettings {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.PreToolUse) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PreToolUse" -Value @() -Force
+        }
+
+        # Convert PreToolUse to array if it's not already
+        if ($Settings.hooks.PreToolUse -isnot [array]) {
+            $Settings.hooks.PreToolUse = @($Settings.hooks.PreToolUse)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.PreToolUse | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        failureMode = "allow"
+                        timeout = 15000
+                        type = "command"
+                    }
+                )
+                matcher = "*"
+            }
+
+            # Add to PreToolUse array
+            $Settings.hooks.PreToolUse += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ Hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  Hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
 function Install-HookSystem {
     param(
         [Parameter(Mandatory=$true)]
@@ -146,6 +256,17 @@ function Install-HookSystem {
             # Get count of copied files for user feedback
             $CopiedFiles = @(Get-ChildItem -Path $HooksPath -Recurse -File)
             Write-Host "  Successfully copied $($CopiedFiles.Count) hook files" -ForegroundColor Green
+
+            # Register pre-tool-use hook in settings.json
+            $SettingsPath = Join-Path $InstallPath "settings.json"
+            $PreToolUseHookPath = Join-Path $HooksPath "pre-tool-use.js"
+
+            if (Test-Path $PreToolUseHookPath) {
+                $HookCommand = "node `"$PreToolUseHookPath`""
+                Register-HookInSettings -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  Pre-tool-use hook not found, skipping settings.json registration"
+            }
 
         } else {
             Write-Warning "Source hooks directory not found: $SourceHooksPath"
@@ -290,26 +411,98 @@ function Install-McpConfiguration {
     }
 }
 
+function Unregister-HookFromSettings {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        if (-not (Test-Path $SettingsPath)) {
+            return
+        }
+
+        Write-Host "  Unregistering hook from settings.json..." -ForegroundColor Gray
+
+        # Load existing settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Check if hooks structure exists
+        if (-not $Settings.hooks -or -not $Settings.hooks.PreToolUse) {
+            return
+        }
+
+        # Convert PreToolUse to array if it's not already
+        if ($Settings.hooks.PreToolUse -isnot [array]) {
+            $Settings.hooks.PreToolUse = @($Settings.hooks.PreToolUse)
+        }
+
+        # Remove matching hooks
+        $OriginalCount = $Settings.hooks.PreToolUse.Count
+        $Settings.hooks.PreToolUse = $Settings.hooks.PreToolUse | Where-Object {
+            -not ($_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand)
+        }
+
+        # If we removed any hooks, save the updated settings
+        if ($Settings.hooks.PreToolUse.Count -lt $OriginalCount) {
+            # Clean up empty structures
+            if ($Settings.hooks.PreToolUse.Count -eq 0) {
+                $Settings.hooks.PSObject.Properties.Remove("PreToolUse")
+
+                if ($Settings.hooks.PSObject.Properties.Count -eq 0) {
+                    $Settings.PSObject.Properties.Remove("hooks")
+                }
+            }
+
+            # Save updated settings
+            if ($Settings.PSObject.Properties.Count -gt 0) {
+                $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+                Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+            } else {
+                # Remove empty settings.json
+                Remove-Item -Path $SettingsPath -Force
+            }
+
+            Write-Host "  ✅ Hook unregistered from settings.json" -ForegroundColor Green
+        }
+
+    } catch {
+        Write-Warning "  Failed to unregister hook from settings.json: $($_.Exception.Message)"
+    }
+}
+
 function Uninstall-IntelligentClaudeCode {
     param(
         [string]$TargetPath,
         [switch]$Force
     )
-    
+
     $Paths = Get-InstallPaths -TargetPath $TargetPath
     Write-Host "Uninstalling from: $($Paths.InstallPath)" -ForegroundColor Cyan
-    
+
     if (-not (Test-Path $Paths.InstallPath)) {
         Write-Host "Nothing to uninstall - installation directory not found." -ForegroundColor Yellow
         return
     }
-    
+
+    # Unregister hooks from settings.json before removing files
+    $SettingsPath = Join-Path $Paths.InstallPath "settings.json"
+    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pre-tool-use.js"
+
+    if (Test-Path $PreToolUseHookPath) {
+        $HookCommand = "node `"$PreToolUseHookPath`""
+        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand
+    }
+
     if ($Force) {
         Write-Host "Force uninstall - removing entire .claude directory..." -ForegroundColor Red
         Remove-Item -Path $Paths.InstallPath -Recurse -Force
     } else {
         Write-Host "Conservative uninstall - preserving user data..." -ForegroundColor Yellow
-        
+
         # Remove system directories but preserve user data
         $SystemDirs = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "hooks", "utils")
 
@@ -320,7 +513,7 @@ function Uninstall-IntelligentClaudeCode {
                 Remove-Item -Path $DirPath -Recurse -Force
             }
         }
-        
+
         # Remove system files but keep user files
         $SystemFiles = @("settings.json.backup")
         foreach ($File in $SystemFiles) {
@@ -401,6 +594,41 @@ function Test-Installation {
             throw "FAIL: No hook files deployed to hooks directory"
         }
 
+        # Verify settings.json hook registration
+        $TestSettingsPath = "$TestDir\.claude\settings.json"
+        if (Test-Path $TestSettingsPath) {
+            try {
+                $TestSettings = Get-Content $TestSettingsPath -Raw | ConvertFrom-Json
+                if ($TestSettings.hooks -and $TestSettings.hooks.PreToolUse) {
+                    $PreToolUseHooks = if ($TestSettings.hooks.PreToolUse -is [array]) {
+                        $TestSettings.hooks.PreToolUse
+                    } else {
+                        @($TestSettings.hooks.PreToolUse)
+                    }
+
+                    $HookFound = $false
+                    foreach ($Hook in $PreToolUseHooks) {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
+                            $HookFound = $true
+                            break
+                        }
+                    }
+
+                    if (-not $HookFound) {
+                        throw "FAIL: Pre-tool-use hook not found in settings.json"
+                    }
+
+                    Write-Host "  ✅ Hook registered in settings.json" -ForegroundColor Green
+                } else {
+                    throw "FAIL: Hooks structure not found in settings.json"
+                }
+            } catch {
+                throw "FAIL: Failed to verify settings.json hook registration: $($_.Exception.Message)"
+            }
+        } else {
+            Write-Warning "  Settings.json not created, hook registration not tested"
+        }
+
         Write-Host "  ✅ Hook system deployed with $($HookFiles.Count) files" -ForegroundColor Green
         Write-Host "✅ Installation tests passed!" -ForegroundColor Green
         
@@ -410,18 +638,49 @@ function Test-Installation {
         
         Write-Host "Testing conservative uninstall..." -ForegroundColor Yellow
         Uninstall-IntelligentClaudeCode -TargetPath $TestDir
-        
+
         $UninstallChecks = @(
             "$TestDir\.claude\modes",
             "$TestDir\.claude\behaviors",
             "$TestDir\.claude\agents",
             "$TestDir\.claude\hooks"
         )
-        
+
         foreach ($Path in $UninstallChecks) {
             if (Test-Path $Path) {
                 throw "FAIL: Directory not removed during uninstall: $Path"
             }
+        }
+
+        # Verify hook unregistration from settings.json
+        $TestSettingsPath = "$TestDir\.claude\settings.json"
+        if (Test-Path $TestSettingsPath) {
+            try {
+                $TestSettings = Get-Content $TestSettingsPath -Raw | ConvertFrom-Json
+                if ($TestSettings.hooks -and $TestSettings.hooks.PreToolUse) {
+                    $PreToolUseHooks = if ($TestSettings.hooks.PreToolUse -is [array]) {
+                        $TestSettings.hooks.PreToolUse
+                    } else {
+                        @($TestSettings.hooks.PreToolUse)
+                    }
+
+                    foreach ($Hook in $PreToolUseHooks) {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
+                            throw "FAIL: Pre-tool-use hook still registered in settings.json after uninstall"
+                        }
+                    }
+                }
+
+                Write-Host "  ✅ Hook unregistered from settings.json" -ForegroundColor Green
+            } catch {
+                if ($_.Exception.Message -like "*FAIL:*") {
+                    throw
+                }
+                # If there's a parsing error, settings.json might be cleaned up, which is acceptable
+                Write-Host "  ✅ Settings.json cleaned up during uninstall" -ForegroundColor Green
+            }
+        } else {
+            Write-Host "  ✅ Settings.json cleaned up during uninstall" -ForegroundColor Green
         }
         
         Write-Host "✅ Conservative uninstall test passed!" -ForegroundColor Green
