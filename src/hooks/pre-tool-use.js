@@ -513,7 +513,7 @@ function main() {
   try {
     let inputData = '';
 
-    // Priority 1: Command line argument (best for autonomous execution)
+    // Priority 1: Command line argument (for testing/debugging)
     if (process.argv[2]) {
       inputData = process.argv[2];
     }
@@ -521,7 +521,7 @@ function main() {
     else if (process.env.HOOK_INPUT) {
       inputData = process.env.HOOK_INPUT;
     }
-    // Priority 3: Check if stdin has data available (non-blocking)
+    // Priority 3: Claude Code provides JSON via stdin (primary method)
     else if (!process.stdin.isTTY) {
       // Try to read from stdin synchronously
       try {
@@ -530,37 +530,34 @@ function main() {
           inputData = stdinBuffer;
         }
       } catch (error) {
-        // If synchronous read fails, provide clear error
-        console.error('Error: Hook expects JSON input via command line argument, HOOK_INPUT environment variable, or piped stdin');
-        console.error('Usage: node pre-tool-use.js \'{"tool":"Edit","parameters":{}}\'');
-        console.error('   or: echo \'{"tool":"Edit","parameters":{}}\' | node pre-tool-use.js');
-        console.error('   or: HOOK_INPUT=\'{"tool":"Edit","parameters":{}}\' node pre-tool-use.js');
-        process.exit(1);
+        // If synchronous read fails, fail open with minimal enforcement
+        console.log('ALLOWED: No input data available, failing open');
+        process.exit(0);
       }
     } else {
-      console.error('Error: Hook expects JSON input via command line argument, HOOK_INPUT environment variable, or piped stdin');
-      console.error('Usage: node pre-tool-use.js \'{"tool":"Edit","parameters":{}}\'');
-      console.error('   or: echo \'{"tool":"Edit","parameters":{}}\' | node pre-tool-use.js');
-      console.error('   or: HOOK_INPUT=\'{"tool":"Edit","parameters":{}}\' node pre-tool-use.js');
-      process.exit(1);
+      // No input available - fail open for graceful handling
+      console.log('ALLOWED: No input source available, failing open');
+      process.exit(0);
     }
 
     if (!inputData.trim()) {
-      console.error('Error: No input received');
-      console.error('Usage: node pre-tool-use.js \'{"tool":"Edit","parameters":{}}\'');
-      console.error('   or: echo \'{"tool":"Edit","parameters":{}}\' | node pre-tool-use.js');
-      console.error('   or: HOOK_INPUT=\'{"tool":"Edit","parameters":{}}\' node pre-tool-use.js');
-      process.exit(1);
+      // No input data - fail open gracefully
+      console.log('ALLOWED: No input data provided, failing open');
+      process.exit(0);
     }
 
     // Parse JSON input
-    let input;
+    let claudeInput;
     try {
-      input = JSON.parse(inputData);
+      claudeInput = JSON.parse(inputData);
     } catch (error) {
-      console.error(`Error parsing JSON: ${error.message}`);
-      process.exit(1);
+      // JSON parse error - fail open gracefully
+      console.log(`ALLOWED: JSON parse error, failing open (${error.message})`);
+      process.exit(0);
     }
+
+    // Convert Claude Code format to internal format
+    const input = convertClaudeCodeInput(claudeInput);
 
     // Process the hook synchronously
     const result = processHookSync(input);

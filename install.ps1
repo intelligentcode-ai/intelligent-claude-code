@@ -164,7 +164,7 @@ function Register-HookInSettings {
     )
 
     try {
-        Write-Host "  Registering hook in settings.json..." -ForegroundColor Gray
+        Write-Host "  Registering PreToolUse hook in settings.json..." -ForegroundColor Gray
 
         # Load or create settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
@@ -209,13 +209,78 @@ function Register-HookInSettings {
             $JsonOutput = $Settings | ConvertTo-Json -Depth 10
             Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
 
-            Write-Host "  ✅ Hook registered successfully in settings.json" -ForegroundColor Green
+            Write-Host "  ✅ PreToolUse hook registered successfully in settings.json" -ForegroundColor Green
         } else {
-            Write-Host "  Hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+            Write-Host "  PreToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
         }
 
     } catch {
-        Write-Warning "  Failed to register hook in settings.json: $($_.Exception.Message)"
+        Write-Warning "  Failed to register PreToolUse hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
+function Register-PostToolUseHookInSettings {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering PostToolUse hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.PostToolUse) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PostToolUse" -Value @() -Force
+        }
+
+        # Convert PostToolUse to array if it's not already
+        if ($Settings.hooks.PostToolUse -isnot [array]) {
+            $Settings.hooks.PostToolUse = @($Settings.hooks.PostToolUse)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.PostToolUse | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        failureMode = "allow"
+                        timeout = 15000
+                        type = "command"
+                    }
+                )
+                matcher = "*"
+            }
+
+            # Add to PostToolUse array
+            $Settings.hooks.PostToolUse += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ PostToolUse hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  PostToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register PostToolUse hook in settings.json: $($_.Exception.Message)"
     }
 }
 
@@ -257,15 +322,25 @@ function Install-HookSystem {
             $CopiedFiles = @(Get-ChildItem -Path $HooksPath -Recurse -File)
             Write-Host "  Successfully copied $($CopiedFiles.Count) hook files" -ForegroundColor Green
 
-            # Register pre-tool-use hook in settings.json
+            # Register production hooks in settings.json
             $SettingsPath = Join-Path $InstallPath "settings.json"
-            $PreToolUseHookPath = Join-Path $HooksPath "pre-tool-use.js"
 
+            # Register pre-tool-use hook
+            $PreToolUseHookPath = Join-Path $HooksPath "pre-tool-use.js"
             if (Test-Path $PreToolUseHookPath) {
                 $HookCommand = "node `"$PreToolUseHookPath`""
                 Register-HookInSettings -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  Pre-tool-use hook not found, skipping settings.json registration"
+                Write-Warning "  Pre-tool-use hook not found, skipping PreToolUse registration"
+            }
+
+            # Register post-tool-use hook
+            $PostToolUseHookPath = Join-Path $HooksPath "post-tool-use.js"
+            if (Test-Path $PostToolUseHookPath) {
+                $HookCommand = "node `"$PostToolUseHookPath`""
+                Register-PostToolUseHookInSettings -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  Post-tool-use hook not found, skipping PostToolUse registration"
             }
 
         } else {
@@ -417,7 +492,11 @@ function Unregister-HookFromSettings {
         [string]$SettingsPath,
 
         [Parameter(Mandatory=$true)]
-        [string]$HookCommand
+        [string]$HookCommand,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateSet("PreToolUse", "PostToolUse")]
+        [string]$HookType
     )
 
     try {
@@ -425,32 +504,32 @@ function Unregister-HookFromSettings {
             return
         }
 
-        Write-Host "  Unregistering hook from settings.json..." -ForegroundColor Gray
+        Write-Host "  Unregistering $HookType hook from settings.json..." -ForegroundColor Gray
 
         # Load existing settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
 
         # Check if hooks structure exists
-        if (-not $Settings.hooks -or -not $Settings.hooks.PreToolUse) {
+        if (-not $Settings.hooks -or -not $Settings.hooks.$HookType) {
             return
         }
 
-        # Convert PreToolUse to array if it's not already
-        if ($Settings.hooks.PreToolUse -isnot [array]) {
-            $Settings.hooks.PreToolUse = @($Settings.hooks.PreToolUse)
+        # Convert hook array to array if it's not already
+        if ($Settings.hooks.$HookType -isnot [array]) {
+            $Settings.hooks.$HookType = @($Settings.hooks.$HookType)
         }
 
         # Remove matching hooks
-        $OriginalCount = $Settings.hooks.PreToolUse.Count
-        $Settings.hooks.PreToolUse = $Settings.hooks.PreToolUse | Where-Object {
+        $OriginalCount = $Settings.hooks.$HookType.Count
+        $Settings.hooks.$HookType = $Settings.hooks.$HookType | Where-Object {
             -not ($_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand)
         }
 
         # If we removed any hooks, save the updated settings
-        if ($Settings.hooks.PreToolUse.Count -lt $OriginalCount) {
+        if ($Settings.hooks.$HookType.Count -lt $OriginalCount) {
             # Clean up empty structures
-            if ($Settings.hooks.PreToolUse.Count -eq 0) {
-                $Settings.hooks.PSObject.Properties.Remove("PreToolUse")
+            if ($Settings.hooks.$HookType.Count -eq 0) {
+                $Settings.hooks.PSObject.Properties.Remove($HookType)
 
                 if ($Settings.hooks.PSObject.Properties.Count -eq 0) {
                     $Settings.PSObject.Properties.Remove("hooks")
@@ -466,11 +545,11 @@ function Unregister-HookFromSettings {
                 Remove-Item -Path $SettingsPath -Force
             }
 
-            Write-Host "  ✅ Hook unregistered from settings.json" -ForegroundColor Green
+            Write-Host "  ✅ $HookType hook unregistered from settings.json" -ForegroundColor Green
         }
 
     } catch {
-        Write-Warning "  Failed to unregister hook from settings.json: $($_.Exception.Message)"
+        Write-Warning "  Failed to unregister $HookType hook from settings.json: $($_.Exception.Message)"
     }
 }
 
@@ -490,11 +569,19 @@ function Uninstall-IntelligentClaudeCode {
 
     # Unregister hooks from settings.json before removing files
     $SettingsPath = Join-Path $Paths.InstallPath "settings.json"
-    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pre-tool-use.js"
 
+    # Unregister pre-tool-use hook
+    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pre-tool-use.js"
     if (Test-Path $PreToolUseHookPath) {
         $HookCommand = "node `"$PreToolUseHookPath`""
-        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand
+        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
+    }
+
+    # Unregister post-tool-use hook
+    $PostToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "post-tool-use.js"
+    if (Test-Path $PostToolUseHookPath) {
+        $HookCommand = "node `"$PostToolUseHookPath`""
+        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PostToolUse"
     }
 
     if ($Force) {
@@ -599,6 +686,8 @@ function Test-Installation {
         if (Test-Path $TestSettingsPath) {
             try {
                 $TestSettings = Get-Content $TestSettingsPath -Raw | ConvertFrom-Json
+
+                # Check PreToolUse hook registration
                 if ($TestSettings.hooks -and $TestSettings.hooks.PreToolUse) {
                     $PreToolUseHooks = if ($TestSettings.hooks.PreToolUse -is [array]) {
                         $TestSettings.hooks.PreToolUse
@@ -606,22 +695,46 @@ function Test-Installation {
                         @($TestSettings.hooks.PreToolUse)
                     }
 
-                    $HookFound = $false
+                    $PreHookFound = $false
                     foreach ($Hook in $PreToolUseHooks) {
                         if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
-                            $HookFound = $true
+                            $PreHookFound = $true
                             break
                         }
                     }
 
-                    if (-not $HookFound) {
+                    if (-not $PreHookFound) {
                         throw "FAIL: Pre-tool-use hook not found in settings.json"
                     }
-
-                    Write-Host "  ✅ Hook registered in settings.json" -ForegroundColor Green
+                    Write-Host "  ✅ PreToolUse hook registered in settings.json" -ForegroundColor Green
                 } else {
-                    throw "FAIL: Hooks structure not found in settings.json"
+                    throw "FAIL: PreToolUse hooks structure not found in settings.json"
                 }
+
+                # Check PostToolUse hook registration
+                if ($TestSettings.hooks -and $TestSettings.hooks.PostToolUse) {
+                    $PostToolUseHooks = if ($TestSettings.hooks.PostToolUse -is [array]) {
+                        $TestSettings.hooks.PostToolUse
+                    } else {
+                        @($TestSettings.hooks.PostToolUse)
+                    }
+
+                    $PostHookFound = $false
+                    foreach ($Hook in $PostToolUseHooks) {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*post-tool-use.js*") {
+                            $PostHookFound = $true
+                            break
+                        }
+                    }
+
+                    if (-not $PostHookFound) {
+                        throw "FAIL: Post-tool-use hook not found in settings.json"
+                    }
+                    Write-Host "  ✅ PostToolUse hook registered in settings.json" -ForegroundColor Green
+                } else {
+                    throw "FAIL: PostToolUse hooks structure not found in settings.json"
+                }
+
             } catch {
                 throw "FAIL: Failed to verify settings.json hook registration: $($_.Exception.Message)"
             }
@@ -657,6 +770,8 @@ function Test-Installation {
         if (Test-Path $TestSettingsPath) {
             try {
                 $TestSettings = Get-Content $TestSettingsPath -Raw | ConvertFrom-Json
+
+                # Check PreToolUse hook removal
                 if ($TestSettings.hooks -and $TestSettings.hooks.PreToolUse) {
                     $PreToolUseHooks = if ($TestSettings.hooks.PreToolUse -is [array]) {
                         $TestSettings.hooks.PreToolUse
@@ -671,7 +786,22 @@ function Test-Installation {
                     }
                 }
 
-                Write-Host "  ✅ Hook unregistered from settings.json" -ForegroundColor Green
+                # Check PostToolUse hook removal
+                if ($TestSettings.hooks -and $TestSettings.hooks.PostToolUse) {
+                    $PostToolUseHooks = if ($TestSettings.hooks.PostToolUse -is [array]) {
+                        $TestSettings.hooks.PostToolUse
+                    } else {
+                        @($TestSettings.hooks.PostToolUse)
+                    }
+
+                    foreach ($Hook in $PostToolUseHooks) {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*post-tool-use.js*") {
+                            throw "FAIL: Post-tool-use hook still registered in settings.json after uninstall"
+                        }
+                    }
+                }
+
+                Write-Host "  ✅ All hooks unregistered from settings.json" -ForegroundColor Green
             } catch {
                 if ($_.Exception.Message -like "*FAIL:*") {
                     throw

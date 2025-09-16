@@ -8,6 +8,15 @@
         "timeout": 15000,
         "failureMode": "allow"
       }]
+    }],
+    "PostToolUse": [{
+      "matcher": "*",
+      "hooks": [{
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/post-tool-use.js",
+        "timeout": 15000,
+        "failureMode": "allow"
+      }]
     }]
   }
 }
