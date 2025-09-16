@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.2] - 2025-01-16
+
+### Added
+- Educational reminder system in PostToolUse hook providing random system principle reminders
+- 10 comprehensive reminder categories covering @Role patterns, AgentTask workflow, memory-first approach, and system boundaries
+- Random message rotation to prevent repetitive notifications (15% chance for educational tools, 5% for others)
+- System principle reinforcement through post-tool notifications to enhance user education
+
+### Enhanced
+- PostToolUse hook now combines memory storage enforcement with educational reminders
+- Cross-platform compatibility maintained with Node.js implementation
+- Graceful input handling pattern preserved from existing hook architecture
+
 ## [8.1.1] - 2025-01-16
 
 ### Fixed
