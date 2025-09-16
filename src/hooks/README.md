@@ -99,21 +99,21 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
 - **Research**: Reading files (Read, Grep, Glob)
 - **Information**: Bash read-only commands (ls, cat, ps, etc.)
 - **Q&A**: Question answering and explanations
-- **Planning**: PRB creation and architecture discussions
+- **Planning**: AgentTask creation and architecture discussions
 
 ### Blocked Operations
 - **File Modifications**: Edit, Write, MultiEdit operations
 - **System Changes**: Destructive bash commands (rm, mv, cp, etc.)
-- **Work Implementation**: Any implementation work without PRB context
-- **PRB Creation Without Memory**: Creating PRB files without recent memory consultation
+- **Work Implementation**: Any implementation work without AgentTask context
+- **AgentTask Creation Without Memory**: Creating AgentTask files without recent memory consultation
 
 ## Memory Enforcement
 
 ### Memory-First Principle
 The hooks enforce a **memory-first** approach to ensure learned patterns are applied:
 
-1. **Pre-Tool-Use Hook**: Blocks PRB creation if no memory search occurred within 5 minutes
-2. **Post-Tool-Use Hook**: Detects PRB completion and suggests memory storage opportunities
+1. **Pre-Tool-Use Hook**: Blocks AgentTask creation if no memory search occurred within 5 minutes
+2. **Post-Tool-Use Hook**: Detects AgentTask completion and suggests memory storage opportunities
 
 ### Memory Search Detection
 The pre-hook considers these activities as valid memory consultation:
@@ -128,7 +128,7 @@ The post-hook identifies learning opportunities from:
 - **Issue Resolution**: Problem-solving patterns and fixes
 
 ### Memory Enforcement Messages
-When PRB creation is blocked, users receive detailed guidance:
+When AgentTask creation is blocked, users receive detailed guidance:
 - Required memory search locations
 - 5-minute time window requirement
 - Specific memory directories to check
@@ -169,7 +169,7 @@ The hook uses the configuration hierarchy:
 3. **Runtime overrides**: Environment variables
 
 Confidence threshold: ≥0.6 (adjustable in pre-tool-use.js)
-Enforcement modes: allow, warn, block, require_prb_context
+Enforcement modes: allow, warn, block, require_agenttask_context
 
 ## Architecture
 
