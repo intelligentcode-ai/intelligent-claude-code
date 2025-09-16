@@ -2,13 +2,12 @@
 
 /**
  * Claude Code Pre-Tool-Use Hook
- * 
- * Main enforcement hook that integrates intent classification and configuration
- * to enforce behavioral patterns in intelligent-claude-code.
- * 
+ *
+ * Educational reminder system that provides helpful guidance about intelligent-claude-code
+ * behavioral patterns. NO BLOCKING - all actions are allowed with educational reminders.
+ *
  * Exit codes:
- * - 0: Allow action to proceed
- * - 2: Block action with error message
+ * - 0: Always allow action to proceed (educational mode only)
  * - 1: System error (fail open)
  */
 
@@ -95,29 +94,27 @@ class MemoryEnforcement {
   }
 
   /**
-   * Generate memory enforcement error message
+   * Generate memory consultation reminder message
    */
-  generateMemoryRequirementError() {
-    return `🚫 MEMORY CONSULTATION REQUIRED BEFORE AGENTTASK CREATION
+  generateMemoryConsultationReminder() {
+    return `🧠 EDUCATIONAL REMINDER: MEMORY-FIRST APPROACH
 
-VIOLATION: Attempting to create AgentTask without recent memory search
-REQUIREMENT: Memory consultation must occur within 5 minutes before AgentTask creation
+💡 SUGGESTION: Consider searching memory before creating AgentTasks
+BEST PRACTICE: Memory consultation helps apply proven patterns and avoid repeated issues
 
-ARCHITECTURAL RULE: MEMORY-FIRST → AGENTTASK → AGENT EXECUTION
-
-REQUIRED PROCESS:
+RECOMMENDED PROCESS:
 1. Search memory for relevant patterns: Read files in memory/ directory
 2. Apply learned patterns and best practices
-3. Then create AgentTask with memory-informed context
+3. Create AgentTask with memory-informed context
 4. Deploy via Task tool to authorized agent
 
-MEMORY LOCATIONS TO SEARCH:
+MEMORY LOCATIONS TO EXPLORE:
 - memory/behavioral-enforcement/
 - memory/system/
 - memory/patterns/
 - memory/[relevant-domain]/
 
-NO EXCEPTIONS - MEMORY CONSULTATION IS MANDATORY`;
+✅ LEARNING PRINCIPLE: Memory-first approach improves quality and prevents repeated issues!`;
   }
 }
 
@@ -217,35 +214,45 @@ function validateInput(input) {
 }
 
 /**
- * Generate helpful error messages for blocked actions
+ * Generate educational reminder messages for work patterns
  */
-function generateErrorMessage(intent, tool, reason) {
-  const baseMessage = `🚫 MAIN SCOPE EXECUTION BLOCKED`;
-  
+function generateEducationalMessage(intent, tool, reason) {
+  // For work intent, use the strong main scope reminder
+  if (intent === 'work' || intent === 'modification') {
+    return generateMainScopeReminder();
+  }
+
+  const baseMessage = `🎓 EDUCATIONAL REMINDER: intelligent-claude-code Best Practices`;
+
   let specificMessage = '';
   switch (intent) {
-    case 'work':
-      specificMessage = `Work intent detected using ${tool}. All implementation work must use AgentTask+agent pattern.`;
-      break;
-    case 'modification':
-      specificMessage = `File modification detected using ${tool}. Modifications require AgentTask creation and agent execution.`;
-      break;
     case 'system':
-      specificMessage = `System operation detected using ${tool}. System changes require AgentTask authorization.`;
+      specificMessage = `System operation detected using ${tool}. 💡 REMINDER: System changes are most reliable through AgentTask authorization.`;
+      break;
+    case 'planning':
+      specificMessage = `🎯 EXCELLENT: Planning activity using ${tool}. This is perfect for main scope!`;
+      break;
+    case 'research':
+      specificMessage = `🔍 GREAT: Research activity using ${tool}. Main scope is ideal for exploration and analysis.`;
+      break;
+    case 'qa':
+      specificMessage = `❓ PERFECT: Q&A activity using ${tool}. Questions and explanations work great in main scope.`;
       break;
     default:
-      specificMessage = `Action blocked: ${reason}`;
+      specificMessage = `Educational note: ${reason}`;
   }
 
   const guidance = `
-ARCHITECTURAL RULE: ALL WORK → AGENTTASK → AGENT EXECUTION
+🏗️ ARCHITECTURAL PATTERN: ALL WORK → AGENTTASK → AGENT EXECUTION
 
-REQUIRED PROCESS:
-1. Create AgentTask using @Role pattern
+📋 RECOMMENDED PROCESS:
+1. Create AgentTask using @Role pattern ("@Developer implement feature")
 2. Deploy via Task tool to authorized agent
-3. Agent executes with full tool authorization
+3. Agent executes with full tool authorization and complete context
 
-NO EXCEPTIONS - NO SHORTCUTS - NO COMPROMISES`;
+✅ WHY THIS MATTERS: This pattern ensures complete context, reliable execution, and automatic learning capture!
+
+💡 TIP: Use @Role patterns like "@Developer fix bug" or "@AI-Engineer optimize behavior" for best results.`;
 
   return `${baseMessage}
 
@@ -305,39 +312,39 @@ function processHookSync(input) {
 
     const { tool, parameters = {}, context = "" } = input;
 
-    // MEMORY ENFORCEMENT: Check for AgentTask creation without memory search
+    // MEMORY GUIDANCE: Educational reminder for AgentTask creation
     if (memoryEnforcement.isAgentTaskCreation(tool, parameters)) {
       if (!memoryEnforcement.hasRecentMemorySearch()) {
-        // Log memory violation (synchronous)
+        // Log memory guidance opportunity (synchronous)
         logger.logViolationSync({
           tool,
-          intent: 'memory_violation',
-          reason: 'AgentTask creation without memory consultation',
+          intent: 'memory_guidance',
+          reason: 'AgentTask creation - memory consultation suggested',
           parameters: Object.keys(parameters),
           context: 'AgentTask creation detected',
-          violation_type: 'memory_enforcement'
+          violation_type: 'educational_guidance'
         });
 
         return {
-          allowed: false,
-          message: memoryEnforcement.generateMemoryRequirementError(),
+          allowed: true, // ALWAYS ALLOW - educational mode only
+          message: memoryEnforcement.generateMemoryConsultationReminder(),
           performance: Date.now() - startTime
         };
       } else {
-        // Log successful memory compliance and allow AgentTask creation
+        // Log successful memory practice
         logger.logViolationSync({
           tool,
           intent: 'memory_compliance',
-          reason: 'AgentTask creation with memory consultation',
+          reason: 'AgentTask creation with memory consultation - excellent practice!',
           parameters: Object.keys(parameters),
-          context: 'Memory requirement satisfied',
-          violation_type: 'memory_compliance'
+          context: 'Memory-first approach applied',
+          violation_type: 'best_practice'
         });
 
-        // Allow AgentTask creation when memory requirement is satisfied
+        // Positive reinforcement for good practices
         return {
           allowed: true,
-          message: 'AgentTask creation allowed with memory consultation',
+          message: '✅ EXCELLENT: AgentTask creation with memory consultation - following best practices!',
           performance: Date.now() - startTime
         };
       }
@@ -366,30 +373,31 @@ function processHookSync(input) {
       enforcement = 'allow'; // Fail open
     }
 
-    // Check if action should be blocked
-    const shouldBlock = (enforcement === 'block' || enforcement === 'require_prb_context') &&
-                       classification.confidence >= 0.6;
+    // Check if educational reminder should be shown
+    const shouldShowReminder = (enforcement === 'block' || enforcement === 'require_prb_context') &&
+                              classification.confidence >= 0.6;
 
-    if (shouldBlock) {
-      // Log violation for analysis (synchronous)
+    if (shouldShowReminder) {
+      // Log educational opportunity for analysis (synchronous)
       logger.logViolationSync({
         tool,
         intent: classification.intent,
         confidence: classification.confidence,
         reason: classification.reason,
         parameters: Object.keys(parameters),
-        context: Object.keys(context)
+        context: Object.keys(context),
+        educational_mode: true
       });
 
-      const errorMessage = generateErrorMessage(
+      const educationalMessage = generateEducationalMessage(
         classification.intent,
         tool,
         classification.reason
       );
 
       return {
-        allowed: false,
-        message: errorMessage,
+        allowed: true, // ALWAYS ALLOW - educational mode only
+        message: educationalMessage,
         performance: Date.now() - startTime
       };
     }
@@ -438,39 +446,39 @@ async function processHook(input) {
 
     const { tool, parameters = {}, context = "" } = input;
 
-    // MEMORY ENFORCEMENT: Check for AgentTask creation without memory search
+    // MEMORY GUIDANCE: Educational reminder for AgentTask creation
     if (memoryEnforcement.isAgentTaskCreation(tool, parameters)) {
       if (!memoryEnforcement.hasRecentMemorySearch()) {
-        // Log memory violation
+        // Log memory guidance opportunity
         await logger.logViolation({
           tool,
-          intent: 'memory_violation',
-          reason: 'AgentTask creation without memory consultation',
+          intent: 'memory_guidance',
+          reason: 'AgentTask creation - memory consultation suggested',
           parameters: Object.keys(parameters),
           context: 'AgentTask creation detected',
-          violation_type: 'memory_enforcement'
+          violation_type: 'educational_guidance'
         });
 
         return {
-          allowed: false,
-          message: memoryEnforcement.generateMemoryRequirementError(),
+          allowed: true, // ALWAYS ALLOW - educational mode only
+          message: memoryEnforcement.generateMemoryConsultationReminder(),
           performance: Date.now() - startTime
         };
       } else {
-        // Log successful memory compliance and allow AgentTask creation
+        // Log successful memory practice
         await logger.logViolation({
           tool,
           intent: 'memory_compliance',
-          reason: 'AgentTask creation with memory consultation',
+          reason: 'AgentTask creation with memory consultation - excellent practice!',
           parameters: Object.keys(parameters),
-          context: 'Memory requirement satisfied',
-          violation_type: 'memory_compliance'
+          context: 'Memory-first approach applied',
+          violation_type: 'best_practice'
         });
 
-        // Allow AgentTask creation when memory requirement is satisfied
+        // Positive reinforcement for good practices
         return {
           allowed: true,
-          message: 'AgentTask creation allowed with memory consultation',
+          message: '✅ EXCELLENT: AgentTask creation with memory consultation - following best practices!',
           performance: Date.now() - startTime
         };
       }
@@ -485,30 +493,31 @@ async function processHook(input) {
     // Get enforcement configuration
     const enforcement = await configLoader.getEnforcement(classification.intent);
 
-    // Check if action should be blocked
-    const shouldBlock = (enforcement === 'block' || enforcement === 'require_prb_context') &&
-                       classification.confidence >= 0.6;
+    // Check if educational reminder should be shown
+    const shouldShowReminder = (enforcement === 'block' || enforcement === 'require_prb_context') &&
+                              classification.confidence >= 0.6;
 
-    if (shouldBlock) {
-      // Log violation for analysis
+    if (shouldShowReminder) {
+      // Log educational opportunity for analysis
       await logger.logViolation({
         tool,
         intent: classification.intent,
         confidence: classification.confidence,
         reason: classification.reason,
         parameters: Object.keys(parameters),
-        context: Object.keys(context)
+        context: Object.keys(context),
+        educational_mode: true
       });
 
-      const errorMessage = generateErrorMessage(
+      const educationalMessage = generateEducationalMessage(
         classification.intent,
         tool,
         classification.reason
       );
 
       return {
-        allowed: false,
-        message: errorMessage,
+        allowed: true, // ALWAYS ALLOW - educational mode only
+        message: educationalMessage,
         performance: Date.now() - startTime
       };
     }
@@ -597,14 +606,15 @@ function main() {
       console.warn(`Warning: Hook took ${result.performance}ms (threshold: ${PERFORMANCE_THRESHOLD}ms)`);
     }
 
-    // Output result and exit with appropriate code
-    if (result.allowed) {
-      console.log(`ALLOWED: ${result.message}`);
-      process.exit(0);
+    // Output result - always allow in educational mode
+    if (result.message.includes('🎓') || result.message.includes('🧠') || result.message.includes('✅')) {
+      // Educational reminder or positive reinforcement
+      console.log(result.message);
     } else {
-      console.error(result.message);
-      process.exit(2);
+      // Standard allowed message
+      console.log(`ALLOWED: ${result.message}`);
     }
+    process.exit(0); // Always exit 0 in educational mode
 
   } catch (error) {
     console.error(`Hook system error: ${error.message}`);
@@ -628,4 +638,49 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { processHook, generateErrorMessage, validateInput, convertClaudeCodeInput };
+/**
+ * Generate strong "NO WORK IN MAIN SCOPE" educational reminder
+ */
+function generateMainScopeReminder() {
+  return `🚨 CRITICAL ARCHITECTURAL REMINDER: NO WORK IN MAIN SCOPE
+
+🏗️ FUNDAMENTAL PRINCIPLE:
+Main scope is for coordination and AgentTask creation ONLY
+Agent scope is for technical execution via Task tool
+
+🚫 MAIN SCOPE PROHIBITIONS:
+❌ Direct file modifications
+❌ Code implementation
+❌ System configuration
+❌ Bug fixes
+❌ Feature development
+
+✅ MAIN SCOPE RESPONSIBILITIES:
+✅ @Role communication ("@Developer implement feature")
+✅ AgentTask creation and coordination
+✅ Planning and architecture discussions
+✅ Memory search and pattern application
+
+🎯 CORRECT WORKFLOW PATTERN:
+1. User: "Fix the authentication bug"
+2. Main scope: Creates AgentTask with complete context
+3. Task tool: Deploys to @Developer agent
+4. Agent scope: Executes fix with full tool access
+
+💡 WHY THIS ARCHITECTURE MATTERS:
+- Ensures complete context for all work
+- Enables reliable autonomous execution
+- Captures learning patterns automatically
+- Prevents workflow interruptions
+- Maintains system integrity
+
+🔥 REMEMBER: Main scope coordination → Agent scope execution = Success!`;
+}
+
+module.exports = {
+  processHook,
+  generateEducationalMessage,
+  generateMainScopeReminder,
+  validateInput,
+  convertClaudeCodeInput
+};
