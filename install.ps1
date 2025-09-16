@@ -318,6 +318,26 @@ function Install-HookSystem {
             # Copy all files and subdirectories from source hooks to destination
             Copy-DirectoryRecursive -Source $SourceHooksPath -Destination $HooksPath
 
+            # Install reminders.json if it doesn't exist (preserve user customizations)
+            $UserRemindersPath = Join-Path $HooksPath "lib" "reminders.json"
+            $SourceRemindersPath = Join-Path $SourceHooksPath "lib" "reminders.json"
+
+            if (-not (Test-Path $UserRemindersPath) -and (Test-Path $SourceRemindersPath)) {
+                Write-Host "  Installing default reminders.json..." -ForegroundColor Gray
+                Copy-Item -Path $SourceRemindersPath -Destination $UserRemindersPath -Force
+            } elseif (Test-Path $UserRemindersPath) {
+                Write-Host "  User reminders.json preserved - keeping customizations" -ForegroundColor Yellow
+            }
+
+            # Always update README.md documentation
+            $SourceReadmePath = Join-Path $SourceHooksPath "lib" "README.md"
+            $DestReadmePath = Join-Path $HooksPath "lib" "README.md"
+
+            if (Test-Path $SourceReadmePath) {
+                Write-Host "  Updating hooks documentation..." -ForegroundColor Gray
+                Copy-Item -Path $SourceReadmePath -Destination $DestReadmePath -Force
+            }
+
             # Get count of copied files for user feedback
             $CopiedFiles = @(Get-ChildItem -Path $HooksPath -Recurse -File)
             Write-Host "  Successfully copied $($CopiedFiles.Count) hook files" -ForegroundColor Green

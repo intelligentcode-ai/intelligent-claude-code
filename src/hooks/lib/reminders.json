@@ -1,0 +1,146 @@
+{
+  "preAction": [
+    {
+      "category": "Memory Consultation",
+      "message": "🧠 CONSULT MEMORY BEFORE WRITING AGENTTASKS! Search memory/[topic]/ for proven patterns and lessons learned.",
+      "icon": "🧠",
+      "principle": "Memory-first approach prevents repeated issues and applies proven solutions"
+    },
+    {
+      "category": "Best Practices",
+      "message": "📋 IF BEST-PRACTICES ARE DEFINED, CONSULT THEM BEFORE WRITING AGENTTASKS! Check best-practices/[category]/ for project standards.",
+      "icon": "📋",
+      "principle": "Best practices consultation ensures quality and consistency"
+    },
+    {
+      "category": "Workflow Architecture",
+      "message": "🚫 NO WORK IN MAIN SCOPE: All work MUST go through PRB → Task → Agent workflow for reliable execution.",
+      "icon": "🚫",
+      "principle": "Main scope is for coordination only - agents execute technical work"
+    },
+    {
+      "category": "PRB Creation",
+      "message": "✅ ENSURE THE WORKFLOW: Follow Main → PRB → Task → Agent pattern strictly for all implementation work.",
+      "icon": "✅",
+      "principle": "Structured workflows ensure complete context and reliable automation"
+    },
+    {
+      "category": "PM Role Boundaries",
+      "message": "👔 PM = COORDINATION ONLY: Project managers create PRBs and delegate - never perform technical work directly.",
+      "icon": "👔",
+      "principle": "PM role maintains coordination focus and delegates all technical execution"
+    },
+    {
+      "category": "Context Completeness",
+      "message": "📝 COMPLETE CONTEXT REQUIRED: PRBs must include all configuration, memory patterns, and project context before agent execution.",
+      "icon": "📝",
+      "principle": "Self-contained execution requires complete context embedding"
+    },
+    {
+      "category": "Role Assignment",
+      "message": "🎯 USE @ROLE PATTERNS: Assign work through @Developer, @AI-Engineer, @DevOps-Engineer patterns for specialist execution.",
+      "icon": "🎯",
+      "principle": "Role-based assignments ensure appropriate expertise and tool access"
+    },
+    {
+      "category": "Template Compliance",
+      "message": "📊 TEMPLATE ENFORCEMENT: Use complexity-based templates (nano/tiny/medium/large/mega) with complete placeholder resolution.",
+      "icon": "📊",
+      "principle": "Template compliance ensures consistent structure and validation"
+    }
+  ],
+  "postAction": [
+    {
+      "category": "@Role Communication",
+      "message": "💡 Remember: Use @Role patterns for natural team coordination! Try \"@PM break down story\" or \"@Developer implement feature\" instead of manual task creation.",
+      "principles": ["@Role communication patterns", "Natural team coordination"]
+    },
+    {
+      "category": "AgentTask Workflow",
+      "message": "🔄 Key Pattern: Work requests → AgentTask creation → Task tool → Agent execution. This ensures complete context and reliable automation.",
+      "principles": ["AgentTask workflow", "Context preservation", "Reliable automation"]
+    },
+    {
+      "category": "Memory-First Approach",
+      "message": "🧠 Best Practice: Search memory before asking users! The system automatically stores learnings - check memory/[topic]/ for proven patterns.",
+      "principles": ["Memory-first approach", "Learning reuse", "Pattern application"]
+    },
+    {
+      "category": "System Boundaries",
+      "message": "🏗️ Architecture: Main agent = coordination & AgentTask creation. Subagents = technical execution via Task tool. Respect the boundaries!",
+      "principles": ["System architecture", "Scope boundaries", "Agent coordination"]
+    },
+    {
+      "category": "Learning Storage",
+      "message": "💾 CONTRIBUTE TO MEMORIES: Store learnings and patterns after every task for knowledge building and reuse.",
+      "principles": ["Learning capture", "Knowledge building", "Pattern reuse"]
+    },
+    {
+      "category": "Configuration Changes",
+      "message": "🔄 RELOAD AFTER CONFIG CHANGES: Restart Claude Code after modifying configuration files for changes to take effect.",
+      "principles": ["Configuration management", "System reliability", "Change application"]
+    },
+    {
+      "category": "Documentation Updates",
+      "message": "📝 UPDATE DOCUMENTATION: Keep docs current with implementation changes for maintainability and team coordination.",
+      "principles": ["Documentation maintenance", "Knowledge sharing", "Team coordination"]
+    },
+    {
+      "category": "Quality Assurance",
+      "message": "✅ VALIDATE COMPLETION: Ensure all PRB requirements met, tests passed, and documentation updated before marking complete.",
+      "principles": ["Quality gates", "Completion validation", "Requirement satisfaction"]
+    },
+    {
+      "category": "Git Privacy",
+      "message": "🔒 RESPECT GIT PRIVACY: Check git_privacy settings and filter AI mentions from commits when enabled.",
+      "principles": ["Privacy compliance", "Professional commits", "Configuration respect"]
+    },
+    {
+      "category": "Continuous Learning",
+      "message": "📚 CAPTURE PATTERNS: Document successful approaches, error solutions, and optimization techniques for future reuse.",
+      "principles": ["Pattern capture", "Solution documentation", "Knowledge transfer"]
+    }
+  ],
+  "system": [
+    {
+      "category": "System Initialization",
+      "message": "🔄 REMINDER: Reload Claude Code after installing hooks or changing configuration for changes to take effect.",
+      "principles": ["System reliability", "Configuration application"]
+    },
+    {
+      "category": "Natural Interaction",
+      "message": "💡 TIP: Use @Role patterns for natural team interaction instead of commands - more intuitive and powerful!",
+      "principles": ["User experience", "Natural interaction patterns"]
+    },
+    {
+      "category": "Parallel Execution",
+      "message": "⚡ FEATURE: System supports up to 5 parallel non-conflicting tasks for increased productivity.",
+      "principles": ["Performance optimization", "Resource management"]
+    },
+    {
+      "category": "Dynamic Specialists",
+      "message": "🎯 CAPABILITY: Create unlimited domain specialists (@React-Developer, @AWS-Engineer) for any technology expertise needed.",
+      "principles": ["Dynamic specialization", "Technology coverage"]
+    }
+  ],
+  "memoryGuidance": [
+    {
+      "category": "Memory Search",
+      "message": "🔍 ALWAYS SEARCH MEMORY FIRST: Check memory/[topic]/ for patterns, solutions, and learnings before creating new work.",
+      "guidance": "Memory-first approach prevents duplicate work and applies proven solutions",
+      "action": "Search relevant memory topics before AgentTask creation"
+    },
+    {
+      "category": "Pattern Application",
+      "message": "📋 APPLY PROVEN PATTERNS: Use existing memory patterns for similar work to ensure consistency and reliability.",
+      "guidance": "Successful patterns should be reused and referenced in new work",
+      "action": "Reference memory patterns in PRB context and execution"
+    },
+    {
+      "category": "Learning Capture",
+      "message": "💾 STORE NEW LEARNINGS: Document new patterns, solutions, and insights for future use and team benefit.",
+      "guidance": "All execution should contribute to collective knowledge and memory",
+      "action": "Store patterns after successful completion using StoreInMemory"
+    }
+  ]
+}
