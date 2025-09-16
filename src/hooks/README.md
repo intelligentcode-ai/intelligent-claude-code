@@ -4,7 +4,8 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
 
 ## Components
 
-- **`pre-tool-use.js`** - Main hook that enforces behavioral patterns
+- **`pre-tool-use.js`** - Main hook that enforces behavioral patterns and memory consultation
+- **`post-tool-use.js`** - Post-execution hook for memory storage reminders
 - **`lib/`** - Core libraries (intent-classifier, config-loader)
 - **`config/`** - Configuration files and settings
 - **`test-hook-integration.js`** - Comprehensive test suite
@@ -36,6 +37,15 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
            "timeout": 15000,
            "failureMode": "allow"
          }]
+       }],
+       "PostToolUse": [{
+         "matcher": "*",
+         "hooks": [{
+           "type": "command",
+           "command": "node .claude/hooks/post-tool-use.js",
+           "timeout": 5000,
+           "failureMode": "continue"
+         }]
        }]
      }
    }
@@ -60,6 +70,15 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
            "command": "node ~/.claude/hooks/pre-tool-use.js",
            "timeout": 15000,
            "failureMode": "allow"
+         }]
+       }],
+       "PostToolUse": [{
+         "matcher": "*",
+         "hooks": [{
+           "type": "command",
+           "command": "node ~/.claude/hooks/post-tool-use.js",
+           "timeout": 5000,
+           "failureMode": "continue"
          }]
        }]
      }
@@ -86,6 +105,34 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
 - **File Modifications**: Edit, Write, MultiEdit operations
 - **System Changes**: Destructive bash commands (rm, mv, cp, etc.)
 - **Work Implementation**: Any implementation work without PRB context
+- **PRB Creation Without Memory**: Creating PRB files without recent memory consultation
+
+## Memory Enforcement
+
+### Memory-First Principle
+The hooks enforce a **memory-first** approach to ensure learned patterns are applied:
+
+1. **Pre-Tool-Use Hook**: Blocks PRB creation if no memory search occurred within 5 minutes
+2. **Post-Tool-Use Hook**: Detects PRB completion and suggests memory storage opportunities
+
+### Memory Search Detection
+The pre-hook considers these activities as valid memory consultation:
+- Reading files in `memory/` directory
+- Bash commands containing "memory search"
+- Any file operations involving memory-related content
+
+### Memory Storage Reminders
+The post-hook identifies learning opportunities from:
+- **Domain Knowledge**: Technical domains and implementation patterns
+- **Solution Patterns**: Successful implementation approaches
+- **Issue Resolution**: Problem-solving patterns and fixes
+
+### Memory Enforcement Messages
+When PRB creation is blocked, users receive detailed guidance:
+- Required memory search locations
+- 5-minute time window requirement
+- Specific memory directories to check
+- Clear instructions for compliance
 
 ### Performance
 - Target: <10ms execution time
@@ -96,7 +143,8 @@ This directory contains the pre-tool-use hook integration for intelligent-claude
 ### Logging
 - **Project-level**: Violations logged to: `$CLAUDE_PROJECT_DIR/.claude/logs/violations-YYYY-MM-DD.log`
 - **User-level**: Violations logged to: `~/.claude/logs/violations-YYYY-MM-DD.log`
-- Format: JSON lines with timestamp, tool, intent, confidence
+- **Memory opportunities**: Logged to: `memory-opportunities-YYYY-MM-DD.log`
+- Format: JSON lines with timestamp, tool, intent, confidence, memory data
 - Retention: Daily rotation, manual cleanup
 
 ## Testing

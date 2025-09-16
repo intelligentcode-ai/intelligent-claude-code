@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.18.0] - 2025-01-16
+
+### Enhanced
+- BUG-070-PRB-003: Implemented hook-based enforcement for memory consultation and storage
+- Enhanced pre-tool-use.js with memory consultation requirements before PRB creation
+- Created post-tool-use.js hook for automatic memory storage reminders after PRB execution
+- Added MemoryEnforcement class with 5-minute consultation window validation
+- Implemented memory search detection through violation logs and file operations
+- Added comprehensive memory opportunity detection for domain knowledge, solution patterns, and issue resolution
+- Updated settings-example.json to include PostToolUse hook configuration
+- Enhanced hook README with memory enforcement documentation and usage guidelines
+- Added memory violation logging and compliance tracking for analysis
+- Created test suite for memory enforcement functionality validation
+
 ## [7.17.0] - 2025-01-16
 
 ### Enhanced

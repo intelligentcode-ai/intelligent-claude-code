@@ -20,6 +20,108 @@ const intentClassifier = require('./lib/intent-classifier');
 const configLoader = require('./lib/config-loader');
 
 /**
+ * Memory enforcement utilities
+ */
+class MemoryEnforcement {
+  constructor() {
+    this.memorySearchWindow = 5 * 60 * 1000; // 5 minutes
+  }
+
+  /**
+   * Check if PRB creation is being attempted
+   */
+  isPRBCreation(tool, parameters) {
+    if (tool !== 'Write' && tool !== 'MultiEdit') return false;
+
+    const filePath = parameters.file_path || '';
+    return filePath.includes('.prb.yaml') || filePath.includes('/prbs/');
+  }
+
+  /**
+   * Check for recent memory search in violation logs
+   */
+  hasRecentMemorySearch() {
+    try {
+      const logDir = this._resolveLogDirectory();
+      const today = new Date().toISOString().split('T')[0];
+      const logFile = path.join(logDir, `violations-${today}.log`);
+
+      if (!fs.existsSync(logFile)) return false;
+
+      const logContent = fs.readFileSync(logFile, 'utf8');
+      const lines = logContent.trim().split('\n').filter(line => line.trim());
+
+      const cutoffTime = Date.now() - this.memorySearchWindow;
+
+      for (const line of lines.reverse()) { // Check most recent first
+        try {
+          const entry = JSON.parse(line);
+          const entryTime = new Date(entry.timestamp).getTime();
+
+          if (entryTime < cutoffTime) break; // Too old
+
+          // Check for memory search indicators
+          if (entry.tool === 'Read' && (
+            entry.parameters?.includes('memory') ||
+            entry.context?.includes('memory') ||
+            entry.reason?.includes('memory')
+          )) {
+            return true;
+          }
+
+          // Check for memory search commands
+          if (entry.tool === 'Bash' && entry.context?.includes('memory search')) {
+            return true;
+          }
+        } catch (parseError) {
+          continue; // Skip malformed entries
+        }
+      }
+
+      return false;
+    } catch (error) {
+      return false; // Fail open
+    }
+  }
+
+  /**
+   * Resolve log directory (same logic as ViolationLogger)
+   */
+  _resolveLogDirectory() {
+    if (process.env.CLAUDE_PROJECT_DIR) {
+      return path.join(process.env.CLAUDE_PROJECT_DIR, '.claude', 'logs');
+    }
+    return path.join(process.env.HOME || '/tmp', '.claude', 'logs');
+  }
+
+  /**
+   * Generate memory enforcement error message
+   */
+  generateMemoryRequirementError() {
+    return `🚫 MEMORY CONSULTATION REQUIRED BEFORE PRB CREATION
+
+VIOLATION: Attempting to create PRB without recent memory search
+REQUIREMENT: Memory consultation must occur within 5 minutes before PRB creation
+
+ARCHITECTURAL RULE: MEMORY-FIRST → PRB → AGENT EXECUTION
+
+REQUIRED PROCESS:
+1. Search memory for relevant patterns: Read files in memory/ directory
+2. Apply learned patterns and best practices
+3. Then create PRB with memory-informed context
+4. Deploy via Task tool to authorized agent
+
+MEMORY LOCATIONS TO SEARCH:
+- memory/behavioral-enforcement/
+- memory/system/
+- memory/patterns/
+- memory/[relevant-domain]/
+
+NO EXCEPTIONS - MEMORY CONSULTATION IS MANDATORY`;
+  }
+}
+
+/**
  * Performance tracking
  */
 const PERFORMANCE_THRESHOLD = 10; // ms
@@ -143,6 +245,7 @@ ${guidance}`;
 async function processHook(input) {
   const startTime = Date.now();
   const logger = new ViolationLogger();
+  const memoryEnforcement = new MemoryEnforcement();
 
   try {
     // Validate input
@@ -157,19 +260,57 @@ async function processHook(input) {
 
     const { tool, parameters = {}, context = "" } = input;
 
+    // MEMORY ENFORCEMENT: Check for PRB creation without memory search
+    if (memoryEnforcement.isPRBCreation(tool, parameters)) {
+      if (!memoryEnforcement.hasRecentMemorySearch()) {
+        // Log memory violation
+        await logger.logViolation({
+          tool,
+          intent: 'memory_violation',
+          reason: 'PRB creation without memory consultation',
+          parameters: Object.keys(parameters),
+          context: 'PRB creation detected',
+          violation_type: 'memory_enforcement'
+        });
+
+        return {
+          allowed: false,
+          message: memoryEnforcement.generateMemoryRequirementError(),
+          performance: Date.now() - startTime
+        };
+      } else {
+        // Log successful memory compliance and allow PRB creation
+        await logger.logViolation({
+          tool,
+          intent: 'memory_compliance',
+          reason: 'PRB creation with memory consultation',
+          parameters: Object.keys(parameters),
+          context: 'Memory requirement satisfied',
+          violation_type: 'memory_compliance'
+        });
+
+        // Allow PRB creation when memory requirement is satisfied
+        return {
+          allowed: true,
+          message: 'PRB creation allowed with memory consultation',
+          performance: Date.now() - startTime
+        };
+      }
+    }
+
     // Prepare context for classifier (expects string)
     const contextString = typeof context === 'string' ? context : JSON.stringify(context);
-    
+
     // Classify the intent using our classifier
     const classification = await intentClassifier.classifyIntent(tool, parameters, contextString);
-    
+
     // Get enforcement configuration
     const enforcement = await configLoader.getEnforcement(classification.intent);
-    
+
     // Check if action should be blocked
-    const shouldBlock = (enforcement === 'block' || enforcement === 'require_prb_context') && 
+    const shouldBlock = (enforcement === 'block' || enforcement === 'require_prb_context') &&
                        classification.confidence >= 0.6;
-    
+
     if (shouldBlock) {
       // Log violation for analysis
       await logger.logViolation({
