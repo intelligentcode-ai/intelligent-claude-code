@@ -19,6 +19,9 @@
 const fs = require('fs');
 const path = require('path');
 
+// Import reminder loader for dynamic reminders
+const ReminderLoader = require('./lib/reminder-loader');
+
 /**
  * Performance tracking
  */
@@ -26,79 +29,18 @@ const PERFORMANCE_THRESHOLD = 5; // ms (faster than pre-hook)
 
 /**
  * Educational reminder system for intelligent-claude-code principles
+ * Now uses dynamic loading from reminders.json with fallback to hardcoded defaults
  */
 class EducationalReminderSystem {
   constructor() {
-    this.systemPrincipleReminders = [
-      {
-        category: '@Role Communication',
-        message: '💡 Remember: Use @Role patterns for natural team coordination! Try "@PM break down story" or "@Developer implement feature" instead of manual task creation.',
-        principles: ['@Role communication patterns', 'Natural team coordination']
-      },
-      {
-        category: 'AgentTask Workflow',
-        message: '🔄 Key Pattern: Work requests → AgentTask creation → Task tool → Agent execution. This ensures complete context and reliable automation.',
-        principles: ['AgentTask workflow', 'Context preservation', 'Reliable automation']
-      },
-      {
-        category: 'Memory-First Approach',
-        message: '🧠 Best Practice: Search memory before asking users! The system automatically stores learnings - check memory/[topic]/ for proven patterns.',
-        principles: ['Memory-first approach', 'Learning reuse', 'Pattern application']
-      },
-      {
-        category: 'System Boundaries',
-        message: '🏗️ Architecture: Main agent = coordination & AgentTask creation. Subagents = technical execution via Task tool. Respect the boundaries!',
-        principles: ['System boundaries', 'Role separation', 'Context isolation']
-      },
-      {
-        category: 'NO WORK IN MAIN SCOPE',
-        message: '🚨 CRITICAL RULE: NO WORK IN MAIN SCOPE! Main scope = coordination only. Technical work = agents only. This architecture ensures reliable execution!',
-        principles: ['Main scope coordination', 'Agent execution', 'Architecture integrity']
-      },
-      {
-        category: 'Behavioral Patterns',
-        message: '⚙️ Core Concept: Behavioral patterns guide main agent actions. They steer behavior, they don\'t execute as subagents.',
-        principles: ['Behavioral patterns', 'Main agent steering', 'Pattern enforcement']
-      },
-      {
-        category: 'PRB Framework',
-        message: '📋 Foundation: Product Requirement Blueprints enable single-pass execution with full context. No workflow interruptions needed!',
-        principles: ['PRB framework', 'Single-pass execution', 'Context completeness']
-      },
-      {
-        category: 'Dynamic Specialization',
-        message: '🎯 Flexibility: Create specialists for ANY technology domain (@React-Developer, @AWS-Engineer) when expertise is needed.',
-        principles: ['Dynamic specialization', 'Technology experts', 'Unlimited creation']
-      },
-      {
-        category: 'Learning Culture',
-        message: '📚 Growth: Every AgentTask completion automatically stores learnings. The system gets smarter with every execution!',
-        principles: ['Learning culture', 'Automatic knowledge capture', 'System evolution']
-      },
-      {
-        category: 'Essential Commands',
-        message: '🎛️ Simplicity: Only 3 essential commands exist. Primary interaction is through @Role patterns, not complex commands.',
-        principles: ['Essential commands', '@Role priority', 'Natural interaction']
-      },
-      {
-        category: 'Context Integration',
-        message: '🔗 Intelligence: CLAUDE.md provides all context, AgentTasks are self-contained with embedded configuration.',
-        principles: ['Context integration', 'Self-contained execution', 'Configuration embedding']
-      },
-      {
-        category: 'Work Execution Architecture',
-        message: '⚡ ARCHITECTURE RULE: Main scope coordinates, agents execute. Use "@Developer implement feature" not direct file modifications!',
-        principles: ['Work execution', 'Agent deployment', 'Main scope coordination']
-      }
-    ];
+    this.reminderLoader = new ReminderLoader();
   }
 
   /**
-   * Get random educational reminder
+   * Get random educational reminder (legacy compatibility)
    */
   getRandomReminder() {
-    const randomIndex = Math.floor(Math.random() * this.systemPrincipleReminders.length);
-    return this.systemPrincipleReminders[randomIndex];
+    return this.reminderLoader.getRandomReminder('postAction');
   }
 
   /**
@@ -118,15 +60,14 @@ class EducationalReminderSystem {
    * Generate educational reminder message
    */
   generateEducationalReminder() {
-    const reminder = this.getRandomReminder();
+    return this.reminderLoader.getPostExecutionReminder();
+  }
 
-    let message = `🎓 INTELLIGENT-CLAUDE-CODE PRINCIPLE REMINDER\n\n`;
-    message += `Category: ${reminder.category}\n\n`;
-    message += `${reminder.message}\n\n`;
-    message += `Related Principles: ${reminder.principles.join(', ')}\n\n`;
-    message += `💡 TIP: These patterns help you work more effectively with the virtual team system!`;
-
-    return message;
+  /**
+   * Get system reminder
+   */
+  getSystemReminder() {
+    return this.reminderLoader.getSystemReminder();
   }
 }
 

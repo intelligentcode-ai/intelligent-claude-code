@@ -14,6 +14,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.1.4] - 2025-01-16
 
+### Added
+- **Dynamic Reminder System**: Comprehensive educational reminder system with JSON configuration support
+- **Multi-Location Loading**: Priority-based loading from project-local (.claude/hooks/reminders.json), user-global (~/.claude/hooks/reminders.json), and system default locations
+- **User Extension Support**: Users can customize reminders for project-specific needs while preserving customizations during updates
+- **25+ Behavioral Reminders**: Educational reminders covering @Role patterns, AgentTask workflow, memory-first approach, and system boundaries
+- **Installer Integration**: Both Ansible and PowerShell installers deploy reminder system with user customization preservation
+
+### Enhanced
+- **Hook System Architecture**: Dynamic reminder loading with fallback hierarchy for reliability
+- **Educational Focus**: Non-blocking educational reminders (5-15% chance) to reinforce system patterns without disrupting workflow
+- **Installation Robustness**: Installers preserve user customizations while updating system components
+- **Cross-Platform Support**: Consistent reminder system deployment across Linux, macOS, and Windows platforms
+
 ### Fixed
 - Critical hook scope detection logic error where Task tool was incorrectly flagged as work instead of orchestration
 - Task tool now correctly classified as planning with 1.0 confidence - Task creates subagents and IS the AgentTask+agent pattern
