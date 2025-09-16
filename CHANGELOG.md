@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.0] - 2025-01-16
+
+### Added
+- Windows installer hook deployment and settings.json integration
+- Install-HookSystem function for comprehensive hook deployment to scope-appropriate directories
+- Full settings.json JSON manipulation with ConvertFrom-Json and ConvertTo-Json
+- Duplicate prevention for repeated installations with robust validation
+- Support for both user scope (~/.claude/) and project scope (project/.claude/)
+- Comprehensive error handling for missing files, malformed JSON, and file operations
+- User feedback and progress indication throughout hook deployment process
+- Hook cleanup integration in both conservative and force uninstall modes
+- Test-JsonFile validation for settings.json corruption detection
+- Register-HookInSettings and Unregister-HookFromSettings functions
+- Complete parity with Ansible playbook hook deployment approach
+
+### Fixed
+- Cleanup of unnecessary test and analysis files created during development
+- Proper feature branch workflow implementation
+
 ## [8.0.4] - 2025-01-16
 
 ### Added
