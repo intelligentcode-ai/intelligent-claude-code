@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.4] - 2025-01-16
+
+### Added
+- STORY-002-AgentTask-002: Implemented PowerShell hook file deployment in install.ps1
+- Added Install-HookSystem function for Windows hook deployment automation
+- Comprehensive hook file copying from src/hooks/ to ~/.claude/hooks/ recursively
+- Windows path resolution with proper user profile directory handling
+- Robust error handling for file operations and permission issues
+- User feedback and progress indication during hook deployment
+- Updated uninstall logic to properly clean up hooks directory
+- Enhanced test suite to validate hook deployment functionality
+
 ## [8.0.3] - 2025-01-16
 
 ### Fixed
