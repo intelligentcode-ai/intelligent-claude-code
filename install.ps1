@@ -128,7 +128,7 @@ function Install-IntelligentClaudeCode {
     # Copy source files
     Write-Host "Copying source files..." -ForegroundColor Yellow
     
-    $DirectoriesToCopy = @("agents", "behaviors", "commands", "modes", "prb-templates", "utils")
+    $DirectoriesToCopy = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "hooks", "utils")
     
     foreach ($Dir in $DirectoriesToCopy) {
         $SourcePath = Join-Path $SourceDir $Dir
@@ -164,7 +164,7 @@ function Install-IntelligentClaudeCode {
     }
     
     # Create essential directories
-    $DirsToCreate = @("memory", "prbs", "stories\drafts")
+    $DirsToCreate = @("memory", "agenttasks\ready", "agenttasks\completed", "stories\drafts")
     foreach ($Dir in $DirsToCreate) {
         $DirPath = Join-Path $Paths.InstallPath $Dir
         if (-not (Test-Path $DirPath)) {

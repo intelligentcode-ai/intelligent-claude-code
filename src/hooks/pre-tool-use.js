@@ -167,7 +167,22 @@ class ViolationLogger {
         timestamp: new Date().toISOString(),
         ...violation
       };
-      
+
+      const logEntry = JSON.stringify(entry) + '\n';
+      fs.appendFileSync(logFile, logEntry);
+    } catch (error) {
+      // Silent fail - logging failures shouldn't break Claude
+    }
+  }
+
+  logViolationSync(violation) {
+    try {
+      const logFile = path.join(this.logDir, `violations-${new Date().toISOString().split('T')[0]}.log`);
+      const entry = {
+        timestamp: new Date().toISOString(),
+        ...violation
+      };
+
       const logEntry = JSON.stringify(entry) + '\n';
       fs.appendFileSync(logFile, logEntry);
     } catch (error) {
@@ -240,7 +255,140 @@ ${guidance}`;
 }
 
 /**
- * Main hook processing function
+ * Synchronous version of processHook to avoid async/await stdin issues
+ */
+function processHookSync(input) {
+  const startTime = Date.now();
+  const logger = new ViolationLogger();
+  const memoryEnforcement = new MemoryEnforcement();
+
+  try {
+    // Validate input
+    const validation = validateInput(input);
+    if (!validation.valid) {
+      return {
+        allowed: true, // Fail open on validation errors
+        message: `Input validation failed: ${validation.error}`,
+        performance: Date.now() - startTime
+      };
+    }
+
+    const { tool, parameters = {}, context = "" } = input;
+
+    // MEMORY ENFORCEMENT: Check for AgentTask creation without memory search
+    if (memoryEnforcement.isAgentTaskCreation(tool, parameters)) {
+      if (!memoryEnforcement.hasRecentMemorySearch()) {
+        // Log memory violation (synchronous)
+        logger.logViolationSync({
+          tool,
+          intent: 'memory_violation',
+          reason: 'AgentTask creation without memory consultation',
+          parameters: Object.keys(parameters),
+          context: 'AgentTask creation detected',
+          violation_type: 'memory_enforcement'
+        });
+
+        return {
+          allowed: false,
+          message: memoryEnforcement.generateMemoryRequirementError(),
+          performance: Date.now() - startTime
+        };
+      } else {
+        // Log successful memory compliance and allow AgentTask creation
+        logger.logViolationSync({
+          tool,
+          intent: 'memory_compliance',
+          reason: 'AgentTask creation with memory consultation',
+          parameters: Object.keys(parameters),
+          context: 'Memory requirement satisfied',
+          violation_type: 'memory_compliance'
+        });
+
+        // Allow AgentTask creation when memory requirement is satisfied
+        return {
+          allowed: true,
+          message: 'AgentTask creation allowed with memory consultation',
+          performance: Date.now() - startTime
+        };
+      }
+    }
+
+    // Prepare context for classifier (expects string)
+    const contextString = typeof context === 'string' ? context : JSON.stringify(context);
+
+    // Classify the intent using our classifier (synchronous)
+    const classification = intentClassifier.classifyIntent(tool, parameters, contextString);
+
+    // Get enforcement configuration (convert async to sync for this critical path)
+    let enforcement;
+    try {
+      // Create a simple synchronous enforcement lookup
+      const enforcementConfig = {
+        work: 'block',
+        modification: 'block',
+        system: 'block',
+        research: 'allow',
+        qa: 'allow',
+        planning: 'allow'
+      };
+      enforcement = enforcementConfig[classification.intent] || 'allow';
+    } catch (error) {
+      enforcement = 'allow'; // Fail open
+    }
+
+    // Check if action should be blocked
+    const shouldBlock = (enforcement === 'block' || enforcement === 'require_prb_context') &&
+                       classification.confidence >= 0.6;
+
+    if (shouldBlock) {
+      // Log violation for analysis (synchronous)
+      logger.logViolationSync({
+        tool,
+        intent: classification.intent,
+        confidence: classification.confidence,
+        reason: classification.reason,
+        parameters: Object.keys(parameters),
+        context: Object.keys(context)
+      });
+
+      const errorMessage = generateErrorMessage(
+        classification.intent,
+        tool,
+        classification.reason
+      );
+
+      return {
+        allowed: false,
+        message: errorMessage,
+        performance: Date.now() - startTime
+      };
+    }
+
+    // Action allowed
+    return {
+      allowed: true,
+      message: `${classification.intent} intent allowed`,
+      performance: Date.now() - startTime
+    };
+
+  } catch (error) {
+    // Log error but fail open to avoid breaking Claude (synchronous)
+    logger.logViolationSync({
+      error: error.message,
+      tool: input?.tool || 'unknown',
+      type: 'system_error'
+    });
+
+    return {
+      allowed: true, // Fail open on system errors
+      message: `System error (failing open): ${error.message}`,
+      performance: Date.now() - startTime
+    };
+  }
+}
+
+/**
+ * Main hook processing function (kept for backward compatibility)
  */
 async function processHook(input) {
   const startTime = Date.now();
@@ -361,26 +509,47 @@ async function processHook(input) {
 /**
  * Main hook execution
  */
-async function main() {
+function main() {
   try {
-    // Read JSON input from stdin
     let inputData = '';
-    
-    // Handle stdin data
-    if (process.stdin.isTTY) {
-      // No piped input - exit with error
-      console.error('Error: Hook expects JSON input from stdin');
-      process.exit(1);
-    }
 
-    process.stdin.setEncoding('utf8');
-    
-    for await (const chunk of process.stdin) {
-      inputData += chunk;
+    // Priority 1: Command line argument (best for autonomous execution)
+    if (process.argv[2]) {
+      inputData = process.argv[2];
+    }
+    // Priority 2: Environment variable (for testing/debugging)
+    else if (process.env.HOOK_INPUT) {
+      inputData = process.env.HOOK_INPUT;
+    }
+    // Priority 3: Check if stdin has data available (non-blocking)
+    else if (!process.stdin.isTTY) {
+      // Try to read from stdin synchronously
+      try {
+        const stdinBuffer = fs.readFileSync(0, 'utf8');
+        if (stdinBuffer && stdinBuffer.trim()) {
+          inputData = stdinBuffer;
+        }
+      } catch (error) {
+        // If synchronous read fails, provide clear error
+        console.error('Error: Hook expects JSON input via command line argument, HOOK_INPUT environment variable, or piped stdin');
+        console.error('Usage: node pre-tool-use.js \'{"tool":"Edit","parameters":{}}\'');
+        console.error('   or: echo \'{"tool":"Edit","parameters":{}}\' | node pre-tool-use.js');
+        console.error('   or: HOOK_INPUT=\'{"tool":"Edit","parameters":{}}\' node pre-tool-use.js');
+        process.exit(1);
+      }
+    } else {
+      console.error('Error: Hook expects JSON input via command line argument, HOOK_INPUT environment variable, or piped stdin');
+      console.error('Usage: node pre-tool-use.js \'{"tool":"Edit","parameters":{}}\'');
+      console.error('   or: echo \'{"tool":"Edit","parameters":{}}\' | node pre-tool-use.js');
+      console.error('   or: HOOK_INPUT=\'{"tool":"Edit","parameters":{}}\' node pre-tool-use.js');
+      process.exit(1);
     }
 
     if (!inputData.trim()) {
       console.error('Error: No input received');
+      console.error('Usage: node pre-tool-use.js \'{"tool":"Edit","parameters":{}}\'');
+      console.error('   or: echo \'{"tool":"Edit","parameters":{}}\' | node pre-tool-use.js');
+      console.error('   or: HOOK_INPUT=\'{"tool":"Edit","parameters":{}}\' node pre-tool-use.js');
       process.exit(1);
     }
 
@@ -393,8 +562,8 @@ async function main() {
       process.exit(1);
     }
 
-    // Process the hook
-    const result = await processHook(input);
+    // Process the hook synchronously
+    const result = processHookSync(input);
 
     // Check performance
     if (result.performance > PERFORMANCE_THRESHOLD) {
