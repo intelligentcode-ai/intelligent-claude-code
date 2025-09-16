@@ -255,6 +255,36 @@ ${guidance}`;
 }
 
 /**
+ * Convert Claude Code input format to internal format
+ */
+function convertClaudeCodeInput(claudeInput) {
+  // If input already has the expected format, use it as-is
+  if (claudeInput.tool && claudeInput.parameters !== undefined) {
+    return claudeInput;
+  }
+
+  // Handle Claude Code PreToolUse format
+  if (claudeInput.hook_event_name === 'PreToolUse' && claudeInput.tool_name && claudeInput.tool_input) {
+    return {
+      tool: claudeInput.tool_name,
+      parameters: claudeInput.tool_input || {},
+      context: {
+        session_id: claudeInput.session_id,
+        cwd: claudeInput.cwd,
+        transcript_path: claudeInput.transcript_path
+      }
+    };
+  }
+
+  // Handle legacy format or other formats - extract what we can
+  return {
+    tool: claudeInput.tool_name || claudeInput.tool || 'Unknown',
+    parameters: claudeInput.tool_input || claudeInput.parameters || {},
+    context: claudeInput.context || claudeInput
+  };
+}
+
+/**
  * Synchronous version of processHook to avoid async/await stdin issues
  */
 function processHookSync(input) {
@@ -598,4 +628,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { processHook, generateErrorMessage, validateInput };
+module.exports = { processHook, generateErrorMessage, validateInput, convertClaudeCodeInput };
