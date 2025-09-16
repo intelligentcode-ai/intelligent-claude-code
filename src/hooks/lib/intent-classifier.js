@@ -1,14 +1,14 @@
 /**
  * Intent Classification Engine for intelligent-claude-code
- * 
- * Classifies user intents based on tool usage, parameters, and context to determine
- * if actions should be allowed in main scope or require AgentTask+agent execution.
+ *
+ * Classifies user intents based on tool usage, parameters, and context to provide
+ * educational reminders about the "NO WORK IN MAIN SCOPE" architectural pattern.
  *
  * Intent Categories:
- * - research: Reading, searching, analyzing (ALLOWED in main scope)
- * - qa: Answering questions, explaining (ALLOWED in main scope)
- * - planning: Creating AgentTasks, architectural discussions (ALLOWED in main scope)
- * - work: Implementing, fixing, modifying code (BLOCKED in main scope)
+ * - research: Reading, searching, analyzing (Educational guidance provided)
+ * - qa: Answering questions, explaining (Educational guidance provided)
+ * - planning: Creating AgentTasks, architectural discussions (Educational guidance provided)
+ * - work: Implementing, fixing, modifying code (Strong "NO WORK IN MAIN SCOPE" reminder)
  */
 
 const configLoader = require('./config-loader');
@@ -408,161 +408,187 @@ function isReadOnlyCommand(command) {
 }
 
 /**
- * Validates if an action is allowed based on intent classification and configuration
- * 
+ * Provides educational guidance based on intent classification
+ *
  * @param {string} tool - Tool name being invoked
  * @param {object} parameters - Tool parameters
  * @param {string} context - Additional context (user message, conversation context)
- * @returns {Promise<object>} Validation result with decision and enforcement action
+ * @returns {Promise<object>} Educational guidance result with tips and reminders
  */
-async function validateAction(tool, parameters = {}, context = '') {
+async function provideEducationalGuidance(tool, parameters = {}, context = '') {
   const startTime = process.hrtime.bigint();
-  
+
   try {
     // First classify the intent
     const classification = classifyIntent(tool, parameters, context);
     const { intent, confidence } = classification;
-    
-    // Get configuration for the classified intent
-    const intentConfig = await configLoader.getIntentConfig(intent);
-    
-    // Check tool allowance
-    const isToolAllowed = await configLoader.isToolAllowed(intent, tool);
-    
-    // Check parameter patterns
-    let parameterViolations = [];
-    if (parameters) {
-      for (const [key, value] of Object.entries(parameters)) {
-        const paramString = `${key}=${value}`;
-        const isParamAllowed = await configLoader.isParameterAllowed(intent, paramString);
-        if (!isParamAllowed) {
-          parameterViolations.push(`${key}=${value}`);
-        }
-      }
-    }
-    
-    // Check file path patterns
-    let pathViolations = [];
-    const filePaths = [];
-    
-    // Extract file paths from parameters
-    if (parameters.file_path) filePaths.push(parameters.file_path);
-    if (parameters.path) filePaths.push(parameters.path);
-    if (parameters.pattern && parameters.pattern.includes('/')) filePaths.push(parameters.pattern);
-    
-    for (const filePath of filePaths) {
-      const isPathAllowed = await configLoader.isPathAllowed(intent, filePath);
-      if (!isPathAllowed) {
-        pathViolations.push(filePath);
-      }
-    }
-    
-    // Determine overall decision
-    const hasViolations = !isToolAllowed || parameterViolations.length > 0 || pathViolations.length > 0;
-    const enforcement = await configLoader.getEnforcement(intent);
-    
-    let decision = 'allow';
+
     let message = '';
-    
-    if (hasViolations) {
-      switch (enforcement) {
-        case 'allow':
-          decision = 'allow';
-          message = 'Action allowed despite pattern violations';
-          break;
-        case 'warn':
-          decision = 'warn';
-          message = 'Action allowed with warnings';
-          break;
-        case 'block':
-          decision = 'block';
-          message = 'Action blocked due to policy violations';
-          break;
-        case 'require_prb_context':
-          decision = 'require_prb';
-          message = 'Action requires AgentTask+agent execution';
-          break;
-        default:
-          decision = 'warn';
-          message = 'Unknown enforcement policy, defaulting to warn';
-      }
+    let guidanceType = 'general';
+
+    // Provide intent-specific educational guidance
+    switch (intent) {
+      case 'work':
+        guidanceType = 'work_reminder';
+        message = `🚨 CRITICAL REMINDER: NO WORK IN MAIN SCOPE
+
+🛑 DETECTED: Work intent using ${tool} - This should go through agents!
+
+🏗️ FUNDAMENTAL ARCHITECTURE RULE:
+Main scope = Coordination and AgentTask creation ONLY
+Agent scope = Technical execution via Task tool
+
+❌ MAIN SCOPE PROHIBITIONS:
+• Direct file modifications
+• Code implementation
+• System configuration
+• Bug fixes
+• Feature development
+
+✅ CORRECT PATTERN:
+1. "@Developer fix authentication bug"
+2. System: Creates AgentTask with complete context
+3. Task tool: Deploys to @Developer agent
+4. Agent: Executes with full tool authorization
+
+🔥 REMEMBER: Work in main scope breaks the architecture!
+🎯 USE: @Role patterns for reliable, autonomous execution`;
+        break;
+
+      case 'planning':
+        guidanceType = 'planning_tip';
+        message = `📅 PLANNING ACTIVITY DETECTED
+
+🎆 EXCELLENT: Planning and coordination work perfectly in main scope!
+
+💡 TIP: Use @Role patterns for natural team coordination:
+- "@PM break down story" for project management
+- "@Architect design system" for architecture decisions
+- "@AI-Engineer optimize behavior" for AI improvements
+
+🏗️ PATTERN: Planning in main → Execution via agents = Perfect architecture!`;
+        break;
+
+      case 'research':
+        guidanceType = 'research_tip';
+        message = `🔍 RESEARCH ACTIVITY DETECTED
+
+✅ PERFECT: Research and analysis work great in main scope!
+
+🧠 MEMORY TIP: Check memory/[topic]/ directories first - the system stores proven patterns and solutions automatically.
+
+📚 RESEARCH LOCATIONS:
+- memory/behavioral-enforcement/
+- memory/system/
+- memory/patterns/
+- Previous AgentTask results in agenttasks/completed/
+
+🎆 PRINCIPLE: Memory-first approach prevents repeated work and applies proven solutions!`;
+        break;
+
+      case 'qa':
+        guidanceType = 'qa_tip';
+        message = `❓ Q&A ACTIVITY DETECTED
+
+✅ EXCELLENT: Questions and explanations work perfectly in main scope!
+
+💭 ENHANCEMENT TIP: When providing answers, consider referencing:
+- Stored patterns in memory/[topic]/
+- Successful AgentTask executions
+- Best practices from previous work
+
+🎆 PRINCIPLE: Knowledge sharing strengthens the entire virtual team system!`;
+        break;
+
+      default:
+        message = `🎓 SYSTEM REMINDER: intelligent-claude-code Architecture
+
+🏗️ CORE PATTERN: Main scope → AgentTask → Task tool → Agent execution
+
+💡 REMEMBER: Use @Role patterns for natural team coordination and reliable work execution!`;
     }
-    
+
     const endTime = process.hrtime.bigint();
     const timingMs = Number(endTime - startTime) / 1_000_000;
-    
+
     return {
-      decision,
+      decision: 'allow', // Always allow in educational mode
       message,
       intent: classification.intent,
       confidence: classification.confidence,
-      violations: {
-        tool: !isToolAllowed,
-        parameters: parameterViolations,
-        paths: pathViolations
-      },
-      enforcement,
-      timing: Math.round(timingMs * 100) / 100
+      guidance_type: guidanceType,
+      timing: Math.round(timingMs * 100) / 100,
+      educational_mode: true
     };
-    
+
   } catch (error) {
-    console.error('Error during action validation:', error.message);
-    
-    // Fallback to basic classification
-    const classification = classifyIntent(tool, parameters, context);
+    console.error('Error during educational guidance:', error.message);
+
     return {
-      decision: classification.intent === 'work' ? 'require_prb' : 'allow',
-      message: 'Validation error, using basic classification',
-      intent: classification.intent,
-      confidence: classification.confidence,
-      violations: { tool: false, parameters: [], paths: [] },
-      enforcement: 'warn',
+      decision: 'allow',
+      message: '🎓 EDUCATIONAL MODE: All actions allowed with learning reminders!',
+      intent: 'unknown',
+      confidence: 0,
+      guidance_type: 'fallback',
       timing: 0,
+      educational_mode: true,
       error: error.message
     };
   }
 }
 
 /**
- * Checks if a specific tool and parameter combination requires PRB context
- * 
+ * Checks if a tool combination suggests AgentTask+agent pattern (educational)
+ *
  * @param {string} tool - Tool name
  * @param {object} parameters - Tool parameters
- * @returns {Promise<boolean>} True if PRB context is required
+ * @returns {Promise<boolean>} True if AgentTask pattern is suggested
  */
-async function requiresPrbContext(tool, parameters = {}) {
+async function suggestsAgentTaskPattern(tool, parameters = {}) {
   try {
-    const validation = await validateAction(tool, parameters);
-    return validation.decision === 'require_prb' || validation.intent === 'work';
+    const guidance = await provideEducationalGuidance(tool, parameters);
+    return guidance.guidance_type === 'work_reminder';
   } catch (error) {
-    console.error('Error checking PRB context requirement:', error.message);
-    // Default to requiring AgentTask for work tools
+    console.error('Error checking AgentTask pattern suggestion:', error.message);
+    // Default suggestion for work tools
     return WORK_TOOLS.has(tool);
   }
 }
 
 /**
- * Gets enforcement action for a specific intent type
- * 
+ * Gets educational guidance type for a specific intent type
+ *
  * @param {string} intentType - Intent type (research, qa, planning, work)
- * @returns {Promise<string>} Enforcement action
+ * @returns {Promise<string>} Educational guidance type
  */
-async function getEnforcementAction(intentType) {
+async function getEducationalGuidanceType(intentType) {
   try {
-    return await configLoader.getEnforcement(intentType);
+    // Map intents to educational guidance types
+    const guidanceMap = {
+      'work': 'work_reminder',
+      'planning': 'planning_tip',
+      'research': 'research_tip',
+      'qa': 'qa_tip'
+    };
+    return guidanceMap[intentType] || 'general_tip';
   } catch (error) {
-    console.error('Error getting enforcement action:', error.message);
-    return 'warn'; // Safe default
+    console.error('Error getting educational guidance type:', error.message);
+    return 'general_tip'; // Safe default
   }
 }
 
 module.exports = {
   classifyIntent,
-  validateAction,
-  requiresPrbContext,
-  getEnforcementAction,
+  provideEducationalGuidance,
+  suggestsAgentTaskPattern,
+  getEducationalGuidanceType,
   isWorkIntent,
   isReadOnlyCommand,
+
+  // Legacy function names for compatibility
+  validateAction: provideEducationalGuidance,
+  requiresPrbContext: suggestsAgentTaskPattern,
+  getEnforcementAction: getEducationalGuidanceType,
 
   // Export constants for testing and system integration
   WORK_VERBS,

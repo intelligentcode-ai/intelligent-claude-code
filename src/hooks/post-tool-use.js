@@ -51,6 +51,11 @@ class EducationalReminderSystem {
         principles: ['System boundaries', 'Role separation', 'Context isolation']
       },
       {
+        category: 'NO WORK IN MAIN SCOPE',
+        message: '🚨 CRITICAL RULE: NO WORK IN MAIN SCOPE! Main scope = coordination only. Technical work = agents only. This architecture ensures reliable execution!',
+        principles: ['Main scope coordination', 'Agent execution', 'Architecture integrity']
+      },
+      {
         category: 'Behavioral Patterns',
         message: '⚙️ Core Concept: Behavioral patterns guide main agent actions. They steer behavior, they don\'t execute as subagents.',
         principles: ['Behavioral patterns', 'Main agent steering', 'Pattern enforcement']
@@ -79,6 +84,11 @@ class EducationalReminderSystem {
         category: 'Context Integration',
         message: '🔗 Intelligence: CLAUDE.md provides all context, AgentTasks are self-contained with embedded configuration.',
         principles: ['Context integration', 'Self-contained execution', 'Configuration embedding']
+      },
+      {
+        category: 'Work Execution Architecture',
+        message: '⚡ ARCHITECTURE RULE: Main scope coordinates, agents execute. Use "@Developer implement feature" not direct file modifications!',
+        principles: ['Work execution', 'Agent deployment', 'Main scope coordination']
       }
     ];
   }
