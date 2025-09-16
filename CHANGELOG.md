@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.3] - 2025-01-16
+
+### Fixed
+- BUG-005-AgentTask-001: Fixed critical hook script stdin blocking issue
+- Removed all async/await stdin dependencies that caused indefinite waiting
+- Implemented synchronous input handling with command line, environment variable, and piped stdin support
+- Eliminated readline and async Promise-based stdin reading that blocked hook execution
+- Hook now executes autonomously in ~20ms without any user interaction
+- Fixed behavioral enforcement system failure caused by stdin hanging
+- Added comprehensive input method support with clear error messages
+
 ## [8.0.2] - 2025-01-16
 
 ### Fixed
