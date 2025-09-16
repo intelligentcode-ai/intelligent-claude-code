@@ -9,8 +9,8 @@
 ## Template Hierarchy
 
 **Search Order (Highest→Lowest Priority):**
-1. **Project Templates**: Project root prb_template_path
-2. **Installation Templates**: Installation prb-templates/
+1. **Project Templates**: Project root agenttask_template_path
+2. **Installation Templates**: Installation agenttask-templates/
 
 ## Standard Templates
 
@@ -57,8 +57,8 @@ medium:
 
 ## Configuration Integration
 
-**Template Path Setting**: Configure prb_template_path in CLAUDE.md or config.md
-**Default Path**: "prb-templates"
+**Template Path Setting**: Configure agenttask_template_path in CLAUDE.md or config.md
+**Default Path**: "agenttask-templates"
 **Hierarchy Override**: Projects can override any template
 
 ## Error Handling

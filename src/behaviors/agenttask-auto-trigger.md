@@ -54,12 +54,12 @@
 
 ## Template-First Generation Flow
 
-**PRB Generation Steps:**
-0. **Check Existing PRBs** for similar work (MANDATORY DEDUPLICATION CHECK)
-   - Scan prbs/ready/ and prbs/completed/ directories for existing PRBs
+**AgentTask Generation Steps:**
+0. **Check Existing AgentTasks** for similar work (MANDATORY DEDUPLICATION CHECK)
+   - Scan agenttasks/ready/ and agenttasks/completed/ directories for existing AgentTasks
    - Analyze work descriptions, technical scope, file references, and parent relationships
    - Calculate similarity score using weighted algorithm (description 40%, scope 30%, context 20%, parent 10%)
-   - If ≥70% similarity detected, UPDATE existing PRB instead of creating new one
+   - If ≥70% similarity detected, UPDATE existing AgentTask instead of creating new one
    - Notify user of existing work reuse with enhancement details
 1. **Detect** work requirement
 2. **Search Memory** for patterns (MANDATORY MEMORY-FIRST APPROACH)
@@ -114,14 +114,14 @@
 - tiny-prb-template.yaml → workflow_settings.tiny.*
 - **BLOCKED:** medium-prb-template.yaml, large-prb-template.yaml, mega-prb-template.yaml
 
-**ENFORCEMENT:** Only nano/tiny PRBs permitted. Work ≥6 points becomes STORY/BUG first.
+**ENFORCEMENT:** Only nano/tiny AgentTasks permitted. Work ≥6 points becomes STORY/BUG first.
 
 ## PRB Deduplication Detection
 
-**MANDATORY:** All PRB generation MUST check for existing similar work before creating new PRBs:
+**MANDATORY:** All AgentTask generation MUST check for existing similar work before creating new AgentTasks:
 
 ### Duplicate Detection Process
-1. **Directory Scan**: Search prbs/ready/ and prbs/completed/ for all existing PRBs
+1. **Directory Scan**: Search agenttasks/ready/ and agenttasks/completed/ for all existing AgentTasks
 2. **Work Analysis**: Extract work description, technical scope, and requirements from new request
 3. **Similarity Calculation**: Compare against each existing PRB using weighted scoring:
    - **Work Description Match** (40%): Compare goal descriptions, problem statements, and success criteria

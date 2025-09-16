@@ -75,7 +75,7 @@ class MemoryStorageEnforcement {
     const content = parameters.content || parameters.new_string || '';
 
     // Check for PRB completion indicators
-    const isPRBFile = filePath.includes('.prb.yaml') || filePath.includes('/prbs/');
+    const isAgentTaskFile = filePath.includes('.agenttask.yaml') || filePath.includes('/agenttasks/');
     const hasCompletionMarkers = content.includes('✅') ||
                                 content.includes('COMPLETED') ||
                                 content.includes('execution_summary') ||
@@ -83,9 +83,9 @@ class MemoryStorageEnforcement {
                                 content.includes('completion_definition') ||
                                 content.includes('done_when');
 
-    console.log(`DEBUG: isPRBFile=${isPRBFile}, hasCompletionMarkers=${hasCompletionMarkers}, filePath=${filePath}`);
+    console.log(`DEBUG: isAgentTaskFile=${isAgentTaskFile}, hasCompletionMarkers=${hasCompletionMarkers}, filePath=${filePath}`);
 
-    return isPRBFile && hasCompletionMarkers;
+    return isAgentTaskFile && hasCompletionMarkers;
   }
 
   /**

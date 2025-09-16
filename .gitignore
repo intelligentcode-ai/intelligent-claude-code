@@ -87,8 +87,8 @@ memory/**/*
 *.memory
 *.learning
 
-# PRBs should also remain local
-prbs/
+# AgentTasks should also remain local
+agenttasks/
 
 # Credentials
 *.pem

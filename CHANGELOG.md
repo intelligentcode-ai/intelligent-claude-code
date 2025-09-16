@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.21.2] - 2025-01-16
+
+### Changed
+- Renamed directory structure from prbs/ to agenttasks/ for AgentTask terminology alignment
+- Updated all configuration references from prb_path to agenttask_path
+- Modified hook scripts to recognize .agenttask.yaml files and /agenttasks/ directory
+- Updated behavioral documentation to reflect AgentTask terminology
+- Preserved all existing AgentTask files during directory rename
+
 ## [7.21.1] - 2025-01-16
 
 ### Changed

@@ -38,8 +38,8 @@
 
 ### Template Path Resolution
 **TEMPLATE HIERARCHY:**
-- Project templates: project_root/prb_template_path
-- Installation templates: detected_path/prb-templates/
+- Project templates: project_root/agenttask_template_path
+- Installation templates: detected_path/agenttask-templates/
 
 ### Behavior Path Resolution
 **BEHAVIOR LOADING:**

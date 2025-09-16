@@ -67,12 +67,12 @@
 
 ### Lightning-Fast Automatic Generation Pipeline
 **SEAMLESS 14-STEP INSTANT AUTOMATION WITH SEQUENTIAL THINKING:**
-0. **Duplicate Check**: MANDATORY scan existing PRBs for similar work (PREVENTS DUPLICATE CREATION)
-   - Search prbs/ready/ and prbs/completed/ directories
+0. **Duplicate Check**: MANDATORY scan existing AgentTasks for similar work (PREVENTS DUPLICATE CREATION)
+   - Search agenttasks/ready/ and agenttasks/completed/ directories
    - Compare work descriptions, technical scope, and file references
    - Score similarity using keyword overlap, scope match, and context alignment
-   - If ≥70% similarity found, UPDATE existing PRB instead of creating new one
-   - Notify user of existing PRB reuse with enhancement details
+   - If ≥70% similarity found, UPDATE existing AgentTask instead of creating new one
+   - Notify user of existing AgentTask reuse with enhancement details
 1. **Detection**: Real-time parsing with NLP pattern recognition
 2. **Intent Classification**: Work vs information classification
 3. **Context Assembly**: Complete project context loading
@@ -95,11 +95,11 @@
 
 ### PRB Deduplication Logic
 
-**MANDATORY:** ALWAYS check for existing PRBs before creating new ones to prevent duplicate work:
+**MANDATORY:** ALWAYS check for existing AgentTasks before creating new ones to prevent duplicate work:
 
 **Deduplication Process:**
-1. **PRB Directory Scan**: Search prbs/ready/ and prbs/completed/ for existing PRBs
-2. **Similarity Analysis**: Compare new work request against existing PRB descriptions and contexts
+1. **AgentTask Directory Scan**: Search agenttasks/ready/ and agenttasks/completed/ for existing AgentTasks
+2. **Similarity Analysis**: Compare new work request against existing AgentTask descriptions and contexts
 3. **Scoring Algorithm**: Calculate similarity percentage using:
    - **Work Description Match** (40%): Keyword overlap in descriptions and goals
    - **Technical Scope Match** (30%): File references, systems, and technical domains

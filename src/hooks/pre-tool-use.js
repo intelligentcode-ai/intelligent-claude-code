@@ -34,7 +34,7 @@ class MemoryEnforcement {
     if (tool !== 'Write' && tool !== 'MultiEdit') return false;
 
     const filePath = parameters.file_path || '';
-    return filePath.includes('.prb.yaml') || filePath.includes('/prbs/');
+    return filePath.includes('.agenttask.yaml') || filePath.includes('/agenttasks/');
   }
 
   /**
