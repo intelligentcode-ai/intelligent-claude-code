@@ -16,7 +16,7 @@ make install
 
 # Start working with agents
 @PM Build a user authentication system
-# System: Generates PRB → Creates specialist agents → Agents execute → Work completes
+# System: Generates AgentTask → Creates specialist agents → Agents execute → Work completes
 ```
 
 ### Windows
@@ -31,7 +31,7 @@ cd intelligent-claude-code
 
 # Start working with agents
 @PM Build a user authentication system
-# System: Generates PRB → Creates specialist agents → Agents execute → Work completes
+# System: Generates AgentTask → Creates specialist agents → Agents execute → Work completes
 ```
 
 ## What You Get
@@ -39,8 +39,15 @@ cd intelligent-claude-code
 ### 🤖 Agent-Driven Architecture
 Complete virtual development team with 14+ specialized agent roles that work together autonomously. Each agent has deep domain expertise and behavioral patterns optimized for their specialty.
 
-### 🎯 PRB-Driven Execution
-Self-contained blueprints replace complex workflows. Each PRB includes everything needed for single-pass execution: context, standards, examples, validation, and automatic agent invocation. PRBs automatically identify the appropriate specialist agent and execute via Task tool for complete isolation and quality assurance.
+### 🎯 AgentTask-Driven Execution
+Self-contained AgentTasks replace complex workflows. Each AgentTask includes everything needed for single-pass execution: context, standards, examples, validation, and automatic agent invocation. AgentTasks automatically identify the appropriate specialist agent and execute via Task tool for complete isolation and quality assurance.
+
+### 🛡️ Behavioral Hook Enforcement
+Built-in hook system ensures reliable execution patterns:
+- **Pre-Tool-Use Hooks**: Validate all tool operations against behavioral patterns
+- **Work Intent Detection**: Automatically blocks unauthorized direct execution
+- **AgentTask-First Pattern**: Enforces structured work through AgentTask system
+- **Memory-First Operations**: Ensures all work checks existing patterns before proceeding
 
 ### 👥 14+ Specialist Agent Roles  
 **Core Agents:**
@@ -96,13 +103,13 @@ Configure in CLAUDE.md where your docs/standards are. Agents find and include th
 
 ## Agent-Driven Story Management
 
-Transform natural language stories into executable PRBs with multi-agent coordination:
+Transform natural language stories into executable AgentTasks with multi-agent coordination:
 
 1. **Story Creation** → Write stories in `stories/` directory
 2. **@PM Analysis** → "@PM break down authentication story"
 3. **Agent Collaboration** → @PM + @Architect + domain specialists collaborate
-4. **PRB Generation** → Ready-to-execute blueprints with agent assignments in `prbs/ready/`
-5. **Agent Execution** → Specialized agents execute PRBs collaboratively
+4. **AgentTask Generation** → Ready-to-execute blueprints with agent assignments in `agenttasks/ready/`
+5. **Agent Execution** → Specialized agents execute AgentTasks collaboratively
 6. **Story Selection** → "@PM what story should we work on next?"
 
 ### Story Directory Structure
@@ -118,15 +125,15 @@ stories/
 - **Story Analysis**: @PM reads business goals, specialist agents evaluate technical approaches
 - **Agent Team Assembly**: Dynamic creation of domain specialists (@Auth-Engineer, @Frontend-Developer, etc.)
 - **Priority Setting**: Multi-agent evaluation of business value + technical complexity
-- **PRB Creation**: @PM generates complexity-appropriate PRBs with agent assignments
+- **AgentTask Creation**: @PM generates complexity-appropriate AgentTasks with agent assignments
 - **Agent Coordination**: Collaborative execution across specialized agent team
 - **Next Selection**: Agent team considers dependencies, risk, current application state
 
-## Automatic PRB System
+## Automatic AgentTask System
 
-**Complete Automation Pipeline:** Work requests automatically trigger PRB creation and execution with no manual steps required.
+**Complete Automation Pipeline:** Work requests automatically trigger AgentTask creation and execution with no manual steps required.
 
-### Automatic PRB Generation
+### Automatic AgentTask Generation
 - **Work Detection**: Intelligent recognition of implementation vs information requests
 - **Template Selection**: Automatic complexity scoring and template selection (Nano→Mega)
 - **Context Integration**: Complete project context, configuration, and memory patterns embedded
@@ -135,24 +142,24 @@ stories/
 
 ### Seamless Work Flow
 ```bash
-# Natural Work Requests → Automatic PRB Creation → Subagent Execution
-@PM Build a [project]         # Auto-creates project setup PRBs with specialist assignments
-@Developer Implement auth     # Auto-generates implementation PRB with complete context
-@AI-Engineer optimize system  # Auto-creates optimization PRB with behavioral patterns
-"Fix the login bug"          # Auto-detects work intent, creates bug fix PRB
-"Setup CI/CD pipeline"       # Auto-creates infrastructure PRB with DevOps specialist
+# Natural Work Requests → Automatic AgentTask Creation → Subagent Execution
+@PM Build a [project]         # Auto-creates project setup AgentTasks with specialist assignments
+@Developer Implement auth     # Auto-generates implementation AgentTask with complete context
+@AI-Engineer optimize system  # Auto-creates optimization AgentTask with behavioral patterns
+"Fix the login bug"          # Auto-detects work intent, creates bug fix AgentTask
+"Setup CI/CD pipeline"       # Auto-creates infrastructure AgentTask with DevOps specialist
 ```
 
 **Intelligent Classification:**
-- **Work Triggers** (Auto-PRB): implement, create, build, fix, deploy, configure, setup
-- **Information Requests** (No PRB): show, explain, what is, status, how does
+- **Work Triggers** (Auto-AgentTask): implement, create, build, fix, deploy, configure, setup
+- **Information Requests** (No AgentTask): show, explain, what is, status, how does
 
 ### Enhanced Automation Features
 - **Context Awareness**: Auto-detects project type (CODE/AI-AGENTIC/HYBRID) and adjusts patterns
 - **Dependency Analysis**: Auto-identifies prerequisite work and creates sequential PRBs
-- **Size Management**: Auto-breakdown of complex work into multiple ≤15 point PRBs
+- **Size Management**: Auto-breakdown of complex work into multiple ≤15 point AgentTasks
 - **Role Assignment**: Auto-selects appropriate specialists based on work type and technology domain
-- **Memory Integration**: Auto-searches applicable patterns and embeds learnings in PRBs
+- **Memory Integration**: Auto-searches applicable patterns and embeds learnings in AgentTasks
 
 ## Essential Commands (Lean System)
 
@@ -163,9 +170,9 @@ stories/
 ```
 
 **Everything else is automatic:**
-- PRB generation happens on work detection with complete automation
+- AgentTask generation happens on work detection with complete automation
 - Specialist creation via technology domain analysis
-- Memory storage during PRB execution  
+- Memory storage during AgentTask execution
 - Story management through @PM natural language
 
 ## MCP Server Integration
@@ -249,7 +256,7 @@ make install MCP_CONFIG=./config/mcps.json
 
 ```yaml
 # Tell system where YOUR files are
-prb_configuration:
+agenttask_configuration:
   best_practices_paths:
     - "docs/standards/"        # Your location
     - "engineering/patterns/"  # Your location
@@ -265,7 +272,7 @@ memory_configuration:
   external_path: "~/claude-memory"    # External memory location
   # Or use project-local (default): "./memory/"
 
-# Workflow configuration - customize per PRB size
+# Workflow configuration - customize per AgentTask size
 workflow_settings:
   nano:
     version_bump: false           # No version changes for trivial fixes
@@ -278,7 +285,7 @@ workflow_settings:
     pr_required: false          # Direct commit allowed
   medium:
     version_bump: true          # Minor version bumps for features
-    version_type: "minor"       
+    version_type: "minor"
     changelog_required: true
     pr_required: true           # Require pull request review
     merge_strategy: "feature_branch"
@@ -327,7 +334,7 @@ memory_configuration:
 Control how the system handles different PRB sizes with fine-grained workflow settings:
 
 ### Per-Size Configuration
-The system automatically applies different workflows based on PRB complexity:
+The system automatically applies different workflows based on AgentTask complexity:
 
 - **Nano (0-2 points)**: Trivial fixes with minimal process overhead
 - **Tiny (3-5 points)**: Small changes with basic versioning and documentation
@@ -352,7 +359,7 @@ When running `/icc-init-system`, the system:
 - Checks if workflow_settings exist in your CLAUDE.md
 - Creates sensible defaults if missing
 - Allows full customization per project needs
-- Applies settings automatically during PRB execution
+- Applies settings automatically during AgentTask execution
 
 ## Directory Structure
 
@@ -361,12 +368,12 @@ your-project/
 ├── CLAUDE.md                  # Your config
 ├── docs/                      # Your docs (anywhere)
 ├── src/                       # Your code
-├── stories/                   # User stories for PRB generation
+├── stories/                   # User stories for AgentTask generation
 │   └── drafts/                # Work-in-progress stories
 ├── memory/                    # Version-controlled learnings (default)
-└── prbs/                      # Version-controlled PRBs
+└── agenttasks/                # Version-controlled AgentTasks
     ├── ready/                 # Ready to execute
-    └── completed/             # Executed PRBs
+    └── completed/             # Executed AgentTasks
 ```
 
 Work in YOUR structure - system adapts!
@@ -380,20 +387,21 @@ Work in YOUR structure - system adapts!
 - [Virtual Team Guide](docs/virtual-team-guide.md) - Meet the 14+ agent roles and dynamic specialist creation
 
 ### Core System Guides
-- [PRB System Guide](docs/prb-system-guide.md) - How PRBs work with agent coordination
+- [AgentTask System Guide](docs/agenttask-system-guide.md) - How AgentTasks work with agent coordination
 - [Configuration Guide](docs/configuration-guide.md) - Complete configuration reference
 - [Commands Reference](docs/commands-reference.md) - All commands and agent interactions explained
+- [Hook System Guide](docs/hook-system-guide.md) - Behavioral enforcement and hook architecture
 
 ### Advanced Features
-- **[Template Extensions Guide](docs/template-extensions.md)** - Customize PRB templates without copying entire files
+- **[Template Extensions Guide](docs/template-extensions.md)** - Customize AgentTask templates without copying entire files
 - **[MCP Integration Guide](docs/mcp-integration.md)** - Connect with external systems (GitHub, databases, etc.)
-- [PRB Templates Guide](docs/prb-templates-guide.md) - Deep dive into PRB template system
+- [AgentTask Templates Guide](docs/agenttask-templates-guide.md) - Deep dive into AgentTask template system
 - [Best Practices Guide](docs/best-practices-guide.md) - Proven patterns and methodologies
 
 ### Quick Examples
-**Template Extensions** - Add project-specific requirements to any PRB:
+**Template Extensions** - Add project-specific requirements to any AgentTask:
 ```yaml
-# prb-extensions.yaml
+# agenttask-extensions.yaml
 all:
   requirements:
     processual:
@@ -417,10 +425,10 @@ mcp_integrations:
       database_url: "${NEO4J_URI}"
 ```
 
-## Why PRBs with Agents?
+## Why AgentTasks with Agents?
 
 - **No workflow interruptions** - Single-pass multi-agent execution
-- **Token-optimized** - Load only what each agent needs  
+- **Token-optimized** - Load only what each agent needs
 - **Project-adaptive** - Agent team respects YOUR structure
 - **Truly autonomous** - Agent specialists have full context and coordination
 - **Predictable** - Same input → Same quality multi-agent output
