@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0-mock",
+  "intents": {
+    "research": {
+      "allowed_tools": ["Read", "Grep", "Glob", "WebSearch", "Bash"],
+      "blocked_tools": ["Edit", "Write", "MultiEdit"],
+      "parameter_patterns": {
+        "allowed": ["^/.*\\.(md|txt|json|js)$"],
+        "blocked": ["\\b(rm|delete)\\b"]
+      },
+      "path_patterns": {
+        "allowed": ["^/test/.*$"],
+        "blocked": ["^/secret/.*$"]
+      },
+      "enforcement": "allow"
+    },
+    "qa": {
+      "allowed_tools": ["Read", "Grep"],
+      "blocked_tools": ["Edit", "Write", "MultiEdit", "Bash"],
+      "parameter_patterns": {
+        "allowed": ["\\b(what|how|why)\\b"],
+        "blocked": ["\\b(fix|change)\\b"]
+      },
+      "path_patterns": {
+        "allowed": ["^/docs/.*$"],
+        "blocked": ["^/src/.*$"]
+      },
+      "enforcement": "allow"
+    },
+    "planning": {
+      "allowed_tools": ["Read", "Write"],
+      "blocked_tools": ["Edit", "MultiEdit"],
+      "parameter_patterns": {
+        "allowed": ["\\b(plan|design)\\b"],
+        "blocked": ["\\b(implement)\\b"]
+      },
+      "path_patterns": {
+        "allowed": ["^/.*/prbs/.*$"],
+        "blocked": ["^/.*/src/.*$"]
+      },
+      "enforcement": "allow"
+    },
+    "work": {
+      "allowed_tools": [],
+      "blocked_tools": ["Edit", "Write", "MultiEdit", "Bash"],
+      "parameter_patterns": {
+        "allowed": [],
+        "blocked": [".*"]
+      },
+      "path_patterns": {
+        "allowed": [],
+        "blocked": [".*"]
+      },
+      "enforcement": "require_prb_context"
+    }
+  },
+  "defaults": {
+    "enforcement": "warn",
+    "unknown_intent": "research"
+  },
+  "overrides": {
+    "debug_mode": false,
+    "strict_mode": true
+  }
+}

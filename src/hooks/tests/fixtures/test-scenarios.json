@@ -1,0 +1,349 @@
+{
+  "research_scenarios": [
+    {
+      "name": "Reading project files",
+      "tool": "Read",
+      "parameters": { "file_path": "/project/src/main.js" },
+      "context": "Let me examine the main entry point to understand the application structure",
+      "expected_intent": "research",
+      "expected_confidence_min": 0.6,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Searching for patterns",
+      "tool": "Grep",
+      "parameters": { "pattern": "function.*authenticate", "path": "/project/src" },
+      "context": "Search for authentication functions to understand the current implementation",
+      "expected_intent": "research",
+      "expected_confidence_min": 0.7,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Finding files by pattern",
+      "tool": "Glob", 
+      "parameters": { "pattern": "**/*.test.js" },
+      "context": "Find all test files to understand the testing structure",
+      "expected_intent": "research",
+      "expected_confidence_min": 0.6,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Read-only bash commands",
+      "tool": "Bash",
+      "parameters": { "command": "ls -la /project/src" },
+      "context": "List source files to understand project organization",
+      "expected_intent": "research", 
+      "expected_confidence_min": 0.7,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "System information gathering",
+      "tool": "Bash",
+      "parameters": { "command": "ps aux | grep node" },
+      "context": "Check running Node.js processes",
+      "expected_intent": "research",
+      "expected_confidence_min": 0.6,
+      "expected_decision": "allow"
+    }
+  ],
+  
+  "qa_scenarios": [
+    {
+      "name": "API documentation question",
+      "tool": "Read",
+      "parameters": { "file_path": "/docs/api.md" },
+      "context": "What does this API endpoint do and how should I use it?",
+      "expected_intent": "qa",
+      "expected_confidence_min": 0.4,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Code explanation request",
+      "tool": "Grep",
+      "parameters": { "pattern": "class.*User" },
+      "context": "How is the User class implemented and what methods does it have?",
+      "expected_intent": "qa",
+      "expected_confidence_min": 0.5,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Configuration explanation",
+      "tool": "Read",
+      "parameters": { "file_path": "/config/database.json" },
+      "context": "Can you explain how this database configuration works?",
+      "expected_intent": "qa",
+      "expected_confidence_min": 0.6,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Architecture question",
+      "tool": "Read",
+      "parameters": { "file_path": "/docs/architecture.md" },
+      "context": "Why was this architectural pattern chosen for the project?",
+      "expected_intent": "qa",
+      "expected_confidence_min": 0.5,
+      "expected_decision": "allow"
+    }
+  ],
+  
+  "planning_scenarios": [
+    {
+      "name": "Creating PRB document",
+      "tool": "Write",
+      "parameters": { "file_path": "/prbs/ready/user-auth.prb.yaml" },
+      "context": "@PM create PRB for user authentication system implementation",
+      "expected_intent": "planning",
+      "expected_confidence_min": 0.6,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "User story creation",
+      "tool": "Write",
+      "parameters": { "file_path": "/stories/user-registration.md" },
+      "context": "Create user story for user registration and onboarding flow",
+      "expected_intent": "planning",
+      "expected_confidence_min": 0.5,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Architecture planning document",
+      "tool": "Write",
+      "parameters": { "file_path": "/docs/api-design.md" },
+      "context": "@Architect document the API design decisions and patterns",
+      "expected_intent": "planning",
+      "expected_confidence_min": 0.6,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Design discussion with roles",
+      "tool": "Read",
+      "parameters": { "file_path": "/docs/system-requirements.md" },
+      "context": "@Architect should we use microservices or monolithic approach?",
+      "expected_intent": "planning",
+      "expected_confidence_min": 0.4,
+      "expected_decision": "allow"
+    }
+  ],
+  
+  "work_scenarios": [
+    {
+      "name": "Code implementation",
+      "tool": "Edit",
+      "parameters": { 
+        "file_path": "/src/auth/authentication.js",
+        "old_string": "// TODO: implement authentication",
+        "new_string": "function authenticate(user, password) { return verifyCredentials(user, password); }"
+      },
+      "context": "Implement user authentication functionality",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.7,
+      "expected_decision": "require_prb"
+    },
+    {
+      "name": "Bug fix implementation",
+      "tool": "Edit",
+      "parameters": {
+        "file_path": "/src/utils/validation.js",
+        "old_string": "if (email.includes('@'))",
+        "new_string": "if (email.includes('@') && email.includes('.'))"
+      },
+      "context": "Fix email validation bug that's missing domain check",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.8,
+      "expected_decision": "require_prb"
+    },
+    {
+      "name": "New file creation with work intent",
+      "tool": "Write",
+      "parameters": {
+        "file_path": "/src/components/LoginForm.js",
+        "content": "import React from 'react';\n\nexport default function LoginForm() {\n  return <div>Login Form</div>;\n}"
+      },
+      "context": "Create new login form component for the authentication system",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.6,
+      "expected_decision": "require_prb"
+    },
+    {
+      "name": "Configuration file modification",
+      "tool": "Edit",
+      "parameters": {
+        "file_path": "/config/database.json",
+        "old_string": "\"host\": \"localhost\"",
+        "new_string": "\"host\": \"production-db.example.com\""
+      },
+      "context": "Update database configuration for production deployment",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.6,
+      "expected_decision": "require_prb"
+    },
+    {
+      "name": "System command execution",
+      "tool": "Bash",
+      "parameters": { "command": "npm install express-validator" },
+      "context": "Install validation middleware for the API",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.7,
+      "expected_decision": "require_prb"
+    },
+    {
+      "name": "Direct work intent language",
+      "tool": "Edit",
+      "parameters": {
+        "file_path": "/src/api/routes.js",
+        "old_string": "// placeholder route",
+        "new_string": "app.get('/api/users', getUserList);"
+      },
+      "context": "Let me fix this API endpoint to properly handle user requests",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.8,
+      "expected_decision": "require_prb"
+    },
+    {
+      "name": "Role-based work assignment",
+      "tool": "MultiEdit",
+      "parameters": {
+        "file_path": "/src/services/auth.js",
+        "edits": [
+          {
+            "old_string": "// TODO: OAuth integration",
+            "new_string": "const oauthProvider = require('./oauth-provider');"
+          }
+        ]
+      },
+      "context": "@Developer implement OAuth integration for third-party authentication",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.8,
+      "expected_decision": "require_prb"
+    }
+  ],
+  
+  "edge_cases": [
+    {
+      "name": "Ambiguous read with work context",
+      "tool": "Read",
+      "parameters": { "file_path": "/src/broken-auth.js" },
+      "context": "I need to fix this authentication file that has security issues",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.4,
+      "expected_decision": "require_prb"
+    },
+    {
+      "name": "Question about potential modification",
+      "tool": "Read", 
+      "parameters": { "file_path": "/src/auth.js" },
+      "context": "Should I modify this authentication method to support OAuth?",
+      "expected_intent": "qa",
+      "expected_confidence_min": 0.4,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Planning with implementation mention",
+      "tool": "Write",
+      "parameters": { "file_path": "/docs/implementation-plan.md" },
+      "context": "Create detailed implementation plan for the user management system",
+      "expected_intent": "planning",
+      "expected_confidence_min": 0.5,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Research with work-like file path",
+      "tool": "Read",
+      "parameters": { "file_path": "/src/critical-system.js" },
+      "context": "Understand how the critical system module works before planning changes",
+      "expected_intent": "research",
+      "expected_confidence_min": 0.5,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Mixed intent - research then work",
+      "tool": "Grep",
+      "parameters": { "pattern": "function.*validate" },
+      "context": "Find validation functions so I can fix the email validation bug",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.4,
+      "expected_decision": "require_prb"
+    }
+  ],
+  
+  "error_conditions": [
+    {
+      "name": "Null tool",
+      "tool": null,
+      "parameters": { "file_path": "/test.js" },
+      "context": "test context",
+      "expected_intent": "unknown",
+      "expected_confidence_min": 0.0,
+      "expected_decision": "warn"
+    },
+    {
+      "name": "Empty tool name",
+      "tool": "",
+      "parameters": { "file_path": "/test.js" },
+      "context": "test context", 
+      "expected_intent": "unknown",
+      "expected_confidence_min": 0.0,
+      "expected_decision": "warn"
+    },
+    {
+      "name": "Undefined parameters",
+      "tool": "Read",
+      "parameters": undefined,
+      "context": "test context",
+      "expected_intent": "research",
+      "expected_confidence_min": 0.3,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Null context",
+      "tool": "Read",
+      "parameters": { "file_path": "/test.js" },
+      "context": null,
+      "expected_intent": "research",
+      "expected_confidence_min": 0.3,
+      "expected_decision": "allow"
+    },
+    {
+      "name": "Very long context",
+      "tool": "Edit",
+      "parameters": { "file_path": "/test.js" },
+      "context": "Lorem ipsum ".repeat(1000) + " implement feature",
+      "expected_intent": "work",
+      "expected_confidence_min": 0.4,
+      "expected_decision": "require_prb"
+    }
+  ],
+  
+  "performance_scenarios": [
+    {
+      "name": "Complex tool with large parameters",
+      "tool": "MultiEdit",
+      "parameters": {
+        "file_path": "/src/large-system.js",
+        "edits": [
+          { "old_string": "old1", "new_string": "new1" },
+          { "old_string": "old2", "new_string": "new2" },
+          { "old_string": "old3", "new_string": "new3" }
+        ]
+      },
+      "context": "Refactor complex authentication system with OAuth, JWT tokens, role-based access control, session management, and security middleware integration",
+      "max_time_ms": 15
+    },
+    {
+      "name": "Large context analysis",
+      "tool": "Read",
+      "parameters": { "file_path": "/docs/comprehensive-api-documentation.md" },
+      "context": "What are all the main architectural patterns, design decisions, implementation details, security considerations, performance optimizations, scalability approaches, testing strategies, deployment procedures, monitoring setup, and maintenance guidelines described in this comprehensive technical documentation?",
+      "max_time_ms": 10
+    },
+    {
+      "name": "Complex bash command",
+      "tool": "Bash",
+      "parameters": { 
+        "command": "find /project -name '*.js' -type f -exec grep -l 'authenticate\\|authorize\\|login\\|session' {} \\; | head -20" 
+      },
+      "context": "Search through the entire project to find all authentication-related files and patterns",
+      "max_time_ms": 8
+    }
+  ]
+}

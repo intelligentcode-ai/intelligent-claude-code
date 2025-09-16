@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0-test",
+  "intents": {
+    "research": {
+      "allowed_tools": ["Read", "Grep", "Glob", "WebSearch", "WebFetch", "Bash"],
+      "blocked_tools": ["Edit", "Write", "MultiEdit", "NotebookEdit"],
+      "parameter_patterns": {
+        "allowed": ["^/.*\\.(md|txt|json|js|py)$"],
+        "blocked": ["\\b(rm|delete)\\b"]
+      },
+      "path_patterns": {
+        "allowed": ["^/test/.*$", "^/.*\\.(md|txt|json)$"],
+        "blocked": ["^/secret/.*$", "^/.*\\.env$"]
+      },
+      "enforcement": "allow"
+    },
+    "qa": {
+      "allowed_tools": ["Read", "Grep", "Glob"],
+      "blocked_tools": ["Edit", "Write", "MultiEdit", "NotebookEdit", "Bash"],
+      "parameter_patterns": {
+        "allowed": ["\\b(what|how|why|explain)\\b"],
+        "blocked": ["\\b(fix|change|update)\\b"]
+      },
+      "path_patterns": {
+        "allowed": ["^/docs/.*$", "^/.*\\.(md|txt)$"],
+        "blocked": ["^/src/.*\\.(js|py)$"]
+      },
+      "enforcement": "allow"
+    },
+    "planning": {
+      "allowed_tools": ["Read", "Grep", "Glob", "Write"],
+      "blocked_tools": ["Edit", "MultiEdit", "NotebookEdit"],
+      "parameter_patterns": {
+        "allowed": ["^/.*/prbs/.*\\.prb\\.yaml$", "\\b(plan|design)\\b"],
+        "blocked": ["\\b(implement|execute)\\b"]
+      },
+      "path_patterns": {
+        "allowed": ["^/.*/prbs/.*$", "^/.*/stories/.*$"],
+        "blocked": ["^/.*/src/.*\\.(js|py)$"]
+      },
+      "enforcement": "allow"
+    },
+    "work": {
+      "allowed_tools": [],
+      "blocked_tools": ["Edit", "Write", "MultiEdit", "NotebookEdit", "Bash"],
+      "parameter_patterns": {
+        "allowed": [],
+        "blocked": [".*"]
+      },
+      "path_patterns": {
+        "allowed": [],
+        "blocked": [".*"]
+      },
+      "enforcement": "require_prb_context"
+    }
+  },
+  "defaults": {
+    "enforcement": "warn",
+    "unknown_intent": "research"
+  },
+  "overrides": {
+    "debug_mode": true,
+    "strict_mode": true
+  }
+}

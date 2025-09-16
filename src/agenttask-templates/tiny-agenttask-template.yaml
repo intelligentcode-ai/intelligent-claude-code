@@ -1,9 +1,9 @@
-# Tiny PRB Template - Simple Changes (3-5 points)  
+# Tiny AgentTask Template - Simple Changes (3-5 points)
 # For single-file modifications and straightforward features
 
 git_privacy: [GIT_PRIVACY_SETTING]
-id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
-type: tiny-prb
+id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+type: tiny-agenttask
 complexity: simple
 priority: "[PRIORITY_LEVEL]"
 title: "[ROLE] [DESCRIPTION]"
@@ -132,7 +132,7 @@ validation_enforcement:
         - "Obvious changes"
         - "Too small for review"
         - "Self-evident implementation"
-      error_message: "❌ BLOCKED: SME review processes are mandatory for all PRBs regardless of size."
+      error_message: "❌ BLOCKED: SME review processes are mandatory for all AgentTasks regardless of size."
     
     documentation:
       - "CHANGELOG entry required for all changes"
@@ -205,7 +205,7 @@ mcp_operations:
     fallback: "file-based"
 
 # MCP Placeholder Resolution Notes
-# During PRB generation, resolve these placeholders:
+# During AgentTask generation, resolve these placeholders:
 # [MCP_MEMORY_ENABLED] → Check mcp_integrations.memory.enabled
 # [MCP_MEMORY_PROVIDER] → Get mcp_integrations.memory.provider
 # [MCP_ISSUE_ENABLED] → Check mcp_integrations.issue_tracking.enabled

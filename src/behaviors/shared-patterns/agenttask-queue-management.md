@@ -1,6 +1,6 @@
-# PRB Queue Management
+# AgentTask Queue Management
 
-**MANDATORY:** Track and manage PRB execution queue for parallel processing with capacity enforcement and conflict prevention.
+**MANDATORY:** Track and manage AgentTask execution queue for parallel processing with capacity enforcement and conflict prevention.
 
 ## Queue States
 
@@ -15,12 +15,12 @@
 ## Capacity Management
 
 **Dispatch:** Load `max_parallel` from L3 → If `current_running < max_parallel` dispatch, else queue with priority
-**Auto-Dispatch:** On completion → release locks, decrement counter, find eligible PRB (dependencies met + no conflicts), dispatch by priority (HIGH→MEDIUM→LOW, FIFO within)
+**Auto-Dispatch:** On completion → release locks, decrement counter, find eligible AgentTask (dependencies met + no conflicts), dispatch by priority (HIGH→MEDIUM→LOW, FIFO within)
 
 ## Conflict Prevention
 
-**File Locking:** Extract PRB files → check running PRB overlap → block if conflicts → lock during execution → release on completion
-**Conflict Types:** Same file/git/config/directory → queue second PRB until first completes
+**File Locking:** Extract AgentTask files → check running AgentTask overlap → block if conflicts → lock during execution → release on completion
+**Conflict Types:** Same file/git/config/directory → queue second AgentTask until first completes
 
 ## Dependency Resolution  
 
@@ -29,19 +29,19 @@
 
 ## Background Execution
 
-**Dispatch Pattern:** Use Task tool with general-purpose subagent and background execution, then store tracking information including PRB ID, agent handle, start time, and file locks
+**Dispatch Pattern:** Use Task tool with general-purpose subagent and background execution, then store tracking information including AgentTask ID, agent handle, start time, and file locks
 **Monitor:** Every 2-5min → check agent status → process completions/failures → cleanup resources → trigger next dispatch → update stats
 
 ## Queue Health & Recovery
 
 **Monitor:** Queue length, completion rates, failure patterns, capacity utilization
-**Recovery:** Failed PRBs (retry/manual), orphaned agents (cleanup), queue corruption (rebuild), graceful degradation (sequential fallback)
+**Recovery:** Failed AgentTasks (retry/manual), orphaned agents (cleanup), queue corruption (rebuild), graceful degradation (sequential fallback)
 
 ## Integration
 
-**PRB System:** Pre-check capacity/conflicts, track execution, update completion state
+**AgentTask System:** Pre-check capacity/conflicts, track execution, update completion state
 **L3 Autonomy:** Dynamic capacity loading, respect autonomy levels, continuous operation
 **Memory/Config:** State persistence, pattern learning, performance optimization, dynamic settings
 
 ---
-*PRB queue management for parallel execution with capacity enforcement and conflict prevention*
+*AgentTask queue management for parallel execution with capacity enforcement and conflict prevention*

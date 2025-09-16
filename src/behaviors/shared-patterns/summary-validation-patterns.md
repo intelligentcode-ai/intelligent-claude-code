@@ -26,7 +26,7 @@
 
 ### Incomplete Execution Detection
 **BLOCKED COMPLETION PATTERNS:**
-- Any step showing ❌ status blocks PRB completion
+- Any step showing ❌ status blocks AgentTask completion
 - Missing checklist items trigger completion validation failure
 - Partial implementations require clear documentation of remaining work
 - Git operations failures prevent completion until resolved
@@ -35,7 +35,7 @@
 **WHEN EXECUTION ISSUES DETECTED:**
 1. **Document Issue**: Specific details in summary
 2. **Assess Impact**: Determine if blocking or non-blocking
-3. **Create Follow-up**: Generate additional PRB if needed
+3. **Create Follow-up**: Generate additional AgentTask if needed
 4. **Update Status**: Reflect actual completion status
 5. **Provide Guidance**: Clear steps for resolution
 

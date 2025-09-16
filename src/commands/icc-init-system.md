@@ -36,10 +36,10 @@ Loading all behavioral patterns from installation/behaviors/:
   ✓ directory-structure.md - Project structure enforcement
   ✓ learning-team-automation.md - PRB learning and pattern capture
   ✓ naming-numbering-system.md - Work item naming and numbering standards  
-  ✓ prb-auto-trigger.md - Automatic PRB generation
-  ✓ prb-creation-system.md - PRB creation rules and validation
-  ✓ prb-enforcement.md - Mandatory PRB execution patterns
-  ✓ prb-execution.md - PRB lifecycle management
+  ✓ agenttask-auto-trigger.md - Automatic AgentTask generation
+  ✓ agenttask-creation-system.md - AgentTask creation rules and validation
+  ✓ agenttask-enforcement.md - Mandatory AgentTask execution patterns
+  ✓ agenttask-execution.md - AgentTask lifecycle management
   ✓ story-breakdown.md - PM story breakdown process
   ✓ sequential-thinking.md - Structured analysis patterns
   ✓ shared-patterns/ - Common behavioral patterns (25 loaded)

@@ -30,10 +30,10 @@
 ### Directory Scanning
 **EPIC/STORY:** Search `stories/` directory
 **BUG:** Search `bugs/` directory  
-**PRB:** Search `prbs/ready/` and `prbs/completed/` directories
+**AGENTTASK:** Search `agenttasks/ready/` and `agenttasks/completed/` directories
 
 ### Number Generation Process
-1. **Scope Determination**: Global (EPIC/STORY/BUG) vs Parent-scoped (PRB)
+1. **Scope Determination**: Global (EPIC/STORY/BUG) vs Parent-scoped (AGENTTASK)
 2. **Directory Scan**: Search configured directories for pattern matches
 3. **Number Extraction**: Extract highest number using regex patterns
 4. **Next Calculation**: Add 1, apply zero-padding (001 format)
@@ -66,7 +66,7 @@
 ## Integration
 
 ### With Directory Structure
-- Respect configured paths (`story_path`, `bug_path`, `prb_path`)
+- Respect configured paths (`story_path`, `bug_path`, `agenttask_path`)
 - Auto-create missing directories
 - Follow standard directory organization
 
