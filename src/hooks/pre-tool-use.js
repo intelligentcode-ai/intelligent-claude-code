@@ -28,9 +28,9 @@ class MemoryEnforcement {
   }
 
   /**
-   * Check if PRB creation is being attempted
+   * Check if AgentTask creation is being attempted
    */
-  isPRBCreation(tool, parameters) {
+  isAgentTaskCreation(tool, parameters) {
     if (tool !== 'Write' && tool !== 'MultiEdit') return false;
 
     const filePath = parameters.file_path || '';
@@ -98,17 +98,17 @@ class MemoryEnforcement {
    * Generate memory enforcement error message
    */
   generateMemoryRequirementError() {
-    return `🚫 MEMORY CONSULTATION REQUIRED BEFORE PRB CREATION
+    return `🚫 MEMORY CONSULTATION REQUIRED BEFORE AGENTTASK CREATION
 
-VIOLATION: Attempting to create PRB without recent memory search
-REQUIREMENT: Memory consultation must occur within 5 minutes before PRB creation
+VIOLATION: Attempting to create AgentTask without recent memory search
+REQUIREMENT: Memory consultation must occur within 5 minutes before AgentTask creation
 
-ARCHITECTURAL RULE: MEMORY-FIRST → PRB → AGENT EXECUTION
+ARCHITECTURAL RULE: MEMORY-FIRST → AGENTTASK → AGENT EXECUTION
 
 REQUIRED PROCESS:
 1. Search memory for relevant patterns: Read files in memory/ directory
 2. Apply learned patterns and best practices
-3. Then create PRB with memory-informed context
+3. Then create AgentTask with memory-informed context
 4. Deploy via Task tool to authorized agent
 
 MEMORY LOCATIONS TO SEARCH:
@@ -210,23 +210,23 @@ function generateErrorMessage(intent, tool, reason) {
   let specificMessage = '';
   switch (intent) {
     case 'work':
-      specificMessage = `Work intent detected using ${tool}. All implementation work must use PRB+agent pattern.`;
+      specificMessage = `Work intent detected using ${tool}. All implementation work must use AgentTask+agent pattern.`;
       break;
     case 'modification':
-      specificMessage = `File modification detected using ${tool}. Modifications require PRB creation and agent execution.`;
+      specificMessage = `File modification detected using ${tool}. Modifications require AgentTask creation and agent execution.`;
       break;
     case 'system':
-      specificMessage = `System operation detected using ${tool}. System changes require PRB authorization.`;
+      specificMessage = `System operation detected using ${tool}. System changes require AgentTask authorization.`;
       break;
     default:
       specificMessage = `Action blocked: ${reason}`;
   }
 
   const guidance = `
-ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
+ARCHITECTURAL RULE: ALL WORK → AGENTTASK → AGENT EXECUTION
 
 REQUIRED PROCESS:
-1. Create PRB using @Role pattern
+1. Create AgentTask using @Role pattern
 2. Deploy via Task tool to authorized agent
 3. Agent executes with full tool authorization
 
@@ -260,16 +260,16 @@ async function processHook(input) {
 
     const { tool, parameters = {}, context = "" } = input;
 
-    // MEMORY ENFORCEMENT: Check for PRB creation without memory search
-    if (memoryEnforcement.isPRBCreation(tool, parameters)) {
+    // MEMORY ENFORCEMENT: Check for AgentTask creation without memory search
+    if (memoryEnforcement.isAgentTaskCreation(tool, parameters)) {
       if (!memoryEnforcement.hasRecentMemorySearch()) {
         // Log memory violation
         await logger.logViolation({
           tool,
           intent: 'memory_violation',
-          reason: 'PRB creation without memory consultation',
+          reason: 'AgentTask creation without memory consultation',
           parameters: Object.keys(parameters),
-          context: 'PRB creation detected',
+          context: 'AgentTask creation detected',
           violation_type: 'memory_enforcement'
         });
 
@@ -279,20 +279,20 @@ async function processHook(input) {
           performance: Date.now() - startTime
         };
       } else {
-        // Log successful memory compliance and allow PRB creation
+        // Log successful memory compliance and allow AgentTask creation
         await logger.logViolation({
           tool,
           intent: 'memory_compliance',
-          reason: 'PRB creation with memory consultation',
+          reason: 'AgentTask creation with memory consultation',
           parameters: Object.keys(parameters),
           context: 'Memory requirement satisfied',
           violation_type: 'memory_compliance'
         });
 
-        // Allow PRB creation when memory requirement is satisfied
+        // Allow AgentTask creation when memory requirement is satisfied
         return {
           allowed: true,
-          message: 'PRB creation allowed with memory consultation',
+          message: 'AgentTask creation allowed with memory consultation',
           performance: Date.now() - startTime
         };
       }

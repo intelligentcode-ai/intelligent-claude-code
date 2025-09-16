@@ -1,6 +1,6 @@
 {
   "name": "intelligent-claude-code-hooks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pre-tool-use hook integration for intelligent-claude-code behavioral pattern enforcement",
   "main": "pre-tool-use.js",
   "scripts": {
