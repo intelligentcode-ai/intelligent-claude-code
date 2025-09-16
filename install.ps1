@@ -83,22 +83,22 @@ function Copy-DirectoryRecursive {
         [string]$Source,
         [string]$Destination
     )
-    
+
     if (-not (Test-Path $Source)) {
         Write-Warning "Source path does not exist: $Source"
         return
     }
-    
+
     # Create destination directory if it doesn't exist
     if (-not (Test-Path $Destination)) {
         New-Item -Path $Destination -ItemType Directory -Force | Out-Null
     }
-    
+
     # Copy all items recursively
     Get-ChildItem -Path $Source -Recurse | ForEach-Object {
         $RelativePath = $_.FullName.Substring($Source.Length + 1)
         $DestPath = Join-Path $Destination $RelativePath
-        
+
         if ($_.PSIsContainer) {
             if (-not (Test-Path $DestPath)) {
                 New-Item -Path $DestPath -ItemType Directory -Force | Out-Null
@@ -106,6 +106,59 @@ function Copy-DirectoryRecursive {
         } else {
             Copy-Item -Path $_.FullName -Destination $DestPath -Force
         }
+    }
+}
+
+function Install-HookSystem {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$InstallPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$SourceDir
+    )
+
+    Write-Host "Installing hook system..." -ForegroundColor Yellow
+
+    try {
+        # Create hooks directory structure
+        $HooksPath = Join-Path $InstallPath "hooks"
+        $LogsPath = Join-Path $InstallPath "logs"
+
+        $DirectoriesToCreate = @($HooksPath, $LogsPath)
+
+        foreach ($Dir in $DirectoriesToCreate) {
+            if (-not (Test-Path $Dir)) {
+                New-Item -Path $Dir -ItemType Directory -Force | Out-Null
+                Write-Host "  Created directory: $Dir" -ForegroundColor Green
+            }
+        }
+
+        # Copy all hook files from src/hooks/ to ~/.claude/hooks/
+        $SourceHooksPath = Join-Path $SourceDir "hooks"
+
+        if (Test-Path $SourceHooksPath) {
+            Write-Host "  Copying hook files recursively..." -ForegroundColor Gray
+
+            # Copy all files and subdirectories from source hooks to destination
+            Copy-DirectoryRecursive -Source $SourceHooksPath -Destination $HooksPath
+
+            # Get count of copied files for user feedback
+            $CopiedFiles = @(Get-ChildItem -Path $HooksPath -Recurse -File)
+            Write-Host "  Successfully copied $($CopiedFiles.Count) hook files" -ForegroundColor Green
+
+        } else {
+            Write-Warning "Source hooks directory not found: $SourceHooksPath"
+            return
+        }
+
+        Write-Host "✅ Hook system installation completed!" -ForegroundColor Green
+        Write-Host "  Hook files deployed to: $HooksPath" -ForegroundColor Cyan
+        Write-Host "  Logs directory created at: $LogsPath" -ForegroundColor Cyan
+
+    } catch {
+        Write-Error "Failed to install hook system: $($_.Exception.Message)"
+        Write-Host "Hook system installation encountered errors but continuing..." -ForegroundColor Yellow
     }
 }
 
@@ -127,13 +180,13 @@ function Install-IntelligentClaudeCode {
     
     # Copy source files
     Write-Host "Copying source files..." -ForegroundColor Yellow
-    
-    $DirectoriesToCopy = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "hooks", "utils")
-    
+
+    $DirectoriesToCopy = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "utils")
+
     foreach ($Dir in $DirectoriesToCopy) {
         $SourcePath = Join-Path $SourceDir $Dir
         $DestPath = Join-Path $Paths.InstallPath $Dir
-        
+
         if (Test-Path $SourcePath) {
             Write-Host "  Copying $Dir..." -ForegroundColor Gray
             Copy-DirectoryRecursive -Source $SourcePath -Destination $DestPath
@@ -141,6 +194,9 @@ function Install-IntelligentClaudeCode {
             Write-Warning "Source directory not found: $SourcePath"
         }
     }
+
+    # Deploy hook files to ~/.claude/hooks/
+    Install-HookSystem -InstallPath $Paths.InstallPath -SourceDir $SourceDir
     
     # Handle CLAUDE.md based on scope
     $ClaudemdPath = if ($Paths.Scope -eq "project") { 
@@ -255,8 +311,8 @@ function Uninstall-IntelligentClaudeCode {
         Write-Host "Conservative uninstall - preserving user data..." -ForegroundColor Yellow
         
         # Remove system directories but preserve user data
-        $SystemDirs = @("agents", "behaviors", "commands", "modes", "prb-templates", "utils")
-        
+        $SystemDirs = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "hooks", "utils")
+
         foreach ($Dir in $SystemDirs) {
             $DirPath = Join-Path $Paths.InstallPath $Dir
             if (Test-Path $DirPath) {
@@ -318,7 +374,8 @@ function Test-Installation {
             "$TestDir\.claude\agents\architect.md",
             "$TestDir\.claude\agents\developer.md",
             "$TestDir\.claude\agents\ai-engineer.md",
-            "$TestDir\.claude\prb-templates\medium-prb-template.yaml"
+            "$TestDir\.claude\agenttask-templates\medium-agenttask-template.yaml",
+            "$TestDir\.claude\hooks"
         )
         
         foreach ($Path in $TestPaths) {
@@ -332,7 +389,19 @@ function Test-Installation {
         if ($ClaudemdContent -notmatch [regex]::Escape("@~/.claude/modes/virtual-team.md")) {
             throw "FAIL: Import line not found in CLAUDE.md"
         }
-        
+
+        # Verify hook files were deployed
+        $HooksDir = "$TestDir\.claude\hooks"
+        if (-not (Test-Path $HooksDir)) {
+            throw "FAIL: Hooks directory not created: $HooksDir"
+        }
+
+        $HookFiles = @(Get-ChildItem -Path $HooksDir -Recurse -File)
+        if ($HookFiles.Count -eq 0) {
+            throw "FAIL: No hook files deployed to hooks directory"
+        }
+
+        Write-Host "  ✅ Hook system deployed with $($HookFiles.Count) files" -ForegroundColor Green
         Write-Host "✅ Installation tests passed!" -ForegroundColor Green
         
         Write-Host "Testing idempotency..." -ForegroundColor Yellow
@@ -345,7 +414,8 @@ function Test-Installation {
         $UninstallChecks = @(
             "$TestDir\.claude\modes",
             "$TestDir\.claude\behaviors",
-            "$TestDir\.claude\agents"
+            "$TestDir\.claude\agents",
+            "$TestDir\.claude\hooks"
         )
         
         foreach ($Path in $UninstallChecks) {
