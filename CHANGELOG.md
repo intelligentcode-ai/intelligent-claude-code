@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.16.0] - 2025-01-16
+
+### Enhanced
+- BUG-070-PRB-001: Integrated memory consultation into PRB generation flow
+- Enhanced prb-creation-system.md with mandatory memory-first approach and detailed SearchMemory integration
+- Updated prb-auto-trigger.md to enforce memory search before template loading with comprehensive pattern embedding
+- Strengthened memory-operations.md with detailed PRB integration process and validation rules
+- Added memory search validation and blocking patterns to prevent runtime memory lookups
+- Documented memory pattern embedding process for self-contained PRB execution
+- Implemented memory-first principle throughout PRB generation pipeline
+
 ## [7.15.10] - 2025-01-08
 
 ### Fixed

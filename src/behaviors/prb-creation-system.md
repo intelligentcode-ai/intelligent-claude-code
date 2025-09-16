@@ -70,7 +70,12 @@
 1. **Detection**: Real-time parsing with NLP pattern recognition
 2. **Intent Classification**: Work vs information classification
 3. **Context Assembly**: Complete project context loading
-4. **Memory Integration**: Auto-search memory for applicable patterns
+4. **Memory Integration**: MANDATORY auto-search memory for applicable patterns
+   - Parse work intent for keywords and context
+   - Search memory/[topic]/ directories using SearchMemory pattern
+   - Score patterns by keyword match + recency + context relevance
+   - Select top 2-3 patterns (max 1000 tokens) for PRB embedding
+   - EMBED patterns directly in PRB context - NO runtime lookups
 4b. **Best-Practices Integration**: Auto-search best-practices for relevant standards
 5. **Sequential Thinking**: ALWAYS apply sequential thinking with project context for ALL work requests
 6. **Complexity Calculation**: Enhanced scoring algorithm with sequential analysis
@@ -79,15 +84,34 @@
 9. **Template Loading**: Complete template structure loaded
 10. **Configuration Resolution**: Full config hierarchy with actual values
 11. **Placeholder Elimination**: Replace ALL placeholders with actual values
-12. **Context Embedding**: Complete project context embedded with sequential thinking results
-13. **Quality Validation**: ZERO placeholders, complete sections verified
+12. **Context Embedding**: Complete project context embedded with sequential thinking results AND memory patterns
+13. **Quality Validation**: ZERO placeholders, complete sections verified, memory patterns embedded
+
+### Memory-First Principle Integration
+
+**MANDATORY:** All PRB generation MUST implement memory-first approach:
+
+**Memory Search Process:**
+1. **Parse Work Intent**: Extract keywords, work type, and technical domains
+2. **Search Memory Directories**: Scan memory/[topic]/ using SearchMemory pattern
+3. **Pattern Scoring**: Score by keyword match + recency + context relevance + success rate
+4. **Pattern Selection**: Choose top 2-3 most relevant patterns (max 1000 tokens total)
+5. **Direct Embedding**: EMBED patterns in PRB context - NEVER runtime lookups
+6. **Learning Application**: Apply proven approaches from embedded patterns
+
+**Memory Integration Rules:**
+- **ALWAYS search first**: Memory search before any PRB generation
+- **EMBED patterns**: Include relevant learnings directly in PRB context
+- **NO runtime lookups**: All memory patterns embedded at creation time
+- **Self-contained PRBs**: Complete execution context with embedded patterns
+- **Learning application**: Reference and apply embedded patterns during execution
 
 ### Automatic Context Integration
 **PRBs AUTOMATICALLY INCLUDE:**
 - **Project Context**: System nature, project root, constraints from CLAUDE.md
 - **Configuration Values**: All relevant settings from config hierarchy
 - **Critical Files**: Relevant files with actual content samples and purposes
-- **Memory Patterns**: Applicable learnings and successful patterns
+- **Memory Patterns**: MANDATORY - Applicable learnings and successful patterns embedded
 - **Best-Practices**: Relevant standards, guidelines, and quality patterns
 - **User Requirements**: Clear requirements with success criteria and scope limits
 - **Role Assignment**: Appropriate specialist roles based on work type
@@ -101,9 +125,10 @@
 ### Creation (Main Agent)
 - Full configuration access
 - Template hierarchy access
-- Memory search capabilities
+- **MANDATORY memory search capabilities**: Access to all memory/[topic]/ directories
+- **SearchMemory pattern implementation**: Pattern scoring and selection
 - Complete project context
-- Placeholder resolution
+- Placeholder resolution with embedded memory patterns
 
 ### Execution (Subagent)
 - PRB implementation work
@@ -118,6 +143,8 @@
 **AUTOMATIC RECOVERY PATTERNS:**
 - **Work Detection Failure** → Re-analyze with enhanced pattern matching
 - **Context Incomplete** → Auto-gather missing project context and configuration
+- **Memory Search Failure** → Re-run SearchMemory with expanded keywords and topics
+- **Pattern Embedding Missing** → Force memory search and embed relevant patterns
 - **Wrong Template** → Recalculate complexity, auto-select correct template
 - **Size Violations** → Automatic logical breakdown into multiple ≤15 point PRBs
 - **Format Violations** → Auto-apply naming standards and compliance rules
@@ -129,6 +156,8 @@
 - Manual PRB without templates → "TEMPLATE REQUIRED: PRB creation without template FORBIDDEN"
 - Unresolved placeholders → "PLACEHOLDER UNRESOLVED: All placeholders must be resolved"
 - Runtime config dependencies → "RUNTIME LOOKUP FORBIDDEN: All config must be embedded"
+- Memory search skipped → "MEMORY SEARCH MANDATORY: All PRB generation must search memory first"
+- Runtime memory lookups → "RUNTIME MEMORY FORBIDDEN: All patterns must be embedded in PRB"
 
 ---
 *Comprehensive PRB and work item creation system*

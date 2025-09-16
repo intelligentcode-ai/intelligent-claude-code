@@ -52,11 +52,16 @@
 
 ### SearchMemory Pattern
 1. **Path Resolution**: Determine memory base path using the Memory Base Path Resolution pattern
-2. Parse query for keywords/context
-3. Check index for quick filtering
-4. Search within topic files in [memory_base]/[topic]/
-5. Score by: keyword match + recency + context match
-6. Return top matches for PRB embedding
+2. **Query Analysis**: Parse work intent for keywords, work type, technical domains, and context
+3. **Directory Scanning**: Check index for topic filtering, scan memory/[topic]/ directories
+4. **Pattern Matching**: Search within topic files for keyword and context matches
+5. **Pattern Scoring**: Score patterns by multiple factors:
+   - **Keyword match**: Direct term matches (work type, technical domains, problem patterns)
+   - **Recency**: Newer patterns weighted higher for current relevance
+   - **Context relevance**: Similar problem/solution pattern matches
+   - **Success indicators**: Patterns from successful PRB executions
+6. **Pattern Selection**: Return top 2-3 most relevant patterns (max 1000 tokens total)
+7. **PRB Embedding**: Patterns embedded directly in PRB context for self-contained execution
 
 ### LoadFromMemory Pattern
 1. **Path Resolution**: Determine memory base path
@@ -71,9 +76,27 @@
 - Keep: Most recent 5-10
 
 ## PRB Integration
-- Embed 2-3 most relevant (max 1000 tokens)
-- Selection: topic match + recency
-- No runtime lookups needed
+
+### Memory-First PRB Generation
+**MANDATORY:** All PRB creation MUST implement memory-first approach:
+- **Search BEFORE template loading**: Memory search happens before template selection
+- **Embed patterns directly**: Include 2-3 most relevant patterns in PRB context
+- **Token limit**: Maximum 1000 tokens from memory patterns total
+- **Selection criteria**: Topic match + recency + context relevance + success indicators
+- **Self-contained execution**: NO runtime memory lookups during PRB execution
+
+### Memory Pattern Embedding Process
+1. **SearchMemory execution**: Run during PRB creation in main agent context
+2. **Pattern extraction**: Extract relevant learning entries from memory files
+3. **Context integration**: Include patterns in PRB complete_context section
+4. **Validation**: Ensure no `[MEMORY_SEARCH:topic]` placeholders remain
+5. **Execution reference**: Agents apply embedded patterns during PRB execution
+
+### Memory Application in PRB Execution
+- **Pattern reference**: "Based on embedded memory pattern: [pattern summary]"
+- **Learning application**: Apply proven approaches from embedded context
+- **Issue prevention**: Avoid known problems documented in embedded patterns
+- **Success replication**: Follow successful patterns from embedded learnings
 
 ---
 *Memory operations patterns for intelligent-claude-code system*

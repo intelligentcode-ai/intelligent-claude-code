@@ -54,7 +54,12 @@
 
 **PRB Generation Steps:**
 1. **Detect** work requirement
-2. **Search** memory for patterns (MANDATORY)
+2. **Search Memory** for patterns (MANDATORY MEMORY-FIRST APPROACH)
+   - Parse work intent for keywords: work type, technical domains, problem patterns
+   - Search memory/[topic]/ directories using SearchMemory pattern
+   - Score patterns by: keyword match + recency + context relevance + success indicators
+   - Select top 2-3 most relevant patterns (max 1000 tokens total)
+   - EMBED patterns directly in PRB context - NO runtime memory lookups
 3. **Search** best-practices for applicable patterns (MANDATORY)
 4. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
 5. **Sequential Analysis** ALWAYS (structured thinking with project context for ALL work)
@@ -64,8 +69,8 @@
 9. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
 10. **Resolve Configuration Placeholders** with actual config values
 11. **Resolve Workflow Placeholders** with actual workflow_settings values
-12. **Embed Complete Context** in PRB with resolved workflow instructions and best-practices
-13. **Validate NO Placeholders** remain (including workflow placeholders)
+12. **Embed Complete Context** in PRB with resolved workflow instructions, best-practices, AND memory patterns
+13. **Validate NO Placeholders** remain (including workflow placeholders, memory search patterns)
 14. **Generate** compliant name and create PRB
 15. **Execute** via subagent
 
@@ -103,6 +108,34 @@
 - large-prb-template.yaml → workflow_settings.large.*
 - mega-prb-template.yaml → workflow_settings.mega.*
 
+## Memory-First PRB Generation
+
+**MANDATORY:** All PRB generation MUST implement memory-first approach before template loading:
+
+### Memory Search Process
+1. **Work Intent Analysis**: Parse user request for work type, technical domains, and context
+2. **Memory Directory Search**: Scan memory/[topic]/ directories for relevant patterns
+3. **Pattern Scoring**: Evaluate patterns using SearchMemory scoring algorithm:
+   - Keyword match score (work type, technical terms, domain match)
+   - Recency score (newer patterns weighted higher)
+   - Context relevance score (similar problem/solution patterns)
+   - Success indicators (proven patterns from successful PRBs)
+4. **Pattern Selection**: Choose top 2-3 most relevant patterns (max 1000 tokens)
+5. **Direct Embedding**: Include patterns in PRB context - NEVER runtime lookups
+
+### Memory Integration Rules
+- **ALWAYS search memory BEFORE template loading**
+- **EMBED patterns directly in PRB context**
+- **NO runtime memory lookups during execution**
+- **Self-contained PRBs with embedded learning context**
+- **Apply memory patterns during PRB execution**
+
+### Memory Search Validation
+- Verify memory search completed before template selection
+- Confirm relevant patterns embedded in PRB context
+- Check NO `[MEMORY_SEARCH:topic]` placeholders remain
+- Validate memory patterns included in context embedding
+
 ## Context Requirements
 
 **MANDATORY before generation:**
@@ -111,6 +144,7 @@
 - Configuration (actual values)
 - Critical files (with samples)
 - User requirements (clear)
+- **Memory patterns (embedded from search)**
 
 ## Work Detection Patterns
 
