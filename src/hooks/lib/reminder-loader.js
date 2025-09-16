@@ -21,7 +21,7 @@ class ReminderLoader {
    * Load reminders from multiple locations with priority order:
    * 1. Project-local: .claude/hooks/reminders.json (highest priority)
    * 2. User-global: ~/.claude/hooks/reminders.json (medium priority)
-   * 3. System default: ~/.claude/hooks/lib/reminders.json (fallback)
+   * 3. System default: same directory as this loader (fallback)
    */
   _loadReminders() {
     const reminderPaths = this._getReminderPaths();
@@ -51,21 +51,95 @@ class ReminderLoader {
    */
   _getReminderPaths() {
     const homeDir = os.homedir();
+    const projectDir = this._detectProjectDirectory();
+
+    const paths = [];
+
+    // 1. Project-local (highest priority) - only if we can detect project directory
+    if (projectDir) {
+      paths.push(path.join(projectDir, '.claude', 'hooks', 'reminders.json'));
+    }
+
+    // 2. User-global (medium priority)
+    paths.push(path.join(homeDir, '.claude', 'hooks', 'reminders.json'));
+
+    // 3. System default (installed location - fallback)
+    paths.push(path.join(__dirname, 'reminders.json'));
+
+    return paths;
+  }
+
+  /**
+   * Detect the actual project directory when running from hook context
+   * When hooks run from Claude Code, process.cwd() points to Claude's directory,
+   * not the user's project directory. We need to detect the actual project.
+   */
+  _detectProjectDirectory() {
+    // Strategy 1: Check environment variables that Claude Code might set
+    if (process.env.CLAUDE_PROJECT_ROOT) {
+      return process.env.CLAUDE_PROJECT_ROOT;
+    }
+
+    if (process.env.PWD) {
+      return process.env.PWD;
+    }
+
+    // Strategy 2: Check process.cwd() first (works when not in hook context)
     const currentDir = process.cwd();
+    if (this._isProjectDirectory(currentDir)) {
+      return currentDir;
+    }
 
-    return [
-      // 1. Project-local (highest priority)
-      path.join(currentDir, '.claude', 'hooks', 'reminders.json'),
+    // Strategy 3: Look for common project indicators in nearby directories
+    // Check parent directories for project markers
+    let checkDir = currentDir;
+    for (let i = 0; i < 5; i++) {
+      if (this._isProjectDirectory(checkDir)) {
+        return checkDir;
+      }
+      const parentDir = path.dirname(checkDir);
+      if (parentDir === checkDir) break; // Reached root
+      checkDir = parentDir;
+    }
 
-      // 2. User-global (medium priority)
-      path.join(homeDir, '.claude', 'hooks', 'reminders.json'),
+    // Strategy 4: If we're in ~/.claude/hooks/, the project might be in a common location
+    if (currentDir.includes('.claude/hooks')) {
+      // Could try to find project in common development directories, but this is risky
+      // Better to just return null and skip project-local configuration
+    }
 
-      // 3. System default (installed location - fallback)
-      path.join(__dirname, 'reminders.json'),
+    // Unable to detect project directory reliably
+    return null;
+  }
 
-      // 4. Alternative system location
-      path.join(homeDir, '.claude', 'hooks', 'lib', 'reminders.json')
-    ];
+  /**
+   * Check if a directory looks like a project directory
+   */
+  _isProjectDirectory(dir) {
+    try {
+      // Look for common project indicators
+      const indicators = [
+        'package.json',
+        '.git',
+        'Cargo.toml',
+        'pyproject.toml',
+        'go.mod',
+        'pom.xml',
+        'build.gradle',
+        'Makefile',
+        'CLAUDE.md',
+        'README.md'
+      ];
+
+      for (const indicator of indicators) {
+        if (fs.existsSync(path.join(dir, indicator))) {
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
   }
 
   /**
@@ -238,6 +312,7 @@ class ReminderLoader {
   getLoadingInfo() {
     return {
       loadedFrom: this.loadedFrom,
+      detectedProjectDir: this._detectProjectDirectory(),
       availablePaths: this._getReminderPaths(),
       reminderCount: this._getTotalReminderCount()
     };
