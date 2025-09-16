@@ -1,6 +1,6 @@
-# Intelligent Claude Code - Agent-Driven Development
+# Intelligent Claude Code - Virtual Development Team
 
-Transform Claude Code into an intelligent development team with 14+ specialized agent roles using Product Requirement Blueprints (PRBs) for predictable, autonomous execution.
+Transform Claude Code into an intelligent virtual development team with 14+ specialized roles using AgentTask execution system and behavioral hook enforcement for reliable, autonomous development.
 
 ## Quick Start (30 seconds)
 
