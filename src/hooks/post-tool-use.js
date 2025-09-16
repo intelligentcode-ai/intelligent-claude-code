@@ -351,54 +351,108 @@ async function processHook(input) {
 }
 
 /**
+ * Convert Claude Code hook format to internal hook format
+ */
+function convertClaudeCodeInput(claudeInput) {
+  // If input already has the expected format, use it as-is
+  if (claudeInput.tool && claudeInput.parameters !== undefined) {
+    return claudeInput;
+  }
+
+  // Handle Claude Code PostToolUse format
+  if (claudeInput.hook_event_name === 'PostToolUse' && claudeInput.tool_name && claudeInput.tool_result) {
+    return {
+      tool: claudeInput.tool_name,
+      parameters: claudeInput.tool_input || {},
+      result: claudeInput.tool_result,
+      context: {
+        session_id: claudeInput.session_id,
+        cwd: claudeInput.cwd,
+        transcript_path: claudeInput.transcript_path
+      }
+    };
+  }
+
+  // Handle legacy format or other formats - extract what we can
+  return {
+    tool: claudeInput.tool_name || claudeInput.tool || 'Unknown',
+    parameters: claudeInput.tool_input || claudeInput.parameters || {},
+    result: claudeInput.tool_result || claudeInput.result || {},
+    context: claudeInput.context || claudeInput
+  };
+}
+
+/**
  * Main hook execution
  */
-async function main() {
+function main() {
   try {
-    // Read JSON input from stdin
     let inputData = '';
 
-    // Handle stdin data
-    if (process.stdin.isTTY) {
-      // No piped input - this is normal for post-hooks, just exit
+    // Priority 1: Command line argument (for testing/debugging)
+    if (process.argv[2]) {
+      inputData = process.argv[2];
+    }
+    // Priority 2: Environment variable (for testing/debugging)
+    else if (process.env.HOOK_INPUT) {
+      inputData = process.env.HOOK_INPUT;
+    }
+    // Priority 3: Claude Code provides JSON via stdin (primary method)
+    else if (!process.stdin.isTTY) {
+      // Try to read from stdin synchronously
+      try {
+        const stdinBuffer = fs.readFileSync(0, 'utf8');
+        if (stdinBuffer && stdinBuffer.trim()) {
+          inputData = stdinBuffer;
+        }
+      } catch (error) {
+        // If synchronous read fails, fail open with minimal processing
+        console.log('Post-hook completed: No input data available, continuing normally');
+        process.exit(0);
+      }
+    } else {
+      // No input available - fail open for graceful handling
+      console.log('Post-hook completed: No input source available, continuing normally');
       process.exit(0);
     }
 
-    process.stdin.setEncoding('utf8');
-
-    for await (const chunk of process.stdin) {
-      inputData += chunk;
-    }
-
     if (!inputData.trim()) {
-      // No input is normal for post-hooks
+      // No input data - fail open gracefully
+      console.log('Post-hook completed: No input data provided, continuing normally');
       process.exit(0);
     }
 
     // Parse JSON input
-    let input;
+    let claudeInput;
     try {
-      input = JSON.parse(inputData);
+      claudeInput = JSON.parse(inputData);
     } catch (error) {
-      console.warn(`Post-hook JSON parse warning: ${error.message}`);
+      // JSON parse error - fail open gracefully
+      console.log(`Post-hook completed: JSON parse error, continuing normally (${error.message})`);
       process.exit(0);
     }
 
-    // Process the hook
-    const result = await processHook(input);
+    // Convert Claude Code format to internal format
+    const input = convertClaudeCodeInput(claudeInput);
 
-    // Check performance
-    if (result.performance > PERFORMANCE_THRESHOLD) {
-      console.warn(`Warning: Post-hook took ${result.performance}ms (threshold: ${PERFORMANCE_THRESHOLD}ms)`);
-    }
+    // Process the hook asynchronously
+    processHook(input).then(result => {
+      // Check performance
+      if (result.performance > PERFORMANCE_THRESHOLD) {
+        console.warn(`Warning: Post-hook took ${result.performance}ms (threshold: ${PERFORMANCE_THRESHOLD}ms)`);
+      }
 
-    // Output result - always success for post-hooks
-    console.log(result.message);
-    process.exit(0);
+      // Output result - always success for post-hooks
+      console.log(result.message);
+      process.exit(0);
+    }).catch(error => {
+      console.warn(`Post-hook warning: ${error.message}`);
+      process.exit(0); // Don't break Claude on post-hook errors
+    });
 
   } catch (error) {
-    console.warn(`Post-hook warning: ${error.message}`);
-    process.exit(0); // Don't break Claude on post-hook errors
+    console.warn(`Post-hook system error: ${error.message}`);
+    process.exit(0); // Fail open
   }
 }
 
@@ -418,4 +472,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { processHook, validateInput };
+module.exports = { processHook, validateInput, convertClaudeCodeInput };

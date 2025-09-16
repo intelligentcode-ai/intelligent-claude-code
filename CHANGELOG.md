@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.1] - 2025-01-16
+
+### Fixed
+- Comprehensive input handling for all hooks to gracefully handle missing input, JSON parse errors, and stdin issues
+- Applied convertClaudeCodeInput() function pattern to PostToolUse hook for consistent Claude Code JSON format handling
+- Enhanced fail-open philosophy across all hook types to prevent Claude Code crashes due to hook input problems
+- Improved hook system reliability with graceful failure handling when input problems occur
+
 ## [8.1.0] - 2025-01-16
 
 ### Added
