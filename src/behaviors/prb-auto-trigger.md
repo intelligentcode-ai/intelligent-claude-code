@@ -39,16 +39,18 @@
 - External APIs: 3pts each
 - Database/Security: 4-5pts
 
-**Template Selection:**
-| Score | Template |
-|-------|----------|
-| 0-2 | nano-prb-template.yaml |
-| 3-5 | tiny-prb-template.yaml |
-| 6-15 | medium-prb-template.yaml |
-| 16-30 | large-prb-template.yaml |
-| 30+ | mega-prb-template.yaml |
+**AGGRESSIVE BREAKDOWN ENFORCEMENT:**
+**MANDATORY:** Work ≥6 points MUST create STORY/BUG first, then break into nano/tiny PRBs ≤5 points each.
 
-**SIZE BREAKDOWN RULE:** Auto-breakdown PRBs if complexity > 15 points into multiple PRBs ≤15 points each.
+| Score | Action |
+|-------|--------|
+| 0-2 | Create nano PRB directly |
+| 3-5 | Create tiny PRB directly |
+| **6+** | **MANDATORY: Create STORY/BUG → Break into nano/tiny PRBs ≤5 points** |
+
+**BLOCKED TEMPLATES:** medium-prb-template.yaml, large-prb-template.yaml, mega-prb-template.yaml
+
+**SIZE ENFORCEMENT RULE:** ALL work ≥6 points becomes STORY/BUG first, NO direct PRB creation allowed.
 
 ## Template-First Generation Flow
 
@@ -67,10 +69,10 @@
    - Select top 2-3 most relevant patterns (max 1000 tokens total)
    - EMBED patterns directly in PRB context - NO runtime memory lookups
 4. **Search** best-practices for applicable patterns (MANDATORY)
-5. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
+5. **Score** complexity and enforce breakdown rule (nano/tiny direct, ≥6 points → STORY/BUG)
 6. **Sequential Analysis** ALWAYS (structured thinking with project context for ALL work)
-7. **Auto-breakdown** if complexity > 15 points
-8. **Load Template** from hierarchy
+7. **AGGRESSIVE BREAKDOWN** if complexity ≥6 points → FORCE STORY/BUG creation → Break into nano/tiny PRBs ≤5 points
+8. **Load Template** from hierarchy (nano/tiny only for PRBs)
 9. **Load Configuration** at generation time
 10. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
 11. **Resolve Configuration Placeholders** with actual config values
@@ -107,12 +109,12 @@
 - Include EXPLICIT PR creation commands: `gh pr create --title "[PR_ID]" --body "..."`
 - Add complete feature branch workflow when merge_strategy="feature_branch"
 
-**Size to Settings Mapping:**
+**Size to Settings Mapping (RESTRICTED TO NANO/TINY ONLY):**
 - nano-prb-template.yaml → workflow_settings.nano.*
 - tiny-prb-template.yaml → workflow_settings.tiny.*
-- medium-prb-template.yaml → workflow_settings.medium.*
-- large-prb-template.yaml → workflow_settings.large.*
-- mega-prb-template.yaml → workflow_settings.mega.*
+- **BLOCKED:** medium-prb-template.yaml, large-prb-template.yaml, mega-prb-template.yaml
+
+**ENFORCEMENT:** Only nano/tiny PRBs permitted. Work ≥6 points becomes STORY/BUG first.
 
 ## PRB Deduplication Detection
 
@@ -238,5 +240,18 @@
 3. **Context Preservation**: Maintain conversation flow for planning
 4. **Work Enforcement**: Strong PRB creation for implementation tasks
 
+## Aggressive Breakdown Blocking Patterns
+
+**BLOCKED ACTIONS (IMMEDIATE STOP):**
+- Direct PRB creation ≥6 points → "BREAKDOWN REQUIRED: Work ≥6 points must become STORY/BUG first"
+- Medium/Large PRB requests → "TEMPLATE BLOCKED: Only nano/tiny PRBs permitted, create STORY first"
+- Bypass story creation → "STORY CREATION MANDATORY: All ≥6 point work requires STORY/BUG breakdown"
+- Manual large PRB creation → "LARGE PRB FORBIDDEN: Maximum PRB size is 5 points (tiny)"
+
+**ENFORCEMENT MESSAGES:**
+- "AGGRESSIVE BREAKDOWN: Converting 8-point work to STORY-XXX → nano/tiny PRBs"
+- "SIZE LIMIT ENFORCED: PRB creation blocked, story breakdown required"
+- "TEMPLATE RESTRICTION: Only nano-prb-template.yaml and tiny-prb-template.yaml permitted"
+
 ---
-*PRB auto-trigger with template-first generation and ASK vs DEMAND classification*
+*PRB auto-trigger with aggressive breakdown enforcement and nano/tiny restrictions*

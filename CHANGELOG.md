@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.20.0] - 2025-01-16
+
+### Enhanced
+- BUG-072-PRB-001: Implemented aggressive breakdown enforcement to ensure manageable task decomposition
+- Enforced MANDATORY story creation for all work ≥6 points before PRB generation
+- Limited PRB creation to nano (0-2 points) and tiny (3-5 points) templates only
+- Blocked medium, large, and mega PRB template usage to prevent oversized tasks
+- Updated prb-auto-trigger.md with aggressive breakdown rules and size restrictions
+- Enhanced prb-creation-system.md with story-first enforcement for ≥6 point work
+- Strengthened story-breakdown.md to ensure all PRBs are ≤5 points maximum
+- Added comprehensive blocking patterns to prevent bypass of breakdown requirements
+- Implemented enforcement messages to guide users through proper decomposition workflow
+- Created fail-safe mechanisms ensuring all complex work follows Story→tiny PRB pattern
+
 ## [7.19.0] - 2025-01-16
 
 ### Enhanced

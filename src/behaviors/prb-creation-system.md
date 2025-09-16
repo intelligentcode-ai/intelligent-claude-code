@@ -48,13 +48,13 @@
 
 **BLOCKED:** AGENTS CANNOT create work items due to isolated context limitations.
 
-### Template Requirements
-**MANDATORY:** Every PRB MUST use appropriate template from template hierarchy:
+### Template Requirements (AGGRESSIVE BREAKDOWN ENFORCED)
+**MANDATORY:** PRBs LIMITED to nano/tiny templates only. Work ≥6 points becomes STORY/BUG first:
 - `nano-prb-template.yaml` (0-2 points): Simple changes
 - `tiny-prb-template.yaml` (3-5 points): Single-file work
-- `medium-prb-template.yaml` (6-15 points): Multi-file features
-- `large-prb-template.yaml` (16-30 points): Complex coordination
-- `mega-prb-template.yaml` (30+ points): System-wide changes
+- **BLOCKED:** `medium-prb-template.yaml`, `large-prb-template.yaml`, `mega-prb-template.yaml`
+
+**ENFORCEMENT RULE:** Work ≥6 points → STORY/BUG creation → Break into nano/tiny PRBs ≤5 points each
 
 ### Placeholder Resolution
 **COMPLETE RESOLUTION REQUIRED:**
@@ -85,8 +85,8 @@
 5. **Best-Practices Integration**: Auto-search best-practices for relevant standards
 6. **Sequential Thinking**: ALWAYS apply sequential thinking with project context for ALL work requests
 7. **Complexity Calculation**: Enhanced scoring algorithm with sequential analysis
-8. **Auto-Breakdown**: If >15 points, intelligent decomposition with sequential thinking
-9. **Template Selection**: Complexity score mapping to optimal template
+8. **AGGRESSIVE BREAKDOWN**: If ≥6 points, FORCE STORY/BUG creation → Break into nano/tiny PRBs ≤5 points
+9. **Template Selection**: Restricted to nano/tiny templates only (medium/large/mega BLOCKED)
 10. **Template Loading**: Complete template structure loaded
 11. **Configuration Resolution**: Full config hierarchy with actual values
 12. **Placeholder Elimination**: Replace ALL placeholders with actual values
@@ -150,9 +150,10 @@
 - **User Requirements**: Clear requirements with success criteria and scope limits
 - **Role Assignment**: Appropriate specialist roles based on work type
 
-### Size Enforcement & Validation
-**AUTO-BREAKDOWN:** If complexity >15 points, automatically break into smaller PRBs ≤15 points each
-**MANDATORY CHECKS:** Template compliance, zero placeholders, complete context, naming format, parent reference
+### Size Enforcement & Validation (AGGRESSIVE BREAKDOWN)
+**MANDATORY BREAKDOWN:** If complexity ≥6 points, FORCE STORY/BUG creation → Break into nano/tiny PRBs ≤5 points each
+**BLOCKED:** Direct PRB creation ≥6 points, medium/large/mega templates
+**MANDATORY CHECKS:** Template compliance (nano/tiny only), zero placeholders, complete context, naming format, parent reference
 
 ## Creation vs Execution Separation
 
@@ -182,7 +183,7 @@
 - **Duplicate Check Missing** → Force PRB directory scan and similarity analysis
 - **Duplicate Creation Attempt** → Redirect to update-existing pattern with enhancement details
 - **Wrong Template** → Recalculate complexity, auto-select correct template
-- **Size Violations** → Automatic logical breakdown into multiple ≤15 point PRBs
+- **Size Violations** → FORCE STORY/BUG creation for ≥6 points, break into nano/tiny PRBs ≤5 points
 - **Format Violations** → Auto-apply naming standards and compliance rules
 - **Missing Dependencies** → Auto-identify and include prerequisite work items
 
@@ -196,6 +197,9 @@
 - Runtime memory lookups → "RUNTIME MEMORY FORBIDDEN: All patterns must be embedded in PRB"
 - Duplicate check skipped → "DUPLICATE CHECK MANDATORY: All PRB creation must check existing PRBs first"
 - Creating duplicate PRB → "DUPLICATE CREATION BLOCKED: Use update-existing pattern for similar work"
+- Direct PRB ≥6 points → "SIZE ENFORCEMENT BLOCKED: Work ≥6 points must become STORY/BUG first"
+- Medium/Large PRB creation → "TEMPLATE BLOCKED: Only nano/tiny PRBs permitted, create STORY first"
+- Bypass story creation → "STORY CREATION MANDATORY: Aggressive breakdown required for ≥6 points"
 
 ---
 *Comprehensive PRB and work item creation system*
