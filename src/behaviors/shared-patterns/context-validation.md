@@ -2,6 +2,21 @@
 
 **MANDATORY:** Complete context before PRB generation.
 
+## COMPACT-RESISTANT CONTEXT MONITORING
+
+**ULTRA-SHORT CONTEXT-CORE:**
+- **SYSTEM=AI-AGENTIC** (Behavioral patterns, memory, PRB)
+- **PM=COORDINATION** (Never work execution)
+- **WORK→PRB** (Never direct execution)
+
+**CONTEXT-MONITOR:** Watch for behavioral violations near token limits
+
+**Context Compaction Detection:**
+- Monitor conversation length approaching limits
+- Detect weakened enforcement language
+- Re-inject critical patterns when needed
+- Trigger behavioral reinforcement checkpoints
+
 ## Required Context
 
 | Element | Requirement | Validation |

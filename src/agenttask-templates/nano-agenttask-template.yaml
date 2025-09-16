@@ -1,11 +1,11 @@
-# Nano PRB Template - Trivial Changes (0-2 points)
+# Nano AgentTask Template - Trivial Changes (0-2 points)
 # For simple one-line fixes, typos, and minimal adjustments
 
 # === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
 git_privacy: [GIT_PRIVACY_SETTING]
-id: "[PARENT_ID]-PRB-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
+id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 title: "[ROLE] [DESCRIPTION]"
-type: nano-prb
+type: nano-agenttask
 complexity: trivial
 priority: normal
 
@@ -79,7 +79,7 @@ validation_enforcement:
         - "Skip git workflow"
         - "Direct push to main"
         - "No commit required"
-      error_message: "❌ BLOCKED: Git operations are mandatory for all PRBs. No bypass patterns allowed."
+      error_message: "❌ BLOCKED: Git operations are mandatory for all AgentTasks. No bypass patterns allowed."
     
     sme_review:
       - "Self-review checklist completion"
@@ -151,7 +151,7 @@ mcp_operations:
     fallback: "file-based"
 
 # MCP Placeholder Resolution Notes
-# During PRB generation, resolve these placeholders:
+# During AgentTask generation, resolve these placeholders:
 # [MCP_MEMORY_ENABLED] → Check mcp_integrations.memory.enabled
 # [MCP_MEMORY_PROVIDER] → Get mcp_integrations.memory.provider
 # [MCP_ISSUE_ENABLED] → Check mcp_integrations.issue_tracking.enabled

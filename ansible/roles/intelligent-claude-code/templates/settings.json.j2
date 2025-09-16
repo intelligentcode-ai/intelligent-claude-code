@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "*",
+      "hooks": [{
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/pre-tool-use.js",
+        "timeout": 15000,
+        "failureMode": "allow"
+      }]
+    }]
+  }
+}

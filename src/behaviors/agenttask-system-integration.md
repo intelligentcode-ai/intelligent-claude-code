@@ -1,6 +1,6 @@
-# PRB System Integration
+# AgentTask System Integration
 
-**MANDATORY:** Unified PRB system with breakdown, validation, execution, and adaptation patterns.
+**MANDATORY:** Unified AgentTask system with breakdown, validation, execution, and adaptation patterns.
 
 ## Imports
 @./shared-patterns/template-loading.md

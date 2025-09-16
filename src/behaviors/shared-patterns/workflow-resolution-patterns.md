@@ -7,7 +7,7 @@
 ### Workflow Settings Loading
 **STEPS:**
 1. **Load CLAUDE.md**: Read workflow_settings section from project configuration
-2. **Determine PRB Size**: Map complexity score to PRB size (nano/tiny/medium/large/mega)
+2. **Determine AgentTask Size**: Map complexity score to AgentTask size (nano/tiny/medium/large/mega)
 3. **Extract Size Settings**: Get workflow_settings.[size] object with all values
 4. **Resolve Placeholders**: Replace ALL workflow placeholders with actual values
 5. **Validate Resolution**: Ensure NO workflow placeholders remain unresolved
@@ -58,7 +58,7 @@ workflow_settings:
 
 ### PR Required Processing
 **WHEN pr_required=true:**
-1. **Replace [PR_ID]** → Actual PRB identifier (e.g., "STORY-001-PRB-001")
+1. **Replace [PR_ID]** → Actual AgentTask identifier (e.g., "STORY-001-AgentTask-001")
 2. **Replace [FEATURE_DESCRIPTION]** → Actual feature/work description
 3. **Include EXPLICIT PR Commands** → Complete git workflow instructions
 4. **Add PR Creation Steps** → Step-by-step PR creation with gh cli commands
@@ -85,8 +85,8 @@ workflow_settings:
 - Version bump instructions without specific version_type when version_bump=true
 
 ### Self-Contained Validation
-**REQUIRED IN PRB:**
-- Resolved workflow settings embedded in PRB context
+**REQUIRED IN AgentTask:**
+- Resolved workflow settings embedded in AgentTask context
 - Explicit git commands with actual values
 - Complete PR creation workflow when required
 - No runtime configuration lookups
@@ -96,7 +96,7 @@ workflow_settings:
 ```bash
 # Create feature branch pull request
 git push -u origin [BRANCH_NAME]
-gh pr create --title "[PRB_ID]: [FEATURE_DESCRIPTION]" --body "$(cat <<'EOF'
+gh pr create --title "[AgentTask_ID]: [FEATURE_DESCRIPTION]" --body "$(cat <<'EOF'
 ## Summary
 [FEATURE_OVERVIEW]
 
@@ -123,15 +123,15 @@ EOF
 - Scan template for workflow placeholders
 - Replace ALL placeholders with actual settings values
 
-### With PRB Generation Flow
+### With AgentTask Generation Flow
 - Insert workflow resolution step after configuration loading
-- Validate workflow resolution before PRB creation
+- Validate workflow resolution before AgentTask creation
 - Ensure complete context embedding with resolved workflow
 
 ### With Git Operations
 - Use resolved workflow settings for actual git operations
-- Follow exact workflow instructions embedded in PRB
+- Follow exact workflow instructions embedded in AgentTask
 - No interpretation required by executing agent
 
 ---
-*Workflow resolution patterns for self-contained PRB execution*
+*Workflow resolution patterns for self-contained AgentTask execution*

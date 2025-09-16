@@ -1,0 +1,54 @@
+{
+  "description": "Claude Code hook configuration for intelligent-claude-code behavioral enforcement",
+  "version": "1.0.0",
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "*",
+      "description": "Enforce behavioral patterns - block work in main scope, allow research/planning",
+      "hooks": [{
+        "type": "command",
+        "command": "node ~/.claude/hooks/pre-tool-use.js",
+        "timeout": 15000,
+        "failureMode": "allow"
+      }]
+    }]
+  },
+  "installation_instructions": {
+    "1": "Copy pre-tool-use.js to ~/.claude/hooks/pre-tool-use.js",
+    "2": "Copy lib/ directory to ~/.claude/hooks/lib/",
+    "3": "Copy config/ directory to ~/.claude/hooks/config/",
+    "4": "Add the hooks configuration to your Claude Code settings.json file",
+    "5": "Restart Claude Code to activate the hooks"
+  },
+  "hook_behavior": {
+    "allows": [
+      "Reading files and directories (Read, Grep, Glob)",
+      "Information gathering (Bash read-only commands)",
+      "Research and analysis activities",
+      "Q&A and explanation requests",
+      "Planning and PRB creation",
+      "Architecture discussions"
+    ],
+    "blocks": [
+      "File modifications (Edit, Write, MultiEdit)",
+      "Code implementation without PRB context",
+      "System changes without authorization",
+      "Work execution in main scope"
+    ],
+    "exit_codes": {
+      "0": "Allow action to proceed",
+      "2": "Block action with error message",
+      "1": "System error (fail open to avoid breaking Claude)"
+    }
+  },
+  "performance": {
+    "target": "<10ms total execution time",
+    "monitoring": "Performance warnings logged for optimization",
+    "timeout": "15 seconds maximum execution time"
+  },
+  "logging": {
+    "violations": "~/.claude/logs/violations-YYYY-MM-DD.log",
+    "format": "JSON lines with timestamp, tool, intent, confidence, reason",
+    "retention": "Logs rotate daily, manual cleanup required"
+  }
+}

@@ -2,6 +2,16 @@
 
 **MANDATORY:** Context-based behavioral decision system for consistent pattern following. Auto-correct violations.
 
+## COMPACT-RESISTANT DECISION CORE
+
+**ULTRA-SHORT DECISION-TREE:**
+- **WORK-INTENT** → PRB+AGENT (ALWAYS)
+- **@ROLE+WORK** → PRB+TASK-TOOL (IMMEDIATE) 
+- **QUESTION-ONLY** → MEMORY-FIRST+DIRECT (ALLOWED)
+- **PM-DETECTION** → COORDINATION-ONLY (BLOCKED FROM WORK)
+
+**DECISION-CHECKPOINT:** Re-inject decision rules at every behavioral choice
+
 ## Purpose
 
 **Token-efficient decision matrix** for resolving behavioral pattern inconsistencies and providing clear, consistent guidance for Claude's behavioral choices across all interaction patterns.
@@ -107,6 +117,8 @@
 ## Implementation Guidelines
 
 ### For Claude Behavioral Processing
+
+**CHECKPOINT-REMINDER:** WORK-INTENT→PRB+AGENT, PM→COORDINATION-ONLY, @ROLE+WORK→IMMEDIATE-PRB
 
 **DECISION SEQUENCE:**
 1. **Check Continuation Work**: Is this work continuation after PRB?

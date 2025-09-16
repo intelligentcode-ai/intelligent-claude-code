@@ -32,8 +32,8 @@
 - specialist_creation (true/false)
 - role_validation (true/false)
 
-### PRB Settings
-- prb_template_path (default: prb-templates)
+### AgentTask Settings
+- agenttask_template_path (default: agenttask-templates)
 - template_validation (true/false)
 - complexity_override (true/false)
 

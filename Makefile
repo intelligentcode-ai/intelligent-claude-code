@@ -84,8 +84,6 @@ install:
 	fi
 	@if [ -z "$(HOST)" ]; then \
 		echo "Installing locally..."; \
-		ANSIBLE_DISPLAY_SKIPPED_HOSTS=no \
-		ANSIBLE_DISPLAY_OK_HOSTS=no \
 		$(ANSIBLE_PLAYBOOK) ansible/install.yml \
 			-i localhost, \
 			-c local \
@@ -103,8 +101,6 @@ install:
 		if [ -n "$(PASS)" ]; then \
 			echo "Using password authentication..."; \
 			ANSIBLE_STDOUT_CALLBACK=actionable \
-			ANSIBLE_DISPLAY_SKIPPED_HOSTS=no \
-			ANSIBLE_DISPLAY_OK_HOSTS=no \
 			$(ANSIBLE_PLAYBOOK) ansible/install.yml \
 				-i "$(USER)@$(HOST)," \
 				-k -e "ansible_ssh_pass=$(PASS)" \
@@ -114,8 +110,6 @@ install:
 		else \
 			echo "Using SSH key authentication..."; \
 			ANSIBLE_STDOUT_CALLBACK=actionable \
-			ANSIBLE_DISPLAY_SKIPPED_HOSTS=no \
-			ANSIBLE_DISPLAY_OK_HOSTS=no \
 			$(ANSIBLE_PLAYBOOK) ansible/install.yml \
 				-i "$(USER)@$(HOST)," \
 				-e "ansible_ssh_private_key_file=$(KEY)" \
@@ -193,8 +187,6 @@ uninstall:
 	fi
 	@if [ -z "$(HOST)" ]; then \
 		echo "Uninstalling locally..."; \
-		ANSIBLE_DISPLAY_SKIPPED_HOSTS=no \
-		ANSIBLE_DISPLAY_OK_HOSTS=no \
 		$(ANSIBLE_PLAYBOOK) ansible/uninstall.yml \
 			-i localhost, \
 			-c local \
@@ -211,8 +203,6 @@ uninstall:
 		if [ -n "$(PASS)" ]; then \
 			echo "Using password authentication..."; \
 			ANSIBLE_STDOUT_CALLBACK=actionable \
-			ANSIBLE_DISPLAY_SKIPPED_HOSTS=no \
-			ANSIBLE_DISPLAY_OK_HOSTS=no \
 			$(ANSIBLE_PLAYBOOK) ansible/uninstall.yml \
 				-i "$(USER)@$(HOST)," \
 				-k -e "ansible_ssh_pass=$(PASS)" \
@@ -221,8 +211,6 @@ uninstall:
 		else \
 			echo "Using SSH key authentication..."; \
 			ANSIBLE_STDOUT_CALLBACK=actionable \
-			ANSIBLE_DISPLAY_SKIPPED_HOSTS=no \
-			ANSIBLE_DISPLAY_OK_HOSTS=no \
 			$(ANSIBLE_PLAYBOOK) ansible/uninstall.yml \
 				-i "$(USER)@$(HOST)," \
 				-e "ansible_ssh_private_key_file=$(KEY)" \

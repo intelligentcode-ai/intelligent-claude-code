@@ -82,7 +82,7 @@ Integrate project-specific best practices, coding standards, and architectural p
 - **Security Validation**: Apply security guidelines
 
 ### Context Embedding
-**PRB ENHANCEMENT:** Relevant practices embedded in PRBs:
+**AGENTTASK ENHANCEMENT:** Relevant practices embedded in AgentTasks:
 - **Applicable Standards**: Only relevant practices for work type
 - **Validation Criteria**: Specific quality gates and requirements
 - **Pattern References**: Links to detailed guidelines and examples

@@ -1,6 +1,16 @@
-# PRB Enforcement
+# AgentTask Enforcement
 
-**MANDATORY:** Use PRB system with templates for all work. Block direct execution.
+**MANDATORY:** Use AgentTask system with templates for all work. Block direct execution.
+
+## COMPACT-RESISTANT CORE ENFORCEMENT
+
+**ULTRA-SHORT REMINDERS (SURVIVE SUMMARIZATION):**
+- **PM=COORDINATION-ONLY** (NO WORK EXECUTION)
+- **WORK→PRB→AGENT** (MANDATORY PATTERN)
+- **MAIN≠WORK** (Main scope blocks work)
+- **TOOLS→AGENTS-ONLY** (Edit/Write/MultiEdit blocked in main)
+
+**CONTEXT-CHECKPOINT:** Re-inject core rules at every work detection point
 
 ## Imports
 @./shared-patterns/behavioral-decision-matrix.md
@@ -17,6 +27,9 @@
 **EXECUTION:** Subagent (PRB implementation, file ops, git)
 
 ### Detection & Blocking
+
+**CHECKPOINT-REMINDER:** PM=COORDINATION-ONLY, WORK→PRB→AGENT, NO-MAIN-EXECUTION
+
 **WORK INTENT (ULTRA-STRICT):** ALL action verbs including fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor, create, add, insert, generate, build, make, write, implement, develop, delete, remove, clean, purge, clear, eliminate, drop, deploy, install, configure, setup, run, execute, start, stop, restart, migrate, backup, restore, sync, merge, commit, push, pull
 
 **INFORMATION REQUEST:** Pure questions with what, how, why, should, can, will + @Role consultations WITHOUT work commitment
@@ -30,6 +43,9 @@
 ### Main Scope Work Blocking
 
 #### Main Scope Execution Prevention (NUCLEAR ENFORCEMENT)
+
+**CHECKPOINT-REMINDER:** MAIN≠WORK, PM=COORDINATION-ONLY, TOOLS→AGENTS-ONLY
+
 **MANDATORY:** ZERO TOLERANCE for main scope work execution. ALL work execution must follow PRB+agent pattern.
 
 **BLOCKED ACTIONS:** All work execution in main scope including:

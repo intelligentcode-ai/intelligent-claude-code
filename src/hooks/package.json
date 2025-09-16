@@ -1,0 +1,50 @@
+{
+  "name": "intelligent-claude-code-hooks",
+  "version": "1.0.0",
+  "description": "Pre-tool-use hook integration for intelligent-claude-code behavioral pattern enforcement",
+  "main": "pre-tool-use.js",
+  "scripts": {
+    "test": "jest --verbose --coverage --testPathPattern='tests/'",
+    "test:unit": "jest --testPathPattern='tests/unit/'",
+    "test:integration": "jest --testPathPattern='tests/integration/'",
+    "test:performance": "jest --testPathPattern='tests/performance/'",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --coverageDirectory=coverage",
+    "test:legacy": "node test-hook-integration.js",
+    "test:legacy:intent": "node lib/intent-classifier.test.js",
+    "test:legacy:config": "node lib/config-loader.test.js",
+    "test:all": "node run-all-tests.js",
+    "test:validate": "node validate-tests.js",
+    "benchmark": "node tests/performance/benchmark.js"
+  },
+  "keywords": [
+    "claude-code",
+    "hooks", 
+    "behavioral-patterns",
+    "intent-classification",
+    "enforcement"
+  ],
+  "author": "intelligent-claude-code",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "files": [
+    "pre-tool-use.js",
+    "lib/",
+    "config/",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/intelligentcode-ai/intelligent-claude-code"
+  },
+  "bugs": {
+    "url": "https://github.com/intelligentcode-ai/intelligent-claude-code/issues"
+  },
+  "homepage": "https://github.com/intelligentcode-ai/intelligent-claude-code#readme"
+}
