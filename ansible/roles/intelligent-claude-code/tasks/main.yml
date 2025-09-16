@@ -155,13 +155,20 @@
     msg: "Hooks directory preserved: {{ claude_install_path }}/hooks/ already exists - keeping user modifications"
   when: hooks_copy_result.failed and ansible_verbosity >= 1
 
-- name: Make hook scripts executable
+- name: Make production hook scripts executable
   file:
     path: "{{ claude_install_path }}/hooks/{{ item }}"
     mode: '0755'
   loop:
     - pre-tool-use.js
-    - test-hook-integration.js
+    - post-tool-use.js
+  ignore_errors: yes
+
+- name: Make test utility scripts executable (if they exist)
+  file:
+    path: "{{ claude_install_path }}/hooks/{{ item }}"
+    mode: '0755'
+  loop:
     - run-all-tests.js
     - validate-tests.js
   ignore_errors: yes
@@ -221,7 +228,7 @@
 
     - name: Add hooks section to existing settings
       set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': {'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/pre-tool-use.js', 'timeout': 15000, 'failureMode': 'allow'}]}]}}, recursive=True) }}"
+        merged_settings: "{{ settings_data | combine({'hooks': {'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/pre-tool-use.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'PostToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/post-tool-use.js', 'timeout': 15000, 'failureMode': 'allow'}]}]}}, recursive=True) }}"
 
     - name: Write merged settings.json
       copy:
@@ -231,13 +238,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "Hooks merged into existing settings.json - behavioral enforcement active"
+        msg: "PreToolUse and PostToolUse hooks merged into existing settings.json - behavioral enforcement active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with hook registration - behavioral enforcement active"
+    msg: "Settings file created with PreToolUse and PostToolUse hook registration - behavioral enforcement active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -255,5 +262,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: Pre-tool-use enforcement active"
+      - "🔒 Behavioral Hooks: PreToolUse and PostToolUse enforcement active"
       - "🚀 Use @Role communication to activate team members"
