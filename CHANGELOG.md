@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.6] - 2025-01-16
+
+### Fixed
+- **Hook Path Resolution**: Fix hardcoded paths in reminder-loader.js that caused errors when hooks run from Claude Code context
+- **Project Directory Detection**: Implement intelligent project directory detection using multiple strategies (environment variables, project markers, parent directory traversal)
+- **Context-Aware Path Resolution**: Replace process.cwd() dependency with robust project directory detection for reliable operation when installed to ~/.claude/hooks/
+- **Fallback Behavior**: Graceful handling when project directory cannot be detected, falling back to user-global and system default reminder locations
+
 ## [8.1.5] - 2025-01-16
 
 ### Changed
