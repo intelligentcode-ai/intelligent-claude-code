@@ -312,6 +312,103 @@ Tests verify:
 - **Memory Integration**: File-based storage with automatic search, relationships, and exponential aging
 - **Story Management**: Natural language stories converted to PRBs by @PM and architect collaboration
 
+## Hook System (Educational Reminders)
+
+The system includes a **dynamic educational reminder system** that helps reinforce best practices during interaction. This system provides gentle reminders about architectural patterns and behavioral guidelines.
+
+### How It Works
+
+The hook system shows **educational reminders** randomly (5-15% chance) to help users internalize best practices:
+
+- **25+ Behavioral Reminders**: Extracted from core system patterns
+- **"NO WORK IN MAIN SCOPE" Enforcement**: Strong reminders about PRB-driven execution
+- **Educational Only**: No blocking or interruption - purely educational messages
+- **Dynamic Configuration**: JSON-based customization with priority loading
+
+### Educational Reminder Examples
+
+```
+🎯 REMINDER: @Role Communication Pattern
+Use @PM, @Developer, @AI-Engineer for natural team interaction
+Work requests should follow: User → PRB → Task Tool → Agent
+
+🎯 REMINDER: Memory-First Approach
+Always search memory before asking users for information
+Store learnings automatically during @Role work
+
+🎯 REMINDER: NO WORK IN MAIN SCOPE
+Main agent = PRB creation ONLY
+All work execution happens via Task tool + agents
+```
+
+### Customization Options
+
+You can customize reminders using JSON configuration files with priority loading:
+
+**Priority Order** (highest to lowest):
+1. **Project-local**: `.claude/hooks/reminders.json` (project-specific reminders)
+2. **User-global**: `~/.claude/hooks/reminders.json` (personal customizations)
+3. **System default**: `~/.claude/hooks/lib/reminders.json` (preserved during updates)
+
+### Creating Custom Reminders
+
+Create `.claude/hooks/reminders.json` in your project:
+
+```json
+{
+  "reminders": [
+    {
+      "message": "🎯 CUSTOM: Your project-specific reminder here",
+      "weight": 10,
+      "category": "project_standards"
+    },
+    {
+      "message": "🎯 CUSTOM: Another important project pattern",
+      "weight": 8,
+      "category": "team_workflow"
+    }
+  ]
+}
+```
+
+**Configuration Options**:
+- **message**: The reminder text to display
+- **weight**: Priority weight (1-10, higher = more frequent)
+- **category**: Optional grouping for organization
+
+### File Locations
+
+**Project Customization**:
+```
+your-project/
+├── .claude/
+│   └── hooks/
+│       └── reminders.json    # Project-specific reminders
+```
+
+**User Customization**:
+```
+~/.claude/
+└── hooks/
+    └── reminders.json        # Personal customizations
+```
+
+**System Default** (preserved during updates):
+```
+~/.claude/
+└── hooks/
+    └── lib/
+        └── reminders.json    # System reminders
+```
+
+### Benefits
+
+- **Non-Intrusive Learning**: Gentle reinforcement without blocking workflow
+- **Pattern Internalization**: Helps users learn architectural patterns naturally
+- **Customizable**: Project teams can add their own standards and reminders
+- **Preserved Customizations**: Personal and project customizations survive system updates
+- **Quality Culture**: Reinforces best practices and team standards
+
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.

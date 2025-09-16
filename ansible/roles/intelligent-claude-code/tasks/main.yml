@@ -147,6 +147,30 @@
     - lib
   ignore_errors: yes
 
+- name: Check if user reminders.json exists
+  stat:
+    path: "{{ claude_install_path }}/hooks/lib/reminders.json"
+  register: user_reminders_exists
+
+- name: Install default reminders.json (ONLY if not exists)
+  copy:
+    src: "{{ playbook_dir }}/../src/hooks/lib/reminders.json"
+    dest: "{{ claude_install_path }}/hooks/lib/reminders.json"
+    mode: '0644'
+  when: not user_reminders_exists.stat.exists
+
+- name: Display reminders preservation notice
+  debug:
+    msg: "User reminders.json preserved: {{ claude_install_path }}/hooks/lib/reminders.json already exists - keeping user customizations"
+  when: user_reminders_exists.stat.exists and ansible_verbosity >= 1
+
+- name: Install hooks documentation
+  copy:
+    src: "{{ playbook_dir }}/../src/hooks/lib/README.md"
+    dest: "{{ claude_install_path }}/hooks/lib/README.md"
+    mode: '0644'
+    force: yes
+
 - name: Display hooks preservation notice
   debug:
     msg: "Hooks directory preserved: {{ claude_install_path }}/hooks/ already exists - keeping user modifications"

@@ -48,6 +48,7 @@ Built-in hook system ensures reliable execution patterns:
 - **Work Intent Detection**: Automatically blocks unauthorized direct execution
 - **AgentTask-First Pattern**: Enforces structured work through AgentTask system
 - **Memory-First Operations**: Ensures all work checks existing patterns before proceeding
+- **Educational Reminder System**: Dynamic reminders help users learn system patterns
 
 ### 👥 14+ Specialist Agent Roles  
 **Core Agents:**
@@ -174,6 +175,41 @@ stories/
 - Specialist creation via technology domain analysis
 - Memory storage during AgentTask execution
 - Story management through @PM natural language
+
+## Hook Reminder System
+
+The system includes an educational reminder system that helps users learn and follow intelligent-claude-code patterns:
+
+### Key Features
+- **Dynamic Loading**: JSON-based configuration with multi-location support
+- **Educational Focus**: Non-blocking reminders (5-15% chance) that teach without interrupting
+- **User Customization**: Project and user-level reminder customization
+- **25+ Behavioral Reminders**: Covering @Role patterns, AgentTask workflow, memory-first approach
+
+### Customization Locations
+```
+Priority Order (Highest to Lowest):
+1. Project-local: .claude/hooks/reminders.json
+2. User-global: ~/.claude/hooks/reminders.json
+3. System default: ~/.claude/hooks/lib/reminders.json
+```
+
+### Quick Customization Example
+```json
+// .claude/hooks/reminders.json
+{
+  "preAction": [
+    {
+      "category": "Project Standards",
+      "message": "📋 Check project-specific coding standards",
+      "icon": "📋",
+      "principle": "Project consistency requires following established patterns"
+    }
+  ]
+}
+```
+
+**Learn More**: See [Hook Reminder System Documentation](docs/hooks/reminder-system.md)
 
 ## MCP Server Integration
 
@@ -391,6 +427,7 @@ Work in YOUR structure - system adapts!
 - [Configuration Guide](docs/configuration-guide.md) - Complete configuration reference
 - [Commands Reference](docs/commands-reference.md) - All commands and agent interactions explained
 - [Hook System Guide](docs/hook-system-guide.md) - Behavioral enforcement and hook architecture
+- [Hook Reminder System](docs/hooks/reminder-system.md) - Dynamic educational reminder system
 
 ### Advanced Features
 - **[Template Extensions Guide](docs/template-extensions.md)** - Customize AgentTask templates without copying entire files

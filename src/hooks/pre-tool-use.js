@@ -17,6 +17,7 @@ const path = require('path');
 // Import our modules
 const intentClassifier = require('./lib/intent-classifier');
 const configLoader = require('./lib/config-loader');
+const ReminderLoader = require('./lib/reminder-loader');
 
 /**
  * Memory enforcement utilities
@@ -97,24 +98,9 @@ class MemoryEnforcement {
    * Generate memory consultation reminder message
    */
   generateMemoryConsultationReminder() {
-    return `🧠 EDUCATIONAL REMINDER: MEMORY-FIRST APPROACH
-
-💡 SUGGESTION: Consider searching memory before creating AgentTasks
-BEST PRACTICE: Memory consultation helps apply proven patterns and avoid repeated issues
-
-RECOMMENDED PROCESS:
-1. Search memory for relevant patterns: Read files in memory/ directory
-2. Apply learned patterns and best practices
-3. Create AgentTask with memory-informed context
-4. Deploy via Task tool to authorized agent
-
-MEMORY LOCATIONS TO EXPLORE:
-- memory/behavioral-enforcement/
-- memory/system/
-- memory/patterns/
-- memory/[relevant-domain]/
-
-✅ LEARNING PRINCIPLE: Memory-first approach improves quality and prevents repeated issues!`;
+    // Use dynamic reminder loader for memory guidance
+    const reminderLoader = new ReminderLoader();
+    return reminderLoader.getMemoryGuidanceReminder();
   }
 }
 
@@ -214,6 +200,50 @@ function validateInput(input) {
 }
 
 /**
+ * Educational reminder system for intelligent-claude-code principles
+ * Now uses dynamic loading from reminders.json with fallback to hardcoded defaults
+ */
+class EducationalReminderSystem {
+  constructor() {
+    this.reminderLoader = new ReminderLoader();
+  }
+
+  /**
+   * Get random pre-execution reminder (legacy compatibility)
+   */
+  getRandomPreExecutionReminder() {
+    return this.reminderLoader.getRandomReminder('preAction');
+  }
+
+  /**
+   * Generate pre-execution educational reminder
+   */
+  generatePreExecutionReminder() {
+    return this.reminderLoader.getPreExecutionReminder();
+  }
+
+  /**
+   * Check if educational reminder should be shown (random chance)
+   */
+  shouldShowPreExecutionReminder(tool) {
+    // Show reminder for certain tools with random chance
+    const educationalTools = ['Write', 'Edit', 'MultiEdit', 'Bash'];
+    const isEducationalTool = educationalTools.includes(tool);
+
+    // Show reminder 20% of the time for educational tools, 5% for others
+    const showChance = isEducationalTool ? 0.20 : 0.05;
+    return Math.random() < showChance;
+  }
+
+  /**
+   * Get memory guidance reminder
+   */
+  generateMemoryConsultationReminder() {
+    return this.reminderLoader.getMemoryGuidanceReminder();
+  }
+}
+
+/**
  * Generate educational reminder messages for work patterns
  */
 function generateEducationalMessage(intent, tool, reason) {
@@ -222,6 +252,13 @@ function generateEducationalMessage(intent, tool, reason) {
     return generateMainScopeReminder();
   }
 
+  // Create reminder system and check if we should show pre-execution reminder
+  const reminderSystem = new EducationalReminderSystem();
+  if (reminderSystem.shouldShowPreExecutionReminder(tool)) {
+    return reminderSystem.generatePreExecutionReminder();
+  }
+
+  // Fallback to standard educational message
   const baseMessage = `🎓 EDUCATIONAL REMINDER: intelligent-claude-code Best Practices`;
 
   let specificMessage = '';
@@ -682,5 +719,6 @@ module.exports = {
   generateEducationalMessage,
   generateMainScopeReminder,
   validateInput,
-  convertClaudeCodeInput
+  convertClaudeCodeInput,
+  EducationalReminderSystem
 };
