@@ -8,15 +8,13 @@
   gather_facts: yes
   vars:
     source_dir: "{{ playbook_dir }}/../src"
-    target_path: "{{ target_path | default('') }}"
-    mcp_config_file: "{{ mcp_config_file | default('') }}"
   
   tasks:
     - name: Determine installation scope and path
       set_fact:
-        target_scope: "{{ 'project' if target_path else 'user' }}"
-        install_path: "{{ (target_path | realpath) + '/.claude' if target_path else ansible_env.HOME + '/.claude' }}"
-        project_path: "{{ target_path | realpath if target_path else '' }}"
+        target_scope: "{{ 'project' if (target_path | default('')) else 'user' }}"
+        install_path: "{{ ((target_path | default('')) | realpath) + '/.claude' if (target_path | default('')) else ansible_env.HOME + '/.claude' }}"
+        project_path: "{{ (target_path | default('')) | realpath if (target_path | default('')) else '' }}"
     
     - name: Display installation target
       debug:
@@ -36,4 +34,4 @@
         name: mcp-integration
       vars:
         settings_json_path: "{{ ansible_env.HOME }}/.claude.json"
-      when: mcp_config_file != '' and mcp_config_file is defined
+      when: (mcp_config_file | default('')) != ''

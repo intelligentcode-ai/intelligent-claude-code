@@ -37,7 +37,7 @@
   when: claude_md_exists.stat.exists
 
 - name: Handle graceful integration for existing CLAUDE.md
-  include_tasks: graceful_integration.yml
+  ansible.builtin.import_tasks: graceful_integration.yml
   when: claude_md_exists.stat.exists
 
 - name: Create new CLAUDE.md for fresh installation
@@ -126,11 +126,15 @@
   when: agenttask_templates_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy hooks directory
-  copy:
+  synchronize:
     src: "{{ playbook_dir }}/../src/hooks/"
     dest: "{{ claude_install_path }}/hooks/"
-    mode: preserve
-    force: yes
+    recursive: yes
+    delete: no
+    rsync_opts:
+      - "--exclude=node_modules/"
+      - "--exclude=package-lock.json"
+  delegate_to: localhost
   register: hooks_copy_result
 
 - name: Ensure hooks subdirectories are copied
@@ -214,7 +218,7 @@
 # learning-callouts.md file removed - integrated into learning-team-automation.md system
 
 - name: Handle project-specific integration
-  include_tasks: project_integration.yml
+  ansible.builtin.import_tasks: project_integration.yml
   when: claude_scope == "project"
 
 
