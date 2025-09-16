@@ -66,7 +66,13 @@
 ## Creation Process
 
 ### Lightning-Fast Automatic Generation Pipeline
-**SEAMLESS 13-STEP INSTANT AUTOMATION WITH SEQUENTIAL THINKING:**
+**SEAMLESS 14-STEP INSTANT AUTOMATION WITH SEQUENTIAL THINKING:**
+0. **Duplicate Check**: MANDATORY scan existing PRBs for similar work (PREVENTS DUPLICATE CREATION)
+   - Search prbs/ready/ and prbs/completed/ directories
+   - Compare work descriptions, technical scope, and file references
+   - Score similarity using keyword overlap, scope match, and context alignment
+   - If ≥70% similarity found, UPDATE existing PRB instead of creating new one
+   - Notify user of existing PRB reuse with enhancement details
 1. **Detection**: Real-time parsing with NLP pattern recognition
 2. **Intent Classification**: Work vs information classification
 3. **Context Assembly**: Complete project context loading
@@ -76,16 +82,44 @@
    - Score patterns by keyword match + recency + context relevance
    - Select top 2-3 patterns (max 1000 tokens) for PRB embedding
    - EMBED patterns directly in PRB context - NO runtime lookups
-4b. **Best-Practices Integration**: Auto-search best-practices for relevant standards
-5. **Sequential Thinking**: ALWAYS apply sequential thinking with project context for ALL work requests
-6. **Complexity Calculation**: Enhanced scoring algorithm with sequential analysis
-7. **Auto-Breakdown**: If >15 points, intelligent decomposition with sequential thinking
-8. **Template Selection**: Complexity score mapping to optimal template
-9. **Template Loading**: Complete template structure loaded
-10. **Configuration Resolution**: Full config hierarchy with actual values
-11. **Placeholder Elimination**: Replace ALL placeholders with actual values
-12. **Context Embedding**: Complete project context embedded with sequential thinking results AND memory patterns
-13. **Quality Validation**: ZERO placeholders, complete sections verified, memory patterns embedded
+5. **Best-Practices Integration**: Auto-search best-practices for relevant standards
+6. **Sequential Thinking**: ALWAYS apply sequential thinking with project context for ALL work requests
+7. **Complexity Calculation**: Enhanced scoring algorithm with sequential analysis
+8. **Auto-Breakdown**: If >15 points, intelligent decomposition with sequential thinking
+9. **Template Selection**: Complexity score mapping to optimal template
+10. **Template Loading**: Complete template structure loaded
+11. **Configuration Resolution**: Full config hierarchy with actual values
+12. **Placeholder Elimination**: Replace ALL placeholders with actual values
+13. **Context Embedding**: Complete project context embedded with sequential thinking results AND memory patterns
+14. **Quality Validation**: ZERO placeholders, complete sections verified, memory patterns embedded
+
+### PRB Deduplication Logic
+
+**MANDATORY:** ALWAYS check for existing PRBs before creating new ones to prevent duplicate work:
+
+**Deduplication Process:**
+1. **PRB Directory Scan**: Search prbs/ready/ and prbs/completed/ for existing PRBs
+2. **Similarity Analysis**: Compare new work request against existing PRB descriptions and contexts
+3. **Scoring Algorithm**: Calculate similarity percentage using:
+   - **Work Description Match** (40%): Keyword overlap in descriptions and goals
+   - **Technical Scope Match** (30%): File references, systems, and technical domains
+   - **Context Alignment** (20%): Similar problem patterns and solution approaches
+   - **Parent Reference Match** (10%): Same story/bug parent or related work chain
+4. **Threshold Decision**: If any existing PRB scores ≥70% similarity, UPDATE instead of CREATE
+5. **Update-Existing Pattern**: Enhance existing PRB with new requirements instead of duplication
+6. **User Notification**: Inform user of existing PRB reuse with enhancement details
+
+**Similarity Scoring Examples:**
+- **High Similarity (≥70%)**: Same bug fix request, identical feature implementation, duplicate optimization work
+- **Medium Similarity (50-69%)**: Related features, similar technical domains, connected workflow steps
+- **Low Similarity (<50%)**: Different technical scope, unrelated problem domains, distinct implementation goals
+
+**Update-Existing Workflow:**
+- Load existing PRB and merge new requirements into context
+- Preserve original execution instructions while adding new specifications
+- Update completion criteria to include both original and new requirements
+- Maintain original PRB ID and creation date, add update notation
+- Notify user: "Enhanced existing PRB-XXX with additional requirements instead of creating duplicate"
 
 ### Memory-First Principle Integration
 
@@ -145,6 +179,8 @@
 - **Context Incomplete** → Auto-gather missing project context and configuration
 - **Memory Search Failure** → Re-run SearchMemory with expanded keywords and topics
 - **Pattern Embedding Missing** → Force memory search and embed relevant patterns
+- **Duplicate Check Missing** → Force PRB directory scan and similarity analysis
+- **Duplicate Creation Attempt** → Redirect to update-existing pattern with enhancement details
 - **Wrong Template** → Recalculate complexity, auto-select correct template
 - **Size Violations** → Automatic logical breakdown into multiple ≤15 point PRBs
 - **Format Violations** → Auto-apply naming standards and compliance rules
@@ -158,6 +194,8 @@
 - Runtime config dependencies → "RUNTIME LOOKUP FORBIDDEN: All config must be embedded"
 - Memory search skipped → "MEMORY SEARCH MANDATORY: All PRB generation must search memory first"
 - Runtime memory lookups → "RUNTIME MEMORY FORBIDDEN: All patterns must be embedded in PRB"
+- Duplicate check skipped → "DUPLICATE CHECK MANDATORY: All PRB creation must check existing PRBs first"
+- Creating duplicate PRB → "DUPLICATE CREATION BLOCKED: Use update-existing pattern for similar work"
 
 ---
 *Comprehensive PRB and work item creation system*

@@ -53,6 +53,12 @@
 ## Template-First Generation Flow
 
 **PRB Generation Steps:**
+0. **Check Existing PRBs** for similar work (MANDATORY DEDUPLICATION CHECK)
+   - Scan prbs/ready/ and prbs/completed/ directories for existing PRBs
+   - Analyze work descriptions, technical scope, file references, and parent relationships
+   - Calculate similarity score using weighted algorithm (description 40%, scope 30%, context 20%, parent 10%)
+   - If ≥70% similarity detected, UPDATE existing PRB instead of creating new one
+   - Notify user of existing work reuse with enhancement details
 1. **Detect** work requirement
 2. **Search Memory** for patterns (MANDATORY MEMORY-FIRST APPROACH)
    - Parse work intent for keywords: work type, technical domains, problem patterns
@@ -60,19 +66,19 @@
    - Score patterns by: keyword match + recency + context relevance + success indicators
    - Select top 2-3 most relevant patterns (max 1000 tokens total)
    - EMBED patterns directly in PRB context - NO runtime memory lookups
-3. **Search** best-practices for applicable patterns (MANDATORY)
-4. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
-5. **Sequential Analysis** ALWAYS (structured thinking with project context for ALL work)
-6. **Auto-breakdown** if complexity > 15 points
-7. **Load Template** from hierarchy
-8. **Load Configuration** at generation time
-9. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
-10. **Resolve Configuration Placeholders** with actual config values
-11. **Resolve Workflow Placeholders** with actual workflow_settings values
-12. **Embed Complete Context** in PRB with resolved workflow instructions, best-practices, AND memory patterns
-13. **Validate NO Placeholders** remain (including workflow placeholders, memory search patterns)
-14. **Generate** compliant name and create PRB
-15. **Execute** via subagent
+4. **Search** best-practices for applicable patterns (MANDATORY)
+5. **Score** complexity and determine PRB size (nano/tiny/medium/large/mega)
+6. **Sequential Analysis** ALWAYS (structured thinking with project context for ALL work)
+7. **Auto-breakdown** if complexity > 15 points
+8. **Load Template** from hierarchy
+9. **Load Configuration** at generation time
+10. **Load Workflow Settings** from CLAUDE.md workflow_settings.[size]
+11. **Resolve Configuration Placeholders** with actual config values
+12. **Resolve Workflow Placeholders** with actual workflow_settings values
+13. **Embed Complete Context** in PRB with resolved workflow instructions, best-practices, AND memory patterns
+14. **Validate NO Placeholders** remain (including workflow placeholders, memory search patterns)
+15. **Generate** compliant name and create PRB
+16. **Execute** via subagent
 
 ## Workflow Placeholder Resolution
 
@@ -108,6 +114,54 @@
 - large-prb-template.yaml → workflow_settings.large.*
 - mega-prb-template.yaml → workflow_settings.mega.*
 
+## PRB Deduplication Detection
+
+**MANDATORY:** All PRB generation MUST check for existing similar work before creating new PRBs:
+
+### Duplicate Detection Process
+1. **Directory Scan**: Search prbs/ready/ and prbs/completed/ for all existing PRBs
+2. **Work Analysis**: Extract work description, technical scope, and requirements from new request
+3. **Similarity Calculation**: Compare against each existing PRB using weighted scoring:
+   - **Work Description Match** (40%): Compare goal descriptions, problem statements, and success criteria
+   - **Technical Scope Match** (30%): Compare file references, system components, and technical domains
+   - **Context Alignment** (20%): Compare problem patterns, solution approaches, and implementation contexts
+   - **Parent Reference Match** (10%): Check for same story/bug parent or related work chain
+4. **Threshold Decision**: If any PRB scores ≥70% similarity, trigger update-existing workflow
+5. **User Notification**: Inform user of duplicate detection and existing work enhancement
+
+### Similarity Scoring Implementation
+**Work Description Matching:**
+- Extract keywords from descriptions, goals, and success criteria
+- Calculate keyword overlap percentage
+- Weight by importance (goal keywords higher than descriptive text)
+- Score as percentage of matching important keywords
+
+**Technical Scope Matching:**
+- Compare file paths and directory references
+- Match system components and technology domains
+- Analyze implementation approaches and technical requirements
+- Score based on overlap of technical elements
+
+**Context Alignment Scoring:**
+- Compare problem types and solution patterns
+- Analyze implementation complexity and approach similarities
+- Match workflow requirements and execution context
+- Score based on contextual similarity
+
+**Parent Reference Matching:**
+- Direct parent match (same STORY/BUG ID) scores full points
+- Related parent chains (sequential work) score partial points
+- Unrelated parents score zero points
+
+### Update-Existing Workflow
+**When Duplicate Detected (≥70% similarity):**
+1. **Load Existing PRB**: Read current PRB content and context
+2. **Merge Requirements**: Combine new requirements with existing ones
+3. **Preserve Original Context**: Maintain original PRB structure and ID
+4. **Enhanced Completion Criteria**: Expand success criteria to include new requirements
+5. **Update Notation**: Add note about enhancement with new requirements
+6. **User Notification**: "Enhanced existing [PRB-ID] with additional requirements instead of creating duplicate"
+
 ## Memory-First PRB Generation
 
 **MANDATORY:** All PRB generation MUST implement memory-first approach before template loading:
@@ -139,6 +193,7 @@
 ## Context Requirements
 
 **MANDATORY before generation:**
+- **Duplicate check (completed with results)**
 - System nature (CODE/AI-AGENTIC)
 - Project root (absolute path)
 - Configuration (actual values)
