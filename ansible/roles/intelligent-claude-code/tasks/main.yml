@@ -130,7 +130,7 @@
     src: "{{ playbook_dir }}/../src/hooks/"
     dest: "{{ claude_install_path }}/hooks/"
     recursive: yes
-    delete: no
+    delete: yes
     rsync_opts:
       - "--exclude=node_modules/"
       - "--exclude=package-lock.json"
