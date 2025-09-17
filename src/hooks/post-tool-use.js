@@ -49,9 +49,17 @@ function main() {
       process.exit(0);
     }
 
+    // Generate educational reminder
+    const reminderLoader = new ReminderLoader();
+    const reminder = reminderLoader.getPostExecutionReminder();
+
     const output = {
       continue: true,
-      suppressOutput: true
+      suppressOutput: true,
+      hookSpecificOutput: {
+        hookEventName: "PostToolUse",
+        additionalContext: reminder
+      }
     };
 
     console.log(JSON.stringify(output));
