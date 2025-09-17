@@ -1,116 +1,174 @@
 # Hook System Guide
 
-The intelligent-claude-code system uses a sophisticated hook architecture to enforce behavioral patterns and provide educational guidance. This guide covers the complete hook system, including enforcement mechanisms and the dynamic reminder system.
+The intelligent-claude-code system uses an optimized hook architecture to provide behavioral guidance and system initialization. This guide covers the complete hook system, focusing on optimal timing for guidance delivery.
 
 ## Overview
 
-The hook system provides multiple integration points within Claude Code to ensure proper behavioral patterns and educational guidance:
+The hook system provides strategic integration points within Claude Code to ensure proper behavioral patterns and virtual team initialization:
 
-- **Behavioral Enforcement**: Prevent unauthorized patterns through pre-tool validation
-- **Educational Guidance**: Dynamic reminder system for learning system patterns
-- **Work Intent Classification**: Intelligent detection of work vs information requests
-- **Memory Integration**: Automatic memory consultation and storage reminders
+- **System Initialization**: Complete virtual team configuration at session start
+- **Contextual Guidance**: Smart behavioral reminders based on user input analysis
+- **Memory Integration**: Automatic memory consultation and storage guidance
+- **Virtual Team Activation**: Full behavioral pattern loading and enforcement
 
 ## Hook Architecture
 
 ### Hook Types
 
-The system implements several hook types for different behavioral enforcement needs:
+The system implements two optimally-timed hooks:
 
-| Hook Type | Purpose | When Executed | Enforcement Level |
-|-----------|---------|---------------|-------------------|
-| **PreToolUse** | Validate and block unauthorized patterns | Before tool execution | **BLOCKING** |
-| **PostToolUse** | Educational reminders and learning capture | After tool execution | **EDUCATIONAL** |
+| Hook Type | Purpose | When Executed | Guidance Level |
+|-----------|---------|---------------|----------------|
+| **SessionStart** | System initialization and configuration loading | At session beginning | **MANDATORY** |
+| **UserPromptSubmit** | Contextual behavioral guidance | Before response generation | **EDUCATIONAL** |
 
 ### Hook Components
 
 ```
 src/hooks/
-├── pre-tool-use.js           # Main enforcement hook
-├── post-tool-use.js          # Educational reminder hook
+├── session-start.js          # System initialization and config loading
+├── user-prompt-submit.js     # Contextual guidance hook
 └── lib/
-    ├── intent-classifier.js  # Work vs information classification
-    ├── config-loader.js      # Configuration management
     ├── reminder-loader.js    # Dynamic reminder system
-    └── reminders.json        # Default reminder definitions
+    └── reminders.json        # Unified reminder definitions
 ```
 
-## Pre-Tool-Use Hook
+## SessionStart Hook
 
-The pre-tool-use hook enforces behavioral patterns before tool execution:
+The SessionStart hook provides mandatory system initialization at the beginning of each session.
 
-### Enforcement Patterns
+### Initialization Process
 
-1. **Work Intent Detection**: Distinguishes between work requests and information queries
-2. **Tool Classification**: Categorizes tools as work, planning, or information
-3. **Scope Validation**: Ensures work follows Main → AgentTask → Agent pattern
-4. **Blocking Logic**: Prevents unauthorized direct execution
+1. **Configuration Loading**: Forces Claude Code to read local and global CLAUDE.md files
+2. **Include Processing**: Recursively follows all @-notation includes
+3. **Virtual Team Activation**: Loads complete behavioral pattern framework
+4. **Pattern Enforcement**: Activates all behavioral enforcement systems
 
-### Intent Classification
+### Virtual Team Initialization
 
-The system uses sophisticated classification to determine user intent:
+The SessionStart hook provides explicit instructions to Claude Code:
 
+```
+🔄 MANDATORY SESSION INITIALIZATION
+
+Claude Code must IMMEDIATELY perform these actions:
+
+1. READ local project CLAUDE.md file (if exists)
+2. READ global ~/.claude/CLAUDE.md file
+3. PROCESS all @-notation includes found in CLAUDE.md files
+4. When finding @~/.claude/modes/virtual-team.md - LOAD AND APPLY it
+5. RECURSIVELY follow ALL @-notation references in virtual-team.md:
+   • @../roles/specialists.md
+   • @../behaviors/agenttask-creation-system.md
+   • @../behaviors/agenttask-enforcement.md
+   • @../behaviors/agenttask-auto-trigger.md
+   • @../behaviors/agenttask-execution.md
+   • @../behaviors/agenttask-system-integration.md
+   • ALL shared-patterns dependencies
+   • ALL core system behaviors
+   • ALL learning & memory patterns
+   • ALL validation & quality patterns
+   • ALL analytical frameworks
+6. APPLY all loaded behavioral patterns to current session
+7. ACTIVATE virtual team mode with 14 core roles + unlimited specialists
+8. ENFORCE AgentTask-driven execution (NO WORK IN MAIN SCOPE)
+
+⚠️  This is MANDATORY system initialization - not optional context.
+⚠️  All behavioral patterns must be ACTIVE and ENFORCED.
+⚠️  @Role communication patterns must be PRIMARY interaction method.
+```
+
+## UserPromptSubmit Hook
+
+The UserPromptSubmit hook provides contextual behavioral guidance before Claude generates responses.
+
+### Intelligent Context Analysis
+
+The hook analyzes user prompts to provide relevant guidance:
+
+**@Role Detection**:
 ```javascript
-// Work Intent (Triggers AgentTask Creation)
-const workIntents = [
-  'implement', 'create', 'build', 'fix', 'deploy',
-  'configure', 'setup', 'modify', 'update', 'refactor'
-];
-
-// Information Intent (Direct Response)
-const infoIntents = [
-  'show', 'display', 'explain', 'list', 'check',
-  'analyze', 'describe', 'status', 'what', 'how'
-];
+if (userPrompt.includes('@')) {
+  contextualGuidance.push('🎯 @Role Communication: Natural team interaction detected');
+  contextualGuidance.push('📋 Role Assignment: Match project scope and work type to specialist expertise');
+}
 ```
 
-### Blocking Behavior
+**Work Intent Detection**:
+```javascript
+const workIndicators = ['implement', 'fix', 'create', 'build', 'deploy', 'update', 'modify'];
+if (workIndicators.some(indicator => userPrompt.toLowerCase().includes(indicator))) {
+  contextualGuidance.push('🚫 NO WORK IN MAIN SCOPE - all work must use AgentTask → Task → Agent');
+  contextualGuidance.push('🔍 ALWAYS search memory before creating any AgentTask');
+  contextualGuidance.push('📦 AgentTasks must be SELF-CONTAINED with all context embedded');
+}
+```
 
-When unauthorized patterns are detected:
-
-1. **Log Violation**: Record the attempted pattern
-2. **Block Execution**: Return exit code 2 to prevent tool usage
-3. **Provide Guidance**: Show clear error message with correction
-4. **Suggest Alternative**: Recommend proper @Role pattern
-
-## Post-Tool-Use Hook
-
-The post-tool-use hook provides educational guidance and learning reinforcement:
+**Question Detection**:
+```javascript
+if (userPrompt.includes('?') || userPrompt.toLowerCase().includes('how') || userPrompt.toLowerCase().includes('what')) {
+  contextualGuidance.push('🧠 Memory-first approach - check memory before asking users');
+  contextualGuidance.push('📚 Check best-practices/ directory for relevant patterns');
+}
+```
 
 ### Educational Reminder System
 
 **Purpose**: Help users learn system patterns through contextual guidance
 
 **Features**:
-- Dynamic JSON-based configuration
+- Dynamic JSON-based configuration with weight-based selection
 - Multi-location loading with priority order
 - User and project-level customization
-- 25+ behavioral reminders across multiple categories
+- 20+ behavioral reminders across multiple categories
 
-**Display Frequency**:
-- Educational tools (Read, Grep, Glob): 15% chance
-- Modification tools (Edit, Write): 5% chance
-- Other tools: 5% chance
+## Unified Reminder Format
 
-**📖 For complete documentation**: See [Hook Reminder System Documentation](hooks/reminder-system.md)
+The system uses a unified reminder format optimized for UserPromptSubmit hook:
+
+### Reminder Structure
+
+```json
+{
+  "reminders": [
+    {
+      "message": "🚫 NO WORK IN MAIN SCOPE - all work must use AgentTask → Task → Agent",
+      "weight": 10,
+      "category": "architectural_enforcement"
+    },
+    {
+      "message": "🔍 ALWAYS search memory before creating any AgentTask",
+      "weight": 9,
+      "category": "memory_operations"
+    },
+    {
+      "message": "🎯 Use @Role patterns for natural team interaction",
+      "weight": 9,
+      "category": "team_communication"
+    }
+  ]
+}
+```
+
+### Weight-Based Selection
+
+- **Weight 10**: Critical enforcement patterns (highest frequency)
+- **Weight 8-9**: Important behavioral guidance
+- **Weight 6-7**: Quality standards and best practices
+- **Weight 1-5**: Situational reminders
 
 ### Reminder Categories
 
-#### Pre-Action Reminders
-Shown before tool execution to reinforce patterns:
-- Memory consultation requirements
-- Best practices integration
-- Workflow architecture compliance
-- PM role boundaries
-- Template enforcement
+- `architectural_enforcement`: Core system patterns and boundaries
+- `memory_operations`: Memory-first approach guidance
+- `quality_standards`: Best practices and quality gates
+- `team_communication`: @Role interaction patterns
+- `role_enforcement`: Role boundary enforcement
+- `agenttask_quality`: AgentTask creation standards
+- `learning_culture`: Memory storage and pattern capture
+- `execution_validation`: Proof of work requirements
 
-#### Post-Action Reminders
-Educational guidance after tool execution:
-- @Role communication patterns
-- AgentTask workflow reminders
-- Memory-first approach guidance
-- System boundary education
-- Learning storage encouragement
+## Configuration and Customization
 
 ### Dynamic Loading System
 
@@ -122,20 +180,6 @@ The reminder system loads from multiple locations with clear priority:
 3. System default: ~/.claude/hooks/lib/reminders.json (fallback)
 ```
 
-## Configuration and Customization
-
-### System Configuration
-
-The hook system respects project and user configuration:
-
-```yaml
-# In CLAUDE.md or config.md
-hook_configuration:
-  reminder_frequency: 0.10        # 10% chance for reminders
-  educational_mode: true          # Enable educational reminders
-  enforcement_level: "standard"   # standard | strict | permissive
-```
-
 ### Custom Reminders
 
 #### Project-Level Customization
@@ -144,19 +188,16 @@ Create `.claude/hooks/reminders.json` in your project:
 
 ```json
 {
-  "preAction": [
+  "reminders": [
     {
-      "category": "Project Standards",
       "message": "📋 Check project-specific standards before implementation",
-      "icon": "📋",
-      "principle": "Project consistency requires following established patterns"
-    }
-  ],
-  "postAction": [
+      "weight": 10,
+      "category": "project_standards"
+    },
     {
-      "category": "Team Process",
       "message": "💬 Update team channel with progress",
-      "principles": ["Team coordination", "Status transparency"]
+      "weight": 7,
+      "category": "team_process"
     }
   ]
 }
@@ -168,12 +209,11 @@ Create `~/.claude/hooks/reminders.json` for personal preferences:
 
 ```json
 {
-  "preAction": [
+  "reminders": [
     {
-      "category": "Personal Workflow",
       "message": "⏰ Check calendar before starting deep work",
-      "icon": "⏰",
-      "principle": "Time management improves focus and productivity"
+      "weight": 8,
+      "category": "personal_workflow"
     }
   ]
 }
@@ -202,12 +242,26 @@ Hooks are automatically registered in Claude Code's `settings.json`:
 ```json
 {
   "hooks": {
-    "preToolUse": {
-      "script": "/path/to/.claude/hooks/pre-tool-use.js"
-    },
-    "postToolUse": {
-      "script": "/path/to/.claude/hooks/post-tool-use.js"
-    }
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/hooks/session-start.js"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/hooks/user-prompt-submit.js"
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -221,63 +275,12 @@ Verify hook installation:
 ls ~/.claude/hooks/
 
 # Check hook registration
-cat ~/.config/claude-desktop/settings.json | grep hooks
+cat ~/.config/claude-desktop/settings.json | grep -A 20 hooks
 
-# Test hook functionality (triggers educational reminder)
-echo "Test message" | ~/.claude/hooks/post-tool-use.js
+# Test hooks functionality
+node ~/.claude/hooks/session-start.js
+echo '{"user_prompt": "test"}' | node ~/.claude/hooks/user-prompt-submit.js
 ```
-
-## Behavioral Enforcement Patterns
-
-### Work vs Information Detection
-
-The system distinguishes between different request types:
-
-**Work Requests (Trigger AgentTask):**
-- "Implement user authentication"
-- "Fix the login bug"
-- "Deploy to production"
-- "Setup CI/CD pipeline"
-
-**Information Requests (Direct Response):**
-- "Show me the current status"
-- "Explain how authentication works"
-- "What files are in the src directory?"
-- "How does the memory system work?"
-
-### @Role Pattern Enforcement
-
-The system enforces proper @Role usage:
-
-**Correct Patterns:**
-```bash
-@PM Build a user management system    # Project coordination
-@Developer Implement OAuth2 login     # Technical implementation
-@DevOps-Engineer Setup monitoring     # Operations work
-```
-
-**Blocked Patterns:**
-```bash
-# Direct work without proper delegation
-"Let me implement this feature"       # Missing @Role assignment
-"I'll fix this bug quickly"          # Bypassing AgentTask workflow
-```
-
-### Main Scope Protection
-
-The hook system prevents direct work execution in main scope:
-
-**Allowed in Main Scope:**
-- AgentTask creation and delegation
-- @Role coordination and communication
-- Information requests and status queries
-- Memory consultation and pattern search
-
-**Blocked in Main Scope:**
-- Direct file modifications (Edit/Write/MultiEdit)
-- System changes without AgentTask context
-- Implementation work without specialist assignment
-- Configuration changes without proper workflow
 
 ## Troubleshooting
 
@@ -293,9 +296,9 @@ The hook system prevents direct work execution in main scope:
 - Check JSON syntax in custom reminder files
 - Restart Claude Code after reminder customization
 
-**Enforcement not working:**
-- Check pre-tool-use hook is registered and executable
-- Verify intent classification is working properly
+**System initialization not working:**
+- Check SessionStart hook is registered and executable
+- Verify CLAUDE.md files exist and are readable
 - Check console output for hook execution logs
 
 ### Debug Information
@@ -304,7 +307,7 @@ Enable debug output for hooks:
 
 ```javascript
 // In hook files, add debug logging
-console.log('Hook executed:', { tool, parameters, timestamp: new Date() });
+console.log('Hook executed:', { input, timestamp: new Date() });
 ```
 
 View hook execution in Claude Code console or debug mode.
@@ -314,14 +317,14 @@ View hook execution in Claude Code console or debug mode.
 Test hook functionality manually:
 
 ```bash
-# Test pre-tool-use hook
-echo '{"tool": "Edit", "parameters": {...}}' | ~/.claude/hooks/pre-tool-use.js
+# Test SessionStart hook
+node ~/.claude/hooks/session-start.js
 
-# Test post-tool-use hook
-echo '{"tool": "Write", "result": "success"}' | ~/.claude/hooks/post-tool-use.js
+# Test UserPromptSubmit hook
+echo '{"user_prompt": "implement auth"}' | node ~/.claude/hooks/user-prompt-submit.js
 
 # Test reminder loading
-node -e "const RL = require('~/.claude/hooks/lib/reminder-loader'); console.log(new RL().getLoadingInfo());"
+node -e "const RL = require('~/.claude/hooks/lib/reminder-loader'); const loader = new RL(); console.log(loader.getRandomReminder());"
 ```
 
 ## Best Practices
@@ -329,7 +332,7 @@ node -e "const RL = require('~/.claude/hooks/lib/reminder-loader'); console.log(
 ### Hook Development
 
 1. **Fail Safe**: Hooks should never crash Claude Code
-2. **Performance**: Keep execution time under 5ms for responsiveness
+2. **Performance**: Keep execution time under 100ms for responsiveness
 3. **Logging**: Provide clear debug information when needed
 4. **Graceful Degradation**: Continue operation if customizations fail
 
@@ -339,63 +342,15 @@ node -e "const RL = require('~/.claude/hooks/lib/reminder-loader'); console.log(
 2. **Test Thoroughly**: Verify JSON syntax and loading
 3. **Document Changes**: Note why specific customizations were added
 4. **Follow Format**: Use existing reminder structure as template
-5. **Consider Frequency**: Avoid overwhelming users with too many reminders
+5. **Consider Weight**: Balance reminder frequency appropriately
 
 ### Educational Effectiveness
 
 1. **Be Specific**: Provide clear, actionable guidance
-2. **Explain Why**: Include educational principles with reminders
-3. **Be Contextual**: Show reminders at appropriate moments
-4. **Be Helpful**: Focus on improving user understanding
-5. **Be Concise**: Keep messages brief to avoid interrupting flow
-
-## Advanced Features
-
-### Custom Hook Integration
-
-Advanced users can extend the hook system:
-
-```javascript
-// Custom hook integration example
-const ReminderLoader = require('./lib/reminder-loader');
-const customLoader = new ReminderLoader();
-
-// Add custom categories
-const customReminders = {
-  "deployment": [
-    {
-      "category": "Production Safety",
-      "message": "🚨 Run safety checks before production deployment",
-      "principles": ["Production safety", "Risk management"]
-    }
-  ]
-};
-```
-
-### Memory Integration
-
-Hooks integrate with the memory system for learning:
-
-```javascript
-// Memory integration in hooks
-const memoryPatterns = await searchMemory('hook-violations');
-if (memoryPatterns.length > 0) {
-  // Apply learned patterns to improve enforcement
-}
-```
-
-### Analytics and Metrics
-
-Track hook effectiveness:
-
-```javascript
-// Basic metrics tracking
-const hookMetrics = {
-  violations_prevented: 0,
-  reminders_shown: 0,
-  user_learning_progress: 0
-};
-```
+2. **Be Contextual**: Show reminders at appropriate moments
+3. **Be Helpful**: Focus on improving user understanding
+4. **Be Concise**: Keep messages brief to avoid interrupting flow
+5. **Be Consistent**: Maintain consistent terminology and patterns
 
 ## Security Considerations
 
@@ -410,7 +365,7 @@ try {
   // Validate structure and content
 } catch (error) {
   // Fail safe - continue operation
-  return { success: true, message: "Hook input validation failed gracefully" };
+  return { continue: true, suppressOutput: true };
 }
 ```
 
@@ -436,9 +391,9 @@ Hooks operate with appropriate permissions:
 
 The hook system is designed for extension:
 
-- Custom enforcement patterns
-- Additional reminder categories
+- Custom reminder categories and weighting
+- Additional contextual analysis patterns
 - Integration with external systems
 - Advanced analytics and reporting
 
-The hook system provides a robust foundation for behavioral enforcement and educational guidance, helping users learn and apply intelligent-claude-code patterns effectively while maintaining system reliability and automation quality.
+The hook system provides an optimized foundation for behavioral guidance and system initialization, helping users learn and apply intelligent-claude-code patterns effectively while maintaining system reliability and automation quality.
