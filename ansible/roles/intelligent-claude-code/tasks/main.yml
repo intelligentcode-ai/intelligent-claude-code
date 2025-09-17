@@ -164,12 +164,6 @@
     msg: "System reminders installed. Create ~/.claude/hooks/reminders.json or project/.claude/hooks/reminders.json to customize"
   when: ansible_verbosity >= 1
 
-- name: Install hooks documentation
-  copy:
-    src: "{{ playbook_dir }}/../src/hooks/lib/README.md"
-    dest: "{{ claude_install_path }}/hooks/lib/README.md"
-    mode: '0644'
-    force: yes
 
 - name: Display hooks preservation notice
   debug:

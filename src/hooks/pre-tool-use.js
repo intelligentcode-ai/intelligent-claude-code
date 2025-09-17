@@ -7,11 +7,7 @@ const ReminderLoader = require('./lib/reminder-loader');
 function main() {
   const standardOutput = {
     continue: true,
-    suppressOutput: true,
-    hookSpecificOutput: {
-      hookEventName: "PreToolUse",
-      additionalContext: ""
-    }
+    suppressOutput: true
   };
 
   try {
@@ -49,16 +45,12 @@ function main() {
       process.exit(0);
     }
 
-    // Generate educational reminder
-    const reminderLoader = new ReminderLoader();
-    const reminder = reminderLoader.getPreExecutionReminder();
-
     const output = {
       continue: true,
       suppressOutput: true,
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
-        additionalContext: reminder
+        additionalContext: ""
       }
     };
 
