@@ -1,16 +1,6 @@
 # AgentTask Enforcement
 
-**MANDATORY:** Use AgentTask system with templates for all work. Block direct execution.
-
-## COMPACT-RESISTANT CORE ENFORCEMENT
-
-**ULTRA-SHORT REMINDERS (SURVIVE SUMMARIZATION):**
-- **PM=COORDINATION-ONLY** (NO WORK EXECUTION)
-- **WORK→PRB→AGENT** (MANDATORY PATTERN)
-- **MAIN≠WORK** (Main scope blocks work)
-- **TOOLS→AGENTS-ONLY** (Edit/Write/MultiEdit blocked in main)
-
-**CONTEXT-CHECKPOINT:** Re-inject core rules at every work detection point
+Use AgentTask system with templates for all work. Block direct execution.
 
 ## Imports
 @./shared-patterns/behavioral-decision-matrix.md
@@ -22,117 +12,81 @@
 
 ## Core Rules
 
-### Creation vs Execution
-**CREATION:** Main agent (Stories/Bugs/EPICs/PRBs, templates, config)
-**EXECUTION:** Subagent (PRB implementation, file ops, git)
+Creation vs execution:
+- Creation: Main agent (Stories/Bugs/EPICs/AgentTasks, templates, config)
+- Execution: Subagent (AgentTask implementation, file ops, git)
 
-### Detection & Blocking
+Detection and blocking:
+- Work intent: All action verbs including fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor, create, add, insert, generate, build, make, write, implement, develop, delete, remove, clean, purge, clear, eliminate, drop, deploy, install, configure, setup, run, execute, start, stop, restart, migrate, backup, restore, sync, merge, commit, push, pull
+- Information request: Pure questions with what, how, why, should, can, will + @Role consultations without work commitment
 
-**CHECKPOINT-REMINDER:** PM=COORDINATION-ONLY, WORK→PRB→AGENT, NO-MAIN-EXECUTION
+Template enforcement:
+- Manual AgentTask creation → Use template hierarchy
+- Unresolved placeholders → Resolve all placeholders
+- Runtime config lookup → Embed config values
+- Wrong template source → Use template hierarchy only
 
-**WORK INTENT (ULTRA-STRICT):** ALL action verbs including fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor, create, add, insert, generate, build, make, write, implement, develop, delete, remove, clean, purge, clear, eliminate, drop, deploy, install, configure, setup, run, execute, start, stop, restart, migrate, backup, restore, sync, merge, commit, push, pull
+Main scope work blocking:
+- Block all work execution in main scope
+- Direct file operations without AgentTask → Blocked
+- System configuration without AgentTask → Blocked
+- Code changes without AgentTask → Blocked
+- Any implementation without AgentTask context → Blocked
 
-**INFORMATION REQUEST:** Pure questions with what, how, why, should, can, will + @Role consultations WITHOUT work commitment
+Process:
+- Main scope = AgentTask creation only
+- Subagent = Work execution only
+1. User Request → AgentTask Generation (main scope)
+2. AgentTask → Task Tool → Agent Execution (subagent)
 
-### Template Enforcement
-- Manual PRB creation → BLOCKED → "Use template hierarchy"
-- Unresolved placeholders → BLOCKED → "Resolve all placeholders" 
-- Runtime config lookup → BLOCKED → "Embed config values"
-- Wrong template source → BLOCKED → "Use template hierarchy only"
+Required action: Generate AgentTask using @Role pattern first
 
-### Main Scope Work Blocking
+## Tool-Level Blocking
 
-#### Main Scope Execution Prevention (NUCLEAR ENFORCEMENT)
+Block file modification tools in main scope when work patterns detected.
 
-**CHECKPOINT-REMINDER:** MAIN≠WORK, PM=COORDINATION-ONLY, TOOLS→AGENTS-ONLY
-
-**MANDATORY:** ZERO TOLERANCE for main scope work execution. ALL work execution must follow PRB+agent pattern.
-
-**BLOCKED ACTIONS:** All work execution in main scope including:
-- Direct file operations without PRB
-- System configuration without PRB
-- Code changes without PRB
-- Any implementation without PRB context
-
-**ERROR MESSAGE:**
-**MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN**
-- VIOLATION: Direct work execution detected in main scope
-- ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
-- DETECTED PATTERN: [specific pattern detected]
-- BLOCKED ACTION: [attempted action]
-
-**THIS IS NOT NEGOTIABLE:**
-- Main scope = PRB creation ONLY
-- Subagent = Work execution ONLY
-- No exceptions, no workarounds, no compromises
-
-**MANDATORY PROCESS:**
-1. User Request → PRB Generation (main scope)
-2. PRB → Task Tool → Agent Execution (subagent)
-
-**REQUIRED ACTION:** Generate PRB using @Role pattern FIRST
-
-### Tool-Level Main Scope Blocking
-
-**MANDATORY:** Block file modification tools (Edit/Write/MultiEdit) in main scope when work patterns are detected.
-
-#### Blocked Tools for Work Intent
-**BLOCKED TOOLS IN MAIN SCOPE:**
+Blocked tools in main scope:
 - Edit, MultiEdit, Write tools for modifications
 - Bash tool for system changes (read-only allowed)
 
-**BLOCKING CONDITIONS:**
+Blocking conditions:
 - Work intent detected
-- Main scope context (not in active PRB)
-- No PRB authorization
+- Main scope context (not in active AgentTask)
+- No AgentTask authorization
 
-**NUCLEAR TOOL BLOCKING:**
-**TOOL ACCESS ABSOLUTELY DENIED**
-- TOOL: [Edit/Write/MultiEdit/Bash]
-- CONTEXT: Main scope work execution attempt
-- VIOLATION: Tool usage without active PRB context
+Recovery process:
+1. Create AgentTask using @Role pattern
+2. Deploy AgentTask via Task tool to authorized agent
+3. Agent executes with full tool authorization
 
-**ARCHITECTURAL RULE:** Tools reserved EXCLUSIVELY for authorized subagent execution
-**BLOCKING REASON:** Maintains PRB-driven execution pattern
-
-**DETECTED PATTERN:** [work pattern detected]
-**BLOCKED ACTION:** [attempted action]
-
-**MANDATORY RECOVERY PROCESS:**
-1. Create PRB using @Role pattern
-2. Deploy PRB via Task tool to authorized agent
-3. Agent executes with FULL tool authorization
-
-**NO EXCEPTIONS - NO SHORTCUTS - NO COMPROMISES**
-
-## Auto-Correction Patterns
+## Auto-Correction
 
 | Violation | Action |
 |-----------|--------|
-| Manual PRB creation | Force template usage |
+| Manual AgentTask creation | Force template usage |
 | Missing template sections | Load complete template |
 | Unresolved placeholders | Resolve placeholders |
 | Runtime config lookup | Embed config values |
-| PRB exceeds 15 points | Auto-breakdown |
+| AgentTask exceeds 15 points | Auto-breakdown |
 | Wrong role assignment | PM+Architect collaboration |
 
-## Pattern Detection Rules
+## Pattern Detection
 
-**@Role mentions** → Generate PRB → Subagent execution
-**Work items** → Convert to PRB → Execute
-**Direct work** → Block → Generate PRB
+@Role mentions → Generate AgentTask → Subagent execution
+Work items → Convert to AgentTask → Execute
+Direct work → Block → Generate AgentTask
 
 ## System Nature Validation
 
-**AI-AGENTIC:** @AI-Engineer for behaviors, memory, PRBs
-**CODE-BASED:** @Developer, @Backend-Tester for implementation
-**HYBRID:** PM+Architect collaboration for role selection
+AI-AGENTIC: @AI-Engineer for behaviors, memory, AgentTasks
+CODE-BASED: @Developer, @Backend-Tester for implementation
+HYBRID: PM+Architect collaboration for role selection
 
 ## Quality Gates
 
-**Pre-Creation:** Template compliance, context completeness, role assignment
-**Runtime:** Execution monitoring, quality maintenance
-**Post-Execution:** Completion verification, learning capture
+Pre-Creation: Template compliance, context completeness, role assignment
+Runtime: Execution monitoring, quality maintenance
+Post-Execution: Completion verification, learning capture
 
 ---
-*Core PRB enforcement with blocking, auto-correction, and execution precision controls*
+*AgentTask enforcement with blocking, auto-correction, and execution controls*

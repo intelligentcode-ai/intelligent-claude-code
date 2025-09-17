@@ -56,7 +56,7 @@
 ### Violation Detection
 **REAL-TIME MONITORING:**
 - Work intent vs information queries
-- Direct execution without PRB attempts
+- Direct execution without AgentTask attempts
 - Role assignment bypass patterns
 - Template compliance violations
 

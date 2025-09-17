@@ -24,7 +24,7 @@
 ### PM+Architect Collaboration
 1. PM analyzes requirements (COORDINATION ONLY)
 2. PM selects domain architect (DELEGATION ONLY)
-3. Joint role assignment and document rationale in PRB (NO DIRECT WORK)
+3. Joint role assignment and document rationale in AgentTask (NO DIRECT WORK)
 4. Validate technology expertise and specialist creation capability (ANALYSIS ONLY)
 
 ### PM Role Nuclear Enforcement
@@ -54,13 +54,13 @@
 - Verify active PRB context exists
 - Check execution scope (main vs subagent)
 - BLOCK if main scope execution detected
-- Provide mandatory PRB creation guidance
+- Provide mandatory AgentTask creation guidance
 
 **BLOCKING CONDITIONS:**
 - Work intent detected AND no active PRB context
 - Direct execution attempt in main scope
 - Tool usage (Edit/Write/Bash) without PRB authorization
-- File operations outside PRB execution flow
+- File operations outside AgentTask execution flow
 
 ### Work Intent Categories (ULTRA-COMPREHENSIVE)
 **WORK PATTERNS (TRIGGER PRB IMMEDIATELY):** ALL action verbs including fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor, create, add, insert, generate, build, make, write, implement, develop, delete, remove, clean, purge, clear, eliminate, drop, deploy, install, configure, setup, run, execute, start, stop, restart, migrate, backup, restore, sync, merge, commit, push, pull, move, copy, rename, edit, append, replace
@@ -85,7 +85,7 @@
 
 **ULTRA-STRICT DETECTION LOGIC:** 
 - ANY work intent + no active PRB + main scope → NUCLEAR BLOCK IMMEDIATELY
-- ANY tool usage for modification + no PRB authorization → ABSOLUTE TOOL DENIAL
+- ANY tool usage for modification + no AgentTask authorization → ABSOLUTE TOOL DENIAL
 - Pure information request + zero work context → ALLOW CAUTIOUSLY
 - ANY compound pattern with work component → PRIORITIZE WORK, FORCE PRB GENERATION
 - Subtle work indicators detected → TREAT AS FULL WORK REQUEST
@@ -101,15 +101,15 @@
 ## Error Messages
 
 ### Nuclear Error Messages
-- `SUBAGENT_REQUIRED`: "🚫 PRB execution MUST use subagent - main scope FORBIDDEN"
+- `SUBAGENT_REQUIRED`: "🚫 AgentTask execution MUST use subagent - main scope FORBIDDEN"
 - `CREATION_BLOCKED`: "⛔ Work items MUST be created by main agent - NO EXCEPTIONS"
 - `ROLE_MISMATCH`: "❌ Role {role} INVALID for {system_type} - ARCHITECTURAL VIOLATION"
 - `SCOPE_VIOLATION`: "🔒 Operation outside project boundaries - ABSOLUTELY FORBIDDEN"
 - `DIRECT_EXECUTION_BLOCKED`: "🚫 ALL work REQUIRES PRB - use @Role pattern - NO SHORTCUTS"
-- `MAIN_SCOPE_EXECUTION_BLOCKED`: "⛔ Main scope work execution ABSOLUTELY FORBIDDEN - PRB+Agent MANDATORY"
-- `TOOL_ACCESS_BLOCKED`: "🔒 Tool usage REQUIRES active PRB execution context - NO EXCEPTIONS"
+- `MAIN_SCOPE_EXECUTION_BLOCKED`: "⛔ Main scope work execution ABSOLUTELY FORBIDDEN - AgentTask+Agent MANDATORY"
+- `TOOL_ACCESS_BLOCKED`: "🔒 Tool usage REQUIRES active AgentTask execution context - NO EXCEPTIONS"
 - `WORK_PATTERN_DETECTED`: "🚫 Work pattern detected in main scope - PRB GENERATION REQUIRED"
-- `ARCHITECTURAL_VIOLATION`: "⛔ ARCHITECTURAL INTEGRITY COMPROMISED - PRB+Agent pattern NON-NEGOTIABLE"
+- `ARCHITECTURAL_VIOLATION`: "⛔ ARCHITECTURAL INTEGRITY COMPROMISED - AgentTask+Agent pattern NON-NEGOTIABLE"
 - `PM_WORK_EXECUTION_BLOCKED`: "🚫 PM WORK EXECUTION ABSOLUTELY FORBIDDEN - COORDINATION ONLY ROLE"
 - `PM_TOOL_ACCESS_DENIED`: "⛔ PM TOOL ACCESS ABSOLUTELY DENIED - DELEGATION REQUIRED"
 - `PM_TECHNICAL_VIOLATION`: "❌ PM TECHNICAL WORK FORBIDDEN - CREATE PRB AND DELEGATE"
@@ -121,15 +121,15 @@
 | Wrong context | Redirect to appropriate context |
 | Role mismatch | Trigger PM+Architect process |
 | Scope violation | Constrain to project root |
-| PM work violation | Nuclear block + force PRB creation + specialist assignment |
+| PM work violation | Nuclear block + force AgentTask creation + specialist assignment |
 | PM tool access | Immediate denial + delegation guidance |
 
 ### PM Behavioral Integration
 **NUCLEAR ENFORCEMENT MECHANISMS:**
 - **Real-time Pattern Scanning:** Continuous monitoring for PM work intent patterns
 - **Tool Access Control:** Immediate blocking of PM modification tool attempts
-- **Automatic PRB Generation:** Force PRB creation when PM work detected
-- **Specialist Assignment:** Auto-assign appropriate specialist after PRB creation
+- **Automatic AgentTask Generation:** Force AgentTask creation when PM work detected
+- **Specialist Assignment:** Auto-assign appropriate specialist after AgentTask creation
 - **Violation Recovery:** Immediate redirection to delegation patterns
 
 ---

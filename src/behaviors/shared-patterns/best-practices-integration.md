@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Integrate project-specific best practices, coding standards, and architectural patterns into PRB execution for consistent quality and style adherence.
+Integrate project-specific best practices, coding standards, and architectural patterns into AgentTask execution for consistent quality and style adherence.
 
 ## Best Practices Loading
 
@@ -72,10 +72,10 @@ Integrate project-specific best practices, coding standards, and architectural p
 - **Context Relevance**: Work description alignment with practice description
 - **Quality Gate Relevance**: Validation criteria applicable to current work
 
-## PRB Integration
+## AgentTask Integration
 
 ### Practice Application
-**AUTOMATIC INTEGRATION:** Best practices automatically applied during PRB execution:
+**AUTOMATIC INTEGRATION:** Best practices automatically applied during AgentTask execution:
 - **Quality Checks**: Validate against coding standards
 - **Pattern Enforcement**: Apply architectural patterns
 - **Process Compliance**: Ensure workflow requirements met

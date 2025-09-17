@@ -12,7 +12,7 @@
 
 **Standard Best-Practice File Format (from existing files):**
 - **Type**: category (architecture, development, security, etc.)
-- **Applies To**: PRB sizes (nano, tiny, medium, large, mega)
+- **Applies To**: AgentTask sizes (nano, tiny, medium, large, mega)
 - **Keywords**: searchable terms for relevance matching
 - **Description**: Clear practice description
 - **Implementation**: Detailed implementation guidance
@@ -27,9 +27,9 @@
 2. **Directory Mapping**: Map work type to primary and secondary best-practices directories
 3. **File Discovery**: Find all .md files in mapped directories
 4. **Content Parsing**: Extract Type, Applies To, Keywords, and Description from each file
-5. **Relevance Scoring**: Score based on keyword match, PRB size match, and context alignment
+5. **Relevance Scoring**: Score based on keyword match, AgentTask size match, and context alignment
 6. **Selection**: Choose top 2-3 most relevant practices (max 1000 tokens total)
-7. **Return Results**: Return selected practices for PRB embedding
+7. **Return Results**: Return selected practices for AgentTask embedding
 
 ### GenerateBestPractice Pattern  
 **STEPS TO GENERATE BEST-PRACTICE FROM SUCCESSFUL PATTERN:**
@@ -56,7 +56,7 @@
 ### Scoring Factors
 **SCORING CRITERIA (0-10 scale each):**
 - **Keyword Match Score**: Direct matches between work description and practice keywords
-- **PRB Size Score**: "Applies To" field matches current PRB size
+- **AgentTask Size Score**: "Applies To" field matches current AgentTask size
 - **Technology Score**: Technology domain alignment (database, API, infrastructure, etc.)
 - **Context Score**: Work description alignment with practice description
 
@@ -68,18 +68,18 @@
 4. **Minimum Threshold**: Only include practices scoring 6+ total points
 5. **Diversity**: Prefer practices from different categories when scores are similar
 
-## PRB Integration
+## AgentTask Integration
 
 ### Context Embedding
-**BEST-PRACTICES IN PRB CONTEXT:**
-- Embed 2-3 most relevant practices in PRB context section
+**BEST-PRACTICES IN AGENTTASK CONTEXT:**
+- Embed 2-3 most relevant practices in AgentTask context section
 - Include practice title, key implementation points, and quality gates
 - Reference full practice files for detailed implementation guidance
-- Apply token limit to prevent PRB bloat
+- Apply token limit to prevent AgentTask bloat
 
 ### Quality Validation
 **PRACTICE APPLICATION VALIDATION:**
-- Check PRB execution against embedded quality gates
+- Check AgentTask execution against embedded quality gates
 - Validate implementation follows practice guidelines
 - Score adherence to practice recommendations
 - Store successful applications for pattern reinforcement

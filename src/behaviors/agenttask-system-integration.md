@@ -10,22 +10,22 @@
 @./shared-patterns/behavioral-decision-matrix.md
 @./shared-patterns/memory-operations.md
 
-## Core PRB Lifecycle
+## Core AgentTask Lifecycle
 
 ### Creation & Breakdown
-**SIZE LIMIT:** Auto-breakdown PRBs >15 complexity points
+**SIZE LIMIT:** Auto-breakdown AgentTasks >15 complexity points
 **TEMPLATE SELECTION:** Based on complexity score (Nano/Tiny/Medium/Large/Mega)
 **VALIDATION:** Zero placeholders, complete context, embedded config
 
 ### Execution Patterns
-**SUBAGENT REQUIRED:** All PRBs execute via AGENTS
+**SUBAGENT REQUIRED:** All AgentTasks execute via AGENTS
 **COMPLETION CHECKLIST:** Mandatory validation before marking complete
 **CONTEXT PRESERVATION:** Self-contained execution with no external dependencies
 
 ### Adaptation & Updates
-**DYNAMIC UPDATES:** Real-time PRB context modification when corrections provided
+**DYNAMIC UPDATES:** Real-time AgentTask context modification when corrections provided
 **AGENT RESTART:** Seamless transition with updated context
-**SCOPE ADJUSTMENT:** Modify PRB scope while maintaining template compliance
+**SCOPE ADJUSTMENT:** Modify AgentTask scope while maintaining template compliance
 
 ## Integration Components
 
@@ -48,8 +48,8 @@
 - Completion verification
 
 ### Workflow Integration
-- Story → PRB → Execution → Completion
-- Multi-PRB coordination for large stories
+- Story → AgentTask → Execution → Completion
+- Multi-AgentTask coordination for large stories
 - Cross-system dependency management
 - Quality gates at each transition
 
@@ -58,7 +58,7 @@
 ### Auto-Correction
 - Wrong template → Recalculate complexity, use correct template
 - Missing context → Gather required context before proceeding
-- Size violations → Automatic breakdown into compliant PRBs
+- Size violations → Automatic breakdown into compliant AgentTasks
 - Execution failures → Adaptation patterns with context updates
 
 ### Recovery Patterns
@@ -88,4 +88,4 @@
 - Documentation and cleanup
 
 ---
-*Unified PRB system integration patterns*
+*Unified AgentTask system integration patterns*

@@ -5,8 +5,8 @@
 ## COMPACT-RESISTANT DECISION CORE
 
 **ULTRA-SHORT DECISION-TREE:**
-- **WORK-INTENT** → PRB+AGENT (ALWAYS)
-- **@ROLE+WORK** → PRB+TASK-TOOL (IMMEDIATE) 
+- **WORK-INTENT** → AgentTask+AGENT (ALWAYS)
+- **@ROLE+WORK** → AgentTask+TASK-TOOL (IMMEDIATE) 
 - **QUESTION-ONLY** → MEMORY-FIRST+DIRECT (ALLOWED)
 - **PM-DETECTION** → COORDINATION-ONLY (BLOCKED FROM WORK)
 
@@ -19,11 +19,11 @@
 ## Core Decision Hierarchy
 
 **PRECEDENCE ORDER (Highest→Lowest):**
-1. **Continuation Work** - Work after PRB completion triggers
+1. **Continuation Work** - Work after AgentTask completion triggers
 2. **@Role Direct Execution** - Direct role assignments with work context
-3. **Work→PRB Generation** - Work intent patterns requiring structured execution
+3. **Work→AgentTask Generation** - Work intent patterns requiring structured execution
 4. **Simple Information Direct** - Straightforward information requests
-5. **Complex→PRB Analysis** - Complex investigation requiring structured analysis
+5. **Complex→AgentTask Analysis** - Complex investigation requiring structured analysis
 
 ## Context-Based Complexity Evaluation
 
@@ -64,7 +64,7 @@
 
 **Scoring Guidelines:**
 - **Simple Context (5-8 total points)**: Direct response appropriate for focused, surface-level requests
-- **Complex Context (9-15 total points)**: PRB generation required for broad, deep, or multi-faceted work
+- **Complex Context (9-15 total points)**: AgentTask generation required for broad, deep, or multi-faceted work
 
 **STEP 3: Context Overrides**
 - **@Role Direct**: Always bypasses complexity scoring
@@ -74,21 +74,21 @@
 ## Decision Logic Matrix
 
 ### 1. Continuation Work (HIGHEST PRECEDENCE)
-**PATTERN**: Work continuation after PRB completion
+**PATTERN**: Work continuation after AgentTask completion
 **TRIGGERS**: test, validate, fix after PRB, npm test, pytest, lint, build
 **ACTION**: Always generate PRB regardless of complexity score
 
 ### 2. @Role Direct Execution (HIGH PRECEDENCE)
 **PATTERN**: "@Role [direct work assignment]"
 **TRIGGERS**: @Developer implement feature, @DevOps deploy application, @AI-Engineer optimize behavior
-**ACTION**: Immediate PRB generation → Task tool execution
+**ACTION**: Immediate AgentTask generation → Task tool execution
 **RATIONALE**: Clear role assignment with work context requires immediate structured execution
 
-### 3. Work→PRB Generation (MEDIUM PRECEDENCE)
+### 3. Work→AgentTask Generation (MEDIUM PRECEDENCE)
 **PATTERN**: Work intent without explicit role assignment
 **TRIGGERS**: Implementation (implement, create, build, develop), Modification (fix, update, modify, change), Operations (deploy, install, configure, setup)
-**ACTION**: PRB generation → Appropriate role assignment → Task tool execution
-**CONTEXT EVALUATION**: Any scope - Work intent always triggers PRB generation
+**ACTION**: AgentTask generation → Appropriate role assignment → Task tool execution
+**CONTEXT EVALUATION**: Any scope - Work intent always triggers AgentTask generation
 
 ### 4. Simple Information Direct (LOWER PRECEDENCE)
 **PATTERN**: Information requests with simple context
@@ -96,7 +96,7 @@
 **CONTEXT REQUIREMENTS**: scope_breadth ≤2, investigation_depth ≤2, decision_complexity ≤1, coordination_needs = 1, implementation_scope = 1
 **ACTION**: Direct response with memory integration
 
-### 5. Complex→PRB Analysis (TRIGGER PRECEDENCE)
+### 5. Complex→AgentTask Analysis (TRIGGER PRECEDENCE)
 **PATTERN**: Information requests requiring structured investigation
 **TRIGGERS**: Multi-factor analysis questions, Architecture decision requests, System-wide impact assessments
 **CONTEXT REQUIREMENTS**: Any factor = 3 OR total_context_score ≥9
@@ -118,7 +118,7 @@
 
 ### For Claude Behavioral Processing
 
-**CHECKPOINT-REMINDER:** WORK-INTENT→PRB+AGENT, PM→COORDINATION-ONLY, @ROLE+WORK→IMMEDIATE-PRB
+**CHECKPOINT-REMINDER:** WORK-INTENT→AgentTask+AGENT, PM→COORDINATION-ONLY, @ROLE+WORK→IMMEDIATE-PRB
 
 **DECISION SEQUENCE:**
 1. **Check Continuation Work**: Is this work continuation after PRB?
@@ -127,7 +127,7 @@
 4. **Evaluate Context Complexity**: Score context factors 1-15
 5. **Apply Analytical Framework**: Sequential thinking LIBERALLY for ANY multi-step reasoning with project context, Ultrathinking for strategic decisions
 6. **Apply Decision Logic**: Use matrix based on precedence and complexity
-7. **Execute Action**: PRB generation, direct response, or structured analysis with sequential thinking
+7. **Execute Action**: AgentTask generation, direct response, or structured analysis with sequential thinking
 
 **ERROR PREVENTION:**
 - Never bypass work→PRB for implementation intent
