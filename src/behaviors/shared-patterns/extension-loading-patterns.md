@@ -1,31 +1,31 @@
 # Extension Loading Patterns
 
-**MANDATORY:** Load prb-extensions.yaml for template customization. Auto-correct violations.
+**MANDATORY:** Load agenttask-extensions.yaml for template customization. Auto-correct violations.
 
 ## Extension File Location
 
 **Search Order (Highest→Lowest Priority):**
-1. **Project Root**: `{project_root}/prb-extensions.yaml`
-2. **Project Claude Directory**: `{project_root}/.claude/prb-extensions.yaml`
+1. **Project Root**: `{project_root}/agenttask-extensions.yaml`
+2. **Project Claude Directory**: `{project_root}/.claude/agenttask-extensions.yaml`
 
 ## Extension Structure
 
 **Valid Extension Sections:**
 - `all:` - Applied to every template size
-- `nano:` - Applied to nano-prb-template.yaml (0-2 points)
-- `tiny:` - Applied to tiny-prb-template.yaml (3-5 points)
-- `medium:` - Applied to medium-prb-template.yaml (6-15 points)
-- `large:` - Applied to large-prb-template.yaml (16-30 points)
-- `mega:` - Applied to mega-prb-template.yaml (30+ points)
+- `nano:` - Applied to nano-agenttask-template.yaml (0-2 points)
+- `tiny:` - Applied to tiny-agenttask-template.yaml (3-5 points)
+- `medium:` - Applied to medium-agenttask-template.yaml (6-15 points)
+- `large:` - Applied to large-agenttask-template.yaml (16-30 points)
+- `mega:` - Applied to mega-agenttask-template.yaml (30+ points)
 
 ## Loading Process
 
 **Extension Loading Steps:**
-1. **Check Project Root**: Look for `{project_root}/prb-extensions.yaml`
-2. **Check Claude Directory**: If not found, look for `{project_root}/.claude/prb-extensions.yaml`
+1. **Check Project Root**: Look for `{project_root}/agenttask-extensions.yaml`
+2. **Check Claude Directory**: If not found, look for `{project_root}/.claude/agenttask-extensions.yaml`
 3. **Parse YAML Structure**: Validate extension file syntax
 4. **Validate Sections**: Ensure only valid sections (all, nano, tiny, medium, large, mega)
-5. **Store Extensions**: Keep in memory for merging during PRB generation
+5. **Store Extensions**: Keep in memory for merging during AgentTask generation
 6. **Handle Missing**: If no extension file found, continue with base templates only
 
 ## Extension Validation
@@ -61,8 +61,8 @@ extensions:
 - Extensions stored for use during template merging
 - No modification of base templates - extensions kept separate
 
-### With PRB Generation
-- Extensions passed to merging process during PRB creation
+### With AgentTask Generation
+- Extensions passed to merging process during AgentTask creation
 - Size-specific extensions selected based on complexity score
 - Universal `all:` extensions applied to every template
 
@@ -80,4 +80,4 @@ extensions:
 - Cache miss: Reload from filesystem
 
 ---
-*Extension loading patterns for PRB template customization*
+*Extension loading patterns for AgentTask template customization*

@@ -2,7 +2,7 @@
 
 **MANDATORY:** MUST use learning patterns. Auto-correct violations.
 
-**PURPOSE:** Complete learning, memory, and PRB execution patterns
+**PURPOSE:** Complete learning, memory, and AgentTask execution patterns
 
 ## Core Learning Patterns
 
@@ -13,9 +13,9 @@
 **Topics:** Organized by domain (authentication, implementation, performance, etc.)
 
 ### PRB Learning Logic
-**Learning Capture:** Pattern stored from successful PRB execution
-**Learning Application:** Memory patterns successfully applied in PRB context
-**Learning Reference:** Existing patterns referenced during PRB generation
+**Learning Capture:** Pattern stored from successful AgentTask execution
+**Learning Application:** Memory patterns successfully applied in AgentTask context
+**Learning Reference:** Existing patterns referenced during AgentTask generation
 
 ### Learning Application Detection
 **Learning Patterns:**
@@ -27,13 +27,13 @@
 
 ### Memory-First Pattern
 **Process:**
-1. Embed relevant learnings directly in PRB during generation
-2. No runtime memory lookups needed (all in PRB)
+1. Embed relevant learnings directly in AgentTask during generation
+2. No runtime memory lookups needed (all in AgentTask)
 3. Execute work with embedded learning context
 4. Store new patterns in version control (PRB retrospective)
 
 ### Learning Processing Pattern
-**Pattern Recognition:** Identify successful patterns during PRB execution → Store learning entity with pattern details → Reference in future PRB contexts
+**Pattern Recognition:** Identify successful patterns during AgentTask execution → Store learning entity with pattern details → Reference in future PRB contexts
 
 **Learning Creation Process:** Store learning with pattern type, PRB context, observations about what/why/how, and application guidance
 
@@ -57,7 +57,7 @@ Memory embedding and storage are handled during PRB lifecycle:
 - **Embedding**: Relevant learnings copied into PRB context during generation
 - **No Search**: All needed learnings are embedded, no runtime lookups
 - **Storage**: New learnings stored in version-controlled memory/
-- **Learning Capture**: Automatic during PRB completion
+- **Learning Capture**: Automatic during AgentTask completion
 - **Learning Format**: Markdown files with YAML frontmatter
 - **Details**: See memory-operations.md for version-controlled patterns
 

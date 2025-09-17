@@ -22,7 +22,7 @@
 
 ### Installation Completeness Check
 **REQUIRED COMPONENTS:**
-- installation/prb-templates/ directory with template files
+- installation/agenttask-templates/ directory with template files
 - installation/behaviors/ directory with behavioral patterns  
 - installation/config.md file with system configuration
 - installation/roles/ directory with agent definitions

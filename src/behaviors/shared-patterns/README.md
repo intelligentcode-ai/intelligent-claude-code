@@ -7,12 +7,12 @@
 ### behavioral-decision-matrix.md
 **Used by:** agenttask-enforcement, agenttask-auto-trigger, role-management
 **Purpose:** Context-based behavioral decision system for consistent pattern following
-**Key:** @Role direct → Work→PRB → Simple info direct → Complex→PRB precedence
+**Key:** @Role direct → Work→AgentTask → Simple info direct → Complex→AgentTask precedence
 
 ### learning-patterns.md
 **Used by:** learning-team-automation, agenttask-creation-system, role-management
 **Purpose:** PRB learning capture, pattern detection, memory-first approach
-**Key:** PRB execution generates learnings, patterns applied in future PRBs
+**Key:** AgentTask execution generates learnings, patterns applied in future PRBs
 
 ### memory-operations.md  
 **Used by:** learning-team-automation, memory commands (store/search/load)

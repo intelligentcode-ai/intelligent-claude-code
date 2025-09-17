@@ -5,7 +5,7 @@
 ## Core Pattern
 
 **Task Tool Invocation Pattern:**
-- **Agent Type**: Use general-purpose subagent for PRB execution
+- **Agent Type**: Use general-purpose subagent for AgentTask execution
 - **Description**: Include specific PRB identifier for tracking
 - **Context**: Provide complete PRB context for autonomous execution
 - **Background Mode**: Enable background execution for parallel processing
@@ -48,7 +48,7 @@
 
 ## Integration
 
-**L3 Mode:** Parallel PRB generation and dispatch
+**L3 Mode:** Parallel AgentTask generation and dispatch
 **Queue Management:** Priority scheduling, dependency resolution
 **Memory:** Track performance patterns and optimization learnings
 

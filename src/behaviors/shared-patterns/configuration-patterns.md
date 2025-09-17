@@ -8,7 +8,7 @@
 
 ## Configuration Hierarchy
 **Priority (Highest→Lowest):**
-1. Embedded config (in PRBs)
+1. Embedded config (in AgentTasks)
 2. Project config (./config.md - default, or .claude/config.md if user demands)
 3. Installation global ({get_install_path()}/config.md - installation-wide only)
 4. System defaults

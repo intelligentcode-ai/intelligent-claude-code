@@ -1,6 +1,6 @@
 # Extension Merging Patterns
 
-**MANDATORY:** Merge prb-extensions.yaml with base templates during PRB generation. Auto-correct violations.
+**MANDATORY:** Merge agenttask-extensions.yaml with base templates during AgentTask generation. Auto-correct violations.
 
 ## Merging Strategy
 

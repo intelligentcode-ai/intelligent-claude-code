@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.1.7] - 2025-01-26
+
+### Changed
+- Compacted behavior files by removing excessive enforcement language and simplifying structure
+- Reduced priority behavior files to <125 lines each by removing redundant enforcement
+- Removed "MANDATORY:", "CRITICAL:", "MUST", "ABSOLUTE", "ZERO TOLERANCE" prefixes
+- Deleted "COMPACT-RESISTANT" sections and verbose error messages
+- Converted repetitive explanations to bullet lists and removed dramatic language
+- Simplified to clean technical specifications focusing on WHAT and HOW
+
+### Technical Details
+- agenttask-auto-trigger.md: 256→172 lines (33% reduction)
+- agenttask-creation-system.md: 204→167 lines (18% reduction)
+- story-breakdown.md: 188→132 lines (30% reduction)
+- agenttask-execution.md: 172→159 lines (8% reduction)
+- agenttask-enforcement.md: 138→92 lines (33% reduction)
+
 ## [8.1.8] - 2025-01-26
 
 ### Added

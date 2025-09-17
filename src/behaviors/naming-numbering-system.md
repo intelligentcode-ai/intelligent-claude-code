@@ -10,7 +10,7 @@
 ### Format Rules
 - **Standard:** `<CATEGORY>-<NUMBER>-<TITLE>-<DATE>.md`
 - **With Parent:** `<PARENT>-<CATEGORY>-<NUMBER>-<TITLE>-<DATE>.md`
-- **Categories:** EPIC, STORY, BUG, PRB (case sensitive)
+- **Categories:** EPIC, STORY, BUG, AGENTTASK (case sensitive)
 - **Numbers:** Zero-padded (001, 002, 003), sequential within category
 - **Titles:** Lowercase, hyphen-separated, descriptive
 - **Dates:** YYYY-MM-DD format using `$(date +%Y-%m-%d)`
@@ -19,13 +19,13 @@
 - EPIC-001-virtual-team-enhancement-2025-08-26.md
 - STORY-001-user-authentication-2025-08-26.md
 - BUG-005-naming-format-inconsistency-2025-08-26.md
-- STORY-001-PRB-001-implement-auth-backend-2025-08-26.prb.yaml
+- STORY-001-AGENTTASK-001-implement-auth-backend-2025-08-26.agenttask.yaml
 
 ## Sequential Numbering
 
 ### Number Sequences
 - **EPIC/STORY/BUG:** Global sequence across project
-- **PRB:** Parent-scoped sequence (STORY-001-PRB-001, STORY-001-PRB-002)
+- **AGENTTASK:** Parent-scoped sequence (STORY-001-AGENTTASK-001, STORY-001-AGENTTASK-002)
 
 ### Directory Scanning
 **EPIC/STORY:** Search `stories/` directory
@@ -43,11 +43,11 @@
 
 ### Pre-Creation Validation
 **CHECK:**
-- Category in allowed list (EPIC, STORY, BUG, PRB)
+- Category in allowed list (EPIC, STORY, BUG, AGENTTASK)
 - Number format (zero-padded, sequential)
 - Title format (lowercase, hyphens only)
 - Date format (YYYY-MM-DD)
-- Parent reference exists (for PRBs)
+- Parent reference exists (for AGENTTASKs)
 
 ### Auto-Correction
 **COMMON FIXES:**
@@ -72,7 +72,7 @@
 
 ### With Work Item Creation
 - Generate compliant names before file creation
-- Validate parent references for PRBs
+- Validate parent references for AGENTTASKs
 - Ensure uniqueness across project scope
 - Apply consistent formatting rules
 

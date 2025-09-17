@@ -1,6 +1,6 @@
 # Template Resolution & Validation
 
-**MANDATORY:** All PRB templates require complete placeholder resolution and validation before creation.
+**MANDATORY:** All AgentTask templates require complete placeholder resolution and validation before creation.
 
 ## Imports
 @./shared-patterns/template-loading.md
@@ -34,11 +34,11 @@
 
 ### Template Source
 **MANDATORY:** Only use templates from hierarchy:
-- `nano-prb-template.yaml` (0-2 points)
-- `tiny-prb-template.yaml` (3-5 points)
-- `medium-prb-template.yaml` (6-15 points)
-- `large-prb-template.yaml` (16-30 points)
-- `mega-prb-template.yaml` (30+ points)
+- `nano-agenttask-template.yaml` (0-2 points)
+- `tiny-agenttask-template.yaml` (3-5 points)
+- `medium-agenttask-template.yaml` (6-15 points)
+- `large-agenttask-template.yaml` (16-30 points)
+- `mega-agenttask-template.yaml` (30+ points)
 
 ### Resolution Standards
 **BEFORE AGENT execution:**
@@ -69,10 +69,10 @@
 4. **Block Creation**: If any placeholders remain
 
 ### Auto-Correction
-- Manual PRB creation → Force template usage
+- Manual AgentTask creation → Force template usage
 - Unresolved placeholders → Complete resolution required
 - Wrong complexity → Recalculate and use correct template
-- Runtime config → Embed all values in PRB
+- Runtime config → Embed all values in AgentTask
 - AGENT attempts → Block and redirect to main agent
 
 ### Error Messages

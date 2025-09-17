@@ -1,6 +1,6 @@
 # Main Scope Blocking
 
-**MANDATORY:** ZERO TOLERANCE for main scope work execution. ALL work MUST use PRB+agent pattern.
+**MANDATORY:** ZERO TOLERANCE for main scope work execution. ALL work MUST use AgentTask+agent pattern.
 
 ## Imports
 
@@ -30,7 +30,7 @@
 - VIOLATION: Tool usage without active PRB context
 
 **ARCHITECTURAL INTEGRITY:** Tools reserved for authorized subagent execution
-**BLOCKING REASON:** Maintains PRB-driven execution pattern
+**BLOCKING REASON:** Maintains AgentTask-driven execution pattern
 
 **RECOVERY:** Create PRB → Deploy via Task tool → Agent executes with tool authorization
 
@@ -40,11 +40,11 @@
 - SYSTEM STATUS: Maximum enforcement mode activated
 
 **THIS IS NOT NEGOTIABLE:**
-- Main scope = PRB creation ONLY
+- Main scope = AgentTask creation ONLY
 - Subagent = Work execution ONLY
 - No exceptions, no workarounds, no compromises
 
-**COMPLIANCE REQUIRED:** Follow PRB+Agent pattern without deviation
+**COMPLIANCE REQUIRED:** Follow AgentTask+Agent pattern without deviation
 
 ## COMPREHENSIVE WORK CATEGORIES
 

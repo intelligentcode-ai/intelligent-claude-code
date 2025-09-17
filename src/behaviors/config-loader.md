@@ -43,7 +43,7 @@
 2. Load system defaults
 3. Merge installation global config (installation_path/config.md - installation-wide only)
 4. Merge project config (./config.md default, or .claude/config.md if user configured)
-5. Apply embedded overrides (from PRBs)
+5. Apply embedded overrides (from AgentTasks)
 6. Return merged settings
 
 **Configuration Parsing:**
@@ -79,7 +79,7 @@
 ### API Usage
 - **Get Setting:** Load config → Check key exists → Return value or default
 - **Check Autonomy:** Get autonomy_level → Apply L1/L2/L3 behaviors
-- **Apply Embedded:** Check PRB config → Merge with current → Return merged
+- **Apply Embedded:** Check AgentTask config → Merge with current → Return merged
 - **Load Context:** Automatically loads CLAUDE.md from both locations
 - **Settings Access:** Natural configuration queries through behavioral patterns
 

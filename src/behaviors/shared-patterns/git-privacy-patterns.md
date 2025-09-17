@@ -64,7 +64,7 @@ Apply privacy filtering to git operations when git_privacy configuration is enab
 
 ## Integration Points
 
-### With PRB Execution
+### With AgentTask Execution
 **AUTOMATIC APPLICATION:** Privacy filtering applied automatically during:
 - Git commit operations
 - Pull request creation

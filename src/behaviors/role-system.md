@@ -33,7 +33,7 @@
 
 ### Two-Factor Analysis (MANDATORY)
 **Factor 1: Project Scope**
-- AI-AGENTIC SYSTEM: Behavioral patterns, memory operations, PRB frameworks
+- AI-AGENTIC SYSTEM: Behavioral patterns, memory operations, AgentTask frameworks
 - CODE-BASED SYSTEM: Implementation, databases, APIs, infrastructure
 - HYBRID SYSTEM: Mixed domains requiring joint assessment
 

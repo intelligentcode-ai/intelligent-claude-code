@@ -1,6 +1,6 @@
 # AgentTask Execution
 
-**MANDATORY:** Execute AgentTasks with complete context through specialized agents.
+Execute AgentTasks with complete context through specialized agents.
 
 ## Imports
 @./shared-patterns/context-validation.md
@@ -11,35 +11,32 @@
 
 ## Execution Workflow
 
-### PRB Execution Steps
-**MANDATORY:** All PRB execution follows structured workflow:
-1. **Context Loading**: Load complete PRB with embedded context
-2. **Agent Selection**: Deploy to appropriate specialist agent via Task tool
-3. **Scope Validation**: Verify project boundaries and context
-4. **Implementation**: Execute work within PRB scope
-5. **Quality Gates**: Apply validation and testing
-6. **Documentation**: Update version, changelog, documentation
-7. **Git Operations**: Commit and push with privacy filtering
-8. **Completion**: Mark PRB as completed with mandatory comprehensive execution summary
-9. **Memory Storage**: Automatically store execution learnings and patterns
+AgentTask execution steps:
+1. Context loading: Load complete AgentTask with embedded context
+2. Agent selection: Deploy to appropriate specialist agent via Task tool
+3. Scope validation: Verify project boundaries and context
+4. Implementation: Execute work within AgentTask scope
+5. Quality gates: Apply validation and testing
+6. Documentation: Update version, changelog, documentation
+7. Git operations: Commit and push with privacy filtering
+8. Completion: Mark AgentTask as completed with comprehensive execution summary
+9. Memory storage: Automatically store execution learnings and patterns
 
-### Agent Deployment
-**AGENT SELECTION:** Based on PRB role assignments and work type
-**DEPLOYMENT:** Via Task tool with complete PRB context
-**ISOLATION:** Each agent operates in isolated subagent context
+Agent deployment:
+- Agent selection: Based on AgentTask role assignments and work type
+- Deployment: Via Task tool with complete AgentTask context
+- Isolation: Each agent operates in isolated subagent context
 
 ## Context Management
 
-### Complete Context Loading
-**MANDATORY:** PRBs contain all required context:
-- **Project Context**: System nature, root path, boundaries
-- **Configuration**: All settings embedded, no runtime lookups
-- **Critical Files**: Relevant files with content samples
-- **User Requirements**: Clear success criteria
-- **Memory Patterns**: Applicable learnings and best practices
+Complete context loading:
+- Project context: System nature, root path, boundaries
+- Configuration: All settings embedded, no runtime lookups
+- Critical files: Relevant files with content samples
+- User requirements: Clear success criteria
+- Memory patterns: Applicable learnings and best practices
 
-### Context Validation
-**PRE-EXECUTION:** Validate complete context before agent deployment:
+Context validation:
 - System nature identified (CODE/AI-AGENTIC/HYBRID)
 - Project root absolute path verified
 - Configuration values embedded (no placeholders)
@@ -48,126 +45,116 @@
 
 ## Execution Patterns
 
-### Single-Pass Execution
-**OBJECTIVE:** Complete PRB work in single execution without interruption
-**CONTEXT:** All required information embedded in PRB
-**VALIDATION:** Built into execution flow
-**COMPLETION:** Full work completion with documentation
+Single-pass execution:
+- Objective: Complete AgentTask work in single execution without interruption
+- Context: All required information embedded in AgentTask
+- Validation: Built into execution flow
+- Completion: Full work completion with documentation
 
-### Quality Assurance Integration
-**VALIDATION:** Built into PRB execution flow
-**TESTING:** Agent applies appropriate testing patterns
-**DOCUMENTATION:** Automatic updates per workflow settings
-**COMPLIANCE:** Template requirements enforced
+Quality assurance integration:
+- Validation: Built into AgentTask execution flow
+- Testing: Agent applies appropriate testing patterns
+- Documentation: Automatic updates per workflow settings
+- Compliance: Template requirements enforced
 
 ## Workflow Integration
 
-### Version Management
-**VERSION BUMPING:** Per workflow settings embedded in PRB
-**CHANGELOG:** Required entries per template configuration
-**DOCUMENTATION:** Updates per PRB requirements
+Version management:
+- Version bumping: Per workflow settings embedded in AgentTask
+- Changelog: Required entries per template configuration
+- Documentation: Updates per AgentTask requirements
 
-### Git Operations
-**PRE-OPERATION PRIVACY VALIDATION:** Check git_privacy setting before ALL git operations
-**PRIVACY FILTERING:** Strip AI mentions when git_privacy=true from commit messages, PR descriptions, releases
-**AI MENTION PATTERNS:** Remove "AI", "Claude", "agent", "Generated with Claude Code", co-author attributions
-**COMMIT MESSAGES:** Professional, descriptive commit messages with no AI references
-**BRANCH STRATEGY:** Per workflow settings (direct_commit/feature_branch)
-**VALIDATION ENFORCEMENT:** Block git operations if privacy setting not validated
+Git operations:
+- Pre-operation privacy validation: Check git_privacy setting before all git operations
+- Privacy filtering: Strip AI mentions when git_privacy=true
+- AI mention patterns: Remove "AI", "Claude", "agent", "Generated with Claude Code"
+- Commit messages: Professional, descriptive commit messages with no AI references
+- Branch strategy: Per workflow settings (direct_commit/feature_branch)
+- Validation enforcement: Block git operations if privacy setting not validated
 
 ## Agent Coordination
 
-### Role-Based Execution
-**SPECIALIST AGENTS:** Technical work via specialized agents
-**MAIN AGENT ROLES:** Coordination roles (@PM, @Architect) in main context
-**TASK DEPLOYMENT:** Technical agents deployed via Task tool
+Role-based execution:
+- Specialist agents: Technical work via specialized agents
+- Main agent roles: Coordination roles (@PM, @Architect) in main context
+- Task deployment: Technical agents deployed via Task tool
 
-### Multi-Agent Patterns
-**SEQUENTIAL:** Large PRBs with sub-PRB coordination
-**PARALLEL:** Independent work items executed simultaneously
-**VALIDATION:** Cross-agent validation and review patterns
+Multi-agent patterns:
+- Sequential: Large AgentTasks with sub-AgentTask coordination
+- Parallel: Independent work items executed simultaneously
+- Validation: Cross-agent validation and review patterns
 
 ## Error Handling
 
-### Execution Failures
-**DETECTION:** Monitor for execution errors and failures
-**RECOVERY:** Automatic retry with enhanced context
-**ESCALATION:** Complex failures escalated with analysis
+Execution failures:
+- Detection: Monitor for execution errors and failures
+- Recovery: Automatic retry with enhanced context
+- Escalation: Complex failures escalated with analysis
 
-### Context Issues
-**INCOMPLETE CONTEXT:** Block execution, require context completion
-**SCOPE VIOLATIONS:** Prevent work outside project boundaries
-**CONFIGURATION ERRORS:** Validate embedded configuration
-**PRIVACY VIOLATIONS:** Block git operations without git_privacy validation
+Context issues:
+- Incomplete context: Block execution, require context completion
+- Scope violations: Prevent work outside project boundaries
+- Configuration errors: Validate embedded configuration
+- Privacy violations: Block git operations without git_privacy validation
 
 ## Completion Validation
 
-### Work Verification
-**COMPLETION CRITERIA:** Verify all PRB requirements met
-**QUALITY GATES:** Apply validation per template requirements
-**DOCUMENTATION:** Confirm required updates completed
-**EXECUTION SUMMARY:** Generate comprehensive summary per execution-summary.md pattern
+Work verification:
+- Completion criteria: Verify all AgentTask requirements met
+- Quality gates: Apply validation per template requirements
+- Documentation: Confirm required updates completed
+- Execution summary: Generate comprehensive summary per execution-summary.md pattern
 
-### Execution Summary Requirements
-**MANDATORY:** All PRB completions MUST include comprehensive execution summary:
+Execution summary requirements:
 - 9-step execution checklist with ✅/❌ status indicators
 - Functional requirements validation checklist
-- Success criteria verification checklist  
+- Success criteria verification checklist
 - Complete files modified documentation
 - Git operations summary with privacy compliance
 - Clear next steps guidance and follow-up actions
-- NO PRB completion without full execution summary
 
-### Automatic Memory Storage (Step 9)
-**MANDATORY:** All PRB completions MUST automatically store execution learnings:
+Automatic memory storage (Step 9):
+- Successful patterns: Implementation approaches that worked well
+- Issue resolutions: Problems encountered and solutions applied
+- Configuration discoveries: New settings, paths, or tool configurations
+- Optimization techniques: Performance improvements and efficiency gains
+- Integration solutions: Successful cross-component or cross-system integrations
 
-**Memory Storage Triggers:**
-- **Successful Patterns**: Implementation approaches that worked well
-- **Issue Resolutions**: Problems encountered and solutions applied
-- **Configuration Discoveries**: New settings, paths, or tool configurations
-- **Optimization Techniques**: Performance improvements and efficiency gains
-- **Integration Solutions**: Successful cross-component or cross-system integrations
+Storage process:
+1. Learning extraction: Identify patterns worth capturing from execution
+2. Topic determination: Select appropriate memory topic based on work type
+3. Security validation: Apply StoreInMemory security checklist
+4. Pattern storage: Use StoreInMemory pattern with execution context
+5. Index update: Update memory index for discoverability
 
-**Storage Process:**
-1. **Learning Extraction**: Identify patterns worth capturing from execution
-2. **Topic Determination**: Select appropriate memory topic based on work type
-3. **Security Validation**: Apply StoreInMemory security checklist
-4. **Pattern Storage**: Use StoreInMemory pattern with execution context
-5. **Index Update**: Update memory index for discoverability
+What to store:
+- Successful approaches: "AgentTask-XXX: Used [approach] for [problem], resulted in [outcome]"
+- Error solutions: "AgentTask-XXX: Encountered [error], resolved with [solution]"
+- Configuration patterns: "AgentTask-XXX: Found [tool/setting] at [location], enables [capability]"
+- Process improvements: "AgentTask-XXX: Applied [process], improved [metric] by [amount]"
 
-**What To Store:**
-- **Successful Approaches**: "PRB-XXX: Used [approach] for [problem], resulted in [outcome]"
-- **Error Solutions**: "PRB-XXX: Encountered [error], resolved with [solution]"
-- **Configuration Patterns**: "PRB-XXX: Found [tool/setting] at [location], enables [capability]"
-- **Process Improvements**: "PRB-XXX: Applied [process], improved [metric] by [amount]"
-
-**What NOT To Store:**
+What not to store:
 - Sensitive credentials, tokens, or keys
 - Project-specific details that don't generalize
 - Temporary states or one-time configurations
 - Personal information or private data
 
-### Learning Integration
-**PATTERN CAPTURE:** Store successful execution patterns automatically via Step 9
-**ISSUE PREVENTION:** Document and prevent recurring issues through memory storage
-**KNOWLEDGE TRANSFER:** Update memory with learnings after every PRB completion
-
 ## Integration Points
 
-### With PRB Generation
-**CONTEXT INHERITANCE:** Complete context from generation
-**TEMPLATE COMPLIANCE:** Execution follows template structure
-**WORKFLOW SETTINGS:** Apply embedded workflow configuration
+With AgentTask generation:
+- Context inheritance: Complete context from generation
+- Template compliance: Execution follows template structure
+- Workflow settings: Apply embedded workflow configuration
 
-### With Memory System
-**PRE-EXECUTION:** Load applicable patterns and learnings
-**POST-EXECUTION:** Store new patterns and solutions
-**PATTERN APPLICATION:** Apply proven approaches
+With memory system:
+- Pre-execution: Load applicable patterns and learnings
+- Post-execution: Store new patterns and solutions
+- Pattern application: Apply proven approaches
 
-### With Configuration System
-**EMBEDDED CONFIG:** Use embedded configuration values
-**NO RUNTIME LOOKUP:** All settings pre-resolved in PRB
-**WORKFLOW SETTINGS:** Apply per-size workflow configuration
+With configuration system:
+- Embedded config: Use embedded configuration values
+- No runtime lookup: All settings pre-resolved in AgentTask
+- Workflow settings: Apply per-size workflow configuration
 
 ---
-*PRB execution with complete context and agent coordination*
+*AgentTask execution with complete context and agent coordination*
