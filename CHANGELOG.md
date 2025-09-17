@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.3.0] - 2025-09-17
+
+### Changed
+- **Hook-Guided Behaviors**: Streamlined behavioral files to focus on essential logic rather than verbose procedural guidance
+- **Pattern Simplification**: Removed hook-redundant guidance patterns that hooks already remind about
+- **Essential Logic Focus**: Shifted behavioral files from HOW to WHAT (hooks handle the procedural how)
+- **Template Compliance**: Maintained core functionality while trusting hooks for behavioral enforcement
+- **Import Optimization**: Reduced unnecessary imports in streamlined behavioral files
+
+### Improved
+- **Behavioral Architecture**: Cleaner separation between essential logic and hook-guided procedures
+- **Hook Integration**: Better trust relationship between behavioral patterns and hook reminders
+- **File Maintainability**: Simplified behavioral files easier to maintain and understand
+- **System Reliability**: Essential logic preserved while removing procedural redundancy
+
+### Files Modified
+- `src/behaviors/agenttask-auto-trigger.md`: Streamlined from 172 to ~30 lines
+- `src/behaviors/agenttask-creation-system.md`: Streamlined from 167 to ~28 lines
+- `src/behaviors/shared-patterns/best-practices-integration.md`: Streamlined from 166 to ~20 lines
+- `src/behaviors/agenttask-execution.md`: Streamlined from 159 to ~21 lines
+- `src/behaviors/shared-patterns/execution-summary.md`: Streamlined from 146 to ~15 lines
+- `src/behaviors/shared-patterns/context-validation.md`: Streamlined from 139 to ~20 lines
+- `src/behaviors/shared-patterns/workflow-resolution-patterns.md`: Streamlined from 136 to ~26 lines
+- `src/behaviors/shared-patterns/memory-operations.md`: Streamlined from 133 to ~23 lines
+
 ## [8.2.0] - 2025-01-17
 
 ### Changed
