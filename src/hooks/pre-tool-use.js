@@ -7,7 +7,8 @@ const ReminderLoader = require('./lib/reminder-loader');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
-  const logFile = path.join(logDir, 'pre-tool-use.log');
+  const today = new Date().toISOString().split('T')[0];
+  const logFile = path.join(logDir, `${today}-pre-tool-use.log`);
 
   // Ensure log directory exists
   if (!fs.existsSync(logDir)) {
@@ -19,8 +20,6 @@ function main() {
     const logMessage = `[${timestamp}] ${message}\n`;
     fs.appendFileSync(logFile, logMessage);
   }
-
-  log('PreToolUse hook started');
 
   const standardOutput = {
     continue: true,
@@ -41,23 +40,22 @@ function main() {
           inputData = stdinBuffer;
         }
       } catch (error) {
-        console.log(JSON.stringify(standardOutput));
+        log(JSON.stringify(standardOutput));
         process.exit(0);
       }
     } else {
-      console.log(JSON.stringify(standardOutput));
+      log(JSON.stringify(standardOutput));
       process.exit(0);
     }
 
     if (!inputData.trim()) {
-      console.log(JSON.stringify(standardOutput));
+      log(JSON.stringify(standardOutput));
       process.exit(0);
     }
 
     let claudeInput;
     try {
       claudeInput = JSON.parse(inputData);
-      log(`Parsed input: tool=${claudeInput.tool}, args=${JSON.stringify(claudeInput.arguments || {})}`);
     } catch (error) {
       log(`JSON parse error: ${error.message}`);
       console.log(JSON.stringify(standardOutput));
@@ -67,7 +65,6 @@ function main() {
     // Generate educational reminder
     const reminderLoader = new ReminderLoader();
     const reminder = reminderLoader.getPreExecutionReminder();
-    log(`Generated reminder: ${reminder}`);
 
     const output = {
       continue: true,
@@ -78,12 +75,11 @@ function main() {
       }
     };
 
-    log(`Sending output: ${JSON.stringify(output)}`);
-    console.log(JSON.stringify(output));
+    log(JSON.stringify(output));
     process.exit(0);
 
   } catch (error) {
-    console.log(JSON.stringify(standardOutput));
+    log(JSON.stringify(standardOutput));
     process.exit(0);
   }
 }
