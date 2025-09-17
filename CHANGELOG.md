@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.7] - 2025-01-17
+
+### Enhanced
+- **Hook System Reminders**: Comprehensive one-line behavioral reminder system with 66 total reminders (27 preAction, 39 postAction)
+- **Dynamic Reminder Display**: Hooks now show ONE random line per invocation instead of hardcoded messages
+- **Always-On PostToolUse Reminders**: Removed 15% chance limitation - PostToolUse hook now ALWAYS shows helpful reminders
+- **Resource Management Reminders**: Added extensive PostToolUse reminders for autonomy settings, cleanup, memory contribution, and AgentTask management
+- **Research-First Approach**: Added PreToolUse reminder emphasizing "research, don't assume" philosophy
+
+### Fixed
+- **Reminder Loading Logic**: Fixed reminder-loader.js with proper random selection methods for both preAction and postAction reminders
+- **Hook Reliability**: Enhanced hook execution to consistently provide educational guidance throughout user interactions
+- **Behavioral Reinforcement**: Strengthened "proof don't claim" and resource cleanup patterns in post-action reminders
+
 ## [8.1.6] - 2025-01-16
 
 ### Fixed

@@ -47,13 +47,8 @@ class EducationalReminderSystem {
    * Check if educational reminder should be shown (random chance + context)
    */
   shouldShowReminder(tool, parameters, result) {
-    // Show reminder on certain tool types with random chance
-    const educationalTools = ['Write', 'Edit', 'MultiEdit', 'Bash', 'Read'];
-    const isEducationalTool = educationalTools.includes(tool);
-
-    // Show reminder 15% of the time for educational tools
-    const showChance = isEducationalTool ? 0.15 : 0.05;
-    return Math.random() < showChance;
+    // ALWAYS show a reminder for every tool use
+    return true;
   }
 
   /**
@@ -134,8 +129,6 @@ class MemoryStorageEnforcement {
                                 content.includes('Step_') ||
                                 content.includes('completion_definition') ||
                                 content.includes('done_when');
-
-    console.log(`DEBUG: isAgentTaskFile=${isAgentTaskFile}, hasCompletionMarkers=${hasCompletionMarkers}, filePath=${filePath}`);
 
     return isAgentTaskFile && hasCompletionMarkers;
   }
@@ -271,34 +264,9 @@ class MemoryStorageEnforcement {
    * Generate memory storage reminder
    */
   generateMemoryReminder(opportunities) {
-    let reminder = `📚 MEMORY STORAGE OPPORTUNITY DETECTED\n\n`;
-    reminder += `PRB execution completed. Consider storing learnings for future reuse:\n\n`;
-
-    opportunities.forEach((opportunity, index) => {
-      reminder += `${index + 1}. ${opportunity.type.toUpperCase()}:\n`;
-      reminder += `   ${opportunity.suggestion}\n`;
-
-      if (opportunity.domains) {
-        reminder += `   Domains: ${opportunity.domains.join(', ')}\n`;
-      }
-      if (opportunity.patterns) {
-        reminder += `   Patterns: ${opportunity.patterns.join(', ')}\n`;
-      }
-      if (opportunity.issues) {
-        reminder += `   Issues: ${opportunity.issues.join(', ')}\n`;
-      }
-      reminder += `\n`;
-    });
-
-    reminder += `MEMORY STORAGE LOCATIONS:\n`;
-    reminder += `- memory/behavioral-enforcement/ (behavioral patterns)\n`;
-    reminder += `- memory/system/ (system operations)\n`;
-    reminder += `- memory/patterns/ (implementation patterns)\n`;
-    reminder += `- memory/[domain]/ (domain-specific knowledge)\n\n`;
-
-    reminder += `LEARNING CAPTURE PRINCIPLE: Every PRB completion is a learning opportunity!`;
-
-    return reminder;
+    // Just use a simple one-line reminder from the educational system
+    const educationalReminder = new EducationalReminderSystem();
+    return educationalReminder.generateEducationalReminder();
   }
 
   /**
