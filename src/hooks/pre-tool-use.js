@@ -66,9 +66,12 @@ function main() {
     const reminderLoader = new ReminderLoader();
     const reminder = reminderLoader.getPreExecutionReminder();
 
+    // Try different output format for PreToolUse
+    console.log(reminder);
+
     const output = {
       continue: true,
-      suppressOutput: true,
+      suppressOutput: false,
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
         additionalContext: reminder
@@ -80,6 +83,7 @@ function main() {
 
   } catch (error) {
     log(JSON.stringify(standardOutput));
+    console.log(JSON.stringify(standardOutput));
     process.exit(0);
   }
 }
