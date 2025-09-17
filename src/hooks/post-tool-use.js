@@ -58,6 +58,7 @@ function main() {
       claudeInput = JSON.parse(inputData);
     } catch (error) {
       log(`JSON parse error: ${error.message}`);
+      console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
 
@@ -78,7 +79,7 @@ function main() {
     process.exit(0);
 
   } catch (error) {
-    log(`Error: JSON.stringify(standardOutput)`);
+    log(JSON.stringify(standardOutput));
     process.exit(0);
   }
 }
