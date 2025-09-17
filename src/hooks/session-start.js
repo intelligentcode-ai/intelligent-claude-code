@@ -26,20 +26,30 @@ function main() {
   };
 
   try {
-    // Load the full system context from icc-init-system command
-    // This provides CLAUDE.md content, configuration, and initial guidance
-    const initCommand = path.join(os.homedir(), '.claude', 'commands', 'icc-init-system.md');
+    // Load actual CLAUDE.md content for proper initialization
+    const claudeMdPath = path.join(os.homedir(), '.claude', 'CLAUDE.md');
+    let sessionContext = '';
 
-    let sessionContext = '🚀 Intelligent Claude Code System Initialized\\n';
-
-    // Check if init command exists and is readable
-    if (fs.existsSync(initCommand)) {
-      // Note: In production, this would trigger the actual command
-      // For now, we provide the essential context
-      sessionContext += '📋 Run /icc-init-system to load full project context and CLAUDE.md\\n';
-      sessionContext += '🎯 Use @Role patterns for natural team interaction\\n';
-      sessionContext += '🧠 Memory-first approach - check memory before asking users\\n';
-      sessionContext += '🚫 NO WORK IN MAIN SCOPE - all work via AgentTask → Task → Agent';
+    // Try to load CLAUDE.md content
+    if (fs.existsSync(claudeMdPath)) {
+      const claudeMdContent = fs.readFileSync(claudeMdPath, 'utf8');
+      // Provide the full CLAUDE.md content as initialization
+      sessionContext = claudeMdContent;
+    } else {
+      // Fallback to essential context if CLAUDE.md not found
+      sessionContext = [
+        '🚀 Intelligent Claude Code System',
+        '',
+        '## Core Architecture',
+        '• Virtual Team: 14 core roles + unlimited specialists',
+        '• Work Flow: User Request → AgentTask → Task Tool → Agent',
+        '• NO WORK IN MAIN SCOPE - all work via agents',
+        '',
+        '## Primary Pattern',
+        '• Use @Role communication for natural team interaction',
+        '• Memory-first approach - check memory before asking',
+        '• AgentTasks must be self-contained with all context'
+      ].join('\n');
     }
 
     const output = {

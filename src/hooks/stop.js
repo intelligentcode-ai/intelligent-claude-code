@@ -76,15 +76,14 @@ function main() {
       reminder
     ];
 
-    const fullContext = completionReminders.join('\\n');
+    const fullContext = completionReminders.join('\n');
 
+    // Stop hook uses different schema - no hookSpecificOutput
     const output = {
       continue: true,
       suppressOutput: true,
-      hookSpecificOutput: {
-        hookEventName: "Stop",
-        additionalContext: fullContext
-      }
+      decision: "approve",
+      systemMessage: fullContext
     };
 
     log(JSON.stringify(output));
