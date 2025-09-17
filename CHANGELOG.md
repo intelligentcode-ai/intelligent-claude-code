@@ -5,6 +5,111 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+---
+
+## [8.1.8] - 2025-01-26
+
+### Added
+- 4 new educational reminders for improved behavioral guidance:
+  - Self-contained AgentTask requirements (pre and post-action reminders)
+  - Git settings compliance reminder for professional workflows
+  - Agent selection based on project scope and task type
+
+### Changed
+- Compacted README.md by 75% (from 480 to 120 lines) for 2-minute quick start experience
+- Enhanced reminder system with more comprehensive behavioral guidance
+- Now includes 31 pre-action and 41 post-action educational reminders
+
+### Improved
+- Developer onboarding experience with streamlined README
+- Educational reminder coverage for core architectural patterns
+- Documentation organization with detailed content moved to CHANGELOG
+
+---
+
+## Historical Documentation
+
+*The following detailed documentation was moved from README.md to keep the main README focused and concise.*
+
+### Agent-Driven Architecture Details
+
+Complete virtual development team with 14+ specialized agent roles that work together autonomously. Each agent has deep domain expertise and behavioral patterns optimized for their specialty.
+
+**AgentTask-Driven Execution**: Self-contained AgentTasks replace complex workflows. Each AgentTask includes everything needed for single-pass execution: context, standards, examples, validation, and automatic agent invocation.
+
+**Behavioral Hook Enforcement**: Built-in hook system ensures reliable execution patterns with pre-tool-use hooks, work intent detection, AgentTask-first patterns, and memory-first operations.
+
+### Detailed How It Works
+
+1. **Request Work** → "@PM Implement OAuth2 login"
+2. **Agent Activation** → @PM analyzes and creates specialist agents as needed
+3. **Memory Check** → Agents search for existing patterns/learnings
+4. **Best-Practices Discovery** → Agents find relevant methodological approaches
+5. **Analyze Complexity** → Agent team scores complexity (@PM + @Architect for Large/Mega)
+6. **Generate PRB** → Self-contained blueprint with embedded context + practices + agent coordination
+7. **Agent Execution** → Multi-agent collaborative implementation
+8. **Git Integration** → Auto version bump + commit + push
+9. **Cross-Agent Learning** → Capture new patterns shared across agent memory
+
+### Agent-Driven Story Management Details
+
+Transform natural language stories into executable AgentTasks with multi-agent coordination:
+
+- **Story Analysis**: @PM reads business goals, specialist agents evaluate technical approaches
+- **Agent Team Assembly**: Dynamic creation of domain specialists (@Auth-Engineer, @Frontend-Developer, etc.)
+- **Priority Setting**: Multi-agent evaluation of business value + technical complexity
+- **AgentTask Creation**: @PM generates complexity-appropriate AgentTasks with agent assignments
+- **Agent Coordination**: Collaborative execution across specialized agent team
+- **Next Selection**: Agent team considers dependencies, risk, current application state
+
+### Advanced Automation Features
+
+- **Context Awareness**: Auto-detects project type (CODE/AI-AGENTIC/HYBRID) and adjusts patterns
+- **Dependency Analysis**: Auto-identifies prerequisite work and creates sequential PRBs
+- **Size Management**: Auto-breakdown of complex work into multiple ≤15 point AgentTasks
+- **Role Assignment**: Auto-selects appropriate specialists based on work type and technology domain
+- **Memory Integration**: Auto-searches applicable patterns and embeds learnings in AgentTasks
+
+### Hook Reminder System Details
+
+The system includes an educational reminder system that helps users learn and follow intelligent-claude-code patterns:
+
+- **Dynamic Loading**: JSON-based configuration with multi-location support
+- **Educational Focus**: Non-blocking reminders (5-15% chance) that teach without interrupting
+- **User Customization**: Project and user-level reminder customization
+- **25+ Behavioral Reminders**: Covering @Role patterns, AgentTask workflow, memory-first approach
+
+### MCP Server Integration Details
+
+Install with automatic MCP server configuration with environment variable support, JSON syntax validation, backup & rollback, permission handling, and detailed logging.
+
+### Memory Configuration Details
+
+The AI agents can store their learnings in different locations with benefits including privacy (keep learnings separate from project code), sharing (use same memory across multiple projects), git integration (auto-commits changes), and flexibility (store anywhere accessible).
+
+### Workflow Configuration Details
+
+Control how the system handles different PRB sizes with fine-grained workflow settings:
+
+- **Nano (0-2 points)**: Trivial fixes with minimal process overhead
+- **Tiny (3-5 points)**: Small changes with basic versioning and documentation
+- **Medium (6-15 points)**: Standard features requiring review and proper branching
+- **Large (16-30 points)**: Complex features needing coordination and careful review
+- **Mega (30+ points)**: Major system changes with breaking change assessment
+
+Each size level supports version_bump, version_type, changelog_required, pr_required, merge_strategy, release_automation, coordination_required, and breaking_change_assessment controls.
+
+### Why AgentTasks with Agents?
+
+- **No workflow interruptions** - Single-pass multi-agent execution
+- **Token-optimized** - Load only what each agent needs
+- **Project-adaptive** - Agent team respects YOUR structure
+- **Truly autonomous** - Agent specialists have full context and coordination
+- **Predictable** - Same input → Same quality multi-agent output
+- **Agent collaboration** - Cross-specialist knowledge sharing and coordination
+
+---
+
 ## [8.1.7] - 2025-01-17
 
 ### Enhanced
