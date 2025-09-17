@@ -1,100 +1,27 @@
 # Main Scope Blocking
 
-**MANDATORY:** ZERO TOLERANCE for main scope work execution. ALL work MUST use AgentTask+agent pattern.
+Block work execution in main scope. Use AgentTask+agent pattern.
 
-## Imports
+## Core Principle
+**Main scope = AgentTask creation only**
+**Subagent = Work execution only**
 
-@./work-detection-patterns.md
-@./pm-role-blocking-patterns.md
+## Blocking Rules
+**Block in main scope:**
+- File operations (Edit/Write/MultiEdit)
+- System changes (Bash modifications)
+- Direct work execution
 
-## NUCLEAR BLOCKING MESSAGES
+**Process:**
+1. User Request → AgentTask Generation (main scope)
+2. AgentTask → Task Tool → Agent Execution (subagent)
 
-### Primary Violation Message
-**MAIN SCOPE EXECUTION ABSOLUTELY FORBIDDEN**
-- VIOLATION: Direct work execution detected in main scope
-- ARCHITECTURAL RULE: ALL WORK → PRB → AGENT EXECUTION
-- DETECTED PATTERN: [specific pattern detected]
-- BLOCKED ACTION: [attempted action]
-
-**MANDATORY PROCESS:**
-1. User Request → PRB Generation (main scope)
-2. PRB → Task Tool → Agent Execution (subagent)
-3. NO EXCEPTIONS, NO SHORTCUTS, NO COMPROMISES
-
-**REQUIRED ACTION:** Generate PRB using @Role pattern FIRST
-
-### Tool Blocking Message
-**TOOL ACCESS DENIED**
-- TOOL: [Edit/Write/MultiEdit/Bash]
-- CONTEXT: Main scope work execution attempt
-- VIOLATION: Tool usage without active PRB context
-
-**ARCHITECTURAL INTEGRITY:** Tools reserved for authorized subagent execution
-**BLOCKING REASON:** Maintains AgentTask-driven execution pattern
-
-**RECOVERY:** Create PRB → Deploy via Task tool → Agent executes with tool authorization
-
-### Escalation Message
-**ARCHITECTURE PROTECTION ENGAGED**
-- REPEATED VIOLATION: Multiple main scope execution attempts detected
-- SYSTEM STATUS: Maximum enforcement mode activated
-
-**THIS IS NOT NEGOTIABLE:**
-- Main scope = AgentTask creation ONLY
-- Subagent = Work execution ONLY
-- No exceptions, no workarounds, no compromises
-
-**COMPLIANCE REQUIRED:** Follow AgentTask+Agent pattern without deviation
-
-## COMPREHENSIVE WORK CATEGORIES
-
-### File Operations (ALL BLOCKED)
-- File creation, modification, deletion
-- Directory operations
-- Content changes
-- Permission changes
-- File moves, copies, renames
-
-### System Operations (ALL BLOCKED)
-- Configuration changes
-- Service management
-- Process control
-- Network operations
-- Resource management
-
-### Code Operations (ALL BLOCKED)
-- Bug fixes
-- Feature implementation
-- Refactoring
-- Code cleanup
-- Optimization
-
-### Documentation Operations (ALL BLOCKED)
-- README updates
-- Comment additions
-- Documentation fixes
-- Help text changes
-- Version updates
-
-## ENFORCEMENT MECHANISMS
-
-### Preemptive Blocking
-- Scan ALL user input for work patterns
-- Block BEFORE any tool access
-- Prevent ANY file modification attempts
-- Stop ALL system change requests
-
-### Error Recovery
-1. **Detect Violation** → Show nuclear blocking message
-2. **Capture Intent** → Extract user work requirements
-3. **Force PRB Creation** → Generate appropriate PRB automatically
-4. **Deploy Agent** → Execute via Task tool with full context
-5. **Complete Work** → Agent performs authorized execution
-
-### Violation Escalation
-- **First Violation:** Standard blocking message
-- **Second Violation:** Escalation message with emphasis
-- **Third+ Violations:** Maximum enforcement with architectural reminder
+## Error Recovery
+**When work detected:**
+1. Block the action
+2. Create AgentTask with requirements
+3. Deploy via Task tool
+4. Agent executes with authorization
 
 ---
-*Zero tolerance main scope blocking with nuclear enforcement*
+*Essential main scope blocking with hook guidance*

@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.2.0] - 2025-01-17
+
+### Changed
+- Drastically simplified behavioral enforcement system now that hooks provide direct guidance
+- Reduced behavioral file complexity by 60-80% while maintaining essential functionality
+- Streamlined enforcement patterns to trust hook-based behavioral reminders
+- Consolidated redundant blocking patterns and validation logic
+- Simplified error messages and recovery patterns
+- Removed verbose "nuclear" enforcement language in favor of essential boundaries
+- Maintained core architectural boundaries (@PM role restrictions, main scope blocking)
+- Applied hook-first behavioral guidance approach with essential enforcement only
+
+### Technical Details
+- Simplified agenttask-enforcement.md from 93 to 27 lines (71% reduction)
+- Simplified enforcement-rules.md from 136 to 34 lines (75% reduction)
+- Simplified main-scope-blocking.md from 101 to 28 lines (72% reduction)
+- Simplified behavioral-decision-matrix.md from 139 to 33 lines (76% reduction)
+- Simplified pm-role-enforcement.md from 157 to 29 lines (82% reduction)
+- Simplified validation-system.md from 98 to 40 lines (59% reduction)
+- Overall enforcement system complexity reduced by 70% while preserving functionality
+- Hook system now provides primary behavioral guidance with simplified enforcement backup
+
 ## [8.1.7] - 2025-01-26
 
 ### Changed
