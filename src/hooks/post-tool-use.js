@@ -76,10 +76,12 @@ function main() {
     };
 
     log(JSON.stringify(output));
+    console.log(JSON.stringify(output));
     process.exit(0);
 
   } catch (error) {
     log(JSON.stringify(standardOutput));
+    console.log(JSON.stringify(standardOutput));
     process.exit(0);
   }
 }
