@@ -24,7 +24,11 @@
     "📖 Apply project coding standards from best-practices/",
     "🌿 Follow merge_strategy from workflow settings",
     "📚 Create PRs when pr_required=true in workflow",
-    "🔬 Research, don't assume - verify facts before making decisions"
+    "🔬 Research, don't assume - verify facts before making decisions",
+    "📦 AgentTasks must be SELF-CONTAINED with all context embedded",
+    "🚫 No runtime lookups - all config and memory embedded in AgentTasks",
+    "🔐 Respect git settings - follow branch protection and merge strategies",
+    "🎯 Choose the RIGHT agent - match project scope and task type to specialist expertise"
   ],
   "postAction": [
     "💾 Store successful patterns in memory after completion",
@@ -65,6 +69,8 @@
     "📝 Document specific files changed and actions taken",
     "✅ Show evidence of completion with file paths and changes",
     "🚫 Never claim completion without verifiable proof",
-    "📌 List actual modifications, not intended changes"
+    "📌 List actual modifications, not intended changes",
+    "📦 Verify AgentTask was self-contained without external dependencies",
+    "✅ Confirm no runtime lookups were needed during execution"
   ]
 }
