@@ -154,7 +154,7 @@ function Get-SettingsJson {
     }
 }
 
-function Register-HookInSettings {
+function Register-UserPromptSubmitHook {
     param(
         [Parameter(Mandatory=$true)]
         [string]$SettingsPath,
@@ -164,7 +164,7 @@ function Register-HookInSettings {
     )
 
     try {
-        Write-Host "  Registering PreToolUse hook in settings.json..." -ForegroundColor Gray
+        Write-Host "  Registering UserPromptSubmit hook in settings.json..." -ForegroundColor Gray
 
         # Load or create settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
@@ -174,22 +174,22 @@ function Register-HookInSettings {
             $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
         }
 
-        if (-not $Settings.hooks.PreToolUse) {
-            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PreToolUse" -Value @() -Force
+        if (-not $Settings.hooks.UserPromptSubmit) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "UserPromptSubmit" -Value @() -Force
         }
 
-        # Convert PreToolUse to array if it's not already
-        if ($Settings.hooks.PreToolUse -isnot [array]) {
-            $Settings.hooks.PreToolUse = @($Settings.hooks.PreToolUse)
+        # Convert UserPromptSubmit to array if it's not already
+        if ($Settings.hooks.UserPromptSubmit -isnot [array]) {
+            $Settings.hooks.UserPromptSubmit = @($Settings.hooks.UserPromptSubmit)
         }
 
         # Check if hook already exists to prevent duplicates
-        $ExistingHook = $Settings.hooks.PreToolUse | Where-Object {
+        $ExistingHook = $Settings.hooks.UserPromptSubmit | Where-Object {
             $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
         }
 
         if (-not $ExistingHook) {
-            # Create new hook entry
+            # Create new hook entry (note: no matcher field for UserPromptSubmit)
             $NewHook = [PSCustomObject]@{
                 hooks = @(
                     [PSCustomObject]@{
@@ -199,88 +199,22 @@ function Register-HookInSettings {
                         type = "command"
                     }
                 )
-                matcher = "*"
             }
 
-            # Add to PreToolUse array
-            $Settings.hooks.PreToolUse += $NewHook
+            # Add to UserPromptSubmit array
+            $Settings.hooks.UserPromptSubmit += $NewHook
 
             # Save settings with proper JSON formatting
             $JsonOutput = $Settings | ConvertTo-Json -Depth 10
             Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
 
-            Write-Host "  ✅ PreToolUse hook registered successfully in settings.json" -ForegroundColor Green
+            Write-Host "  ✅ UserPromptSubmit hook registered successfully in settings.json" -ForegroundColor Green
         } else {
-            Write-Host "  PreToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+            Write-Host "  UserPromptSubmit hook already registered, skipping duplicate registration" -ForegroundColor Yellow
         }
 
     } catch {
-        Write-Warning "  Failed to register PreToolUse hook in settings.json: $($_.Exception.Message)"
-    }
-}
-
-function Register-PostToolUseHookInSettings {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$SettingsPath,
-
-        [Parameter(Mandatory=$true)]
-        [string]$HookCommand
-    )
-
-    try {
-        Write-Host "  Registering PostToolUse hook in settings.json..." -ForegroundColor Gray
-
-        # Load or create settings
-        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
-
-        # Initialize hooks structure if missing
-        if (-not $Settings.hooks) {
-            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
-        }
-
-        if (-not $Settings.hooks.PostToolUse) {
-            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PostToolUse" -Value @() -Force
-        }
-
-        # Convert PostToolUse to array if it's not already
-        if ($Settings.hooks.PostToolUse -isnot [array]) {
-            $Settings.hooks.PostToolUse = @($Settings.hooks.PostToolUse)
-        }
-
-        # Check if hook already exists to prevent duplicates
-        $ExistingHook = $Settings.hooks.PostToolUse | Where-Object {
-            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
-        }
-
-        if (-not $ExistingHook) {
-            # Create new hook entry
-            $NewHook = [PSCustomObject]@{
-                hooks = @(
-                    [PSCustomObject]@{
-                        command = $HookCommand
-                        failureMode = "allow"
-                        timeout = 15000
-                        type = "command"
-                    }
-                )
-                matcher = "*"
-            }
-
-            # Add to PostToolUse array
-            $Settings.hooks.PostToolUse += $NewHook
-
-            # Save settings with proper JSON formatting
-            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
-            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
-
-            Write-Host "  ✅ PostToolUse hook registered successfully in settings.json" -ForegroundColor Green
-        } else {
-            Write-Host "  PostToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
-        }
-
-    } catch {
-        Write-Warning "  Failed to register PostToolUse hook in settings.json: $($_.Exception.Message)"
+        Write-Warning "  Failed to register UserPromptSubmit hook in settings.json: $($_.Exception.Message)"
     }
 }
 
@@ -345,22 +279,13 @@ function Install-HookSystem {
             # Register production hooks in settings.json
             $SettingsPath = Join-Path $InstallPath "settings.json"
 
-            # Register pre-tool-use hook
-            $PreToolUseHookPath = Join-Path $HooksPath "pre-tool-use.js"
-            if (Test-Path $PreToolUseHookPath) {
-                $HookCommand = "node `"$PreToolUseHookPath`""
-                Register-HookInSettings -SettingsPath $SettingsPath -HookCommand $HookCommand
+            # Register UserPromptSubmit hook only
+            $UserPromptSubmitHookPath = Join-Path $HooksPath "user-prompt-submit.js"
+            if (Test-Path $UserPromptSubmitHookPath) {
+                $HookCommand = "node `"$UserPromptSubmitHookPath`""
+                Register-UserPromptSubmitHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  Pre-tool-use hook not found, skipping PreToolUse registration"
-            }
-
-            # Register post-tool-use hook
-            $PostToolUseHookPath = Join-Path $HooksPath "post-tool-use.js"
-            if (Test-Path $PostToolUseHookPath) {
-                $HookCommand = "node `"$PostToolUseHookPath`""
-                Register-PostToolUseHookInSettings -SettingsPath $SettingsPath -HookCommand $HookCommand
-            } else {
-                Write-Warning "  Post-tool-use hook not found, skipping PostToolUse registration"
+                Write-Warning "  user-prompt-submit.js hook not found, skipping UserPromptSubmit registration"
             }
 
         } else {

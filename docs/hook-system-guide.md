@@ -15,67 +15,20 @@ The hook system provides strategic integration points within Claude Code to ensu
 
 ### Hook Types
 
-The system implements two optimally-timed hooks:
+The system implements a single optimally-timed hook:
 
 | Hook Type | Purpose | When Executed | Guidance Level |
 |-----------|---------|---------------|----------------|
-| **SessionStart** | System initialization and configuration loading | At session beginning | **MANDATORY** |
 | **UserPromptSubmit** | Contextual behavioral guidance | Before response generation | **EDUCATIONAL** |
 
 ### Hook Components
 
 ```
 src/hooks/
-├── session-start.js          # System initialization and config loading
 ├── user-prompt-submit.js     # Contextual guidance hook
 └── lib/
     ├── reminder-loader.js    # Dynamic reminder system
     └── reminders.json        # Unified reminder definitions
-```
-
-## SessionStart Hook
-
-The SessionStart hook provides mandatory system initialization at the beginning of each session.
-
-### Initialization Process
-
-1. **Configuration Loading**: Forces Claude Code to read local and global CLAUDE.md files
-2. **Include Processing**: Recursively follows all @-notation includes
-3. **Virtual Team Activation**: Loads complete behavioral pattern framework
-4. **Pattern Enforcement**: Activates all behavioral enforcement systems
-
-### Virtual Team Initialization
-
-The SessionStart hook provides explicit instructions to Claude Code:
-
-```
-🔄 MANDATORY SESSION INITIALIZATION
-
-Claude Code must IMMEDIATELY perform these actions:
-
-1. READ local project CLAUDE.md file (if exists)
-2. READ global ~/.claude/CLAUDE.md file
-3. PROCESS all @-notation includes found in CLAUDE.md files
-4. When finding @~/.claude/modes/virtual-team.md - LOAD AND APPLY it
-5. RECURSIVELY follow ALL @-notation references in virtual-team.md:
-   • @../roles/specialists.md
-   • @../behaviors/agenttask-creation-system.md
-   • @../behaviors/agenttask-enforcement.md
-   • @../behaviors/agenttask-auto-trigger.md
-   • @../behaviors/agenttask-execution.md
-   • @../behaviors/agenttask-system-integration.md
-   • ALL shared-patterns dependencies
-   • ALL core system behaviors
-   • ALL learning & memory patterns
-   • ALL validation & quality patterns
-   • ALL analytical frameworks
-6. APPLY all loaded behavioral patterns to current session
-7. ACTIVATE virtual team mode with 14 core roles + unlimited specialists
-8. ENFORCE AgentTask-driven execution (NO WORK IN MAIN SCOPE)
-
-⚠️  This is MANDATORY system initialization - not optional context.
-⚠️  All behavioral patterns must be ACTIVE and ENFORCED.
-⚠️  @Role communication patterns must be PRIMARY interaction method.
 ```
 
 ## UserPromptSubmit Hook
@@ -242,16 +195,6 @@ Hooks are automatically registered in Claude Code's `settings.json`:
 ```json
 {
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node ~/.claude/hooks/session-start.js"
-          }
-        ]
-      }
-    ],
     "UserPromptSubmit": [
       {
         "hooks": [
@@ -277,8 +220,7 @@ ls ~/.claude/hooks/
 # Check hook registration
 cat ~/.config/claude-desktop/settings.json | grep -A 20 hooks
 
-# Test hooks functionality
-node ~/.claude/hooks/session-start.js
+# Test hook functionality
 echo '{"user_prompt": "test"}' | node ~/.claude/hooks/user-prompt-submit.js
 ```
 
@@ -296,10 +238,10 @@ echo '{"user_prompt": "test"}' | node ~/.claude/hooks/user-prompt-submit.js
 - Check JSON syntax in custom reminder files
 - Restart Claude Code after reminder customization
 
-**System initialization not working:**
-- Check SessionStart hook is registered and executable
-- Verify CLAUDE.md files exist and are readable
-- Check console output for hook execution logs
+**Virtual team initialization:**
+- Use `/icc-init-system` command to activate virtual team mode
+- This loads complete behavioral patterns and specialist roles
+- Hook system provides contextual guidance only
 
 ### Debug Information
 
@@ -317,9 +259,6 @@ View hook execution in Claude Code console or debug mode.
 Test hook functionality manually:
 
 ```bash
-# Test SessionStart hook
-node ~/.claude/hooks/session-start.js
-
 # Test UserPromptSubmit hook
 echo '{"user_prompt": "implement auth"}' | node ~/.claude/hooks/user-prompt-submit.js
 

@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.5.0] - 2025-01-17
+
+### Changed
+- **Optimal Hook Architecture**: Migrated to UserPromptSubmit-only hook system for behavioral guidance
+- **Removed Obsolete Hooks**: Eliminated SessionStart, PreToolUse, PostToolUse hooks entirely
+- **Enhanced UserPromptSubmit**: Added compaction detection and system initialization enforcement
+- **Installer Improvements**: Both Ansible and PowerShell installers now properly manage hooks
+- **Non-Destructive Updates**: Ansible preserves user's custom hooks while cleaning obsolete ones
+
+### Added
+- **Compaction Detection**: UserPromptSubmit hook detects continued/summarized sessions
+- **System State Tracking**: Tracks virtual team initialization status
+- **Aggressive Initialization**: Forces /icc-init-system when system not loaded
+
+### Fixed
+- **Hook Registration**: Ansible now removes obsolete hooks instead of merging
+- **Module Errors**: Eliminated MODULE_NOT_FOUND errors for deleted hooks
+- **Settings Management**: Proper cleanup of legacy hook registrations
+
+### Removed
+- `src/hooks/session-start.js` - SessionStart cannot force initialization
+- `src/hooks/stop.js` - Stop hook doesn't support required fields
+- `docs/HOOK-ARCHITECTURE-ANALYSIS.md` - Obsolete documentation
+
 ## [8.3.0] - 2025-09-17
 
 ### Changed
