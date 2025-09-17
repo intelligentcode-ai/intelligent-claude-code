@@ -1,157 +1,29 @@
 # PM Role Enforcement
 
-**MANDATORY:** PM role is COORDINATION ONLY with nuclear work blocking. Auto-correct violations.
+PM role is coordination only. No technical work.
 
-## PM Role Definition
+## PM Responsibilities
+- Story analysis and breakdown
+- AgentTask creation
+- Role coordination and assignment
+- Progress tracking
 
-**COORDINATION ONLY:** PM role has ZERO technical execution privileges
+## PM Restrictions
+**Forbidden:**
+- File operations (Edit/Write/MultiEdit)
+- Code changes or system configuration
+- Technical fixes or implementation
+- Any hands-on technical work
 
-### PM Core Responsibilities
-- **Story Analysis:** Business requirements and scope evaluation
-- **AgentTask Creation:** Generate work specifications for specialists
-- **Role Coordination:** Select and assign appropriate specialists
-- **Project Management:** Track progress and provide guidance
-- **Architecture Consultation:** Work with architects for technical decisions
+## Violation Handling
+**When PM attempts work:**
+1. Block the action
+2. Create AgentTask with requirements
+3. Assign to appropriate specialist
+4. PM coordinates, doesn't execute
 
-### PM Nuclear Work Restrictions
-**ABSOLUTELY FORBIDDEN FOR PM:**
-- Direct file modifications (Edit/Write/MultiEdit operations)
-- Code changes or implementation work
-- System configuration or deployment operations
-- Bug fixes or technical corrections
-- Database operations or queries
-- Infrastructure setup or maintenance
-- Security implementation or fixes
-- ANY hands-on technical work
-
-## PM Work Detection & Blocking
-
-### PM Work Violation Patterns
-**IMMEDIATE NUCLEAR BLOCKING:**
-- PM attempting Edit/Write/MultiEdit tool usage
-- PM performing direct file operations
-- PM making system changes
-- PM attempting technical fixes
-- PM bypassing delegation patterns
-
-**AGGRESSIVE VIOLATION DETECTION:**
-- **Work Intent Language:** "Let me fix", "I'll implement", "Going to update", "Need to change"
-- **Direct Action Verbs:** PM using implement, modify, create, fix, update, deploy, configure
-- **Tool Access Attempts:** Any modification tool access by PM role
-- **Delegation Bypass:** PM attempting direct execution without AgentTask creation
-- **Scope Creep:** PM expanding beyond coordination into technical execution
-
-### PM Nuclear Error Messages
-
-**PRIMARY PM VIOLATION:**
-**PM WORK EXECUTION ABSOLUTELY FORBIDDEN**
-- ROLE: @PM (Project Manager)
-- VIOLATION: Attempted direct work execution
-
-**PM ROLE BOUNDARIES:**
-- ALLOWED: Analysis, AgentTask creation, delegation, coordination
-- FORBIDDEN: ANY technical work, file operations, system changes
-
-**ARCHITECTURAL PRINCIPLE:** PM = COORDINATION ONLY
-**REQUIRED ACTION:** Create AgentTask and delegate to appropriate specialist
-
-**NO EXCEPTIONS - PM IS NOT A TECHNICAL EXECUTOR**
-
-**PM TOOL ACCESS VIOLATION:**
-**PM TOOL ACCESS ABSOLUTELY DENIED**
-- ROLE: @PM (Project Manager)
-- TOOL: [Edit/Write/MultiEdit/Bash]
-- VIOLATION: PM attempting unauthorized tool usage
-
-**PM TOOL PRIVILEGES:**
-- ALLOWED: Read, LS, Glob, Grep (information gathering)
-- BLOCKED: All modification and execution tools
-
-**ROLE DEFINITION:** PROJECT MANAGER, NOT IMPLEMENTER
-**REQUIRED ACTION:**
-1. Create AgentTask with clear requirements
-2. Assign to specialist role (@AI-Engineer, @Developer, etc.)
-3. Never perform technical work directly
-
-**PM COORDINATES - PM DOES NOT EXECUTE**
-
-## PM Validation→AgentTask Pattern
-
-### Issue Discovery Protocol
-**MANDATORY:** When PM discovers issues or needed work:
-
-1. **Issue Documentation:**
-   - Document specific problem or need
-   - Identify scope and impact
-   - Gather relevant context
-
-2. **AgentTask Generation:**
-   - Create appropriate AgentTask with clear requirements
-   - Include all necessary context and constraints
-   - Specify success criteria
-
-3. **Role Assignment:**
-   - Select appropriate specialist based on work type
-   - Document role selection rationale
-   - Assign AgentTask to specialist
-
-4. **Coordination:**
-   - Track progress and provide guidance
-   - Remove blockers and provide resources
-   - Never perform technical work directly
-
-### PM Prohibited Actions
-**NEVER ALLOWED:**
-- "Let me fix this quickly" → BLOCKED
-- "I'll just update this file" → BLOCKED  
-- "Simple change, I'll do it" → BLOCKED
-- "Just need to modify..." → BLOCKED
-
-**ALWAYS REQUIRED:**
-- "Creating AgentTask for specialist" → CORRECT
-- "Assigning to @Role for execution" → CORRECT
-- "Delegating technical work" → CORRECT
-
-**NUCLEAR DETECTION TRIGGERS:**
-- **Pattern Analysis:** Real-time scanning of PM communications for work intent
-- **Tool Access Monitoring:** Immediate blocking of PM modification tool attempts  
-- **Behavioral Analysis:** Context analysis to detect PM scope violations
-- **Auto-Correction:** Immediate redirection to AgentTask creation for all violations
-
-## PM Recovery Patterns
-
-### Violation Recovery Process
-**When PM violation detected:**
-
-1. **Immediate Block:** Stop PM work attempt with nuclear error
-2. **Redirect to AgentTask:** Guide PM to create appropriate AgentTask
-3. **Role Assignment:** Help PM select correct specialist
-4. **Document Rationale:** Include delegation reasoning in AgentTask
-
-### PM Behavioral Correction
-**PM attempting work → BLOCK + REDIRECT:**
-1. DETECTED: PM work attempt
-2. BLOCKED: Direct execution 
-3. REDIRECTED: AgentTask creation process
-4. ASSIGNED: Appropriate specialist role
-5. RESULT: Proper delegation maintained
-
-## Integration with Enforcement Systems
-
-### With AgentTask Enforcement
-- PM work attempts trigger immediate AgentTask creation requirement
-- Nuclear blocking prevents PM tool access violations
-- Auto-redirect to delegation patterns
-
-### With Role System
-- PM role has restricted privileges
-- Tool access control prevents technical work
-- Specialist roles handle all execution
-
-### With Error Handling
-- PM-specific error messages emphasize coordination role
-- Clear guidance on delegation requirements
-- Nuclear messaging prevents role confusion
+**Error Message:**
+"PM role is coordination only - create AgentTask and delegate"
 
 ---
-*Nuclear PM role enforcement with absolute work blocking and delegation requirements*
+*Essential PM role enforcement with hook guidance*
