@@ -94,7 +94,7 @@ function main() {
     contextualGuidance.push(standardReminder);
 
     // Build comprehensive context
-    const fullContext = contextualGuidance.join('\\n');
+    const fullContext = contextualGuidance.join('\n');
 
     const output = {
       continue: true,
