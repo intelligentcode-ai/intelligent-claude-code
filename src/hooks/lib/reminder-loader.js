@@ -24,25 +24,42 @@ class ReminderLoader {
    * 3. System default: same directory as this loader (fallback)
    *
    * Note: Claude Code provides correct project context via process.cwd()
+   * Always checks for project-local reminders even when installed in user scope
    */
   _loadReminders() {
     const reminderPaths = this._getReminderPaths();
+    const loadedReminders = [];
 
-    for (const reminderPath of reminderPaths) {
+    // Always start with fallback reminders
+    let mergedReminders = JSON.parse(JSON.stringify(this.fallbackReminders));
+
+    // Load from all available sources and merge them
+    for (const reminderPath of reminderPaths.reverse()) { // Start with lowest priority
       try {
         if (fs.existsSync(reminderPath)) {
           const remindersContent = fs.readFileSync(reminderPath, 'utf8');
-          this.reminders = JSON.parse(remindersContent);
-          this.loadedFrom = reminderPath;
-          return;
+          const loadedData = JSON.parse(remindersContent);
+
+          // Merge categories
+          for (const category in loadedData) {
+            if (Array.isArray(loadedData[category])) {
+              if (!mergedReminders[category]) {
+                mergedReminders[category] = [];
+              }
+              // Add new reminders to category (higher priority sources override)
+              mergedReminders[category] = [...mergedReminders[category], ...loadedData[category]];
+            }
+          }
+
+          loadedReminders.push(reminderPath);
         }
       } catch (error) {
         continue;
       }
     }
 
-    this.reminders = this.fallbackReminders;
-    this.loadedFrom = 'fallback';
+    this.reminders = mergedReminders;
+    this.loadedFrom = loadedReminders.length > 0 ? loadedReminders : 'fallback';
   }
 
   /**
@@ -87,6 +104,47 @@ class ReminderLoader {
       // Legacy object format
       return reminder.message || reminder;
     }
+  }
+
+  /**
+   * Get 1-3 random reminders from specified category
+   * Ensures no duplicates in single call
+   */
+  getMultipleRandomReminders(category = 'preAction', count = null) {
+    const categoryReminders = this.reminders[category] || [];
+
+    if (categoryReminders.length === 0) {
+      return [this._getDefaultReminderString(category)];
+    }
+
+    // Determine random count (1-3) if not specified
+    if (count === null) {
+      count = Math.floor(Math.random() * 3) + 1; // Random 1-3
+    }
+
+    // Limit count to available reminders
+    count = Math.min(count, categoryReminders.length);
+
+    // Get random unique indices
+    const indices = new Set();
+    while (indices.size < count) {
+      indices.add(Math.floor(Math.random() * categoryReminders.length));
+    }
+
+    // Extract reminders
+    const selectedReminders = Array.from(indices).map(index => {
+      const reminder = categoryReminders[index];
+
+      // Handle both string format (new) and object format (legacy)
+      if (typeof reminder === 'string') {
+        return reminder;
+      } else {
+        // Legacy object format
+        return reminder.message || reminder;
+      }
+    });
+
+    return selectedReminders;
   }
 
   /**

@@ -440,18 +440,18 @@ function main() {
         }
       } catch (error) {
         // If synchronous read fails, fail open with minimal processing
-        console.log('Post-hook completed: No input data available, continuing normally');
+        console.log(JSON.stringify({continue: true}));  // No message needed when no input
         process.exit(0);
       }
     } else {
       // No input available - fail open for graceful handling
-      console.log('Post-hook completed: No input source available, continuing normally');
+      console.log(JSON.stringify({continue: true}));  // No message needed when no input
       process.exit(0);
     }
 
     if (!inputData.trim()) {
       // No input data - fail open gracefully
-      console.log('Post-hook completed: No input data provided, continuing normally');
+      console.log(JSON.stringify({continue: true}));  // No message needed when no input
       process.exit(0);
     }
 
@@ -461,7 +461,7 @@ function main() {
       claudeInput = JSON.parse(inputData);
     } catch (error) {
       // JSON parse error - fail open gracefully
-      console.log(`Post-hook completed: JSON parse error, continuing normally (${error.message})`);
+      console.log(JSON.stringify({continue: true}));  // Continue on parse error
       process.exit(0);
     }
 
@@ -475,8 +475,13 @@ function main() {
         console.warn(`Warning: Post-hook took ${result.performance}ms (threshold: ${PERFORMANCE_THRESHOLD}ms)`);
       }
 
-      // Output result - always success for post-hooks
-      console.log(result.message);
+      // Output result in Claude Code expected JSON format
+      const output = {
+        continue: true,  // Always continue for post-hooks
+        systemMessage: result.message  // This will be shown to Claude
+      };
+
+      console.log(JSON.stringify(output));
       process.exit(0);
     }).catch(error => {
       console.warn(`Post-hook warning: ${error.message}`);

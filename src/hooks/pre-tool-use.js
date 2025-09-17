@@ -563,18 +563,18 @@ function main() {
         }
       } catch (error) {
         // If synchronous read fails, fail open with minimal enforcement
-        console.log('ALLOWED: No input data available, failing open');
+        console.log(JSON.stringify({continue: true, systemMessage: 'No input data available, failing open'}));
         process.exit(0);
       }
     } else {
       // No input available - fail open for graceful handling
-      console.log('ALLOWED: No input source available, failing open');
+      console.log(JSON.stringify({continue: true, systemMessage: 'No input source available, failing open'}));
       process.exit(0);
     }
 
     if (!inputData.trim()) {
       // No input data - fail open gracefully
-      console.log('ALLOWED: No input data provided, failing open');
+      console.log(JSON.stringify({continue: true, systemMessage: 'No input data provided, failing open'}));
       process.exit(0);
     }
 
@@ -584,7 +584,7 @@ function main() {
       claudeInput = JSON.parse(inputData);
     } catch (error) {
       // JSON parse error - fail open gracefully
-      console.log(`ALLOWED: JSON parse error, failing open (${error.message})`);
+      console.log(JSON.stringify({continue: true, systemMessage: `JSON parse error, failing open (${error.message})`}));
       process.exit(0);
     }
 
@@ -599,14 +599,13 @@ function main() {
       console.warn(`Warning: Hook took ${result.performance}ms (threshold: ${PERFORMANCE_THRESHOLD}ms)`);
     }
 
-    // Output result - always allow in educational mode
-    if (result.message.includes('🎓') || result.message.includes('🧠') || result.message.includes('✅')) {
-      // Educational reminder or positive reinforcement
-      console.log(result.message);
-    } else {
-      // Standard allowed message
-      console.log(`ALLOWED: ${result.message}`);
-    }
+    // Output result in Claude Code expected JSON format
+    const output = {
+      continue: true,  // Always allow in educational mode
+      systemMessage: result.message  // This will be shown to Claude
+    };
+
+    console.log(JSON.stringify(output));
     process.exit(0); // Always exit 0 in educational mode
 
   } catch (error) {
