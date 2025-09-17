@@ -247,55 +247,11 @@ class EducationalReminderSystem {
  * Generate educational reminder messages for work patterns
  */
 function generateEducationalMessage(intent, tool, reason) {
-  // For work intent, use the strong main scope reminder
-  if (intent === 'work' || intent === 'modification') {
-    return generateMainScopeReminder();
-  }
-
-  // Create reminder system and check if we should show pre-execution reminder
+  // Create reminder system for dynamic reminder loading
   const reminderSystem = new EducationalReminderSystem();
-  if (reminderSystem.shouldShowPreExecutionReminder(tool)) {
-    return reminderSystem.generatePreExecutionReminder();
-  }
 
-  // Fallback to standard educational message
-  const baseMessage = `🎓 EDUCATIONAL REMINDER: intelligent-claude-code Best Practices`;
-
-  let specificMessage = '';
-  switch (intent) {
-    case 'system':
-      specificMessage = `System operation detected using ${tool}. 💡 REMINDER: System changes are most reliable through AgentTask authorization.`;
-      break;
-    case 'planning':
-      specificMessage = `🎯 EXCELLENT: Planning activity using ${tool}. This is perfect for main scope!`;
-      break;
-    case 'research':
-      specificMessage = `🔍 GREAT: Research activity using ${tool}. Main scope is ideal for exploration and analysis.`;
-      break;
-    case 'qa':
-      specificMessage = `❓ PERFECT: Q&A activity using ${tool}. Questions and explanations work great in main scope.`;
-      break;
-    default:
-      specificMessage = `Educational note: ${reason}`;
-  }
-
-  const guidance = `
-🏗️ ARCHITECTURAL PATTERN: ALL WORK → AGENTTASK → AGENT EXECUTION
-
-📋 RECOMMENDED PROCESS:
-1. Create AgentTask using @Role pattern ("@Developer implement feature")
-2. Deploy via Task tool to authorized agent
-3. Agent executes with full tool authorization and complete context
-
-✅ WHY THIS MATTERS: This pattern ensures complete context, reliable execution, and automatic learning capture!
-
-💡 TIP: Use @Role patterns like "@Developer fix bug" or "@AI-Engineer optimize behavior" for best results.`;
-
-  return `${baseMessage}
-
-${specificMessage}
-
-${guidance}`;
+  // Always return just a one-line reminder
+  return reminderSystem.generatePreExecutionReminder();
 }
 
 /**
@@ -675,49 +631,9 @@ if (require.main === module) {
   main();
 }
 
-/**
- * Generate strong "NO WORK IN MAIN SCOPE" educational reminder
- */
-function generateMainScopeReminder() {
-  return `🚨 CRITICAL ARCHITECTURAL REMINDER: NO WORK IN MAIN SCOPE
-
-🏗️ FUNDAMENTAL PRINCIPLE:
-Main scope is for coordination and AgentTask creation ONLY
-Agent scope is for technical execution via Task tool
-
-🚫 MAIN SCOPE PROHIBITIONS:
-❌ Direct file modifications
-❌ Code implementation
-❌ System configuration
-❌ Bug fixes
-❌ Feature development
-
-✅ MAIN SCOPE RESPONSIBILITIES:
-✅ @Role communication ("@Developer implement feature")
-✅ AgentTask creation and coordination
-✅ Planning and architecture discussions
-✅ Memory search and pattern application
-
-🎯 CORRECT WORKFLOW PATTERN:
-1. User: "Fix the authentication bug"
-2. Main scope: Creates AgentTask with complete context
-3. Task tool: Deploys to @Developer agent
-4. Agent scope: Executes fix with full tool access
-
-💡 WHY THIS ARCHITECTURE MATTERS:
-- Ensures complete context for all work
-- Enables reliable autonomous execution
-- Captures learning patterns automatically
-- Prevents workflow interruptions
-- Maintains system integrity
-
-🔥 REMEMBER: Main scope coordination → Agent scope execution = Success!`;
-}
-
 module.exports = {
   processHook,
   generateEducationalMessage,
-  generateMainScopeReminder,
   validateInput,
   convertClaudeCodeInput,
   EducationalReminderSystem

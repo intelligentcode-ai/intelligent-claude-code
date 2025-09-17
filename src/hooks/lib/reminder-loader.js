@@ -34,16 +34,13 @@ class ReminderLoader {
           const remindersContent = fs.readFileSync(reminderPath, 'utf8');
           this.reminders = JSON.parse(remindersContent);
           this.loadedFrom = reminderPath;
-          console.log(`✅ Loaded reminders from: ${reminderPath}`);
           return;
         }
       } catch (error) {
-        console.warn(`Failed to load reminders from ${reminderPath}: ${error.message}`);
         continue;
       }
     }
 
-    console.warn('No valid reminders.json found in any location, using fallback reminders');
     this.reminders = this.fallbackReminders;
     this.loadedFrom = 'fallback';
   }
@@ -77,12 +74,19 @@ class ReminderLoader {
     const categoryReminders = this.reminders[category] || [];
 
     if (categoryReminders.length === 0) {
-      console.warn(`No reminders found for category: ${category}`);
-      return this._getDefaultReminder(category);
+      return this._getDefaultReminderString(category);
     }
 
     const randomIndex = Math.floor(Math.random() * categoryReminders.length);
-    return categoryReminders[randomIndex];
+    const reminder = categoryReminders[randomIndex];
+
+    // Handle both string format (new) and object format (legacy)
+    if (typeof reminder === 'string') {
+      return reminder;
+    } else {
+      // Legacy object format
+      return reminder.message || reminder;
+    }
   }
 
   /**
@@ -97,14 +101,8 @@ class ReminderLoader {
    */
   getPreExecutionReminder() {
     const reminder = this.getRandomReminder('preAction');
-
-    let message = `🎓 PRE-EXECUTION PRINCIPLE REMINDER\n\n`;
-    message += `${reminder.icon || '💡'} ${reminder.category.toUpperCase()}\n\n`;
-    message += `${reminder.message}\n\n`;
-    message += `💭 WHY: ${reminder.principle}\n\n`;
-    message += `🎯 This reminder helps maintain intelligent-claude-code behavioral patterns for reliable automation.`;
-
-    return message;
+    // Return just the one-line reminder
+    return reminder;
   }
 
   /**
@@ -112,45 +110,42 @@ class ReminderLoader {
    */
   getPostExecutionReminder() {
     const reminder = this.getRandomReminder('postAction');
-
-    let message = `🌟 SYSTEM PRINCIPLE REMINDER\n\n`;
-    message += `${reminder.category.toUpperCase()}\n\n`;
-    message += `${reminder.message}\n\n`;
-
-    if (reminder.principles && reminder.principles.length > 0) {
-      message += `🔑 KEY PRINCIPLES:\n`;
-      reminder.principles.forEach(principle => {
-        message += `• ${principle}\n`;
-      });
-      message += `\n`;
-    }
-
-    message += `💡 Following these patterns improves system reliability and automation effectiveness!`;
-
-    return message;
+    // Return just the one-line reminder
+    return reminder;
   }
 
   /**
    * Get memory guidance reminder
    */
   getMemoryGuidanceReminder() {
-    const reminder = this.getRandomReminder('memoryGuidance');
-
-    let message = `🧠 MEMORY-FIRST GUIDANCE\n\n`;
-    message += `${reminder.category.toUpperCase()}\n\n`;
-    message += `${reminder.message}\n\n`;
-    message += `📋 GUIDANCE: ${reminder.guidance}\n\n`;
-    message += `✅ ACTION: ${reminder.action}`;
-
-    return message;
+    // Use preAction reminders for memory guidance too
+    const reminder = this.getRandomReminder('preAction');
+    return reminder;
   }
 
   /**
    * Get system reminder
    */
   getSystemReminder() {
-    const reminder = this.getRandomReminder('system');
-    return `${reminder.message}`;
+    // Use postAction reminders for system reminders
+    const reminder = this.getRandomReminder('postAction');
+    return reminder;
+  }
+
+  /**
+   * Get a pre-action reminder for PreToolUse hook
+   */
+  getPreActionReminder() {
+    const reminder = this.getRandomReminder('preAction');
+    return reminder;
+  }
+
+  /**
+   * Get a post-action reminder for PostToolUse hook
+   */
+  getPostActionReminder() {
+    const reminder = this.getRandomReminder('postAction');
+    return reminder;
   }
 
   /**
@@ -159,45 +154,16 @@ class ReminderLoader {
   _getFallbackReminders() {
     return {
       preAction: [
-        {
-          category: 'Memory Consultation',
-          message: '🧠 CONSULT MEMORY BEFORE WRITING AGENTTASKS! Search memory/[topic]/ for proven patterns.',
-          icon: '🧠',
-          principle: 'Memory-first approach prevents repeated issues and applies proven solutions'
-        },
-        {
-          category: 'Workflow Architecture',
-          message: '🚫 NO WORK IN MAIN SCOPE: All work MUST go through PRB → Task → Agent workflow.',
-          icon: '🚫',
-          principle: 'Main scope is for coordination only - agents execute technical work'
-        }
+        '🚫 NO WORK IN MAIN SCOPE - all work must use PRB → Task → Agent',
+        '🔍 ALWAYS search memory before creating any AgentTask',
+        '📋 Check best-practices/ directory before implementation',
+        '🎯 Use @Role patterns for natural team interaction'
       ],
       postAction: [
-        {
-          category: '@Role Communication',
-          message: '💡 Use @Role patterns for natural team coordination!',
-          principles: ['@Role communication patterns', 'Natural team coordination']
-        },
-        {
-          category: 'Memory Storage',
-          message: '💾 Store learnings and patterns after every task.',
-          principles: ['Learning capture', 'Knowledge building']
-        }
-      ],
-      system: [
-        {
-          category: 'System Initialization',
-          message: '🔄 Reload Claude Code after configuration changes.',
-          principles: ['System reliability']
-        }
-      ],
-      memoryGuidance: [
-        {
-          category: 'Memory Search',
-          message: '🔍 ALWAYS SEARCH MEMORY FIRST before creating new work.',
-          guidance: 'Memory-first approach prevents duplicate work',
-          action: 'Search relevant memory topics before AgentTask creation'
-        }
+        '💾 Store successful patterns in memory after completion',
+        '✅ Validate all PRB requirements were met',
+        '🎯 Remember @Role patterns for natural team coordination',
+        '🧠 Memory-first approach - check memory before asking users'
       ]
     };
   }
@@ -229,6 +195,20 @@ class ReminderLoader {
         guidance: 'Memory-first approach improves efficiency',
         action: 'Check memory patterns before action'
       }
+    };
+
+    return defaults[category] || defaults.preAction;
+  }
+
+  /**
+   * Get default reminder string for category
+   */
+  _getDefaultReminderString(category) {
+    const defaults = {
+      preAction: '💡 Follow intelligent-claude-code behavioral patterns for reliable automation.',
+      postAction: '🌟 Remember to use @Role patterns and memory-first approaches.',
+      system: '🔄 System reminder: Follow established patterns for best results.',
+      memoryGuidance: '🧠 Search memory before creating new work.'
     };
 
     return defaults[category] || defaults.preAction;
