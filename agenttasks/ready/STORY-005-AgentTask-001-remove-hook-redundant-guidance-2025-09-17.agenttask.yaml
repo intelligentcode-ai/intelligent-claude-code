@@ -1,0 +1,135 @@
+---
+# STORY-005-AgentTask-001: Remove Hook-Redundant Guidance from Behaviors
+# Created: 2025-09-17
+# Parent: STORY-005-trust-hooks-for-behavioral-guidance
+# Complexity: 12 points (Medium)
+# Role: @AI-Engineer
+
+complete_context:
+  system_nature: "MARKDOWN-BASED AI-AGENTIC SYSTEM"
+  project_root: "/Users/karsten/Nextcloud/Work/Development/intelligentcode-ai/intelligent-claude-code"
+
+  problem_description: |
+    Behavioral files contain extensive guidance patterns that duplicate what hooks
+    now provide. Files are filled with detection patterns, validation steps, scoring
+    algorithms, and procedural instructions that hooks already remind Claude about.
+    The behaviors should focus on WHAT needs to happen (core logic) not HOW to
+    detect/validate/enforce every detail.
+
+  redundancy_analysis:
+    hook_handled_patterns:
+      - Work detection patterns (hooks remind about work vs information)
+      - Validation checklists (hooks guide validation steps)
+      - Pattern detection lists (hooks provide pattern reminders)
+      - Scoring algorithms (hooks guide complexity assessment)
+      - Procedural instructions (hooks remind about process)
+      - Error messages (hooks guide error handling)
+      - Enforcement rules (hooks provide enforcement reminders)
+
+    files_with_redundancy:
+      - path: "src/behaviors/agenttask-auto-trigger.md"
+        issue: "172 lines of detection patterns and scoring that hooks guide"
+      - path: "src/behaviors/agenttask-creation-system.md"
+        issue: "167 lines with verbose validation hooks already handle"
+      - path: "src/behaviors/shared-patterns/best-practices-integration.md"
+        issue: "166 lines of search/scoring logic hooks remind about"
+      - path: "src/behaviors/agenttask-execution.md"
+        issue: "159 lines of procedural steps hooks guide"
+      - path: "src/behaviors/shared-patterns/execution-summary.md"
+        issue: "146 lines of checklists hooks already remind about"
+      - path: "src/behaviors/shared-patterns/context-validation.md"
+        issue: "139 lines of validation patterns hooks provide"
+      - path: "src/behaviors/shared-patterns/workflow-resolution-patterns.md"
+        issue: "136 lines of workflow details hooks guide"
+      - path: "src/behaviors/shared-patterns/memory-operations.md"
+        issue: "133 lines of memory patterns hooks remind about"
+
+  critical_files:
+    - path: "src/behaviors/agenttask-auto-trigger.md"
+      purpose: "Core AgentTask triggering logic buried in verbose patterns"
+      sample: "172 lines with extensive pattern lists hooks already guide"
+    - path: "src/behaviors/agenttask-creation-system.md"
+      purpose: "AgentTask creation logic with redundant validation"
+      sample: "167 lines of detection and validation hooks handle"
+    - path: "src/behaviors/agenttask-execution.md"
+      purpose: "Execution logic with excessive procedural details"
+      sample: "159 lines of step-by-step instructions hooks guide"
+    - path: "src/hooks/lib/reminders.json"
+      purpose: "Hook reminders that handle behavioral guidance"
+      sample: "Reminders for all behavioral patterns"
+
+  user_requirements:
+    original_request: "Remove hook-redundant guidance patterns from behavioral files"
+    success_criteria:
+      - "Remove verbose pattern lists hooks already remind about"
+      - "Strip procedural instructions hooks guide"
+      - "Eliminate redundant validation hooks handle"
+      - "Keep only essential logic and configuration"
+      - "Focus on WHAT not HOW (hooks handle the how)"
+      - "Maintain functionality with hook-based guidance"
+    work_type: "redundancy_removal"
+    scope_limits: "Preserve core logic while removing guidance redundancy"
+
+  simplification_approach:
+    pattern_removal:
+      - "Delete verbose work detection lists (hooks remind)"
+      - "Remove validation checklists (hooks guide)"
+      - "Strip scoring algorithms (hooks assist)"
+      - "Eliminate procedural steps (hooks instruct)"
+
+    focus_shift:
+      - "FROM: How to detect work → TO: What constitutes work"
+      - "FROM: Step-by-step validation → TO: Core requirements"
+      - "FROM: Detailed scoring → TO: Size boundaries"
+      - "FROM: Procedural instructions → TO: Essential flow"
+
+    hook_trust:
+      - "Trust hooks for pattern detection"
+      - "Rely on hooks for validation guidance"
+      - "Let hooks handle procedural reminders"
+      - "Allow hooks to guide error handling"
+
+version_info:
+  current_version: "8.2.0"
+  version_bump: true
+  version_type: "minor"
+
+workflow:
+  pr_required: false
+  merge_strategy: "direct_commit"
+  coordination_required: false
+
+role_assignment:
+  primary: "@AI-Engineer"
+  rationale: "Behavioral system expertise for removing hook-redundant patterns"
+  specialist_skills: "Pattern analysis, redundancy detection, hook integration"
+
+execution_instructions: |
+  1. **Pattern Analysis**: Identify all hook-redundant guidance patterns in each file
+  2. **Core Logic Extraction**: Extract essential logic from verbose guidance
+  3. **Pattern Removal**: Delete detection lists, validation steps, scoring details hooks handle
+  4. **Procedural Stripping**: Remove step-by-step instructions hooks guide
+  5. **Focus Refinement**: Shift from HOW to WHAT in all behaviors
+  6. **Hook Trust Implementation**: Replace verbose patterns with hook reliance
+  7. **Integration Preservation**: Ensure core functionality remains intact
+  8. **Testing**: Verify behaviors work with hook guidance
+  9. **Version Management**: Apply minor version bump for architectural improvement
+  10. **Git Operations**: Commit streamlined behaviors with clear description
+
+success_criteria:
+  - All major behavioral files streamlined to essential logic
+  - Verbose pattern lists removed (hooks handle)
+  - Procedural instructions stripped (hooks guide)
+  - Validation redundancy eliminated (hooks remind)
+  - Core functionality preserved with hook guidance
+  - Focus shifted from HOW to WHAT
+  - Clean architecture with hook-based behavioral guidance
+
+quality_gates:
+  - Hook-redundant patterns identified and removed
+  - Essential logic preserved and clarified
+  - No functional regressions
+  - Hook integration properly leveraged
+  - Documentation reflects hook-based approach
+  - System reliability maintained
+---
