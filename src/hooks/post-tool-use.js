@@ -7,11 +7,7 @@ const ReminderLoader = require('./lib/reminder-loader');
 function main() {
   const standardOutput = {
     continue: true,
-    suppressOutput: true,
-    hookSpecificOutput: {
-      hookEventName: "PostToolUse",
-      additionalContext: ""
-    }
+    suppressOutput: true
   };
 
   try {
@@ -49,17 +45,9 @@ function main() {
       process.exit(0);
     }
 
-    // Generate educational reminder
-    const reminderLoader = new ReminderLoader();
-    const reminder = reminderLoader.getPostExecutionReminder();
-
     const output = {
       continue: true,
-      suppressOutput: true,
-      hookSpecificOutput: {
-        hookEventName: "PostToolUse",
-        additionalContext: reminder
-      }
+      suppressOutput: true
     };
 
     console.log(JSON.stringify(output));
