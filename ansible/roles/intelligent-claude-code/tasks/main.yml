@@ -235,9 +235,13 @@
       set_fact:
         settings_data: "{{ existing_settings.content | b64decode | from_json }}"
 
-    - name: Add hooks section to existing settings
+    - name: Clean up obsolete hooks while preserving user hooks
       set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': {'SessionStart': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/session-start.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'UserPromptSubmit': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/user-prompt-submit.js', 'timeout': 15000, 'failureMode': 'allow'}]}]}}, recursive=True) }}"
+        cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['SessionStart', 'PreToolUse', 'PostToolUse']) | items2dict }}"
+
+    - name: Add UserPromptSubmit hook to cleaned hooks
+      set_fact:
+        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'UserPromptSubmit': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/user-prompt-submit.js', 'timeout': 15000, 'failureMode': 'allow'}]}]})}, recursive=False) }}"
 
     - name: Write merged settings.json
       copy:
@@ -247,13 +251,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "SessionStart, UserPromptSubmit, and Stop hooks merged into existing settings.json - optimal behavioral guidance active"
+        msg: "UserPromptSubmit hook configured in settings.json - optimal behavioral guidance active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with PreToolUse and PostToolUse hook registration - behavioral enforcement active"
+    msg: "Settings file created with UserPromptSubmit hook registration - behavioral guidance active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -271,5 +275,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: PreToolUse and PostToolUse enforcement active"
+      - "🔒 Behavioral Hooks: UserPromptSubmit guidance active"
       - "🚀 Use @Role communication to activate team members"
