@@ -152,17 +152,17 @@
     path: "{{ claude_install_path }}/hooks/lib/reminders.json"
   register: user_reminders_exists
 
-- name: Install default reminders.json (ONLY if not exists)
+- name: Install default reminders.json (system default, user overrides preserved)
   copy:
     src: "{{ playbook_dir }}/../src/hooks/lib/reminders.json"
     dest: "{{ claude_install_path }}/hooks/lib/reminders.json"
     mode: '0644'
-  when: not user_reminders_exists.stat.exists
+    force: yes
 
-- name: Display reminders preservation notice
+- name: Display reminders hierarchy notice
   debug:
-    msg: "User reminders.json preserved: {{ claude_install_path }}/hooks/lib/reminders.json already exists - keeping user customizations"
-  when: user_reminders_exists.stat.exists and ansible_verbosity >= 1
+    msg: "System reminders installed. Create ~/.claude/hooks/reminders.json or project/.claude/hooks/reminders.json to customize"
+  when: ansible_verbosity >= 1
 
 - name: Install hooks documentation
   copy:

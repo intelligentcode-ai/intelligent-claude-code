@@ -366,9 +366,8 @@ function processHookSync(input) {
       enforcement = 'allow'; // Fail open
     }
 
-    // Check if educational reminder should be shown
-    const shouldShowReminder = (enforcement === 'block' || enforcement === 'require_prb_context') &&
-                              classification.confidence >= 0.6;
+    // ALWAYS show educational reminders regardless of classification
+    const shouldShowReminder = true;
 
     if (shouldShowReminder) {
       // Log educational opportunity for analysis (synchronous)
@@ -486,9 +485,8 @@ async function processHook(input) {
     // Get enforcement configuration
     const enforcement = await configLoader.getEnforcement(classification.intent);
 
-    // Check if educational reminder should be shown
-    const shouldShowReminder = (enforcement === 'block' || enforcement === 'require_prb_context') &&
-                              classification.confidence >= 0.6;
+    // ALWAYS show educational reminders regardless of classification
+    const shouldShowReminder = true;
 
     if (shouldShowReminder) {
       // Log educational opportunity for analysis
@@ -601,12 +599,30 @@ function main() {
 
     // Output result in Claude Code expected JSON format
     const output = {
-      continue: true,  // Always allow in educational mode
+      continue: true,
+      suppressOutput: true,
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
-        additionalContext: result.message  // This adds context directly to Claude
+        additionalContext: result.message
       }
     };
+
+    // Debug logging to stderr and file
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      tool: input?.tool || 'unknown',
+      output: output,
+      message: result.message
+    };
+
+    console.error(`[PRE-HOOK DEBUG] ${JSON.stringify(logEntry)}`);
+
+    try {
+      const logFile = path.join(process.env.HOME || '/tmp', '.claude', 'logs', `pre-hook-debug-${new Date().toISOString().split('T')[0]}.log`);
+      fs.appendFileSync(logFile, JSON.stringify(logEntry) + '\n');
+    } catch (error) {
+      console.error(`[PRE-HOOK] Logging failed: ${error.message}`);
+    }
 
     console.log(JSON.stringify(output));
     process.exit(0); // Always exit 0 in educational mode

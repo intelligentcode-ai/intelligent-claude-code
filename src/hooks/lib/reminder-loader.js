@@ -212,14 +212,14 @@ class ReminderLoader {
   _getFallbackReminders() {
     return {
       preAction: [
-        '🚫 NO WORK IN MAIN SCOPE - all work must use PRB → Task → Agent',
+        '🚫 NO WORK IN MAIN SCOPE - all work must use AgentTask → Task → Agent',
         '🔍 ALWAYS search memory before creating any AgentTask',
         '📋 Check best-practices/ directory before implementation',
         '🎯 Use @Role patterns for natural team interaction'
       ],
       postAction: [
         '💾 Store successful patterns in memory after completion',
-        '✅ Validate all PRB requirements were met',
+        '✅ Validate all AgentTask requirements were met',
         '🎯 Remember @Role patterns for natural team coordination',
         '🧠 Memory-first approach - check memory before asking users'
       ]
