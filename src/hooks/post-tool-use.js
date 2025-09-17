@@ -478,7 +478,10 @@ function main() {
       // Output result in Claude Code expected JSON format
       const output = {
         continue: true,  // Always continue for post-hooks
-        systemMessage: result.message  // This will be shown to Claude
+        hookSpecificOutput: {
+          hookEventName: "PostToolUse",
+          additionalContext: result.message  // This adds context directly to Claude
+        }
       };
 
       console.log(JSON.stringify(output));
