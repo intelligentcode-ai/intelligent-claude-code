@@ -186,7 +186,7 @@ class MemoryStorageEnforcement {
       /system[_-]?configuration/i,
       /hook[_-]?implementation/i,
       /memory[_-]?management/i,
-      /prb[_-]?execution/i,
+      /agenttask[_-]?execution/i,
       /git[_-]?operations/i,
       /file[_-]?operations/i,
       /javascript[_-]?implementation/i,
@@ -477,12 +477,31 @@ function main() {
 
       // Output result in Claude Code expected JSON format
       const output = {
-        continue: true,  // Always continue for post-hooks
+        continue: true,
+        suppressOutput: true,
         hookSpecificOutput: {
           hookEventName: "PostToolUse",
-          additionalContext: result.message  // This adds context directly to Claude
+          additionalContext: result.message
         }
       };
+
+      // Debug logging to stderr and file (no user-visible message)
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        tool: input.tool,
+        output: output,
+        reminder: result.message
+      };
+
+      console.error(`[POST-HOOK DEBUG] ${JSON.stringify(logEntry)}`);
+
+      try {
+        const logDir = path.join(process.env.HOME || '/tmp', '.claude', 'logs');
+        const logFile = path.join(logDir, `post-hook-debug-${new Date().toISOString().split('T')[0]}.log`);
+        fs.appendFileSync(logFile, JSON.stringify(logEntry) + '\n');
+      } catch (error) {
+        console.error(`[POST-HOOK] Logging failed: ${error.message}`);
+      }
 
       console.log(JSON.stringify(output));
       process.exit(0);
