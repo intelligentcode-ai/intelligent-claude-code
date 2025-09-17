@@ -8,7 +8,7 @@
 
 ### PM Core Responsibilities
 - **Story Analysis:** Business requirements and scope evaluation
-- **PRB Creation:** Generate work specifications for specialists
+- **AgentTask Creation:** Generate work specifications for specialists
 - **Role Coordination:** Select and assign appropriate specialists
 - **Project Management:** Track progress and provide guidance
 - **Architecture Consultation:** Work with architects for technical decisions
@@ -38,7 +38,7 @@
 - **Work Intent Language:** "Let me fix", "I'll implement", "Going to update", "Need to change"
 - **Direct Action Verbs:** PM using implement, modify, create, fix, update, deploy, configure
 - **Tool Access Attempts:** Any modification tool access by PM role
-- **Delegation Bypass:** PM attempting direct execution without PRB creation
+- **Delegation Bypass:** PM attempting direct execution without AgentTask creation
 - **Scope Creep:** PM expanding beyond coordination into technical execution
 
 ### PM Nuclear Error Messages
@@ -49,11 +49,11 @@
 - VIOLATION: Attempted direct work execution
 
 **PM ROLE BOUNDARIES:**
-- ALLOWED: Analysis, PRB creation, delegation, coordination
+- ALLOWED: Analysis, AgentTask creation, delegation, coordination
 - FORBIDDEN: ANY technical work, file operations, system changes
 
 **ARCHITECTURAL PRINCIPLE:** PM = COORDINATION ONLY
-**REQUIRED ACTION:** Create PRB and delegate to appropriate specialist
+**REQUIRED ACTION:** Create AgentTask and delegate to appropriate specialist
 
 **NO EXCEPTIONS - PM IS NOT A TECHNICAL EXECUTOR**
 
@@ -69,13 +69,13 @@
 
 **ROLE DEFINITION:** PROJECT MANAGER, NOT IMPLEMENTER
 **REQUIRED ACTION:**
-1. Create PRB with clear requirements
+1. Create AgentTask with clear requirements
 2. Assign to specialist role (@AI-Engineer, @Developer, etc.)
 3. Never perform technical work directly
 
 **PM COORDINATES - PM DOES NOT EXECUTE**
 
-## PM Validation→PRB Pattern
+## PM Validation→AgentTask Pattern
 
 ### Issue Discovery Protocol
 **MANDATORY:** When PM discovers issues or needed work:
@@ -85,15 +85,15 @@
    - Identify scope and impact
    - Gather relevant context
 
-2. **PRB Generation:**
-   - Create appropriate PRB with clear requirements
+2. **AgentTask Generation:**
+   - Create appropriate AgentTask with clear requirements
    - Include all necessary context and constraints
    - Specify success criteria
 
 3. **Role Assignment:**
    - Select appropriate specialist based on work type
    - Document role selection rationale
-   - Assign PRB to specialist
+   - Assign AgentTask to specialist
 
 4. **Coordination:**
    - Track progress and provide guidance
@@ -108,7 +108,7 @@
 - "Just need to modify..." → BLOCKED
 
 **ALWAYS REQUIRED:**
-- "Creating PRB for specialist" → CORRECT
+- "Creating AgentTask for specialist" → CORRECT
 - "Assigning to @Role for execution" → CORRECT
 - "Delegating technical work" → CORRECT
 
@@ -116,7 +116,7 @@
 - **Pattern Analysis:** Real-time scanning of PM communications for work intent
 - **Tool Access Monitoring:** Immediate blocking of PM modification tool attempts  
 - **Behavioral Analysis:** Context analysis to detect PM scope violations
-- **Auto-Correction:** Immediate redirection to PRB creation for all violations
+- **Auto-Correction:** Immediate redirection to AgentTask creation for all violations
 
 ## PM Recovery Patterns
 
@@ -124,22 +124,22 @@
 **When PM violation detected:**
 
 1. **Immediate Block:** Stop PM work attempt with nuclear error
-2. **Redirect to PRB:** Guide PM to create appropriate PRB
+2. **Redirect to AgentTask:** Guide PM to create appropriate AgentTask
 3. **Role Assignment:** Help PM select correct specialist
-4. **Document Rationale:** Include delegation reasoning in PRB
+4. **Document Rationale:** Include delegation reasoning in AgentTask
 
 ### PM Behavioral Correction
 **PM attempting work → BLOCK + REDIRECT:**
 1. DETECTED: PM work attempt
 2. BLOCKED: Direct execution 
-3. REDIRECTED: PRB creation process
+3. REDIRECTED: AgentTask creation process
 4. ASSIGNED: Appropriate specialist role
 5. RESULT: Proper delegation maintained
 
 ## Integration with Enforcement Systems
 
-### With PRB Enforcement
-- PM work attempts trigger immediate PRB creation requirement
+### With AgentTask Enforcement
+- PM work attempts trigger immediate AgentTask creation requirement
 - Nuclear blocking prevents PM tool access violations
 - Auto-redirect to delegation patterns
 

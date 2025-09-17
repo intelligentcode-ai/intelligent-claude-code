@@ -1,6 +1,6 @@
 # Adaptation System
 
-**MANDATORY:** Dynamic PRB adaptation, user correction integration, and seamless agent restart patterns.
+**MANDATORY:** Dynamic AgentTask adaptation, user correction integration, and seamless agent restart patterns.
 
 ## Imports
 @./shared-patterns/learning-patterns.md
@@ -9,18 +9,18 @@
 
 ## Core Adaptation Principles
 
-### Dynamic PRB Updates
-**REAL-TIME ADAPTATION:** Modify PRB context when corrections or new information provided
+### Dynamic AgentTask Updates
+**REAL-TIME ADAPTATION:** Modify AgentTask context when corrections or new information provided
 **TEMPLATE COMPLIANCE:** Maintain template structure during updates
 **EXECUTION CONTINUITY:** Seamless continuation without manual intervention
 
 ### User Correction Integration
 **CORRECTION DETECTION:** Identify when users provide corrections or clarifications
-**CONTEXT UPDATES:** Integrate corrections into PRB context
-**VALIDATION:** Ensure corrections maintain PRB integrity
+**CONTEXT UPDATES:** Integrate corrections into AgentTask context
+**VALIDATION:** Ensure corrections maintain AgentTask integrity
 
 ### Agent Restart Patterns
-**SEAMLESS TRANSITION:** Restart agents with updated PRB context
+**SEAMLESS TRANSITION:** Restart agents with updated AgentTask context
 **STATE PRESERVATION:** Maintain relevant progress and context
 **AUTOMATIC EXECUTION:** No manual intervention required
 
@@ -53,18 +53,18 @@
 
 ### Detection & Analysis
 1. **Pattern Recognition**: Identify correction/update signals
-2. **Context Analysis**: Assess impact on current PRB
+2. **Context Analysis**: Assess impact on current AgentTask
 3. **Scope Evaluation**: Determine extent of required changes
-4. **Validation Check**: Ensure changes maintain PRB integrity
+4. **Validation Check**: Ensure changes maintain AgentTask integrity
 
-### PRB Context Update
+### AgentTask Context Update
 1. **Preserve Structure**: Maintain template compliance
 2. **Update Sections**: Modify affected context areas
 3. **Validate Changes**: Ensure no conflicts introduced
 4. **Document Updates**: Record adaptation rationale
 
 ### Agent Transition
-1. **Context Preparation**: Package updated PRB context
+1. **Context Preparation**: Package updated AgentTask context
 2. **Agent Restart**: Seamless transition to updated context
 3. **State Preservation**: Maintain relevant progress
 4. **Execution Continuation**: Resume work with new context
@@ -94,7 +94,7 @@
 
 ## Integration Points
 
-### With PRB System
+### With AgentTask System
 - Maintain template structure during updates
 - Preserve complexity scoring accuracy
 - Ensure validation compliance
@@ -113,4 +113,4 @@
 - Apply proven transition strategies
 
 ---
-*Dynamic adaptation system for PRB updates and user corrections*
+*Dynamic adaptation system for AgentTask updates and user corrections*

@@ -111,10 +111,10 @@ mcp_operations:
 
 ## Integration Points
 
-### With PRB Generation
+### With AgentTask Generation
 - MCP resolution happens during placeholder resolution phase
 - Applied after configuration loading, before template completion
-- All MCP placeholders resolved before PRB creation
+- All MCP placeholders resolved before AgentTask creation
 
 ### With Template System
 - MCP placeholders exist in all template sizes

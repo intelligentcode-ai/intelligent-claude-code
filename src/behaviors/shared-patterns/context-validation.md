@@ -1,13 +1,13 @@
 # Context Validation
 
-**MANDATORY:** Complete context before PRB generation.
+**MANDATORY:** Complete context before AgentTask generation.
 
 ## COMPACT-RESISTANT CONTEXT MONITORING
 
 **ULTRA-SHORT CONTEXT-CORE:**
-- **SYSTEM=AI-AGENTIC** (Behavioral patterns, memory, PRB)
+- **SYSTEM=AI-AGENTIC** (Behavioral patterns, memory, AgentTask)
 - **PM=COORDINATION** (Never work execution)
-- **WORK→PRB** (Never direct execution)
+- **WORK→AGENTTASK** (Never direct execution)
 
 **CONTEXT-MONITOR:** Watch for behavioral violations near token limits
 
@@ -124,7 +124,7 @@
 ### Role Appropriateness Validation
 **CHECK FOR SYSTEM NATURE ALIGNMENT**:
 - Validate role assignments align with system_nature
-- **AI-AGENTIC SYSTEMS**: Behavioral patterns, memory operations, PRB enforcement → @AI-Engineer (NOT @Security-Engineer, @Database-Engineer, @DevOps-Engineer)
+- **AI-AGENTIC SYSTEMS**: Behavioral patterns, memory operations, AgentTask enforcement → @AI-Engineer (NOT @Security-Engineer, @Database-Engineer, @DevOps-Engineer)
 - **CODE-BASED SYSTEMS**: Implementation, testing, deployment → @Developer, @Backend-Tester, @DevOps-Engineer
 - **HYBRID SYSTEMS**: Mixed assignments with joint architect assessment
 - **BLOCK**: Role assignments that conflict with detected system nature

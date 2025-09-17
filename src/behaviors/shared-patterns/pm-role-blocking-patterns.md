@@ -7,7 +7,7 @@
 - PM trying to fix bugs directly
 - PM implementing features without delegation
 - PM performing system configurations
-- PM bypassing PRB creation process
+- PM bypassing AgentTask creation process
 - PM executing technical work in any form
 
 ## PM-Specific Detection
@@ -21,7 +21,7 @@
 ## Context Analysis
 **PM DETECTION TRIGGERS:**
 - Work intent + main scope context = BLOCK
-- Tool usage + no PRB authorization = BLOCK
+- Tool usage + no AgentTask authorization = BLOCK
 - Action verb + target object = BLOCK
 - Implementation language + specific task = BLOCK
 - PM role + ANY work attempt = NUCLEAR BLOCK

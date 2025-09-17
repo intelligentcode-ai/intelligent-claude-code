@@ -9,10 +9,10 @@
 
 ## Core Learning Process
 
-**PRB-DRIVEN EXECUTION:** Active learning tracking with proactive memory generation
+**AGENTTASK-DRIVEN EXECUTION:** Active learning tracking with proactive memory generation
 
 ### Learning Capture
-**STORE PATTERNS:** Successful PRB execution patterns
+**STORE PATTERNS:** Successful AgentTask execution patterns
 **STORAGE LOCATION:** memory/[topic]/[subtopic].md
 **LEARNING TYPES:** Process improvements, knowledge transfers, issue prevention
 
@@ -37,7 +37,7 @@
 
 ## Proactive Memory Generation
 
-**MANDATORY:** Generate memory during ALL operations, not just PRBs
+**MANDATORY:** Generate memory during ALL operations, not just AgentTasks
 
 ### Proactive Triggers
 **CONTINUOUS OPERATION TRIGGERS:**
@@ -77,22 +77,22 @@
 
 ## Implementation Integration
 
-### PRB Execution Integration
+### AgentTask Execution Integration
 **Learning Capture:** Check embedded learnings → Apply during execution → Store new patterns
 **Learning Application:** Scan for reference patterns → Track usage → Apply proven approaches
 
-### PRB Completion Memory Storage
-**MANDATORY:** All PRB completions trigger automatic memory storage:
+### AgentTask Completion Memory Storage
+**MANDATORY:** All AgentTask completions trigger automatic memory storage:
 
-**PRB Completion Triggers:**
-- **Successful PRB Execution**: Automatically store successful implementation patterns
+**AgentTask Completion Triggers:**
+- **Successful AgentTask Execution**: Automatically store successful implementation patterns
 - **Error Resolution**: Document problems encountered and solutions applied
 - **New Tool Integration**: Capture working configurations and tool usage patterns
 - **Performance Optimization**: Store optimization techniques and results
 - **Process Improvement**: Document workflow enhancements and efficiency gains
 
 **Automatic Storage Process:**
-1. **Execution Analysis**: Scan PRB execution for patterns worth capturing
+1. **Execution Analysis**: Scan AgentTask execution for patterns worth capturing
 2. **Topic Assignment**: Determine appropriate memory topic based on:
    - Work type (implementation, configuration, debugging, optimization)
    - Technology domain (behavioral, security, database, infrastructure)
@@ -103,14 +103,14 @@
    - Configuration discoveries that enable new capabilities
    - Process improvements that increase efficiency
 4. **Security Validation**: Apply StoreInMemory security checklist before storage
-5. **Memory Storage**: Store using StoreInMemory pattern with PRB context
+5. **Memory Storage**: Store using StoreInMemory pattern with AgentTask context
 6. **Index Update**: Update memory index for future discoverability
 
 **Storage Examples:**
-- **implementation/[technology]**: "PRB-123: Implemented authentication using [approach], handles [scenarios]"
-- **debugging/[domain]**: "PRB-124: Resolved [error] in [component] by [solution], prevents [issue]"
-- **configuration/[tool]**: "PRB-125: Configured [tool] with [settings], enables [capability]"
-- **optimization/[area]**: "PRB-126: Optimized [component] using [technique], improved [metric] by [amount]"
+- **implementation/[technology]**: "AgentTask-123: Implemented authentication using [approach], handles [scenarios]"
+- **debugging/[domain]**: "AgentTask-124: Resolved [error] in [component] by [solution], prevents [issue]"
+- **configuration/[tool]**: "AgentTask-125: Configured [tool] with [settings], enables [capability]"
+- **optimization/[area]**: "AgentTask-126: Optimized [component] using [technique], improved [metric] by [amount]"
 
 ### Enhanced Auto-Application
 1. **Query Intent Analysis:** Parse user needs

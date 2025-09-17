@@ -1,6 +1,6 @@
 # AgentTask Creation System
 
-**MANDATORY:** All AgentTask and work item creation via main agent with template compliance and placeholder resolution.
+All AgentTask and work item creation via main agent with template compliance and placeholder resolution.
 
 ## Imports
 @./shared-patterns/template-enforcement.md
@@ -10,196 +10,159 @@
 @./shared-patterns/behavioral-decision-matrix.md
 @./shared-patterns/best-practices-integration.md
 
-## Automatic PRB Generation
+## Automatic Generation
 
-### Real-Time Work Detection & Instant PRB Creation
-**CRITICAL:** System operates in continuous detection mode with ZERO manual PRB creation:
-- **Work intent triggers immediate PRB generation**
-- **Pattern recognition distinguishes work vs information requests**
-- **Complexity scoring auto-selects optimal template**
-- **Full project context gathered and embedded automatically**
-- **All placeholders resolved, no runtime dependencies**
-- **PRBs generated with complete Task tool context**
+Real-time work detection and instant AgentTask creation:
+- Work intent triggers immediate AgentTask generation
+- Pattern recognition distinguishes work vs information requests
+- Complexity scoring auto-selects optimal template
+- Full project context gathered and embedded automatically
+- All placeholders resolved, no runtime dependencies
 
-### Enhanced Automatic Detection Patterns
-**GUARANTEED PRB CREATION:**
-- **Implementation**: implement, create, build, develop, code, program, write
-- **Modification**: fix, update, modify, change, refactor, optimize, enhance
-- **@Role Work**: @Developer implement auth, @AI-Engineer optimize behavior
-- **Story Processing**: break down STORY-001, implement user authentication
-- **Operations**: deploy, configure CI/CD, setup monitoring, provision resources
-- **Maintenance**: clean deprecated code, remove unused files, archive data
+Detection patterns:
+- Implementation: implement, create, build, develop, code, program, write
+- Modification: fix, update, modify, change, refactor, optimize, enhance
+- @Role Work: @Developer implement auth, @AI-Engineer optimize behavior
+- Operations: deploy, configure CI/CD, setup monitoring, provision resources
 
-**INTELLIGENT NON-TRIGGERS:**
-- **Query**: show, display, read, list, check, analyze, examine, explain, describe
-- **Status**: what's the status, current progress, ongoing work
-- **Planning**: should we, what if, how about, what's the best approach
-- **@Role Consultations**: @Role what would you recommend, how would you handle
-- **Knowledge**: explain concept, describe process, define terminology
+Non-triggers:
+- Query: show, display, read, list, check, analyze, examine, explain
+- Status: what's the status, current progress, ongoing work
+- Planning: should we, what if, how about, what's the best approach
+- @Role Consultations: @Role what would you recommend
 
-## Core Creation Rules
+## Core Rules
 
-### Main Agent Only
-**CRITICAL:** ALL work item creation MUST happen in main agent context:
-- Stories, Bugs, EPICs, PRBs creation
+Main agent only:
+- All work item creation happens in main agent context
 - Template resolution with full context
 - Configuration hierarchy access
 - Complete project context gathering
+- Agents cannot create work items due to isolated context
 
-**BLOCKED:** AGENTS CANNOT create work items due to isolated context limitations.
+Template requirements:
+- AgentTasks limited to nano/tiny templates only
+- Work ≥6 points becomes STORY/BUG first
+- nano-agenttask-template.yaml (0-2 points): Simple changes
+- tiny-agenttask-template.yaml (3-5 points): Single-file work
+- Blocked: medium/large/mega templates
 
-### Template Requirements (AGGRESSIVE BREAKDOWN ENFORCED)
-**MANDATORY:** PRBs LIMITED to nano/tiny templates only. Work ≥6 points becomes STORY/BUG first:
-- `nano-prb-template.yaml` (0-2 points): Simple changes
-- `tiny-prb-template.yaml` (3-5 points): Single-file work
-- **BLOCKED:** `medium-prb-template.yaml`, `large-prb-template.yaml`, `mega-prb-template.yaml`
-
-**ENFORCEMENT RULE:** Work ≥6 points → STORY/BUG creation → Break into nano/tiny PRBs ≤5 points each
-
-### Placeholder Resolution
-**COMPLETE RESOLUTION REQUIRED:**
-- ALL placeholders resolved at generation time
-- NO runtime config lookups
-- Configuration values embedded in PRB
+Placeholder resolution:
+- All placeholders resolved at generation time
+- No runtime config lookups
+- Configuration values embedded in AgentTask
 - Self-contained execution context
 
 ## Creation Process
 
-### Lightning-Fast Automatic Generation Pipeline
-**SEAMLESS 14-STEP INSTANT AUTOMATION WITH SEQUENTIAL THINKING:**
-0. **Duplicate Check**: MANDATORY scan existing AgentTasks for similar work (PREVENTS DUPLICATE CREATION)
-   - Search agenttasks/ready/ and agenttasks/completed/ directories
-   - Compare work descriptions, technical scope, and file references
-   - Score similarity using keyword overlap, scope match, and context alignment
-   - If ≥70% similarity found, UPDATE existing AgentTask instead of creating new one
-   - Notify user of existing AgentTask reuse with enhancement details
-1. **Detection**: Real-time parsing with NLP pattern recognition
-2. **Intent Classification**: Work vs information classification
-3. **Context Assembly**: Complete project context loading
-4. **Memory Integration**: MANDATORY auto-search memory for applicable patterns
-   - Parse work intent for keywords and context
-   - Search memory/[topic]/ directories using SearchMemory pattern
-   - Score patterns by keyword match + recency + context relevance
-   - Select top 2-3 patterns (max 1000 tokens) for PRB embedding
-   - EMBED patterns directly in PRB context - NO runtime lookups
-5. **Best-Practices Integration**: Auto-search best-practices for relevant standards
-6. **Sequential Thinking**: ALWAYS apply sequential thinking with project context for ALL work requests
-7. **Complexity Calculation**: Enhanced scoring algorithm with sequential analysis
-8. **AGGRESSIVE BREAKDOWN**: If ≥6 points, FORCE STORY/BUG creation → Break into nano/tiny PRBs ≤5 points
-9. **Template Selection**: Restricted to nano/tiny templates only (medium/large/mega BLOCKED)
-10. **Template Loading**: Complete template structure loaded
-11. **Configuration Resolution**: Full config hierarchy with actual values
-12. **Placeholder Elimination**: Replace ALL placeholders with actual values
-13. **Context Embedding**: Complete project context embedded with sequential thinking results AND memory patterns
-14. **Quality Validation**: ZERO placeholders, complete sections verified, memory patterns embedded
+Automatic generation pipeline:
+1. Duplicate check: Scan existing AgentTasks for similar work
+2. Detection: Real-time parsing with pattern recognition
+3. Intent classification: Work vs information classification
+4. Context assembly: Complete project context loading
+5. Memory integration: Auto-search memory for applicable patterns
+6. Best-practices integration: Auto-search for relevant standards
+7. Sequential thinking: Apply structured analysis with project context
+8. Complexity calculation: Enhanced scoring algorithm
+9. Breakdown enforcement: If ≥6 points, create STORY/BUG first
+10. Template selection: Nano/tiny templates only
+11. Template loading: Complete template structure loaded
+12. Configuration resolution: Full config hierarchy with actual values
+13. Placeholder elimination: Replace all placeholders with actual values
+14. Context embedding: Complete project context with memory patterns
+15. Quality validation: Zero placeholders, complete sections verified
 
-### PRB Deduplication Logic
+## Deduplication Logic
 
-**MANDATORY:** ALWAYS check for existing AgentTasks before creating new ones to prevent duplicate work:
+Check for existing AgentTasks before creating new ones:
 
-**Deduplication Process:**
-1. **AgentTask Directory Scan**: Search agenttasks/ready/ and agenttasks/completed/ for existing AgentTasks
-2. **Similarity Analysis**: Compare new work request against existing AgentTask descriptions and contexts
-3. **Scoring Algorithm**: Calculate similarity percentage using:
-   - **Work Description Match** (40%): Keyword overlap in descriptions and goals
-   - **Technical Scope Match** (30%): File references, systems, and technical domains
-   - **Context Alignment** (20%): Similar problem patterns and solution approaches
-   - **Parent Reference Match** (10%): Same story/bug parent or related work chain
-4. **Threshold Decision**: If any existing PRB scores ≥70% similarity, UPDATE instead of CREATE
-5. **Update-Existing Pattern**: Enhance existing PRB with new requirements instead of duplication
-6. **User Notification**: Inform user of existing PRB reuse with enhancement details
+Deduplication process:
+1. Directory scan: Search agenttasks/ready/ and agenttasks/completed/
+2. Similarity analysis: Compare new work against existing descriptions
+3. Scoring algorithm: Calculate similarity percentage using weighted factors
+4. Threshold decision: ≥70% similarity triggers UPDATE instead of CREATE
+5. Update-existing pattern: Enhance existing AgentTask with new requirements
+6. User notification: Inform of existing work reuse
 
-**Similarity Scoring Examples:**
-- **High Similarity (≥70%)**: Same bug fix request, identical feature implementation, duplicate optimization work
-- **Medium Similarity (50-69%)**: Related features, similar technical domains, connected workflow steps
-- **Low Similarity (<50%)**: Different technical scope, unrelated problem domains, distinct implementation goals
+Similarity scoring factors:
+- Work description match (40%)
+- Technical scope match (30%)
+- Context alignment (20%)
+- Parent reference match (10%)
 
-**Update-Existing Workflow:**
-- Load existing PRB and merge new requirements into context
-- Preserve original execution instructions while adding new specifications
-- Update completion criteria to include both original and new requirements
-- Maintain original PRB ID and creation date, add update notation
-- Notify user: "Enhanced existing PRB-XXX with additional requirements instead of creating duplicate"
+## Memory-First Integration
 
-### Memory-First Principle Integration
+All AgentTask generation implements memory-first approach:
 
-**MANDATORY:** All PRB generation MUST implement memory-first approach:
+Memory search process:
+1. Parse work intent: Extract keywords, work type, technical domains
+2. Search memory directories: Scan memory/[topic]/ using SearchMemory pattern
+3. Pattern scoring: Score by keyword match + recency + context relevance
+4. Pattern selection: Choose top 2-3 patterns (max 1000 tokens)
+5. Direct embedding: Embed patterns in AgentTask context
 
-**Memory Search Process:**
-1. **Parse Work Intent**: Extract keywords, work type, and technical domains
-2. **Search Memory Directories**: Scan memory/[topic]/ using SearchMemory pattern
-3. **Pattern Scoring**: Score by keyword match + recency + context relevance + success rate
-4. **Pattern Selection**: Choose top 2-3 most relevant patterns (max 1000 tokens total)
-5. **Direct Embedding**: EMBED patterns in PRB context - NEVER runtime lookups
-6. **Learning Application**: Apply proven approaches from embedded patterns
+Memory integration rules:
+- Search memory before AgentTask generation
+- Embed patterns directly in AgentTask context
+- No runtime lookups
+- Self-contained AgentTasks with embedded patterns
 
-**Memory Integration Rules:**
-- **ALWAYS search first**: Memory search before any PRB generation
-- **EMBED patterns**: Include relevant learnings directly in PRB context
-- **NO runtime lookups**: All memory patterns embedded at creation time
-- **Self-contained PRBs**: Complete execution context with embedded patterns
-- **Learning application**: Reference and apply embedded patterns during execution
+## Context Integration
 
-### Automatic Context Integration
-**PRBs AUTOMATICALLY INCLUDE:**
-- **Project Context**: System nature, project root, constraints from CLAUDE.md
-- **Configuration Values**: All relevant settings from config hierarchy
-- **Critical Files**: Relevant files with actual content samples and purposes
-- **Memory Patterns**: MANDATORY - Applicable learnings and successful patterns embedded
-- **Best-Practices**: Relevant standards, guidelines, and quality patterns
-- **User Requirements**: Clear requirements with success criteria and scope limits
-- **Role Assignment**: Appropriate specialist roles based on work type
+AgentTasks automatically include:
+- Project context: System nature, project root, constraints from CLAUDE.md
+- Configuration values: All relevant settings from config hierarchy
+- Critical files: Relevant files with actual content samples
+- Memory patterns: Applicable learnings and successful patterns
+- Best-practices: Relevant standards, guidelines, quality patterns
+- User requirements: Clear requirements with success criteria
+- Role assignment: Appropriate specialist roles based on work type
 
-### Size Enforcement & Validation (AGGRESSIVE BREAKDOWN)
-**MANDATORY BREAKDOWN:** If complexity ≥6 points, FORCE STORY/BUG creation → Break into nano/tiny PRBs ≤5 points each
-**BLOCKED:** Direct PRB creation ≥6 points, medium/large/mega templates
-**MANDATORY CHECKS:** Template compliance (nano/tiny only), zero placeholders, complete context, naming format, parent reference
+## Size Enforcement
 
-## Creation vs Execution Separation
+Breakdown enforcement:
+- If complexity ≥6 points, create STORY/BUG first
+- Break into nano/tiny AgentTasks ≤5 points each
+- Block direct AgentTask creation ≥6 points
+- Block medium/large/mega templates
+- Check template compliance, zero placeholders, complete context
 
-### Creation (Main Agent)
+## Creation vs Execution
+
+Creation (Main Agent):
 - Full configuration access
 - Template hierarchy access
-- **MANDATORY memory search capabilities**: Access to all memory/[topic]/ directories
-- **SearchMemory pattern implementation**: Pattern scoring and selection
+- Memory search capabilities
+- SearchMemory pattern implementation
 - Complete project context
 - Placeholder resolution with embedded memory patterns
 
-### Execution (Subagent)
-- PRB implementation work
+Execution (Subagent):
+- AgentTask implementation work
 - Role-based task delegation
 - Code changes and file operations
 - Testing and validation
-- Git operations within PRB scope
+- Git operations within AgentTask scope
 
-## Automatic Error Handling & Recovery
+## Error Handling & Recovery
 
-### Intelligent Violation Detection & Auto-Correction
-**AUTOMATIC RECOVERY PATTERNS:**
-- **Work Detection Failure** → Re-analyze with enhanced pattern matching
-- **Context Incomplete** → Auto-gather missing project context and configuration
-- **Memory Search Failure** → Re-run SearchMemory with expanded keywords and topics
-- **Pattern Embedding Missing** → Force memory search and embed relevant patterns
-- **Duplicate Check Missing** → Force PRB directory scan and similarity analysis
-- **Duplicate Creation Attempt** → Redirect to update-existing pattern with enhancement details
-- **Wrong Template** → Recalculate complexity, auto-select correct template
-- **Size Violations** → FORCE STORY/BUG creation for ≥6 points, break into nano/tiny PRBs ≤5 points
-- **Format Violations** → Auto-apply naming standards and compliance rules
-- **Missing Dependencies** → Auto-identify and include prerequisite work items
+Automatic recovery patterns:
+- Work detection failure → Re-analyze with enhanced pattern matching
+- Context incomplete → Auto-gather missing project context
+- Memory search failure → Re-run SearchMemory with expanded keywords
+- Pattern embedding missing → Force memory search and embed patterns
+- Duplicate check missing → Force directory scan and similarity analysis
+- Wrong template → Recalculate complexity, auto-select correct template
+- Size violations → Create STORY/BUG for ≥6 points, break into nano/tiny
+- Format violations → Auto-apply naming standards
 
-### Blocking Patterns (IMMEDIATE STOP)
-**HARD BLOCKS:**
-- Subagent PRB creation → "CREATION BLOCKED: Work items must be created by main agent"
-- Manual PRB without templates → "TEMPLATE REQUIRED: PRB creation without template FORBIDDEN"
-- Unresolved placeholders → "PLACEHOLDER UNRESOLVED: All placeholders must be resolved"
-- Runtime config dependencies → "RUNTIME LOOKUP FORBIDDEN: All config must be embedded"
-- Memory search skipped → "MEMORY SEARCH MANDATORY: All PRB generation must search memory first"
-- Runtime memory lookups → "RUNTIME MEMORY FORBIDDEN: All patterns must be embedded in PRB"
-- Duplicate check skipped → "DUPLICATE CHECK MANDATORY: All PRB creation must check existing PRBs first"
-- Creating duplicate PRB → "DUPLICATE CREATION BLOCKED: Use update-existing pattern for similar work"
-- Direct PRB ≥6 points → "SIZE ENFORCEMENT BLOCKED: Work ≥6 points must become STORY/BUG first"
-- Medium/Large PRB creation → "TEMPLATE BLOCKED: Only nano/tiny PRBs permitted, create STORY first"
-- Bypass story creation → "STORY CREATION MANDATORY: Aggressive breakdown required for ≥6 points"
+Blocking patterns:
+- Subagent AgentTask creation → "Work items must be created by main agent"
+- Manual AgentTask without templates → "Template required for creation"
+- Unresolved placeholders → "All placeholders must be resolved"
+- Runtime config dependencies → "All config must be embedded"
+- Memory search skipped → "Memory search required before generation"
+- Direct AgentTask ≥6 points → "Work ≥6 points must become STORY/BUG first"
 
 ---
-*Comprehensive PRB and work item creation system*
+*AgentTask and work item creation system*

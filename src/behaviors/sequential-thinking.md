@@ -20,7 +20,7 @@
 - **Simple Task Planning:** Even straightforward tasks benefit from structured thinking
 - **Story Breakdown:** Multi-factor story analysis with >10 total points
 - **Bug Investigation:** All bug analysis requiring root cause identification
-- **PRB Planning:** Multi-step PRB creation and breakdown scenarios
+- **AgentTask Planning:** Multi-step AgentTask creation and breakdown scenarios
 - **Architecture Evaluation:** Design decisions with multiple factors or trade-offs
 - **Risk Assessment:** Security, performance, or technical risk evaluation
 - **Integration Analysis:** Cross-component or cross-system coordination needs
@@ -52,7 +52,7 @@
 3. **Complexity Assessment:** Score each component using standard complexity metrics
 4. **Logical Grouping:** Organize related functionality into coherent work units
 5. **Sequential Ordering:** Establish proper execution sequence with dependencies
-6. **PRB Generation:** Create appropriately-sized PRBs (≤15 points each)
+6. **AgentTask Generation:** Create appropriately-sized AgentTasks (≤15 points each)
 
 ### Bug Investigation Sequential Pattern
 **For All Bug Analysis:**
@@ -65,13 +65,13 @@
 
 ## Integration with System Patterns
 
-### PRB Creation Integration
-**Sequential thinking enhances PRB generation:**
+### AgentTask Creation Integration
+**Sequential thinking enhances AgentTask generation:
 - **Context Assembly:** Systematic gathering of all required context elements
 - **Complexity Calculation:** Structured assessment of work complexity factors
 - **Template Selection:** Logic-based template matching using complexity scores
 - **Placeholder Resolution:** Systematic resolution of all template placeholders
-- **Validation:** Comprehensive validation of PRB completeness and accuracy
+- **Validation:** Comprehensive validation of AgentTask completeness and accuracy
 
 ### Memory Integration
 **Store sequential thinking patterns:**
@@ -96,7 +96,7 @@
 - Simple task planning that benefits from structured approach
 - Complex story breakdown requiring multi-factor analysis
 - Bug investigation requiring systematic root cause analysis
-- ALL PRB creation regardless of complexity (not just >2 points)
+- ALL AgentTask creation regardless of complexity (not just >2 points)
 - Architecture decisions involving multiple technology choices
 - Risk assessments requiring structured evaluation
 - Understanding work requests within project boundaries

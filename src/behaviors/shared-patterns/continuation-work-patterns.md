@@ -40,10 +40,10 @@ Its complexity CANNOT be predetermined because it depends on results.
 - Continuation work has HIGHEST precedence
 - Overrides ALL complexity scoring
 - Bypasses context evaluation
-- ALWAYS triggers PRB generation
+- ALWAYS triggers AgentTask generation
 
 ### With PRB Auto-Trigger
-- Detect PRB completion → Check for continuation patterns
+- Detect AgentTask completion → Check for continuation patterns
 - Match pattern → Generate continuation PRB
 - No pattern → Normal flow
 
@@ -58,7 +58,7 @@ Its complexity CANNOT be predetermined because it depends on results.
 
 **NEVER ALLOW** main scope to execute:
 - "Let me test this" → Requires validation PRB
-- "Let me fix this" → Requires fix PRB  
+- "Let me fix this" → Requires fix AgentTask  
 - "Let me check if it works" → Requires validation PRB
 - "Let me build it" → Requires build PRB
 
@@ -71,4 +71,4 @@ Store successful continuation chains for pattern recognition:
 - Build/deploy sequences
 
 ---
-*Continuation work patterns for mandatory PRB generation*
+*Continuation work patterns for mandatory AgentTask generation*

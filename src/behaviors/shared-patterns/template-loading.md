@@ -1,6 +1,6 @@
 # Template Loading Patterns
 
-**MANDATORY:** Use template hierarchy for PRB loading. Auto-correct violations.
+**MANDATORY:** Use template hierarchy for AgentTask loading. Auto-correct violations.
 
 ## Imports
 
@@ -14,11 +14,11 @@
 
 ## Standard Templates
 
-- `nano-prb-template.yaml` - Trivial changes (0-2 points)
-- `tiny-prb-template.yaml` - Single-file tasks (3-5 points)  
-- `medium-prb-template.yaml` - Multi-file features (6-15 points)
-- `large-prb-template.yaml` - Complex features (16-30 points)
-- `mega-prb-template.yaml` - System-wide changes (30+ points)
+- `nano-agenttask-template.yaml` - Trivial changes (0-2 points)
+- `tiny-agenttask-template.yaml` - Single-file tasks (3-5 points)  
+- `medium-agenttask-template.yaml` - Multi-file features (6-15 points)
+- `large-agenttask-template.yaml` - Complex features (16-30 points)
+- `mega-agenttask-template.yaml` - System-wide changes (30+ points)
 
 ## Template Loading Process
 
@@ -26,12 +26,12 @@
 1. **Determine Name**: Build template filename from complexity level
 2. **Search Hierarchy**: Check paths in priority order
 3. **Load Context**: Parse CLAUDE.md for project context integration
-4. **Apply Extensions**: Merge prb-extensions.yaml if present
+4. **Apply Extensions**: Merge agenttask-extensions.yaml if present
 5. **Validate**: Ensure complete context and structure
 
 ## Template Extension System
 
-**Extension File**: prb-extensions.yaml in project root or .claude/
+**Extension File**: agenttask-extensions.yaml in project root or .claude/
 
 **Extension Structure:**
 ```yaml
@@ -86,7 +86,7 @@ medium:
 - Apply configuration hierarchy
 - Enable path flexibility
 
-### With PRB Generation  
+### With AgentTask Generation  
 - Analyze complexity for template selection
 - Load from hierarchy with extension processing
 - Inject complete project context
@@ -100,7 +100,7 @@ medium:
 ## Template Customization
 
 ### Extension-Based (Recommended)
-**Process**: Create prb-extensions.yaml with customizations
+**Process**: Create agenttask-extensions.yaml with customizations
 **Benefits**: Automatic updates, clean separation, intelligent merging
 
 ### Template Copying (Legacy)
