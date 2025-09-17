@@ -174,9 +174,11 @@
   file:
     path: "{{ claude_install_path }}/hooks/{{ item }}"
     mode: '0755'
+    state: file
   loop:
-    - pre-tool-use.js
-    - post-tool-use.js
+    - session-start.js
+    - user-prompt-submit.js
+    - stop.js
   ignore_errors: yes
 
 
@@ -235,7 +237,7 @@
 
     - name: Add hooks section to existing settings
       set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': {'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/pre-tool-use.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'PostToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/post-tool-use.js', 'timeout': 15000, 'failureMode': 'allow'}]}]}}, recursive=True) }}"
+        merged_settings: "{{ settings_data | combine({'hooks': {'SessionStart': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/session-start.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'UserPromptSubmit': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/user-prompt-submit.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'Stop': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/stop.js', 'timeout': 15000, 'failureMode': 'allow'}]}]}}, recursive=True) }}"
 
     - name: Write merged settings.json
       copy:
@@ -245,7 +247,7 @@
 
     - name: Report hook registration
       debug:
-        msg: "PreToolUse and PostToolUse hooks merged into existing settings.json - behavioral enforcement active"
+        msg: "SessionStart, UserPromptSubmit, and Stop hooks merged into existing settings.json - optimal behavioral guidance active"
 
   when: settings_json_exists.stat.exists
 
