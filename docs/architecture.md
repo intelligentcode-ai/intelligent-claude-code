@@ -7,7 +7,7 @@ This document provides a comprehensive overview of the intelligent-claude-code s
 1. [System Overview](#system-overview)
 2. [Core Components](#core-components)
 3. [Virtual Team Architecture](#virtual-team-architecture)
-4. [PRB Execution Engine](#prb-execution-engine)
+4. [AgentTask Execution Engine](#prb-execution-engine)
 5. [Memory System](#memory-system)
 6. [Configuration Management](#configuration-management)
 7. [Component Interactions](#component-interactions)
@@ -21,7 +21,7 @@ The intelligent-claude-code system is a **markdown-based AI-agentic framework** 
 
 - **14 Core Specialized Roles** with behavioral patterns
 - **Unlimited Dynamic Specialist Creation** for any technology domain
-- **PRB-Driven Execution** with 5 complexity tiers
+- **AgentTask-Driven Execution** with 5 complexity tiers
 - **Memory-First Learning System** with pattern capture
 - **Configuration-First Design** with hierarchy management
 - **Project-Agnostic Framework** that adapts to any codebase
@@ -66,8 +66,8 @@ The system operates as a **MARKDOWN-BASED AI-AGENTIC SYSTEM**, meaning:
 **Purpose:** Implements behavioral patterns and enforcement rules
 
 **Key Components:**
-- `prb-enforcement.md` - PRB system enforcement and validation
-- `prb-auto-trigger.md` - Automatic PRB generation from work patterns
+- `prb-enforcement.md` - AgentTask system enforcement and validation
+- `prb-auto-trigger.md` - Automatic AgentTask generation from work patterns
 - `dynamic-specialist-creation.md` - On-demand specialist creation
 - `story-breakdown.md` - PM + Architect collaboration patterns
 - `memory-operations.md` - Learning and pattern storage
@@ -80,16 +80,16 @@ The system operates as a **MARKDOWN-BASED AI-AGENTIC SYSTEM**, meaning:
 - Learning pattern capture
 - Autonomy level behaviors
 
-### 3. PRB System (`src/prb-templates/`)
+### 3. AgentTask System (`agenttask-templates/`)
 
-**Purpose:** Product Requirement Blueprints for single-pass execution
+**Purpose:** AgentTask execution blueprints for single-pass execution
 
 **Template Hierarchy:**
-- `nano-prb-template.yaml` (0-2 complexity points)
-- `tiny-prb-template.yaml` (3-5 complexity points)
-- `medium-prb-template.yaml` (6-15 complexity points)
-- `large-prb-template.yaml` (16-30 complexity points)
-- `mega-prb-template.yaml` (30+ complexity points)
+- `nano-agenttask-template.yaml` (0-2 complexity points)
+- `tiny-agenttask-template.yaml` (3-5 complexity points)
+- `medium-agenttask-template.yaml` (6-15 complexity points)
+- `large-agenttask-template.yaml` (16-30 complexity points)
+- `mega-agenttask-template.yaml` (30+ complexity points)
 
 **Template Features:**
 - Complete context embedding (no runtime lookups)
@@ -106,8 +106,8 @@ The system operates as a **MARKDOWN-BASED AI-AGENTIC SYSTEM**, meaning:
 - `/icc-init-system` - Initialize virtual team system
 - `/icc-system-status` - Check system health
 - `/icc-search-memory` - Query memory patterns
-- `/icc-create-prb` - Generate PRBs with templates
-- `/icc-breakdown-story` - Story-to-PRB conversion
+- `/icc-create-prb` - Generate AgentTasks with templates
+- `/icc-breakdown-story` - Story-to-AgentTask conversion
 
 ### 5. Installation System (`ansible/`)
 
@@ -142,8 +142,8 @@ graph TB
 3. **Specialist Architect Selection** → Domain-specific architect creation
 4. **Collaboration** → PM + Architect determine optimal role assignment
 5. **Dynamic Creation** → Create domain-specific specialist if needed
-6. **PRB Generation** → Template-based execution plan
-7. **Subagent Execution** → Specialist executes PRB with embedded context
+6. **AgentTask Generation** → Template-based execution plan
+7. **Subagent Execution** → Specialist executes AgentTask with embedded context
 
 ### Role Assignment Decision Matrix
 
@@ -157,7 +157,7 @@ graph TB
 | ANY | Database Work | @Database-Engineer | Domain expertise |
 | ANY | Security Review | @Security-Engineer | Security specialization |
 
-## PRB Execution Engine
+## AgentTask Execution Engine
 
 ### Architecture Overview
 
@@ -169,7 +169,7 @@ graph TD
     Select --> Load[Template Loading]
     Load --> Resolve[Placeholder Resolution]
     Resolve --> Embed[Context Embedding]
-    Embed --> Generate[PRB Generation]
+    Embed --> Generate[AgentTask Generation]
     Generate --> Execute[Subagent Execution]
     Execute --> Complete[Completion Validation]
     Complete --> Learn[Learning Capture]
@@ -204,7 +204,7 @@ graph TD
 ### Execution Lifecycle
 
 ```yaml
-PRB Lifecycle:
+AgentTask Lifecycle:
   1. Creation:
      - Main agent context (full project access)
      - Template selection based on complexity
@@ -213,7 +213,7 @@ PRB Lifecycle:
   
   2. Execution:
      - Subagent context (task-specific scope)
-     - Self-contained PRB with embedded context
+     - Self-contained AgentTask with embedded context
      - No runtime configuration lookups
      - Step-by-step execution validation
   
@@ -221,7 +221,7 @@ PRB Lifecycle:
      - All 9 execution steps validated
      - Learning pattern capture
      - Memory storage of successful approaches
-     - PRB moved to completed/ directory
+     - AgentTask moved to completed/ directory
 ```
 
 ## Memory System
@@ -265,7 +265,7 @@ memory/
    - Track pattern usage and effectiveness
 
 3. **Learning Capture**
-   - Store patterns from successful PRB execution
+   - Store patterns from successful AgentTask execution
    - Capture PM + Architect collaboration approaches
    - Document dynamic specialist creation patterns
    - Record configuration optimization discoveries
@@ -290,7 +290,7 @@ memory/
 
 ```mermaid
 graph TD
-    Embedded[Embedded Config in PRBs] --> Project[Project Config]
+    Embedded[Embedded Config in AgentTasks] --> Project[Project Config]
     Project --> User[User Global Config]
     User --> System[System Defaults]
     
@@ -306,7 +306,7 @@ graph TD
 ### Configuration Levels
 
 1. **Embedded Configuration** (Highest Priority)
-   - PRB-specific overrides
+   - AgentTask-specific overrides
    - Work context configurations
    - Temporary behavioral modifications
 
@@ -340,7 +340,7 @@ max_concurrent_subagents: 5 # Parallel execution limit
 # Directory Structure
 directory_structure:
   story_path: "stories"     # User stories location
-  prb_path: "prbs"         # PRB storage location
+  prb_path: "prbs"         # AgentTask storage location
   memory_path: "memory"     # Learning storage location
 
 # System Behavior
@@ -371,7 +371,7 @@ template_validation: true   # Enforce template compliance
 
 3. **Runtime Operations**
    ```
-   User Request → Pattern Detection → PRB Generation → Execution
+   User Request → Pattern Detection → AgentTask Generation → Execution
               ↓
    Memory Search ← Configuration → Template Loading → Context Embedding
    ```
@@ -392,7 +392,7 @@ sequenceDiagram
     PM->>M: Search Memory Patterns
     PM->>A: Domain Analysis Request
     A->>S: Create Domain Specialist
-    PM->>S: Generate PRB
+    PM->>S: Generate AgentTask
     S->>M: Store Learning Patterns
     S->>U: Completed Work
 ```
@@ -413,7 +413,7 @@ sequenceDiagram
    - Context embedding and validation
 
 3. **Output Generation**
-   - PRB files with embedded context
+   - AgentTask files with embedded context
    - Subagent execution coordination
    - Memory pattern storage
    - Learning capture and indexing
@@ -489,13 +489,13 @@ Security Checklist:
    ├── modes/                   # Behavioral mode definitions
    ├── roles/                   # Role specifications
    ├── behaviors/               # Behavioral pattern library
-   ├── prb-templates/           # Template hierarchy
+   ├── agenttask-templates/           # Template hierarchy
    └── config.md                # User configuration
    
    project/                     # Project-specific deployment
    ├── CLAUDE.md                # Project context (with import)
    ├── memory/                  # Learning storage
-   ├── prbs/                    # PRB execution files
+   ├── prbs/                    # AgentTask execution files
    └── .claude/                 # Project overrides (optional)
    ```
 
@@ -506,7 +506,7 @@ Security Checklist:
    │   ├── modes/
    │   ├── roles/
    │   ├── behaviors/
-   │   └── prb-templates/
+   │   └── agenttask-templates/
    ├── CLAUDE.md
    ├── memory/
    └── prbs/
@@ -623,7 +623,7 @@ Optional Dependencies:
 ### Performance Metrics
 
 1. **Response Time Targets**
-   - PRB Generation: <10 seconds
+   - AgentTask Generation: <10 seconds
    - Memory Search: <2 seconds
    - Configuration Loading: <1 second
    - Template Resolution: <3 seconds
@@ -635,7 +635,7 @@ Optional Dependencies:
    - Concurrent Subagents: ≤5 (configurable)
 
 3. **Quality Indicators**
-   - PRB Success Rate: >95%
+   - AgentTask Success Rate: >95%
    - Memory Pattern Accuracy: >90%
    - Configuration Validation: 100%
    - Template Compliance: 100%

@@ -5,7 +5,7 @@ The intelligent-claude-code system supports extensive project-level configuratio
 ## Related Documentation
 - [Virtual Team Guide](virtual-team-guide.md) - Understanding the 14 roles
 - [Commands Reference](commands-reference.md) - All available commands
-- [PRB System Guide](prb-system-guide.md) - How PRBs work
+- [AgentTask System Guide](prb-system-guide.md) - How AgentTasks work
 - [Directory Structure](directory-structure.md) - File organization
 
 ## Directory Structure
@@ -34,9 +34,9 @@ project-root/
 ├── memory/                    # Learning storage (version-controlled)
 │   └── [topic]/               # Organized by topic
 │       └── [subtopic].md      # Learnings and patterns
-└── prbs/                      # Generated PRBs (version-controlled)
+└── prbs/                      # Generated AgentTasks (version-controlled)
     ├── ready/                 # Ready to execute
-    └── completed/             # Executed PRBs
+    └── completed/             # Executed AgentTasks
 ```
 
 ## Configuration in CLAUDE.md
@@ -47,9 +47,9 @@ project:
   name: "My Awesome Project"
   type: "web-application"
   
-# PRB Configuration
-prb_configuration:
-  # Include project best practices in all PRBs
+# AgentTask Configuration
+agenttask_configuration:
+  # Include project best practices in all AgentTasks
   include_best_practices: true
   best_practices_paths:
     - "docs/best-practices/"     # User's documentation
@@ -94,7 +94,7 @@ architecture:
 ## Using Project Configuration
 
 ### 1. Best Practices Inclusion
-When PRBs are generated, they automatically include:
+When AgentTasks are generated, they automatically include:
 - Relevant best practices from your project
 - Architecture patterns and constraints
 - Coding standards and style guides
@@ -106,7 +106,7 @@ The system searches your codebase for:
 - Examples to reference
 
 ### 3. External Documentation
-PRBs can reference:
+AgentTasks can reference:
 - Real-time library documentation via Context7
 - Project-specific documentation URLs
 - Architecture decision records (ADRs)
@@ -118,7 +118,7 @@ Each project can override default behaviors:
 - Code review depth
 - Validation criteria
 
-## Draft-Based PRB Generation
+## Draft-Based AgentTask Generation
 
 Place draft specifications wherever natural in your project:
 
@@ -133,20 +133,20 @@ mkdir -p specs/new-feature/
 # Add specifications
 echo "User Authentication Requirements..." > drafts/new-feature/requirements.md
 
-# Generate PRBs from drafts
+# Generate AgentTasks from drafts
 /icc-generate-prb-from-draft drafts/new-feature/
 ```
 
 The system will:
 1. @PM analyzes requirements
 2. @Architect designs approach
-3. Generate appropriate PRBs with all project context
+3. Generate appropriate AgentTasks with all project context
 4. Include best practices and standards
 5. Reference existing code patterns
 
 ## Dynamic Configuration
 
-PRBs adapt to your project:
+AgentTasks adapt to your project:
 - **React Project**: Includes React best practices, component patterns
 - **Terraform Project**: Includes IaC standards, module patterns  
 - **API Project**: Includes RESTful patterns, OpenAPI specs
@@ -158,4 +158,4 @@ PRBs adapt to your project:
 2. **Knowledge Reuse**: Leverages existing patterns
 3. **Quality**: Enforces best practices automatically
 4. **Flexibility**: Fully configurable per project
-5. **Autonomy**: PRBs contain everything needed for execution
+5. **Autonomy**: AgentTasks contain everything needed for execution

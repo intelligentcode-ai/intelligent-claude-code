@@ -2,7 +2,7 @@
 category: git
 tags: [branching, workflow, feature-development, clean-commits]
 created: 2025-08-09
-source_operation: STORY-002-PRB-001-best-practices-generation
+source_operation: STORY-002-AgentTask-001-best-practices-generation
 quality_score: 9.2
 usage_count: 1
 effectiveness_rating: excellent
@@ -181,8 +181,8 @@ Create focused branch for bug resolution, implement fix with validation, integra
 ## References and Resources
 
 ### Source Operations
-- STORY-002-PRB-001: Successful multi-file feature development with clean integration
-- Multiple completed PRBs: Consistent application of professional Git practices
+- STORY-002-AgentTask-001: Successful multi-file feature development with clean integration
+- Multiple completed AgentTasks: Consistent application of professional Git practices
 
 ### External Resources
 - Git Documentation: Branching and merging best practices
@@ -194,7 +194,7 @@ Create focused branch for bug resolution, implement fix with validation, integra
 ## Revision History
 
 ### 2025-08-09 - v1.0
-- Initial creation from STORY-002-PRB-001 best practices generation
+- Initial creation from STORY-002-AgentTask-001 best practices generation
 - Includes feature branch workflow, commit standards, clean integration
 - Based on successful multi-file development pattern
 
