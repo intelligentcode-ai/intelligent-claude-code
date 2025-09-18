@@ -1,8 +1,8 @@
-# PRB Template Extensions Guide
+# AgentTask Template Extensions Guide
 
 ## Overview
 
-The PRB Template Extensions system allows projects to customize PRB templates without copying or maintaining entire template files. Using a single `prb-extensions.yaml` file, you can extend templates with project-specific requirements, customize workflows, and add validation steps while still receiving automatic updates to base templates.
+The AgentTask Template Extensions system allows projects to customize AgentTask templates without copying or maintaining entire template files. Using a single `prb-extensions.yaml` file, you can extend templates with project-specific requirements, customize workflows, and add validation steps while still receiving automatic updates to base templates.
 
 **Key Benefits:**
 - ✅ **No Template Copying** - Extend without maintaining full copies
@@ -18,7 +18,7 @@ The PRB Template Extensions system allows projects to customize PRB templates wi
 Create a `prb-extensions.yaml` file in your project root with project-specific additions:
 
 ```yaml
-# Universal extensions applied to ALL PRB sizes
+# Universal extensions applied to ALL AgentTask sizes
 all:
   requirements:
     processual:
@@ -38,7 +38,7 @@ large:
     multi_team_coordination: true
 ```
 
-That's it! The system automatically applies these extensions to all PRBs generated in your project.
+That's it! The system automatically applies these extensions to all AgentTasks generated in your project.
 
 ## Complete Extension Structure
 
@@ -47,10 +47,10 @@ Here's the full structure of what's possible in `prb-extensions.yaml`:
 ```yaml
 # Universal extensions - applied to ALL template sizes
 all:
-  # Add new requirements to every PRB
+  # Add new requirements to every AgentTask
   requirements:
     functional:
-      - "New functional requirement for all PRBs"
+      - "New functional requirement for all AgentTasks"
     processual:
       - "Run project linting"
       - "Execute custom validation scripts"  
@@ -190,7 +190,7 @@ medium:
   version_bump:
     type: "!override patch"  # Replaces "minor" with "patch"
 
-# Result: medium PRBs use patch versioning
+# Result: medium AgentTasks use patch versioning
 ```
 
 **3. New Section Addition**
@@ -204,7 +204,7 @@ all:
     - "Secret detection scan"
     - "License compliance check"
 
-# Result: All PRBs get this new section
+# Result: All AgentTasks get this new section
 ```
 
 **4. Context-Aware Intelligence**
@@ -436,13 +436,13 @@ large:
 
 ### Extension File Not Loading
 
-**Problem:** Extensions aren't being applied to generated PRBs.
+**Problem:** Extensions aren't being applied to generated AgentTasks.
 
 **Solutions:**
 1. **Check File Location:** Ensure `prb-extensions.yaml` is in project root or `.claude/` directory
 2. **Validate YAML Syntax:** Use a YAML validator to check for syntax errors
 3. **Check File Permissions:** Ensure file is readable by the system
-4. **Verify Content:** Look for successful extension application in generated PRB content
+4. **Verify Content:** Look for successful extension application in generated AgentTask content
 
 ### YAML Syntax Errors
 
@@ -521,7 +521,7 @@ medium:
 
 ### Missing Extension Effects
 
-**Problem:** Extensions seem to load but don't appear in generated PRBs.
+**Problem:** Extensions seem to load but don't appear in generated AgentTasks.
 
 **Solutions:**
 1. **Check Section Names:** Ensure extension section names match base template structure
@@ -531,7 +531,7 @@ medium:
 
 ### Performance Issues with Large Extensions
 
-**Problem:** PRB generation slower with complex extensions.
+**Problem:** AgentTask generation slower with complex extensions.
 
 **Solutions:**
 1. **Optimize Extension Size:** Keep extensions focused and minimal
@@ -570,7 +570,7 @@ medium:
 
 ### Step 3: Test Extensions
 
-Generate a test PRB to verify extensions work correctly:
+Generate a test AgentTask to verify extensions work correctly:
 
 ```bash
 # Test with a medium complexity task
@@ -624,7 +624,7 @@ The system will merge both files, with `.claude/` extensions taking precedence.
 
 ## Summary
 
-The PRB Template Extensions system provides a powerful, maintainable way to customize PRB templates for your project needs:
+The AgentTask Template Extensions system provides a powerful, maintainable way to customize AgentTask templates for your project needs:
 
 ✅ **Easy to Use** - Single YAML file with clear structure  
 ✅ **Intelligent Merging** - AI-powered contextual integration  
@@ -635,4 +635,4 @@ The PRB Template Extensions system provides a powerful, maintainable way to cust
 
 **Start simple** with universal requirements in the `all:` section, then add size-specific customizations as needed. The extension system grows with your project needs while keeping base templates up to date automatically.
 
-For questions or advanced use cases, refer to the [PRB System Guide](prb-system-guide.md) or [Configuration Guide](configuration-guide.md).
+For questions or advanced use cases, refer to the [AgentTask System Guide](prb-system-guide.md) or [Configuration Guide](configuration-guide.md).

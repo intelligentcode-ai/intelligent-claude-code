@@ -1,6 +1,6 @@
 # Dynamic Specialist Examples
 
-This document demonstrates the dynamic specialist creation system implemented in STORY-007-PRB-005.
+This document demonstrates the dynamic specialist creation system implemented in STORY-007-AgentTask-005.
 
 ## Example 1: React Project Requirements
 
@@ -20,7 +20,7 @@ This document demonstrates the dynamic specialist creation system implemented in
 **Generated Specialist**: @React-Developer
 - **Location**: `.claude/agents/dynamic/react-developer.md`
 - **Expertise**: React 18+, hooks, state management, TypeScript, testing
-- **Usage**: Available immediately in PRBs and story breakdown
+- **Usage**: Available immediately in AgentTasks and story breakdown
 
 ## Example 2: AWS Infrastructure Requirements
 
@@ -62,9 +62,9 @@ This document demonstrates the dynamic specialist creation system implemented in
 - **Expertise**: TensorFlow, PyTorch, model optimization, MLOps
 - **Usage**: Handles ML-specific implementation and architecture
 
-## Integration in PRBs
+## Integration in AgentTasks
 
-Once created, specialists are used in PRBs:
+Once created, specialists are used in AgentTasks:
 
 ```yaml
 ## Meta
