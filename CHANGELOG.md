@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.6.0] - 2025-01-18
+
+### Changed
+- **Documentation Cleanup**: Comprehensive cleanup of obsolete and misplaced content
+- **Terminology Update**: Standardized all documentation to use "AgentTask" instead of "PRB"
+- **Commands Streamlined**: Updated docs to reflect only 3 actual commands
+- **Directory Restructure**: Renamed best-practices/ to best-practices-examples/
+
+### Added
+- **Clear Hook Documentation**: Updated hook system guide to reflect UserPromptSubmit-only architecture
+
+### Removed
+- **Obsolete Directories**: Completely deleted ./bugs/ directory
+- **Misplaced Files**: Removed behavioral files from docs/ directory (naming-standards.md)
+- **Completion Reports**: Deleted PRB-COMPLETION-* files and validation tools
+- **Obsolete Documentation**: Removed compact patterns and validation guides
+
+### Fixed
+- **Template References**: Updated all template paths from src/prb-templates/ to agenttask-templates/
+- **Configuration Keys**: Fixed prb_configuration: to agenttask_configuration:
+- **Template Filenames**: Updated references to use nano-agenttask-template.yaml format
+- **Commands Documentation**: Reflects actual system with only 3 essential commands
+
 ## [8.5.0] - 2025-01-17
 
 ### Changed
