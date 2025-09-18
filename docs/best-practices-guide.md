@@ -1,16 +1,16 @@
 # Best-Practices Guide
 
-**PURPOSE:** How to add your own best-practices to any project for automatic PRB injection
+**PURPOSE:** How to add your own best-practices to any project for automatic AgentTask injection
 
 ## Overview
 
-The intelligent-claude-code system automatically discovers and injects best-practices from your project's `best-practices/` directory during PRB generation. This allows you to customize PRB templates without modifying the core system.
+The intelligent-claude-code system automatically discovers and injects best-practices from your project's `best-practices/` directory during AgentTask generation. This allows you to customize AgentTask templates without modifying the core system.
 
 ## Quick Start
 
 1. Create `best-practices/` directory in your project root
 2. Add practice files organized by category
-3. PRB generation will automatically discover and inject your practices
+3. AgentTask generation will automatically discover and inject your practices
 4. Template placeholders like `[DYNAMIC_CODING_PRACTICES]` get replaced with your content
 
 ## Directory Structure
@@ -69,7 +69,7 @@ your-project/
 
 ## Template Placeholders
 
-The system replaces these placeholders during PRB generation:
+The system replaces these placeholders during AgentTask generation:
 
 | Placeholder | Source | Description |
 |-------------|--------|-------------|
@@ -81,7 +81,7 @@ The system replaces these placeholders during PRB generation:
 
 ## Auto-Discovery Process
 
-1. **Detection**: PRB generation scans for `best-practices/` directory
+1. **Detection**: AgentTask generation scans for `best-practices/` directory
 2. **Category Mapping**: Maps directories to placeholder types
 3. **Content Extraction**: Reads markdown files and extracts content
 4. **Injection**: Replaces template placeholders with discovered content
@@ -111,12 +111,12 @@ Practice files should be standard markdown:
 - Use JSDoc for JavaScript
 ```
 
-## Integration with PRB Generation
+## Integration with AgentTask Generation
 
 The system automatically:
 - Discovers your `best-practices/` directory
 - Maps categories to template placeholders
-- Injects relevant content during PRB generation
+- Injects relevant content during AgentTask generation
 - Preserves your practices in version control
 - Updates practices without system changes
 
@@ -194,7 +194,7 @@ best-practices/
 1. Extract best-practices from existing docs
 2. Organize into category structure
 3. Convert to markdown format
-4. Test PRB generation with new practices
+4. Test AgentTask generation with new practices
 
 ## Troubleshooting
 
@@ -202,7 +202,7 @@ best-practices/
 - Verify `best-practices/` directory exists
 - Check file permissions are readable
 - Ensure markdown format is valid
-- Check PRB template has appropriate placeholders
+- Check AgentTask template has appropriate placeholders
 
 ### Wrong Category Mapping
 - Directory names map to placeholder names
@@ -225,4 +225,4 @@ best-practices/
 
 ---
 
-This system enables unlimited customization while maintaining the core PRB architecture. Your practices become part of every PRB automatically.
+This system enables unlimited customization while maintaining the core AgentTask architecture. Your practices become part of every AgentTask automatically.

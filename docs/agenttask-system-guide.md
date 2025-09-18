@@ -1,13 +1,13 @@
-# PRB System Guide
+# AgentTask System Guide
 
-## What is the PRB System?
+## What is the AgentTask System?
 
-The **Product Requirement Blueprint (PRB)** system replaces complex multi-step workflows with self-contained execution blueprints. Based on proven PRP (Product Requirement Prompt) methodology, PRBs provide everything needed for single-pass, autonomous execution by specialist roles.
+The **AgentTask** system replaces complex multi-step workflows with self-contained execution blueprints. Based on proven methodologies, AgentTasks provide everything needed for single-pass, autonomous execution by specialist roles.
 
 ## Key Benefits
 
 1. **Single-Pass Execution** - No workflow interruptions or context loss
-2. **Self-Contained** - All context, standards, examples embedded in PRB
+2. **Self-Contained** - All context, standards, examples embedded in AgentTask
 3. **Autonomous Operation** - Specialists execute independently with full context
 4. **Token-Optimized** - Load only what's needed, when needed
 5. **Project-Adaptive** - Respects your structure and standards
@@ -15,8 +15,8 @@ The **Product Requirement Blueprint (PRB)** system replaces complex multi-step w
 7. **Systematic Validation** - Evidence-based completion verification with comprehensive checks
 8. **Template Enforcement** - Mandatory template usage with zero-tolerance blocking
 9. **Configuration Embedding** - Complete config resolution at generation time, no runtime lookups
-10. **Automatic Generation** - Revolutionary zero-touch PRB creation with intelligent work detection
-11. **Seamless Execution** - Work requests automatically trigger PRB generation and specialist execution
+10. **Automatic Generation** - Revolutionary zero-touch AgentTask creation with intelligent work detection
+11. **Seamless Execution** - Work requests automatically trigger AgentTask generation and specialist execution
 
 ## How It Works
 
@@ -36,18 +36,18 @@ System automatically analyzes complexity:
 - Security implications
 - Coordination requirements
 
-### 3. PRB Generation
-Mandatory template selected from src/prb-templates/ based on complexity:
+### 3. AgentTask Generation
+Mandatory template selected from agenttask-templates/ based on complexity:
 - **Nano (0-2)**: Trivial one-line changes - 4-step execution process
 - **Tiny (3-5)**: Simple single-file tasks - 7-step execution process
 - **Medium (6-15)**: Standard features - 9-step execution process
-- **Large (16-30)**: Complex with sub-PRBs - Sequential coordination
+- **Large (16-30)**: Complex with sub-AgentTasks - Sequential coordination
 - **Mega (30+)**: System-wide changes - Epic-level coordination
 
-**Key Enhancement from STORY-008**: All templates now use standardized execution processes with mandatory template usage and complete placeholder resolution at generation time.
+All templates use standardized execution processes with mandatory template usage and complete placeholder resolution at generation time.
 
 ### 4. Context Integration
-PRB includes everything from your project:
+AgentTask includes everything from your project:
 - **Best practices from best-practices/** - Methodological approaches (GitOps, TDD, DevSecOps, etc.)
 - Architecture patterns
 - Existing code examples
@@ -57,23 +57,23 @@ PRB includes everything from your project:
 
 ### 4a. Best-Practices Auto-Discovery
 The system automatically discovers and injects relevant methodological approaches:
-- **Scans best-practices/** directory during PRB generation
+- **Scans best-practices/** directory during AgentTask generation
 - **Matches practices** to work type and complexity
-- **Injects top 2-3 practices** into PRB context (max 800 tokens)
+- **Injects top 2-3 practices** into AgentTask context (max 800 tokens)
 - **Replaces template placeholders** with dynamic content
 - **No template modification needed** - system handles injection automatically
 
 ### 5. Agent System Execution
-PRBs execute through the 14-role virtual team system:
+AgentTasks execute through the 14-role virtual team system:
 - **Direct @Agent Communication**: Natural @Role mentions trigger Task tool subagent creation
-- **Context Preservation**: Complete PRB context passed to executing subagent
+- **Context Preservation**: Complete AgentTask context passed to executing subagent
 - **Behavioral Patterns**: Embedded behavioral patterns guide specialist execution
 - **Dynamic Specialist Creation**: Unlimited specialists created when technology expertise needed
 - **Self-Contained Execution**: No workflow steps, complete blueprint for implementation
 - **Built-in Validation**: Evidence-based completion verification
 - **Automatic Learning Capture**: Successful patterns stored in memory/
 
-## PRB Structure
+## AgentTask Structure
 
 ```yaml
 # Self-contained execution blueprint
@@ -157,7 +157,7 @@ prb_configuration:
 
 ## Commands
 
-- `/icc-create-prb` - Generate PRB for work
+- `/icc-create-prb` - Generate AgentTask for work
 - `/icc-analyze-complexity` - Preview complexity score
 - `/icc-generate-prb-from-draft` - Create from your drafts
 
@@ -168,7 +168,7 @@ prb_configuration:
 "Add rate limiting to API"
 
 # System analyzes → Medium complexity (score: 12)
-# Generates Medium PRB with:
+# Generates Medium AgentTask with:
 - Your API standards embedded
 - Existing middleware patterns
 - Rate limiting best practices
@@ -183,7 +183,7 @@ prb_configuration:
 
 1. **Configure CLAUDE.md** - Tell system where your docs are
 2. **Natural Structure** - Work in your preferred layout
-3. **Draft Support** - Create drafts anywhere, generate PRBs
-4. **Let System Adapt** - PRBs include YOUR standards automatically
+3. **Draft Support** - Create drafts anywhere, generate AgentTasks
+4. **Let System Adapt** - AgentTasks include YOUR standards automatically
 
-The PRB system makes AI development predictable, efficient, and adapted to YOUR project!
+The AgentTask system makes AI development predictable, efficient, and adapted to YOUR project!

@@ -13,7 +13,7 @@ project-root/
 │   ├── Pattern/              # Reusable patterns
 │   └── Knowledge/            # Domain knowledge
 └── .claude/                   # System internals ONLY
-    └── prbs/                 # Generated PRBs (auto-managed)
+    └── prbs/                 # Generated AgentTasks (auto-managed)
 ```
 
 That's it! Everything else is YOUR choice.
@@ -86,7 +86,7 @@ prb_configuration:
 
 The system stores everything in YOUR project (version-controlled):
 - `memory/` - Learning storage (version-controlled)
-- `prbs/` - Generated PRBs (version-controlled)
+- `prbs/` - Generated AgentTasks (version-controlled)
 - `config.md` - Project settings (default location, not .claude/)
 
 ## Key Points

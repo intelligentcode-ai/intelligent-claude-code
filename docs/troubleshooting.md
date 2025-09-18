@@ -7,7 +7,7 @@ This guide covers common issues encountered when using the intelligent-claude-co
 1. [Installation Issues](#installation-issues)
 2. [System Initialization Problems](#system-initialization-problems)
 3. [Role Assignment Errors](#role-assignment-errors)
-4. [PRB Execution Issues](#prb-execution-issues)
+4. [AgentTask Execution Issues](#prb-execution-issues)
 5. [Memory System Problems](#memory-system-problems)
 6. [Configuration Issues](#configuration-issues)
 7. [Git Operation Problems](#git-operation-problems)
@@ -204,7 +204,7 @@ python -c "import yaml; yaml.safe_load(open('config.md').read())"
 grep -A 5 "system_nature:" CLAUDE.md
 
 # For AI-AGENTIC systems, use:
-@AI-Engineer    # For behavioral patterns, memory, PRBs
+@AI-Engineer    # For behavioral patterns, memory, AgentTasks
 @PM             # For story breakdown
 @Architect      # For system design
 
@@ -262,7 +262,7 @@ Use PM + Architect collaboration:
 # 3. Create appropriate specialist
 ```
 
-## PRB Execution Issues
+## AgentTask Execution Issues
 
 ### Template Not Found
 
@@ -271,7 +271,7 @@ Use PM + Architect collaboration:
 Template not found: medium-prb-template.yaml
 ```
 
-**Cause:** PRB templates not properly installed.
+**Cause:** AgentTask templates not properly installed.
 
 **Solution:**
 1. Check template installation:
@@ -292,21 +292,21 @@ make install
 /icc-template-hierarchy
 ```
 
-### Unresolved Placeholders in PRB
+### Unresolved Placeholders in AgentTask
 
 **Error Message:**
 ```
 ❌ Unresolved placeholder: [FROM_CONFIG]
 ```
 
-**Cause:** PRB generated with unresolved template placeholders.
+**Cause:** AgentTask generated with unresolved template placeholders.
 
 **Solution:**
-1. Regenerate PRB with main agent (not subagent):
+1. Regenerate AgentTask with main agent (not subagent):
 ```bash
 # Wrong - subagent cannot resolve placeholders
 # Right - use main agent
-@PM Create PRB for this work request
+@PM Create AgentTask for this work request
 ```
 
 2. Check configuration hierarchy:
@@ -315,39 +315,39 @@ make install
 /icc-load-config
 ```
 
-### PRB Size Limit Exceeded
+### AgentTask Size Limit Exceeded
 
 **Error Message:**
 ```
-❌ PRB too large (25 points). Break it down into smaller PRBs.
+❌ AgentTask too large (25 points). Break it down into smaller AgentTasks.
 ```
 
-**Cause:** Single PRB exceeds 15 complexity points.
+**Cause:** Single AgentTask exceeds 15 complexity points.
 
 **Solution:**
 ```bash
-@PM break down this large story into multiple PRBs
-# Each PRB will be <15 points
-# Sequential: STORY-001-PRB-001, STORY-001-PRB-002, etc.
+@PM break down this large story into multiple AgentTasks
+# Each AgentTask will be <15 points
+# Sequential: STORY-001-AgentTask-001, STORY-001-AgentTask-002, etc.
 ```
 
 ### Runtime Config Lookups Blocked
 
 **Error Message:**
 ```
-❌ Runtime config lookup forbidden - embed values in PRB
+❌ Runtime config lookup forbidden - embed values in AgentTask
 ```
 
-**Cause:** PRB trying to load config during execution instead of having embedded values.
+**Cause:** AgentTask trying to load config during execution instead of having embedded values.
 
 **Solution:**
-1. Regenerate PRB with embedded configuration:
+1. Regenerate AgentTask with embedded configuration:
 ```bash
-# PRBs must contain all needed config values
+# AgentTasks must contain all needed config values
 # Template resolution happens at generation time
 ```
 
-2. Check PRB has embedded context:
+2. Check AgentTask has embedded context:
 ```bash
 grep -A 20 "complete_context:" your-prb-file.prb.yaml
 ```
@@ -435,7 +435,7 @@ cat ~/.claude/config.md
 cat ./config.md
 cat ./.claude/config.md
 
-# PRB embedded (check specific PRB file)
+# AgentTask embedded (check specific AgentTask file)
 grep -A 10 "configuration:" prb-file.prb.yaml
 ```
 
@@ -636,9 +636,9 @@ grep -i error mcp-install.log
 
 ## Performance Issues
 
-### Slow PRB Generation
+### Slow AgentTask Generation
 
-**Symptoms:** PRB creation takes >30 seconds
+**Symptoms:** AgentTask creation takes >30 seconds
 
 **Causes & Solutions:**
 
@@ -684,7 +684,7 @@ mkdir -p ./memory/{performance,security,implementation}
 
 ### High CPU Usage During Execution
 
-**Symptoms:** System using >90% CPU during PRB execution
+**Symptoms:** System using >90% CPU during AgentTask execution
 
 **Solutions:**
 1. **Reduce Concurrent Operations:**
@@ -693,10 +693,10 @@ mkdir -p ./memory/{performance,security,implementation}
 max_concurrent_subagents: 2  # Reduce from default 5
 ```
 
-2. **Optimize Complex PRBs:**
+2. **Optimize Complex AgentTasks:**
 ```bash
-# Break down large PRBs (<15 complexity points)
-@PM break down this complex work into smaller PRBs
+# Break down large AgentTasks (<15 complexity points)
+@PM break down this complex work into smaller AgentTasks
 ```
 
 ## Debug Techniques
@@ -729,16 +729,16 @@ ls -la ./.claude/
 ls -la ./
 ```
 
-### PRB Debugging
+### AgentTask Debugging
 
 ```bash
-# Validate PRB structure
+# Validate AgentTask structure
 /icc-validate-prb path/to/prb-file.prb.yaml
 
-# Check PRB template
+# Check AgentTask template
 /icc-validate-template medium-prb
 
-# Show PRB hierarchy
+# Show AgentTask hierarchy
 /icc-template-hierarchy
 ```
 
