@@ -131,7 +131,7 @@ completion:
 In your CLAUDE.md:
 
 ```yaml
-prb_configuration:
+agenttask_configuration:
   # Directory structure configuration
   directory_structure:
     best_practices_path: "best-practices"    # Auto-discovered practices location
@@ -157,9 +157,13 @@ prb_configuration:
 
 ## Commands
 
-- `/icc-create-prb` - Generate AgentTask for work
-- `/icc-analyze-complexity` - Preview complexity score
-- `/icc-generate-prb-from-draft` - Create from your drafts
+Note: The system now uses only 3 essential commands. Most interaction is through @Role communication:
+
+- `/icc-init-system` - Initialize virtual team system
+- `/icc-get-setting [key]` - Get configuration values
+- `/icc-search-memory [query]` - Search learning patterns
+
+Primary interaction: @Role communication (@PM, @Developer, @AI-Engineer, etc.)
 
 ## Example
 
