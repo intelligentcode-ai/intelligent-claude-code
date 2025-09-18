@@ -2,7 +2,7 @@
 
 ## Getting Started
 1. [Virtual Team Guide](virtual-team-guide.md) - **Start here!** Understand the 14 specialist roles
-2. [PRB System Guide](prb-system-guide.md) - How PRB-driven execution works
+2. [AgentTask System Guide](prb-system-guide.md) - How AgentTask-driven execution works
 3. [Commands Reference](commands-reference.md) - All 10 essential commands
 
 ## Configuration
@@ -19,7 +19,7 @@
 - Operations: @System-Engineer, @DevOps-Engineer
 - Design: @Web-Designer, @Requirements-Engineer
 
-### PRBs (Product Requirement Blueprints)
+### AgentTasks (Product Requirement Blueprints)
 Self-contained execution blueprints that include:
 - Complete requirements
 - Your coding standards
@@ -31,7 +31,7 @@ Self-contained execution blueprints that include:
 Version-controlled learning storage:
 - Topic-based organization (authentication/, performance/, etc.)
 - Shared with team via git
-- Auto-embedded in PRBs
+- Auto-embedded in AgentTasks
 - Token-efficient (max 5KB per file)
 
 ### Autonomy Levels

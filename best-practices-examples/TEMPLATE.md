@@ -2,7 +2,7 @@
 category: [CATEGORY]
 tags: [TAG1, TAG2, TAG3]
 created: [CREATION_DATE]
-source_operation: [SOURCE_PRB_OR_OPERATION]
+source_operation: [SOURCE_AgentTask_OR_OPERATION]
 quality_score: [QUALITY_SCORE]
 usage_count: 0
 effectiveness_rating: unrated
@@ -140,8 +140,8 @@ Without this practice, teams typically experience [CONSEQUENCES_OF_NOT_FOLLOWING
 ## References and Resources
 
 ### Source Operations
-- [SOURCE_PRB_OR_OPERATION_1]: [BRIEF_DESCRIPTION_OF_SOURCE]
-- [SOURCE_PRB_OR_OPERATION_2]: [CONTEXT_OF_SUCCESSFUL_APPLICATION]
+- [SOURCE_AgentTask_OR_OPERATION_1]: [BRIEF_DESCRIPTION_OF_SOURCE]
+- [SOURCE_AgentTask_OR_OPERATION_2]: [CONTEXT_OF_SUCCESSFUL_APPLICATION]
 
 ### External Resources
 - [EXTERNAL_DOCUMENTATION_LINK]: [DESCRIPTION_OF_RESOURCE]

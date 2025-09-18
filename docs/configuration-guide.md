@@ -8,12 +8,12 @@ This guide covers all configuration options available in the Intelligent Claude 
 
 Settings are loaded in this priority order (highest to lowest):
 
-1. **Embedded config** (in PRBs) - Configuration values resolved at generation time
+1. **Embedded config** (in AgentTasks) - Configuration values resolved at generation time
 2. **Project config** (`./config.md` or `.claude/config.md`) - Project-specific settings
 3. **User global** (`~/.claude/config.md` - system-wide only) - User preferences
 4. **System defaults** - Built-in fallback values
 
-**Key Change from STORY-007/008**: All PRB templates now embed complete configuration at generation time rather than performing runtime config lookups, ensuring self-contained execution.
+**Key Change from STORY-007/008**: All AgentTask templates now embed complete configuration at generation time rather than performing runtime config lookups, ensuring self-contained execution.
 
 ## Memory Configuration
 
@@ -243,10 +243,10 @@ memory_configuration:
 
 ## Integration with Other Systems
 
-### PRB System Integration
-Memory configuration affects PRB generation:
-- **Memory Search**: PRBs search configured memory location
-- **Context Embedding**: Memory patterns embedded in PRBs
+### AgentTask System Integration
+Memory configuration affects AgentTask generation:
+- **Memory Search**: AgentTasks search configured memory location
+- **Context Embedding**: Memory patterns embedded in AgentTasks
 - **Learning Storage**: New learnings stored in configured location
 
 ### Behavioral Pattern Integration
@@ -361,26 +361,26 @@ agent_configuration:
 
 ### Template Resolution Configuration
 
-Configure how PRB templates are resolved with actual values:
+Configure how AgentTask templates are resolved with actual values:
 
 ```yaml
 # Template enforcement settings
 template_configuration:
-  mandatory_templates: true               # Block manual PRB creation
+  mandatory_templates: true               # Block manual AgentTask creation
   placeholder_resolution: "generation_time" # Resolve all placeholders at generation
-  config_embedding: true                  # Embed complete config in PRBs
+  config_embedding: true                  # Embed complete config in AgentTasks
   template_source: "src/prb-templates/"   # Required template source hierarchy
   
   # Template validation
   validation:
-    block_unresolved_placeholders: true   # Block [FROM_CONFIG] in final PRBs
+    block_unresolved_placeholders: true   # Block [FROM_CONFIG] in final AgentTasks
     require_complete_context: true        # Require complete_context section
     enforce_template_sections: true       # All mandatory sections must be present
     
   # Runtime behavior
   runtime:
     config_lookups_blocked: true          # Block runtime config access
-    self_contained_execution: true        # PRBs must be completely self-contained
+    self_contained_execution: true        # AgentTasks must be completely self-contained
 ```
 
 ### Dynamic Specialist Configuration
@@ -521,7 +521,7 @@ This means projects work perfectly without MCP servers - they're purely optional
 
 ## Template Extension Configuration
 
-The PRB Template Extensions system allows projects to customize PRB templates without copying entire template files.
+The AgentTask Template Extensions system allows projects to customize AgentTask templates without copying entire template files.
 
 ### Basic Template Extension Configuration
 
@@ -530,7 +530,7 @@ Create a `prb-extensions.yaml` file in your project root:
 ```yaml
 # Universal extensions - applied to ALL template sizes
 all:
-  # Add new requirements to every PRB
+  # Add new requirements to every AgentTask
   requirements:
     functional:
       - "Follow project-specific business rules"
@@ -659,7 +659,7 @@ The system detects installation location in this priority order:
 directory_structure:
   story_path: "user-stories"          # Custom story directory
   bug_path: "issues"                  # Custom bug directory  
-  prb_path: "requirements"            # Custom PRB directory
+  prb_path: "requirements"            # Custom AgentTask directory
   memory_path: "knowledge-base"       # Custom memory directory
   prb_template_path: "custom-templates" # Custom template directory
 
@@ -699,19 +699,19 @@ directory_structure:
 | **Team Settings** | `default_reviewer` | string | `"@Architect"` | Default code reviewer role |
 | | `role_validation` | boolean | `true` | Validate role assignments |
 
-### Template and PRB Settings
+### Template and AgentTask Settings
 
 | Setting Category | Setting Key | Type | Default Value | Description |
 |------------------|-------------|------|---------------|-------------|
-| **Template Configuration** | `template_configuration.mandatory_templates` | boolean | `true` | Block manual PRB creation |
+| **Template Configuration** | `template_configuration.mandatory_templates` | boolean | `true` | Block manual AgentTask creation |
 | | `template_configuration.placeholder_resolution` | string | `"generation_time"` | When to resolve placeholders |
-| | `template_configuration.config_embedding` | boolean | `true` | Embed complete config in PRBs |
+| | `template_configuration.config_embedding` | boolean | `true` | Embed complete config in AgentTasks |
 | | `template_configuration.template_source` | string | `"src/prb-templates/"` | Required template source |
-| **Template Validation** | `validation.block_unresolved_placeholders` | boolean | `true` | Block [FROM_CONFIG] in PRBs |
+| **Template Validation** | `validation.block_unresolved_placeholders` | boolean | `true` | Block [FROM_CONFIG] in AgentTasks |
 | | `validation.require_complete_context` | boolean | `true` | Require complete_context section |
 | | `validation.enforce_template_sections` | boolean | `true` | All mandatory sections required |
 | **Runtime Behavior** | `runtime.config_lookups_blocked` | boolean | `true` | Block runtime config access |
-| | `runtime.self_contained_execution` | boolean | `true` | PRBs must be self-contained |
+| | `runtime.self_contained_execution` | boolean | `true` | AgentTasks must be self-contained |
 
 ### Directory Structure Settings
 
@@ -719,7 +719,7 @@ directory_structure:
 |------------------|-------------|------|---------------|-------------|
 | **Directory Paths** | `directory_structure.story_path` | string | `"stories"` | Story directory name |
 | | `directory_structure.bug_path` | string | `"bugs"` | Bug directory name |
-| | `directory_structure.prb_path` | string | `"prbs"` | PRB directory name |
+| | `directory_structure.prb_path` | string | `"prbs"` | AgentTask directory name |
 | | `directory_structure.memory_path` | string | `"memory"` | Memory directory name |
 | | `directory_structure.docs_path` | string | `"docs"` | Documentation directory |
 | | `directory_structure.src_path` | string | `"src"` | Source code directory |
@@ -750,9 +750,9 @@ directory_structure:
 | | `mcp_integrations.documentation.provider` | string | `null` | Documentation provider |
 | | `mcp_integrations.documentation.config` | object | `{}` | Provider-specific config |
 
-### Workflow Settings by PRB Size
+### Workflow Settings by AgentTask Size
 
-| PRB Size | Version Bump | Changelog | PR Required | Merge Strategy | Release Automation |
+| AgentTask Size | Version Bump | Changelog | PR Required | Merge Strategy | Release Automation |
 |----------|-------------|-----------|-------------|----------------|--------------------|
 | **Nano (0-2 pts)** | `false` | `false` | `false` | `direct_commit` | `false` |
 | **Tiny (3-5 pts)** | `true` (patch) | `true` | `false` | `direct_commit` | `false` |

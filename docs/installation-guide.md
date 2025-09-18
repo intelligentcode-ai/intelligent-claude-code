@@ -341,7 +341,7 @@ specialist_creation: true      # Enable dynamic specialists
 # Directory Structure
 directory_structure:
   story_path: "stories"        # User stories location
-  prb_path: "prbs"            # PRB execution files
+  prb_path: "prbs"            # AgentTask execution files
   memory_path: "memory"        # Learning storage
   docs_path: "docs"           # Documentation
 ---
@@ -357,7 +357,7 @@ Add project-specific development guidelines here.
 ---
 # Performance Settings
 max_concurrent_subagents: 5    # Parallel execution limit
-template_validation: true      # Enforce PRB template compliance
+template_validation: true      # Enforce AgentTask template compliance
 complexity_override: false     # Allow manual complexity override
 
 # Security Settings
@@ -372,7 +372,7 @@ mcp_servers_enabled: true     # Enable MCP server integration
 directory_structure:
   story_path: "requirements"   # Custom story location
   bug_path: "issues"          # Custom bug location
-  prb_path: "blueprints"      # Custom PRB location
+  prb_path: "blueprints"      # Custom AgentTask location
   memory_path: "knowledge"    # Custom memory location
   prb_template_path: "templates"  # Custom template location
 ---
@@ -527,16 +527,16 @@ Test core system functionality:
 # Expected: Developer reports readiness
 ```
 
-#### 2. PRB System Verification
+#### 2. AgentTask System Verification
 
 ```bash
-# Test PRB creation
-@PM create PRB for user authentication
-# Expected: PRB generated with proper template
+# Test AgentTask creation
+@PM create AgentTask for user authentication
+# Expected: AgentTask generated with proper template
 
-# Check PRB structure
+# Check AgentTask structure
 ls -la prbs/ready/
-# Expected: PRB file with proper naming convention
+# Expected: AgentTask file with proper naming convention
 ```
 
 #### 3. Memory System Verification
@@ -620,8 +620,8 @@ time /icc-system-status
 time /icc-search-memory "test"
 # Expected: <3 seconds search time
 
-# Test PRB generation performance
-time @PM create simple PRB for documentation update
+# Test AgentTask generation performance
+time @PM create simple AgentTask for documentation update
 # Expected: <10 seconds generation time
 ```
 
@@ -646,7 +646,7 @@ Set up the intelligent-claude-code system for this project.
 - [ ] System installed and configured
 - [ ] Basic verification completed
 - [ ] Team familiar with @Role commands
-- [ ] First PRB successfully executed
+- [ ] First AgentTask successfully executed
 
 ## Notes
 This story helps verify the system is working correctly.
@@ -684,7 +684,7 @@ mkdir -p memory/{behavioral-patterns,implementation,configuration}
 ```bash
 # Demonstrate basic role usage
 @PM explain the virtual team system
-@Architect describe the PRB system
+@Architect describe the AgentTask system
 @Developer show available commands
 ```
 
@@ -694,15 +694,15 @@ mkdir -p memory/{behavioral-patterns,implementation,configuration}
 # Break down initial story
 @PM break down stories/STORY-001-system-setup-*
 
-# Check generated PRBs
+# Check generated AgentTasks
 ls -la prbs/ready/
 ```
 
-#### 3. Execute First PRB
+#### 3. Execute First AgentTask
 
 ```bash
-# Execute the generated PRB
-# This will be done by the appropriate specialist based on PRB assignment
+# Execute the generated AgentTask
+# This will be done by the appropriate specialist based on AgentTask assignment
 ```
 
 ### Best Practices Setup
@@ -713,8 +713,8 @@ ls -la prbs/ready/
 # Add to CLAUDE.md
 development_workflow:
   - "Always create stories before implementation"
-  - "Use @PM for story breakdown into PRBs"
-  - "Execute PRBs via assigned specialists"
+  - "Use @PM for story breakdown into AgentTasks"
+  - "Execute AgentTasks via assigned specialists"
   - "Capture learnings in memory system"
   - "Review and document architectural decisions"
 ```
@@ -724,7 +724,7 @@ development_workflow:
 ```yaml
 # Add to CLAUDE.md  
 quality_gates:
-  - "All PRBs must be under 15 complexity points"
+  - "All AgentTasks must be under 15 complexity points"
   - "Memory patterns captured for reusable solutions"
   - "Configuration changes documented"
   - "Security review for sensitive operations"
@@ -874,7 +874,7 @@ make install MCP_CONFIG=./config/mcps.json
 
 ### Custom Template Development
 
-#### Create Custom PRB Template
+#### Create Custom AgentTask Template
 
 ```yaml
 # custom-nano-prb-template.yaml
@@ -1080,7 +1080,7 @@ make test
 After successful installation:
 
 1. **Read the User Guide**: `docs/user-guide.md`
-2. **Explore PRB System**: `docs/prb-system-guide.md`
+2. **Explore AgentTask System**: `docs/prb-system-guide.md`
 3. **Configure Your Project**: Update `CLAUDE.md` with project specifics
 4. **Create Your First Story**: Add stories and let @PM break them down
 5. **Join the Community**: Contribute patterns and improvements

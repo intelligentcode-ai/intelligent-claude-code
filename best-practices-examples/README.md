@@ -1,10 +1,10 @@
 # Best Practices System
 
-**Dynamic injection system for methodological approaches into PRB generation**
+**Dynamic injection system for methodological approaches into AgentTask generation**
 
 ## Overview
 
-The best-practices system automatically discovers and injects methodological approaches and practices into PRBs during generation. This system follows the same auto-discovery pattern as the memory system but focuses on process and practice guidance.
+The best-practices system automatically discovers and injects methodological approaches and practices into AgentTasks during generation. This system follows the same auto-discovery pattern as the memory system but focuses on process and practice guidance.
 
 ## Directory Structure
 
@@ -20,11 +20,11 @@ best-practices/
 
 ## Auto-Discovery Process
 
-During PRB generation, the system:
+During AgentTask generation, the system:
 
 1. **Scans best-practices/** directory for relevant practice files
 2. **Matches practices** to work type and complexity
-3. **Injects top 2-3 practices** into PRB context (max 800 tokens)
+3. **Injects top 2-3 practices** into AgentTask context (max 800 tokens)
 4. **Replaces template placeholders** with dynamic content
 
 ## Practice File Format
@@ -52,12 +52,12 @@ Specific guidance for this practice
 Code or configuration examples
 ```
 
-## Integration with PRB Generation
+## Integration with AgentTask Generation
 
 The system automatically:
 - **Discovers** relevant practices based on work request analysis
 - **Scores** practices by relevance, recency, and project context
-- **Embeds** selected practices into PRB complete_context
+- **Embeds** selected practices into AgentTask complete_context
 - **Replaces** template placeholders like `[CODING_STYLE]` with actual practice content
 
 ## Supported Methodologies
@@ -75,7 +75,7 @@ The system supports ANY methodological approach:
 1. **Add practices**: Create `.md` files in appropriate subdirectories
 2. **Use keywords**: Include relevant keywords for auto-discovery
 3. **Specify scope**: Define what work types and complexity levels apply
-4. **Let system work**: PRB generation automatically discovers and injects
+4. **Let system work**: AgentTask generation automatically discovers and injects
 
 ## Template Integration
 
@@ -87,12 +87,12 @@ Replaces hardcoded placeholders:
 
 ## No Manual Template Modification
 
-The system eliminates the need to modify PRB templates for customization. Simply add practice files and the auto-discovery mechanism handles injection automatically.
+The system eliminates the need to modify AgentTask templates for customization. Simply add practice files and the auto-discovery mechanism handles injection automatically.
 
 ## Version Control
 
 All best-practices are version controlled with the project, enabling:
-- **Team consistency** across all PRB executions
+- **Team consistency** across all AgentTask executions
 - **Practice evolution** through normal git workflows
 - **Project-specific** customization without system modification
 - **Knowledge sharing** through documented practices
