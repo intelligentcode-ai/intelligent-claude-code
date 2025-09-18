@@ -2,25 +2,25 @@
 
 ## Overview
 
-The intelligent-claude-code system transforms Claude into a virtual development team with 14 specialized roles that collaborate to deliver high-quality software. Each role has deep expertise and works autonomously through PRB-driven execution.
+The intelligent-claude-code system transforms Claude into a virtual development team with 14 specialized roles that collaborate to deliver high-quality software. Each role has deep expertise and works autonomously through AgentTask-driven execution.
 
 ## Core Concepts
 
 ### Virtual Team Philosophy
 - **Specialists, not generalists**: Each role has 10+ years of expertise in their domain
-- **Collaborative execution**: Roles hand off work naturally through PRBs
+- **Collaborative execution**: Roles hand off work naturally through AgentTasks
 - **Self-improving**: Team learns from every task and applies knowledge to future work
 - **Autonomous operation**: Given clear requirements, specialists execute independently
 
-### PRB (Product Requirement Blueprint)
-A PRB is a self-contained execution blueprint that includes:
+### AgentTask (Product Requirement Blueprint)
+A AgentTask is a self-contained execution blueprint that includes:
 - Complete requirements and context
 - Embedded best practices and standards
 - Relevant code examples from your project
 - Previous learnings on similar tasks
 - Validation criteria and tests
 
-Think of PRBs as "everything a specialist needs to complete the work in one pass."
+Think of AgentTasks as "everything a specialist needs to complete the work in one pass."
 
 ## The 14 Core Roles
 
@@ -144,7 +144,7 @@ specs/api-design.md
 docs/feature-proposal.md
 ```
 
-Then: `/icc-generate-prb-from-draft drafts/new-feature/`
+Then: `/icc-generate-agenttask-from-draft drafts/new-feature/`
 
 ## Interaction Patterns
 
@@ -152,18 +152,18 @@ Then: `/icc-generate-prb-from-draft drafts/new-feature/`
 1. User describes high-level goal
 2. @PM analyzes and breaks down into tasks
 3. @Architect reviews technical approach
-4. PRBs generated for each task
+4. AgentTasks generated for each task
 
 ### Execution Phase
-1. Specialist receives PRB with full context
+1. Specialist receives AgentTask with full context
 2. Implements solution following embedded standards
 3. Validates against criteria
 4. Captures new learnings
 
 ### Learning Phase
 1. New patterns stored in `memory/[topic]/`
-2. PRB patterns become learnings automatically
-3. Future PRBs include relevant learnings
+2. AgentTask patterns become learnings automatically
+3. Future AgentTasks include relevant learnings
 4. Team improves continuously
 
 ## Memory System
@@ -277,7 +277,7 @@ You: "Dashboard loads too slowly"
 
 ### "Work not progressing"
 - Check autonomy level (L3 for full auto)
-- Ensure clear requirements in PRB
+- Ensure clear requirements in AgentTask
 - Review any blocking issues
 
 ---

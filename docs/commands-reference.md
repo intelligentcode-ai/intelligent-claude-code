@@ -1,9 +1,9 @@
 # Commands Reference
 
 ## Overview
-The intelligent-claude-code system provides 14 essential commands that cover initialization, PRB creation, story management, specialist management, problem-solving, and memory operations.
+The intelligent-claude-code system provides **only 3 essential commands** for specific system functions. The primary interaction method is through **@Role communication patterns** rather than command-based interaction.
 
-## System Commands
+## Essential Commands (Only 3)
 
 ### `/icc-init-system`
 Initializes the virtual team system and prepares for work.
@@ -20,7 +20,7 @@ Initializes the virtual team system and prepares for work.
 - Loads configuration from CLAUDE.md
 - Creates memory directory structure
 - Activates the 14 core roles
-- Sets up PRB system
+- Sets up AgentTask system
 - Configures autonomy level
 
 ### `/icc-get-setting [key]`
@@ -36,227 +36,13 @@ Retrieves configuration values from the hierarchy.
 ```
 
 **Configuration hierarchy:**
-1. Embedded config (in PRBs)
+1. Embedded config (in AgentTasks)
 2. Project config (./config.md or CLAUDE.md)
 3. User config (~/.claude/config.md - system-wide only)
 4. System defaults
 
-## PRB Commands
-
-### `/icc-create-prb`
-Generates a Product Requirement Blueprint for work.
-
-**Usage:** `/icc-create-prb "[work description]"`
-
-**Examples:**
-```bash
-/icc-create-prb "Add user authentication with JWT"
-/icc-create-prb "Fix memory leak in dashboard"
-/icc-create-prb "Optimize database queries"
-```
-
-**Process:**
-1. Analyzes work complexity (0-30+ score)
-2. Selects appropriate template (Nano/Tiny/Medium/Large/Mega)
-3. Embeds relevant context and learnings
-4. Assigns appropriate specialist role
-5. Creates self-contained execution blueprint
-
-### `/icc-analyze-complexity`
-Preview complexity score before creating PRB.
-
-**Usage:** `/icc-analyze-complexity "[work description]"`
-
-**Examples:**
-```bash
-/icc-analyze-complexity "Update button color"        # Score: 2 (Nano)
-/icc-analyze-complexity "Add OAuth2 authentication"  # Score: 15 (Medium)
-/icc-analyze-complexity "Refactor entire backend"    # Score: 35 (Mega)
-```
-
-**Scoring factors:**
-- Files affected
-- Lines of code
-- External integrations
-- Security implications
-- Coordination requirements
-
-### `/icc-generate-prb-from-draft [path]`
-Creates PRBs from your specification documents.
-
-**Usage:** `/icc-generate-prb-from-draft [draft_directory]`
-
-**Examples:**
-```bash
-/icc-generate-prb-from-draft drafts/new-feature/
-/icc-generate-prb-from-draft specs/api-redesign/
-/icc-generate-prb-from-draft docs/performance-improvements/
-```
-
-**Process:**
-1. @PM analyzes draft specifications
-2. @Architect designs technical approach
-3. System generates appropriate PRBs
-4. Includes all project context and standards
-
-## Story Management Commands
-
-### `/icc-breakdown-story`
-Converts natural language stories into PRBs.
-
-**Usage:** `/icc-breakdown-story <story_filename> [options]`
-
-**Examples:**
-```bash
-/icc-breakdown-story auth-system.md
-/icc-breakdown-story user-dashboard.txt preview
-/icc-breakdown-story payment.md force
-```
-
-**Process:**
-1. @PM analyzes the story
-2. @Architect reviews technical approach
-3. System generates appropriate PRBs
-4. Story updated with PRB references
-
-### `/icc-story-status`
-Tracks story progress and PRB completion.
-
-**Usage:** `/icc-story-status <story_filename> [detail_level]`
-
-**Examples:**
-```bash
-/icc-story-status auth-system.md
-/icc-story-status payment.txt detailed
-```
-
-## Specialist Creation Commands
-
-### `/icc-create-specialist`
-Creates dynamic specialist roles for any domain.
-
-**Usage:** `/icc-create-specialist [domain] [role-type]`
-
-**Examples:**
-```bash
-/icc-create-specialist React Developer        # Creates @React-Developer
-/icc-create-specialist AWS Engineer          # Creates @AWS-Engineer
-/icc-create-specialist Kubernetes DevOps     # Creates @Kubernetes-DevOps-Engineer
-```
-
-**Process:**
-1. Analyzes domain requirements
-2. Creates domain-specific specialist with 10+ years expertise
-3. Integrates with existing team
-4. Available immediately for @Agent mentions
-
-### `/icc-create-dynamic-specialist`
-Advanced dynamic specialist creation with detailed requirements.
-
-**Usage:** `/icc-create-dynamic-specialist [domain] [role-type] [requirements]`
-
-**Examples:**
-```bash
-/icc-create-dynamic-specialist Machine-Learning Specialist "TensorFlow, PyTorch, MLOps"
-/icc-create-dynamic-specialist Vue Frontend-Developer "Vue3, TypeScript, Pinia"
-```
-
-**Features:**
-- ALWAYS creates specialists when technology expertise is needed
-- Support for ANY technology domain
-- Custom expertise requirements
-- No capability thresholds - created based on need
-
-### `/icc-rename-work-items`
-Renames work items to follow standard naming format.
-
-**Usage:** `/icc-rename-work-items [options]`
-
-**Examples:**
-```bash
-/icc-rename-work-items                # Rename all work items
-/icc-rename-work-items --preview      # Preview changes without applying
-```
-
-**Process:**
-1. Scans project for work items
-2. Validates naming compliance
-3. Renames to standard format
-4. Updates references
-
-## Problem Solving Commands
-
-### `/icc-think-sequential`
-Engages sequential thinking mode for complex problem analysis.
-
-**Usage:** `/icc-think-sequential <problem_description> [complexity_level] [analysis_depth]`
-
-**Examples:**
-```bash
-/icc-think-sequential "Design memory system architecture"
-/icc-think-sequential "Optimize database queries" high
-/icc-think-sequential "Fix authentication bug" low basic
-```
-
-**Parameters:**
-- **problem_description** (required): Problem to analyze
-- **complexity_level** (optional): low, medium, high (default: auto-detect)
-- **analysis_depth** (optional): basic, detailed, maximum (default: detailed)
-
-**Features:**
-- Ultra-experienced cognitive pattern analysis
-- Evidence-based thinking with assumption questioning
-- Iterative refinement process
-- Available to all roles for deep analysis
-
-## Agent System Integration
-
-### Natural @Agent Communication
-All work operates through direct agent communication - no command scaffolding needed.
-
-**Usage:** Natural @Agent mentions automatically create subagents for execution
-
-**Examples:**
-```bash
-# Direct agent communication patterns
-"@PM break down the authentication story"     # PM analyzes and creates PRBs
-"@Developer implement the login API"          # Developer creates PRB and executes
-"@Security-Engineer review the auth flow"     # Security specialist reviews
-"@AI-Engineer optimize ML algorithm"          # AI specialist handles behavioral work
-```
-
-**Agent Features:**
-- 14 core specialized roles with embedded behavioral patterns
-- Unlimited dynamic specialist creation for ANY technology domain when expertise is needed
-- Direct PRB execution through Task tool invocation
-- Complete context preservation across agent interactions
-
-
-
-## Memory Commands
-
-### `/icc-store-memory [topic] [content]`
-Stores learnings in version-controlled memory.
-
-**Usage:** `/icc-store-memory [topic/subtopic] "[learning content]"`
-
-**Examples:**
-```bash
-/icc-store-memory authentication/oauth2 "Problem: Token expiry not handled. Solution: Implement automatic refresh on 401 errors with exponential backoff."
-
-/icc-store-memory performance/caching "Redis cache with 5-minute TTL reduced API load by 80%. Key pattern: user:{id}:profile"
-
-/icc-store-memory error-handling/retries "Network errors need exponential backoff: 1s, 2s, 4s, 8s with max 30s"
-```
-
-**Features:**
-- Topic-based organization
-- Auto-prunes to keep files small (5KB max)
-- Newest entries first
-- Version controlled (shared with team)
-
 ### `/icc-search-memory [query]`
-Searches memory for relevant learnings.
+Searches memory for relevant learnings and patterns.
 
 **Usage:** `/icc-search-memory "[search terms]"`
 
@@ -267,10 +53,10 @@ Searches memory for relevant learnings.
 /icc-search-memory "error handling patterns"
 ```
 
-**Used during:**
-- PRB generation (automatic)
-- Manual exploration
-- Problem investigation
+**Used for:**
+- Manual memory exploration
+- Pattern investigation
+- Learning discovery
 
 **Results include:**
 - Topic location
@@ -278,80 +64,112 @@ Searches memory for relevant learnings.
 - Relevance score
 - Preview snippet
 
-### `/icc-load-memory [topic/file]`
-Loads specific memory entries for review.
+## Primary Interaction: @Role Communication
 
-**Usage:** `/icc-load-memory [topic/subtopic]`
+The system is designed for **natural @Role communication** rather than command-based interaction. This is the primary and preferred way to work with the system.
 
-**Examples:**
+### Core @Role Patterns
+
+**Project Management:**
 ```bash
-/icc-load-memory authentication/oauth2-patterns
-/icc-load-memory performance/caching
-/icc-load-memory error-handling/api-errors
+@PM Build me a [project]        # Start any project with PM coordination
+@PM break down [story]          # Convert story to AgentTasks
+@PM what story next?            # Select next story with architect
+@PM status update               # Get project status and next actions
 ```
 
-**Returns:**
-- Full content of topic file
-- All entries (newest first)
-- Archive references if applicable
+**Architecture and Design:**
+```bash
+@Architect Design the API       # Request architecture design
+@Architect review [component]   # Architecture review request
+@Database-Architect design schema  # Specialized architecture
+```
 
-## Command Patterns
+**Implementation Work:**
+```bash
+@Developer Implement auth       # Assign implementation task
+@Developer fix [bug]            # Bug fix assignment
+@AI-Engineer optimize behavior  # AI/behavioral improvements
+```
+
+**Quality and Operations:**
+```bash
+@Security-Engineer Review       # Request security review
+@QA-Engineer test [feature]     # Quality assurance request
+@DevOps-Engineer deploy [env]   # Deployment operations
+```
+
+### How @Role Communication Works
+
+1. **Natural Language**: Simply mention @Role with your request
+2. **AgentTask Creation**: System creates appropriate AgentTask automatically
+3. **Agent Execution**: Work executes through Task tool with specialist agents
+4. **Memory Storage**: Learnings captured automatically during work
+
+### Dynamic Specialist Creation
+
+The system automatically creates specialists for ANY technology domain when expertise is needed:
+
+**Examples:**
+- `@React-Developer` - Frontend React expertise
+- `@AWS-Engineer` - Cloud infrastructure specialist
+- `@Kubernetes-DevOps-Engineer` - Container orchestration
+- `@ML-Specialist` - Machine learning and AI systems
+- `@Vue-Frontend-Developer` - Vue.js frontend development
+
+### @Role vs Commands
+
+**Use @Role Patterns for** (Primary Usage):
+- All project work and coordination
+- Architecture and design decisions
+- Implementation tasks
+- Quality assurance
+- Any specialist work
+
+**Use Commands for** (System Functions Only):
+- System initialization: `/icc-init-system`
+- Configuration queries: `/icc-get-setting`
+- Memory exploration: `/icc-search-memory`
+
+## Usage Patterns
 
 ### Starting New Work
 ```bash
-/icc-init-system                              # Initialize
-"Build a REST API for user management"        # Natural language
-# OR
-/icc-create-prb "Build REST API for users"    # Explicit PRB
+/icc-init-system                              # Initialize system once
+@PM Build a REST API for user management      # Natural language work request
 ```
 
-### Working with Drafts
+### Memory Exploration
 ```bash
-# Create your specs
-echo "API Requirements..." > drafts/api-spec.md
-
-# Generate PRBs
-/icc-generate-prb-from-draft drafts/
+/icc-search-memory "authentication patterns"  # Find relevant patterns
+@Developer Implement OAuth based on memory    # Apply found patterns
 ```
 
-### Complex Problem Solving
+### Configuration Management
 ```bash
-/icc-think-sequential "How to handle 10K concurrent websocket connections"
-# ... thinking process completes with solution analysis ...
-/icc-create-prb "Implement websocket scaling solution"
+/icc-get-setting autonomy_level              # Check current autonomy
+/icc-get-setting git_privacy                 # Check privacy settings
 ```
 
-### Learning from PRB Patterns
-```bash
-# PRB pattern recognized - captured for learning
-"Successful OAuth implementation with refresh"
-/icc-store-memory authentication/oauth "Pattern: OAuth with auto-refresh. Context: Successful implementation"
+## Best Practices
 
-# Next time - pattern applied automatically
-/icc-create-prb "Implement Microsoft OAuth"
-# PRB includes previous OAuth learnings
-```
-
-## Tips
-
-### Effective Commands
-- Be specific in descriptions
+### Effective @Role Communication
+- Be specific in work descriptions
 - Include success criteria
-- Reference existing code/patterns
+- Reference existing code/patterns when relevant
 - Mention constraints upfront
 
-### Memory Management
-- Store learnings immediately after solving problems
-- Use consistent topic naming
-- Keep entries concise but complete
-- Include code examples when relevant
+### Memory Integration
+- Memory searches happen automatically during @Role work
+- Use `/icc-search-memory` for manual exploration only
+- Learnings are stored automatically - no manual commands needed
+- Memory captures patterns from successful AgentTask executions
 
-### PRB Optimization
-- Smaller PRBs execute faster
-- Clear requirements = better output
-- Let system choose complexity
-- Trust specialist assignments
+### System Configuration
+- Use `/icc-get-setting` to understand current configuration
+- Configuration affects @Role behavior and AgentTask execution
+- Settings hierarchy: Embedded → Project → User → System defaults
 
 ---
 
-Essential utility commands combined with natural @Agent behavioral patterns provide intuitive control over the virtual team system. Most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists rather than command scaffolding.
+The intelligent-claude-code system prioritizes **@Role communication patterns** over command-based interaction. The 3 essential commands provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.
