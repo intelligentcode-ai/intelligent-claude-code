@@ -80,16 +80,16 @@ The system operates as a **MARKDOWN-BASED AI-AGENTIC SYSTEM**, meaning:
 - Learning pattern capture
 - Autonomy level behaviors
 
-### 3. AgentTask System (`src/prb-templates/`)
+### 3. AgentTask System (`agenttask-templates/`)
 
-**Purpose:** Product Requirement Blueprints for single-pass execution
+**Purpose:** AgentTask execution blueprints for single-pass execution
 
 **Template Hierarchy:**
-- `nano-prb-template.yaml` (0-2 complexity points)
-- `tiny-prb-template.yaml` (3-5 complexity points)
-- `medium-prb-template.yaml` (6-15 complexity points)
-- `large-prb-template.yaml` (16-30 complexity points)
-- `mega-prb-template.yaml` (30+ complexity points)
+- `nano-agenttask-template.yaml` (0-2 complexity points)
+- `tiny-agenttask-template.yaml` (3-5 complexity points)
+- `medium-agenttask-template.yaml` (6-15 complexity points)
+- `large-agenttask-template.yaml` (16-30 complexity points)
+- `mega-agenttask-template.yaml` (30+ complexity points)
 
 **Template Features:**
 - Complete context embedding (no runtime lookups)
@@ -489,7 +489,7 @@ Security Checklist:
    ├── modes/                   # Behavioral mode definitions
    ├── roles/                   # Role specifications
    ├── behaviors/               # Behavioral pattern library
-   ├── prb-templates/           # Template hierarchy
+   ├── agenttask-templates/           # Template hierarchy
    └── config.md                # User configuration
    
    project/                     # Project-specific deployment
@@ -506,7 +506,7 @@ Security Checklist:
    │   ├── modes/
    │   ├── roles/
    │   ├── behaviors/
-   │   └── prb-templates/
+   │   └── agenttask-templates/
    ├── CLAUDE.md
    ├── memory/
    └── prbs/

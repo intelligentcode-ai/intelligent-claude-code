@@ -48,7 +48,7 @@ project:
   type: "web-application"
   
 # AgentTask Configuration
-prb_configuration:
+agenttask_configuration:
   # Include project best practices in all AgentTasks
   include_best_practices: true
   best_practices_paths:

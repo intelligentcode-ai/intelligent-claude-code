@@ -67,7 +67,7 @@ Tell the system where YOUR files are:
 
 ```yaml
 # In CLAUDE.md
-prb_configuration:
+agenttask_configuration:
   best_practices_paths:
     - "docs/best-practices/"      # Your location
     - "engineering/standards/"     # Your location

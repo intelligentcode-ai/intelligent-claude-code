@@ -268,7 +268,7 @@ Use PM + Architect collaboration:
 
 **Error Message:**
 ```
-Template not found: medium-prb-template.yaml
+Template not found: medium-agenttask-template.yaml
 ```
 
 **Cause:** AgentTask templates not properly installed.
@@ -276,9 +276,9 @@ Template not found: medium-prb-template.yaml
 **Solution:**
 1. Check template installation:
 ```bash
-ls -la ~/.claude/prb-templates/
-ls -la ./.claude/prb-templates/  # Project-specific
-ls -la ./src/prb-templates/      # Source templates
+ls -la ~/.claude/agenttask-templates/
+ls -la ./.claude/agenttask-templates/  # Project-specific
+ls -la ./src/agenttask-templates/      # Source templates
 ```
 
 2. Reinstall templates:

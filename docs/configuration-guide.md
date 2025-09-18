@@ -369,7 +369,7 @@ template_configuration:
   mandatory_templates: true               # Block manual AgentTask creation
   placeholder_resolution: "generation_time" # Resolve all placeholders at generation
   config_embedding: true                  # Embed complete config in AgentTasks
-  template_source: "src/prb-templates/"   # Required template source hierarchy
+  template_source: "agenttask-templates/"   # Required template source hierarchy
   
   # Template validation
   validation:
@@ -706,7 +706,7 @@ directory_structure:
 | **Template Configuration** | `template_configuration.mandatory_templates` | boolean | `true` | Block manual AgentTask creation |
 | | `template_configuration.placeholder_resolution` | string | `"generation_time"` | When to resolve placeholders |
 | | `template_configuration.config_embedding` | boolean | `true` | Embed complete config in AgentTasks |
-| | `template_configuration.template_source` | string | `"src/prb-templates/"` | Required template source |
+| | `template_configuration.template_source` | string | `"agenttask-templates/"` | Required template source |
 | **Template Validation** | `validation.block_unresolved_placeholders` | boolean | `true` | Block [FROM_CONFIG] in AgentTasks |
 | | `validation.require_complete_context` | boolean | `true` | Require complete_context section |
 | | `validation.enforce_template_sections` | boolean | `true` | All mandatory sections required |
