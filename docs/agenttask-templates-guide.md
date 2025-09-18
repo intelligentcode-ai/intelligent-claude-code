@@ -1,8 +1,8 @@
-# PRB Templates Guide
+# AgentTask Templates Guide
 
 ## Overview
 
-PRB templates are the backbone of the intelligent-claude-code system. They define how work is structured, what context is included, and how specialists execute tasks. The system automatically selects the right template based on complexity from the mandatory src/prb-templates/ hierarchy.
+AgentTask templates are the backbone of the intelligent-claude-code system. They define how work is structured, what context is included, and how specialists execute tasks. The system automatically selects the right template based on complexity from the mandatory agenttask-templates/ hierarchy.
 
 **Key Enhancement from STORY-008**: All templates now have mandatory usage enforcement with complete placeholder resolution at generation time, ensuring self-contained execution without runtime config dependencies.
 
@@ -10,20 +10,20 @@ PRB templates are the backbone of the intelligent-claude-code system. They defin
 
 ### Mandatory Template Usage (STORY-008 Enhancement)
 
-**CRITICAL RULE**: ALL PRB creation MUST use templates from src/prb-templates/ with complete placeholder resolution.
+**CRITICAL RULE**: ALL AgentTask creation MUST use templates from agenttask-templates/ with complete placeholder resolution.
 
 **Template Enforcement Rules**:
-1. **Template Source Enforcement**: Only templates from src/prb-templates/ hierarchy allowed
+1. **Template Source Enforcement**: Only templates from agenttask-templates/ hierarchy allowed
 2. **Placeholder Resolution**: ALL placeholders must be resolved at generation time
-3. **Config Embedding**: Complete configuration embedded in PRB, no runtime lookups
-4. **Manual Creation Blocking**: Immediate blocking of any manual PRB creation attempts
+3. **Config Embedding**: Complete configuration embedded in AgentTask, no runtime lookups
+4. **Manual Creation Blocking**: Immediate blocking of any manual AgentTask creation attempts
 5. **Template Completeness**: All mandatory template sections required
 
 **Blocked Patterns**:
-- ❌ Manual PRB creation without templates
-- ❌ Unresolved placeholders like `[FROM_CONFIG]` in final PRBs  
+- ❌ Manual AgentTask creation without templates
+- ❌ Unresolved placeholders like `[FROM_CONFIG]` in final AgentTasks  
 - ❌ Runtime config lookups during execution
-- ❌ Invalid template sources outside src/prb-templates/
+- ❌ Invalid template sources outside agenttask-templates/
 - ❌ Missing mandatory template sections
 
 **Template Resolution Process**:
@@ -40,9 +40,9 @@ default_branch: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
 
 ## Template Types by Complexity
 
-### 🔵 Nano PRB (Score: 0-2)
+### 🔵 Nano AgentTask (Score: 0-2)
 **For:** Trivial one-line changes, config updates, typo fixes
-**File:** `nano-prb-template.yaml`
+**File:** `nano-agenttask-template.yaml`
 **Execution Process:** 4 steps (Knowledge → Implementation → Git Commit → Git Push)
 
 **When used:**
@@ -74,9 +74,9 @@ validation: "[HOW_TO_VERIFY]"
 - "Fix typo in README"
 - "Update package version to 2.0.1"
 
-### 🟢 Tiny PRB (Score: 3-5)
+### 🟢 Tiny AgentTask (Score: 3-5)
 **For:** Simple single-file changes, small features
-**File:** `tiny-prb-template.yaml`
+**File:** `tiny-agenttask-template.yaml`
 **Execution Process:** 7 steps (Knowledge → Implementation → Review → Version → Documentation → Git Commit → Git Push)
 
 **When used:**
@@ -106,9 +106,9 @@ validation:
 - "Fix null pointer in user service"
 - "Add logging to payment processor"
 
-### 🟡 Medium PRB (Score: 6-15)
+### 🟡 Medium AgentTask (Score: 6-15)
 **For:** Standard features, multi-file changes
-**File:** `medium-prb-template.yaml`
+**File:** `medium-agenttask-template.yaml`
 **Execution Process:** 9 steps (Branch → Knowledge → Implementation → Review → Version → Documentation → Git Commit → Git Push → PR)
 
 **When used:**
@@ -137,9 +137,9 @@ validation:
 - "Add pagination to API endpoints"
 - "Integrate with Stripe payment system"
 
-### 🟠 Large PRB (Score: 16-30)
+### 🟠 Large AgentTask (Score: 16-30)
 **For:** Complex features requiring coordination
-**File:** `large-prb-template.yaml`
+**File:** `large-agenttask-template.yaml`
 
 **When used:**
 - Features spanning many files
@@ -148,14 +148,14 @@ validation:
 - Performance overhauls
 
 **Key features:**
-- Sub-PRB generation
+- Sub-AgentTask generation
 - Multiple specialist coordination
 - Dependency tracking
 - Phased execution
 
 **Structure includes:**
 - Problem decomposition
-- Sub-PRB references
+- Sub-AgentTask references
 - Coordination points
 - Integration testing
 
@@ -164,9 +164,9 @@ validation:
 - "Refactor authentication to OAuth2"
 - "Add multi-tenant support"
 
-### 🔴 Mega PRB (Score: 30+)
+### 🔴 Mega AgentTask (Score: 30+)
 **For:** System-wide changes, major refactors
-**File:** `mega-prb-template.yaml`
+**File:** `mega-agenttask-template.yaml`
 
 **When used:**
 - Architecture migrations
@@ -176,7 +176,7 @@ validation:
 
 **Key features:**
 - Epic-level coordination
-- Multiple Large PRBs
+- Multiple Large AgentTasks
 - Cross-team coordination
 - Rollback planning
 
@@ -222,19 +222,19 @@ The system analyzes:
 - 16-30: Large
 - 30+: Mega
 
-## Customizing PRB Templates
+## Customizing AgentTask Templates
 
 ### 1. Project-Level Customization (CLAUDE.md)
 
-Configure how PRBs are generated for YOUR project:
+Configure how AgentTasks are generated for YOUR project:
 
 ```yaml
 # CLAUDE.md
-prb_configuration:
-  # Where to find your custom PRB templates
+agenttask_configuration:
+  # Where to find your custom AgentTask templates
   custom_template_paths:
-    - "prb-templates/"              # Your custom PRB templates
-    - "engineering/prb-templates/"  # Team-specific templates
+    - "agenttask-templates/"              # Your custom AgentTask templates
+    - "engineering/agenttask-templates/"  # Team-specific templates
     
   # Where to find your standards
   best_practices_paths:
@@ -267,7 +267,7 @@ prb_configuration:
 Create custom templates in your project (NOT in `.claude/`):
 
 ```yaml
-# prb-templates/medium-prb-template.yaml
+# agenttask-templates/medium-agenttask-template.yaml
 # Place in your project root or any project directory
 # This overrides the default medium template
 
@@ -294,13 +294,13 @@ validation_criteria:
 Create specialized templates in your project directories:
 
 ```yaml
-# prb-templates/api-endpoint-prb.yaml
-# or engineering/prb-templates/api-endpoint-prb.yaml
+# agenttask-templates/api-endpoint-agenttask.yaml
+# or engineering/agenttask-templates/api-endpoint-agenttask.yaml
 # or wherever makes sense in YOUR project structure
 
 id: "API-[AUTO]"
-type: api-endpoint-prb
-extends: medium-prb  # Build on existing template
+type: api-endpoint-agenttask
+extends: medium-agenttask  # Build on existing template
 
 # API-specific sections
 api_design:
@@ -320,11 +320,11 @@ rate_limiting:
 
 ### 4. Workflow Integration
 
-PRBs adapt to your workflow:
+AgentTasks adapt to your workflow:
 
 #### For Agile Teams
 ```yaml
-prb_configuration:
+agenttask_configuration:
   workflow_integration:
     ticket_system: "jira"
     ticket_prefix: "PROJ-"
@@ -339,7 +339,7 @@ prb_configuration:
 
 #### For GitFlow
 ```yaml
-prb_configuration:
+agenttask_configuration:
   git_workflow:
     feature_branch_prefix: "feature/"
     hotfix_branch_prefix: "hotfix/"
@@ -349,7 +349,7 @@ prb_configuration:
 
 #### For Continuous Deployment
 ```yaml
-prb_configuration:
+agenttask_configuration:
   deployment:
     auto_deploy: true
     environments: ["dev", "staging", "prod"]
@@ -360,10 +360,10 @@ prb_configuration:
 
 ### 1. Conditional Sections
 
-PRB templates can include conditional sections:
+AgentTask templates can include conditional sections:
 
 ```yaml
-# In any PRB template
+# In any AgentTask template
 {% if project.type == "microservice" %}
 service_boundaries:
   api_contract: "[define_here]"
@@ -379,7 +379,7 @@ security_review:
 
 ### 2. Dynamic Content Injection
 
-PRBs automatically inject:
+AgentTasks automatically inject:
 - Recent learnings from `memory/`
 - Existing code patterns
 - Project best practices
@@ -388,7 +388,7 @@ PRBs automatically inject:
 Control what gets injected:
 
 ```yaml
-prb_configuration:
+agenttask_configuration:
   content_injection:
     max_memory_entries: 3      # Token efficiency
     max_code_examples: 2       # Relevant examples
@@ -398,7 +398,7 @@ prb_configuration:
 
 ### 3. Role-Specific Customization
 
-Different roles can have different PRB structures:
+Different roles can have different AgentTask structures:
 
 ```yaml
 # For @Security-Engineer
@@ -416,7 +416,7 @@ ai_prb_overrides:
     - evaluation_metrics
 ```
 
-## Best Practices for PRB Customization
+## Best Practices for AgentTask Customization
 
 ### DO:
 - ✅ Keep templates focused and concise
@@ -426,17 +426,17 @@ ai_prb_overrides:
 - ✅ Use conditional sections sparingly
 
 ### DON'T:
-- ❌ Override core PRB structure
+- ❌ Override core AgentTask structure
 - ❌ Make templates too rigid
 - ❌ Include sensitive information
 - ❌ Create too many custom templates
 - ❌ Duplicate standard sections
 
-## Examples of Well-Customized PRBs
+## Examples of Well-Customized AgentTasks
 
 ### Example 1: API-First Company
 ```yaml
-prb_configuration:
+agenttask_configuration:
   api_first:
     require_openapi_spec: true
     api_design_review: mandatory
@@ -450,7 +450,7 @@ prb_configuration:
 
 ### Example 2: High-Security Environment
 ```yaml
-prb_configuration:
+agenttask_configuration:
   security_first:
     code_review_required: true
     security_review_required: true
@@ -464,7 +464,7 @@ prb_configuration:
 
 ### Example 3: Startup (Move Fast)
 ```yaml
-prb_configuration:
+agenttask_configuration:
   startup_mode:
     mvp_first: true
     perfect_later: true
@@ -476,12 +476,12 @@ prb_configuration:
     - "Optimize in v2"
 ```
 
-## Troubleshooting PRB Templates
+## Troubleshooting AgentTask Templates
 
-### "PRB too large"
+### "AgentTask too large"
 - Reduce embedded content
 - Reference instead of embed
-- Split into sub-PRBs
+- Split into sub-AgentTasks
 
 ### "Missing context"
 - Check best_practices_paths
@@ -499,7 +499,7 @@ prb_configuration:
 
 ### 14-Role Virtual Team Execution
 
-All PRB templates now integrate with the 14-role virtual team system:
+All AgentTask templates now integrate with the 14-role virtual team system:
 
 **Core Roles Available:**
 - @PM, @Architect, @Developer, @System-Engineer, @DevOps-Engineer
@@ -515,7 +515,7 @@ All PRB templates now integrate with the 14-role virtual team system:
 
 **Template Integration Features:**
 ```yaml
-# Embedded in all PRB templates
+# Embedded in all AgentTask templates
 specialization_context:
   technology_domains: <DETECTED_FROM_PROJECT>
   specialist_creation: "ALWAYS create specialists when technology expertise is needed"
@@ -527,8 +527,8 @@ specialization_context:
 
 **Natural Communication Pattern:**
 - User: "@Developer implement authentication API"
-- System: Creates Medium PRB with embedded context
-- Task tool: Creates @Developer subagent with complete PRB context
+- System: Creates Medium AgentTask with embedded context
+- Task tool: Creates @Developer subagent with complete AgentTask context
 - Subagent: Executes 9-step process autonomously
 - Result: Complete implementation with learning capture
 
@@ -540,4 +540,4 @@ specialization_context:
 
 ---
 
-Remember: PRB templates are meant to adapt to YOUR workflow, not the other way around. Start with defaults, then customize based on what your team needs. The agent system provides unlimited specialist coverage for any technology domain while maintaining consistent behavioral patterns.
+Remember: AgentTask templates are meant to adapt to YOUR workflow, not the other way around. Start with defaults, then customize based on what your team needs. The agent system provides unlimited specialist coverage for any technology domain while maintaining consistent behavioral patterns.
