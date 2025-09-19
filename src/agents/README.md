@@ -6,27 +6,27 @@ This directory contains the 14 core Claude Code Subagent definitions with embedd
 
 | Agent | Role | Specialization Capability |
 |-------|------|---------------------------|
-| **pm.md** | Project management and coordination | Any project domain via PRB context |
-| **architect.md** | System architecture and technical design | Any architectural domain via PRB context |
-| **developer.md** | Software implementation and feature development | Any technology stack via PRB context |
-| **system-engineer.md** | Infrastructure and system operations | Any cloud/infrastructure platform via PRB context |
-| **devops-engineer.md** | CI/CD and deployment automation | Any CI/CD platform or deployment strategy via PRB context |
-| **database-engineer.md** | Database design and optimization | Any database technology via PRB context |
-| **security-engineer.md** | Security and compliance frameworks | Any security domain via PRB context |
-| **ai-engineer.md** | AI/ML and behavioral frameworks | Any AI/ML platform or behavioral domain via PRB context |
-| **web-designer.md** | UI/UX design and user experience | Any design domain or industry via PRB context |
-| **qa-engineer.md** | Quality assurance and test planning | Any testing domain via PRB context |
-| **backend-tester.md** | Backend testing and API validation | Any backend technology via PRB context |
-| **requirements-engineer.md** | Requirements analysis and documentation | Any domain or industry via PRB context |
-| **user-role.md** | End-to-end testing and browser automation | Any testing framework via PRB context |
+| **pm.md** | Project management and coordination | Any project domain via AgentTask context |
+| **architect.md** | System architecture and technical design | Any architectural domain via AgentTask context |
+| **developer.md** | Software implementation and feature development | Any technology stack via AgentTask context |
+| **system-engineer.md** | Infrastructure and system operations | Any cloud/infrastructure platform via AgentTask context |
+| **devops-engineer.md** | CI/CD and deployment automation | Any CI/CD platform or deployment strategy via AgentTask context |
+| **database-engineer.md** | Database design and optimization | Any database technology via AgentTask context |
+| **security-engineer.md** | Security and compliance frameworks | Any security domain via AgentTask context |
+| **ai-engineer.md** | AI/ML and behavioral frameworks | Any AI/ML platform or behavioral domain via AgentTask context |
+| **web-designer.md** | UI/UX design and user experience | Any design domain or industry via AgentTask context |
+| **qa-engineer.md** | Quality assurance and test planning | Any testing domain via AgentTask context |
+| **backend-tester.md** | Backend testing and API validation | Any backend technology via AgentTask context |
+| **requirements-engineer.md** | Requirements analysis and documentation | Any domain or industry via AgentTask context |
+| **user-role.md** | End-to-end testing and browser automation | Any testing framework via AgentTask context |
 
 **Note**: @PM operates as both main agent (for story breakdown and coordination) and subagent (for delegation and specialized PM tasks).
 
 ## Key Features
 
 - **14 Core Generic Agents**: Handle any work via context specialization
-- **Dynamic Specialization**: Achieved through PRB context, not separate files
-- **Unlimited Domain Coverage**: Any technology via specialized PRB content
+- **Dynamic Specialization**: Achieved through AgentTask context, not separate files
+- **Unlimited Domain Coverage**: Any technology via specialized AgentTask content
 - **Claude Code Native Integration**: Full compatibility with Claude Code Subagents
 
 ## Documentation
@@ -50,10 +50,10 @@ This directory contains the 14 core Claude Code Subagent definitions with embedd
 @DevOps deploy to production environment
 @AI-Engineer optimize behavioral patterns
 
-# PM automatically determines specialization and creates PRB with context
-# Agents receive PRB and operate as specialists for the work
+# PM automatically determines specialization and creates AgentTask with context
+# Agents receive AgentTask and operate as specialists for the work
 ```
 
 ---
 
-*14 core agents with unlimited specialization via PRB context*
+*14 core agents with unlimited specialization via AgentTask context*

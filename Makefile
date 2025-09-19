@@ -137,7 +137,7 @@ test:
 	@test -f test-install/.claude/agents/architect.md || (echo "FAIL: agent definitions not installed"; exit 1)
 	@test -f test-install/.claude/agents/developer.md || (echo "FAIL: developer agent not installed"; exit 1)
 	@test -f test-install/.claude/agents/ai-engineer.md || (echo "FAIL: ai-engineer agent not installed"; exit 1)
-	@test -f test-install/.claude/prb-templates/medium-prb-template.yaml || (echo "FAIL: prb-templates not installed"; exit 1)
+	@test -f test-install/.claude/agenttask-templates/medium-agenttask-template.yaml || (echo "FAIL: agenttask-templates not installed"; exit 1)
 	@grep -q "@~/.claude/modes/virtual-team.md" test-install/CLAUDE.md || (echo "FAIL: Import not added"; exit 1)
 	@echo "✅ Installation tests passed!"
 	@echo ""

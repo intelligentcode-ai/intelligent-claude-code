@@ -23,8 +23,8 @@
 
 **L3 Continuous Work Pattern:**
 - **Discover Tasks:** Find PLANNED/IN_PROGRESS tasks, uncommitted changes, memory improvement opportunities
-- **Generate PRB:** Create appropriate PRB for discovered work
-- **Execute Work:** Complete the work using PRB framework
+- **Generate AgentTask:** Create appropriate AgentTask for discovered work
+- **Execute Work:** Complete the work using AgentTask framework
 - **Learn from Results:** Capture learnings and patterns
 - **Continue to Next:** Repeat cycle with next available work
 

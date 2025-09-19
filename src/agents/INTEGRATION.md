@@ -31,18 +31,18 @@ tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
 
 Each agent embeds behavioral patterns in markdown content:
 
-- **PRB Execution Patterns**: How to execute PRBs with embedded context
+- **AgentTask Execution Patterns**: How to execute AgentTasks with embedded context
 - **Memory Integration**: Search memory before work, store successful patterns
 - **Quality Standards**: Ensure high standards for domain expertise
 - **Documentation Enforcement**: Mandatory enforcement of template documentation requirements with blocking mechanisms
-- **Specialization Instructions**: How to embody specialist expertise via PRB context
+- **Specialization Instructions**: How to embody specialist expertise via AgentTask context
 - **Collaboration Patterns**: How to work with other agents and PM
 
 ### Documentation Enforcement Patterns (v7.3.6+)
 
 All agents now include **mandatory documentation enforcement** behavioral patterns:
 
-- **Version Bump Enforcement**: Block PRB completion if version not bumped per template
+- **Version Bump Enforcement**: Block AgentTask completion if version not bumped per template
 - **CHANGELOG Compliance**: Block if CHANGELOG entry not created/updated as specified
 - **README Enforcement**: Block if README updates required by template are not completed
 - **Documentation Completeness**: Validate all template documentation sections are executed
@@ -51,7 +51,7 @@ All agents now include **mandatory documentation enforcement** behavioral patter
 ## Benefits of This Architecture
 
 ### Unlimited Scalability
-- **ANY Technology**: Support for emerging tech via PRB context
+- **ANY Technology**: Support for emerging tech via AgentTask context
 - **NO Maintenance Overhead**: No need to maintain hundreds of specialist files
 - **Clean Architecture**: 14 generic agents + unlimited contextual specialization
 
