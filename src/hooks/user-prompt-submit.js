@@ -154,10 +154,29 @@ function main() {
       }
     }
 
+    // AGGRESSIVE MEMORY-FIRST ENFORCEMENT
+    const locationQueries = ['where is', 'where are', 'where can', 'path to', 'location of', 'find the', 'access'];
+    const credentialQueries = ['pat', 'token', 'credential', 'password', 'auth', 'key', 'secret'];
+    const configQueries = ['config', 'setting', 'how to', 'how do', 'what is the', 'what are the'];
+
+    const isLocationQuery = locationQueries.some(q => userPrompt.toLowerCase().includes(q));
+    const isCredentialQuery = credentialQueries.some(q => userPrompt.toLowerCase().includes(q));
+    const isConfigQuery = configQueries.some(q => userPrompt.toLowerCase().includes(q));
+
+    // CRITICAL: Detect when asking for information that should be in memory
+    if (isLocationQuery || isCredentialQuery || isConfigQuery) {
+      contextualGuidance.push('🚨 MEMORY-FIRST VIOLATION DETECTED!');
+      contextualGuidance.push('❌ STOP! Search memory BEFORE asking for locations/credentials/config');
+      contextualGuidance.push('🧠 MANDATORY: mcp__memory__search_nodes for this information FIRST');
+      contextualGuidance.push('📍 Example: Git PAT location, hook paths, config settings are IN MEMORY');
+      contextualGuidance.push('⚠️ Only ask user if memory search returns empty');
+    }
+
     // Check for questions
     if (userPrompt.includes('?') || userPrompt.toLowerCase().includes('how') || userPrompt.toLowerCase().includes('what')) {
       contextualGuidance.push('🧠 Memory-first approach - check memory before asking users');
       contextualGuidance.push('📚 Check best-practices/ directory for relevant patterns');
+      contextualGuidance.push('🔍 Use mcp__memory__search_nodes before asking for ANY information');
     }
 
     // Add contextual reminders from virtual-team.md and referenced files
@@ -182,10 +201,15 @@ function main() {
       contextualGuidance.push('🚨 Run /icc-init-system to load complete virtual team system');
     }
 
-    // Add weighted random reminder
+    // Add weighted random reminder with memory-first bias
     const randomReminder = reminderLoader.getReminder();
     if (randomReminder) {
-      contextualGuidance.push(randomReminder);
+      // If asking for info, increase chance of memory reminder
+      if ((isLocationQuery || isCredentialQuery || isConfigQuery) && Math.random() > 0.3) {
+        contextualGuidance.push('🧠 MEMORY FIRST - search memory/ before any work or questions');
+      } else {
+        contextualGuidance.push(randomReminder);
+      }
     }
 
     // Build comprehensive context
