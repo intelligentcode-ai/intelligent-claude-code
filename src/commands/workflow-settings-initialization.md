@@ -1,12 +1,12 @@
 # Workflow Settings Initialization
 
-**MANDATORY:** Default workflow settings creation and management for PRB execution.
+**MANDATORY:** Default workflow settings creation and management for AgentTask execution.
 
 ## Workflow Settings Initialization
 
 When initializing workflow settings:
 - Checks if workflow_settings exists in CLAUDE.md
-- If missing, creates default workflow configuration for all PRB sizes
+- If missing, creates default workflow configuration for all AgentTask sizes
 - Workflow settings control version bumping, changelog requirements, PR creation, and merge strategies
 
 ## Default Configuration
@@ -19,7 +19,7 @@ When initializing workflow settings:
 - **mega**: Major version bump, changelog + PR + coordination + breaking change assessment, feature branch
 
 **Application:**
-- Settings are automatically applied during PRB template resolution
+- Settings are automatically applied during AgentTask template resolution
 - Can be customized per-project by editing CLAUDE.md workflow_settings section
 
 ## Memory System Details
@@ -31,7 +31,7 @@ When initializing memory system:
 - Creates memory/domain/ for domain knowledge and best practices
 - Creates memory/index.md for quick memory lookup
 - All memories are version-controlled (not in .gitignore)
-- Memories are embedded directly into PRBs during generation
+- Memories are embedded directly into AgentTasks during generation
 
 ## Autonomy Levels
 

@@ -11,16 +11,16 @@
 
 ### learning-patterns.md
 **Used by:** learning-team-automation, agenttask-creation-system, role-management
-**Purpose:** PRB learning capture, pattern detection, memory-first approach
-**Key:** AgentTask execution generates learnings, patterns applied in future PRBs
+**Purpose:** AgentTask learning capture, pattern detection, memory-first approach
+**Key:** AgentTask execution generates learnings, patterns applied in future AgentTasks
 
 ### memory-operations.md  
 **Used by:** learning-team-automation, memory commands (store/search/load)
-**Purpose:** Topic-based memory storage, pruning, PRB embedding
+**Purpose:** Topic-based memory storage, pruning, AgentTask embedding
 **Key:** memory/[topic]/, newest first, auto-prune at 5KB
 
 ### autonomy-patterns.md
-**Used by:** config-loader, role-management, prb behaviors
+**Used by:** config-loader, role-management, agenttask behaviors
 **Purpose:** L1/L2/L3 autonomy levels and enforcement
 **Key:** L1=manual, L2=guided, L3=autonomous
 

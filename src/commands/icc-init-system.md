@@ -34,7 +34,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 Loading all behavioral patterns from installation/behaviors/:
   ✓ config-loader.md - Configuration hierarchy management
   ✓ directory-structure.md - Project structure enforcement
-  ✓ learning-team-automation.md - PRB learning and pattern capture
+  ✓ learning-team-automation.md - AgentTask learning and pattern capture
   ✓ naming-numbering-system.md - Work item naming and numbering standards  
   ✓ agenttask-auto-trigger.md - Automatic AgentTask generation
   ✓ agenttask-creation-system.md - AgentTask creation rules and validation
@@ -45,15 +45,15 @@ Loading all behavioral patterns from installation/behaviors/:
   ✓ shared-patterns/ - Common behavioral patterns (25 loaded)
 Behavioral pattern validation: ✅ All patterns successfully loaded and validated
 
-### 📋 RELOADING PRB TEMPLATES
+### 📋 RELOADING AGENTTASK TEMPLATES
 Loading all templates from template hierarchy:
 **Primary Templates:**
-  ✓ nano-prb-template.yaml - Trivial changes (0-2 points)
-  ✓ tiny-prb-template.yaml - Simple single-file (3-5 points)
-  ✓ medium-prb-template.yaml - Multi-file features (6-15 points)
-  ✓ large-prb-template.yaml - Complex coordination (16-30 points)
-  ✓ mega-prb-template.yaml - System-wide changes (30+ points)
-PRB template system: ✅ All templates validated with placeholder resolution capability
+  ✓ nano-agenttask-template.yaml - Trivial changes (0-2 points)
+  ✓ tiny-agenttask-template.yaml - Simple single-file (3-5 points)
+  ✓ medium-agenttask-template.yaml - Multi-file features (6-15 points)
+  ✓ large-agenttask-template.yaml - Complex coordination (16-30 points)
+  ✓ mega-agenttask-template.yaml - System-wide changes (30+ points)
+AgentTask template system: ✅ All templates validated with placeholder resolution capability
 
 ### 🎯 PROJECT SCOPE CONFIRMATION
 **Current Project Context:**
@@ -76,12 +76,12 @@ PRB template system: ✅ All templates validated with placeholder resolution cap
 6. **Read Autonomy Level**: Load autonomy_level from CLAUDE.md, create if missing
 7. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
 8. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
-9. **Activate PRB System**: Enable PRB-driven execution system with template validation
+9. **Activate AgentTask System**: Enable AgentTask-driven execution system with template validation
 10. **Initialize Workflow Settings**: Create default workflow configuration if missing from CLAUDE.md
 
 ### Phase 3: System Integration & Validation
 11. **Initialize Progress Reporting**: Activate clean completion tracking
-12. **Setup Learning System**: Enable PRB learning and pattern capture
+12. **Setup Learning System**: Enable AgentTask learning and pattern capture
 13. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
 14. **Apply Autonomy Level**: Set L1/L2/L3 mode based on loaded/provided configuration
 15. **Persist Autonomy Changes**: Write autonomy_level changes back to CLAUDE.md for session preservation

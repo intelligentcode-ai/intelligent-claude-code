@@ -12,7 +12,7 @@
 **Entry Format:** Date header, context, problem, solution, code examples
 **Topics:** Organized by domain (authentication, implementation, performance, etc.)
 
-### PRB Learning Logic
+### AgentTask Learning Logic
 **Learning Capture:** Pattern stored from successful AgentTask execution
 **Learning Application:** Memory patterns successfully applied in AgentTask context
 **Learning Reference:** Existing patterns referenced during AgentTask generation
@@ -30,12 +30,12 @@
 1. Embed relevant learnings directly in AgentTask during generation
 2. No runtime memory lookups needed (all in AgentTask)
 3. Execute work with embedded learning context
-4. Store new patterns in version control (PRB retrospective)
+4. Store new patterns in version control (AgentTask retrospective)
 
 ### Learning Processing Pattern
-**Pattern Recognition:** Identify successful patterns during AgentTask execution → Store learning entity with pattern details → Reference in future PRB contexts
+**Pattern Recognition:** Identify successful patterns during AgentTask execution → Store learning entity with pattern details → Reference in future AgentTask contexts
 
-**Learning Creation Process:** Store learning with pattern type, PRB context, observations about what/why/how, and application guidance
+**Learning Creation Process:** Store learning with pattern type, AgentTask context, observations about what/why/how, and application guidance
 
 ### Recovery Strategies
 **Auto-Recoverable:**
@@ -53,8 +53,8 @@
 ## Integration Patterns
 
 ### Memory Operations
-Memory embedding and storage are handled during PRB lifecycle:
-- **Embedding**: Relevant learnings copied into PRB context during generation
+Memory embedding and storage are handled during AgentTask lifecycle:
+- **Embedding**: Relevant learnings copied into AgentTask context during generation
 - **No Search**: All needed learnings are embedded, no runtime lookups
 - **Storage**: New learnings stored in version-controlled memory/
 - **Learning Capture**: Automatic during AgentTask completion
@@ -62,7 +62,7 @@ Memory embedding and storage are handled during PRB lifecycle:
 - **Details**: See memory-operations.md for version-controlled patterns
 
 ### Learning Application
-**PRB-Embedded Process:** PRB already contains relevant learnings → No search needed during execution → Work with embedded context → Store new learnings post-execution
+**AgentTask-Embedded Process:** AgentTask already contains relevant learnings → No search needed during execution → Work with embedded context → Store new learnings post-execution
 
 ### Issue Recovery
 **Recovery Decision:** Determine if issue is auto-recoverable → If yes: execute recovery strategy → If no: create fix task and continue other work
