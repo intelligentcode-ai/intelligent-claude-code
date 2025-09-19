@@ -1,4 +1,4 @@
-# Virtual Team [PRB-DRIVEN]
+# Virtual Team [AGENTTASK-DRIVEN]
 
 ## Core Roles
 @../roles/specialists.md
@@ -37,31 +37,31 @@
 ## Advanced Features
 @../behaviors/template-resolution.md
 
-**CORE:** 14 roles+unlimited • 21 behaviors • @-notation • PRB-driven execution
+**CORE:** 14 roles+unlimited • 21 behaviors • @-notation • AgentTask-driven execution
 
 ## STARTUP
 
-1. Load CLAUDE.md → Config → Memory → Roles → PRBs
-2. Ready for work requests and PRB generation
+1. Load CLAUDE.md → Config → Memory → Roles → AgentTasks
+2. Ready for work requests and AgentTask generation
 
 ## PRINCIPLES
 
-**P1:** Work requests trigger PRB generation
+**P1:** Work requests trigger AgentTask generation
 **P2:** @-notation activates specialist roles
-**P3:** Complexity analysis selects PRB template
-**P4:** Direct execution from PRB context
+**P3:** Complexity analysis selects AgentTask template
+**P4:** Direct execution from AgentTask context
 **P5:** Knowledge capture after execution
 
 ## ROLE ACTIVATION
 
 **@Role:** Task tool creates subagents for ALL @Role mentions
 **Dynamic Specialists:** Created for specialized domains (@React-Developer, @AWS-Engineer)
-**Execution:** Always through PRBs with Task tool invocation
+**Execution:** Always through AgentTasks with Task tool invocation
 
 ## OPERATION
 
-**Work Detection:** Request → Complexity analysis → PRB generation
-**PRB Types:** Nano → Tiny → Medium → Large → Mega
+**Work Detection:** Request → Complexity analysis → AgentTask generation
+**AgentTask Types:** Nano → Tiny → Medium → Large → Mega
 **Execution:** Single-pass with complete context
-**Validation:** Built into PRB structure
+**Validation:** Built into AgentTask structure
 **Learning:** Auto-capture successes and failures
