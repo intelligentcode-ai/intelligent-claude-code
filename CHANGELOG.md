@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.7.0] - 2025-01-19
+
+### Added
+- **Enhanced Hook System**: Context loader now reads complete instructions from virtual-team.md and all referenced files
+- **Main Scope Enhancement**: Enabled nano/tiny AgentTask in-memory generation and direct execution
+- **Contextual Reminders**: Hook system provides intelligent contextual guidance based on user prompt analysis
+- **Complete System Loading**: Hooks now load comprehensive behavioral patterns for full context availability
+
+### Changed
+- **AgentTask-Template Emphasis**: Updated all hook messages to specifically reference AgentTask-Templates
+- **Memory-First Approach**: Significantly increased emphasis on memory/ search before work or questions
+- **Learning Integration**: Enhanced focus on learning patterns and best-practices promotion in hook messaging
+- **Enforcement Enhancement**: Main scope can now handle nano/tiny AgentTasks directly while maintaining template compliance
+
+### Fixed
+- **Ansible References**: Updated uninstall script to reference agenttask-templates instead of prb-templates
+- **JSON Syntax**: Fixed trailing comma in reminders.json configuration file
+- **Hook Messaging**: Enhanced compaction detection to reference complete system initialization requirements
+
+---
+
 ## [8.6.0] - 2025-01-18
 
 ### Changed
