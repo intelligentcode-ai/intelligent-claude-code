@@ -12,7 +12,7 @@
 - `large-agenttask-template.yaml` (16-30 points)
 - `mega-agenttask-template.yaml` (30+ points)
 
-**BLOCKED:** AgentTask creation without templates, unresolved placeholders, runtime config lookups, manual PRB structures
+**BLOCKED:** AgentTask creation without templates, unresolved placeholders, runtime config lookups, manual AgentTask structures
 
 ### Placeholder Resolution
 **COMMON PLACEHOLDERS:**
@@ -30,7 +30,7 @@
 
 ## Integration Requirements
 
-### With PRB Creation System
+### With AgentTask Creation System
 - Block non-template AgentTask creation
 - Enforce placeholder resolution before creation
 - Validate template completeness
@@ -41,7 +41,7 @@
 - NO manual creation allowed
 
 ### With Execution System
-- PRBs execute with embedded configuration only
+- AgentTasks execute with embedded configuration only
 - Self-contained execution context
 - All settings pre-resolved and embedded
 

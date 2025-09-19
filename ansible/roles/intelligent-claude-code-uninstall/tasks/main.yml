@@ -90,17 +90,17 @@
     msg: "{{ 'Agents directory removed' if not agents_removal.failed else 'Could not remove agents directory: ' + (agents_removal.msg | default('Permission denied')) }}"
   when: install_directory.stat.exists
 
-- name: Remove system files (prb-templates directory)
+- name: Remove system files (agenttask-templates directory)
   file:
-    path: "{{ claude_install_path }}/prb-templates"
+    path: "{{ claude_install_path }}/agenttask-templates"
     state: absent
   ignore_errors: yes
-  register: prb_templates_removal
+  register: agenttask_templates_removal
   when: install_directory.stat.exists
 
-- name: Display prb-templates removal result
+- name: Display agenttask-templates removal result
   debug:
-    msg: "{{ 'PRB templates directory removed' if not prb_templates_removal.failed else 'Could not remove prb-templates directory: ' + (prb_templates_removal.msg | default('Permission denied')) }}"
+    msg: "{{ 'AgentTask templates directory removed' if not agenttask_templates_removal.failed else 'Could not remove agenttask-templates directory: ' + (agenttask_templates_removal.msg | default('Permission denied')) }}"
   when: install_directory.stat.exists
 
 - name: Remove system files (VERSION file)
@@ -191,7 +191,7 @@
       - "Uninstall complete!"
       - "Location: {{ claude_install_path }}"
       - "Mode: {{ 'Force removal - all files removed' if (force_remove is defined and force_remove | bool) else 'Conservative - user data preserved' }}"
-      - "Removed: Virtual team modes, behaviors, commands, roles, agents, prb-templates, VERSION file"
+      - "Removed: Virtual team modes, behaviors, commands, roles, agents, agenttask-templates, VERSION file"
       - "{{ 'Preserved: config.md, scores.md, learning-callouts.md' if not (force_remove is defined and force_remove | bool) else 'All files removed' }}"
       - "{{ 'Directory preserved (contains user files)' if (claude_dir_contents.matched > 0 and not (force_remove is defined and force_remove | bool)) else 'Directory removed' }}"
   when: install_directory.stat.exists

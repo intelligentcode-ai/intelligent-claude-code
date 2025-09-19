@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
+const ContextLoader = require('./lib/context-loader');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -67,6 +68,7 @@ function main() {
 
     // Generate contextual reminders based on user prompt
     const reminderLoader = new ReminderLoader();
+    const contextLoader = new ContextLoader();
     let contextualGuidance = [];
 
     // COMPACTION DETECTION - Check for session continuation markers
@@ -106,10 +108,11 @@ function main() {
     // AGGRESSIVE COMPACTION RESPONSE
     if (isCompacted) {
       contextualGuidance.push('🔄 COMPACTION DETECTED - VIRTUAL TEAM SYSTEM LOST!');
-      contextualGuidance.push('⚠️ Session was continued/summarized - behavioral patterns NOT loaded');
+      contextualGuidance.push('⚠️ Session was continued/summarized - complete context NOT loaded');
       contextualGuidance.push('🚨 MANDATORY: Run /icc-init-system IMMEDIATELY');
-      contextualGuidance.push('❌ @Role patterns WILL NOT WORK without initialization');
-      contextualGuidance.push('🛑 DO NOT PROCEED with work until system is initialized');
+      contextualGuidance.push('❌ @Role patterns + AgentTask-Templates WILL NOT WORK without initialization');
+      contextualGuidance.push('🧠 Memory-first approach and best-practices patterns NOT active');
+      contextualGuidance.push('🛑 DO NOT PROCEED with work until complete system is initialized');
 
       // Force this to the top priority
       const criticalWarning = [
@@ -144,21 +147,70 @@ function main() {
         contextualGuidance.push('⚡ MUST RUN: /icc-init-system FIRST');
         contextualGuidance.push('❌ AgentTask system REQUIRES virtual team activation');
       } else {
-        contextualGuidance.push('🚫 NO WORK IN MAIN SCOPE - all work must use AgentTask → Task → Agent');
-        contextualGuidance.push('🔍 ALWAYS search memory before creating any AgentTask');
-        contextualGuidance.push('📦 AgentTasks must be SELF-CONTAINED with all context embedded');
+        contextualGuidance.push('🚫 NO WORK IN MAIN SCOPE (except nano/tiny in-memory AgentTask-Templates)');
+        contextualGuidance.push('🧠 MEMORY FIRST - search memory/ before any work or questions');
+        contextualGuidance.push('📋 BEST-PRACTICES FIRST - check best-practices/ before implementation');
+        contextualGuidance.push('📑 AgentTask-Templates must be SELF-CONTAINED with all context embedded');
       }
+    }
+
+    // AGGRESSIVE MEMORY-FIRST ENFORCEMENT
+    const locationQueries = ['where is', 'where are', 'where can', 'path to', 'location of', 'find the', 'access'];
+    const credentialQueries = ['pat', 'token', 'credential', 'password', 'auth', 'key', 'secret'];
+    const configQueries = ['config', 'setting', 'how to', 'how do', 'what is the', 'what are the'];
+
+    const isLocationQuery = locationQueries.some(q => userPrompt.toLowerCase().includes(q));
+    const isCredentialQuery = credentialQueries.some(q => userPrompt.toLowerCase().includes(q));
+    const isConfigQuery = configQueries.some(q => userPrompt.toLowerCase().includes(q));
+
+    // CRITICAL: Detect when asking for information that should be in memory
+    if (isLocationQuery || isCredentialQuery || isConfigQuery) {
+      contextualGuidance.push('🚨 MEMORY-FIRST VIOLATION DETECTED!');
+      contextualGuidance.push('❌ STOP! Search memory BEFORE asking for locations/credentials/config');
+      contextualGuidance.push('🧠 MANDATORY: mcp__memory__search_nodes for this information FIRST');
+      contextualGuidance.push('📍 Example: Git PAT location, hook paths, config settings are IN MEMORY');
+      contextualGuidance.push('⚠️ Only ask user if memory search returns empty');
     }
 
     // Check for questions
     if (userPrompt.includes('?') || userPrompt.toLowerCase().includes('how') || userPrompt.toLowerCase().includes('what')) {
       contextualGuidance.push('🧠 Memory-first approach - check memory before asking users');
       contextualGuidance.push('📚 Check best-practices/ directory for relevant patterns');
+      contextualGuidance.push('🔍 Use mcp__memory__search_nodes before asking for ANY information');
     }
 
-    // Add standard pre-execution reminders
-    const standardReminder = reminderLoader.getPreExecutionReminder();
-    contextualGuidance.push(standardReminder);
+    // Add contextual reminders from virtual-team.md and referenced files
+    const contextualReminders = contextLoader.getContextualReminders(userPrompt);
+    contextualGuidance.push(...contextualReminders);
+
+    // Check for AgentTask-Template mentions or unknown templates
+    const agenttaskIndicators = ['agenttask', 'template', 'nano', 'tiny', 'medium', 'large', 'mega'];
+    const templateMentioned = agenttaskIndicators.some(indicator =>
+      userPrompt.toLowerCase().includes(indicator)
+    );
+
+    // Check for confusion about AgentTask-Templates
+    const confusionIndicators = ['what is', 'what are', 'how do', 'where are', 'unknown', 'missing'];
+    const seemsConfused = confusionIndicators.some(indicator =>
+      userPrompt.toLowerCase().includes(indicator)
+    ) && templateMentioned;
+
+    if (seemsConfused || (!systemInitialized && templateMentioned)) {
+      contextualGuidance.push('⚠️ AgentTask-Templates UNKNOWN? Load ~/.claude/modes/virtual-team.md + ALL included files!');
+      contextualGuidance.push('📑 Templates are in agenttask-templates/ directory');
+      contextualGuidance.push('🚨 Run /icc-init-system to load complete virtual team system');
+    }
+
+    // Add weighted random reminder with memory-first bias
+    const randomReminder = reminderLoader.getReminder();
+    if (randomReminder) {
+      // If asking for info, increase chance of memory reminder
+      if ((isLocationQuery || isCredentialQuery || isConfigQuery) && Math.random() > 0.3) {
+        contextualGuidance.push('🧠 MEMORY FIRST - search memory/ before any work or questions');
+      } else {
+        contextualGuidance.push(randomReminder);
+      }
+    }
 
     // Build comprehensive context
     const fullContext = contextualGuidance.join('\n');
