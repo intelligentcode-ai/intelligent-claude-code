@@ -6,6 +6,16 @@
       "category": "memory"
     },
     {
+      "message": "⛔ NEVER ask for paths/credentials without searching memory FIRST",
+      "weight": 10,
+      "category": "memory"
+    },
+    {
+      "message": "🚨 Git PAT, config paths, hook locations - CHECK MEMORY, don't ask!",
+      "weight": 9,
+      "category": "memory"
+    },
+    {
       "message": "📋 BEST-PRACTICES FIRST - check best-practices/ before implementation",
       "weight": 10,
       "category": "best-practices"
