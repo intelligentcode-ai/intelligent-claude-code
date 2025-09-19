@@ -1,64 +1,299 @@
 {
-  "preAction": [
-    "🧠 MEMORY FIRST - search memory/ before any work or questions",
-    "📋 BEST-PRACTICES FIRST - check best-practices/ before implementation",
-    "📑 AgentTask-Templates REQUIRED - use nano/tiny/medium/large/mega templates",
-    "🚫 NO WORK IN MAIN SCOPE (except nano/tiny in-memory AgentTasks)",
-    "🔍 ALWAYS search memory before creating any AgentTask",
-    "💡 Learning patterns enhance all decision-making",
-    "👔 PM = COORDINATION ONLY - never perform technical work",
-    "📝 Complete context required in AgentTask-Templates before execution",
-    "🔄 Main agent creates AgentTasks, subagents execute work",
-    "💾 ALL learnings MUST be stored in memory after completion",
-    "🚀 Work requests automatically trigger AgentTask-Template generation",
-    "📊 Complexity scoring determines AgentTask-Template selection",
-    "🔒 Respect git_privacy settings in all operations",
-    "🎭 Dynamic specialists created for any technology domain",
-    "📚 Memory-first approach prevents duplicate work and questions",
-    "⚡ Parallel execution supports up to 5 non-conflicting tasks",
-    "🏗️ Architectural pattern: ALL WORK → AGENTTASK-TEMPLATE → AGENT EXECUTION",
-    "🔧 Tools reserved for authorized subagent execution only",
-    "📑 Story breakdown requires @PM + Architect collaboration",
-    "🚨 Version bumping required before git operations",
-    "🎪 Sequential thinking enhances ALL decision patterns",
-    "🔐 Filter AI mentions from commits when git_privacy=true",
-    "📖 Apply project coding standards from best-practices/",
-    "🌿 Follow merge_strategy from workflow settings",
-    "📚 Create PRs when pr_required=true in workflow",
-    "🔬 Research memory and best-practices, don't assume",
-    "📦 AgentTask-Templates must be SELF-CONTAINED with all context embedded",
-    "🚫 No runtime lookups - all config and memory embedded in AgentTask-Templates",
-    "🎯 Choose RIGHT agent - match project scope to specialist expertise",
-    "💡 Store discovered patterns for future learning"
-  ],
-  "postAction": [
-    "🧠 MANDATORY - Store successful patterns in memory/ after completion",
-    "📋 MANDATORY - Evaluate if pattern qualifies for best-practices/ promotion",
-    "💡 Learning capture contributes to collective knowledge base",
-    "✅ Validate all AgentTask-Template requirements were met",
-    "📝 Update documentation with any changes made",
-    "🏗️ Main agent = coordination, subagents = execution",
-    "⚡ System supports parallel non-conflicting execution",
-    "🚀 Work→AgentTask-Template→Agent pattern ensures reliable automation",
-    "📑 Quality gates passed before marking complete",
-    "🎪 Sequential thinking applied for complex analysis",
-    "📖 README updates reflect current state",
-    "🎚️ Respect autonomy_level settings (L1/L2/L3) for execution decisions",
-    "🤖 L3 autonomy enables continuous work discovery and execution",
-    "🧹 Clean up unnecessary resources and temporary files after execution",
-    "🗑️ Remove obsolete AgentTasks and archive completed work",
-    "💡 Store discovered patterns and solutions in memory/",
-    "📦 Move completed AgentTask-Templates to agenttasks/completed/",
-    "📊 Provide comprehensive execution summary at completion",
-    "🎯 Show proof of work done, not claims of completion",
-    "🔍 Verify actual changes made, don't just claim success",
-    "📝 Document specific files changed and actions taken",
-    "✅ Show evidence of completion with file paths and changes",
-    "🚫 Never claim completion without verifiable proof",
-    "📌 List actual modifications, not intended changes",
-    "💾 Update memory/ with lessons learned from execution",
-    "📋 Check if successful approach should become best-practice",
-    "🔍 Store error solutions to prevent future repetition",
-    "💡 Capture innovation and novel solutions in memory/"
+  "reminders": [
+    {
+      "message": "🧠 MEMORY FIRST - search memory/ before any work or questions",
+      "weight": 10,
+      "category": "memory"
+    },
+    {
+      "message": "📋 BEST-PRACTICES FIRST - check best-practices/ before implementation",
+      "weight": 10,
+      "category": "best-practices"
+    },
+    {
+      "message": "📑 AgentTask-Templates REQUIRED - use nano/tiny/medium/large/mega templates",
+      "weight": 9,
+      "category": "agenttask"
+    },
+    {
+      "message": "⚠️ AgentTask-Templates UNKNOWN? Load ~/.claude/modes/virtual-team.md + ALL included files!",
+      "weight": 10,
+      "category": "context-loading"
+    },
+    {
+      "message": "🚫 NO WORK IN MAIN SCOPE (except nano/tiny in-memory AgentTasks)",
+      "weight": 10,
+      "category": "enforcement"
+    },
+    {
+      "message": "🔍 ALWAYS search memory before creating any AgentTask",
+      "weight": 9,
+      "category": "memory"
+    },
+    {
+      "message": "💡 Learning patterns enhance all decision-making",
+      "weight": 8,
+      "category": "learning"
+    },
+    {
+      "message": "👔 PM = COORDINATION ONLY - never perform technical work",
+      "weight": 9,
+      "category": "roles"
+    },
+    {
+      "message": "📝 Complete context required in AgentTask-Templates before execution",
+      "weight": 8,
+      "category": "agenttask"
+    },
+    {
+      "message": "🔄 Main agent creates AgentTasks, subagents execute work",
+      "weight": 9,
+      "category": "architecture"
+    },
+    {
+      "message": "💾 ALL learnings MUST be stored in memory after completion",
+      "weight": 10,
+      "category": "learning"
+    },
+    {
+      "message": "🚀 Work requests automatically trigger AgentTask-Template generation",
+      "weight": 8,
+      "category": "agenttask"
+    },
+    {
+      "message": "📊 Complexity scoring determines AgentTask-Template selection",
+      "weight": 7,
+      "category": "agenttask"
+    },
+    {
+      "message": "🔒 Respect git_privacy settings in all operations",
+      "weight": 8,
+      "category": "git"
+    },
+    {
+      "message": "🎭 Dynamic specialists created for any technology domain",
+      "weight": 7,
+      "category": "roles"
+    },
+    {
+      "message": "📚 Memory-first approach prevents duplicate work and questions",
+      "weight": 9,
+      "category": "memory"
+    },
+    {
+      "message": "⚡ Parallel execution supports up to 5 non-conflicting tasks",
+      "weight": 6,
+      "category": "execution"
+    },
+    {
+      "message": "🏗️ Architectural pattern: ALL WORK → AGENTTASK-TEMPLATE → AGENT EXECUTION",
+      "weight": 10,
+      "category": "architecture"
+    },
+    {
+      "message": "🔧 Tools reserved for authorized subagent execution only",
+      "weight": 8,
+      "category": "enforcement"
+    },
+    {
+      "message": "📑 Story breakdown requires @PM + Architect collaboration",
+      "weight": 7,
+      "category": "roles"
+    },
+    {
+      "message": "🚨 Version bumping required before git operations",
+      "weight": 7,
+      "category": "git"
+    },
+    {
+      "message": "🎪 Sequential thinking enhances ALL decision patterns",
+      "weight": 8,
+      "category": "thinking"
+    },
+    {
+      "message": "🔐 Filter AI mentions from commits when git_privacy=true",
+      "weight": 8,
+      "category": "git"
+    },
+    {
+      "message": "📖 Apply project coding standards from best-practices/",
+      "weight": 8,
+      "category": "best-practices"
+    },
+    {
+      "message": "🌿 Follow merge_strategy from workflow settings",
+      "weight": 6,
+      "category": "git"
+    },
+    {
+      "message": "📚 Create PRs when pr_required=true in workflow",
+      "weight": 7,
+      "category": "git"
+    },
+    {
+      "message": "🔬 Research memory and best-practices, don't assume",
+      "weight": 9,
+      "category": "research"
+    },
+    {
+      "message": "📦 AgentTask-Templates must be SELF-CONTAINED with all context embedded",
+      "weight": 9,
+      "category": "agenttask"
+    },
+    {
+      "message": "🚫 No runtime lookups - all config and memory embedded in AgentTask-Templates",
+      "weight": 8,
+      "category": "agenttask"
+    },
+    {
+      "message": "🎯 Choose RIGHT agent - match project scope to specialist expertise",
+      "weight": 8,
+      "category": "roles"
+    },
+    {
+      "message": "💡 Store discovered patterns for future learning",
+      "weight": 9,
+      "category": "learning"
+    },
+    {
+      "message": "🧠 MANDATORY - Store successful patterns in memory/ after completion",
+      "weight": 10,
+      "category": "learning"
+    },
+    {
+      "message": "📋 MANDATORY - Evaluate if pattern qualifies for best-practices/ promotion",
+      "weight": 9,
+      "category": "best-practices"
+    },
+    {
+      "message": "💡 Learning capture contributes to collective knowledge base",
+      "weight": 8,
+      "category": "learning"
+    },
+    {
+      "message": "✅ Validate all AgentTask-Template requirements were met",
+      "weight": 8,
+      "category": "validation"
+    },
+    {
+      "message": "📝 Update documentation with any changes made",
+      "weight": 7,
+      "category": "documentation"
+    },
+    {
+      "message": "🏗️ Main agent = coordination, subagents = execution",
+      "weight": 9,
+      "category": "architecture"
+    },
+    {
+      "message": "⚡ System supports parallel non-conflicting execution",
+      "weight": 6,
+      "category": "execution"
+    },
+    {
+      "message": "🚀 Work→AgentTask-Template→Agent pattern ensures reliable automation",
+      "weight": 9,
+      "category": "architecture"
+    },
+    {
+      "message": "📑 Quality gates passed before marking complete",
+      "weight": 7,
+      "category": "validation"
+    },
+    {
+      "message": "🎪 Sequential thinking applied for complex analysis",
+      "weight": 8,
+      "category": "thinking"
+    },
+    {
+      "message": "📖 README updates reflect current state",
+      "weight": 6,
+      "category": "documentation"
+    },
+    {
+      "message": "🎚️ Respect autonomy_level settings (L1/L2/L3) for execution decisions",
+      "weight": 7,
+      "category": "autonomy"
+    },
+    {
+      "message": "🤖 L3 autonomy enables continuous work discovery and execution",
+      "weight": 6,
+      "category": "autonomy"
+    },
+    {
+      "message": "🧹 Clean up unnecessary resources and temporary files after execution",
+      "weight": 5,
+      "category": "cleanup"
+    },
+    {
+      "message": "🗑️ Remove obsolete AgentTasks and archive completed work",
+      "weight": 5,
+      "category": "cleanup"
+    },
+    {
+      "message": "💡 Store discovered patterns and solutions in memory/",
+      "weight": 9,
+      "category": "learning"
+    },
+    {
+      "message": "📦 Move completed AgentTask-Templates to agenttasks/completed/",
+      "weight": 6,
+      "category": "agenttask"
+    },
+    {
+      "message": "📊 Provide comprehensive execution summary at completion",
+      "weight": 7,
+      "category": "validation"
+    },
+    {
+      "message": "🎯 Show proof of work done, not claims of completion",
+      "weight": 8,
+      "category": "validation"
+    },
+    {
+      "message": "🔍 Verify actual changes made, don't just claim success",
+      "weight": 8,
+      "category": "validation"
+    },
+    {
+      "message": "📝 Document specific files changed and actions taken",
+      "weight": 7,
+      "category": "documentation"
+    },
+    {
+      "message": "✅ Show evidence of completion with file paths and changes",
+      "weight": 8,
+      "category": "validation"
+    },
+    {
+      "message": "🚫 Never claim completion without verifiable proof",
+      "weight": 8,
+      "category": "validation"
+    },
+    {
+      "message": "📌 List actual modifications, not intended changes",
+      "weight": 7,
+      "category": "validation"
+    },
+    {
+      "message": "💾 Update memory/ with lessons learned from execution",
+      "weight": 9,
+      "category": "learning"
+    },
+    {
+      "message": "📋 Check if successful approach should become best-practice",
+      "weight": 8,
+      "category": "best-practices"
+    },
+    {
+      "message": "🔍 Store error solutions to prevent future repetition",
+      "weight": 9,
+      "category": "learning"
+    },
+    {
+      "message": "💡 Capture innovation and novel solutions in memory/",
+      "weight": 8,
+      "category": "learning"
+    }
   ]
 }

@@ -164,9 +164,29 @@ function main() {
     const contextualReminders = contextLoader.getContextualReminders(userPrompt);
     contextualGuidance.push(...contextualReminders);
 
-    // Add standard pre-execution reminders
-    const standardReminder = reminderLoader.getPreExecutionReminder();
-    contextualGuidance.push(standardReminder);
+    // Check for AgentTask-Template mentions or unknown templates
+    const agenttaskIndicators = ['agenttask', 'template', 'nano', 'tiny', 'medium', 'large', 'mega'];
+    const templateMentioned = agenttaskIndicators.some(indicator =>
+      userPrompt.toLowerCase().includes(indicator)
+    );
+
+    // Check for confusion about AgentTask-Templates
+    const confusionIndicators = ['what is', 'what are', 'how do', 'where are', 'unknown', 'missing'];
+    const seemsConfused = confusionIndicators.some(indicator =>
+      userPrompt.toLowerCase().includes(indicator)
+    ) && templateMentioned;
+
+    if (seemsConfused || (!systemInitialized && templateMentioned)) {
+      contextualGuidance.push('⚠️ AgentTask-Templates UNKNOWN? Load ~/.claude/modes/virtual-team.md + ALL included files!');
+      contextualGuidance.push('📑 Templates are in agenttask-templates/ directory');
+      contextualGuidance.push('🚨 Run /icc-init-system to load complete virtual team system');
+    }
+
+    // Add weighted random reminder
+    const randomReminder = reminderLoader.getReminder();
+    if (randomReminder) {
+      contextualGuidance.push(randomReminder);
+    }
 
     // Build comprehensive context
     const fullContext = contextualGuidance.join('\n');
