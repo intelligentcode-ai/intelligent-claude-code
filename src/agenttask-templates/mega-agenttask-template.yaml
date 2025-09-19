@@ -258,9 +258,9 @@ mcp_operations:
 # Execution Strategy
 execution_strategy: |
   1. Create epic branch for system-wide coordination
-  2. Execute Phase 1 Large PRBs with validation gates
-  3. Execute Phase 2 Large PRBs building on Phase 1
-  4. Execute Integration Large PRBs for system unification
+  2. Execute Phase 1 Large AgentTasks with validation gates
+  3. Execute Phase 2 Large AgentTasks building on Phase 1
+  4. Execute Integration Large AgentTasks for system unification
   5. Comprehensive system testing and validation
   6. Documentation overhaul and migration guide creation
   7. Staged rollout with rollback capability
@@ -269,9 +269,9 @@ execution_strategy: |
 execution_checklist: |
   ☐ Epic branch created for system coordination (MANDATORY - validation enforced)
   ☐ Epic decomposition completed into phases (MANDATORY - no direct execution)
-  ☐ Phase 1 Large PRBs executed with validation (MANDATORY - phased approach)
-  ☐ Phase 2 Large PRBs executed building on Phase 1 (MANDATORY - dependency validation)
-  ☐ Integration Large PRBs executed for system unification (MANDATORY - coordination)
+  ☐ Phase 1 Large AgentTasks executed with validation (MANDATORY - phased approach)
+  ☐ Phase 2 Large AgentTasks executed building on Phase 1 (MANDATORY - dependency validation)
+  ☐ Integration Large AgentTasks executed for system unification (MANDATORY - coordination)
   ☐ Comprehensive system testing completed (MANDATORY - system validation)
   ☐ Documentation completely updated with migration guide (MANDATORY - no "No documentation needed")
   ☐ Architectural board review completed (MANDATORY - no "Review not required")

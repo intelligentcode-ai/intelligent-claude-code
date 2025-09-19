@@ -1,6 +1,6 @@
 # /icc-search-memory
 
-**Purpose:** Search version-controlled memory for embedding into PRBs
+**Purpose:** Search version-controlled memory for embedding into AgentTasks
 
 **Usage:** `/icc-search-memory [query]`
 
@@ -66,8 +66,8 @@ Found 3 relevant memories:
 - Tag search: "tag:authentication"
 
 ## Integration
-- Used during PRB generation to find relevant memories
-- Memories are embedded directly into PRBs
+- Used during AgentTask generation to find relevant memories
+- Memories are embedded directly into AgentTasks
 - Manual search for exploration
 - No runtime searches needed during execution
 - Auto-prunes large files during search (maintains 5-10 recent entries)

@@ -12,12 +12,12 @@
 - ✅ Memory system operational with file access
 - ✅ Role definitions loaded (14 core + dynamic specialists)
 
-### PRB & Workflow Systems  
-- ✅ PRB system active with template validation
+### AgentTask & Workflow Systems  
+- ✅ AgentTask system active with template validation
 - ✅ Workflow settings initialized from CLAUDE.md
 - ✅ Template hierarchy operational
 - ✅ Placeholder resolution capability confirmed
-- ✅ PRB creation and execution patterns loaded
+- ✅ AgentTask creation and execution patterns loaded
 - ✅ Sequential thinking integration active
 
 ### Behavioral & Enforcement Systems
@@ -43,12 +43,12 @@
 **System Component Errors:**
 - **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration hierarchy. Check installation/config.md and project CLAUDE.md"
 - **BEHAVIORAL_PATTERN_LOAD_FAILED**: "❌ Critical: Behavioral patterns failed to load. Check installation/behaviors/ directory"
-- **TEMPLATE_VALIDATION_FAILED**: "❌ Error: PRB templates failed validation. Check template syntax and structure"
+- **TEMPLATE_VALIDATION_FAILED**: "❌ Error: AgentTask templates failed validation. Check template syntax and structure"
 - **MEMORY_BOOTSTRAP_FAILED**: "⚠️ Warning: Memory system bootstrap failed. Creating minimal fallback structure"
 - **ROLE_DEFINITION_FAILED**: "❌ Error: Role definitions failed to load. Check installation/roles/specialists.md"
 
 **Recovery & Validation Errors:**
-- **PRB_SYSTEM_VALIDATION_FAILED**: "❌ Critical: PRB system failed comprehensive validation. System not operational"
+- **AGENTTASK_SYSTEM_VALIDATION_FAILED**: "❌ Critical: AgentTask system failed comprehensive validation. System not operational"
 - **WORKFLOW_SETTINGS_CORRUPTED**: "⚠️ Warning: Workflow settings corrupted in CLAUDE.md. Recreating with defaults"
 - **AUTONOMY_PERSISTENCE_FAILED**: "⚠️ Warning: Cannot persist autonomy changes to CLAUDE.md. Using session-only settings"
 - **COMPREHENSIVE_VALIDATION_FAILED**: "❌ Critical: System failed comprehensive health check. Manual intervention required"
