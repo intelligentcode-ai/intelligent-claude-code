@@ -36,16 +36,18 @@ class ReminderLoader {
   _getFallbackReminders() {
     return {
       preAction: [
-        '🚫 NO WORK IN MAIN SCOPE - all work must use AgentTask → Task → Agent',
-        '🔍 ALWAYS search memory before creating any AgentTask',
-        '📋 Check best-practices/ directory before implementation',
+        '🧠 MEMORY FIRST - search memory/ before any work or questions',
+        '📋 BEST-PRACTICES FIRST - check best-practices/ before implementation',
+        '📑 AgentTask-Templates REQUIRED - use nano/tiny/medium/large/mega templates',
+        '🚫 NO WORK IN MAIN SCOPE (except nano/tiny in-memory AgentTask-Templates)',
         '🎯 Use @Role patterns for natural team interaction'
       ],
       postAction: [
-        '💾 Store successful patterns in memory after completion',
-        '✅ Validate all AgentTask requirements were met',
+        '🧠 MANDATORY - Store successful patterns in memory/ after completion',
+        '📋 MANDATORY - Evaluate if pattern qualifies for best-practices/ promotion',
+        '✅ Validate all AgentTask-Template requirements were met',
         '🎯 Remember @Role patterns for natural team coordination',
-        '🧠 Memory-first approach - check memory before asking users'
+        '💡 Learning capture contributes to collective knowledge base'
       ]
     };
   }

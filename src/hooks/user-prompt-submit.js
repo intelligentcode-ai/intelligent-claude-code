@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
+const ContextLoader = require('./lib/context-loader');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -67,6 +68,7 @@ function main() {
 
     // Generate contextual reminders based on user prompt
     const reminderLoader = new ReminderLoader();
+    const contextLoader = new ContextLoader();
     let contextualGuidance = [];
 
     // COMPACTION DETECTION - Check for session continuation markers
@@ -106,10 +108,11 @@ function main() {
     // AGGRESSIVE COMPACTION RESPONSE
     if (isCompacted) {
       contextualGuidance.push('🔄 COMPACTION DETECTED - VIRTUAL TEAM SYSTEM LOST!');
-      contextualGuidance.push('⚠️ Session was continued/summarized - behavioral patterns NOT loaded');
+      contextualGuidance.push('⚠️ Session was continued/summarized - complete context NOT loaded');
       contextualGuidance.push('🚨 MANDATORY: Run /icc-init-system IMMEDIATELY');
-      contextualGuidance.push('❌ @Role patterns WILL NOT WORK without initialization');
-      contextualGuidance.push('🛑 DO NOT PROCEED with work until system is initialized');
+      contextualGuidance.push('❌ @Role patterns + AgentTask-Templates WILL NOT WORK without initialization');
+      contextualGuidance.push('🧠 Memory-first approach and best-practices patterns NOT active');
+      contextualGuidance.push('🛑 DO NOT PROCEED with work until complete system is initialized');
 
       // Force this to the top priority
       const criticalWarning = [
@@ -144,9 +147,10 @@ function main() {
         contextualGuidance.push('⚡ MUST RUN: /icc-init-system FIRST');
         contextualGuidance.push('❌ AgentTask system REQUIRES virtual team activation');
       } else {
-        contextualGuidance.push('🚫 NO WORK IN MAIN SCOPE - all work must use AgentTask → Task → Agent');
-        contextualGuidance.push('🔍 ALWAYS search memory before creating any AgentTask');
-        contextualGuidance.push('📦 AgentTasks must be SELF-CONTAINED with all context embedded');
+        contextualGuidance.push('🚫 NO WORK IN MAIN SCOPE (except nano/tiny in-memory AgentTask-Templates)');
+        contextualGuidance.push('🧠 MEMORY FIRST - search memory/ before any work or questions');
+        contextualGuidance.push('📋 BEST-PRACTICES FIRST - check best-practices/ before implementation');
+        contextualGuidance.push('📑 AgentTask-Templates must be SELF-CONTAINED with all context embedded');
       }
     }
 
@@ -155,6 +159,10 @@ function main() {
       contextualGuidance.push('🧠 Memory-first approach - check memory before asking users');
       contextualGuidance.push('📚 Check best-practices/ directory for relevant patterns');
     }
+
+    // Add contextual reminders from virtual-team.md and referenced files
+    const contextualReminders = contextLoader.getContextualReminders(userPrompt);
+    contextualGuidance.push(...contextualReminders);
 
     // Add standard pre-execution reminders
     const standardReminder = reminderLoader.getPreExecutionReminder();
