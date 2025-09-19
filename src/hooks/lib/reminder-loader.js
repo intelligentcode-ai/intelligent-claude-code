@@ -6,16 +6,31 @@ class ReminderLoader {
     this.reminders = this._loadReminders();
   }
 
-  getPreExecutionReminder() {
-    const preReminders = this.reminders.preAction || [];
-    if (preReminders.length === 0) return '';
-    return preReminders[Math.floor(Math.random() * preReminders.length)];
+  getReminder() {
+    const reminders = this.reminders.reminders || this.reminders.preAction || [];
+    if (reminders.length === 0) return '';
+
+    // If using new format with weights, use weighted selection
+    if (reminders[0] && typeof reminders[0] === 'object' && reminders[0].weight) {
+      return this._getWeightedReminder(reminders);
+    }
+
+    // Legacy format - simple random selection
+    return reminders[Math.floor(Math.random() * reminders.length)];
   }
 
-  getPostExecutionReminder() {
-    const postReminders = this.reminders.postAction || [];
-    if (postReminders.length === 0) return '';
-    return postReminders[Math.floor(Math.random() * postReminders.length)];
+  _getWeightedReminder(reminders) {
+    const totalWeight = reminders.reduce((sum, r) => sum + (r.weight || 1), 0);
+    let random = Math.random() * totalWeight;
+
+    for (const reminder of reminders) {
+      random -= (reminder.weight || 1);
+      if (random <= 0) {
+        return reminder.message || reminder;
+      }
+    }
+
+    return reminders[reminders.length - 1].message || reminders[reminders.length - 1];
   }
 
   _loadReminders() {
@@ -35,17 +50,17 @@ class ReminderLoader {
 
   _getFallbackReminders() {
     return {
-      preAction: [
-        '🚫 NO WORK IN MAIN SCOPE - all work must use AgentTask → Task → Agent',
-        '🔍 ALWAYS search memory before creating any AgentTask',
-        '📋 Check best-practices/ directory before implementation',
-        '🎯 Use @Role patterns for natural team interaction'
-      ],
-      postAction: [
-        '💾 Store successful patterns in memory after completion',
-        '✅ Validate all AgentTask requirements were met',
-        '🎯 Remember @Role patterns for natural team coordination',
-        '🧠 Memory-first approach - check memory before asking users'
+      reminders: [
+        { message: '🧠 MEMORY FIRST - search memory/ before any work or questions', weight: 10 },
+        { message: '📋 BEST-PRACTICES FIRST - check best-practices/ before implementation', weight: 10 },
+        { message: '📑 AgentTask-Templates REQUIRED - use nano/tiny/medium/large/mega templates', weight: 9 },
+        { message: '⚠️ AgentTask-Templates UNKNOWN? Load ~/.claude/modes/virtual-team.md + ALL included files!', weight: 10 },
+        { message: '🚫 NO WORK IN MAIN SCOPE (except nano/tiny in-memory AgentTask-Templates)', weight: 10 },
+        { message: '🎯 Use @Role patterns for natural team interaction', weight: 8 },
+        { message: '🧠 MANDATORY - Store successful patterns in memory/ after completion', weight: 10 },
+        { message: '📋 MANDATORY - Evaluate if pattern qualifies for best-practices/ promotion', weight: 9 },
+        { message: '✅ Validate all AgentTask-Template requirements were met', weight: 8 },
+        { message: '💡 Learning capture contributes to collective knowledge base', weight: 8 }
       ]
     };
   }

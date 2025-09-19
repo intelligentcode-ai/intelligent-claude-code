@@ -1,4 +1,4 @@
-# Virtual Team [PRB-DRIVEN]
+# Virtual Team [AGENTTASK-DRIVEN]
 
 ## Core Roles
 @../roles/specialists.md
@@ -37,31 +37,34 @@
 ## Advanced Features
 @../behaviors/template-resolution.md
 
-**CORE:** 14 roles+unlimited • 21 behaviors • @-notation • PRB-driven execution
+**CORE:** 14 roles+unlimited • 21 behaviors • @-notation • AgentTask-Template-driven execution
 
 ## STARTUP
 
-1. Load CLAUDE.md → Config → Memory → Roles → PRBs
-2. Ready for work requests and PRB generation
+1. Load CLAUDE.md → Config → Memory → Roles → AgentTask-Templates
+2. Ready for work requests and AgentTask-Template generation
 
 ## PRINCIPLES
 
-**P1:** Work requests trigger PRB generation
+**P1:** Work requests trigger AgentTask-Template generation
 **P2:** @-notation activates specialist roles
-**P3:** Complexity analysis selects PRB template
-**P4:** Direct execution from PRB context
-**P5:** Knowledge capture after execution
+**P3:** Complexity analysis selects AgentTask-Template (nano/tiny/medium/large/mega)
+**P4:** Memory-first approach before all work and questions
+**P5:** Direct execution from AgentTask-Template context
+**P6:** Knowledge capture and best-practices promotion after execution
 
 ## ROLE ACTIVATION
 
 **@Role:** Task tool creates subagents for ALL @Role mentions
 **Dynamic Specialists:** Created for specialized domains (@React-Developer, @AWS-Engineer)
-**Execution:** Always through PRBs with Task tool invocation
+**Execution:** Always through AgentTask-Templates with Task tool invocation
 
 ## OPERATION
 
-**Work Detection:** Request → Complexity analysis → PRB generation
-**PRB Types:** Nano → Tiny → Medium → Large → Mega
-**Execution:** Single-pass with complete context
-**Validation:** Built into PRB structure
-**Learning:** Auto-capture successes and failures
+**Memory First:** Search memory/ before any work or questions
+**Best-Practices First:** Check best-practices/ before implementation
+**Work Detection:** Request → Complexity analysis → AgentTask-Template generation
+**AgentTask-Template Types:** Nano → Tiny → Medium → Large → Mega
+**Execution:** Single-pass with complete embedded context
+**Validation:** Built into AgentTask-Template structure
+**Learning:** Auto-capture successes and failures, promote to best-practices
