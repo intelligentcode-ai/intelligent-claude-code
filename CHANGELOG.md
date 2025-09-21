@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.7.2] - 2025-01-21
+
+### Added
+- Comprehensive architectural failure analysis identifying critical behavioral enforcement gaps
+- Detailed root cause analysis documenting why agent creation is not automatic
+- Complete solution architecture for PreToolUse hook enforcement implementation
+- Immediate implementation plan with phased approach for behavioral compliance restoration
+
+### Analysis
+- **Critical Finding**: Behavioral patterns are advisory text without enforcement mechanisms
+- **Root Cause**: PreToolUse/PostToolUse hooks were removed, leaving only UserPromptSubmit guidance
+- **Impact**: Claude's helpfulness overrides architectural patterns leading to 70% compliance failure
+- **Solution**: Restore PreToolUse hooks with real blocking capability and auto-AgentTask generation
+
+## [8.7.1] - 2025-01-21
+
+### Fixed
+- Enhanced agenttask-enforcement.md with comprehensive workflow step enforcement and git operation requirements
+- Added mandatory workflow completion validation with blocking patterns for incomplete executions
+- Strengthened PM role delegation enforcement with strict tool access control
+- Improved AgentTask execution validation with complete workflow step verification
+
 ## [8.7.0] - 2025-01-19
 
 ### Added
