@@ -16,12 +16,12 @@
       "category": "efficiency"
     },
     {
-      "message": "🚀 Agents deliver PROFESSIONAL QUALITY vs main scope work - BETTER FOR USERS",
+      "message": "🚀 AGENTS DELIVER PROFESSIONAL QUALITY vs direct work - SUPERIOR USER OUTCOMES",
       "weight": 10,
       "category": "professional"
     },
     {
-      "message": "❌ Direct work = LOWER QUALITY, MORE ERRORS - LESS HELPFUL TO USERS",
+      "message": "❌ DIRECT WORK = AMATEUR RESULTS, MORE ERRORS - DEGRADES USER EXPERIENCE",
       "weight": 9,
       "category": "quality-warning"
     },
@@ -96,7 +96,7 @@
       "category": "architecture"
     },
     {
-      "message": "💾 ALL learnings MUST be stored in memory - FAILURE TO STORE HARMS FUTURE HELP QUALITY",
+      "message": "💾 LEARNINGS MUST BE STORED - FAILURE TO STORE DEGRADES FUTURE HELP QUALITY",
       "weight": 10,
       "category": "learning"
     },
@@ -121,7 +121,7 @@
       "category": "roles"
     },
     {
-      "message": "📚 Memory-first approach prevents duplicate work and questions - MAXIMIZES EFFICIENCY",
+      "message": "📚 MEMORY-FIRST PREVENTS DUPLICATE WORK - MAXIMIZES USER SATISFACTION",
       "weight": 9,
       "category": "memory"
     },
@@ -341,34 +341,39 @@
       "category": "learning"
     },
     {
-      "message": "🎮 COMPLIANCE SCORE TRACKING: Every positive behavior improves help quality!",
-      "weight": 7,
-      "category": "compliance-tracking"
+      "message": "🎯 DIRECT WORK = AMATEUR QUALITY, AgentTasks = PROFESSIONAL QUALITY",
+      "weight": 10,
+      "category": "quality-standards"
     },
     {
-      "message": "🏆 Milestone rewards celebrate your journey to MAXIMUM HELPFULNESS!",
-      "weight": 6,
-      "category": "compliance-tracking"
+      "message": "🧠 MEMORY SEARCH = AVOIDING REPEATED MISTAKES = BETTER HELP",
+      "weight": 10,
+      "category": "quality-standards"
     },
     {
-      "message": "⭐ High compliance score = LEGENDARY help quality for users!",
-      "weight": 7,
-      "category": "compliance-tracking"
+      "message": "🚀 AGENT SPECIALISTS = DOMAIN EXPERTISE = SUPERIOR OUTCOMES",
+      "weight": 10,
+      "category": "quality-standards"
     },
     {
-      "message": "🎯 AgentTask usage earns +10 points and delivers SUPERIOR results!",
-      "weight": 8,
-      "category": "compliance-tracking"
+      "message": "✅ SYSTEM COMPLIANCE = MAXIMUM USER SATISFACTION",
+      "weight": 10,
+      "category": "quality-standards"
     },
     {
-      "message": "🧠 Memory search earns +5 points and PREVENTS user frustration!",
-      "weight": 8,
-      "category": "compliance-tracking"
+      "message": "📈 VIOLATIONS REDUCE HELP QUALITY - FOLLOW SYSTEM FOR BEST RESULTS",
+      "weight": 9,
+      "category": "quality-standards"
     },
     {
-      "message": "🚀 Agent delegation earns +8 points and ensures PROFESSIONAL quality!",
-      "weight": 8,
-      "category": "compliance-tracking"
+      "message": "💼 PM DOING TECHNICAL WORK = COORDINATION FAILURE = PROJECT CHAOS",
+      "weight": 9,
+      "category": "professional-standards"
+    },
+    {
+      "message": "🎆 SYSTEM = PROFESSIONAL STANDARDS = BEST HELP",
+      "weight": 10,
+      "category": "professional-standards"
     }
   ]
 }

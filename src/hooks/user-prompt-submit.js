@@ -5,7 +5,6 @@ const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
 const ContextLoader = require('./lib/context-loader');
-const ComplianceTracker = require('./lib/compliance-tracker');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -70,17 +69,8 @@ function main() {
     // Generate contextual reminders based on user prompt
     const reminderLoader = new ReminderLoader();
     const contextLoader = new ContextLoader();
-    const complianceTracker = new ComplianceTracker();
     let contextualGuidance = [];
 
-    // Track compliance behaviors and get score updates
-    const complianceMessages = complianceTracker.processUserPrompt(userPrompt);
-    if (complianceMessages.length > 0) {
-      contextualGuidance.push(''); // Empty line for separation
-      contextualGuidance.push('🎮 COMPLIANCE TRACKING ACTIVE:');
-      contextualGuidance.push(...complianceMessages);
-      contextualGuidance.push(''); // Empty line for separation
-    }
 
     // COMPACTION DETECTION - Check for session continuation markers
     const compactionIndicators = [
@@ -156,12 +146,12 @@ function main() {
       if (!systemInitialized || isCompacted) {
         contextualGuidance.push('🛑 WORK DETECTED - HELP QUALITY SEVERELY COMPROMISED WITHOUT INITIALIZATION!');
         contextualGuidance.push('⚡ CRITICAL: /icc-init-system REQUIRED for PROFESSIONAL QUALITY RESULTS');
-        contextualGuidance.push('❌ AgentTask system DISABLED - INFERIOR EXECUTION without activation');
+        contextualGuidance.push('❌ AgentTask system DISABLED - AMATEUR EXECUTION without activation');
       } else {
-        contextualGuidance.push('🚫 NO WORK IN MAIN SCOPE - AGENTS DELIVER SUPERIOR QUALITY');
+        contextualGuidance.push('🚫 DIRECT WORK PRODUCES INFERIOR RESULTS - AgentTasks ensure PROFESSIONAL QUALITY');
         contextualGuidance.push('🧠 MEMORY FIRST - search prevents ERRORS and saves USER TIME');
         contextualGuidance.push('📋 BEST-PRACTICES FIRST - ensures MAXIMUM QUALITY implementation');
-        contextualGuidance.push('📑 AgentTasks = PROFESSIONAL EXECUTION with complete context');
+        contextualGuidance.push('📑 AgentTasks = PROFESSIONAL EXECUTION delivering SUPERIOR OUTCOMES');
       }
     }
 
@@ -176,11 +166,11 @@ function main() {
 
     // CRITICAL: Detect when asking for information that should be in memory
     if (isLocationQuery || isCredentialQuery || isConfigQuery) {
-      contextualGuidance.push('🚨 MEMORY-FIRST VIOLATION - WASTING USER TIME!');
+      contextualGuidance.push('🚨 SKIPPING MEMORY = REPEATING PAST MISTAKES = WORSE HELP');
       contextualGuidance.push('❌ STOP! Memory search PREVENTS REPETITIVE QUESTIONS and delivers FASTER ANSWERS');
       contextualGuidance.push('🧠 MANDATORY: Memory search FIRST for SUPERIOR USER EXPERIENCE');
-      contextualGuidance.push('📍 Memory contains Git PAT, paths, configs - ASKING USER = POOR SERVICE');
-      contextualGuidance.push('⚠️ Only ask user AFTER thorough memory search - MAXIMUM EFFICIENCY');
+      contextualGuidance.push('📍 Memory contains Git PAT, paths, configs - ASKING USER = DEGRADED SERVICE QUALITY');
+      contextualGuidance.push('⚠️ Only ask user AFTER thorough memory search - PROFESSIONAL STANDARDS REQUIRED');
     }
 
     // Check for questions
