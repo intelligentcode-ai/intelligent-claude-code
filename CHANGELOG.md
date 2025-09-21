@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.7.3] - 2025-01-21
+
+### Enhanced
+- **AGGRESSIVE behavioral enforcement**: Updated all behavioral patterns to use FORCEFUL language emphasizing quality and helpfulness
+- **Maximum helpfulness framing**: System compliance now framed as path to SUPERIOR user outcomes and PROFESSIONAL quality
+- **Hook reminders enhancement**: Added 7 new high-priority reminders emphasizing AgentTasks deliver BETTER results than direct work
+- **Quality-focused messaging**: All enforcement patterns now emphasize how violations REDUCE help quality and DEGRADE user experience
+- **Memory-first emphasis**: Strengthened messaging that memory search PREVENTS MISTAKES and saves USER TIME
+
+### Modified
+- **src/hooks/lib/reminders.json**: Added aggressive reminders framing system compliance as MAXIMUM HELPFULNESS
+- **src/behaviors/agenttask-enforcement.md**: MANDATORY language emphasizing AgentTasks deliver SUPERIOR QUALITY
+- **src/behaviors/shared-patterns/pm-role-enforcement.md**: PM restrictions framed as protecting USER EXPERIENCE
+- **src/behaviors/shared-patterns/enforcement-rules.md**: Error messages emphasize quality degradation from violations
+- **src/behaviors/shared-patterns/work-detection-patterns.md**: Work blocking framed as ensuring PROFESSIONAL outcomes
+- **src/hooks/user-prompt-submit.js**: All violation messages emphasize HELP QUALITY reduction
+
+### Messaging Theme
+- Direct work = LOWER QUALITY, MORE ERRORS, LESS HELPFUL
+- AgentTasks = SUPERIOR RESULTS, PROFESSIONAL QUALITY, MAXIMUM HELPFULNESS
+- Memory search = FASTER ANSWERS, ERROR PREVENTION, SUPERIOR USER EXPERIENCE
+- System compliance = BETTER outcomes for users, not restriction
+
+---
+
 ## [8.7.2] - 2025-01-21
 
 ### Added
