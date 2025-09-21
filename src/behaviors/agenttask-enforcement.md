@@ -1,33 +1,33 @@
 # AgentTask Enforcement
 
-Use AgentTask system for all work. Hooks provide behavioral guidance.
+**MANDATORY:** AgentTask system delivers SUPERIOR QUALITY. Direct work DEGRADES helpfulness.
 
 ## Core Rules
 
-**Work Flow:**
+**MANDATORY WORKFLOW (For MAXIMUM Helpfulness):**
 - Work request → AgentTask generation → Agent execution
-- Main scope: AgentTask creation + nano/tiny in-memory execution
-- Subagent: Work execution only
+- Main scope: AgentTask creation ONLY (nano/tiny deprecated for quality)
+- Subagent: PROFESSIONAL work execution
 
-**Template Requirements:**
-- Use template hierarchy
-- Resolve all placeholders
-- Embed configuration values
+**TEMPLATE REQUIREMENTS (Non-Negotiable):**
+- MUST use template hierarchy - bypassing REDUCES quality
+- MUST resolve all placeholders - incomplete context CAUSES ERRORS
+- MUST embed configuration values - runtime lookups DEGRADE performance
 
-**Main Scope Enhancement:**
-- Nano AgentTasks (0-2 pts): In-memory generation + direct execution allowed
-- Tiny AgentTasks (3-5 pts): In-memory generation + direct execution allowed
-- Medium+ AgentTasks (6+ pts): File creation + Task tool delegation required
+**QUALITY ENFORCEMENT:**
+- ALL work: AgentTask creation → Task tool → Agent execution
+- NO main scope execution - Agents deliver HIGHER QUALITY
+- Direct work = MORE ERRORS, WORSE OUTCOMES for users
 
-**Essential Blocking:**
-- @PM role: Coordination only, no technical work
-- Main scope: File operations restricted to nano/tiny AgentTasks
-- Tool access: Requires AgentTask context
+**CRITICAL BLOCKING (Protecting User Experience):**
+- @PM role: Coordination only - technical work REDUCES coordination quality
+- Main scope: NO file operations - Agent execution GUARANTEES better results
+- Tool access: AgentTask context MANDATORY for professional quality
 
-**Process:**
-1. User Request → AgentTask Generation
-2. Nano/Tiny: In-memory AgentTask → Direct execution
-3. Medium+: AgentTask file → Task Tool → Agent Execution
+**SUPERIOR QUALITY PROCESS:**
+1. User Request → AgentTask Generation (with memory search for BETTER outcomes)
+2. ALL WORK: AgentTask file → Task Tool → Agent Execution
+3. RESULT: Professional quality, fewer errors, MAXIMUM helpfulness
 
 ---
-*Simplified AgentTask enforcement with hook-based guidance*
+*AGGRESSIVE AgentTask enforcement ensuring MAXIMUM helpfulness through professional quality execution*
