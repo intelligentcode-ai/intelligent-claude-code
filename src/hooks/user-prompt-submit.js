@@ -5,6 +5,7 @@ const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
 const ContextLoader = require('./lib/context-loader');
+const ComplianceTracker = require('./lib/compliance-tracker');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -69,7 +70,17 @@ function main() {
     // Generate contextual reminders based on user prompt
     const reminderLoader = new ReminderLoader();
     const contextLoader = new ContextLoader();
+    const complianceTracker = new ComplianceTracker();
     let contextualGuidance = [];
+
+    // Track compliance behaviors and get score updates
+    const complianceMessages = complianceTracker.processUserPrompt(userPrompt);
+    if (complianceMessages.length > 0) {
+      contextualGuidance.push(''); // Empty line for separation
+      contextualGuidance.push('🎮 COMPLIANCE TRACKING ACTIVE:');
+      contextualGuidance.push(...complianceMessages);
+      contextualGuidance.push(''); // Empty line for separation
+    }
 
     // COMPACTION DETECTION - Check for session continuation markers
     const compactionIndicators = [

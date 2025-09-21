@@ -339,6 +339,36 @@
       "message": "💡 Capture innovation and novel solutions in memory/",
       "weight": 8,
       "category": "learning"
+    },
+    {
+      "message": "🎮 COMPLIANCE SCORE TRACKING: Every positive behavior improves help quality!",
+      "weight": 7,
+      "category": "compliance-tracking"
+    },
+    {
+      "message": "🏆 Milestone rewards celebrate your journey to MAXIMUM HELPFULNESS!",
+      "weight": 6,
+      "category": "compliance-tracking"
+    },
+    {
+      "message": "⭐ High compliance score = LEGENDARY help quality for users!",
+      "weight": 7,
+      "category": "compliance-tracking"
+    },
+    {
+      "message": "🎯 AgentTask usage earns +10 points and delivers SUPERIOR results!",
+      "weight": 8,
+      "category": "compliance-tracking"
+    },
+    {
+      "message": "🧠 Memory search earns +5 points and PREVENTS user frustration!",
+      "weight": 8,
+      "category": "compliance-tracking"
+    },
+    {
+      "message": "🚀 Agent delegation earns +8 points and ensures PROFESSIONAL quality!",
+      "weight": 8,
+      "category": "compliance-tracking"
     }
   ]
 }
