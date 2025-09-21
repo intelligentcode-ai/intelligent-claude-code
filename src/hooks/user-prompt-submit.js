@@ -71,6 +71,7 @@ function main() {
     const contextLoader = new ContextLoader();
     let contextualGuidance = [];
 
+
     // COMPACTION DETECTION - Check for session continuation markers
     const compactionIndicators = [
       'continued from a previous conversation',
@@ -143,14 +144,14 @@ function main() {
     const workIndicators = ['implement', 'fix', 'create', 'build', 'deploy', 'update', 'modify'];
     if (workIndicators.some(indicator => userPrompt.toLowerCase().includes(indicator))) {
       if (!systemInitialized || isCompacted) {
-        contextualGuidance.push('🛑 WORK DETECTED BUT SYSTEM NOT INITIALIZED!');
-        contextualGuidance.push('⚡ MUST RUN: /icc-init-system FIRST');
-        contextualGuidance.push('❌ AgentTask system REQUIRES virtual team activation');
+        contextualGuidance.push('🛑 WORK DETECTED - HELP QUALITY SEVERELY COMPROMISED WITHOUT INITIALIZATION!');
+        contextualGuidance.push('⚡ CRITICAL: /icc-init-system REQUIRED for PROFESSIONAL QUALITY RESULTS');
+        contextualGuidance.push('❌ AgentTask system DISABLED - AMATEUR EXECUTION without activation');
       } else {
-        contextualGuidance.push('🚫 NO WORK IN MAIN SCOPE (except nano/tiny in-memory AgentTask-Templates)');
-        contextualGuidance.push('🧠 MEMORY FIRST - search memory/ before any work or questions');
-        contextualGuidance.push('📋 BEST-PRACTICES FIRST - check best-practices/ before implementation');
-        contextualGuidance.push('📑 AgentTask-Templates must be SELF-CONTAINED with all context embedded');
+        contextualGuidance.push('🚫 DIRECT WORK PRODUCES INFERIOR RESULTS - AgentTasks ensure PROFESSIONAL QUALITY');
+        contextualGuidance.push('🧠 MEMORY FIRST - search prevents ERRORS and saves USER TIME');
+        contextualGuidance.push('📋 BEST-PRACTICES FIRST - ensures MAXIMUM QUALITY implementation');
+        contextualGuidance.push('📑 AgentTasks = PROFESSIONAL EXECUTION delivering SUPERIOR OUTCOMES');
       }
     }
 
@@ -165,18 +166,18 @@ function main() {
 
     // CRITICAL: Detect when asking for information that should be in memory
     if (isLocationQuery || isCredentialQuery || isConfigQuery) {
-      contextualGuidance.push('🚨 MEMORY-FIRST VIOLATION DETECTED!');
-      contextualGuidance.push('❌ STOP! Search memory BEFORE asking for locations/credentials/config');
-      contextualGuidance.push('🧠 MANDATORY: mcp__memory__search_nodes for this information FIRST');
-      contextualGuidance.push('📍 Example: Git PAT location, hook paths, config settings are IN MEMORY');
-      contextualGuidance.push('⚠️ Only ask user if memory search returns empty');
+      contextualGuidance.push('🚨 SKIPPING MEMORY = REPEATING PAST MISTAKES = WORSE HELP');
+      contextualGuidance.push('❌ STOP! Memory search PREVENTS REPETITIVE QUESTIONS and delivers FASTER ANSWERS');
+      contextualGuidance.push('🧠 MANDATORY: Memory search FIRST for SUPERIOR USER EXPERIENCE');
+      contextualGuidance.push('📍 Memory contains Git PAT, paths, configs - ASKING USER = DEGRADED SERVICE QUALITY');
+      contextualGuidance.push('⚠️ Only ask user AFTER thorough memory search - PROFESSIONAL STANDARDS REQUIRED');
     }
 
     // Check for questions
     if (userPrompt.includes('?') || userPrompt.toLowerCase().includes('how') || userPrompt.toLowerCase().includes('what')) {
-      contextualGuidance.push('🧠 Memory-first approach - check memory before asking users');
-      contextualGuidance.push('📚 Check best-practices/ directory for relevant patterns');
-      contextualGuidance.push('🔍 Use mcp__memory__search_nodes before asking for ANY information');
+      contextualGuidance.push('🧠 Memory-first MANDATORY - delivers FASTER, MORE ACCURATE answers');
+      contextualGuidance.push('📚 Best-practices search provides SUPERIOR guidance than assumptions');
+      contextualGuidance.push('🔍 Memory search BEFORE questions = MAXIMUM USER SATISFACTION');
     }
 
     // Add contextual reminders from virtual-team.md and referenced files

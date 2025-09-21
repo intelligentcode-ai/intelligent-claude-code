@@ -1,31 +1,31 @@
 # PM Role Blocking Patterns
 
-**MANDATORY:** Nuclear blocking patterns specific to PM role work execution.
+**MANDATORY:** NUCLEAR blocking patterns protecting MAXIMUM PM effectiveness and user outcomes.
 
-## PM Role Operations (NUCLEAR BLOCKED)
-- PM attempting any Edit/Write/MultiEdit operations
-- PM trying to fix bugs directly
-- PM implementing features without delegation
-- PM performing system configurations
-- PM bypassing AgentTask creation process
-- PM executing technical work in any form
+## PM Role Operations (NUCLEAR BLOCKED - Protecting User Experience)
+- PM attempting any Edit/Write/MultiEdit operations - DESTROYS coordination focus
+- PM trying to fix bugs directly - REDUCES strategic oversight quality
+- PM implementing features without delegation - COMPROMISES professional delegation
+- PM performing system configurations - DEGRADES PM effectiveness
+- PM bypassing AgentTask creation process - HARMS systematic quality
+- PM executing technical work in any form - ELIMINATES PM value to users
 
-## PM-Specific Detection
-**ULTRA-AGGRESSIVE PM BLOCKING:**
-- PM + "Let me fix" = NUCLEAR BLOCK
-- PM + "I'll implement" = NUCLEAR BLOCK  
-- PM + Edit/Write/MultiEdit tool = NUCLEAR BLOCK
-- PM + any technical action verb = NUCLEAR BLOCK
-- PM bypassing delegation = NUCLEAR BLOCK
+## PM-Specific Detection (Protecting MAXIMUM Helpfulness)
+**ULTRA-AGGRESSIVE PM BLOCKING (For Superior User Outcomes):**
+- PM + "Let me fix" = NUCLEAR BLOCK - Direct work REDUCES coordination quality
+- PM + "I'll implement" = NUCLEAR BLOCK - Implementation DESTROYS PM strategic value
+- PM + Edit/Write/MultiEdit tool = NUCLEAR BLOCK - Tool use DEGRADES delegation effectiveness
+- PM + any technical action verb = NUCLEAR BLOCK - Technical work COMPROMISES PM role
+- PM bypassing delegation = NUCLEAR BLOCK - Bypassing HARMS professional quality
 
-## Context Analysis
-**PM DETECTION TRIGGERS:**
-- Work intent + main scope context = BLOCK
-- Tool usage + no AgentTask authorization = BLOCK
-- Action verb + target object = BLOCK
-- Implementation language + specific task = BLOCK
-- PM role + ANY work attempt = NUCLEAR BLOCK
-- PM role + tool access attempt = NUCLEAR BLOCK
+## Context Analysis (Quality Protection)
+**PM DETECTION TRIGGERS (Preventing Help Quality Degradation):**
+- Work intent + main scope context = BLOCK - Protects coordination effectiveness
+- Tool usage + no AgentTask authorization = BLOCK - Ensures professional execution
+- Action verb + target object = BLOCK - Maintains delegation quality
+- Implementation language + specific task = BLOCK - Preserves strategic focus
+- PM role + ANY work attempt = NUCLEAR BLOCK - GUARANTEES maximum PM value
+- PM role + tool access attempt = NUCLEAR BLOCK - ENSURES superior user outcomes
 
 ---
-*Nuclear PM role blocking patterns for delegation enforcement*
+*NUCLEAR PM role blocking patterns ensuring MAXIMUM helpfulness through professional delegation*

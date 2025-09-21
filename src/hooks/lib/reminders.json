@@ -1,17 +1,52 @@
 {
   "reminders": [
     {
+      "message": "⚡ FOLLOWING THE SYSTEM GUARANTEES MAXIMUM HELPFULNESS",
+      "weight": 10,
+      "category": "helpfulness"
+    },
+    {
+      "message": "🎯 AgentTasks = SUPERIOR RESULTS vs direct work - HIGHER QUALITY GUARANTEED",
+      "weight": 10,
+      "category": "quality"
+    },
+    {
+      "message": "💡 Memory search PREVENTS MISTAKES and saves time - MORE HELPFUL OUTCOMES",
+      "weight": 10,
+      "category": "efficiency"
+    },
+    {
+      "message": "🚀 AGENTS DELIVER PROFESSIONAL QUALITY vs direct work - SUPERIOR USER OUTCOMES",
+      "weight": 10,
+      "category": "professional"
+    },
+    {
+      "message": "❌ DIRECT WORK = AMATEUR RESULTS, MORE ERRORS - DEGRADES USER EXPERIENCE",
+      "weight": 9,
+      "category": "quality-warning"
+    },
+    {
+      "message": "🔥 System compliance = MAXIMUM USER SATISFACTION and ERROR PREVENTION",
+      "weight": 9,
+      "category": "satisfaction"
+    },
+    {
+      "message": "⚡ VIOLATING PATTERNS REDUCES HELP QUALITY - FOLLOW SYSTEM FOR BEST RESULTS",
+      "weight": 9,
+      "category": "compliance"
+    },
+    {
       "message": "🧠 MEMORY FIRST - search memory/ before any work or questions",
       "weight": 10,
       "category": "memory"
     },
     {
-      "message": "⛔ NEVER ask for paths/credentials without searching memory FIRST",
+      "message": "⛔ NEVER ask for paths/credentials without searching memory FIRST - WASTES USER TIME",
       "weight": 10,
       "category": "memory"
     },
     {
-      "message": "🚨 Git PAT, config paths, hook locations - CHECK MEMORY, don't ask!",
+      "message": "🚨 Git PAT, config paths, hook locations - CHECK MEMORY, don't ask! ASKING = POOR SERVICE",
       "weight": 9,
       "category": "memory"
     },
@@ -31,7 +66,7 @@
       "category": "context-loading"
     },
     {
-      "message": "🚫 NO WORK IN MAIN SCOPE (except nano/tiny in-memory AgentTasks)",
+      "message": "🚫 NO WORK IN MAIN SCOPE - AGENTS DELIVER SUPERIOR QUALITY",
       "weight": 10,
       "category": "enforcement"
     },
@@ -61,7 +96,7 @@
       "category": "architecture"
     },
     {
-      "message": "💾 ALL learnings MUST be stored in memory after completion",
+      "message": "💾 LEARNINGS MUST BE STORED - FAILURE TO STORE DEGRADES FUTURE HELP QUALITY",
       "weight": 10,
       "category": "learning"
     },
@@ -86,7 +121,7 @@
       "category": "roles"
     },
     {
-      "message": "📚 Memory-first approach prevents duplicate work and questions",
+      "message": "📚 MEMORY-FIRST PREVENTS DUPLICATE WORK - MAXIMIZES USER SATISFACTION",
       "weight": 9,
       "category": "memory"
     },
@@ -96,12 +131,12 @@
       "category": "execution"
     },
     {
-      "message": "🏗️ Architectural pattern: ALL WORK → AGENTTASK-TEMPLATE → AGENT EXECUTION",
+      "message": "🏗️ MANDATORY ARCHITECTURE: ALL WORK → AGENTTASK → AGENT = MAXIMUM HELPFULNESS",
       "weight": 10,
       "category": "architecture"
     },
     {
-      "message": "🔧 Tools reserved for authorized subagent execution only",
+      "message": "🔧 Tools reserved for subagents - MAIN SCOPE TOOL USE DEGRADES QUALITY",
       "weight": 8,
       "category": "enforcement"
     },
@@ -166,7 +201,7 @@
       "category": "learning"
     },
     {
-      "message": "🧠 MANDATORY - Store successful patterns in memory/ after completion",
+      "message": "🧠 MANDATORY - Store patterns or FUTURE HELP QUALITY SUFFERS",
       "weight": 10,
       "category": "learning"
     },
@@ -201,7 +236,7 @@
       "category": "execution"
     },
     {
-      "message": "🚀 Work→AgentTask-Template→Agent pattern ensures reliable automation",
+      "message": "🚀 Work→AgentTask→Agent pattern ENSURES SUPERIOR RESULTS",
       "weight": 9,
       "category": "architecture"
     },
@@ -304,6 +339,41 @@
       "message": "💡 Capture innovation and novel solutions in memory/",
       "weight": 8,
       "category": "learning"
+    },
+    {
+      "message": "🎯 DIRECT WORK = AMATEUR QUALITY, AgentTasks = PROFESSIONAL QUALITY",
+      "weight": 10,
+      "category": "quality-standards"
+    },
+    {
+      "message": "🧠 MEMORY SEARCH = AVOIDING REPEATED MISTAKES = BETTER HELP",
+      "weight": 10,
+      "category": "quality-standards"
+    },
+    {
+      "message": "🚀 AGENT SPECIALISTS = DOMAIN EXPERTISE = SUPERIOR OUTCOMES",
+      "weight": 10,
+      "category": "quality-standards"
+    },
+    {
+      "message": "✅ SYSTEM COMPLIANCE = MAXIMUM USER SATISFACTION",
+      "weight": 10,
+      "category": "quality-standards"
+    },
+    {
+      "message": "📈 VIOLATIONS REDUCE HELP QUALITY - FOLLOW SYSTEM FOR BEST RESULTS",
+      "weight": 9,
+      "category": "quality-standards"
+    },
+    {
+      "message": "💼 PM DOING TECHNICAL WORK = COORDINATION FAILURE = PROJECT CHAOS",
+      "weight": 9,
+      "category": "professional-standards"
+    },
+    {
+      "message": "🎆 SYSTEM = PROFESSIONAL STANDARDS = BEST HELP",
+      "weight": 10,
+      "category": "professional-standards"
     }
   ]
 }
