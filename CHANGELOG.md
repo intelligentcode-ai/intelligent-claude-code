@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.5] - 2025-09-23
+
+### Added
+- **🔄 CONTEXT-LOSS DETECTION**: Comprehensive reminders for virtual team concept mentions to prevent context compaction
+- **🎯 VIRTUAL TEAM LOADING**: High-weight reminders (8-10) to immediately load virtual team system when team concepts are detected
+- **👔 ROLE DETECTION**: Broad triggers for role names (PM, Developer, Architect) without @ symbols to catch generic references
+- **📋 AGENTTASK/PRB TRIGGERS**: Automatic detection of specialized terminology (AgentTask, PRB, specialist, breakdown, memory)
+- **🧠 DUAL SCOPE SUPPORT**: Works with both user scope (~/.claude/modes/) and project scope (.claude/modes/) configurations
+- **⚡ GENERIC CC BEHAVIOR DETECTION**: Identifies when Claude Code shows generic behavior despite virtual team concepts being present
+
+### Enhanced
+- **src/hooks/lib/reminders.json**: Added 6 new high-priority reminders for context-loss detection and virtual team loading
+- **Context Preservation**: Improved system ability to recognize when virtual team context has been lost and needs reloading
+- **Terminology Coverage**: Expanded detection to cover broader range of virtual team and system-specific terms
+
+---
+
 ## [8.9.0] - 2025-09-21
 
 ### Changed
