@@ -16,7 +16,7 @@
       "category": "helpfulness"
     },
     {
-      "message": "🎯 FOLLOW SYSTEM = HELP USERS BEST!",
+      "message": "🎯 LOST CONTEXT? ASK USER TO LOAD ~/.claude/modes/virtual-team.md!",
       "weight": 10,
       "category": "helpfulness"
     },
@@ -301,12 +301,12 @@
       "category": "quality-standards"
     },
     {
-      "message": "✅ SYSTEM = SATISFACTION!",
+      "message": "✅ NO CONTEXT? REQUEST ~/.claude/modes/virtual-team.md!",
       "weight": 8,
       "category": "quality-standards"
     },
     {
-      "message": "📈 FOLLOW FOR BEST RESULTS!",
+      "message": "📈 ASK USER FOR .claude/modes/virtual-team.md!",
       "weight": 6,
       "category": "quality-standards"
     },
@@ -316,7 +316,7 @@
       "category": "professional-standards"
     },
     {
-      "message": "🎆 SYSTEM = BEST HELP!",
+      "message": "🎆 REQUEST ~/.claude/modes/virtual-team.md FROM USER!",
       "weight": 9,
       "category": "professional-standards"
     }
