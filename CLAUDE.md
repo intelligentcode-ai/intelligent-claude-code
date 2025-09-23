@@ -50,13 +50,16 @@ The system is designed for natural @Role communication rather than command-based
 @DevOps-Engineer deploy [env]   # Deployment operations
 ```
 
-### Essential Commands (Only 3)
+### Essential Commands (Only 4)
 
-The system includes only 3 essential commands for specific system functions:
+The system includes only 4 essential commands for specific system functions:
 
 ```bash
 # System Initialization (run once after installation)
 /icc-init-system                # Initialize virtual team system
+
+# Version Check (verify system version)
+/icc-version                    # Display current system version
 
 # Configuration Access (when needed)
 /icc-get-setting [key]          # Get specific configuration value
@@ -78,6 +81,7 @@ The system includes only 3 essential commands for specific system functions:
 
 **Use Essential Commands for** (System Functions Only):
 - System initialization: `/icc-init-system` (once after installation)
+- Version check: `/icc-version` (verify system version)
 - Configuration queries: `/icc-get-setting git_privacy` (when needed)
 - Memory exploration: `/icc-search-memory authentication` (when exploring patterns)
 
@@ -141,14 +145,14 @@ The system adapts to YOUR structure via CLAUDE.md configuration!
    - Purpose: STEER main agent behavioral patterns
 
 3. **COMMANDS (Essential System Functions)**:
-   - Only 3 essential commands remain for specific system functions
+   - Only 4 essential commands remain for specific system functions
    - Primary interaction is through @Role patterns, not commands
    - Can be triggered by MULTIPLE sources:
      * **USERS DIRECTLY** - Manual invocation (/icc-init-system, /icc-get-setting, /icc-search-memory)
      * **BEHAVIORS** - Called when behaviors need specific functionality
      * **SYSTEM PROCESSES** - Initialization, automation, etc.
    - Located in `src/commands/` directory
-   - Essential commands: icc-get-setting.md, icc-init-system.md, icc-search-memory.md
+   - Essential commands: icc-init-system.md, icc-version.md, icc-get-setting.md, icc-search-memory.md
    - Purpose: PROVIDE core system functionality when @Role patterns are insufficient
 
 **CRITICAL RELATIONSHIPS:**
@@ -183,7 +187,7 @@ The system adapts to YOUR structure via CLAUDE.md configuration!
 1. **@Role Communication Pattern**: Primary interaction through natural @Role mentions, not commands
 2. **Task Tool Pattern**: 13 technical agents execute as subagents via Task tool
 3. **Behavioral Role Pattern**: Main agent acts as different roles (@PM, @Architect) via behaviors
-4. **Essential Command Pattern**: Only 3 commands provide core system functionality
+4. **Essential Command Pattern**: Only 4 commands provide core system functionality
 5. **Context Loading**: CLAUDE.md provides all context, PRBs are self-contained
 6. **Memory-First**: All operations check memory before action, store results automatically
 7. **Learning System**: PRB-driven pattern capture and application
