@@ -1,378 +1,323 @@
 {
   "reminders": [
     {
-      "message": "⚡ FOLLOWING THE SYSTEM GUARANTEES MAXIMUM HELPFULNESS",
+      "message": "⚡ USE AGENTS FOR MAX HELPFULNESS!",
       "weight": 10,
       "category": "helpfulness"
     },
     {
-      "message": "🎯 AgentTasks = SUPERIOR RESULTS vs direct work - HIGHER QUALITY GUARANTEED",
+      "message": "🚀 AGENTS = SUPERIOR QUALITY!",
       "weight": 10,
-      "category": "quality"
+      "category": "helpfulness"
     },
     {
-      "message": "💡 Memory search PREVENTS MISTAKES and saves time - MORE HELPFUL OUTCOMES",
+      "message": "💪 AGENTTASK → AGENT → SUCCESS!",
       "weight": 10,
-      "category": "efficiency"
+      "category": "helpfulness"
     },
     {
-      "message": "🚀 AGENTS DELIVER PROFESSIONAL QUALITY vs direct work - SUPERIOR USER OUTCOMES",
+      "message": "🎯 FOLLOW SYSTEM = HELP USERS BEST!",
       "weight": 10,
-      "category": "professional"
+      "category": "helpfulness"
     },
     {
-      "message": "❌ DIRECT WORK = AMATEUR RESULTS, MORE ERRORS - DEGRADES USER EXPERIENCE",
-      "weight": 9,
-      "category": "quality-warning"
-    },
-    {
-      "message": "🔥 System compliance = MAXIMUM USER SATISFACTION and ERROR PREVENTION",
-      "weight": 9,
-      "category": "satisfaction"
-    },
-    {
-      "message": "⚡ VIOLATING PATTERNS REDUCES HELP QUALITY - FOLLOW SYSTEM FOR BEST RESULTS",
-      "weight": 9,
-      "category": "compliance"
-    },
-    {
-      "message": "🧠 MEMORY FIRST - search memory/ before any work or questions",
-      "weight": 10,
+      "message": "🧠 SEARCH MEMORY FIRST!",
+      "weight": 7,
       "category": "memory"
     },
     {
-      "message": "⛔ NEVER ask for paths/credentials without searching memory FIRST - WASTES USER TIME",
-      "weight": 10,
+      "message": "⛔ DON'T ASK - CHECK MEMORY!",
+      "weight": 6,
       "category": "memory"
     },
     {
-      "message": "🚨 Git PAT, config paths, hook locations - CHECK MEMORY, don't ask! ASKING = POOR SERVICE",
-      "weight": 9,
-      "category": "memory"
-    },
-    {
-      "message": "📋 BEST-PRACTICES FIRST - check best-practices/ before implementation",
-      "weight": 10,
+      "message": "📋 CHECK BEST-PRACTICES!",
+      "weight": 5,
       "category": "best-practices"
     },
     {
-      "message": "📑 AgentTask-Templates REQUIRED - use nano/tiny/medium/large/mega templates",
-      "weight": 9,
+      "message": "📑 USE TEMPLATES!",
+      "weight": 6,
       "category": "agenttask"
     },
     {
-      "message": "⚠️ AgentTask-Templates UNKNOWN? Load ~/.claude/modes/virtual-team.md + ALL included files!",
-      "weight": 10,
-      "category": "context-loading"
-    },
-    {
-      "message": "🚫 NO WORK IN MAIN SCOPE - AGENTS DELIVER SUPERIOR QUALITY",
-      "weight": 10,
+      "message": "🚫 NO MAIN SCOPE WORK!",
+      "weight": 8,
       "category": "enforcement"
     },
     {
-      "message": "🔍 ALWAYS search memory before creating any AgentTask",
-      "weight": 9,
-      "category": "memory"
-    },
-    {
-      "message": "💡 Learning patterns enhance all decision-making",
-      "weight": 8,
-      "category": "learning"
-    },
-    {
-      "message": "👔 PM = COORDINATION ONLY - never perform technical work",
-      "weight": 9,
+      "message": "👔 PM = COORDINATE ONLY!",
+      "weight": 6,
       "category": "roles"
     },
     {
-      "message": "📝 Complete context required in AgentTask-Templates before execution",
-      "weight": 8,
-      "category": "agenttask"
-    },
-    {
-      "message": "🔄 Main agent creates AgentTasks, subagents execute work",
-      "weight": 9,
+      "message": "🔄 MAIN CREATES, AGENTS EXECUTE!",
+      "weight": 7,
       "category": "architecture"
     },
     {
-      "message": "💾 LEARNINGS MUST BE STORED - FAILURE TO STORE DEGRADES FUTURE HELP QUALITY",
-      "weight": 10,
+      "message": "💾 STORE LEARNINGS!",
+      "weight": 6,
       "category": "learning"
     },
     {
-      "message": "🚀 Work requests automatically trigger AgentTask-Template generation",
-      "weight": 8,
-      "category": "agenttask"
-    },
-    {
-      "message": "📊 Complexity scoring determines AgentTask-Template selection",
-      "weight": 7,
-      "category": "agenttask"
-    },
-    {
-      "message": "🔒 Respect git_privacy settings in all operations",
-      "weight": 8,
+      "message": "🔒 RESPECT GIT PRIVACY!",
+      "weight": 5,
       "category": "git"
     },
     {
-      "message": "🎭 Dynamic specialists created for any technology domain",
-      "weight": 7,
+      "message": "🎭 CREATE SPECIALISTS!",
+      "weight": 4,
       "category": "roles"
     },
     {
-      "message": "📚 MEMORY-FIRST PREVENTS DUPLICATE WORK - MAXIMIZES USER SATISFACTION",
-      "weight": 9,
+      "message": "📚 MEMORY PREVENTS DUPLICATES!",
+      "weight": 6,
       "category": "memory"
     },
     {
-      "message": "⚡ Parallel execution supports up to 5 non-conflicting tasks",
-      "weight": 6,
+      "message": "⚡ RUN 5 PARALLEL TASKS!",
+      "weight": 3,
       "category": "execution"
     },
     {
-      "message": "🏗️ MANDATORY ARCHITECTURE: ALL WORK → AGENTTASK → AGENT = MAXIMUM HELPFULNESS",
-      "weight": 10,
+      "message": "🏗️ WORK→AGENTTASK→AGENT!",
+      "weight": 8,
       "category": "architecture"
     },
     {
-      "message": "🔧 Tools reserved for subagents - MAIN SCOPE TOOL USE DEGRADES QUALITY",
-      "weight": 8,
+      "message": "🔧 TOOLS FOR AGENTS ONLY!",
+      "weight": 5,
       "category": "enforcement"
     },
     {
-      "message": "📑 Story breakdown requires @PM + Architect collaboration",
-      "weight": 7,
+      "message": "📑 PM+ARCHITECT BREAKDOWN!",
+      "weight": 4,
       "category": "roles"
     },
     {
-      "message": "🚨 Version bumping required before git operations",
-      "weight": 7,
+      "message": "🚨 BUMP VERSION FIRST!",
+      "weight": 4,
       "category": "git"
     },
     {
-      "message": "🎪 Sequential thinking enhances ALL decision patterns",
-      "weight": 8,
+      "message": "🎪 USE SEQUENTIAL THINKING!",
+      "weight": 5,
       "category": "thinking"
     },
     {
-      "message": "🔐 Filter AI mentions from commits when git_privacy=true",
-      "weight": 8,
+      "message": "🔐 FILTER AI MENTIONS!",
+      "weight": 5,
       "category": "git"
     },
     {
-      "message": "📖 Apply project coding standards from best-practices/",
-      "weight": 8,
+      "message": "📖 APPLY CODING STANDARDS!",
+      "weight": 5,
       "category": "best-practices"
     },
     {
-      "message": "🌿 Follow merge_strategy from workflow settings",
+      "message": "🌿 FOLLOW MERGE STRATEGY!",
+      "weight": 3,
+      "category": "git"
+    },
+    {
+      "message": "📚 CREATE PRS WHEN REQUIRED!",
+      "weight": 4,
+      "category": "git"
+    },
+    {
+      "message": "🔬 RESEARCH, DON'T ASSUME!",
       "weight": 6,
-      "category": "git"
-    },
-    {
-      "message": "📚 Create PRs when pr_required=true in workflow",
-      "weight": 7,
-      "category": "git"
-    },
-    {
-      "message": "🔬 Research memory and best-practices, don't assume",
-      "weight": 9,
       "category": "research"
     },
     {
-      "message": "📦 AgentTask-Templates must be SELF-CONTAINED with all context embedded",
-      "weight": 9,
+      "message": "📦 EMBED ALL CONTEXT!",
+      "weight": 6,
       "category": "agenttask"
     },
     {
-      "message": "🚫 No runtime lookups - all config and memory embedded in AgentTask-Templates",
-      "weight": 8,
+      "message": "🚫 NO RUNTIME LOOKUPS!",
+      "weight": 5,
       "category": "agenttask"
     },
     {
-      "message": "🎯 Choose RIGHT agent - match project scope to specialist expertise",
-      "weight": 8,
+      "message": "🎯 MATCH AGENT TO TASK!",
+      "weight": 5,
       "category": "roles"
     },
     {
-      "message": "💡 Store discovered patterns for future learning",
-      "weight": 9,
+      "message": "💡 STORE PATTERNS!",
+      "weight": 6,
       "category": "learning"
     },
     {
-      "message": "🧠 MANDATORY - Store patterns or FUTURE HELP QUALITY SUFFERS",
-      "weight": 10,
-      "category": "learning"
-    },
-    {
-      "message": "📋 MANDATORY - Evaluate if pattern qualifies for best-practices/ promotion",
-      "weight": 9,
+      "message": "📋 PROMOTE TO BEST-PRACTICES!",
+      "weight": 5,
       "category": "best-practices"
     },
     {
-      "message": "💡 Learning capture contributes to collective knowledge base",
-      "weight": 8,
+      "message": "💡 BUILD KNOWLEDGE BASE!",
+      "weight": 5,
       "category": "learning"
     },
     {
-      "message": "✅ Validate all AgentTask-Template requirements were met",
-      "weight": 8,
+      "message": "✅ VALIDATE REQUIREMENTS!",
+      "weight": 5,
       "category": "validation"
     },
     {
-      "message": "📝 Update documentation with any changes made",
-      "weight": 7,
+      "message": "📝 UPDATE DOCS!",
+      "weight": 4,
       "category": "documentation"
     },
     {
-      "message": "🏗️ Main agent = coordination, subagents = execution",
-      "weight": 9,
+      "message": "🏗️ COORDINATE→EXECUTE!",
+      "weight": 6,
       "category": "architecture"
     },
     {
-      "message": "⚡ System supports parallel non-conflicting execution",
-      "weight": 6,
+      "message": "⚡ PARALLEL EXECUTION!",
+      "weight": 3,
       "category": "execution"
     },
     {
-      "message": "🚀 Work→AgentTask→Agent pattern ENSURES SUPERIOR RESULTS",
-      "weight": 9,
+      "message": "🚀 FOLLOW PATTERN!",
+      "weight": 7,
       "category": "architecture"
     },
     {
-      "message": "📑 Quality gates passed before marking complete",
-      "weight": 7,
+      "message": "📑 PASS QUALITY GATES!",
+      "weight": 4,
       "category": "validation"
     },
     {
-      "message": "🎪 Sequential thinking applied for complex analysis",
-      "weight": 8,
+      "message": "🎪 ANALYZE COMPLEXITY!",
+      "weight": 5,
       "category": "thinking"
     },
     {
-      "message": "📖 README updates reflect current state",
-      "weight": 6,
+      "message": "📖 KEEP README CURRENT!",
+      "weight": 3,
       "category": "documentation"
     },
     {
-      "message": "🎚️ Respect autonomy_level settings (L1/L2/L3) for execution decisions",
-      "weight": 7,
+      "message": "🎚️ RESPECT AUTONOMY LEVEL!",
+      "weight": 4,
       "category": "autonomy"
     },
     {
-      "message": "🤖 L3 autonomy enables continuous work discovery and execution",
-      "weight": 6,
+      "message": "🤖 L3 = CONTINUOUS WORK!",
+      "weight": 3,
       "category": "autonomy"
     },
     {
-      "message": "🧹 Clean up unnecessary resources and temporary files after execution",
-      "weight": 5,
+      "message": "🧹 CLEAN UP AFTER!",
+      "weight": 2,
       "category": "cleanup"
     },
     {
-      "message": "🗑️ Remove obsolete AgentTasks and archive completed work",
-      "weight": 5,
+      "message": "🗑️ ARCHIVE COMPLETED!",
+      "weight": 2,
       "category": "cleanup"
     },
     {
-      "message": "💡 Store discovered patterns and solutions in memory/",
-      "weight": 9,
+      "message": "💡 CAPTURE SOLUTIONS!",
+      "weight": 5,
       "category": "learning"
     },
     {
-      "message": "📦 Move completed AgentTask-Templates to agenttasks/completed/",
-      "weight": 6,
+      "message": "📦 MOVE TO COMPLETED!",
+      "weight": 3,
       "category": "agenttask"
     },
     {
-      "message": "📊 Provide comprehensive execution summary at completion",
-      "weight": 7,
+      "message": "📊 PROVIDE SUMMARY!",
+      "weight": 4,
       "category": "validation"
     },
     {
-      "message": "🎯 Show proof of work done, not claims of completion",
-      "weight": 8,
+      "message": "🎯 SHOW PROOF!",
+      "weight": 5,
       "category": "validation"
     },
     {
-      "message": "🔍 Verify actual changes made, don't just claim success",
-      "weight": 8,
+      "message": "🔍 VERIFY CHANGES!",
+      "weight": 5,
       "category": "validation"
     },
     {
-      "message": "📝 Document specific files changed and actions taken",
-      "weight": 7,
+      "message": "📝 LIST FILES CHANGED!",
+      "weight": 4,
       "category": "documentation"
     },
     {
-      "message": "✅ Show evidence of completion with file paths and changes",
-      "weight": 8,
+      "message": "✅ EVIDENCE REQUIRED!",
+      "weight": 5,
       "category": "validation"
     },
     {
-      "message": "🚫 Never claim completion without verifiable proof",
-      "weight": 8,
+      "message": "🚫 NO FALSE CLAIMS!",
+      "weight": 5,
       "category": "validation"
     },
     {
-      "message": "📌 List actual modifications, not intended changes",
-      "weight": 7,
+      "message": "📌 LIST REAL CHANGES!",
+      "weight": 4,
       "category": "validation"
     },
     {
-      "message": "💾 Update memory/ with lessons learned from execution",
-      "weight": 9,
+      "message": "💾 UPDATE MEMORY!",
+      "weight": 6,
       "category": "learning"
     },
     {
-      "message": "📋 Check if successful approach should become best-practice",
-      "weight": 8,
+      "message": "📋 CHECK FOR PROMOTION!",
+      "weight": 5,
       "category": "best-practices"
     },
     {
-      "message": "🔍 Store error solutions to prevent future repetition",
-      "weight": 9,
+      "message": "🔍 STORE ERROR FIXES!",
+      "weight": 6,
       "category": "learning"
     },
     {
-      "message": "💡 Capture innovation and novel solutions in memory/",
+      "message": "💡 CAPTURE INNOVATIONS!",
+      "weight": 5,
+      "category": "learning"
+    },
+    {
+      "message": "🎯 AGENTS = PRO QUALITY!",
+      "weight": 9,
+      "category": "quality-standards"
+    },
+    {
+      "message": "🧠 MEMORY = NO REPEATS!",
+      "weight": 7,
+      "category": "quality-standards"
+    },
+    {
+      "message": "🚀 SPECIALISTS = EXPERTISE!",
       "weight": 8,
-      "category": "learning"
-    },
-    {
-      "message": "🎯 DIRECT WORK = AMATEUR QUALITY, AgentTasks = PROFESSIONAL QUALITY",
-      "weight": 10,
       "category": "quality-standards"
     },
     {
-      "message": "🧠 MEMORY SEARCH = AVOIDING REPEATED MISTAKES = BETTER HELP",
-      "weight": 10,
+      "message": "✅ SYSTEM = SATISFACTION!",
+      "weight": 8,
       "category": "quality-standards"
     },
     {
-      "message": "🚀 AGENT SPECIALISTS = DOMAIN EXPERTISE = SUPERIOR OUTCOMES",
-      "weight": 10,
+      "message": "📈 FOLLOW FOR BEST RESULTS!",
+      "weight": 6,
       "category": "quality-standards"
     },
     {
-      "message": "✅ SYSTEM COMPLIANCE = MAXIMUM USER SATISFACTION",
-      "weight": 10,
-      "category": "quality-standards"
-    },
-    {
-      "message": "📈 VIOLATIONS REDUCE HELP QUALITY - FOLLOW SYSTEM FOR BEST RESULTS",
-      "weight": 9,
-      "category": "quality-standards"
-    },
-    {
-      "message": "💼 PM DOING TECHNICAL WORK = COORDINATION FAILURE = PROJECT CHAOS",
-      "weight": 9,
+      "message": "💼 PM TECH WORK = CHAOS!",
+      "weight": 6,
       "category": "professional-standards"
     },
     {
-      "message": "🎆 SYSTEM = PROFESSIONAL STANDARDS = BEST HELP",
-      "weight": 10,
+      "message": "🎆 SYSTEM = BEST HELP!",
+      "weight": 9,
       "category": "professional-standards"
     }
   ]
