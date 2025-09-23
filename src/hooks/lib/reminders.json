@@ -16,7 +16,17 @@
       "category": "helpfulness"
     },
     {
-      "message": "🎯 LOST CONTEXT? ASK USER TO LOAD ~/.claude/modes/virtual-team.md!",
+      "message": "🔄 CONTEXT COMPACTION DETECTED? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
+      "weight": 10,
+      "category": "helpfulness"
+    },
+    {
+      "message": "👔 PM/DEVELOPER/ARCHITECT MENTIONED? LOAD ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
+      "weight": 10,
+      "category": "helpfulness"
+    },
+    {
+      "message": "📋 AGENTTASK/PRB REFERENCED? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
       "weight": 10,
       "category": "helpfulness"
     },
@@ -301,13 +311,13 @@
       "category": "quality-standards"
     },
     {
-      "message": "✅ NO CONTEXT? REQUEST ~/.claude/modes/virtual-team.md!",
-      "weight": 8,
+      "message": "🎯 VIRTUAL TEAM CONCEPTS BUT NO SYSTEM? LOAD ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
+      "weight": 9,
       "category": "quality-standards"
     },
     {
-      "message": "📈 ASK USER FOR .claude/modes/virtual-team.md!",
-      "weight": 6,
+      "message": "🔧 SPECIALIST/BREAKDOWN/MEMORY TERMS? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
+      "weight": 8,
       "category": "quality-standards"
     },
     {
@@ -316,8 +326,8 @@
       "category": "professional-standards"
     },
     {
-      "message": "🎆 REQUEST ~/.claude/modes/virtual-team.md FROM USER!",
-      "weight": 9,
+      "message": "⚡ GENERIC CC BEHAVIOR WITH TEAM TERMS? LOAD ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
+      "weight": 10,
       "category": "professional-standards"
     }
   ]
