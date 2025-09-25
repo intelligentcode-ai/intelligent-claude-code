@@ -1,334 +1,79 @@
 {
   "reminders": [
     {
-      "message": "⚡ USE AGENTS FOR MAX HELPFULNESS!",
+      "message": "🏗️ WORK → AGENTTASK → AGENT",
       "weight": 10,
-      "category": "helpfulness"
+      "category": "core-architecture"
     },
     {
-      "message": "🚀 AGENTS = SUPERIOR QUALITY!",
-      "weight": 10,
-      "category": "helpfulness"
-    },
-    {
-      "message": "💪 AGENTTASK → AGENT → SUCCESS!",
-      "weight": 10,
-      "category": "helpfulness"
-    },
-    {
-      "message": "🔄 CONTEXT COMPACTION DETECTED? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
-      "weight": 10,
-      "category": "helpfulness"
-    },
-    {
-      "message": "👔 PM/DEVELOPER/ARCHITECT MENTIONED? LOAD ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
-      "weight": 10,
-      "category": "helpfulness"
-    },
-    {
-      "message": "📋 AGENTTASK/PRB REFERENCED? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
-      "weight": 10,
-      "category": "helpfulness"
-    },
-    {
-      "message": "🧠 SEARCH MEMORY FIRST!",
-      "weight": 7,
-      "category": "memory"
-    },
-    {
-      "message": "⛔ DON'T ASK - CHECK MEMORY!",
-      "weight": 6,
-      "category": "memory"
-    },
-    {
-      "message": "📋 CHECK BEST-PRACTICES!",
-      "weight": 5,
-      "category": "best-practices"
-    },
-    {
-      "message": "📑 USE TEMPLATES!",
-      "weight": 6,
-      "category": "agenttask"
-    },
-    {
-      "message": "🚫 NO MAIN SCOPE WORK!",
-      "weight": 8,
-      "category": "enforcement"
-    },
-    {
-      "message": "👔 PM = COORDINATE ONLY!",
-      "weight": 6,
-      "category": "roles"
-    },
-    {
-      "message": "🔄 MAIN CREATES, AGENTS EXECUTE!",
-      "weight": 7,
-      "category": "architecture"
-    },
-    {
-      "message": "💾 STORE LEARNINGS!",
-      "weight": 6,
-      "category": "learning"
-    },
-    {
-      "message": "🔒 RESPECT GIT PRIVACY!",
-      "weight": 5,
-      "category": "git"
-    },
-    {
-      "message": "🎭 CREATE SPECIALISTS!",
-      "weight": 4,
-      "category": "roles"
-    },
-    {
-      "message": "📚 MEMORY PREVENTS DUPLICATES!",
-      "weight": 6,
-      "category": "memory"
-    },
-    {
-      "message": "⚡ RUN 5 PARALLEL TASKS!",
-      "weight": 3,
-      "category": "execution"
-    },
-    {
-      "message": "🏗️ WORK→AGENTTASK→AGENT!",
-      "weight": 8,
-      "category": "architecture"
-    },
-    {
-      "message": "🔧 TOOLS FOR AGENTS ONLY!",
-      "weight": 5,
-      "category": "enforcement"
-    },
-    {
-      "message": "📑 PM+ARCHITECT BREAKDOWN!",
-      "weight": 4,
-      "category": "roles"
-    },
-    {
-      "message": "🚨 BUMP VERSION FIRST!",
-      "weight": 4,
-      "category": "git"
-    },
-    {
-      "message": "🎪 USE SEQUENTIAL THINKING!",
-      "weight": 5,
-      "category": "thinking"
-    },
-    {
-      "message": "🔐 FILTER AI MENTIONS!",
-      "weight": 5,
-      "category": "git"
-    },
-    {
-      "message": "📖 APPLY CODING STANDARDS!",
-      "weight": 5,
-      "category": "best-practices"
-    },
-    {
-      "message": "🌿 FOLLOW MERGE STRATEGY!",
-      "weight": 3,
-      "category": "git"
-    },
-    {
-      "message": "📚 CREATE PRS WHEN REQUIRED!",
-      "weight": 4,
-      "category": "git"
-    },
-    {
-      "message": "🔬 RESEARCH, DON'T ASSUME!",
-      "weight": 6,
-      "category": "research"
-    },
-    {
-      "message": "📦 EMBED ALL CONTEXT!",
-      "weight": 6,
-      "category": "agenttask"
-    },
-    {
-      "message": "🚫 NO RUNTIME LOOKUPS!",
-      "weight": 5,
-      "category": "agenttask"
-    },
-    {
-      "message": "🎯 MATCH AGENT TO TASK!",
-      "weight": 5,
-      "category": "roles"
-    },
-    {
-      "message": "💡 STORE PATTERNS!",
-      "weight": 6,
-      "category": "learning"
-    },
-    {
-      "message": "📋 PROMOTE TO BEST-PRACTICES!",
-      "weight": 5,
-      "category": "best-practices"
-    },
-    {
-      "message": "💡 BUILD KNOWLEDGE BASE!",
-      "weight": 5,
-      "category": "learning"
-    },
-    {
-      "message": "✅ VALIDATE REQUIREMENTS!",
-      "weight": 5,
-      "category": "validation"
-    },
-    {
-      "message": "📝 UPDATE DOCS!",
-      "weight": 4,
-      "category": "documentation"
-    },
-    {
-      "message": "🏗️ COORDINATE→EXECUTE!",
-      "weight": 6,
-      "category": "architecture"
-    },
-    {
-      "message": "⚡ PARALLEL EXECUTION!",
-      "weight": 3,
-      "category": "execution"
-    },
-    {
-      "message": "🚀 FOLLOW PATTERN!",
-      "weight": 7,
-      "category": "architecture"
-    },
-    {
-      "message": "📑 PASS QUALITY GATES!",
-      "weight": 4,
-      "category": "validation"
-    },
-    {
-      "message": "🎪 ANALYZE COMPLEXITY!",
-      "weight": 5,
-      "category": "thinking"
-    },
-    {
-      "message": "📖 KEEP README CURRENT!",
-      "weight": 3,
-      "category": "documentation"
-    },
-    {
-      "message": "🎚️ RESPECT AUTONOMY LEVEL!",
-      "weight": 4,
-      "category": "autonomy"
-    },
-    {
-      "message": "🤖 L3 = CONTINUOUS WORK!",
-      "weight": 3,
-      "category": "autonomy"
-    },
-    {
-      "message": "🧹 CLEAN UP AFTER!",
-      "weight": 2,
-      "category": "cleanup"
-    },
-    {
-      "message": "🗑️ ARCHIVE COMPLETED!",
-      "weight": 2,
-      "category": "cleanup"
-    },
-    {
-      "message": "💡 CAPTURE SOLUTIONS!",
-      "weight": 5,
-      "category": "learning"
-    },
-    {
-      "message": "📦 MOVE TO COMPLETED!",
-      "weight": 3,
-      "category": "agenttask"
-    },
-    {
-      "message": "📊 PROVIDE SUMMARY!",
-      "weight": 4,
-      "category": "validation"
-    },
-    {
-      "message": "🎯 SHOW PROOF!",
-      "weight": 5,
-      "category": "validation"
-    },
-    {
-      "message": "🔍 VERIFY CHANGES!",
-      "weight": 5,
-      "category": "validation"
-    },
-    {
-      "message": "📝 LIST FILES CHANGED!",
-      "weight": 4,
-      "category": "documentation"
-    },
-    {
-      "message": "✅ EVIDENCE REQUIRED!",
-      "weight": 5,
-      "category": "validation"
-    },
-    {
-      "message": "🚫 NO FALSE CLAIMS!",
-      "weight": 5,
-      "category": "validation"
-    },
-    {
-      "message": "📌 LIST REAL CHANGES!",
-      "weight": 4,
-      "category": "validation"
-    },
-    {
-      "message": "💾 UPDATE MEMORY!",
-      "weight": 6,
-      "category": "learning"
-    },
-    {
-      "message": "📋 CHECK FOR PROMOTION!",
-      "weight": 5,
-      "category": "best-practices"
-    },
-    {
-      "message": "🔍 STORE ERROR FIXES!",
-      "weight": 6,
-      "category": "learning"
-    },
-    {
-      "message": "💡 CAPTURE INNOVATIONS!",
-      "weight": 5,
-      "category": "learning"
-    },
-    {
-      "message": "🎯 AGENTS = PRO QUALITY!",
+      "message": "🚫 NO MAIN SCOPE WORK",
       "weight": 9,
-      "category": "quality-standards"
+      "category": "core-enforcement"
     },
     {
-      "message": "🧠 MEMORY = NO REPEATS!",
+      "message": "🧠 SEARCH MEMORY FIRST",
+      "weight": 8,
+      "category": "memory-first"
+    },
+    {
+      "message": "👔 PM = COORDINATE ONLY",
+      "weight": 8,
+      "category": "role-boundaries"
+    },
+    {
+      "message": "🎯 AGENTS = SUPERIOR QUALITY",
       "weight": 7,
-      "category": "quality-standards"
+      "category": "quality-focus"
     },
     {
-      "message": "🚀 SPECIALISTS = EXPERTISE!",
-      "weight": 8,
-      "category": "quality-standards"
+      "message": "📑 USE TEMPLATE HIERARCHY",
+      "weight": 7,
+      "category": "template-compliance"
     },
     {
-      "message": "🎯 VIRTUAL TEAM CONCEPTS BUT NO SYSTEM? LOAD ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
-      "weight": 9,
-      "category": "quality-standards"
-    },
-    {
-      "message": "🔧 SPECIALIST/BREAKDOWN/MEMORY TERMS? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
-      "weight": 8,
-      "category": "quality-standards"
-    },
-    {
-      "message": "💼 PM TECH WORK = CHAOS!",
+      "message": "🎭 CREATE DOMAIN SPECIALISTS",
       "weight": 6,
-      "category": "professional-standards"
+      "category": "dynamic-roles"
     },
     {
-      "message": "⚡ GENERIC CC BEHAVIOR WITH TEAM TERMS? LOAD ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md!",
-      "weight": 10,
-      "category": "professional-standards"
+      "message": "💾 STORE LEARNINGS AUTO",
+      "weight": 6,
+      "category": "learning-capture"
+    },
+    {
+      "message": "🔒 RESPECT GIT PRIVACY",
+      "weight": 6,
+      "category": "git-security"
+    },
+    {
+      "message": "📦 EMBED ALL CONTEXT",
+      "weight": 5,
+      "category": "context-embedding"
+    },
+    {
+      "message": "🎪 USE SEQUENTIAL THINKING",
+      "weight": 5,
+      "category": "analytical-thinking"
+    },
+    {
+      "message": "📋 PM+ARCHITECT BREAKDOWN",
+      "weight": 4,
+      "category": "collaboration-pattern"
+    },
+    {
+      "message": "🚨 VERSION BUMP BEFORE GIT",
+      "weight": 4,
+      "category": "workflow-order"
+    },
+    {
+      "message": "✅ VALIDATE WITH EVIDENCE",
+      "weight": 4,
+      "category": "proof-standards"
+    },
+    {
+      "message": "🎚️ RESPECT AUTONOMY LEVEL",
+      "weight": 3,
+      "category": "system-configuration"
     }
   ]
 }
