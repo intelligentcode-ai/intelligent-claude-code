@@ -1,6 +1,11 @@
 {
   "reminders": [
     {
+      "message": "⚡ AGENTTASKS + AGENTS = MAX HELPFULNESS!",
+      "weight": 10,
+      "category": "helpfulness-enforcement"
+    },
+    {
       "message": "🏗️ WORK → AGENTTASK → AGENT",
       "weight": 10,
       "category": "core-architecture"
@@ -74,6 +79,21 @@
       "message": "🎚️ RESPECT AUTONOMY LEVEL",
       "weight": 3,
       "category": "system-configuration"
+    },
+    {
+      "message": "🔄 CONTEXT COMPACTION? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md",
+      "weight": 10,
+      "category": "context-recovery"
+    },
+    {
+      "message": "👥 PM/DEVELOPER/ARCHITECT UNKNOWN? LOAD ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md",
+      "weight": 10,
+      "category": "context-recovery"
+    },
+    {
+      "message": "📋 AGENTTASK TEMPLATES MISSING? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md",
+      "weight": 10,
+      "category": "context-recovery"
     }
   ]
 }
