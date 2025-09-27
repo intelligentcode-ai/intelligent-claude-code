@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.8] - 2025-09-27
+
+### Improved
+- **🧹 USABILITY ENHANCEMENT**: Replaced excessive warning language with practical, professional guidance across behavioral patterns
+- **📋 PRACTICAL GUIDELINES**: Simplified compaction detection with actionable system restoration guidance and infrastructure memory patterns
+- **⚖️ BALANCED ENFORCEMENT**: Converted aggressive blocking patterns to constructive delegation guidelines for PM role management
+- **🎯 CLEAR MESSAGING**: Replaced nuclear warning terminology with professional guidance for AgentTask system usage
+
+### Enhanced
+- **src/behaviors/shared-patterns/compaction-enforcement.md**: Renamed to system continuity detection with practical restoration guidance
+- **src/behaviors/shared-patterns/pm-role-blocking-patterns.md**: Simplified to PM role guidelines focusing on coordination and delegation
+- **src/behaviors/agenttask-enforcement.md**: Converted to AgentTask system guidelines with structured workflow patterns
+- **src/behaviors/shared-patterns/work-detection-patterns.md**: Replaced aggressive blocking with work pattern recognition and delegation guidance
+- **src/behaviors/shared-patterns/enforcement-rules.md**: Simplified to system guidelines with practical boundaries and patterns
+- **src/behaviors/shared-patterns/template-enforcement.md**: Updated to template usage guidelines with validation messaging
+
+---
+
 ## [8.8.7] - 2025-09-25
 
 ### Fixed

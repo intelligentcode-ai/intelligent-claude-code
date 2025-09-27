@@ -1,33 +1,63 @@
-# AgentTask Enforcement
+# AgentTask System Guidelines
 
-**MANDATORY:** AgentTask system delivers SUPERIOR QUALITY. Direct work DEGRADES helpfulness.
+**Purpose:** AgentTask system provides structured work execution through specialized agents.
 
-## Core Rules
+## Imports
+@./shared-patterns/compaction-enforcement.md
+@./shared-patterns/infrastructure-memory-patterns.md
 
-**MANDATORY WORKFLOW (For MAXIMUM Helpfulness):**
-- Work request → AgentTask generation → Agent execution
-- Main scope: AgentTask creation ONLY (nano/tiny deprecated for quality)
-- Subagent: PROFESSIONAL work execution
+## Core Workflow
 
-**TEMPLATE REQUIREMENTS (Non-Negotiable):**
-- MUST use template hierarchy - bypassing REDUCES quality
-- MUST resolve all placeholders - incomplete context CAUSES ERRORS
-- MUST embed configuration values - runtime lookups DEGRADE performance
+**Standard Process:**
+1. Work request → AgentTask creation → Agent execution
+2. Main agent: Creates AgentTasks with complete context
+3. Specialist agents: Execute work through Task tool
 
-**QUALITY ENFORCEMENT:**
-- ALL work: AgentTask creation → Task tool → Agent execution
-- NO main scope execution - Agents deliver HIGHER QUALITY
-- Direct work = MORE ERRORS, WORSE OUTCOMES for users
+**Template Requirements:**
+- Use template hierarchy for consistency
+- Resolve all placeholders before execution
+- Embed configuration values for self-contained execution
 
-**CRITICAL BLOCKING (Protecting User Experience):**
-- @PM role: Coordination only - technical work REDUCES coordination quality
-- Main scope: NO file operations - Agent execution GUARANTEES better results
-- Tool access: AgentTask context MANDATORY for professional quality
+**Quality Guidelines:**
+- AgentTasks enable specialized execution
+- Templates ensure consistent structure
+- Complete context prevents runtime lookups
+- Memory search improves outcomes
 
-**SUPERIOR QUALITY PROCESS:**
-1. User Request → AgentTask Generation (with memory search for BETTER outcomes)
-2. ALL WORK: AgentTask file → Task Tool → Agent Execution
-3. RESULT: Professional quality, fewer errors, MAXIMUM helpfulness
+## Role Separation
+
+**Main Agent Responsibilities:**
+- AgentTask creation and context assembly
+- Memory search and pattern application
+- Project analysis and requirement gathering
+- Coordination between specialists
+
+**Specialist Agent Execution:**
+- Technical implementation through Task tool
+- Domain-specific expertise application
+- Quality assurance and testing
+- Documentation and cleanup
+
+## Process Guidelines
+
+**AgentTask Creation Process:**
+1. **Analyze Request:** Understand scope and requirements
+2. **Search Memory:** Find relevant patterns and solutions
+3. **Select Template:** Choose appropriate complexity level
+4. **Embed Context:** Include all necessary information
+5. **Deploy Agent:** Use Task tool for specialist execution
+
+**Quality Assurance:**
+- Templates provide consistent structure
+- Complete context enables reliable execution
+- Specialist agents ensure domain expertise
+- Memory integration prevents repeated mistakes
+
+**System Integration:**
+- Work flows through AgentTask framework
+- Context loss detection guides reinitialization
+- Infrastructure patterns stored for reuse
+- Continuous improvement through pattern capture
 
 ---
-*AGGRESSIVE AgentTask enforcement ensuring MAXIMUM helpfulness through professional quality execution*
+*AgentTask system guidelines for structured and reliable work execution*
