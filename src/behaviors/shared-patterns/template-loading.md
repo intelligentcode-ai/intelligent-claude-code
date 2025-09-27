@@ -10,7 +10,8 @@
 
 **Search Order (Highest→Lowest Priority):**
 1. **Project Templates**: Project root agenttask_template_path
-2. **Installation Templates**: Installation agenttask-templates/
+2. **Development Context Templates**: When working in intelligent-claude-code project, use project_root/src/agenttask-templates/
+3. **Installation Templates**: Installation agenttask-templates/ directory
 
 ## Standard Templates
 
