@@ -1,50 +1,61 @@
 # Work Detection Patterns
 
-**MANDATORY:** AGGRESSIVE work detection protecting MAXIMUM helpfulness through professional execution.
+**Purpose:** Identify work requests that should be handled through AgentTask system for optimal results.
 
-## ULTRA-STRICT Work Detection (Protecting User Experience)
-**BLOCKED PATTERNS (Direct work REDUCES quality, Agent execution GUARANTEES superior results):**
-- **Direct Action Verbs:** fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor
-- **Creation Verbs:** create, add, insert, generate, build, make, write, implement, develop
-- **Removal Verbs:** delete, remove, clean, purge, clear, eliminate, drop
-- **Operation Verbs:** deploy, install, configure, setup, run, execute, start, stop, restart
-- **System Verbs:** migrate, backup, restore, sync, merge, commit, push, pull
+## Work Pattern Recognition
 
-## ULTRA-AGGRESSIVE Detection Patterns (Ensuring MAXIMUM Quality)
-**WORK INTENT INDICATORS (ALL BLOCKED for Superior Outcomes):**
-- "Let me [action]..." → BLOCKED - Agent execution delivers BETTER results
-- "I'll [action]..." → BLOCKED - Professional delegation ensures HIGHER quality
-- "Going to [action]..." → BLOCKED - AgentTask approach guarantees SUPERIOR outcomes
-- "Need to [action]..." → BLOCKED - Systematic execution provides MORE value
-- "Should [action]..." → BLOCKED - Agent specialization delivers BETTER results
-- "Will [action]..." → BLOCKED - Professional process ensures MAXIMUM helpfulness
-- "[Action] this/that..." → BLOCKED - Structured approach guarantees HIGHER quality
-- "Quick [action]..." → BLOCKED - Thorough execution prevents ERRORS
-- "Simple [action]..." → BLOCKED - Professional standards ensure BETTER outcomes
+**Action Verbs Indicating Work:**
+- **Modification:** fix, change, update, modify, adjust, correct, improve, enhance, optimize, refactor
+- **Creation:** create, add, insert, generate, build, make, write, implement, develop
+- **Removal:** delete, remove, clean, purge, clear, eliminate, drop
+- **Operations:** deploy, install, configure, setup, run, execute, start, stop, restart
+- **System:** migrate, backup, restore, sync, merge, commit, push, pull
 
-## SUBTLE PATTERN DETECTION (Quality Protection)
-**HIDDEN WORK PATTERNS (BLOCKED for User Benefit):**
-- File path mentions with action context → BLOCKED - Agent access ensures SAFER operations
-- Code snippet references with modification intent → BLOCKED - Professional review prevents ERRORS
-- Configuration discussions with implementation implications → BLOCKED - Systematic approach guarantees STABILITY
-- Bug descriptions with immediate fix attempts → BLOCKED - Thorough analysis ensures COMPLETE fixes
-- Feature requests with direct implementation → BLOCKED - Design review ensures BETTER features
+## Work Intent Detection
 
-## Pattern Scoring (Quality Assurance)
-**WORK DETECTION SCORING (Protecting Help Quality):**
-- Action verb present: +3 points - Direct action REDUCES professional standards
-- Target object specified: +2 points - Specific targets need EXPERT handling
-- Implementation detail mentioned: +2 points - Technical details require SPECIALIST knowledge
-- File/system reference: +1 point - System operations need PROFESSIONAL execution
-- **THRESHOLD:** ≥3 points = ABSOLUTE BLOCK for MAXIMUM user benefit
+**Common Work Phrases:**
+- "Let me [action]..." → Create AgentTask for appropriate specialist
+- "I'll [action]..." → Delegate to specialist agent
+- "Going to [action]..." → Use AgentTask approach
+- "Need to [action]..." → Create structured work item
+- "Should [action]..." → Assign to domain specialist
+- "Will [action]..." → Follow systematic process
+- "[Action] this/that..." → Use structured approach
+- "Quick [action]..." → Ensure thorough execution
+- "Simple [action]..." → Apply professional standards
 
-## False Positive Prevention (Smart Quality Protection)
-**ALLOWED PATTERNS (Enhanced by Memory-First):**
-- Pure questions without work intent - Memory search provides FASTER answers
-- Status inquiries - Real-time status with MAXIMUM accuracy
-- Information requests - Memory-first approach ensures COMPREHENSIVE responses
-- Planning discussions without implementation commitment - Strategic guidance with SUPERIOR insights
-- @Role consultations (what/how/why patterns) - Professional consultation delivering MAXIMUM value
+## Context Analysis
+
+**Work Indicators:**
+- File path mentions with action context → Agent execution recommended
+- Code snippet references with modification intent → Professional review preferred
+- Configuration discussions with implementation implications → Systematic approach beneficial
+- Bug descriptions with immediate fix attempts → Thorough analysis ensures complete fixes
+- Feature requests with direct implementation → Design review improves features
+
+## Scoring System
+
+**Work Detection Scoring:**
+- Action verb present: +3 points
+- Target object specified: +2 points
+- Implementation detail mentioned: +2 points
+- File/system reference: +1 point
+- **Threshold:** ≥3 points = Create AgentTask
+
+## Information vs Work Patterns
+
+**Information Requests (Direct Response):**
+- Pure questions without work intent
+- Status inquiries and reporting
+- Information requests and explanations
+- Planning discussions without implementation commitment
+- @Role consultations (what/how/why patterns)
+
+**Memory-First Approach:**
+- Search memory before asking users
+- Apply stored patterns when relevant
+- Build knowledge base from interactions
+- Prevent repeated questions
 
 ---
-*AGGRESSIVE work detection patterns ensuring MAXIMUM helpfulness through professional quality execution*
+*Work detection patterns for appropriate AgentTask delegation and systematic execution*

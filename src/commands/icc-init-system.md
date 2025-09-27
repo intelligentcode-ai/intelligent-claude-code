@@ -37,7 +37,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 **Architecture:** AgentTask-driven professional execution
 
 ### 🧠 RELOADING SYSTEM BEHAVIORS
-Loading all behavioral patterns from installation/behaviors/:
+Loading all behavioral patterns from src/behaviors/:
   ✓ config-loader.md - Configuration hierarchy management
   ✓ directory-structure.md - Project structure enforcement
   ✓ learning-team-automation.md - AgentTask learning and pattern capture

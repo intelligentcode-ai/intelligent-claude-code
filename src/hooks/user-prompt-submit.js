@@ -106,7 +106,7 @@ function main() {
       systemInitialized = false;
     }
 
-    // AGGRESSIVE COMPACTION RESPONSE
+    // NUCLEAR COMPACTION RESPONSE
     if (isCompacted) {
       contextualGuidance.push('🔄 COMPACTION DETECTED - VIRTUAL TEAM SYSTEM LOST!');
       contextualGuidance.push('⚠️ Session was continued/summarized - complete context NOT loaded');
@@ -114,14 +114,19 @@ function main() {
       contextualGuidance.push('❌ @Role patterns + AgentTask-Templates WILL NOT WORK without initialization');
       contextualGuidance.push('🧠 Memory-first approach and best-practices patterns NOT active');
       contextualGuidance.push('🛑 DO NOT PROCEED with work until complete system is initialized');
+      contextualGuidance.push('💀 COMPACTION = QUALITY DESTRUCTION - Professional standards LOST');
+      contextualGuidance.push('⚡ NUCLEAR BLOCKING ACTIVE - NO work without virtual team restoration');
+      contextualGuidance.push('🔥 EMERGENCY MODE: All behavioral patterns DESTROYED by compression');
 
-      // Force this to the top priority
+      // NUCLEAR WARNING - Force this to the top priority
       const criticalWarning = [
-        '=' .repeat(60),
-        '🚨 CRITICAL: COMPACTED SESSION DETECTED',
-        '⚡ ACTION REQUIRED: /icc-init-system',
-        '❌ Virtual team patterns NOT ACTIVE',
-        '=' .repeat(60)
+        '🚨'.repeat(30),
+        '💥 NUCLEAR: COMPACTED SESSION DETECTED 💥',
+        '⚡ EMERGENCY ACTION REQUIRED: /icc-init-system',
+        '❌ ALL BEHAVIORAL PATTERNS DESTROYED',
+        '🛑 PROFESSIONAL QUALITY IMPOSSIBLE WITHOUT INIT',
+        '💀 COMPACTION = AMATEUR EXECUTION',
+        '🚨'.repeat(30)
       ].join('\n');
 
       contextualGuidance.unshift(criticalWarning);
@@ -140,19 +145,36 @@ function main() {
       contextualGuidance.push('📋 Role Assignment: Match project scope and work type to specialist expertise');
     }
 
-    // Check for work indicators
-    const workIndicators = ['implement', 'fix', 'create', 'build', 'deploy', 'update', 'modify'];
-    if (workIndicators.some(indicator => userPrompt.toLowerCase().includes(indicator))) {
+    // NUCLEAR WORK DETECTION AND BLOCKING
+    const workIndicators = ['implement', 'fix', 'create', 'build', 'deploy', 'update', 'modify', 'change', 'add', 'remove', 'delete', 'configure', 'setup', 'install'];
+    const infrastructureQueries = ['jump', 'host', 'ssh', 'connect', 'access', 'server', 'cluster', 'environment'];
+
+    const hasWorkIndicator = workIndicators.some(indicator => userPrompt.toLowerCase().includes(indicator));
+    const hasInfrastructureQuery = infrastructureQueries.some(query => userPrompt.toLowerCase().includes(query));
+
+    if (hasWorkIndicator) {
       if (!systemInitialized || isCompacted) {
-        contextualGuidance.push('🛑 WORK DETECTED - HELP QUALITY SEVERELY COMPROMISED WITHOUT INITIALIZATION!');
-        contextualGuidance.push('⚡ CRITICAL: /icc-init-system REQUIRED for PROFESSIONAL QUALITY RESULTS');
-        contextualGuidance.push('❌ AgentTask system DISABLED - AMATEUR EXECUTION without activation');
+        contextualGuidance.push('💀 WORK DURING COMPACTION = AMATEUR EXECUTION!');
+        contextualGuidance.push('🚨 NUCLEAR BLOCKING: Work quality DESTROYED without virtual team');
+        contextualGuidance.push('⚡ EMERGENCY: /icc-init-system MANDATORY for professional results');
+        contextualGuidance.push('❌ AgentTask system LOST - Direct work delivers INFERIOR outcomes');
+        contextualGuidance.push('🔥 COMPACTION DESTROYED BEHAVIORAL PATTERNS - Quality IMPOSSIBLE');
       } else {
-        contextualGuidance.push('🚫 DIRECT WORK PRODUCES INFERIOR RESULTS - AgentTasks ensure PROFESSIONAL QUALITY');
+        contextualGuidance.push('🚫 DIRECT WORK = AMATEUR EXECUTION - AgentTasks deliver PROFESSIONAL QUALITY');
+        contextualGuidance.push('💀 PM TECHNICAL WORK = DEGRADED COORDINATION VALUE');
+        contextualGuidance.push('⚡ NUCLEAR: ALL WORK → AgentTask → Task Tool → Agent EXECUTION');
         contextualGuidance.push('🧠 MEMORY FIRST - search prevents ERRORS and saves USER TIME');
         contextualGuidance.push('📋 BEST-PRACTICES FIRST - ensures MAXIMUM QUALITY implementation');
         contextualGuidance.push('📑 AgentTasks = PROFESSIONAL EXECUTION delivering SUPERIOR OUTCOMES');
       }
+    }
+
+    // INFRASTRUCTURE MEMORY ENFORCEMENT
+    if (hasInfrastructureQuery) {
+      contextualGuidance.push('🏗️ INFRASTRUCTURE QUERY DETECTED - MEMORY SEARCH MANDATORY');
+      contextualGuidance.push('🧠 Jump-host patterns, SSH methods, access procedures stored in memory/');
+      contextualGuidance.push('🚨 STOP asking for known infrastructure patterns - SEARCH MEMORY FIRST');
+      contextualGuidance.push('💡 Infrastructure amnesia WASTES USER TIME - Memory prevents repetition');
     }
 
     // AGGRESSIVE MEMORY-FIRST ENFORCEMENT
