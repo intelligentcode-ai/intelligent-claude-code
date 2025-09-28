@@ -62,21 +62,47 @@ Dynamic specialist architect creation:
 - Never use generic @Architect - precision required
 - Unlimited specialist creation based on technology expertise needs
 
+## Work Complexity Thresholds
+
+**MANDATORY:** Work complexity determines breakdown approach:
+
+**≤5 points (Direct AgentTask)**:
+- Create AgentTask directly with nano/tiny template
+- No story creation needed
+- Immediate execution via Task tool
+
+**6+ points (Story Creation Required)**:
+- MUST create Story file first in stories/ directory
+- Story gets broken down into multiple nano/tiny AgentTasks
+- All AgentTasks ≤5 points each - no exceptions
+- Stories enable coordination for medium+ complexity work
+
 ## AgentTask Generation
 
-Size management:
-- All stories broken into nano/tiny AgentTasks ≤5 points only
-- No large AgentTasks: All work broken into multiple nano/tiny AgentTasks ≤5 points each
+Size management with story threshold:
+- **≤5 points**: Direct AgentTask creation (nano/tiny templates)
+- **6+ points**: Story creation → Breakdown into nano/tiny AgentTasks ≤5 points
 - Maximum AgentTask size: 5 points (tiny) - no exceptions
-- Sequential numbering: AgentTask-001, AgentTask-002, AgentTask-003 under same parent story
+- Sequential numbering: STORY-001-AGENTTASK-001, STORY-001-AGENTTASK-002 under parent story
 
-Auto-breakdown process:
-1. Analyze complexity: Calculate total story complexity points
-2. Sequential thinking: Use mcp__sequential-thinking__sequentialthinking for story analysis with project context
-3. Breakdown enforcement: Decompose into nano/tiny AgentTasks ≤5 points using sequential thinking
-4. Generate sub-AgentTasks: Each ≤5 points with specific focus and project scope awareness
-5. Sequential numbering: Under same parent with dependencies documented
-6. Fail-safe: If auto-breakdown fails, block with manual breakdown request
+Auto-breakdown process for 6+ point work:
+1. **Story Creation**: Create Story file documenting complete requirements
+2. **Complexity Analysis**: Calculate total story complexity points
+3. **Sequential Thinking**: Use mcp__sequential-thinking__sequentialthinking for story analysis with project context
+4. **Breakdown Enforcement**: Decompose into nano/tiny AgentTasks ≤5 points using sequential thinking
+5. **In-Memory AgentTask Generation**: Generate AgentTasks in memory (not as files)
+6. **Sequential Execution**: Execute AgentTasks one by one via Task tool
+7. **Dependency Management**: Handle dependencies between AgentTasks
+8. **Fail-safe**: If auto-breakdown fails, block with manual breakdown request
+
+## In-Memory AgentTask Pattern
+
+**For Story Breakdown (6+ points)**:
+- AgentTasks generated in memory, not as files
+- Each AgentTask contains complete context for isolated execution
+- Sequential execution via Task tool with full project context
+- All AgentTasks inherit story context and requirements
+- Memory-based coordination prevents file system clutter
 
 ## Story Selection
 
