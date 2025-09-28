@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.9.0] - 2025-09-28
+
+### Changed
+- **🏗️ ARCHITECTURAL TRANSFORMATION**: Complete transition from file-based to in-memory AgentTask execution model
+- **⚡ STREAMLINED EXECUTION**: AgentTasks now generated and executed directly in memory without file system operations
+- **🧹 SIMPLIFIED WORKFLOW**: Removed file-based AgentTask storage, directory management, and file lifecycle complexity
+- **📋 ENHANCED PATTERNS**: Updated behavioral patterns to support in-memory AgentTask generation and execution
+- **🎯 FOCUSED OPERATIONS**: AgentTasks created as structured objects and passed directly to agents via Task tool
+
+### Improved
+- **src/behaviors/agenttask-creation-system.md**: Updated for in-memory AgentTask generation and validation
+- **src/behaviors/agenttask-execution.md**: Streamlined for direct agent execution without file operations
+- **src/behaviors/story-breakdown.md**: Enhanced for in-memory workflow with improved role coordination
+- **src/behaviors/directory-structure.md**: Updated to reflect simplified directory requirements
+- **src/behaviors/naming-numbering-system.md**: Adapted for in-memory AgentTask identification patterns
+
+### Enhanced
+- **CLAUDE.md**: Updated system overview to reflect architectural changes and in-memory execution model
+- **Execution Model**: Simplified from "User → AgentTask File → Agent" to "User → In-Memory AgentTask → Agent"
+- **Performance**: Reduced file system overhead and improved execution speed through memory-based operations
+
 ## [8.8.8] - 2025-09-27
 
 ### Improved
