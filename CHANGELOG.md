@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.15] - 2025-10-01
+
+### Fixed
+- **Ansible Messages**: Updated hook registration messages to accurately reflect both SessionStart and UserPromptSubmit hooks
+- **Installation Summary**: Clarified that both compaction detection and behavioral guidance are active
+
 ## [8.8.14] - 2025-10-01
 
 ### Added
