@@ -69,17 +69,14 @@ function main() {
     // Detect context compaction or session resumption
     if (reason === 'compact' || reason === 'resume') {
       const guidance = [
-        '🔄 Session Continuation Detected',
+        '🔄 CONTEXT COMPACTION DETECTED - VIRTUAL TEAM SYSTEM LOST!',
         '',
-        'Virtual team system requires re-initialization after context compaction.',
-        'Run /icc-init-system to restore @Role patterns and AgentTask templates.',
+        '⚠️ Session was continued/summarized - complete context NOT loaded',
+        '🚨 MANDATORY: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!',
         '',
-        'System capabilities reactivated:',
-        '  • @Role communication patterns',
-        '  • AgentTask-driven execution',
-        '  • Memory-first approach',
-        '  • Best-practices integration',
-        '  • Educational reminder system'
+        '❌ @Role patterns + AgentTask-Templates NOT loaded',
+        '🧠 Memory-first approach and best-practices patterns NOT active',
+        '🛑 System must be reloaded from disk before proceeding with work'
       ].join('\n');
 
       const output = {
