@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.16] - 2025-10-01
+
+### Fixed
+- **Critical SessionStart Hook Bug**: Fixed blocking issue where hook logged to file instead of stdout, causing compaction process to hang indefinitely
+- **Hook Output**: All exit paths now correctly output JSON to stdout (console.log) instead of only to log file
+- **Safety Timeout**: Added 5-second timeout ensuring hook always exits even if code path fails
+
+### Changed
+- **src/hooks/session-start.js**: Replaced log() calls with console.log() on all exit paths for proper stdout output
+- **src/hooks/session-start.js**: Added safety setTimeout() ensuring hook never runs longer than 5 seconds
+
 ## [8.8.15] - 2025-10-01
 
 ### Fixed

@@ -39,16 +39,16 @@ function main() {
           inputData = stdinBuffer;
         }
       } catch (error) {
-        log(JSON.stringify(standardOutput));
+        console.log(JSON.stringify(standardOutput));
         process.exit(0);
       }
     } else {
-      log(JSON.stringify(standardOutput));
+      console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
 
     if (!inputData.trim()) {
-      log(JSON.stringify(standardOutput));
+      console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
 
