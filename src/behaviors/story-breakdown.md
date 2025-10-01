@@ -147,6 +147,12 @@ PM work detection patterns:
 - Direct action attempts: Any Edit/Write/MultiEdit tool usage by PM role
 - Bypass patterns: "Quick change", "Simple fix", "Just need to..."
 
+**Quality Assurance:**
+- PM maintains strategic oversight
+- Technical execution by specialists ensures quality
+- Delegation enables parallel work and specialization
+- Clear separation of concerns improves outcomes
+
 ## Delegation Pattern
 
 All PM-identified work must be delegated:
