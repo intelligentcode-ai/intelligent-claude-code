@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.18] - 2025-10-01
+
+### Fixed
+- **Critical Ansible Bug**: SessionStart hook was removed during settings.json merge but never re-added, causing hook to not register
+- **Critical PowerShell Bug**: SessionStart hook registration function was missing entirely from Windows installer
+- **Hook Registration**: Both Ansible and PowerShell installers now correctly register BOTH SessionStart and UserPromptSubmit hooks
+
+### Changed
+- **ansible/roles/intelligent-claude-code/tasks/main.yml**: Line 242-244 now adds both SessionStart and UserPromptSubmit hooks to cleaned_hooks during merge
+- **install.ps1**: Added Register-SessionStartHook function (lines 221-283)
+- **install.ps1**: Added SessionStart hook registration call in Install-HookSystem (lines 346-353)
+
 ## [8.8.17] - 2025-10-01
 
 ### Fixed
