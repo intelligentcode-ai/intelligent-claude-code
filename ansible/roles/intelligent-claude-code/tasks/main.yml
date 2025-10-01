@@ -251,13 +251,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "UserPromptSubmit hook configured in settings.json - optimal behavioral guidance active"
+        msg: "SessionStart and UserPromptSubmit hooks configured in settings.json - compaction detection and behavioral guidance active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with UserPromptSubmit hook registration - behavioral guidance active"
+    msg: "Settings file created with SessionStart and UserPromptSubmit hooks - compaction detection and behavioral guidance active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -275,5 +275,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: UserPromptSubmit guidance active"
+      - "🔒 Behavioral Hooks: SessionStart compaction detection + UserPromptSubmit guidance active"
       - "🚀 Use @Role communication to activate team members"
