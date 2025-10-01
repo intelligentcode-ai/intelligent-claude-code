@@ -239,9 +239,9 @@
       set_fact:
         cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['SessionStart', 'PreToolUse', 'PostToolUse']) | items2dict }}"
 
-    - name: Add UserPromptSubmit hook to cleaned hooks
+    - name: Add SessionStart and UserPromptSubmit hooks to cleaned hooks
       set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'UserPromptSubmit': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/user-prompt-submit.js', 'timeout': 15000, 'failureMode': 'allow'}]}]})}, recursive=False) }}"
+        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'SessionStart': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/session-start.js', 'timeout': 10000, 'failureMode': 'allow'}]}], 'UserPromptSubmit': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/user-prompt-submit.js', 'timeout': 15000, 'failureMode': 'allow'}]}]})}, recursive=False) }}"
 
     - name: Write merged settings.json
       copy:
