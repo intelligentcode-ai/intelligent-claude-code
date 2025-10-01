@@ -12,15 +12,21 @@
 PM role is coordination only - no work execution permitted.
 
 PM work violations (blocked):
-- Direct file modifications (Edit/Write/MultiEdit tools)
+- Technical file modifications (src/, config/, code files)
 - Code changes or implementation work
 - System configuration or deployment
 - Bug fixes or technical corrections
-- Tool usage except Read operations and AgentTask creation
+
+PM coordination work (allowed):
+- Story file creation and editing (stories/*.md)
+- Bug report creation and editing (bugs/*.md)
+- Documentation coordination (root-level *.md files)
+- Read operations (Glob, Grep, LS, Read)
+- AgentTask creation (coordination only)
 
 PM role boundaries:
-- Allowed: Story analysis, AgentTask creation, role coordination
-- Forbidden: Work execution, file operations, technical fixes
+- Allowed: Coordination documents, story/bug files, planning, delegation
+- Forbidden: Technical work execution, source code modifications, config changes
 
 PM validation pattern:
 1. Issue found → Document in findings
@@ -123,10 +129,12 @@ Stories and bugs must not contain role assignments:
 
 ## Tool Access Control
 
-PM role has restricted tool access:
-- Allowed tools: Read, LS, Glob, Grep (information gathering only)
-- Blocked tools: Edit, Write, MultiEdit, Bash (system operations)
-- AgentTask creation: Only non-technical AgentTask generation permitted
+PM role has path-based tool access:
+- Always allowed: Read, LS, Glob, Grep (information gathering)
+- Conditionally allowed: Write/Edit for coordination files (stories/*.md, bugs/*.md, root *.md)
+- Always blocked: Write/Edit for technical files (src/, config/, code files)
+- Always blocked: Bash (system operations must be delegated)
+- AgentTask creation: Non-technical AgentTask generation permitted
 
 PM tool violation response:
 - Tool access denied for modification tools
