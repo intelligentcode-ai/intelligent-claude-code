@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
-const ContextLoader = require('./lib/context-loader');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -68,7 +67,6 @@ function main() {
 
     // Generate contextual reminders based on user prompt
     const reminderLoader = new ReminderLoader();
-    const contextLoader = new ContextLoader();
     let contextualGuidance = [];
 
 
@@ -202,9 +200,8 @@ function main() {
       contextualGuidance.push('🔍 Memory search BEFORE questions = MAXIMUM USER SATISFACTION');
     }
 
-    // Add contextual reminders from virtual-team.md and referenced files
-    const contextualReminders = contextLoader.getContextualReminders(userPrompt);
-    contextualGuidance.push(...contextualReminders);
+    // Removed broken contextual reminder extraction - caused garbage output
+    // All proper reminders come from reminders.json instead
 
     // Check for AgentTask-Template mentions or unknown templates
     const agenttaskIndicators = ['agenttask', 'template', 'nano', 'tiny', 'medium', 'large', 'mega'];
