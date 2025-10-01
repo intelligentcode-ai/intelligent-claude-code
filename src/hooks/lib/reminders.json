@@ -11,9 +11,6 @@
     "🚫 Delegate all non-retrieval and non-search related work to Agents. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
     "🧠 SEARCH MEMORY FIRST. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
     "👔 PM = COORDINATE ONLY. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🎯 AGENTS = SUPERIOR QUALITY. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🔄 CONTEXT COMPACTION DETECTED? Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "👥 @PM/@DEVELOPER/@ARCHITECT UNKNOWN? Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "📋 AGENTTASK TEMPLATES MISSING? Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!"
+    "🎯 AGENTS = SUPERIOR QUALITY. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!"
   ]
 }

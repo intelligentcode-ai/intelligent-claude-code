@@ -1,5 +1,13 @@
 {
   "hooks": {
+    "SessionStart": [{
+      "hooks": [{
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/session-start.js",
+        "timeout": 10000,
+        "failureMode": "allow"
+      }]
+    }],
     "UserPromptSubmit": [{
       "hooks": [{
         "type": "command",

@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.14] - 2025-10-01
+
+### Added
+- **SessionStart Hook**: Implements professional context compaction detection for session continuity
+- **Professional Restoration Guidance**: Clear, actionable guidance for system re-initialization after compaction
+- **Hook Deployment**: SessionStart hook deployed via Ansible with proper permissions and settings
+
+### Improved
+- **Reminder System Simplification**: Reduced reminders.json from 15 to 12 core educational reminders
+- **Focused Educational Content**: Removed compaction detection and role unknown reminders (handled by SessionStart hook)
+- **Hook Specialization**: Dedicated SessionStart hook for session continuity instead of prompt-based detection
+
+### Changed
+- **src/hooks/session-start.js**: New hook detecting reason="compact"|"resume" with professional restoration guidance
+- **ansible/roles/intelligent-claude-code/templates/settings.json.j2**: Added SessionStart hook registration
+- **src/hooks/lib/reminders.json**: Simplified to 12 core reminders focusing on AgentTask patterns and workflow
+
 ## [8.8.11] - 2025-10-01
 
 ### Improved
