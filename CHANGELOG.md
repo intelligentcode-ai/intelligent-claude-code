@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.11] - 2025-10-01
+
+### Improved
+- **Hook System Clarity**: Updated reminder suffix from "Does that make sense? If not:" to clearer "If unclear:" phrasing across all 15 educational reminders for improved comprehension and actionability
+
+### Changed
+- **~/.claude/hooks/lib/reminders.json**: Updated all 12 core reminders with clearer suffix
+- **src/hooks/lib/reminders.json**: Updated all 12 core reminders with clearer suffix
+- **Compaction Detection Reminders**: Updated 3 compaction detection reminders with consistent suffix
+
 ## [8.9.0] - 2025-09-28
 
 ### Changed
