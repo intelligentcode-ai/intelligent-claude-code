@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.17] - 2025-10-01
+
+### Fixed
+- **SessionStart Hook Guidance**: Changed guidance from command execution to file path reading - Claude Code cannot execute commands, must read files from disk
+- **Actionable Restoration**: Hook now provides actual file paths (~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md) for system re-initialization
+
+### Changed
+- **src/hooks/session-start.js**: Updated line 75 from "Run /icc-init-system" to "Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!"
+
 ## [8.8.16] - 2025-10-01
 
 ### Fixed
