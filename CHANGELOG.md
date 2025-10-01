@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.9.0] - 2025-10-01
+
+### Changed
+- **Behavioral System Consolidation**: Reduced from 22 to 16 files via deduplication
+- **virtual-team.md Enhanced**: Now includes AgentTask guidelines, PM boundaries, validation gates
+- **Files Removed**: agenttask-enforcement.md, agenttask-auto-trigger.md, validation-system.md, ultrathinking.md (content merged)
+- **Files Consolidated**: pm-role-blocking-patterns.md → story-breakdown.md, proactive-memory-behavior.md → learning-team-automation.md
+- **Result**: 27% reduction in file count, <35k total context, zero redundancy
+
 ## [8.8.18] - 2025-10-01
 
 ### Fixed
