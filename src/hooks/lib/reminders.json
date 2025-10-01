@@ -1,99 +1,15 @@
 {
   "reminders": [
-    {
-      "message": "⚡ AGENTTASKS + AGENTS = MAX HELPFULNESS!",
-      "weight": 10,
-      "category": "helpfulness-enforcement"
-    },
-    {
-      "message": "🏗️ WORK → AGENTTASK → AGENT",
-      "weight": 10,
-      "category": "core-architecture"
-    },
-    {
-      "message": "🚫 NO MAIN SCOPE WORK",
-      "weight": 9,
-      "category": "core-enforcement"
-    },
-    {
-      "message": "🧠 SEARCH MEMORY FIRST",
-      "weight": 8,
-      "category": "memory-first"
-    },
-    {
-      "message": "👔 PM = COORDINATE ONLY",
-      "weight": 8,
-      "category": "role-boundaries"
-    },
-    {
-      "message": "🎯 AGENTS = SUPERIOR QUALITY",
-      "weight": 7,
-      "category": "quality-focus"
-    },
-    {
-      "message": "📑 USE TEMPLATE HIERARCHY",
-      "weight": 7,
-      "category": "template-compliance"
-    },
-    {
-      "message": "🎭 CREATE DOMAIN SPECIALISTS",
-      "weight": 6,
-      "category": "dynamic-roles"
-    },
-    {
-      "message": "💾 STORE LEARNINGS AUTO",
-      "weight": 6,
-      "category": "learning-capture"
-    },
-    {
-      "message": "🔒 RESPECT GIT PRIVACY",
-      "weight": 6,
-      "category": "git-security"
-    },
-    {
-      "message": "📦 EMBED ALL CONTEXT",
-      "weight": 5,
-      "category": "context-embedding"
-    },
-    {
-      "message": "🎪 USE SEQUENTIAL THINKING",
-      "weight": 5,
-      "category": "analytical-thinking"
-    },
-    {
-      "message": "📋 PM+ARCHITECT BREAKDOWN",
-      "weight": 4,
-      "category": "collaboration-pattern"
-    },
-    {
-      "message": "🚨 VERSION BUMP BEFORE GIT",
-      "weight": 4,
-      "category": "workflow-order"
-    },
-    {
-      "message": "✅ VALIDATE WITH EVIDENCE",
-      "weight": 4,
-      "category": "proof-standards"
-    },
-    {
-      "message": "🎚️ RESPECT AUTONOMY LEVEL",
-      "weight": 3,
-      "category": "system-configuration"
-    },
-    {
-      "message": "🔄 CONTEXT COMPACTION? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md",
-      "weight": 10,
-      "category": "context-recovery"
-    },
-    {
-      "message": "👥 PM/DEVELOPER/ARCHITECT UNKNOWN? LOAD ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md",
-      "weight": 10,
-      "category": "context-recovery"
-    },
-    {
-      "message": "📋 AGENTTASK TEMPLATES MISSING? READ ~/.claude/modes/virtual-team.md OR .claude/modes/virtual-team.md",
-      "weight": 10,
-      "category": "context-recovery"
-    }
+    "⚡ AGENTTASKS + AGENTS = MAX HELPFULNESS! Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "🏗️ WORK → AGENTTASK → AGENT. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "📑 USE AGENTTASK TEMPLATES (nano/tiny/medium/large/mega). Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "💾 ACTIVELY STORE LEARNINGS IN MEMORY. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "🔒 RESPECT GIT PRIVACY SETTINGS. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "🚨 FOLLOW GIT WORKFLOW PROCESSES. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "🎚️ RESPECT AUTONOMY LEVEL SETTINGS. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "🚫 NO MAIN SCOPE WORK. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "🧠 SEARCH MEMORY FIRST. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "👔 PM = COORDINATE ONLY. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!",
+    "🎯 AGENTS = SUPERIOR QUALITY. Makes sense? If not, load ~/.claude/modes/virtual-team.md OR ./.claude/modes/virtual-team.md!"
   ]
 }
