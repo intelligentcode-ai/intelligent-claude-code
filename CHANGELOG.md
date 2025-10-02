@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.9.1] - 2025-10-02
+
+### Fixed
+- **SessionStart Hook Compaction Detection**: Enhanced detection logic to handle empty reason field from Claude Code
+- **Comprehensive Logging**: Added full JSON input structure logging to diagnose actual Claude Code data format
+- **Multi-Method Detection**: Implemented three detection methods (reason field, summary fields, message content keywords)
+- **Robust Fallback**: Hook now checks multiple indicators instead of relying solely on reason field
+
+### Changed
+- **src/hooks/session-start.js**: Added full input structure logging and multi-method compaction detection logic
+- **Detection Methods**: reason field check, summary/compacted/continued field check, message content keyword scanning
+- **Logging Enhancement**: Full claudeInput JSON structure logged for debugging and future improvements
+
 ## [8.9.0] - 2025-10-01
 
 ### Changed
