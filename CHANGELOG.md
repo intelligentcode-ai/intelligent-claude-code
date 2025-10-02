@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.3] - 2025-10-02
+
+### Fixed
+- **SessionStart Hook Silent Injection**: Changed from stdout to JSON hookSpecificOutput.additionalContext for truly silent context injection
+- **Context Restoration**: Hook still injects virtual-team.md content on compaction, but now silently using additionalContext field
+
+### Changed
+- **src/hooks/session-start.js**: Use hookSpecificOutput.additionalContext instead of plain stdout for silent injection
+
+### Technical Details
+- Root cause: Plain stdout output was visible in chat, not silent as documented
+- Solution: JSON hookSpecificOutput.additionalContext adds context silently without visible output
+- Impact: Context restoration still works on compaction, but output is truly silent now
+- Documentation reference: "hookSpecificOutput.additionalContext" for silent context injection
+
+---
+
 ## [8.10.1] - 2025-10-02
 
 ### Fixed
