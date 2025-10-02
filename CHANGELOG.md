@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.2] - 2025-10-02
+
+### Fixed
+- **SessionStart Hook Output**: Removed all visible output from SessionStart hook - virtual-team context is already loaded through CLAUDE.md import
+- **Silent Hook Operation**: Hook now returns JSON with suppressOutput=true for truly silent operation (no visible output to user)
+
+### Changed
+- **src/hooks/session-start.js**: Simplified hook to log compaction detection without injecting content (already available via CLAUDE.md)
+- **Context Loading**: Rely on CLAUDE.md's @~/.claude/modes/virtual-team.md import instead of hook injection
+
+### Technical Details
+- Root cause: Previous implementation output guidance text via stdout, which appeared as visible user messages
+- Solution: Return standard JSON output with suppressOutput=true, no text injection needed
+- Impact: SessionStart hook is now truly silent - no visible output during session resume/compaction
+- Context availability: virtual-team.md content already loaded through CLAUDE.md import line
+
+---
+
 ## [8.10.1] - 2025-10-02
 
 ### Fixed
