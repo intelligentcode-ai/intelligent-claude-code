@@ -66,20 +66,20 @@ function main() {
     log(JSON.stringify(claudeInput, null, 2));
     log(`=== END FULL STRUCTURE ===`);
 
-    // Get session reason from input
-    const reason = claudeInput.reason || '';
+    // Get session source from input (correct field name per documentation)
+    const source = claudeInput.source || '';
 
-    log(`SessionStart triggered with reason: ${reason}`);
+    log(`SessionStart triggered with source: ${source}`);
 
     // ENHANCED COMPACTION DETECTION
-    // Check multiple indicators since 'reason' field is often empty
+    // Check multiple indicators since 'source' field is often empty
     let isCompaction = false;
     let detectionMethod = 'none';
 
-    // Method 1: Direct reason field check
-    if (reason === 'compact' || reason === 'resume') {
+    // Method 1: Direct source field check
+    if (source === 'compact' || source === 'resume') {
       isCompaction = true;
-      detectionMethod = 'reason_field';
+      detectionMethod = 'source_field';
     }
 
     // Method 2: Check for summary or compacted field
