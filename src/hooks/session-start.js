@@ -113,7 +113,7 @@ function main() {
       const guidance = [
         '⚠️ Session was continued/summarized - complete context NOT loaded',
         '🚨 MANDATORY: Read and apply ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!',
-        'Confirm this before continuing!'
+        '✅ Confirm this before continuing!'
       ].join('\n');
 
       const output = {
