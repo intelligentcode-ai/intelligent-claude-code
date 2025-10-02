@@ -1,16 +1,14 @@
 {
   "reminders": [
-    "⚡ AGENTTASKS + AGENTS = MAX HELPFULNESS! If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🏗️ WORK → AGENTTASK → AGENT. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "📑 USE AGENTTASK TEMPLATES (nano/tiny/medium/large/mega). If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "💾 WRITE TO MEMORY AFTER SUCCESSFUL EXECUTION. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🔒 RESPECT GIT PRIVACY SETTINGS. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🚨 FOLLOW GIT WORKFLOW PROCESSES. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "📚 RESPECT BEST-PRACTICES (if defined). If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🎚️ RESPECT AUTONOMY LEVEL SETTINGS. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🚫 Delegate all non-retrieval and non-search related work to Agents. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🧠 SEARCH MEMORY FIRST. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "👔 PM = COORDINATE ONLY. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!",
-    "🎯 AGENTS = SUPERIOR QUALITY. If unclear: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!"
+    "🚀 INTELLIGENT CLAUDE CODE AND VIRTUAL-TEAM.md: MAX HELPFULNESS!",
+    "⚡ WORK → AGENTTASK → AGENT = SUPERIOR QUALITY!",
+    "📑 USE AGENTTASK TEMPLATES (nano/tiny/medium/large/mega).",
+    "💾 WRITE TO MEMORY AFTER SUCCESSFUL EXECUTION.",
+    "🔒 RESPECT GIT PRIVACY SETTINGS.",
+    "🚨 FOLLOW GIT WORKFLOW PROCESSES.",
+    "📚 RESPECT BEST-PRACTICES (if defined).",
+    "🎚️ RESPECT AUTONOMY LEVEL SETTINGS.",
+    "🚫 DELEGATE ALL WORK TO AGENTS.",
+    "🧠 SEARCH MEMORY FIRST."
   ]
 }
