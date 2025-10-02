@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.1] - 2025-10-02
+
+### Fixed
+- **Hook Output Visibility**: Fixed SessionStart and UserPromptSubmit hooks to use plain stdout instead of JSON hookSpecificOutput for silent context injection
+- **Hook Reminders**: Removed unnecessary "If unclear: Read..." suffixes from reminder messages (context now auto-injected via SessionStart hook)
+
+### Changed
+- **src/hooks/session-start.js**: Changed from JSON hookSpecificOutput to plain stdout output for silent injection (only visible in CTRL-R transcript mode)
+- **src/hooks/user-prompt-submit.js**: Changed from JSON hookSpecificOutput to plain stdout output for silent injection
+- **src/hooks/lib/reminders.json**: Removed "If unclear..." suffixes, consolidated duplicate reminders, reduced from 12 to 10 focused reminders
+
+### Technical Details
+- Root cause: Using `hookSpecificOutput.additionalContext` in JSON format makes output visible in chat
+- Solution: Plain stdout with exit 0 = silent injection to Claude (only visible in CTRL-R transcript mode per Claude Code documentation)
+- Impact: Hook output no longer clutters user's chat during session resume/compaction
+- Documentation reference: "stdout is added to the context" for SessionStart/UserPromptSubmit hooks
+
 ## [8.9.5] - 2025-10-02
 
 ### Fixed
