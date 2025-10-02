@@ -108,55 +108,15 @@ function main() {
 
     log(`Compaction detection: ${isCompaction} (method: ${detectionMethod})`);
 
-    // Detect context compaction or session resumption
+    // When compaction is detected, log it but don't output anything visible
+    // The virtual-team.md content is already loaded through CLAUDE.md's @~/.claude/modes/virtual-team.md import
     if (isCompaction) {
-      // Try to read virtual-team.md content to inject directly
-      let virtualTeamContent = null;
-      const possiblePaths = [
-        path.join(os.homedir(), '.claude', 'modes', 'virtual-team.md'),
-        path.join(claudeInput.cwd || '.', '.claude', 'modes', 'virtual-team.md')
-      ];
-
-      for (const filePath of possiblePaths) {
-        try {
-          if (fs.existsSync(filePath)) {
-            virtualTeamContent = fs.readFileSync(filePath, 'utf8');
-            log(`Successfully read virtual-team.md from: ${filePath}`);
-            break;
-          }
-        } catch (error) {
-          log(`Failed to read ${filePath}: ${error.message}`);
-        }
-      }
-
-      let guidance;
-      if (virtualTeamContent) {
-        // Inject actual file content
-        guidance = [
-          '⚠️ Session was continued/summarized - virtual team system reloaded from disk',
-          '',
-          '--- VIRTUAL TEAM SYSTEM CONTENT ---',
-          virtualTeamContent,
-          '--- END VIRTUAL TEAM SYSTEM ---'
-        ].join('\n');
-      } else {
-        // Fallback to instruction message
-        guidance = [
-          '⚠️ Session was continued/summarized - complete context NOT loaded',
-          '🚨 MANDATORY: Read and apply ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!',
-          '✅ Confirm this before continuing!'
-        ].join('\n');
-      }
-
-      // For SessionStart: stdout with exit 0 = silent injection (only visible in CTRL-R transcript mode)
-      // Don't use JSON hookSpecificOutput - that makes it visible in chat!
-      log(`Compaction detected via ${detectionMethod} - ${virtualTeamContent ? 'injecting virtual-team.md content' : 'injecting restoration guidance'}`);
-      console.log(guidance);
-      process.exit(0);
+      log(`Compaction detected via ${detectionMethod} - virtual-team context already loaded through CLAUDE.md`);
+    } else {
+      log(`Normal session start - no action required`);
     }
 
-    // Normal session start - no guidance needed
-    log(`Normal session start - no action required`);
+    // Always return silent output (suppressOutput: true means no visible output to user)
     console.log(JSON.stringify(standardOutput));
     process.exit(0);
 
