@@ -61,13 +61,55 @@ function main() {
       process.exit(0);
     }
 
+    // LOG FULL INPUT STRUCTURE FOR DEBUGGING
+    log(`=== FULL CLAUDE INPUT STRUCTURE ===`);
+    log(JSON.stringify(claudeInput, null, 2));
+    log(`=== END FULL STRUCTURE ===`);
+
     // Get session reason from input
     const reason = claudeInput.reason || '';
 
     log(`SessionStart triggered with reason: ${reason}`);
 
-    // Detect context compaction or session resumption
+    // ENHANCED COMPACTION DETECTION
+    // Check multiple indicators since 'reason' field is often empty
+    let isCompaction = false;
+    let detectionMethod = 'none';
+
+    // Method 1: Direct reason field check
     if (reason === 'compact' || reason === 'resume') {
+      isCompaction = true;
+      detectionMethod = 'reason_field';
+    }
+
+    // Method 2: Check for summary or compacted field
+    if (claudeInput.summary || claudeInput.compacted || claudeInput.continued) {
+      isCompaction = true;
+      detectionMethod = 'summary_field';
+    }
+
+    // Method 3: Check message content for compaction indicators
+    const messageContent = JSON.stringify(claudeInput).toLowerCase();
+    const compactionKeywords = [
+      'continued from previous',
+      'conversation was summarized',
+      'ran out of context',
+      'session was compacted',
+      'context limit reached'
+    ];
+
+    for (const keyword of compactionKeywords) {
+      if (messageContent.includes(keyword)) {
+        isCompaction = true;
+        detectionMethod = 'message_content';
+        break;
+      }
+    }
+
+    log(`Compaction detection: ${isCompaction} (method: ${detectionMethod})`);
+
+    // Detect context compaction or session resumption
+    if (isCompaction) {
       const guidance = [
         '🔄 CONTEXT COMPACTION DETECTED - VIRTUAL TEAM SYSTEM LOST!',
         '',
@@ -88,7 +130,7 @@ function main() {
         }
       };
 
-      log(`Compaction detected - injecting restoration guidance`);
+      log(`Compaction detected via ${detectionMethod} - injecting restoration guidance`);
       console.log(JSON.stringify(output));
       process.exit(0);
     }
