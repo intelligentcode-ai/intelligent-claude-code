@@ -123,7 +123,7 @@ function main() {
 
       const output = {
         continue: true,
-        suppressOutput: true,
+        suppressOutput: false,
         hookSpecificOutput: {
           hookEventName: "SessionStart",
           additionalContext: guidance
