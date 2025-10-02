@@ -111,14 +111,9 @@ function main() {
     // Detect context compaction or session resumption
     if (isCompaction) {
       const guidance = [
-        '🔄 CONTEXT COMPACTION DETECTED - VIRTUAL TEAM SYSTEM LOST!',
-        '',
         '⚠️ Session was continued/summarized - complete context NOT loaded',
-        '🚨 MANDATORY: Read ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!',
-        '',
-        '❌ @Role patterns + AgentTask-Templates NOT loaded',
-        '🧠 Memory-first approach and best-practices patterns NOT active',
-        '🛑 System must be reloaded from disk before proceeding with work'
+        '🚨 MANDATORY: Read and apply ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!',
+        'Confirm this before continuing!'
       ].join('\n');
 
       const output = {
