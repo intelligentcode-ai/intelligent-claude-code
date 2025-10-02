@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.9.5] - 2025-10-02
+
+### Fixed
+- **SessionStart Hook Field Name**: Corrected hook to use `source` field instead of `reason` (per Claude Code documentation)
+- **Hook Message Simplification**: Removed unverifiable claims about system state loss
+- **Transcript Visibility**: Changed `suppressOutput` to `false` for user visibility in transcript mode
+- **Message Consistency**: Added icon to confirmation line for visual consistency
+
+### Changed
+- **src/hooks/session-start.js**: Updated to check `claudeInput.source` instead of `claudeInput.reason`
+- **Hook Output Format**: Set `suppressOutput: false` to ensure compaction warnings are visible
+- **Guidance Message**: Simplified from 8 lines to 3 concise, actionable lines
+- **Detection Method**: Now correctly detects `source: 'compact'` and `source: 'resume'` events
+
+### Technical Details
+- Root cause: Hook was checking wrong field name (`reason` vs `source`) since all previous versions
+- Evidence: Log shows `source: "resume"` in actual Claude Code input, not `reason`
+- Result: Hook now reliably detects compaction with `source_field` detection method
+- Message: Clear 3-line guidance with warning, mandatory action, and confirmation request
+
 ## [8.9.1] - 2025-10-02
 
 ### Fixed
