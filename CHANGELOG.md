@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.4] - 2025-10-03
+
+### Added
+- **PreToolUse Hook Skeleton**: Created initial PreToolUse hook with input parsing and logging infrastructure
+- **Hook Input Parsing**: Support for multiple input sources (argv, env, stdin)
+- **Logging Infrastructure**: Automatic daily log files in ~/.claude/logs/
+
+### Changed
+- **src/hooks/pretooluse.js**: New hook file with skeleton implementation ready for validation logic
+
+### Technical Details
+- Hook parses JSON input containing tool, parameters.file_path, and context
+- Logging to ~/.claude/logs/YYYY-MM-DD-pretooluse.log with timestamps
+- Default behavior: allow all operations (exit 0) until validation logic added
+- Error handling prevents crashes, defaults to allowing operations
+- Preparation for AGENTTASK-002 (allowlist loading), 003 (path validation), 004 (blocking logic)
+
+---
+
 ## [8.10.3] - 2025-10-02
 
 ### Fixed
