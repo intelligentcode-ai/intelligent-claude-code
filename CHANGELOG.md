@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.10] - 2025-10-03
+
+### Changed
+- **Story Status Updates**: Marked STORY-001 through STORY-004 as COMPLETED
+- **Documentation Cleanup**: Updated story completion dates for historical tracking
+
+### Technical Details
+- Updated 9 story files with COMPLETED status and completion date 2025-10-03
+- Stories include: in-memory AgentTask architecture, context detection, hook infrastructure, MCP integration, Windows installer, PRB rename, role permissions, git worktrees, and error guidance
+- All completed stories preserved in stories/ directory for historical reference
+
+---
+
 ## [8.10.9] - 2025-10-03
 
 ### Changed
