@@ -122,18 +122,23 @@ PM role focuses on coordination and delegation. All technical work must be assig
         <path>Root *.md files</path>
       </path_allowlist>
     </operation>
+    <operation type="bash_commands">
+      <read_only>git status, git log, git diff, ls, find, cat, grep, sleep, date</read_only>
+      <coordination_paths>mkdir/touch/echo for allowed paths only</coordination_paths>
+    </operation>
   </allowed_operations>
 
   <blocked_operations id="PM-TECH-BLOCK">
     <operation type="technical_work">No file edits in src/, lib/, config/, tests/</operation>
     <operation type="implementation">No code changes or bug fixes</operation>
     <operation type="deployment">No system configuration or operations</operation>
+    <operation type="bash_blocked">git commit, npm, docker, deploy, build commands</operation>
   </blocked_operations>
 
   <delegation_required id="PM-DELEGATE">
     <pattern>Issue found → Document → Create AgentTask → Assign specialist</pattern>
     <pattern>Technical work detected → Create AgentTask for specialist</pattern>
-    <pattern>File operations needed → Delegate to appropriate agent</pattern>
+    <pattern>Blocked bash command → Create AgentTask for specialist</pattern>
   </delegation_required>
 </pm_constraints>
 
