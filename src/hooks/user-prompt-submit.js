@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
+const { selectRelevantConstraints } = require('./lib/constraint-selector');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -230,6 +231,18 @@ function main() {
       } else {
         contextualGuidance.push(randomReminder);
       }
+    }
+
+    // Generate constraint display with error handling
+    try {
+      const constraintIDs = selectRelevantConstraints(userPrompt);
+      if (constraintIDs && constraintIDs.length > 0) {
+        const constraintDisplay = `🎯 Active Constraints: ${constraintIDs.join(', ')}`;
+        contextualGuidance.push(constraintDisplay);
+      }
+    } catch (error) {
+      log(`Constraint selection error: ${error.message}`);
+      // Silently fail - don't block hook execution
     }
 
     // Build comprehensive context
