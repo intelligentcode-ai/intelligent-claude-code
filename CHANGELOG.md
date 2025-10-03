@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.11] - 2025-10-03
+
+### Added
+- **XML Schema Design**: Complete XML schema structure for critical enforcement rules
+- **Constraint ID Registry**: 18 unique constraint IDs across 5 categories (PM, AgentTask, Directory, Role, Meta)
+- **Constraint Documentation**: Comprehensive constraint registry with descriptions and usage guidelines
+
+### Technical Details
+- Created src/docs/xml-schema-design.md with hierarchical XML structure
+- Created src/docs/xml-constraint-registry.md with constraint ID index and naming convention
+- Defined PM constraints (PM-CORE, PM-FILE-OPS, PM-TECH-BLOCK, PM-DELEGATE)
+- Defined AgentTask requirements (AGENTTASK-CORE, AGENTTASK-TEMPLATE, AGENTTASK-PLACEHOLDERS, AGENTTASK-CONTEXT, AGENTTASK-SIZE)
+- Defined Directory structure (DIR-STRUCTURE, PATH-ALLOWLIST, PATH-BLOCKLIST, NAMING-STD, SUMMARY-REDIRECT)
+- Defined Role assignment (ROLE-CORE, ROLE-TWO-FACTOR, ROLE-SPECIALIST)
+- Defined Meta-rule (RECURSIVE-DISPLAY for constraint display enforcement)
+- Integration notes for STORY-007 hook implementation included
+- Machine-parseable XML enables automated validation and self-documenting enforcement
+
+---
+
 ## [8.10.10] - 2025-10-03
 
 ### Changed
