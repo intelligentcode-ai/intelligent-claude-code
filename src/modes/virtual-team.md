@@ -145,7 +145,7 @@ PM role focuses on coordination and delegation. All technical work must be assig
 ## Meta-Rules
 
 <meta_rule id="RECURSIVE-DISPLAY" enforcement="mandatory">
-  <display_pattern>After each response: 🎯 Active Constraints: [ID-1, ID-2, ID-3]</display_pattern>
+  <display_pattern>Display 2-3 context-relevant constraints with full text in XML format after each response</display_pattern>
   <purpose>Anchor attention through recency - self-enforcing constraint display</purpose>
 </meta_rule>
 

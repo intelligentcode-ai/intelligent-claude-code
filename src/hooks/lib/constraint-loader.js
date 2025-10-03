@@ -89,26 +89,10 @@ function loadConstraintIDs() {
 function extractConstraintText(content, position, constraintId) {
   // Extract text from XML element containing this ID
   const searchStart = Math.max(0, position - 500);
-  const searchEnd = Math.min(content.length, position + 1000);
+  const searchEnd = Math.min(content.length, position + 2000);
   const searchArea = content.substring(searchStart, searchEnd);
 
-  // Find the element with this ID and extract its content
-  const idPattern = new RegExp(`id="${constraintId}"[^>]*>([\\s\\S]*?)<`, 'i');
-  const match = searchArea.match(idPattern);
-
-  if (match && match[1]) {
-    // Clean up the extracted text
-    const text = match[1]
-      .replace(/<[^>]+>/g, '') // Remove any nested XML tags
-      .replace(/\s+/g, ' ')     // Normalize whitespace
-      .trim();
-
-    if (text && text.length > 0) {
-      return text;
-    }
-  }
-
-  // Fallback: Try to find display_pattern or purpose elements
+  // Strategy 1: Look for <display_pattern> or <purpose> child elements first (most specific)
   const displayPattern = searchArea.match(/<display_pattern>([^<]+)<\/display_pattern>/i);
   if (displayPattern && displayPattern[1]) {
     return displayPattern[1].trim();
@@ -117,6 +101,27 @@ function extractConstraintText(content, position, constraintId) {
   const purposePattern = searchArea.match(/<purpose>([^<]+)<\/purpose>/i);
   if (purposePattern && purposePattern[1]) {
     return purposePattern[1].trim();
+  }
+
+  // Strategy 2: For nested elements, extract ALL child text content
+  const idMatch = searchArea.match(new RegExp(`id="${constraintId}"[^>]*>([\\s\\S]*?)</`, 'i'));
+  if (idMatch && idMatch[1]) {
+    // Extract text from immediate child elements
+    const childTexts = [];
+    const childPattern = />([^<]+)</g;
+    let childMatch;
+
+    while ((childMatch = childPattern.exec(idMatch[1])) !== null) {
+      const text = childMatch[1].trim();
+      if (text && text.length > 0 && !text.match(/^\s*$/)) {
+        childTexts.push(text);
+      }
+    }
+
+    if (childTexts.length > 0) {
+      // Return first non-empty child text (usually the most relevant)
+      return childTexts[0];
+    }
   }
 
   // Ultimate fallback
