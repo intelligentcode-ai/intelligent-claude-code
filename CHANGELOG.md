@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.8] - 2025-10-03
+
+### Added
+- **PreToolUse Hook Configuration**: Added PreToolUse hook to ~/.claude/settings.json with 5000ms timeout for validation
+- **Comprehensive Documentation**: Created src/hooks/README-pretooluse.md with complete usage guide
+- **Installation Guide**: Hook configuration instructions in README-pretooluse.md
+- **Testing Instructions**: Test cases for PM blocking, allowlist validation, and summary redirection
+- **Troubleshooting Guide**: Common issues and resolution steps for hook behavior
+
+### Changed
+- **~/.claude/settings.json**: Added PreToolUse hook configuration pointing to src/hooks/pretooluse.js
+- **Documentation Organization**: Complete hook documentation with overview, configuration, testing, and troubleshooting
+
+### Technical Details
+- PreToolUse hook configured with absolute path to src/hooks/pretooluse.js
+- Timeout set to 5000ms (5 seconds) for configuration loading and validation
+- Documentation includes PM role allowlist, technical directory blocking, summary file redirection
+- Testing instructions cover PM blocking, PM allowing, and summary redirection scenarios
+- Troubleshooting covers hook configuration, false positives, and PM role detection issues
+- Related documentation cross-references for STORY-005, directory-structure, and story-breakdown
+
+---
+
 ## [8.10.7] - 2025-10-03
 
 ### Added
