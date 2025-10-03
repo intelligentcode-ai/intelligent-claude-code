@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.11.0] - 2025-10-03
+
+### Added
+- **XML Critical Rules Conversion (STORY-006)**: Converted critical enforcement rules in virtual-team.md to XML format for improved adherence
+- **Constraint ID System**: Implemented machine-parseable constraint IDs enabling validation tooling and recursive display
+- **RECURSIVE-DISPLAY Meta-Rule**: Added self-enforcing constraint display pattern for attention anchoring
+- **XML Schema Documentation**: Created comprehensive schema reference with hierarchical structure and examples
+- **Constraint Registry**: Established central registry of 18 constraint IDs across 5 categories
+
+### Changed
+- **PM Constraints**: Converted to XML with constraint IDs (PM-CORE, PM-FILE-OPS, PM-TECH-BLOCK, PM-DELEGATE)
+- **AgentTask Requirements**: Converted to XML with constraint IDs (AGENTTASK-CORE, AGENTTASK-TEMPLATE, AGENTTASK-PLACEHOLDERS, AGENTTASK-CONTEXT, AGENTTASK-SIZE, AGENTTASK-ROLES)
+- **File Length Optimization**: Reduced virtual-team.md from 240+ lines to exactly 150 lines (37.5% reduction)
+- **Hybrid Approach**: Implemented markdown headers with XML constraints for readability and parseability
+
+### Technical Details
+- Created xml-schema-design.md (395 lines) with complete schema reference
+- Created xml-constraint-registry.md (359 lines) with all 18 constraint IDs
+- Added Meta-Rules section with RECURSIVE-DISPLAY enforcement
+- Optimized Validation Gates and Analytical Frameworks sections for space
+- Validation report shows 98% compliance with one minor registration gap
+
+### Documentation
+- Added comprehensive validation report in summaries/STORY-006-AGENTTASK-005-validation-report-2025-10-03.md
+- Schema documentation covers PM, AgentTask, Directory, Role, and Meta-Rule categories
+- Registry provides usage patterns for developers, hooks, and documentation
+
+---
+
 ## [8.10.13] - 2025-10-03
 
 ### Changed
