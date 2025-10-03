@@ -7,6 +7,10 @@ const { loadConstraintIDs } = require('./constraint-loader');
  * relevant constraints for recursive display in UserPromptSubmit hook.
  */
 
+// Track recently displayed constraints for rotation (in-memory)
+let recentlyDisplayed = [];
+const MAX_RECENT = 10; // Remember last 10 displayed constraint IDs
+
 /**
  * Detect active role from conversation context
  *
@@ -124,10 +128,10 @@ function calculateRelevance(constraint, activeRole, workType) {
 }
 
 /**
- * Select 2-3 most relevant constraint IDs based on conversation context
+ * Select 2-3 most relevant constraints based on conversation context
  *
  * @param {string} context - Recent conversation text
- * @returns {Array<string>} Array of 2-3 most relevant constraint IDs
+ * @returns {Array<Object>} Array of 2-3 most relevant constraint objects with id and text
  */
 function selectRelevantConstraints(context) {
   const constraints = loadConstraintIDs();
@@ -139,18 +143,42 @@ function selectRelevantConstraints(context) {
   const activeRole = detectActiveRole(context);
   const workType = classifyWorkType(context);
 
-  // Score all constraints
-  const scored = constraints.map(constraint => ({
-    id: constraint.id,
-    score: calculateRelevance(constraint, activeRole, workType),
-    category: constraint.category
-  }));
+  // Score all constraints with rotation penalty
+  const scored = constraints.map(constraint => {
+    let score = calculateRelevance(constraint, activeRole, workType);
+
+    // Apply rotation penalty: reduce score if recently displayed
+    const recentIndex = recentlyDisplayed.indexOf(constraint.id);
+    if (recentIndex !== -1) {
+      // More recent = higher penalty
+      const recencyPenalty = (MAX_RECENT - recentIndex) * 0.5;
+      score -= recencyPenalty;
+    }
+
+    return {
+      id: constraint.id,
+      text: constraint.text,
+      score: score,
+      category: constraint.category
+    };
+  });
 
   // Sort by score (highest first), take top 3
   const selected = scored
     .sort((a, b) => b.score - a.score)
     .slice(0, 3)
-    .map(c => c.id);
+    .map(c => ({ id: c.id, text: c.text }));
+
+  // Update recently displayed tracking
+  selected.forEach(constraint => {
+    // Remove if already in list
+    recentlyDisplayed = recentlyDisplayed.filter(id => id !== constraint.id);
+    // Add to front of list
+    recentlyDisplayed.unshift(constraint.id);
+  });
+
+  // Keep only last MAX_RECENT
+  recentlyDisplayed = recentlyDisplayed.slice(0, MAX_RECENT);
 
   return selected;
 }
