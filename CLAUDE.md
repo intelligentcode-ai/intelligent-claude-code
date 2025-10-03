@@ -408,13 +408,45 @@ your-project/
         └── reminders.json    # System reminders
 ```
 
+### Constraint Display Customization
+
+The hook system also displays **context-aware constraint enforcement rules** in structured XML format:
+
+**Display Example:**
+```xml
+🎯 Active Constraints:
+<constraints>
+  <constraint id="RECURSIVE-DISPLAY">After each response, display 2-3 relevant constraint IDs</constraint>
+  <constraint id="AGENTTASK-CORE">Use hierarchy, resolve placeholders, embed configuration</constraint>
+  <constraint id="PM-DELEGATE">Issue found → Document → Create AgentTask → Assign specialist</constraint>
+</constraints>
+```
+
+**Customization Hierarchy** (highest to lowest priority):
+1. **Project-local**: `.claude/modes/virtual-team.md` (project-specific constraints)
+2. **User-global**: `~/.claude/modes/virtual-team.md` (personal constraint overrides)
+
+**How to Customize:**
+Create `.claude/modes/virtual-team.md` in your project with custom XML constraints:
+
+```xml
+<pm_constraints id="PM-CORE">
+  <allowed_operations id="PM-FILE-OPS">
+    <operation type="coordination">Story breakdown and AgentTask creation</operation>
+  </allowed_operations>
+</pm_constraints>
+```
+
+Constraint text is extracted directly from the XML structure—no hardcoded mappings needed!
+
 ### Benefits
 
 - **Non-Intrusive Learning**: Gentle reinforcement without blocking workflow
 - **Pattern Internalization**: Helps users learn architectural patterns naturally
-- **Customizable**: Project teams can add their own standards and reminders
+- **Customizable**: Project teams can add their own standards, reminders, and constraints
 - **Preserved Customizations**: Personal and project customizations survive system updates
 - **Quality Culture**: Reinforces best practices and team standards
+- **Context-Aware Display**: Shows relevant constraints based on conversation context
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
@@ -427,3 +459,7 @@ NEVER proactively create documentation files (*.md) or README files. Only create
 - Bug-Fixes only yield build number changes.
 - No behavioural file should be longer than 125 lines!
 - NO CODE OR PSEUDO-CODE WHATSOEVER!
+
+
+# Remember
+**NEVER** work outside this project! **NEVER** write in ~/.claude and subdirectories!

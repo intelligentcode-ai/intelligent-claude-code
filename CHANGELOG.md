@@ -14,19 +14,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Constraint Loader Module**: Created constraint-loader.js to extract and cache constraint IDs from virtual-team.md
 - **Constraint Selector Module**: Implemented intelligent relevance scoring for context-aware constraint selection
 - **Hook Integration**: Added constraint display to UserPromptSubmit hook with graceful error handling
+- **Configuration Hierarchy**: Added support for project-local constraint customization via .claude/modes/virtual-team.md
 - **Comprehensive Validation**: Created detailed validation report documenting implementation quality and deployment requirements
 
 ### Changed
 - **UserPromptSubmit Hook**: Enhanced to display 2-3 most relevant constraint IDs based on conversation context
-- **Display Pattern**: Added "Active Constraints: [ID-1, ID-2, ID-3]" format to hook output
+- **Display Pattern**: Outputs structured XML with full constraint text instead of plain text IDs
+- **Dynamic Text Extraction**: Constraint text extracted directly from XML structure, removing hardcoded mappings
+- **Configuration Hierarchy**: Supports project → user → system hierarchy for constraint definitions
 - **Performance Optimization**: Implemented 15-minute cache for constraint loading (reduces overhead to <1ms)
 
 ### Technical Details
-- Created src/hooks/lib/constraint-loader.js (148 lines) with XML parsing and caching
+- Created src/hooks/lib/constraint-loader.js (190+ lines) with XML parsing, hierarchy support, and caching
 - Created src/hooks/lib/constraint-selector.js (164 lines) with relevance scoring algorithm
-- Modified src/hooks/user-prompt-submit.js to integrate constraint display (lines 236-246)
+- Modified src/hooks/user-prompt-submit.js to output XML-formatted constraints (lines 236-250)
 - Performance: <5ms total overhead (well under 20ms budget)
 - Smart relevance scoring: Role matching (+10), work type matching (+5), meta-rules (+3)
+- Configuration paths: project/.claude/modes/virtual-team.md → ~/.claude/modes/virtual-team.md
 
 ### Documentation
 - Added comprehensive validation report in summaries/STORY-007-AGENTTASK-004-validation-report-2025-10-03.md
