@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.5] - 2025-10-03
+
+### Added
+- **Configuration Loading**: PreToolUse hook now loads directory paths from CLAUDE.md/config.md
+- **Configuration Caching**: 5-minute TTL cache prevents repeated file I/O operations
+- **Path Resolution**: Dynamic allowlist/blocklist based on configured directory paths
+
+### Changed
+- **src/hooks/pretooluse.js**: Added loadConfiguration() and getConfiguredPaths() functions
+- **Configuration Hierarchy**: Checks CLAUDE.md, config.md, .claude/config.md in priority order
+- **Path Normalization**: Automatic trailing slash removal for consistent path handling
+
+### Technical Details
+- Configuration parsing supports YAML frontmatter and markdown key:value pairs
+- Default values (stories, bugs, memory, docs, src, tests, config) applied when config missing
+- Cache invalidation after 5 minutes ensures fresh configuration when updated
+- Allowlist includes: story_path, bug_path, memory_path, docs_path, agenttasks
+- Blocklist includes: src_path, test_path, config_path, lib
+- Preparation for AGENTTASK-003 (path validation) and AGENTTASK-004 (blocking logic)
+
+---
+
 ## [8.10.4] - 2025-10-03
 
 ### Added
