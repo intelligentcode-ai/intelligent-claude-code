@@ -233,11 +233,15 @@ function main() {
       }
     }
 
-    // Generate constraint display with error handling
+    // Generate XML-formatted constraint display with full text
     try {
-      const constraintIDs = selectRelevantConstraints(userPrompt);
-      if (constraintIDs && constraintIDs.length > 0) {
-        const constraintDisplay = `🎯 Active Constraints: ${constraintIDs.join(', ')}`;
+      const constraints = selectRelevantConstraints(userPrompt);
+      if (constraints && constraints.length > 0) {
+        const constraintXML = constraints.map(c =>
+          `  <constraint id="${c.id}">${c.text}</constraint>`
+        ).join('\n');
+
+        const constraintDisplay = `🎯 Active Constraints:\n<constraints>\n${constraintXML}\n</constraints>`;
         contextualGuidance.push(constraintDisplay);
       }
     } catch (error) {
