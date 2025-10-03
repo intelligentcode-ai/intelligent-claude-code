@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.6] - 2025-10-03
+
+### Added
+- **PM Role Detection**: PreToolUse hook detects PM role from context and conversation
+- **Allowlist Validation**: PM operations validated against allowlist of coordination directories
+- **Blocklist Enforcement**: PM blocked from modifying technical directories (src, tests, config, lib)
+- **Root Markdown Files**: PM can edit root-level markdown files (CLAUDE.md, README.md, etc.)
+
+### Changed
+- **src/hooks/pretooluse.js**: Added isPMRole(), isPathInAllowlist(), isPathInBlocklist(), validatePMOperation() functions
+- **Validation Logic**: Integrated PM validation into main hook flow with clear error messages
+- **Exit Codes**: Returns exit 1 for blocked operations with actionable guidance
+
+### Technical Details
+- PM role detection checks hookInput.context.role and conversation text for @PM mentions
+- Allowlist validation checks if file path starts with allowlist directories or is root *.md
+- Blocklist takes precedence over allowlist for explicit denial
+- Default fail-safe: non-PM roles or unclear context allows operations
+- Blocked operations return JSON with continue:false and guidance message
+- Logging shows all validation decisions for debugging
+
+---
+
 ## [8.10.5] - 2025-10-03
 
 ### Added

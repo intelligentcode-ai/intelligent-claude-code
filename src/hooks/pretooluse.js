@@ -127,6 +127,87 @@ function main() {
     };
   }
 
+  function isPMRole(hookInput) {
+    // Check context for PM role
+    if (hookInput.context && hookInput.context.role) {
+      return hookInput.context.role.includes('@PM');
+    }
+
+    // Check for PM indicators in conversation context
+    if (hookInput.conversation) {
+      const conversationText = JSON.stringify(hookInput.conversation).toLowerCase();
+      return conversationText.includes('@pm');
+    }
+
+    // Default to non-PM (fail-safe: allow operations)
+    return false;
+  }
+
+  function isPathInAllowlist(filePath, allowlist) {
+    // Check if file is in root and ends with .md
+    const fileName = path.basename(filePath);
+    const dirName = path.dirname(filePath);
+
+    // Allow root *.md files (CLAUDE.md, README.md, etc.)
+    if ((dirName === '.' || dirName === '/') && fileName.endsWith('.md')) {
+      return true;
+    }
+
+    // Check if path starts with any allowlist directory
+    for (const allowedPath of allowlist) {
+      if (filePath.startsWith(allowedPath + '/') || filePath === allowedPath) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function isPathInBlocklist(filePath, blocklist) {
+    // Check if path starts with any blocklist directory
+    for (const blockedPath of blocklist) {
+      if (filePath.startsWith(blockedPath + '/') || filePath === blockedPath) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function validatePMOperation(filePath, tool, paths) {
+    const { allowlist, blocklist } = paths;
+
+    // Check blocklist first (explicit denial)
+    if (isPathInBlocklist(filePath, blocklist)) {
+      const blockedDir = blocklist.find(p => filePath.startsWith(p + '/'));
+      return {
+        allowed: false,
+        message: `🚫 PM role is coordination only - create AgentTask for technical work
+
+Blocked: ${filePath}
+Reason: PM cannot modify files in ${blockedDir}/
+
+Allowed directories: ${allowlist.join(', ')}, root *.md files`
+      };
+    }
+
+    // Check allowlist (explicit permission)
+    if (isPathInAllowlist(filePath, allowlist)) {
+      return { allowed: true };
+    }
+
+    // Not in allowlist = blocked
+    return {
+      allowed: false,
+      message: `🚫 PM role is coordination only - create AgentTask for technical work
+
+Blocked: ${filePath}
+Reason: File path not in PM allowlist
+
+Allowed directories: ${allowlist.join(', ')}, root *.md files`
+    };
+  }
+
   try {
     // Parse input from multiple sources
     let inputData = '';
@@ -159,19 +240,27 @@ function main() {
 
     log(`Tool: ${tool}, FilePath: ${filePath}`);
 
-    // Load configuration and paths
-    const config = loadConfiguration();
-    const paths = getConfiguredPaths();
+    // Check if PM role and validate
+    if (isPMRole(hookInput)) {
+      log(`PM role detected, validating file path: ${filePath}`);
 
-    log(`Allowlist: ${JSON.stringify(paths.allowlist)}`);
-    log(`Blocklist: ${JSON.stringify(paths.blocklist)}`);
+      const paths = getConfiguredPaths();
+      const validation = validatePMOperation(filePath, tool, paths);
 
-    // TODO: Add validation logic here (AGENTTASK-003, 004)
-    // - AGENTTASK-003: Path matching and validation
-    // - AGENTTASK-004: Block Edit/Write operations outside allowlist
+      if (!validation.allowed) {
+        log(`PM operation BLOCKED: ${filePath}`);
+        console.log(JSON.stringify({
+          continue: false,
+          message: validation.message
+        }));
+        process.exit(1);
+      }
 
-    // Default: allow operation
-    log('Default behavior: allowing operation');
+      log(`PM operation ALLOWED: ${filePath}`);
+    }
+
+    // Non-PM role or allowed operation
+    log('Operation allowed');
     console.log(JSON.stringify({ continue: true }));
     process.exit(0);
 
