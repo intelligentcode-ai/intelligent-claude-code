@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.13] - 2025-10-03
+
+### Changed
+- **AgentTask Requirements XML Conversion**: Converted AgentTask requirements to XML format in virtual-team.md
+- **Hybrid Approach Implementation**: AgentTask guidelines now use markdown headers with embedded XML structure
+- **Constraint ID Integration**: Applied constraint IDs from registry (AGENTTASK-CORE, AGENTTASK-TEMPLATE, AGENTTASK-PLACEHOLDERS, AGENTTASK-CONTEXT, AGENTTASK-SIZE, AGENTTASK-ROLES)
+
+### Technical Details
+- Converted AgentTask Guidelines section to XML format with constraint IDs
+- Preserved markdown section header and core workflow description for readability
+- Applied template compliance rules with placeholder resolution and config embedding requirements
+- Defined context completeness requirements with 5 essential elements
+- Defined size limits for direct execution, story creation, and breakdown targets
+- Defined role separation between main agent and specialist agents
+- Maintained creation process steps in markdown for clarity
+- Optimized Validation Gates section to meet 150-line file limit
+- File length maintained at 149 lines with improved machine parseability
+
+---
+
 ## [8.10.12] - 2025-10-03
 
 ### Changed
