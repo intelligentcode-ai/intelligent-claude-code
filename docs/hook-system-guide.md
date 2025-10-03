@@ -121,6 +121,155 @@ The system uses a unified reminder format optimized for UserPromptSubmit hook:
 - `learning_culture`: Memory storage and pattern capture
 - `execution_validation`: Proof of work requirements
 
+## Constraint Display System
+
+The hook system includes **context-aware constraint enforcement** that displays relevant behavioral rules in structured XML format based on conversation context.
+
+### How It Works
+
+The system analyzes user prompts to select and display 2-3 most relevant constraint rules:
+
+**Display Example:**
+```xml
+🎯 Active Constraints:
+<constraints>
+  <constraint id="RECURSIVE-DISPLAY">After each response, display 2-3 relevant constraint IDs</constraint>
+  <constraint id="AGENTTASK-CORE">Use hierarchy, resolve placeholders, embed configuration</constraint>
+  <constraint id="PM-DELEGATE">Issue found → Document → Create AgentTask → Assign specialist</constraint>
+</constraints>
+```
+
+### Context-Aware Selection
+
+The system uses intelligent relevance scoring to select constraints:
+
+**Role Detection:**
+```javascript
+// Detects @Role mentions in conversation
+const activeRole = detectActiveRole(userPrompt);
+// Example: @PM → Shows PM-related constraints
+// Example: @Developer → Shows AgentTask execution constraints
+```
+
+**Work Type Classification:**
+```javascript
+// Classifies work type from keywords
+const workType = classifyWorkType(userPrompt);
+// coordination → PM constraints
+// implementation → AgentTask constraints
+// testing → Quality constraints
+```
+
+**Relevance Scoring:**
+- Role match: +10 points
+- Work type match: +5 points
+- Meta-rules: +3 points
+- Top 2-3 constraints displayed
+
+### System Components
+
+```
+src/hooks/lib/
+├── constraint-loader.js      # Loads constraints from virtual-team.md
+├── constraint-selector.js    # Intelligent relevance scoring
+└── reminders.json           # Educational reminders
+```
+
+### Constraint Hierarchy
+
+The system supports multi-level constraint customization:
+
+**Priority Order (highest → lowest):**
+1. **Project-local**: `.claude/modes/virtual-team.md` (project-specific constraints)
+2. **User-global**: `~/.claude/modes/virtual-team.md` (personal overrides)
+
+### Customizing Constraints
+
+#### Project-Level Constraints
+
+Create `.claude/modes/virtual-team.md` in your project with custom XML constraints:
+
+```xml
+<pm_constraints id="PM-CORE">
+  <allowed_operations id="PM-FILE-OPS">
+    <operation type="coordination">Story breakdown and AgentTask creation</operation>
+    <operation type="file_operations">
+      <path_allowlist>
+        <path>stories/</path>
+        <path>bugs/</path>
+        <path>docs/</path>
+      </path_allowlist>
+    </operation>
+  </allowed_operations>
+
+  <blocked_operations id="PM-TECH-BLOCK">
+    <operation type="technical_work">No file edits in src/, lib/, config/</operation>
+  </blocked_operations>
+
+  <delegation_required id="PM-DELEGATE">
+    <pattern>Issue found → Document → Create AgentTask → Assign specialist</pattern>
+  </delegation_required>
+</pm_constraints>
+```
+
+#### User-Global Constraints
+
+Create `~/.claude/modes/virtual-team.md` for personal constraint preferences:
+
+```xml
+<custom_constraints id="MY-WORKFLOW">
+  <review_pattern id="CODE-REVIEW">
+    <requirement>All code changes require peer review before merge</requirement>
+  </review_pattern>
+</custom_constraints>
+```
+
+### Dynamic Text Extraction
+
+Constraint text is **extracted directly from XML structure**—no hardcoded mappings:
+
+**Extraction Process:**
+1. Load virtual-team.md from hierarchy (project → user → system)
+2. Parse XML to find elements with `id="CONSTRAINT-ID"` attributes
+3. Extract text content from XML elements
+4. Fall back to `<display_pattern>` or `<purpose>` elements
+5. Cache results for 15 minutes (performance optimization)
+
+**Example XML Structure:**
+```xml
+<meta_rule id="RECURSIVE-DISPLAY" enforcement="mandatory">
+  <display_pattern>After each response: 🎯 Active Constraints: [ID-1, ID-2, ID-3]</display_pattern>
+  <purpose>Anchor attention through recency - self-enforcing constraint display</purpose>
+</meta_rule>
+```
+
+### Performance Optimization
+
+**Caching Strategy:**
+- 15-minute TTL cache for constraint loading
+- <1ms response time on cache hits
+- <5ms total overhead (well under 20ms budget)
+- Merged constraints from all hierarchy levels
+
+### Available Constraint IDs
+
+**AgentTask Requirements:**
+- `AGENTTASK-CORE`: Template compliance and configuration embedding
+- `AGENTTASK-TEMPLATE`: Use hierarchy: nano/tiny/medium/large/mega templates
+- `AGENTTASK-PLACEHOLDERS`: All [.*] patterns must be resolved before execution
+- `AGENTTASK-CONTEXT`: Embed CLAUDE.md, config, memory, best practices
+- `AGENTTASK-SIZE`: ≤5 points direct execution, ≥6 points becomes STORY first
+- `AGENTTASK-ROLES`: Main agent creates, specialist agents execute via Task tool
+
+**PM Role Constraints:**
+- `PM-CORE`: Coordination and delegation only, all technical work to specialists
+- `PM-FILE-OPS`: Allowed: stories/, bugs/, memory/, docs/, root *.md files
+- `PM-TECH-BLOCK`: Blocked: src/, lib/, config/, tests/ file operations
+- `PM-DELEGATE`: Issue found → Document → Create AgentTask → Assign specialist
+
+**Meta-Rules:**
+- `RECURSIVE-DISPLAY`: After each response, display 2-3 relevant constraint IDs
+
 ## Configuration and Customization
 
 ### Dynamic Loading System
