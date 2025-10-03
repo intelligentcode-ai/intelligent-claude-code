@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.9] - 2025-10-03
+
+### Changed
+- **Ansible Installation**: Added pretooluse.js to executable hooks list
+- **Ansible Hook Merge**: Integrated PreToolUse hook into settings.json merge logic
+- **PowerShell Installation**: Added PreToolUse hook registration function
+- **PowerShell Hook System**: Integrated PreToolUse hook deployment during installation
+- **Uninstall Scripts**: Updated to handle PreToolUse hook unregistration
+- **Test Scripts**: Updated hook validation tests to check for pretooluse.js
+
+### Technical Details
+- Ansible playbook includes pretooluse.js in executable permissions list
+- PreToolUse hook merged into settings.json with 5000ms timeout
+- PowerShell Register-PreToolUseHook function matches Ansible behavior
+- Hook registration occurs during Install-HookSystem execution
+- Uninstall properly removes PreToolUse hook from settings.json
+- Test suite validates PreToolUse hook presence and removal
+- Consistent hook configuration across Linux and Windows installations
+
+---
+
 ## [8.10.8] - 2025-10-03
 
 ### Added
