@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.12] - 2025-10-03
+
+### Changed
+- **PM Constraints XML Conversion**: Converted PM role constraints to XML format in virtual-team.md
+- **Hybrid Approach Implementation**: PM guidelines now use markdown headers with embedded XML structure
+- **Constraint ID Integration**: Applied constraint IDs from registry (PM-CORE, PM-FILE-OPS, PM-TECH-BLOCK, PM-DELEGATE)
+
+### Technical Details
+- Converted PM Role Guidelines section to XML format with constraint IDs
+- Preserved markdown section header and introductory text for readability
+- Applied path_allowlist with config_key references for dynamic path resolution
+- Defined allowed operations (coordination, file operations with path allowlist)
+- Defined blocked operations (technical work, implementation, deployment)
+- Defined delegation patterns for issue handling and work assignment
+- Maintained file length within limits and improved machine parseability
+
+---
+
 ## [8.10.11] - 2025-10-03
 
 ### Added
