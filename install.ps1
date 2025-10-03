@@ -282,6 +282,69 @@ function Register-SessionStartHook {
     }
 }
 
+function Register-PreToolUseHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering PreToolUse hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.PreToolUse) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PreToolUse" -Value @() -Force
+        }
+
+        # Convert PreToolUse to array if it's not already
+        if ($Settings.hooks.PreToolUse -isnot [array]) {
+            $Settings.hooks.PreToolUse = @($Settings.hooks.PreToolUse)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.PreToolUse | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        timeout = 5000
+                        type = "command"
+                    }
+                )
+            }
+
+            # Add to PreToolUse array
+            $Settings.hooks.PreToolUse += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ PreToolUse hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  PreToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register PreToolUse hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
 function Install-HookSystem {
     param(
         [Parameter(Mandatory=$true)]
@@ -359,6 +422,15 @@ function Install-HookSystem {
                 Register-UserPromptSubmitHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
                 Write-Warning "  user-prompt-submit.js hook not found, skipping UserPromptSubmit registration"
+            }
+
+            # Register PreToolUse hook
+            $PreToolUseHookPath = Join-Path $HooksPath "pretooluse.js"
+            if (Test-Path $PreToolUseHookPath) {
+                $HookCommand = "node `"$PreToolUseHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  pretooluse.js hook not found, skipping PreToolUse registration"
             }
 
         } else {
@@ -588,14 +660,14 @@ function Uninstall-IntelligentClaudeCode {
     # Unregister hooks from settings.json before removing files
     $SettingsPath = Join-Path $Paths.InstallPath "settings.json"
 
-    # Unregister pre-tool-use hook
-    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pre-tool-use.js"
+    # Unregister pretooluse hook
+    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pretooluse.js"
     if (Test-Path $PreToolUseHookPath) {
         $HookCommand = "node `"$PreToolUseHookPath`""
         Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
     }
 
-    # Unregister post-tool-use hook
+    # Unregister post-tool-use hook (legacy)
     $PostToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "post-tool-use.js"
     if (Test-Path $PostToolUseHookPath) {
         $HookCommand = "node `"$PostToolUseHookPath`""
@@ -715,14 +787,14 @@ function Test-Installation {
 
                     $PreHookFound = $false
                     foreach ($Hook in $PreToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pretooluse.js*") {
                             $PreHookFound = $true
                             break
                         }
                     }
 
                     if (-not $PreHookFound) {
-                        throw "FAIL: Pre-tool-use hook not found in settings.json"
+                        throw "FAIL: PreToolUse hook not found in settings.json"
                     }
                     Write-Host "  ✅ PreToolUse hook registered in settings.json" -ForegroundColor Green
                 } else {
@@ -798,8 +870,8 @@ function Test-Installation {
                     }
 
                     foreach ($Hook in $PreToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
-                            throw "FAIL: Pre-tool-use hook still registered in settings.json after uninstall"
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pretooluse.js*") {
+                            throw "FAIL: PreToolUse hook still registered in settings.json after uninstall"
                         }
                     }
                 }
