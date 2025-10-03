@@ -24,31 +24,47 @@ function loadConstraintIDs() {
   }
 
   try {
-    // Load virtual-team.md from standard location
-    const virtualTeamPath = path.join(process.env.HOME, '.claude', 'modes', 'virtual-team.md');
+    // Define hierarchy: project → user → system
+    const paths = [
+      path.join(process.cwd(), '.claude', 'modes', 'virtual-team.md'),  // Project-local
+      path.join(process.env.HOME, '.claude', 'modes', 'virtual-team.md') // User-global (system)
+    ];
 
-    if (!fs.existsSync(virtualTeamPath)) {
-      console.error(`Constraint loader: virtual-team.md not found at ${virtualTeamPath}`);
-      return [];
+    // Load constraints from all available sources
+    const allConstraints = new Map(); // Use Map to merge by ID (last wins)
+
+    // Process in reverse order (system → user → project) so higher priority overrides
+    for (let i = paths.length - 1; i >= 0; i--) {
+      const virtualTeamPath = paths[i];
+
+      if (!fs.existsSync(virtualTeamPath)) {
+        continue; // Skip missing files
+      }
+
+      const content = fs.readFileSync(virtualTeamPath, 'utf8');
+
+      // Extract constraint IDs from XML attributes using regex
+      const idRegex = /id="([A-Z][A-Z0-9-]+)"/g;
+      let match;
+
+      while ((match = idRegex.exec(content)) !== null) {
+        const constraintId = match[1];
+        const category = inferCategory(content, match.index);
+        const text = extractConstraintText(content, match.index, constraintId);
+
+        // Store with source path for debugging
+        allConstraints.set(constraintId, {
+          id: constraintId,
+          category: category,
+          text: text,
+          position: match.index,
+          source: virtualTeamPath
+        });
+      }
     }
 
-    const content = fs.readFileSync(virtualTeamPath, 'utf8');
-
-    // Extract constraint IDs from XML attributes using regex
-    const constraints = [];
-    const idRegex = /id="([A-Z][A-Z0-9-]+)"/g;
-    let match;
-
-    while ((match = idRegex.exec(content)) !== null) {
-      const constraintId = match[1];
-      const category = inferCategory(content, match.index);
-
-      constraints.push({
-        id: constraintId,
-        category: category,
-        position: match.index
-      });
-    }
+    // Convert Map to Array
+    const constraints = Array.from(allConstraints.values());
 
     // Cache results
     constraintCache = constraints;
@@ -60,6 +76,51 @@ function loadConstraintIDs() {
     console.error('Constraint loader error:', error.message);
     return [];
   }
+}
+
+/**
+ * Extract human-readable constraint text from XML structure
+ *
+ * @param {string} content - Full file content
+ * @param {number} position - Position of constraint ID
+ * @param {string} constraintId - The constraint ID
+ * @returns {string} Human-readable constraint text
+ */
+function extractConstraintText(content, position, constraintId) {
+  // Extract text from XML element containing this ID
+  const searchStart = Math.max(0, position - 500);
+  const searchEnd = Math.min(content.length, position + 1000);
+  const searchArea = content.substring(searchStart, searchEnd);
+
+  // Find the element with this ID and extract its content
+  const idPattern = new RegExp(`id="${constraintId}"[^>]*>([\\s\\S]*?)<`, 'i');
+  const match = searchArea.match(idPattern);
+
+  if (match && match[1]) {
+    // Clean up the extracted text
+    const text = match[1]
+      .replace(/<[^>]+>/g, '') // Remove any nested XML tags
+      .replace(/\s+/g, ' ')     // Normalize whitespace
+      .trim();
+
+    if (text && text.length > 0) {
+      return text;
+    }
+  }
+
+  // Fallback: Try to find display_pattern or purpose elements
+  const displayPattern = searchArea.match(/<display_pattern>([^<]+)<\/display_pattern>/i);
+  if (displayPattern && displayPattern[1]) {
+    return displayPattern[1].trim();
+  }
+
+  const purposePattern = searchArea.match(/<purpose>([^<]+)<\/purpose>/i);
+  if (purposePattern && purposePattern[1]) {
+    return purposePattern[1].trim();
+  }
+
+  // Ultimate fallback
+  return 'Constraint enforcement rule';
 }
 
 /**
