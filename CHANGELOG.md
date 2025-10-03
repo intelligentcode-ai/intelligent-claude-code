@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.10.7] - 2025-10-03
+
+### Added
+- **Summary File Detection**: PreToolUse hook detects summary files in project root (SUMMARY*, REPORT*, VALIDATION*, ANALYSIS*)
+- **Automatic Redirection**: Summary files automatically redirected to summaries/ directory with suggested path
+- **Directory Auto-Creation**: summaries/ directory created automatically when needed
+- **Case-Insensitive Matching**: Works with all case variations (summary.md, Summary.md, SUMMARY.md)
+
+### Changed
+- **src/hooks/pretooluse.js**: Added isSummaryFile() and validateSummaryFile() functions
+- **Validation Order**: Summary file validation executes before PM role check (applies to ALL roles)
+- **Root File Organization**: Summary files blocked in root to maintain clean project structure
+
+### Technical Details
+- Summary patterns: SUMMARY, REPORT, VALIDATION, ANALYSIS (case-insensitive)
+- Blocking only applies to root files, not subdirectories (stories/SUMMARY.md allowed)
+- summaries/ directory auto-created with recursive mkdir when first summary file blocked
+- Exit code 1 for blocked operations with clear redirection guidance
+- Suggested path format: summaries/[original-filename]
+
+---
+
 ## [8.10.6] - 2025-10-03
 
 ### Added

@@ -174,6 +174,51 @@ function main() {
     return false;
   }
 
+  function isSummaryFile(filePath) {
+    const fileName = path.basename(filePath);
+    const dirName = path.dirname(filePath);
+
+    // Only check files in project root
+    if (dirName !== '.' && dirName !== '/') {
+      // Check if it's an absolute path to project root
+      const isAbsoluteRoot = dirName.split('/').pop() === path.basename(process.cwd());
+      if (!isAbsoluteRoot) {
+        return false;
+      }
+    }
+
+    // Check if filename matches summary patterns (case-insensitive)
+    const upperFileName = fileName.toUpperCase();
+    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS'];
+
+    return summaryPatterns.some(pattern => upperFileName.startsWith(pattern));
+  }
+
+  function validateSummaryFile(filePath) {
+    if (!isSummaryFile(filePath)) {
+      return { allowed: true };
+    }
+
+    const fileName = path.basename(filePath);
+    const suggestedPath = `summaries/${fileName}`;
+
+    // Ensure summaries directory exists
+    if (!fs.existsSync('summaries')) {
+      fs.mkdirSync('summaries', { recursive: true });
+      log('Created summaries/ directory for summary file redirection');
+    }
+
+    return {
+      allowed: false,
+      message: `📋 Summary files belong in ./summaries/ directory
+
+Blocked: ${filePath}
+Suggested: ${suggestedPath}
+
+Please create summary files in the summaries/ directory to keep project root clean.`
+    };
+  }
+
   function validatePMOperation(filePath, tool, paths) {
     const { allowlist, blocklist } = paths;
 
@@ -239,6 +284,17 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     }
 
     log(`Tool: ${tool}, FilePath: ${filePath}`);
+
+    // Check for summary files in root (applies to ALL roles)
+    const summaryValidation = validateSummaryFile(filePath);
+    if (!summaryValidation.allowed) {
+      log(`Summary file blocked: ${filePath}`);
+      console.log(JSON.stringify({
+        continue: false,
+        message: summaryValidation.message
+      }));
+      process.exit(1);
+    }
 
     // Check if PM role and validate
     if (isPMRole(hookInput)) {
