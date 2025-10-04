@@ -138,18 +138,20 @@ function main() {
     }
 
     try {
-      // Read last 100 lines of transcript (covers recent agent context)
+      // Read last 200 lines of transcript (increased for deeper agent context)
       const content = fs.readFileSync(transcriptPath, 'utf8');
-      const lines = content.trim().split('\n').slice(-100);
+      const lines = content.trim().split('\n').slice(-200);
 
       // Parse entries and find Task tool invocations
       const taskUUIDs = new Set();
       const entries = [];
+      const entryMap = new Map();
 
       for (const line of lines) {
         try {
           const entry = JSON.parse(line);
           entries.push(entry);
+          entryMap.set(entry.uuid, entry);
 
           // Track Task tool UUIDs (agent spawns)
           if (entry.message?.content?.[0]?.name === 'Task') {
@@ -167,24 +169,37 @@ function main() {
         return true;
       }
 
-      // Check last 20 entries to see if we're in agent execution context
-      // by checking if entries link to Task tools via parentUuid
-      for (let i = entries.length - 1; i >= Math.max(0, entries.length - 20); i--) {
-        const entry = entries[i];
-
-        // Direct link: entry is Task tool or immediate child
-        if (taskUUIDs.has(entry.uuid) || taskUUIDs.has(entry.parentUuid)) {
-          log(`Agent context detected: entry ${entry.uuid} linked to Task`);
+      // Helper function to check if UUID chain leads to Task tool
+      function hasTaskInChain(uuid, visited = new Set()) {
+        // Prevent infinite loops
+        if (visited.has(uuid)) {
           return false;
         }
+        visited.add(uuid);
 
-        // 2-level deep: check parent's parent
-        if (entry.parentUuid) {
-          const parent = entries.find(e => e.uuid === entry.parentUuid);
-          if (parent && taskUUIDs.has(parent.parentUuid)) {
-            log(`Agent context detected: parent chain leads to Task`);
-            return false;
-          }
+        // Direct Task tool match
+        if (taskUUIDs.has(uuid)) {
+          return true;
+        }
+
+        // Get entry and check parent chain
+        const entry = entryMap.get(uuid);
+        if (entry && entry.parentUuid) {
+          return hasTaskInChain(entry.parentUuid, visited);
+        }
+
+        return false;
+      }
+
+      // Check last 100 entries (expanded from 20) for agent execution context
+      // by walking parentUuid chains back to Task tools
+      for (let i = entries.length - 1; i >= Math.max(0, entries.length - 100); i--) {
+        const entry = entries[i];
+
+        // Check if this entry's parentUuid chain leads to a Task tool
+        if (entry.parentUuid && hasTaskInChain(entry.parentUuid)) {
+          log(`Agent context detected: entry ${entry.uuid} chain leads to Task tool`);
+          return false;
         }
       }
 
