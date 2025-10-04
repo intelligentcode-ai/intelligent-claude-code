@@ -315,10 +315,13 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     if (!summaryValidation.allowed) {
       log(`Summary file blocked: ${filePath}`);
       console.log(JSON.stringify({
-        continue: false,
-        message: summaryValidation.message
+        hookSpecificOutput: {
+          hookEventName: 'PreToolUse',
+          permissionDecision: 'deny',
+          permissionDecisionReason: summaryValidation.message
+        }
       }));
-      process.exit(1);
+      process.exit(2);
     }
 
     // Check if PM role and validate
@@ -333,10 +336,13 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
         if (!bashValidation.allowed) {
           log(`Bash command BLOCKED: ${command}`);
           console.log(JSON.stringify({
-            continue: false,
-            message: bashValidation.message
+            hookSpecificOutput: {
+              hookEventName: 'PreToolUse',
+              permissionDecision: 'deny',
+              permissionDecisionReason: bashValidation.message
+            }
           }));
-          process.exit(1);
+          process.exit(2);
         }
 
         log(`Bash command ALLOWED: ${command}`);
@@ -352,10 +358,13 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
         if (!validation.allowed) {
           log(`File operation BLOCKED: ${filePath}`);
           console.log(JSON.stringify({
-            continue: false,
-            message: validation.message
+            hookSpecificOutput: {
+              hookEventName: 'PreToolUse',
+              permissionDecision: 'deny',
+              permissionDecisionReason: validation.message
+            }
           }));
-          process.exit(1);
+          process.exit(2);
         }
 
         log(`File operation ALLOWED: ${filePath}`);
