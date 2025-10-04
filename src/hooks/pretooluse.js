@@ -128,19 +128,41 @@ function main() {
   }
 
   function isPMRole(hookInput) {
-    // Check context for PM role
-    if (hookInput.context && hookInput.context.role) {
-      return hookInput.context.role.includes('@PM');
+    // PM is ALWAYS active in main scope per system configuration
+    // Main agent = PM coordination role by default
+    return true;
+  }
+
+  function validateBashCommand(command) {
+    // Block build/deploy/system commands in PM scope
+    const blockedCommands = [
+      'npm', 'yarn', 'make', 'docker', 'cargo', 'mvn', 'gradle', 'go',
+      'kubectl', 'terraform', 'ansible', 'helm', 'systemctl', 'service',
+      'apt', 'yum', 'brew', 'pip', 'gem', 'composer'
+    ];
+
+    // Extract first word (command name) from command string
+    const firstWord = command.trim().split(/\s+/)[0];
+
+    // Check if command is blocked
+    for (const blocked of blockedCommands) {
+      if (firstWord === blocked) {
+        return {
+          allowed: false,
+          message: `🚫 PM role cannot execute build/deploy/system commands - create AgentTask for technical work
+
+Blocked command: ${blocked}
+Full command: ${command}
+
+Build/Deploy tools blocked: npm, yarn, make, docker, cargo, mvn, gradle, go
+System tools blocked: kubectl, terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer
+
+Create AgentTask for specialist execution.`
+        };
+      }
     }
 
-    // Check for PM indicators in conversation context
-    if (hookInput.conversation) {
-      const conversationText = JSON.stringify(hookInput.conversation).toLowerCase();
-      return conversationText.includes('@pm');
-    }
-
-    // Default to non-PM (fail-safe: allow operations)
-    return false;
+    return { allowed: true };
   }
 
   function isPathInAllowlist(filePath, allowlist) {
@@ -273,17 +295,18 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     const hookInput = JSON.parse(inputData);
     log(`PreToolUse triggered: ${JSON.stringify(hookInput)}`);
 
-    // Extract tool and file_path
+    // Extract tool and parameters
     const tool = hookInput.tool || '';
     const filePath = hookInput.parameters?.file_path || '';
+    const command = hookInput.parameters?.command || '';
 
-    if (!tool || !filePath) {
-      log('No tool or file_path - allowing operation');
+    if (!tool) {
+      log('No tool specified - allowing operation');
       console.log(JSON.stringify({ continue: true }));
       process.exit(0);
     }
 
-    log(`Tool: ${tool}, FilePath: ${filePath}`);
+    log(`Tool: ${tool}, FilePath: ${filePath}, Command: ${command}`);
 
     // Check for summary files in root (applies to ALL roles)
     const summaryValidation = validateSummaryFile(filePath);
@@ -298,21 +321,43 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
 
     // Check if PM role and validate
     if (isPMRole(hookInput)) {
-      log(`PM role detected, validating file path: ${filePath}`);
+      log('PM role active - validating operation');
 
-      const paths = getConfiguredPaths();
-      const validation = validatePMOperation(filePath, tool, paths);
+      // Validate Bash commands
+      if (tool === 'Bash' && command) {
+        log(`Validating Bash command: ${command}`);
+        const bashValidation = validateBashCommand(command);
 
-      if (!validation.allowed) {
-        log(`PM operation BLOCKED: ${filePath}`);
-        console.log(JSON.stringify({
-          continue: false,
-          message: validation.message
-        }));
-        process.exit(1);
+        if (!bashValidation.allowed) {
+          log(`Bash command BLOCKED: ${command}`);
+          console.log(JSON.stringify({
+            continue: false,
+            message: bashValidation.message
+          }));
+          process.exit(1);
+        }
+
+        log(`Bash command ALLOWED: ${command}`);
       }
 
-      log(`PM operation ALLOWED: ${filePath}`);
+      // Validate file operations (Edit/Write/MultiEdit)
+      if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit')) {
+        log(`Validating file operation: ${tool} on ${filePath}`);
+
+        const paths = getConfiguredPaths();
+        const validation = validatePMOperation(filePath, tool, paths);
+
+        if (!validation.allowed) {
+          log(`File operation BLOCKED: ${filePath}`);
+          console.log(JSON.stringify({
+            continue: false,
+            message: validation.message
+          }));
+          process.exit(1);
+        }
+
+        log(`File operation ALLOWED: ${filePath}`);
+      }
     }
 
     // Non-PM role or allowed operation
