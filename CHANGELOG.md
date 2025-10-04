@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.12.2] - 2025-10-04
+
+### Fixed
+- **RECURSIVE-DISPLAY Concrete Format (BUG-007)**: Restored concrete display format specification for constraint visibility
+- **Display Pattern**: Updated RECURSIVE-DISPLAY with exact XML format showing how constraints should appear
+- **Format Structure**: Added separator, constraint structure, and child element specifications
+- **LLM Clarity**: Changed from vague "display with full text" to precise format with examples
+
+### Technical Details
+- Modified src/modes/virtual-team.md RECURSIVE-DISPLAY meta-rule with concrete format
+- Specified exact XML structure: separator (---), constraint wrapper, child element display
+- Format now matches historical pattern while using new XML structure
+- Provides clear template for LLM to follow when displaying constraints
+
+---
+
 ## [8.12.1] - 2025-10-04
 
 ### Fixed
