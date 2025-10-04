@@ -203,6 +203,13 @@ function main() {
         }
       }
 
+      // ALSO: Check if hookInput itself indicates agent context
+      // The current tool invocation might not be in the transcript yet
+      if (hookInput.parentUuid && hasTaskInChain(hookInput.parentUuid)) {
+        log(`Agent context detected: current operation parentUuid leads to Task tool`);
+        return false;
+      }
+
       log('No agent context in recent entries - PM context');
       return true;
 

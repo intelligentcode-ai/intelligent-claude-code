@@ -89,8 +89,12 @@ function main() {
       { pattern: /Claude/i, name: 'Claude' },
       { pattern: /Generated with.*Claude Code/i, name: 'Generated with Claude Code' },
       { pattern: /Co-Authored-By:.*Claude/i, name: 'Co-Authored-By: Claude' },
-      { pattern: /\bAI\b/, name: 'AI' },
-      { pattern: /artificial intelligence/i, name: 'artificial intelligence' }
+      { pattern: /\bAI-generated\b/i, name: 'AI-generated' },
+      { pattern: /\bartificial intelligence\b/i, name: 'artificial intelligence' },
+      { pattern: /\bChatGPT\b/i, name: 'ChatGPT' },
+      { pattern: /\bGPT-\d+\b/i, name: 'GPT model reference' },
+      // Match AI in attribution context only to avoid false positives like "ThAIs"
+      { pattern: /(?:by|from|with|using|created by|authored by)\s+AI/i, name: 'AI attribution' }
     ];
 
     const violations = [];
@@ -119,7 +123,7 @@ To allow AI mentions in this project, set in CLAUDE.md:
 
       console.error(errorMessage);
       log('BLOCKED: AI mentions found in commit message');
-      process.exit(1);  // Block commit
+      process.exit(2);  // Block commit (Claude Code requirement)
     }
 
     log('No AI mentions detected - allowing commit');
