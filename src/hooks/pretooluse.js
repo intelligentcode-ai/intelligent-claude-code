@@ -314,13 +314,7 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     const summaryValidation = validateSummaryFile(filePath);
     if (!summaryValidation.allowed) {
       log(`Summary file blocked: ${filePath}`);
-      console.log(JSON.stringify({
-        hookSpecificOutput: {
-          hookEventName: 'PreToolUse',
-          permissionDecision: 'deny',
-          permissionDecisionReason: summaryValidation.message
-        }
-      }));
+      console.error(summaryValidation.message);
       process.exit(2);
     }
 
@@ -335,13 +329,7 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
 
         if (!bashValidation.allowed) {
           log(`Bash command BLOCKED: ${command}`);
-          console.log(JSON.stringify({
-            hookSpecificOutput: {
-              hookEventName: 'PreToolUse',
-              permissionDecision: 'deny',
-              permissionDecisionReason: bashValidation.message
-            }
-          }));
+          console.error(bashValidation.message);
           process.exit(2);
         }
 
@@ -357,13 +345,7 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
 
         if (!validation.allowed) {
           log(`File operation BLOCKED: ${filePath}`);
-          console.log(JSON.stringify({
-            hookSpecificOutput: {
-              hookEventName: 'PreToolUse',
-              permissionDecision: 'deny',
-              permissionDecisionReason: validation.message
-            }
-          }));
+          console.error(validation.message);
           process.exit(2);
         }
 
