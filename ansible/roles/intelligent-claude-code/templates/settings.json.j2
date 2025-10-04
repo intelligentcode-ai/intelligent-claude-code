@@ -1,6 +1,15 @@
 {
   "hooks": {
+    "PreToolUse": [{
+      "matcher": "*",
+      "hooks": [{
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/pretooluse.js",
+        "timeout": 5000
+      }]
+    }],
     "SessionStart": [{
+      "matcher": "*",
       "hooks": [{
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/session-start.js",
@@ -9,6 +18,7 @@
       }]
     }],
     "UserPromptSubmit": [{
+      "matcher": "*",
       "hooks": [{
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/user-prompt-submit.js",
