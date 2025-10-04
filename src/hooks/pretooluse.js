@@ -314,13 +314,17 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     const summaryValidation = validateSummaryFile(filePath);
     if (!summaryValidation.allowed) {
       log(`Summary file blocked: ${filePath}`);
-      console.log(JSON.stringify({
+      const response = {
         hookSpecificOutput: {
           hookEventName: 'PreToolUse',
           permissionDecision: 'deny',
           permissionDecisionReason: summaryValidation.message
         }
-      }));
+      };
+      const responseJson = JSON.stringify(response);
+      log(`RESPONSE: ${responseJson}`);
+      log(`EXIT CODE: 2`);
+      console.log(responseJson);
       process.exit(2);
     }
 
@@ -335,13 +339,17 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
 
         if (!bashValidation.allowed) {
           log(`Bash command BLOCKED: ${command}`);
-          console.log(JSON.stringify({
+          const response = {
             hookSpecificOutput: {
               hookEventName: 'PreToolUse',
               permissionDecision: 'deny',
               permissionDecisionReason: bashValidation.message
             }
-          }));
+          };
+          const responseJson = JSON.stringify(response);
+          log(`RESPONSE: ${responseJson}`);
+          log(`EXIT CODE: 2`);
+          console.log(responseJson);
           process.exit(2);
         }
 
@@ -357,13 +365,17 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
 
         if (!validation.allowed) {
           log(`File operation BLOCKED: ${filePath}`);
-          console.log(JSON.stringify({
+          const response = {
             hookSpecificOutput: {
               hookEventName: 'PreToolUse',
               permissionDecision: 'deny',
               permissionDecisionReason: validation.message
             }
-          }));
+          };
+          const responseJson = JSON.stringify(response);
+          log(`RESPONSE: ${responseJson}`);
+          log(`EXIT CODE: 2`);
+          console.log(responseJson);
           process.exit(2);
         }
 
