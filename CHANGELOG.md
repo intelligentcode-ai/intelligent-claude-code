@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.13.1] - 2025-10-04
+
+### Fixed
+- **PreToolUse Agent Detection**: Fixed agent context detection by checking current operation's parentUuid chain
+- **Pre-Commit Exit Code**: Changed exit code from 1 to 2 for Claude Code blocking requirement
+- **AI Pattern False Positives**: Fixed AI pattern to only match in attribution context, avoiding false positives
+
+### Technical Details
+- Modified src/hooks/pretooluse.js to check hookInput.parentUuid chain in addition to transcript entries
+- Agent operations now properly detected by tracing current operation's parentUuid to Task tool
+- Changed src/hooks/pre-commit.js exit code from 1 to 2 (Claude Code requirement for blocking)
+- Updated AI pattern from /\bAI\b/ to context-aware pattern matching only attribution uses
+- Prevents false positives in words containing "AI" substring while catching real AI mentions
+
+---
+
 ## [8.12.2] - 2025-10-04
 
 ### Fixed
