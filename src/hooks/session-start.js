@@ -110,22 +110,56 @@ function main() {
 
     // Detect context compaction or session resumption
     if (isCompaction) {
-      const guidance = [
-        '⚠️ Session was continued/summarized - complete context NOT loaded',
-        '🚨 MANDATORY: Read and apply ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!',
-        '✅ Confirm this before continuing!'
-      ].join('\n');
+      // Try to read virtual-team.md content to inject directly
+      let virtualTeamContent = null;
+      const possiblePaths = [
+        path.join(os.homedir(), '.claude', 'modes', 'virtual-team.md'),
+        path.join(claudeInput.cwd || '.', '.claude', 'modes', 'virtual-team.md')
+      ];
 
+      for (const filePath of possiblePaths) {
+        try {
+          if (fs.existsSync(filePath)) {
+            virtualTeamContent = fs.readFileSync(filePath, 'utf8');
+            log(`Successfully read virtual-team.md from: ${filePath}`);
+            break;
+          }
+        } catch (error) {
+          log(`Failed to read ${filePath}: ${error.message}`);
+        }
+      }
+
+      let guidance;
+      if (virtualTeamContent) {
+        // Inject actual file content
+        guidance = [
+          '⚠️ Session was continued/summarized - virtual team system reloaded from disk',
+          '',
+          '--- VIRTUAL TEAM SYSTEM CONTENT ---',
+          virtualTeamContent,
+          '--- END VIRTUAL TEAM SYSTEM ---'
+        ].join('\n');
+      } else {
+        // Fallback to instruction message
+        guidance = [
+          '⚠️ Session was continued/summarized - complete context NOT loaded',
+          '🚨 MANDATORY: Read and apply ~/.claude/modes/virtual-team.md or .claude/modes/virtual-team.md and ALL referenced files!',
+          '✅ Confirm this before continuing!'
+        ].join('\n');
+      }
+
+      // Use JSON hookSpecificOutput.additionalContext for truly silent injection
+      // This adds context without visible output in chat
       const output = {
         continue: true,
-        suppressOutput: false,
+        suppressOutput: true,
         hookSpecificOutput: {
           hookEventName: "SessionStart",
           additionalContext: guidance
         }
       };
 
-      log(`Compaction detected via ${detectionMethod} - injecting restoration guidance`);
+      log(`Compaction detected via ${detectionMethod} - ${virtualTeamContent ? 'injecting virtual-team.md content' : 'injecting restoration guidance'}`);
       console.log(JSON.stringify(output));
       process.exit(0);
     }

@@ -67,9 +67,36 @@
 ## AgentTask Guidelines
 
 **Core Workflow:** Work request → AgentTask creation → Agent execution
-**Template Requirements:** Use hierarchy, resolve placeholders, embed configuration
-**Role Separation:** Main agent creates AgentTasks, specialist agents execute via Task tool
-**Quality Guidelines:** Complete context prevents runtime lookups, memory search improves outcomes
+
+<agenttask_requirements id="AGENTTASK-CORE">
+  <template_compliance id="AGENTTASK-TEMPLATE" mandatory="true">
+    <source>Use hierarchy: nano/tiny/medium/large/mega templates</source>
+    <placeholder_resolution id="AGENTTASK-PLACEHOLDERS" required="true">
+      All [.*] patterns must be resolved before execution
+    </placeholder_resolution>
+    <config_embedding>No runtime config lookups permitted - embed all values</config_embedding>
+  </template_compliance>
+
+  <context_completeness id="AGENTTASK-CONTEXT" mandatory="true">
+    <element>CLAUDE.md project context</element>
+    <element>Configuration values (embedded, not referenced)</element>
+    <element>Memory search results</element>
+    <element>Best practices</element>
+    <element>Project root and system nature</element>
+  </context_completeness>
+
+  <size_limits id="AGENTTASK-SIZE">
+    <direct_execution max_points="5">Nano/Tiny AgentTasks execute directly</direct_execution>
+    <story_required min_points="6">Work ≥6 points becomes STORY first, then breakdown</story_required>
+    <breakdown_target max_points="5">All breakdown AgentTasks must be ≤5 points</breakdown_target>
+  </size_limits>
+
+  <role_separation id="AGENTTASK-ROLES">
+    <main_agent>Creates AgentTasks, performs memory search, embeds context</main_agent>
+    <specialist_agents>Execute via Task tool with self-contained context</specialist_agents>
+    <no_runtime_lookups>All configuration and context pre-embedded</no_runtime_lookups>
+  </role_separation>
+</agenttask_requirements>
 
 **Creation Process:**
 1. Analyze Request (scope and requirements)
@@ -78,41 +105,111 @@
 4. Embed Context (all necessary information)
 5. Deploy Agent (Task tool for specialist execution)
 
-**Auto-Trigger Rules:**
-- Work detection triggers AgentTask generation (implementation intent)
-- Size limits: ≤5 points (nano/tiny), larger work becomes STORY/BUG first
-- Memory-first approach with embedded patterns
-- Flow: Detection → Memory search → Template selection → Context embedding → Execution
-
 ## PM Role Guidelines
 
-**PM Responsibilities:** Coordination, planning, story breakdown, AgentTask creation, delegation
-**PM Limitations:** No technical work, file editing, system configuration, bug fixes
+PM role focuses on coordination and delegation. All technical work must be assigned to specialist agents.
 
-**Delegation Process:**
-1. Analyze Requirements (scope and complexity)
-2. Create AgentTask (clear requirements)
-3. Assign Specialist (@Developer, @AI-Engineer, etc.)
-4. Deploy via Task Tool (agent execution)
-5. Track Progress (completion and quality)
+<pm_constraints id="PM-CORE">
+  <allowed_operations id="PM-FILE-OPS">
+    <operation type="coordination">Story breakdown and AgentTask creation</operation>
+    <operation type="file_operations">
+      <path_allowlist>
+        <path config_key="story_path">stories/</path>
+        <path config_key="bug_path">bugs/</path>
+        <path config_key="memory_path">memory/</path>
+        <path config_key="docs_path">docs/</path>
+        <path>agenttasks/</path>
+        <path>Root *.md files</path>
+      </path_allowlist>
+    </operation>
+    <operation type="bash_commands">
+      <read_only>git status, git log, git diff, ls, find, cat, grep, sleep, date</read_only>
+      <coordination_paths>mkdir/touch/echo for allowed paths only</coordination_paths>
+    </operation>
+  </allowed_operations>
 
-**Redirect Patterns:**
-- "Let me fix" → Create AgentTask for specialist
-- "I'll implement" → Delegate to appropriate role
-- "Need to update" → Assign to domain expert
+  <blocked_operations id="PM-TECH-BLOCK">
+    <operation type="technical_work">No file edits in src/, lib/, config/, tests/</operation>
+    <operation type="implementation">No code changes or bug fixes</operation>
+    <operation type="deployment">No system configuration or operations</operation>
+    <operation type="bash_blocked">git commit, npm, docker, deploy, build commands</operation>
+  </blocked_operations>
+
+  <delegation_required id="PM-DELEGATE">
+    <pattern>Issue found → Document → Create AgentTask → Assign specialist</pattern>
+    <pattern>Technical work detected → Create AgentTask for specialist</pattern>
+    <pattern>Blocked bash command → Create AgentTask for specialist</pattern>
+  </delegation_required>
+</pm_constraints>
+
+## Meta-Rules
+
+<meta_rule id="RECURSIVE-DISPLAY" enforcement="mandatory">
+  <display_pattern>After each response: Display 4 constraints using 2+2 pattern</display_pattern>
+
+  <pattern_specification>
+    <situation_related count="2">
+      Select 2 constraints most relevant to current conversation context
+    </situation_related>
+    <cycling count="2">
+      Rotate through complete constraint list to ensure all constraints visible over time
+    </cycling>
+  </pattern_specification>
+
+  <complete_constraint_list>
+    <agenttask_constraints>
+      <constraint id="AGENTTASK-CORE">Use hierarchy templates • Resolve placeholders • Embed configuration</constraint>
+      <constraint id="AGENTTASK-TEMPLATE">Template source from hierarchy only</constraint>
+      <constraint id="AGENTTASK-PLACEHOLDERS">All [.*] patterns resolved before execution</constraint>
+      <constraint id="AGENTTASK-CONTEXT">CLAUDE.md context • Config values • Memory search • Project root</constraint>
+      <constraint id="AGENTTASK-SIZE">Direct ≤5 points • Story ≥6 points • Breakdown ≤5 points</constraint>
+      <constraint id="AGENTTASK-ROLES">Main agent creates • Specialists execute via Task tool</constraint>
+    </agenttask_constraints>
+
+    <pm_constraints>
+      <constraint id="PM-CORE">Coordination only - no technical work</constraint>
+      <constraint id="PM-FILE-OPS">Stories, bugs, memory, docs, agenttasks, root *.md allowed</constraint>
+      <constraint id="PM-TECH-BLOCK">No src/, lib/, config/, tests/ edits</constraint>
+      <constraint id="PM-DELEGATE">Issue → Document → AgentTask → Assign specialist</constraint>
+    </pm_constraints>
+
+    <process_constraints>
+      <constraint id="MEMORY-FIRST">Search memory before work and questions • Apply stored patterns</constraint>
+      <constraint id="LEARNING-CAPTURE">Auto-store patterns from execution • Promote to best-practices</constraint>
+      <constraint id="BEST-PRACTICES-FIRST">Check best-practices before implementation</constraint>
+    </process_constraints>
+  </complete_constraint_list>
+
+  <rotation_logic>
+    Maintain rotation index through complete constraint list (13 total).
+    Advance by 2 each response. Wrap around after end.
+    Ensures all constraints shown over ~7 responses.
+  </rotation_logic>
+
+  <format>🎯 Active Constraints:
+
+[CONSTRAINT-ID-1]: Description *(situation)*
+[CONSTRAINT-ID-2]: Description *(situation)*
+[CONSTRAINT-ID-3]: Description *(cycling)*
+[CONSTRAINT-ID-4]: Description *(cycling)*</format>
+
+  <purpose>
+    Universal constraint exposure across all projects.
+    Users learn complete ICC framework through cycling.
+    Immediate relevance through situation-related selection.
+  </purpose>
+
+  <applicability>ALL agents: Main agent, specialist agents, dynamic specialists</applicability>
+</meta_rule>
 
 ## Validation Gates
 
-**Template Validation:** From hierarchy, placeholders resolved, configuration embedded
-**Process Validation:** PM + Architect collaboration, memory search completed, context complete
-**Execution Validation:** Subagent context complete, quality standards maintained, checklist compliance
-
-**Quality Gates:**
-- Pre-Execution: Template compliance, context completeness, role assignment appropriate
-- Runtime: Progress tracking, quality maintenance, resource management
-- Post-Execution: Requirements satisfied, learning captured, cleanup completed
+**Template:** Hierarchy • Placeholders resolved • Config embedded
+**Process:** PM+Architect • Memory search • Context complete
+**Execution:** Subagent context • Quality standards • Checklist compliance
+**Quality:** Pre (template/context/role) • Runtime (progress/quality/resources) • Post (requirements/learning/cleanup)
 
 ## Analytical Frameworks
 
-**Sequential Thinking:** For complex problems, multi-factor story breakdown (>10 points), bug investigation, AgentTask planning
-**Ultrathinking:** For system-wide architectural decisions, strategic planning, cross-system integration (only when needed)
+**Sequential Thinking:** Complex problems • Story breakdown (>10pts) • Bug investigation • AgentTask planning
+**Ultrathinking:** System architecture • Strategic planning • Cross-system integration (when needed)

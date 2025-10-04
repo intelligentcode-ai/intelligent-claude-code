@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
+const { selectRelevantConstraints } = require('./lib/constraint-selector');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -232,20 +233,29 @@ function main() {
       }
     }
 
+    // Generate simple list constraint display with rotation
+    try {
+      const constraints = selectRelevantConstraints(userPrompt);
+      if (constraints && constraints.length > 0) {
+        const constraintList = constraints.map(c =>
+          `[${c.id}]: ${c.text}`
+        ).join(' | ');
+
+        const constraintDisplay = `🎯 Active Constraints: ${constraintList}`;
+        contextualGuidance.push(constraintDisplay);
+      }
+    } catch (error) {
+      log(`Constraint selection error: ${error.message}`);
+      // Silently fail - don't block hook execution
+    }
+
     // Build comprehensive context
     const fullContext = contextualGuidance.join('\n');
 
-    const output = {
-      continue: true,
-      suppressOutput: true,
-      hookSpecificOutput: {
-        hookEventName: "UserPromptSubmit",
-        additionalContext: fullContext
-      }
-    };
-
-    log(JSON.stringify(output));
-    console.log(JSON.stringify(output));
+    // For UserPromptSubmit: stdout with exit 0 = silent injection (only visible in CTRL-R transcript mode)
+    // Don't use JSON hookSpecificOutput - that makes it visible in chat!
+    log(`Injecting contextual guidance: ${contextualGuidance.length} messages`);
+    console.log(fullContext);
     process.exit(0);
 
   } catch (error) {

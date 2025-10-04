@@ -133,12 +133,34 @@ PM role has path-based tool access:
 - Always allowed: Read, LS, Glob, Grep (information gathering)
 - Conditionally allowed: Write/Edit for coordination files (stories/*.md, bugs/*.md, root *.md)
 - Always blocked: Write/Edit for technical files (src/, config/, code files)
-- Always blocked: Bash (system operations must be delegated)
+- Conditionally allowed: Bash (read-only and coordination commands only)
 - AgentTask creation: Non-technical AgentTask generation permitted
+
+### PM Bash Access Rules
+
+**ALLOWED (Read-only + Coordination):**
+- Git read: git status, git log, git diff, git show, git branch
+- File read: cat, head, tail, less, more, file
+- Directory ops: ls, find, tree, pwd, cd
+- Search: grep, rg, ack
+- Analysis: wc, sort, uniq, cut, tr
+- Timing: sleep, date
+- Coordination paths: mkdir/touch/echo for stories/, bugs/, docs/, memory/
+
+**BLOCKED (Technical work - must delegate):**
+- Git write: git commit, git push, git merge, git rebase, git add, git stash
+- File write: sed -i, awk, tee, echo >, >>
+- File ops to technical paths: rm/mv/cp for src/, lib/, config/, tests/
+- Build: npm, yarn, make, docker, cargo, mvn, gradle, go
+- Deploy: kubectl, terraform, ansible, helm
+- System: systemctl, service, apt, yum, brew install
+- Package: pip install, gem install, composer install
+
+**VALIDATION:** Bash commands are validated before execution—blocked commands trigger delegation pattern
 
 PM tool violation response:
 - Tool access denied for modification tools
-- Create AgentTask with clear requirements
+- Bash command blocked → Create AgentTask with clear requirements
 - Delegate to appropriate specialist (@AI-Engineer, @Developer, etc.)
 - Deploy via Task tool to authorized agent
 

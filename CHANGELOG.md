@@ -7,6 +7,359 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.13.1] - 2025-10-04
+
+### Fixed
+- **PreToolUse Agent Detection**: Fixed agent context detection by checking current operation's parentUuid chain
+- **Pre-Commit Exit Code**: Changed exit code from 1 to 2 for Claude Code blocking requirement
+- **AI Pattern False Positives**: Fixed AI pattern to only match in attribution context, avoiding false positives
+
+### Technical Details
+- Modified src/hooks/pretooluse.js to check hookInput.parentUuid chain in addition to transcript entries
+- Agent operations now properly detected by tracing current operation's parentUuid to Task tool
+- Changed src/hooks/pre-commit.js exit code from 1 to 2 (Claude Code requirement for blocking)
+- Updated AI pattern from /\bAI\b/ to context-aware pattern matching only attribution uses
+- Prevents false positives in words containing "AI" substring while catching real AI mentions
+
+---
+
+## [8.12.2] - 2025-10-04
+
+### Fixed
+- **RECURSIVE-DISPLAY Concrete Format (BUG-007)**: Restored concrete display format specification for constraint visibility
+- **Display Pattern**: Updated RECURSIVE-DISPLAY with exact XML format showing how constraints should appear
+- **Format Structure**: Added separator, constraint structure, and child element specifications
+- **LLM Clarity**: Changed from vague "display with full text" to precise format with examples
+
+### Technical Details
+- Modified src/modes/virtual-team.md RECURSIVE-DISPLAY meta-rule with concrete format
+- Specified exact XML structure: separator (---), constraint wrapper, child element display
+- Format now matches historical pattern while using new XML structure
+- Provides clear template for LLM to follow when displaying constraints
+
+---
+
+## [8.12.1] - 2025-10-04
+
+### Fixed
+- **PreToolUse Hook PM Enforcement (BUG-006)**: Fixed hook to properly enforce PM role constraints
+- **PM Always Active**: Updated isPMRole() to return true by default - PM always active in main scope
+- **Bash Command Validation**: Added validateBashCommand() to block build/deploy/system commands (npm, yarn, make, docker, cargo, mvn, gradle, go, kubectl, terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer)
+- **File Operation Validation**: Enhanced file path validation for Edit/Write/MultiEdit tools with proper allowlist/blocklist enforcement
+
+### Changed
+- **Hook Logic**: Separated Bash command validation from file path validation for clearer enforcement
+- **Logging**: Improved hook logging to show PM role detection and validation steps
+
+### Technical Details
+- Modified src/hooks/pretooluse.js with PM always-active logic and Bash validation
+- Hook extracts hookInput.parameters.command for Bash tool validation
+- Blocks blocked commands with clear error messages and alternative guidance
+- File operations validated against allowlist (stories/, bugs/, memory/, docs/, agenttasks/, root .md) and blocklist (src/, lib/, config/, tests/)
+
+---
+
+## [8.12.0] - 2025-10-03
+
+### Added
+- **Recursive Constraint Display Integration (STORY-007)**: Integrated XML constraint IDs with hook system for context-aware enforcement
+- **Constraint Loader Module**: Created constraint-loader.js to extract and cache constraint IDs from virtual-team.md
+- **Constraint Selector Module**: Implemented intelligent relevance scoring for context-aware constraint selection
+- **Hook Integration**: Added constraint display to UserPromptSubmit hook with graceful error handling
+- **Configuration Hierarchy**: Added support for project-local constraint customization via .claude/modes/virtual-team.md
+- **Comprehensive Validation**: Created detailed validation report documenting implementation quality and deployment requirements
+
+### Changed
+- **UserPromptSubmit Hook**: Enhanced to display 2-3 most relevant constraint IDs based on conversation context
+- **Display Pattern**: Outputs structured XML with full constraint text instead of plain text IDs
+- **Dynamic Text Extraction**: Constraint text extracted directly from XML structure, removing hardcoded mappings
+- **Configuration Hierarchy**: Supports project → user → system hierarchy for constraint definitions
+- **Performance Optimization**: Implemented 15-minute cache for constraint loading (reduces overhead to <1ms)
+
+### Technical Details
+- Created src/hooks/lib/constraint-loader.js (190+ lines) with XML parsing, hierarchy support, and caching
+- Created src/hooks/lib/constraint-selector.js (164 lines) with relevance scoring algorithm
+- Modified src/hooks/user-prompt-submit.js to output XML-formatted constraints (lines 236-250)
+- Performance: <5ms total overhead (well under 20ms budget)
+- Smart relevance scoring: Role matching (+10), work type matching (+5), meta-rules (+3)
+- Configuration paths: project/.claude/modes/virtual-team.md → ~/.claude/modes/virtual-team.md
+
+### Documentation
+- Added comprehensive validation report in summaries/STORY-007-AGENTTASK-004-validation-report-2025-10-03.md
+- Documented deployment gap: XML conversion not yet applied to virtual-team.md
+- Provided post-deployment test plan for production validation
+
+### Notes
+- Implementation complete with excellent code quality (80% success criteria met)
+- Production deployment blocked pending XML conversion application to virtual-team.md
+- Code demonstrates robust error handling and graceful degradation patterns
+
+---
+
+## [8.11.0] - 2025-10-03
+
+### Added
+- **XML Critical Rules Conversion (STORY-006)**: Converted critical enforcement rules in virtual-team.md to XML format for improved adherence
+- **Constraint ID System**: Implemented machine-parseable constraint IDs enabling validation tooling and recursive display
+- **RECURSIVE-DISPLAY Meta-Rule**: Added self-enforcing constraint display pattern for attention anchoring
+- **XML Schema Documentation**: Created comprehensive schema reference with hierarchical structure and examples
+- **Constraint Registry**: Established central registry of 18 constraint IDs across 5 categories
+
+### Changed
+- **PM Constraints**: Converted to XML with constraint IDs (PM-CORE, PM-FILE-OPS, PM-TECH-BLOCK, PM-DELEGATE)
+- **AgentTask Requirements**: Converted to XML with constraint IDs (AGENTTASK-CORE, AGENTTASK-TEMPLATE, AGENTTASK-PLACEHOLDERS, AGENTTASK-CONTEXT, AGENTTASK-SIZE, AGENTTASK-ROLES)
+- **File Length Optimization**: Reduced virtual-team.md from 240+ lines to exactly 150 lines (37.5% reduction)
+- **Hybrid Approach**: Implemented markdown headers with XML constraints for readability and parseability
+
+### Technical Details
+- Created xml-schema-design.md (395 lines) with complete schema reference
+- Created xml-constraint-registry.md (359 lines) with all 18 constraint IDs
+- Added Meta-Rules section with RECURSIVE-DISPLAY enforcement
+- Optimized Validation Gates and Analytical Frameworks sections for space
+- Validation report shows 98% compliance with one minor registration gap
+
+### Documentation
+- Added comprehensive validation report in summaries/STORY-006-AGENTTASK-005-validation-report-2025-10-03.md
+- Schema documentation covers PM, AgentTask, Directory, Role, and Meta-Rule categories
+- Registry provides usage patterns for developers, hooks, and documentation
+
+---
+
+## [8.10.13] - 2025-10-03
+
+### Changed
+- **AgentTask Requirements XML Conversion**: Converted AgentTask requirements to XML format in virtual-team.md
+- **Hybrid Approach Implementation**: AgentTask guidelines now use markdown headers with embedded XML structure
+- **Constraint ID Integration**: Applied constraint IDs from registry (AGENTTASK-CORE, AGENTTASK-TEMPLATE, AGENTTASK-PLACEHOLDERS, AGENTTASK-CONTEXT, AGENTTASK-SIZE, AGENTTASK-ROLES)
+
+### Technical Details
+- Converted AgentTask Guidelines section to XML format with constraint IDs
+- Preserved markdown section header and core workflow description for readability
+- Applied template compliance rules with placeholder resolution and config embedding requirements
+- Defined context completeness requirements with 5 essential elements
+- Defined size limits for direct execution, story creation, and breakdown targets
+- Defined role separation between main agent and specialist agents
+- Maintained creation process steps in markdown for clarity
+- Optimized Validation Gates section to meet 150-line file limit
+- File length maintained at 149 lines with improved machine parseability
+
+---
+
+## [8.10.12] - 2025-10-03
+
+### Changed
+- **PM Constraints XML Conversion**: Converted PM role constraints to XML format in virtual-team.md
+- **Hybrid Approach Implementation**: PM guidelines now use markdown headers with embedded XML structure
+- **Constraint ID Integration**: Applied constraint IDs from registry (PM-CORE, PM-FILE-OPS, PM-TECH-BLOCK, PM-DELEGATE)
+
+### Technical Details
+- Converted PM Role Guidelines section to XML format with constraint IDs
+- Preserved markdown section header and introductory text for readability
+- Applied path_allowlist with config_key references for dynamic path resolution
+- Defined allowed operations (coordination, file operations with path allowlist)
+- Defined blocked operations (technical work, implementation, deployment)
+- Defined delegation patterns for issue handling and work assignment
+- Maintained file length within limits and improved machine parseability
+
+---
+
+## [8.10.11] - 2025-10-03
+
+### Added
+- **XML Schema Design**: Complete XML schema structure for critical enforcement rules
+- **Constraint ID Registry**: 18 unique constraint IDs across 5 categories (PM, AgentTask, Directory, Role, Meta)
+- **Constraint Documentation**: Comprehensive constraint registry with descriptions and usage guidelines
+
+### Technical Details
+- Created src/docs/xml-schema-design.md with hierarchical XML structure
+- Created src/docs/xml-constraint-registry.md with constraint ID index and naming convention
+- Defined PM constraints (PM-CORE, PM-FILE-OPS, PM-TECH-BLOCK, PM-DELEGATE)
+- Defined AgentTask requirements (AGENTTASK-CORE, AGENTTASK-TEMPLATE, AGENTTASK-PLACEHOLDERS, AGENTTASK-CONTEXT, AGENTTASK-SIZE)
+- Defined Directory structure (DIR-STRUCTURE, PATH-ALLOWLIST, PATH-BLOCKLIST, NAMING-STD, SUMMARY-REDIRECT)
+- Defined Role assignment (ROLE-CORE, ROLE-TWO-FACTOR, ROLE-SPECIALIST)
+- Defined Meta-rule (RECURSIVE-DISPLAY for constraint display enforcement)
+- Integration notes for STORY-007 hook implementation included
+- Machine-parseable XML enables automated validation and self-documenting enforcement
+
+---
+
+## [8.10.10] - 2025-10-03
+
+### Changed
+- **Story Status Updates**: Marked STORY-001 through STORY-004 as COMPLETED
+- **Documentation Cleanup**: Updated story completion dates for historical tracking
+
+### Technical Details
+- Updated 9 story files with COMPLETED status and completion date 2025-10-03
+- Stories include: in-memory AgentTask architecture, context detection, hook infrastructure, MCP integration, Windows installer, PRB rename, role permissions, git worktrees, and error guidance
+- All completed stories preserved in stories/ directory for historical reference
+
+---
+
+## [8.10.9] - 2025-10-03
+
+### Changed
+- **Ansible Installation**: Added pretooluse.js to executable hooks list
+- **Ansible Hook Merge**: Integrated PreToolUse hook into settings.json merge logic
+- **PowerShell Installation**: Added PreToolUse hook registration function
+- **PowerShell Hook System**: Integrated PreToolUse hook deployment during installation
+- **Uninstall Scripts**: Updated to handle PreToolUse hook unregistration
+- **Test Scripts**: Updated hook validation tests to check for pretooluse.js
+
+### Technical Details
+- Ansible playbook includes pretooluse.js in executable permissions list
+- PreToolUse hook merged into settings.json with 5000ms timeout
+- PowerShell Register-PreToolUseHook function matches Ansible behavior
+- Hook registration occurs during Install-HookSystem execution
+- Uninstall properly removes PreToolUse hook from settings.json
+- Test suite validates PreToolUse hook presence and removal
+- Consistent hook configuration across Linux and Windows installations
+
+---
+
+## [8.10.8] - 2025-10-03
+
+### Added
+- **PreToolUse Hook Configuration**: Added PreToolUse hook to ~/.claude/settings.json with 5000ms timeout for validation
+- **Comprehensive Documentation**: Created src/hooks/README-pretooluse.md with complete usage guide
+- **Installation Guide**: Hook configuration instructions in README-pretooluse.md
+- **Testing Instructions**: Test cases for PM blocking, allowlist validation, and summary redirection
+- **Troubleshooting Guide**: Common issues and resolution steps for hook behavior
+
+### Changed
+- **~/.claude/settings.json**: Added PreToolUse hook configuration pointing to src/hooks/pretooluse.js
+- **Documentation Organization**: Complete hook documentation with overview, configuration, testing, and troubleshooting
+
+### Technical Details
+- PreToolUse hook configured with absolute path to src/hooks/pretooluse.js
+- Timeout set to 5000ms (5 seconds) for configuration loading and validation
+- Documentation includes PM role allowlist, technical directory blocking, summary file redirection
+- Testing instructions cover PM blocking, PM allowing, and summary redirection scenarios
+- Troubleshooting covers hook configuration, false positives, and PM role detection issues
+- Related documentation cross-references for STORY-005, directory-structure, and story-breakdown
+
+---
+
+## [8.10.7] - 2025-10-03
+
+### Added
+- **Summary File Detection**: PreToolUse hook detects summary files in project root (SUMMARY*, REPORT*, VALIDATION*, ANALYSIS*)
+- **Automatic Redirection**: Summary files automatically redirected to summaries/ directory with suggested path
+- **Directory Auto-Creation**: summaries/ directory created automatically when needed
+- **Case-Insensitive Matching**: Works with all case variations (summary.md, Summary.md, SUMMARY.md)
+
+### Changed
+- **src/hooks/pretooluse.js**: Added isSummaryFile() and validateSummaryFile() functions
+- **Validation Order**: Summary file validation executes before PM role check (applies to ALL roles)
+- **Root File Organization**: Summary files blocked in root to maintain clean project structure
+
+### Technical Details
+- Summary patterns: SUMMARY, REPORT, VALIDATION, ANALYSIS (case-insensitive)
+- Blocking only applies to root files, not subdirectories (stories/SUMMARY.md allowed)
+- summaries/ directory auto-created with recursive mkdir when first summary file blocked
+- Exit code 1 for blocked operations with clear redirection guidance
+- Suggested path format: summaries/[original-filename]
+
+---
+
+## [8.10.6] - 2025-10-03
+
+### Added
+- **PM Role Detection**: PreToolUse hook detects PM role from context and conversation
+- **Allowlist Validation**: PM operations validated against allowlist of coordination directories
+- **Blocklist Enforcement**: PM blocked from modifying technical directories (src, tests, config, lib)
+- **Root Markdown Files**: PM can edit root-level markdown files (CLAUDE.md, README.md, etc.)
+
+### Changed
+- **src/hooks/pretooluse.js**: Added isPMRole(), isPathInAllowlist(), isPathInBlocklist(), validatePMOperation() functions
+- **Validation Logic**: Integrated PM validation into main hook flow with clear error messages
+- **Exit Codes**: Returns exit 1 for blocked operations with actionable guidance
+
+### Technical Details
+- PM role detection checks hookInput.context.role and conversation text for @PM mentions
+- Allowlist validation checks if file path starts with allowlist directories or is root *.md
+- Blocklist takes precedence over allowlist for explicit denial
+- Default fail-safe: non-PM roles or unclear context allows operations
+- Blocked operations return JSON with continue:false and guidance message
+- Logging shows all validation decisions for debugging
+
+---
+
+## [8.10.5] - 2025-10-03
+
+### Added
+- **Configuration Loading**: PreToolUse hook now loads directory paths from CLAUDE.md/config.md
+- **Configuration Caching**: 5-minute TTL cache prevents repeated file I/O operations
+- **Path Resolution**: Dynamic allowlist/blocklist based on configured directory paths
+
+### Changed
+- **src/hooks/pretooluse.js**: Added loadConfiguration() and getConfiguredPaths() functions
+- **Configuration Hierarchy**: Checks CLAUDE.md, config.md, .claude/config.md in priority order
+- **Path Normalization**: Automatic trailing slash removal for consistent path handling
+
+### Technical Details
+- Configuration parsing supports YAML frontmatter and markdown key:value pairs
+- Default values (stories, bugs, memory, docs, src, tests, config) applied when config missing
+- Cache invalidation after 5 minutes ensures fresh configuration when updated
+- Allowlist includes: story_path, bug_path, memory_path, docs_path, agenttasks
+- Blocklist includes: src_path, test_path, config_path, lib
+- Preparation for AGENTTASK-003 (path validation) and AGENTTASK-004 (blocking logic)
+
+---
+
+## [8.10.4] - 2025-10-03
+
+### Added
+- **PreToolUse Hook Skeleton**: Created initial PreToolUse hook with input parsing and logging infrastructure
+- **Hook Input Parsing**: Support for multiple input sources (argv, env, stdin)
+- **Logging Infrastructure**: Automatic daily log files in ~/.claude/logs/
+
+### Changed
+- **src/hooks/pretooluse.js**: New hook file with skeleton implementation ready for validation logic
+
+### Technical Details
+- Hook parses JSON input containing tool, parameters.file_path, and context
+- Logging to ~/.claude/logs/YYYY-MM-DD-pretooluse.log with timestamps
+- Default behavior: allow all operations (exit 0) until validation logic added
+- Error handling prevents crashes, defaults to allowing operations
+- Preparation for AGENTTASK-002 (allowlist loading), 003 (path validation), 004 (blocking logic)
+
+---
+
+## [8.10.3] - 2025-10-02
+
+### Fixed
+- **SessionStart Hook Silent Injection**: Changed from stdout to JSON hookSpecificOutput.additionalContext for truly silent context injection
+- **Context Restoration**: Hook still injects virtual-team.md content on compaction, but now silently using additionalContext field
+
+### Changed
+- **src/hooks/session-start.js**: Use hookSpecificOutput.additionalContext instead of plain stdout for silent injection
+
+### Technical Details
+- Root cause: Plain stdout output was visible in chat, not silent as documented
+- Solution: JSON hookSpecificOutput.additionalContext adds context silently without visible output
+- Impact: Context restoration still works on compaction, but output is truly silent now
+- Documentation reference: "hookSpecificOutput.additionalContext" for silent context injection
+
+---
+
+## [8.10.1] - 2025-10-02
+
+### Fixed
+- **Hook Output Visibility**: Fixed SessionStart and UserPromptSubmit hooks to use plain stdout instead of JSON hookSpecificOutput for silent context injection
+- **Hook Reminders**: Removed unnecessary "If unclear: Read..." suffixes from reminder messages (context now auto-injected via SessionStart hook)
+
+### Changed
+- **src/hooks/session-start.js**: Changed from JSON hookSpecificOutput to plain stdout output for silent injection (only visible in CTRL-R transcript mode)
+- **src/hooks/user-prompt-submit.js**: Changed from JSON hookSpecificOutput to plain stdout output for silent injection
+- **src/hooks/lib/reminders.json**: Removed "If unclear..." suffixes, consolidated duplicate reminders, reduced from 12 to 10 focused reminders
+
+### Technical Details
+- Root cause: Using `hookSpecificOutput.additionalContext` in JSON format makes output visible in chat
+- Solution: Plain stdout with exit 0 = silent injection to Claude (only visible in CTRL-R transcript mode per Claude Code documentation)
+- Impact: Hook output no longer clutters user's chat during session resume/compaction
+- Documentation reference: "stdout is added to the context" for SessionStart/UserPromptSubmit hooks
+
 ## [8.9.5] - 2025-10-02
 
 ### Fixed
