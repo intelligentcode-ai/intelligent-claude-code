@@ -180,7 +180,6 @@
     - user-prompt-submit.js
     - pretooluse.js
     - pre-commit.js
-    - stop.js
   ignore_errors: yes
 
 
