@@ -295,10 +295,12 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     const hookInput = JSON.parse(inputData);
     log(`PreToolUse triggered: ${JSON.stringify(hookInput)}`);
 
-    // Extract tool and parameters
-    const tool = hookInput.tool || '';
-    const filePath = hookInput.parameters?.file_path || '';
-    const command = hookInput.parameters?.command || '';
+    // Extract tool and parameters from Claude Code format
+    // Claude Code sends: { tool_name: "Edit", tool_input: { file_path: "..." } }
+    const tool = hookInput.tool_name || hookInput.tool || '';
+    const toolInput = hookInput.tool_input || hookInput.parameters || {};
+    const filePath = toolInput.file_path || '';
+    const command = toolInput.command || '';
 
     if (!tool) {
       log('No tool specified - allowing operation');
