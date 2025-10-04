@@ -8,6 +8,14 @@
         "timeout": 5000
       }]
     }],
+    "PreCommit": [{
+      "matcher": "*",
+      "hooks": [{
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/pre-commit.js",
+        "timeout": 5000
+      }]
+    }],
     "SessionStart": [{
       "matcher": "*",
       "hooks": [{
