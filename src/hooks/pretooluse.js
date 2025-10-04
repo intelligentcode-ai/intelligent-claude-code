@@ -363,7 +363,13 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     } else if (process.env.HOOK_INPUT) {
       inputData = process.env.HOOK_INPUT;
     } else if (!process.stdin.isTTY) {
-      inputData = fs.readFileSync(0, 'utf8');
+      try {
+        inputData = fs.readFileSync(0, 'utf8');
+      } catch (stdinError) {
+        log(`WARN: Failed to read stdin: ${stdinError.message} - allowing operation`);
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
+      }
     }
 
     if (!inputData.trim()) {
