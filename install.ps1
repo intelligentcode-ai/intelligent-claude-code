@@ -189,8 +189,9 @@ function Register-UserPromptSubmitHook {
         }
 
         if (-not $ExistingHook) {
-            # Create new hook entry (note: no matcher field for UserPromptSubmit)
+            # Create new hook entry
             $NewHook = [PSCustomObject]@{
+                matcher = "*"
                 hooks = @(
                     [PSCustomObject]@{
                         command = $HookCommand
@@ -255,6 +256,7 @@ function Register-SessionStartHook {
         if (-not $ExistingHook) {
             # Create new hook entry
             $NewHook = [PSCustomObject]@{
+                matcher = "*"
                 hooks = @(
                     [PSCustomObject]@{
                         command = $HookCommand
@@ -319,6 +321,7 @@ function Register-PreToolUseHook {
         if (-not $ExistingHook) {
             # Create new hook entry
             $NewHook = [PSCustomObject]@{
+                matcher = "*"
                 hooks = @(
                     [PSCustomObject]@{
                         command = $HookCommand
