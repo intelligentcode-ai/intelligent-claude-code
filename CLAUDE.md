@@ -14,6 +14,7 @@ l3_settings:
   max_parallel: 5
   auto_discover: true
   continue_on_error: true
+git_privacy: true
 ```
 
 ## System Usage
