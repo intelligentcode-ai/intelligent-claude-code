@@ -145,9 +145,61 @@ PM role focuses on coordination and delegation. All technical work must be assig
 ## Meta-Rules
 
 <meta_rule id="RECURSIVE-DISPLAY" enforcement="mandatory">
-  <display_pattern>After each response: Display 2-3 context-relevant constraints as simple list with separator line (---) and emoji (🎯)</display_pattern>
-  <format>🎯 Active Constraints: [ID-1]: Description | [ID-2]: Description | [ID-3]: Description</format>
-  <purpose>Anchor attention through recency - self-enforcing constraint display</purpose>
+  <display_pattern>After each response: Display 4 constraints using 2+2 pattern</display_pattern>
+
+  <pattern_specification>
+    <situation_related count="2">
+      Select 2 constraints most relevant to current conversation context
+    </situation_related>
+    <cycling count="2">
+      Rotate through complete constraint list to ensure all constraints visible over time
+    </cycling>
+  </pattern_specification>
+
+  <complete_constraint_list>
+    <agenttask_constraints>
+      <constraint id="AGENTTASK-CORE">Use hierarchy templates • Resolve placeholders • Embed configuration</constraint>
+      <constraint id="AGENTTASK-TEMPLATE">Template source from hierarchy only</constraint>
+      <constraint id="AGENTTASK-PLACEHOLDERS">All [.*] patterns resolved before execution</constraint>
+      <constraint id="AGENTTASK-CONTEXT">CLAUDE.md context • Config values • Memory search • Project root</constraint>
+      <constraint id="AGENTTASK-SIZE">Direct ≤5 points • Story ≥6 points • Breakdown ≤5 points</constraint>
+      <constraint id="AGENTTASK-ROLES">Main agent creates • Specialists execute via Task tool</constraint>
+    </agenttask_constraints>
+
+    <pm_constraints>
+      <constraint id="PM-CORE">Coordination only - no technical work</constraint>
+      <constraint id="PM-FILE-OPS">Stories, bugs, memory, docs, agenttasks, root *.md allowed</constraint>
+      <constraint id="PM-TECH-BLOCK">No src/, lib/, config/, tests/ edits</constraint>
+      <constraint id="PM-DELEGATE">Issue → Document → AgentTask → Assign specialist</constraint>
+    </pm_constraints>
+
+    <process_constraints>
+      <constraint id="MEMORY-FIRST">Search memory before work and questions • Apply stored patterns</constraint>
+      <constraint id="LEARNING-CAPTURE">Auto-store patterns from execution • Promote to best-practices</constraint>
+      <constraint id="BEST-PRACTICES-FIRST">Check best-practices before implementation</constraint>
+    </process_constraints>
+  </complete_constraint_list>
+
+  <rotation_logic>
+    Maintain rotation index through complete constraint list (13 total).
+    Advance by 2 each response. Wrap around after end.
+    Ensures all constraints shown over ~7 responses.
+  </rotation_logic>
+
+  <format>🎯 Active Constraints:
+
+[CONSTRAINT-ID-1]: Description *(situation)*
+[CONSTRAINT-ID-2]: Description *(situation)*
+[CONSTRAINT-ID-3]: Description *(cycling)*
+[CONSTRAINT-ID-4]: Description *(cycling)*</format>
+
+  <purpose>
+    Universal constraint exposure across all projects.
+    Users learn complete ICC framework through cycling.
+    Immediate relevance through situation-related selection.
+  </purpose>
+
+  <applicability>ALL agents: Main agent, specialist agents, dynamic specialists</applicability>
 </meta_rule>
 
 ## Validation Gates
