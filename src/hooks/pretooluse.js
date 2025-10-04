@@ -128,9 +128,73 @@ function main() {
   }
 
   function isPMRole(hookInput) {
-    // PM is ALWAYS active in main scope per system configuration
-    // Main agent = PM coordination role by default
-    return true;
+    // Detect if current operation is within agent context by checking transcript
+    // for Task tool invocations and parentUuid chains
+    const transcriptPath = hookInput.transcript_path;
+
+    if (!transcriptPath || !fs.existsSync(transcriptPath)) {
+      log('No transcript available - allowing operation (fail-safe for agents)');
+      return false;
+    }
+
+    try {
+      // Read last 100 lines of transcript (covers recent agent context)
+      const content = fs.readFileSync(transcriptPath, 'utf8');
+      const lines = content.trim().split('\n').slice(-100);
+
+      // Parse entries and find Task tool invocations
+      const taskUUIDs = new Set();
+      const entries = [];
+
+      for (const line of lines) {
+        try {
+          const entry = JSON.parse(line);
+          entries.push(entry);
+
+          // Track Task tool UUIDs (agent spawns)
+          if (entry.message?.content?.[0]?.name === 'Task') {
+            taskUUIDs.add(entry.uuid);
+            log(`Found Task tool UUID: ${entry.uuid}`);
+          }
+        } catch (parseError) {
+          continue;
+        }
+      }
+
+      // If no recent Task tools, this is main agent (PM context)
+      if (taskUUIDs.size === 0) {
+        log('No recent Task tools - PM context');
+        return true;
+      }
+
+      // Check last 20 entries to see if we're in agent execution context
+      // by checking if entries link to Task tools via parentUuid
+      for (let i = entries.length - 1; i >= Math.max(0, entries.length - 20); i--) {
+        const entry = entries[i];
+
+        // Direct link: entry is Task tool or immediate child
+        if (taskUUIDs.has(entry.uuid) || taskUUIDs.has(entry.parentUuid)) {
+          log(`Agent context detected: entry ${entry.uuid} linked to Task`);
+          return false;
+        }
+
+        // 2-level deep: check parent's parent
+        if (entry.parentUuid) {
+          const parent = entries.find(e => e.uuid === entry.parentUuid);
+          if (parent && taskUUIDs.has(parent.parentUuid)) {
+            log(`Agent context detected: parent chain leads to Task`);
+            return false;
+          }
+        }
+      }
+
+      log('No agent context in recent entries - PM context');
+      return true;
+
+    } catch (readError) {
+      log(`ERROR: Failed to read transcript: ${readError.message}`);
+      return false; // Fail-safe: allow operation on errors
+    }
   }
 
   function validateBashCommand(command) {
@@ -309,6 +373,13 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     }
 
     log(`Tool: ${tool}, FilePath: ${filePath}, Command: ${command}`);
+
+    // Always allow Task tool (agent creation) - no PM restrictions apply
+    if (tool === 'Task') {
+      log('Task tool invocation - always allowed (agent creation)');
+      console.log(JSON.stringify({ continue: true }));
+      process.exit(0);
+    }
 
     // Check for summary files in root (applies to ALL roles)
     const summaryValidation = validateSummaryFile(filePath);
