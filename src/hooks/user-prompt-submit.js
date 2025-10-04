@@ -233,15 +233,15 @@ function main() {
       }
     }
 
-    // Generate XML-formatted constraint display with full text
+    // Generate simple list constraint display with rotation
     try {
       const constraints = selectRelevantConstraints(userPrompt);
       if (constraints && constraints.length > 0) {
-        const constraintXML = constraints.map(c =>
-          `  <constraint id="${c.id}">${c.text}</constraint>`
-        ).join('\n');
+        const constraintList = constraints.map(c =>
+          `[${c.id}]: ${c.text}`
+        ).join(' | ');
 
-        const constraintDisplay = `🎯 Active Constraints:\n<constraints>\n${constraintXML}\n</constraints>`;
+        const constraintDisplay = `🎯 Active Constraints: ${constraintList}`;
         contextualGuidance.push(constraintDisplay);
       }
     } catch (error) {
