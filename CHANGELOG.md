@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.12.1] - 2025-10-04
+
+### Fixed
+- **PreToolUse Hook PM Enforcement (BUG-006)**: Fixed hook to properly enforce PM role constraints
+- **PM Always Active**: Updated isPMRole() to return true by default - PM always active in main scope
+- **Bash Command Validation**: Added validateBashCommand() to block build/deploy/system commands (npm, yarn, make, docker, cargo, mvn, gradle, go, kubectl, terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer)
+- **File Operation Validation**: Enhanced file path validation for Edit/Write/MultiEdit tools with proper allowlist/blocklist enforcement
+
+### Changed
+- **Hook Logic**: Separated Bash command validation from file path validation for clearer enforcement
+- **Logging**: Improved hook logging to show PM role detection and validation steps
+
+### Technical Details
+- Modified src/hooks/pretooluse.js with PM always-active logic and Bash validation
+- Hook extracts hookInput.parameters.command for Bash tool validation
+- Blocks blocked commands with clear error messages and alternative guidance
+- File operations validated against allowlist (stories/, bugs/, memory/, docs/, agenttasks/, root .md) and blocklist (src/, lib/, config/, tests/)
+
+---
+
 ## [8.12.0] - 2025-10-03
 
 ### Added
