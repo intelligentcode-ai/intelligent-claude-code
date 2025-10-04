@@ -179,6 +179,7 @@
     - session-start.js
     - user-prompt-submit.js
     - pretooluse.js
+    - pre-commit.js
     - stop.js
   ignore_errors: yes
 
@@ -240,9 +241,9 @@
       set_fact:
         cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['SessionStart', 'PreToolUse', 'PostToolUse']) | items2dict }}"
 
-    - name: Add SessionStart, UserPromptSubmit, and PreToolUse hooks to cleaned hooks
+    - name: Add SessionStart, UserPromptSubmit, PreToolUse, and PreCommit hooks to cleaned hooks
       set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'SessionStart': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/session-start.js', 'timeout': 10000, 'failureMode': 'allow'}]}], 'UserPromptSubmit': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/user-prompt-submit.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/pretooluse.js', 'timeout': 5000}]}]})}, recursive=False) }}"
+        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'SessionStart': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/session-start.js', 'timeout': 10000, 'failureMode': 'allow'}]}], 'UserPromptSubmit': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/user-prompt-submit.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/pretooluse.js', 'timeout': 5000}]}], 'PreCommit': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/pre-commit.js', 'timeout': 5000}]}]})}, recursive=False) }}"
 
     - name: Write merged settings.json
       copy:
@@ -252,13 +253,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "SessionStart, UserPromptSubmit, and PreToolUse hooks configured in settings.json - compaction detection, behavioral guidance, and PM enforcement active"
+        msg: "SessionStart, UserPromptSubmit, PreToolUse, and PreCommit hooks configured in settings.json - compaction detection, behavioral guidance, PM enforcement, and git privacy enforcement active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with SessionStart, UserPromptSubmit, and PreToolUse hooks - compaction detection, behavioral guidance, and PM enforcement active"
+    msg: "Settings file created with SessionStart, UserPromptSubmit, PreToolUse, and PreCommit hooks - compaction detection, behavioral guidance, PM enforcement, and git privacy enforcement active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -276,5 +277,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: SessionStart compaction detection + UserPromptSubmit guidance + PreToolUse PM enforcement active"
+      - "🔒 Behavioral Hooks: SessionStart compaction detection + UserPromptSubmit guidance + PreToolUse PM enforcement + PreCommit git privacy active"
       - "🚀 Use @Role communication to activate team members"
