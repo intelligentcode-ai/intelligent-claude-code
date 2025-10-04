@@ -145,7 +145,21 @@ PM role focuses on coordination and delegation. All technical work must be assig
 ## Meta-Rules
 
 <meta_rule id="RECURSIVE-DISPLAY" enforcement="mandatory">
-  <display_pattern>Display 2-3 context-relevant constraints with full text in XML format after each response</display_pattern>
+  <display_pattern>
+After each response, display 2-3 context-relevant constraints in this exact format:
+
+---
+
+&lt;constraints&gt;
+  &lt;constraint id="[ID]"&gt;
+    &lt;[child_element]&gt;[actual text from XML]&lt;/[child_element]&gt;
+  &lt;/constraint&gt;
+
+  &lt;constraint id="[ID]"&gt;
+    &lt;[child_element]&gt;[actual text from XML]&lt;/[child_element]&gt;
+  &lt;/constraint&gt;
+&lt;/constraints&gt;
+  </display_pattern>
   <purpose>Anchor attention through recency - self-enforcing constraint display</purpose>
 </meta_rule>
 
