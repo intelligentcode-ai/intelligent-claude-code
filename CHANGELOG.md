@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.17] - 2025-10-05
+
+### Added
+- **Extended PM bash command blocking**: Now blocks scripting languages, background tools, text processing, and text editors
+- Blocks scripting languages: python, python3, node, ruby, perl, php
+- Blocks background/session tools: nohup, screen, tmux
+- Blocks text processing: sed, awk (file modification commands)
+- Blocks text editors: vi, vim, nano, emacs
+- Special heredoc pattern detection: Blocks `python3 << 'PYEOF'`, `node << 'EOF'`, etc.
+
+### Security
+- Prevents PM from executing inline scripts via heredoc patterns
+- Prevents PM from running background processes
+- Prevents PM from using stream editors that modify files
+- Maintains coordination-only role separation
+
+---
+
 ## [8.14.16] - 2025-10-05
 
 ### Added
