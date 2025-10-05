@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.9] - 2025-10-05
+
+### Fixed
+- Simplified transcript directory detection using path.dirname() on hookInput.transcript_path
+- Removed path transformation assumptions and hardcoded patterns
+- Removed unnecessary fail-safe for non-existent transcript directory (transcript directory always exists)
+
+### Technical Details
+- Changed from deriving transcript directory via cwd transformation to using path.dirname(transcript_path)
+- hookInput.transcript_path already points to the current transcript file - just extract its directory
+- Eliminated hardcoded leading dash behavior and slash replacement logic
+- Removed directory existence check (if transcript_path directory doesn't exist, Claude Code is broken)
+- More robust: works for ANY project structure without assumptions
+
+### Benefits
+- No path transformation or assumptions needed
+- Works for ANY project without hardcoding
+- Uses what Claude Code actually provides directly
+- Simpler, more maintainable code
+
+---
+
 ## [8.14.8] - 2025-10-05
 
 ### Fixed
