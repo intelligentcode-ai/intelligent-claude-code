@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.19] - 2025-10-05
+
+### Fixed
+- **DEFINITIVE FIX: ParentUuid chain from LAST EXISTING entry**
+- Root cause: PreToolUse fires BEFORE current entry written to transcript
+- Previous approaches failed because they tried to find "current" entry (doesn't exist yet)
+- Solution: Start from LAST EXISTING entry and walk ITS parentUuid chain
+- Task tool in parent chain = Agent context (allow all operations)
+- No Task tool in parent chain = PM context (enforce constraints)
+- Fixes false positives where agents were incorrectly blocked from technical work
+
 ## [8.14.18] - 2025-10-05
 
 ### Fixed
