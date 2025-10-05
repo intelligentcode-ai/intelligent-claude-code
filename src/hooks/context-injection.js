@@ -4,16 +4,41 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
+const { selectRelevantConstraints } = require('./lib/constraint-selector');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
   const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-user-prompt-submit.log`);
+  const logFile = path.join(logDir, `${today}-context-injection.log`);
 
   // Ensure log directory exists
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
   }
+
+  function cleanOldLogs(logDir) {
+    try {
+      const files = fs.readdirSync(logDir);
+      const now = Date.now();
+      const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+
+      for (const file of files) {
+        if (!file.endsWith('.log')) continue;
+
+        const filePath = path.join(logDir, file);
+        const stats = fs.statSync(filePath);
+
+        if (now - stats.mtimeMs > maxAge) {
+          fs.unlinkSync(filePath);
+        }
+      }
+    } catch (error) {
+      // Silent fail - don't block hook execution
+    }
+  }
+
+  // Clean old logs at hook start
+  cleanOldLogs(logDir);
 
   function log(message) {
     const timestamp = new Date().toISOString();
@@ -64,6 +89,97 @@ function main() {
 
     // Get user prompt from input
     const userPrompt = claudeInput.user_prompt || '';
+
+    // DETECT /icc-init-system COMMAND AND FORCE INITIALIZATION DISPLAY
+    if (userPrompt.trim().startsWith('/icc-init-system')) {
+      try {
+        const installPath = path.join(os.homedir(), '.claude');
+        const commandFile = path.join(installPath, 'commands', 'icc-init-system.md');
+
+        // Try to find VERSION file - check multiple possible locations
+        let version = '8.13.3'; // fallback
+        const versionSearchPaths = [
+          path.join(installPath, 'VERSION'),
+          path.join(installPath, '..', 'Nextcloud', 'Work', 'Development', 'intelligentcode-ai', 'intelligent-claude-code', 'VERSION'),
+          path.join(process.cwd(), 'VERSION')
+        ];
+
+        for (const versionPath of versionSearchPaths) {
+          if (fs.existsSync(versionPath)) {
+            version = fs.readFileSync(versionPath, 'utf8').trim();
+            break;
+          }
+        }
+
+        // Read initialization content from command file
+        if (fs.existsSync(commandFile)) {
+          const commandContent = fs.readFileSync(commandFile, 'utf8');
+
+          // Extract initialization display (lines 34-96)
+          const lines = commandContent.split('\n');
+          const initDisplayStart = lines.findIndex(l => l.includes('### 🎯 INTELLIGENT CLAUDE CODE'));
+          const initDisplayEnd = lines.findIndex((l, idx) => idx > initDisplayStart && l.startsWith('## Core Actions'));
+
+          if (initDisplayStart !== -1 && initDisplayEnd !== -1) {
+            let initDisplay = lines.slice(initDisplayStart, initDisplayEnd).join('\n');
+
+            // Replace [CURRENT_VERSION] placeholder with actual version
+            initDisplay = initDisplay.replace(/\[CURRENT_VERSION\]/g, version);
+
+            // Build complete initialization text
+            const fullInitText = [
+              '🚀 INITIALIZING INTELLIGENT CLAUDE CODE VIRTUAL TEAM SYSTEM',
+              '',
+              initDisplay,
+              '',
+              '✅ SYSTEM INITIALIZATION COMPLETE',
+              '📋 Virtual team ready for @Role communication',
+              '🎯 AgentTask-driven execution activated',
+              '🧠 Memory-first approach enabled',
+              '⚡ Professional standards enforced',
+              ''
+            ].join('\n');
+
+            // Force injection via hookSpecificOutput with exit code 0
+            const response = {
+              hookSpecificOutput: {
+                hookEventName: 'UserPromptSubmit',
+                additionalContext: fullInitText
+              }
+            };
+
+            log('Injecting /icc-init-system initialization display');
+            console.log(JSON.stringify(response));
+            process.exit(0);
+          }
+        }
+
+        // Fallback if file reading fails - still show something
+        const fallbackInit = [
+          '🚀 INITIALIZING INTELLIGENT CLAUDE CODE v' + version,
+          '✅ Virtual Team System Active',
+          '📋 14 core roles + unlimited specialists',
+          '🎯 AgentTask-driven execution ready',
+          '🧠 Memory-first approach enabled',
+          '⚡ Professional standards enforced'
+        ].join('\n');
+
+        const fallbackResponse = {
+          hookSpecificOutput: {
+            hookEventName: 'UserPromptSubmit',
+            additionalContext: fallbackInit
+          }
+        };
+
+        log('Using fallback /icc-init-system display');
+        console.log(JSON.stringify(fallbackResponse));
+        process.exit(0);
+
+      } catch (error) {
+        log(`/icc-init-system injection error: ${error.message}`);
+        // Continue with normal flow if init injection fails
+      }
+    }
 
     // Generate contextual reminders based on user prompt
     const reminderLoader = new ReminderLoader();
@@ -230,6 +346,22 @@ function main() {
       } else {
         contextualGuidance.push(randomReminder);
       }
+    }
+
+    // Generate simple list constraint display with rotation
+    try {
+      const constraints = selectRelevantConstraints(userPrompt);
+      if (constraints && constraints.length > 0) {
+        const constraintList = constraints.map(c =>
+          `[${c.id}]: ${c.text}`
+        ).join(' | ');
+
+        const constraintDisplay = `🎯 Active Constraints: ${constraintList}`;
+        contextualGuidance.push(constraintDisplay);
+      }
+    } catch (error) {
+      log(`Constraint selection error: ${error.message}`);
+      // Silently fail - don't block hook execution
     }
 
     // Build comprehensive context

@@ -189,8 +189,9 @@ function Register-UserPromptSubmitHook {
         }
 
         if (-not $ExistingHook) {
-            # Create new hook entry (note: no matcher field for UserPromptSubmit)
+            # Create new hook entry
             $NewHook = [PSCustomObject]@{
+                matcher = "*"
                 hooks = @(
                     [PSCustomObject]@{
                         command = $HookCommand
@@ -255,6 +256,7 @@ function Register-SessionStartHook {
         if (-not $ExistingHook) {
             # Create new hook entry
             $NewHook = [PSCustomObject]@{
+                matcher = "*"
                 hooks = @(
                     [PSCustomObject]@{
                         command = $HookCommand
@@ -279,6 +281,70 @@ function Register-SessionStartHook {
 
     } catch {
         Write-Warning "  Failed to register SessionStart hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
+function Register-PreToolUseHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering PreToolUse hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.PreToolUse) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PreToolUse" -Value @() -Force
+        }
+
+        # Convert PreToolUse to array if it's not already
+        if ($Settings.hooks.PreToolUse -isnot [array]) {
+            $Settings.hooks.PreToolUse = @($Settings.hooks.PreToolUse)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.PreToolUse | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                matcher = "*"
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        timeout = 5000
+                        type = "command"
+                    }
+                )
+            }
+
+            # Add to PreToolUse array
+            $Settings.hooks.PreToolUse += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ PreToolUse hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  PreToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register PreToolUse hook in settings.json: $($_.Exception.Message)"
     }
 }
 
@@ -343,6 +409,23 @@ function Install-HookSystem {
             # Register production hooks in settings.json
             $SettingsPath = Join-Path $InstallPath "settings.json"
 
+            # Remove old hook names (graceful cleanup)
+            $OldHooks = @(
+                'pretooluse.js',
+                'user-prompt-submit.js',
+                'pre-commit.js',
+                'installation-protection.js',
+                'git-privacy-validation.js'
+            )
+
+            foreach ($OldHook in $OldHooks) {
+                $OldHookPath = Join-Path $HooksPath $OldHook
+                if (Test-Path $OldHookPath) {
+                    Remove-Item -Path $OldHookPath -Force
+                    Write-Host "  Removed old hook: $OldHook" -ForegroundColor Gray
+                }
+            }
+
             # Register SessionStart hook
             $SessionStartHookPath = Join-Path $HooksPath "session-start.js"
             if (Test-Path $SessionStartHookPath) {
@@ -352,13 +435,22 @@ function Install-HookSystem {
                 Write-Warning "  session-start.js hook not found, skipping SessionStart registration"
             }
 
-            # Register UserPromptSubmit hook
-            $UserPromptSubmitHookPath = Join-Path $HooksPath "user-prompt-submit.js"
+            # Register UserPromptSubmit hook (context-injection.js)
+            $UserPromptSubmitHookPath = Join-Path $HooksPath "context-injection.js"
             if (Test-Path $UserPromptSubmitHookPath) {
                 $HookCommand = "node `"$UserPromptSubmitHookPath`""
                 Register-UserPromptSubmitHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  user-prompt-submit.js hook not found, skipping UserPromptSubmit registration"
+                Write-Warning "  context-injection.js hook not found, skipping UserPromptSubmit registration"
+            }
+
+            # Register PreToolUse hook (pm-constraints-enforcement.js)
+            $PreToolUseHookPath = Join-Path $HooksPath "pm-constraints-enforcement.js"
+            if (Test-Path $PreToolUseHookPath) {
+                $HookCommand = "node `"$PreToolUseHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  pm-constraints-enforcement.js hook not found, skipping PreToolUse registration"
             }
 
         } else {
@@ -588,14 +680,21 @@ function Uninstall-IntelligentClaudeCode {
     # Unregister hooks from settings.json before removing files
     $SettingsPath = Join-Path $Paths.InstallPath "settings.json"
 
-    # Unregister pre-tool-use hook
-    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pre-tool-use.js"
+    # Unregister new hook names
+    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pm-constraints-enforcement.js"
     if (Test-Path $PreToolUseHookPath) {
         $HookCommand = "node `"$PreToolUseHookPath`""
         Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
     }
 
-    # Unregister post-tool-use hook
+    # Unregister old hook names (graceful cleanup)
+    $OldPreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pretooluse.js"
+    if (Test-Path $OldPreToolUseHookPath) {
+        $HookCommand = "node `"$OldPreToolUseHookPath`""
+        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
+    }
+
+    # Unregister post-tool-use hook (legacy)
     $PostToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "post-tool-use.js"
     if (Test-Path $PostToolUseHookPath) {
         $HookCommand = "node `"$PostToolUseHookPath`""
@@ -715,14 +814,14 @@ function Test-Installation {
 
                     $PreHookFound = $false
                     foreach ($Hook in $PreToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pm-constraints-enforcement.js*") {
                             $PreHookFound = $true
                             break
                         }
                     }
 
                     if (-not $PreHookFound) {
-                        throw "FAIL: Pre-tool-use hook not found in settings.json"
+                        throw "FAIL: PreToolUse hook not found in settings.json"
                     }
                     Write-Host "  ✅ PreToolUse hook registered in settings.json" -ForegroundColor Green
                 } else {
@@ -798,8 +897,8 @@ function Test-Installation {
                     }
 
                     foreach ($Hook in $PreToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
-                            throw "FAIL: Pre-tool-use hook still registered in settings.json after uninstall"
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pm-constraints-enforcement.js*") {
+                            throw "FAIL: PreToolUse hook still registered in settings.json after uninstall"
                         }
                     }
                 }
