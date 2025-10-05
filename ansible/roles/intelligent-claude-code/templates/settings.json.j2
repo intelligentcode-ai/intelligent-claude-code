@@ -4,6 +4,10 @@
       "matcher": "*",
       "hooks": [{
         "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/installation-protection.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
         "command": "node {{ claude_install_path }}/hooks/pretooluse.js",
         "timeout": 5000
       }]

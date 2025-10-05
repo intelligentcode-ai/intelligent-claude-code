@@ -169,17 +169,8 @@ function main() {
         return true;
       }
 
-      // STRATEGY 0: Check for sidechain indicator (most reliable for agent context)
-      // Agents execute in sidechains, so any sidechain operation is agent context
-      for (let i = entries.length - 1; i >= Math.max(0, entries.length - 10); i--) {
-        const entry = entries[i];
-        if (entry.isSidechain === true) {
-          log(`Agent context detected: sidechain indicator found (entry ${entry.uuid})`);
-          return false; // Agent context
-        }
-      }
-
       // STRATEGY 1: Check if hookInput's parentUuid chain leads to a Task tool
+      // This is the primary and most reliable detection method
       // Walk backwards from current operation to find nearest Task tool in ancestry
       function findNearestTaskInChain(uuid, visited = new Set(), depth = 0, maxDepth = 20) {
         // Prevent infinite loops and limit depth
