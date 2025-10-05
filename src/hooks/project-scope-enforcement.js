@@ -7,12 +7,36 @@ const os = require('os');
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
   const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-installation-protection.log`);
+  const logFile = path.join(logDir, `${today}-project-scope-enforcement.log`);
 
   // Ensure log directory exists
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
   }
+
+  function cleanOldLogs(logDir) {
+    try {
+      const files = fs.readdirSync(logDir);
+      const now = Date.now();
+      const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+
+      for (const file of files) {
+        if (!file.endsWith('.log')) continue;
+
+        const filePath = path.join(logDir, file);
+        const stats = fs.statSync(filePath);
+
+        if (now - stats.mtimeMs > maxAge) {
+          fs.unlinkSync(filePath);
+        }
+      }
+    } catch (error) {
+      // Silent fail - don't block hook execution
+    }
+  }
+
+  // Clean old logs at hook start
+  cleanOldLogs(logDir);
 
   function log(message) {
     const timestamp = new Date().toISOString();
@@ -78,7 +102,7 @@ function main() {
     }
 
     const hookInput = JSON.parse(inputData);
-    log(`Installation protection triggered: ${JSON.stringify(hookInput)}`);
+    log(`Project scope enforcement triggered: ${JSON.stringify(hookInput)}`);
 
     // Extract tool and parameters
     const tool = hookInput.tool_name || hookInput.tool || '';
