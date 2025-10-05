@@ -244,9 +244,9 @@ function main() {
     // Extract first word (command name) from command string
     const firstWord = command.trim().split(/\s+/)[0];
 
-    // Check if command is blocked
+    // Check if command is blocked (exact match OR prefix match with hyphen)
     for (const blocked of blockedCommands) {
-      if (firstWord === blocked) {
+      if (firstWord === blocked || firstWord.startsWith(blocked + '-')) {
         return {
           allowed: false,
           message: `🚫 PM role cannot execute build/deploy/system commands - create AgentTask for technical work
