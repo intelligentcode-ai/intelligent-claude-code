@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.5] - 2025-10-05
+
+### Fixed
+- PM constraints hook now detects agents by checking operation CWD
+- Hook allows agents in other projects (non-intelligent-claude-code CWD)
+- PRIMARY STRATEGY: CWD-based detection (fast and reliable)
+- FALLBACK STRATEGY: Transcript parentUuid chain analysis
+
+### Technical Details
+- Check if operation CWD contains '/intelligent-claude-code'
+- If NOT in ICC project, return false (allow agent to work)
+- Solves issue where agents in other projects were blocked
+- Fast detection without complex transcript parsing
+
+---
+
 ## [8.14.4] - 2025-10-05
 
 ### Fixed
