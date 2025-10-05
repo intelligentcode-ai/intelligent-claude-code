@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.18] - 2025-10-05
+
+### Fixed
+- **Compound command detection**: Now checks ALL commands in chains (&&, ;, |) not just first command
+- Prevents bypass via `cd /path && nohup ansible-playbook ...`
+- Each command part in chain is validated against blocklist
+- Shows which part of compound command triggered block
+
+### Security
+- Closes bypass vulnerability where blocked commands could execute after allowed commands in chains
+- Example blocked: `cd /path && nohup ansible-playbook ...` (nohup detected in chain)
+
+---
+
 ## [8.14.17] - 2025-10-05
 
 ### Added
