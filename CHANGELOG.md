@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.3] - 2025-10-05
+
+### Fixed
+- Ansible playbook set_fact tasks now use fully qualified collection names
+- Fixed JSON parsing error in settings.json merge block
+- Changed `set_fact` to `ansible.builtin.set_fact` for all three merge tasks
+
+### Technical Details
+- Updated "Parse existing settings as JSON" task with ansible.builtin.set_fact
+- Updated "Clean up obsolete hooks" task with ansible.builtin.set_fact
+- Updated "Add SessionStart, UserPromptSubmit, PreToolUse hooks" task with ansible.builtin.set_fact
+- Prevents Ansible errors about invalid args fields during installation
+
+---
+
 ## [8.14.2] - 2025-10-05
 
 ### Fixed
