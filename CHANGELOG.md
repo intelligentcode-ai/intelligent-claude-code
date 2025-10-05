@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.23] - 2025-10-05
+
+### Changed
+- Split marker file creation into dedicated agent-marker.js PreToolUse hook
+- Simplified pm-constraints-enforcement.js to only check marker existence
+- Separated concerns: marker creation vs constraint enforcement
+- agent-marker.js creates marker files for Task tool invocations
+- pm-constraints-enforcement.js focuses solely on PM constraint validation
+
+---
+
+## [8.14.22] - 2025-10-05
+
+### Fixed
+- **BULLETPROOF FIX: Marker file approach for agent detection**
+- Replaced unreliable transcript parsing with simple file markers
+- Task tool creates marker file (~/.claude/tmp/agent-executing-{session_id})
+- PreToolUse checks marker: EXISTS = Agent scope, MISSING = PM scope
+- SubagentStop deletes marker file on agent completion
+- 100% reliable, no timing issues, no transcript confusion
+- Fixes all false positives where agents were blocked from technical work
+
+---
+
 ## [8.14.21] - 2025-10-05
 
 ### Fixed
