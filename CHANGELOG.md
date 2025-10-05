@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.0] - 2025-10-05
+
+### Added
+- L3 autonomous behavior patterns for full autonomous execution without approval questions
+- Autonomy-aware role activation system for PM role
+- Autonomous story selection and breakdown based on priority analysis
+- Auto-execution patterns for standard operations in L3 mode
+- Integration of autonomy levels into behavioral decision matrix
+- Work detection patterns with autonomy-aware execution flows
+
+### Changed
+- PM role now checks autonomy_level from config and applies L1/L2/L3 patterns accordingly
+- Story breakdown process differentiates between L1/L2/L3 execution modes
+- Behavioral decision matrix includes autonomy level checking as first step
+- Work detection patterns trigger different execution flows based on autonomy level
+
+### Technical Details
+- Created src/behaviors/shared-patterns/l3-autonomous-behavior.md
+- Updated story-breakdown.md to import and apply autonomy patterns
+- Updated role-system.md with autonomy-aware role activation
+- Updated behavioral-decision-matrix.md with autonomy integration
+- Updated work-detection-patterns.md with autonomy-aware execution
+
+---
+
 ## [8.13.11] - 2025-10-05
 
 ### Fixed

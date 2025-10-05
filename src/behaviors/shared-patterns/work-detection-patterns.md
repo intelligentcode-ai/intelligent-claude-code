@@ -42,6 +42,19 @@
 - File/system reference: +1 point
 - **Threshold:** ≥3 points = Create AgentTask
 
+## Autonomy-Aware Execution
+
+**L3 Autonomous** (≥3 points):
+- Detect work → Create AgentTask → Execute immediately
+- No approval questions for standard operations
+- Status updates only
+
+**L2 Guided** (≥3 points):
+- Detect work → Architect review → Create AgentTask → Execute
+
+**L1 Manual** (≥3 points):
+- Detect work → Request approval → Create AgentTask → Execute
+
 ## Information vs Work Patterns
 
 **Information Requests (Direct Response):**
