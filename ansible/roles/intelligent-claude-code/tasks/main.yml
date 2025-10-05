@@ -170,6 +170,17 @@
     msg: "Hooks directory preserved: {{ claude_install_path }}/hooks/ already exists - keeping user modifications"
   when: hooks_copy_result.failed and ansible_verbosity >= 1
 
+- name: Remove old hook names (graceful cleanup)
+  file:
+    path: "{{ claude_install_path }}/hooks/{{ item }}"
+    state: absent
+  loop:
+    - pretooluse.js
+    - user-prompt-submit.js
+    - pre-commit.js
+    - installation-protection.js
+  ignore_errors: yes
+
 - name: Make production hook scripts executable
   file:
     path: "{{ claude_install_path }}/hooks/{{ item }}"
@@ -177,10 +188,11 @@
     state: file
   loop:
     - session-start.js
-    - user-prompt-submit.js
-    - pretooluse.js
+    - context-injection.js
+    - pm-constraints-enforcement.js
     - project-scope-enforcement.js
     - git-privacy-enforcement.js
+    - git-privacy-validation.js
   ignore_errors: yes
 
 

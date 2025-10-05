@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.13.9] - 2025-10-05
+
+### Changed
+- Renamed hooks to descriptive, purpose-driven names for better clarity
+- `pretooluse.js` → `pm-constraints-enforcement.js` (enforces PM role boundaries)
+- `user-prompt-submit.js` → `context-injection.js` (injects reminders and init system)
+- `pre-commit.js` → `git-privacy-validation.js` (validates git privacy before commits)
+- `installation-protection.js` → `project-scope-enforcement.js` (already renamed in 8.13.8)
+
+### Fixed
+- Ansible playbook now gracefully removes old hook names during upgrade
+- PowerShell install.ps1 script gracefully removes old hook names during upgrade
+- Settings.json.j2 template updated with correct descriptive hook names
+- PreCommit hook chain now properly registered in settings.json
+
+### Technical Details
+- Hook chain order: project-scope → git-privacy → PM constraints enforcement
+- Old hook files automatically removed during installation to prevent confusion
+- All deployment scripts updated (Ansible + PowerShell) with graceful removal logic
+- Deployment idempotence maintained - upgrades work smoothly without orphaned hooks
+
+---
+
 ## [8.13.8] - 2025-10-05
 
 ### Fixed
