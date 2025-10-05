@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.13.5] - 2025-10-05
+
+### Security
+- **CRITICAL**: Fixed ansible-playbook command bypass in PreToolUse hook validation
+- Command blocking now uses prefix matching to catch all tool variants (ansible-playbook, ansible-vault, ansible-galaxy, npm install, docker build, etc.)
+- Previous exact-match logic only blocked base commands (ansible, npm, docker) but missed hyphenated variants
+
+### Fixed
+- PreToolUse hook now correctly blocks ansible-playbook, ansible-vault, ansible-galaxy, and all other hyphenated tool variants
+- Command matching changed from exact match to prefix match with hyphen support
+
+---
+
 ## [8.13.4] - 2025-10-05
 
 ### Fixed
