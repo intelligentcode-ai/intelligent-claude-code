@@ -152,97 +152,77 @@ function main() {
   }
 
   function isPMRole(hookInput) {
-    // PRIMARY STRATEGY: Check if CWD differs from intelligent-claude-code project
-    // Agents working in other projects have different CWD
-    const hookInstallPath = path.dirname(path.dirname(__dirname)); // ~/.claude
-    const operationCwd = hookInput.cwd || process.cwd();
+    // Detect agent context by finding Task tool invocations in CURRENT transcript
+    // Strategy: Find newest transcript file dynamically to avoid stale session issues
 
-    // Normalize paths for comparison
-    const normalizedHookPath = path.resolve(hookInstallPath);
-    const normalizedOpCwd = path.resolve(operationCwd);
+    // 1. Derive transcript directory from cwd
+    const projectPath = hookInput.cwd;
+    const projectKey = projectPath.replace(/\//g, '-').replace(/^-/, '');
+    const transcriptDir = path.join(os.homedir(), '.claude', 'projects', projectKey);
 
-    // If operation is NOT in intelligent-claude-code project, it's an agent
-    if (!normalizedOpCwd.includes('/intelligent-claude-code')) {
-      log(`Agent detected: operation CWD (${normalizedOpCwd}) is not in intelligent-claude-code project`);
-      return false; // Agent in different project
-    }
+    log(`Checking transcript directory: ${transcriptDir}`);
 
-    // FALLBACK STRATEGY: Check transcript for Task tool invocations
-    const transcriptPath = hookInput.transcript_path;
-
-    if (!transcriptPath || !fs.existsSync(transcriptPath)) {
-      log('No transcript available - allowing operation (fail-safe for agents)');
-      return false;
-    }
+    // 2. Find newest transcript file
+    let newestTranscript = null;
+    let newestMtime = 0;
 
     try {
-      // Read last 200 lines of transcript
-      const content = fs.readFileSync(transcriptPath, 'utf8');
-      const lines = content.trim().split('\n').slice(-200);
+      if (!fs.existsSync(transcriptDir)) {
+        log('Transcript directory does not exist - allowing operation (fail-safe)');
+        return false;
+      }
 
-      // Parse entries and build maps
-      const entries = [];
-      const entryMap = new Map();
-      const taskToolMap = new Map(); // Task UUID -> Task entry
+      const files = fs.readdirSync(transcriptDir);
+      const jsonlFiles = files.filter(f => f.endsWith('.jsonl'));
 
+      for (const file of jsonlFiles) {
+        const filePath = path.join(transcriptDir, file);
+        const stats = fs.statSync(filePath);
+        if (stats.mtimeMs > newestMtime) {
+          newestMtime = stats.mtimeMs;
+          newestTranscript = filePath;
+        }
+      }
+
+      if (!newestTranscript) {
+        log('No transcript files found - allowing operation (fail-safe)');
+        return false;
+      }
+
+      log(`Using newest transcript: ${path.basename(newestTranscript)}`);
+
+    } catch (dirError) {
+      log(`ERROR: Failed to find transcript: ${dirError.message}`);
+      return false; // Fail-safe: allow operation on errors
+    }
+
+    // 3. Read recent entries (last 100 lines)
+    try {
+      const content = fs.readFileSync(newestTranscript, 'utf8');
+      const lines = content.trim().split('\n').slice(-100);
+
+      // 4. Check for Task tools in recent entries
+      let taskToolCount = 0;
       for (const line of lines) {
         try {
           const entry = JSON.parse(line);
-          entries.push(entry);
-          entryMap.set(entry.uuid, entry);
-
-          // Track Task tool invocations
           if (entry.message?.content?.[0]?.name === 'Task') {
-            taskToolMap.set(entry.uuid, entry);
-            log(`Found Task tool UUID: ${entry.uuid}`);
+            taskToolCount++;
+            log(`Found Task tool in recent entries: ${entry.uuid}`);
           }
         } catch (parseError) {
           continue;
         }
       }
 
-      // If no Task tools found, this is PM context
-      if (taskToolMap.size === 0) {
-        log('No recent Task tools - PM context');
-        return true;
+      // 5. Determine context
+      if (taskToolCount > 0) {
+        log(`Agent context detected: ${taskToolCount} Task tool(s) in recent entries`);
+        return false; // Agent context - allow all operations
       }
 
-      // Check if hookInput's parentUuid chain leads to a Task tool
-      function findNearestTaskInChain(uuid, visited = new Set(), depth = 0, maxDepth = 20) {
-        if (visited.has(uuid) || depth > maxDepth) {
-          return null;
-        }
-        visited.add(uuid);
-
-        const entry = entryMap.get(uuid);
-        if (!entry) {
-          return null;
-        }
-
-        if (taskToolMap.has(uuid)) {
-          log(`Found Task tool in chain at depth ${depth}: ${uuid}`);
-          return uuid;
-        }
-
-        if (entry.parentUuid) {
-          return findNearestTaskInChain(entry.parentUuid, visited, depth + 1, maxDepth);
-        }
-
-        return null;
-      }
-
-      if (hookInput.parentUuid) {
-        const nearestTask = findNearestTaskInChain(hookInput.parentUuid);
-
-        if (nearestTask) {
-          log(`Agent context detected: current operation parentUuid chain leads to Task tool ${nearestTask}`);
-          return false; // Agent context
-        }
-      }
-
-      // No Task tool in current operation's ancestry = PM context
-      log('No Task tool in parentUuid chain - PM context');
-      return true;
+      log('No Task tools in recent entries - PM context');
+      return true; // PM context - enforce constraints
 
     } catch (readError) {
       log(`ERROR: Failed to read transcript: ${readError.message}`);
