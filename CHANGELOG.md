@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.20] - 2025-10-05
+
+### Fixed
+- **SessionStart hook**: Only trigger on compaction, not on resume events
+- Removed `|| source === 'resume'` condition from line 80 in session-start.js
+- Hook now silent on normal session resumes as intended
+- Maintains all other compaction detection methods (summary field, message content)
+
+---
+
 ## [8.14.19] - 2025-10-05
 
 ### Fixed
