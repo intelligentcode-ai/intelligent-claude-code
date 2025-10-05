@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.1] - 2025-10-05
+
+### Fixed
+- Ansible playbook settings.json merge now uses correct hook names
+- Fixed hardcoded old hook names in existing installation merge path
+- `user-prompt-submit.js` → `context-injection.js` in merge task
+- `pretooluse.js` → `pm-constraints-enforcement.js` in merge task
+
+### Technical Details
+- New installations use settings.json.j2 template (already correct)
+- Existing installations now properly merge with updated hook names
+- Graceful upgrades work correctly without orphaned hook references
+
+---
+
 ## [8.14.0] - 2025-10-05
 
 ### Added
