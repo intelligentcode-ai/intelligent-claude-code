@@ -155,23 +155,17 @@ function main() {
     // Detect agent context by finding Task tool invocations in CURRENT transcript
     // Strategy: Find newest transcript file dynamically to avoid stale session issues
 
-    // 1. Derive transcript directory from cwd
-    const projectPath = hookInput.cwd;
-    const projectKey = projectPath.replace(/\//g, '-');
-    const transcriptDir = path.join(os.homedir(), '.claude', 'projects', projectKey);
+    // 1. Extract transcript directory from transcript_path directly
+    const transcriptPath = hookInput.transcript_path;
+    const transcriptDir = path.dirname(transcriptPath);
 
-    log(`Checking transcript directory: ${transcriptDir}`);
+    log(`Using transcript directory: ${transcriptDir}`);
 
     // 2. Find newest transcript file
     let newestTranscript = null;
     let newestMtime = 0;
 
     try {
-      if (!fs.existsSync(transcriptDir)) {
-        log('Transcript directory does not exist - allowing operation (fail-safe)');
-        return false;
-      }
-
       const files = fs.readdirSync(transcriptDir);
       const jsonlFiles = files.filter(f => f.endsWith('.jsonl'));
 
