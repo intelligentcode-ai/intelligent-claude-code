@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.13.6] - 2025-10-05
+
+### Fixed
+- **CRITICAL REGRESSION**: Fixed PreToolUse hook incorrectly blocking agent execution
+- Hook now correctly detects agent context using sidechain indicator (isSidechain: true)
+- Agent operations in sidechains are properly allowed (devops-engineer ansible-playbook now works)
+- PM context blocking still works correctly for main agent operations
+- Added Strategy 0 (sidechain detection) as primary agent context detection method
+
+### Technical Details
+- Root cause: Agent operations create sidechains with parentUuid: null, breaking chain detection
+- Solution: Added sidechain indicator check (isSidechain field) as most reliable detection method
+- Detection strategies: 0) Sidechain indicator (new), 1) ParentUuid chain, 2) Recent entry scanning
+- All agents execute in sidechains (isSidechain: true), PM context has isSidechain: false
+- Hook checks last 10 entries for sidechain presence before other detection methods
+
+---
+
 ## [8.13.5] - 2025-10-05
 
 ### Security
