@@ -333,10 +333,9 @@ Please create summary files in the summaries/ directory to keep project root cle
 
   function getBlockingEnabled() {
     const configPaths = [
-      path.join(process.env.HOME || os.homedir(), '.claude', 'config.md'),
-      path.join(process.cwd(), 'src', 'config.md'),
-      path.join(process.cwd(), '.claude', 'config.md'),
-      path.join(process.cwd(), 'config.md')
+      path.join(process.cwd(), 'CLAUDE.md'),           // Project CLAUDE.md (highest priority)
+      path.join(process.cwd(), '.claude', 'CLAUDE.md'), // Project .claude/CLAUDE.md
+      path.join(process.env.HOME || os.homedir(), '.claude', 'CLAUDE.md') // User global CLAUDE.md
     ];
 
     for (const configPath of configPaths) {
@@ -344,7 +343,7 @@ Please create summary files in the summaries/ directory to keep project root cle
         if (fs.existsSync(configPath)) {
           const content = fs.readFileSync(configPath, 'utf8');
 
-          // Look for blocking_enabled setting
+          // Look for blocking_enabled setting in YAML frontmatter or markdown
           const match = content.match(/blocking_enabled:\s*(true|false)/i);
           if (match) {
             const enabled = match[1].toLowerCase() === 'true';
@@ -358,7 +357,7 @@ Please create summary files in the summaries/ directory to keep project root cle
     }
 
     // DEFAULT: blocking enabled (secure by default)
-    log('No blocking_enabled config found - defaulting to TRUE (blocking mode)');
+    log('No blocking_enabled config found in CLAUDE.md - defaulting to TRUE (blocking mode)');
     return true;
   }
 
