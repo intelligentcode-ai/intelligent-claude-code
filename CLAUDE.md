@@ -15,6 +15,7 @@ l3_settings:
   auto_discover: true
   continue_on_error: true
 git_privacy: false
+blocking_enabled: true
 ```
 
 ## System Usage
