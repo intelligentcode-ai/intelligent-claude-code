@@ -187,8 +187,25 @@ function main() {
         }
       }
 
-      // Get LAST existing entry (current operation not written yet)
-      const lastEntry = JSON.parse(lines[lines.length - 1]);
+      // Find LAST existing entry WITH a UUID (skip file-history-snapshot and other meta entries)
+      let lastEntry = null;
+      for (let i = lines.length - 1; i >= 0; i--) {
+        try {
+          const entry = JSON.parse(lines[i]);
+          if (entry.uuid) {
+            lastEntry = entry;
+            break;
+          }
+        } catch (e) {
+          continue;
+        }
+      }
+
+      if (!lastEntry) {
+        log('No entries with UUID found in transcript - allowing (fail-safe)');
+        return false;
+      }
+
       log(`Starting from last existing entry: UUID ${lastEntry.uuid}, type: ${lastEntry.type}`);
 
       // Walk parentUuid chain from last existing entry

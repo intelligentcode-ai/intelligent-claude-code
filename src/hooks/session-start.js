@@ -77,7 +77,7 @@ function main() {
     let detectionMethod = 'none';
 
     // Method 1: Direct source field check
-    if (source === 'compact' || source === 'resume') {
+    if (source === 'compact') {
       isCompaction = true;
       detectionMethod = 'source_field';
     }
