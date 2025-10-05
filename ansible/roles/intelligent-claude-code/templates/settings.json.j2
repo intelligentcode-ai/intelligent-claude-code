@@ -33,14 +33,6 @@
         "timeout": 15000,
         "failureMode": "allow"
       }]
-    }],
-    "PreCommit": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/git-privacy-validation.js",
-        "timeout": 5000
-      }]
     }]
   }
 }
