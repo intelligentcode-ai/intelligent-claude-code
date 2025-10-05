@@ -148,10 +148,19 @@ function main() {
         ].join('\n');
       }
 
-      // For SessionStart: stdout with exit 0 = silent injection (only visible in CTRL-R transcript mode)
-      // Don't use JSON hookSpecificOutput - that makes it visible in chat!
+      // Use JSON hookSpecificOutput.additionalContext for truly silent injection
+      // This adds context without visible output in chat
+      const output = {
+        continue: true,
+        suppressOutput: true,
+        hookSpecificOutput: {
+          hookEventName: "SessionStart",
+          additionalContext: guidance
+        }
+      };
+
       log(`Compaction detected via ${detectionMethod} - ${virtualTeamContent ? 'injecting virtual-team.md content' : 'injecting restoration guidance'}`);
-      console.log(guidance);
+      console.log(JSON.stringify(output));
       process.exit(0);
     }
 

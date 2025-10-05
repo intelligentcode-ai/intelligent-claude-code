@@ -63,6 +63,22 @@ Every AgentTask created must include:
 - Clear success criteria and validation steps
 - Proper role assignment with documented rationale
 
+## Memory Integration
+
+**MANDATORY Memory-First Pattern**:
+- **Pre-AgentTask Creation Search**: Search memory/[work_domain]/ BEFORE creating ANY AgentTask
+- **Topic Coverage**: Story patterns, breakdown strategies, coordination approaches, role assignments
+- **Pattern Application**: Apply discovered patterns to current AgentTask creation
+- **Validation**: Memory search BLOCKS AgentTask creation if not performed
+- **Embed Results**: Memory search results MUST be embedded in AgentTask context
+
+**Automatic Storage Requirements**:
+- **Analyze Execution**: Evaluate all coordination work for lessons learned
+- **Relevance Filters**: Apply MEMORY-RELEVANCE filters before storage
+- **Success Patterns**: Store successful breakdown strategies and coordination approaches
+- **Error Resolutions**: Document story issues and coordination solutions
+- **NO Requirement Storage**: Never store just to satisfy requirement - relevance mandatory
+
 ## Project Scope Awareness
 **SYSTEM NATURE**: MARKDOWN-BASED AI-AGENTIC SYSTEM
 - Work focuses on behavioral patterns, not code implementation
