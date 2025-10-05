@@ -331,6 +331,37 @@ Please create summary files in the summaries/ directory to keep project root cle
     };
   }
 
+  function getBlockingEnabled() {
+    const configPaths = [
+      path.join(process.env.HOME || os.homedir(), '.claude', 'config.md'),
+      path.join(process.cwd(), 'src', 'config.md'),
+      path.join(process.cwd(), '.claude', 'config.md'),
+      path.join(process.cwd(), 'config.md')
+    ];
+
+    for (const configPath of configPaths) {
+      try {
+        if (fs.existsSync(configPath)) {
+          const content = fs.readFileSync(configPath, 'utf8');
+
+          // Look for blocking_enabled setting
+          const match = content.match(/blocking_enabled:\s*(true|false)/i);
+          if (match) {
+            const enabled = match[1].toLowerCase() === 'true';
+            log(`Config found at ${configPath}: blocking_enabled=${enabled}`);
+            return enabled;
+          }
+        }
+      } catch (error) {
+        // Continue to next path
+      }
+    }
+
+    // DEFAULT: blocking enabled (secure by default)
+    log('No blocking_enabled config found - defaulting to TRUE (blocking mode)');
+    return true;
+  }
+
   function validatePMOperation(filePath, tool, paths, projectRoot) {
     const { allowlist, blocklist } = paths;
 
@@ -421,18 +452,29 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     const summaryValidation = validateSummaryFile(filePath, projectRoot);
     if (!summaryValidation.allowed) {
       log(`Summary file blocked: ${filePath}`);
-      const response = {
-        hookSpecificOutput: {
-          hookEventName: 'PreToolUse',
-          permissionDecision: 'deny',
-          permissionDecisionReason: summaryValidation.message
-        }
-      };
-      const responseJson = JSON.stringify(response);
-      log(`RESPONSE: ${responseJson}`);
-      log(`EXIT CODE: 2`);
-      console.log(responseJson);
-      process.exit(2);
+
+      const blockingEnabled = getBlockingEnabled();
+
+      if (blockingEnabled) {
+        // BLOCKING MODE (default)
+        const response = {
+          hookSpecificOutput: {
+            hookEventName: 'PreToolUse',
+            permissionDecision: 'deny',
+            permissionDecisionReason: summaryValidation.message
+          }
+        };
+        const responseJson = JSON.stringify(response);
+        log(`RESPONSE: ${responseJson}`);
+        log(`EXIT CODE: 2 (BLOCKING MODE)`);
+        console.log(responseJson);
+        process.exit(2);
+      } else {
+        // WARNING MODE (non-blocking)
+        log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
+      }
     }
 
     // Check if PM role and validate
@@ -446,18 +488,29 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
 
         if (!bashValidation.allowed) {
           log(`Bash command BLOCKED: ${command}`);
-          const response = {
-            hookSpecificOutput: {
-              hookEventName: 'PreToolUse',
-              permissionDecision: 'deny',
-              permissionDecisionReason: bashValidation.message
-            }
-          };
-          const responseJson = JSON.stringify(response);
-          log(`RESPONSE: ${responseJson}`);
-          log(`EXIT CODE: 2`);
-          console.log(responseJson);
-          process.exit(2);
+
+          const blockingEnabled = getBlockingEnabled();
+
+          if (blockingEnabled) {
+            // BLOCKING MODE (default)
+            const response = {
+              hookSpecificOutput: {
+                hookEventName: 'PreToolUse',
+                permissionDecision: 'deny',
+                permissionDecisionReason: bashValidation.message
+              }
+            };
+            const responseJson = JSON.stringify(response);
+            log(`RESPONSE: ${responseJson}`);
+            log(`EXIT CODE: 2 (BLOCKING MODE)`);
+            console.log(responseJson);
+            process.exit(2);
+          } else {
+            // WARNING MODE (non-blocking)
+            log(`⚠️ WARNING (non-blocking): ${bashValidation.message}`);
+            console.log(JSON.stringify({ continue: true }));
+            process.exit(0);
+          }
         }
 
         log(`Bash command ALLOWED: ${command}`);
@@ -472,18 +525,29 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
 
         if (!validation.allowed) {
           log(`File operation BLOCKED: ${filePath}`);
-          const response = {
-            hookSpecificOutput: {
-              hookEventName: 'PreToolUse',
-              permissionDecision: 'deny',
-              permissionDecisionReason: validation.message
-            }
-          };
-          const responseJson = JSON.stringify(response);
-          log(`RESPONSE: ${responseJson}`);
-          log(`EXIT CODE: 2`);
-          console.log(responseJson);
-          process.exit(2);
+
+          const blockingEnabled = getBlockingEnabled();
+
+          if (blockingEnabled) {
+            // BLOCKING MODE (default)
+            const response = {
+              hookSpecificOutput: {
+                hookEventName: 'PreToolUse',
+                permissionDecision: 'deny',
+                permissionDecisionReason: validation.message
+              }
+            };
+            const responseJson = JSON.stringify(response);
+            log(`RESPONSE: ${responseJson}`);
+            log(`EXIT CODE: 2 (BLOCKING MODE)`);
+            console.log(responseJson);
+            process.exit(2);
+          } else {
+            // WARNING MODE (non-blocking)
+            log(`⚠️ WARNING (non-blocking): ${validation.message}`);
+            console.log(JSON.stringify({ continue: true }));
+            process.exit(0);
+          }
         }
 
         log(`File operation ALLOWED: ${filePath}`);
