@@ -414,7 +414,8 @@ function Install-HookSystem {
                 'pretooluse.js',
                 'user-prompt-submit.js',
                 'pre-commit.js',
-                'installation-protection.js'
+                'installation-protection.js',
+                'git-privacy-validation.js'
             )
 
             foreach ($OldHook in $OldHooks) {

@@ -29,7 +29,6 @@ src/hooks/
 ├── pm-constraints-enforcement.js     # PM role boundary enforcement (PreToolUse)
 ├── project-scope-enforcement.js      # Project scope protection (PreToolUse)
 ├── git-privacy-enforcement.js        # Git privacy enforcement (PreToolUse)
-├── git-privacy-validation.js         # Git privacy validation (PreCommit)
 └── lib/
     ├── reminder-loader.js            # Dynamic reminder system
     └── reminders.json                # Unified reminder definitions

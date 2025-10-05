@@ -231,24 +231,8 @@ function main() {
         }
       }
 
-      // STRATEGY 2: Check most recent entries (last 50) for active agent execution
-      // This catches operations that are part of an ongoing agent execution
-      for (let i = entries.length - 1; i >= Math.max(0, entries.length - 50); i--) {
-        const entry = entries[i];
-
-        // Skip entries without parentUuid
-        if (!entry.parentUuid) {
-          continue;
-        }
-
-        const nearestTask = findNearestTaskInChain(entry.parentUuid);
-        if (nearestTask) {
-          log(`Agent context detected: recent entry ${entry.uuid} chain leads to Task tool ${nearestTask}`);
-          return false; // Agent context
-        }
-      }
-
-      log('No active agent context detected - PM context');
+      // No Task tool in current operation's ancestry = PM context
+      log('No Task tool in parentUuid chain - PM context');
       return true;
 
     } catch (readError) {
@@ -290,18 +274,25 @@ Create AgentTask for specialist execution.`
   }
 
   function isPathInAllowlist(filePath, allowlist) {
-    // Check if file is in root and ends with .md
-    const fileName = path.basename(filePath);
-    const dirName = path.dirname(filePath);
+    // Normalize to relative path if absolute
+    let relativePath = filePath;
+    const projectRoot = process.cwd();
 
-    // Allow root *.md files (CLAUDE.md, README.md, etc.)
-    if ((dirName === '.' || dirName === '/') && fileName.endsWith('.md')) {
+    if (path.isAbsolute(filePath)) {
+      relativePath = path.relative(projectRoot, filePath);
+    }
+
+    // Check if file is in root and ends with .md
+    const fileName = path.basename(relativePath);
+    const dirName = path.dirname(relativePath);
+
+    if ((dirName === '.' || dirName === '') && fileName.endsWith('.md')) {
       return true;
     }
 
     // Check if path starts with any allowlist directory
     for (const allowedPath of allowlist) {
-      if (filePath.startsWith(allowedPath + '/') || filePath === allowedPath) {
+      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
         return true;
       }
     }
@@ -310,9 +301,17 @@ Create AgentTask for specialist execution.`
   }
 
   function isPathInBlocklist(filePath, blocklist) {
+    // Normalize to relative path if absolute
+    let relativePath = filePath;
+    const projectRoot = process.cwd();
+
+    if (path.isAbsolute(filePath)) {
+      relativePath = path.relative(projectRoot, filePath);
+    }
+
     // Check if path starts with any blocklist directory
     for (const blockedPath of blocklist) {
-      if (filePath.startsWith(blockedPath + '/') || filePath === blockedPath) {
+      if (relativePath.startsWith(blockedPath + '/') || relativePath === blockedPath) {
         return true;
       }
     }
@@ -321,23 +320,27 @@ Create AgentTask for specialist execution.`
   }
 
   function isSummaryFile(filePath) {
-    const fileName = path.basename(filePath);
-    const dirName = path.dirname(filePath);
+    // Normalize to relative path if absolute
+    let relativePath = filePath;
+    const projectRoot = process.cwd();
 
-    // Only check files in project root
-    if (dirName !== '.' && dirName !== '/') {
-      // Check if it's an absolute path to project root
-      const isAbsoluteRoot = dirName.split('/').pop() === path.basename(process.cwd());
-      if (!isAbsoluteRoot) {
-        return false;
-      }
+    if (path.isAbsolute(filePath)) {
+      relativePath = path.relative(projectRoot, filePath);
+    }
+
+    const fileName = path.basename(relativePath);
+    const dirName = path.dirname(relativePath);
+
+    // Check if it's in project root
+    if (dirName !== '.' && dirName !== '') {
+      return false;
     }
 
     // Check if filename matches summary patterns (case-insensitive)
     const upperFileName = fileName.toUpperCase();
-    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS'];
+    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING'];
 
-    return summaryPatterns.some(pattern => upperFileName.startsWith(pattern));
+    return summaryPatterns.some(pattern => upperFileName.includes(pattern));
   }
 
   function validateSummaryFile(filePath) {

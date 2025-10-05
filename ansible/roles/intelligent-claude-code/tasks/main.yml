@@ -192,7 +192,6 @@
     - pm-constraints-enforcement.js
     - project-scope-enforcement.js
     - git-privacy-enforcement.js
-    - git-privacy-validation.js
   ignore_errors: yes
 
 
