@@ -9,7 +9,7 @@ const { selectRelevantConstraints } = require('./lib/constraint-selector');
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
   const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-user-prompt-submit.log`);
+  const logFile = path.join(logDir, `${today}-context-injection.log`);
 
   // Ensure log directory exists
   if (!fs.existsSync(logDir)) {
