@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.14] - 2025-10-05
+
+### Added
+- **blocking_enabled configuration support in PM constraints hook**: Hook now respects `blocking_enabled` configuration setting for flexible enforcement
+- New `getBlockingEnabled()` function searches configuration hierarchy for blocking_enabled setting
+- Configuration path priority: ~/.claude/config.md, ./src/config.md, ./.claude/config.md, ./config.md
+
+### Changed
+- **Default behavior: BLOCKING mode (secure by default)**: When blocking_enabled not found or set to true, violations are blocked with exit code 2
+- **WARNING mode when blocking_enabled: false**: Violations log warnings but allow operations to proceed with exit code 0
+- All three violation points (summary files, bash commands, file operations) now check blocking_enabled configuration
+
+### Benefits
+- Flexible enforcement allows projects to choose between strict blocking and warning-only modes
+- Secure by default: missing or undefined configuration defaults to blocking mode
+- Comprehensive logging shows which mode is active for transparency
+- Non-blocking mode useful for learning environments and exploratory work
+
+---
+
 ## [8.14.13] - 2025-10-05
 
 ### Fixed
