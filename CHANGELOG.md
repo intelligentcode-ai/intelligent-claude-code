@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.16] - 2025-10-05
+
+### Added
+- **Comprehensive blocking_enabled documentation in configuration-guide.md**: New section covering enforcement modes, use cases, examples
+- Documents BLOCKING mode (default, secure) vs WARNING mode (non-blocking, learning)
+- Includes configuration hierarchy, hook integration, best practices, troubleshooting
+- Proper placement in docs/ instead of project CLAUDE.md
+
+### Fixed
+- Removed incorrect documentation from project CLAUDE.md (feature docs belong in docs/, not project config)
+
+---
+
 ## [8.14.15] - 2025-10-05
 
 ### Fixed
