@@ -1,6 +1,6 @@
 # Template Resolution & Validation
 
-**MANDATORY:** All AgentTask templates require complete placeholder resolution and validation before creation.
+**MANDATORY:** Complete placeholder resolution before AgentTask creation. Auto-correct violations.
 
 ## Imports
 @./shared-patterns/template-loading.md
@@ -9,77 +9,29 @@
 
 ## Core Rules
 
-### Main Agent Context Required
-**PLACEHOLDER RESOLUTION requires full context:**
-- Configuration hierarchy (embedded → project → user → system)
-- Project root detection and file system access
-- System nature analysis (CODE-BASED vs MARKDOWN-BASED AI-AGENTIC)
-- Critical file identification and content sampling
-- Memory search across memory/ directories
-
-**AGENTS CANNOT resolve placeholders due to isolated context.**
+### Main Agent Required
+Placeholder resolution requires full context: config hierarchy, project root, system nature analysis, critical files, memory search.
+AGENTS CANNOT resolve placeholders (isolated context).
 
 ### Common Placeholders
-
-| Category | Placeholder | Resolution |
-|----------|-------------|------------|
-| **Config** | `[FROM_CONFIG]` | Load from hierarchy |
-| | `[GIT_PRIVACY]`, `[BRANCH_PROTECTION]` | Boolean settings |
-| **Context** | `[PROJECT_ROOT]` | Absolute path |
-| | `[SYSTEM_NATURE]` | System type analysis |
-| | `[CURRENT_DATE]` | YYYY-MM-DD format |
-| **Files** | `[CRITICAL_FILES]` | Relevant files with samples |
-| **Search** | `[MEMORY_SEARCH:topic]` | Top memory entries |
-| **Project** | `[PROJECT_OVERVIEW]` | Project description from CLAUDE.md |
+**Config**: [FROM_CONFIG], [GIT_PRIVACY], [BRANCH_PROTECTION]
+**Context**: [PROJECT_ROOT], [SYSTEM_NATURE], [CURRENT_DATE]
+**Files**: [CRITICAL_FILES], [MEMORY_SEARCH:topic], [PROJECT_OVERVIEW]
 
 ### Template Source
-**MANDATORY:** Only use templates from hierarchy:
-- `nano-agenttask-template.yaml` (0-2 points)
-- `tiny-agenttask-template.yaml` (3-5 points)
-- `medium-agenttask-template.yaml` (6-15 points)
-- `large-agenttask-template.yaml` (16-30 points)
-- `mega-agenttask-template.yaml` (30+ points)
+Use templates from hierarchy: nano (0-2), tiny (3-5), medium (6-15), large (16-30), mega (30+).
 
 ### Resolution Standards
-**BEFORE AGENT execution:**
-- Zero placeholders (`[.*]` patterns)
-- Absolute paths only (no relative paths)
-- Actual config values (not placeholders)
-- Current dates (not `[CURRENT_DATE]`)
-- Embedded search results (not `[SEARCH_TOPIC]`)
-- Story content (not `[USER_REQUEST]`)
-- Role assignment (not `[ROLE]`)
-- Project context (not `[SYSTEM_NATURE]`)
+Before agent execution: Zero placeholders, absolute paths, actual config values, current dates, embedded search results, story content, role assignment, project context.
 
-### Validation Checklist
-**MANDATORY VALIDATION:**
-☐ **Zero Placeholders**: No [.*] patterns remain
-☐ **Absolute Paths**: All paths start with /
-☐ **Actual Config Values**: Boolean/string values loaded
-☐ **Current Dates**: System date format YYYY-MM-DD
-☐ **Embedded Search Results**: Memory/practice results included
-☐ **Story Content**: Actual requirements text
-☐ **Role Assignment**: Specific role assigned
-☐ **Project Context**: Real system nature determined
-
-### Blocking & Validation
-1. **Scan Template**: Check for `[.*]` patterns
-2. **Resolve All**: Replace every placeholder with actual values
-3. **Validate**: Ensure no unresolved patterns remain
-4. **Block Creation**: If any placeholders remain
+### Validation Process
+1. Scan for [.*] patterns
+2. Replace all placeholders with actual values
+3. Validate no unresolved patterns remain
+4. Block creation if any placeholders remain
 
 ### Auto-Correction
-- Manual AgentTask creation → Force template usage
-- Unresolved placeholders → Complete resolution required
-- Wrong complexity → Recalculate and use correct template
-- Runtime config → Embed all values in AgentTask
-- AGENT attempts → Block and redirect to main agent
-
-### Error Messages
-- "❌ PLACEHOLDER RESOLUTION BLOCKED: AGENTS cannot resolve placeholders - use main agent"
-- "❌ CONFIGURATION ACCESS DENIED: Config hierarchy not available in isolated context"
-- "❌ PROJECT ANALYSIS BLOCKED: Project-wide analysis requires main agent access"
-- "❌ MEMORY SEARCH BLOCKED: Memory operations require main agent directory access"
+Manual creation → Force template. Unresolved placeholders → Complete resolution. Wrong complexity → Recalculate. Runtime config → Embed values. Agent attempts → Block, redirect to main agent.
 
 ---
 *Template resolution and validation with complete placeholder handling*

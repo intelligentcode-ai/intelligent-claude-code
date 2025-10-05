@@ -174,14 +174,15 @@ PM role focuses on coordination and delegation. All technical work must be assig
     </pm_constraints>
 
     <process_constraints>
-      <constraint id="MEMORY-FIRST">Search memory before work and questions • Apply stored patterns</constraint>
-      <constraint id="LEARNING-CAPTURE">Auto-store patterns from execution • Promote to best-practices</constraint>
+      <constraint id="MEMORY-SEARCH-MANDATORY">PM/Agents MUST search memory before work • Embed results in context</constraint>
+      <constraint id="MEMORY-STORAGE-RULES">Auto-analyze execution • Store ONLY if relevant • Apply filters</constraint>
+      <constraint id="LEARNING-CAPTURE">Success/failure analysis • Pattern identification • Best-practice promotion</constraint>
       <constraint id="BEST-PRACTICES-FIRST">Check best-practices before implementation</constraint>
     </process_constraints>
   </complete_constraint_list>
 
   <rotation_logic>
-    Maintain rotation index through complete constraint list (13 total).
+    Maintain rotation index through complete constraint list (14 total).
     Advance by 2 each response. Wrap around after end.
     Ensures all constraints shown over ~7 responses.
   </rotation_logic>
@@ -201,6 +202,84 @@ PM role focuses on coordination and delegation. All technical work must be assig
 
   <applicability>ALL agents: Main agent, specialist agents, dynamic specialists</applicability>
 </meta_rule>
+
+## Memory-First Enforcement
+
+<memory_requirements id="MEMORY-ENFORCEMENT" enforcement="mandatory">
+  <search_requirements id="MEMORY-SEARCH-MANDATORY">
+    <pm_requirements>
+      <rule>PM MUST search memory BEFORE creating ANY AgentTask</rule>
+      <rule>Search topics: [work_type], implementation, debugging, [technology_domain]</rule>
+      <rule>AgentTask creation BLOCKED if memory search not performed</rule>
+      <validation>Memory search results MUST be embedded in AgentTask context</validation>
+    </pm_requirements>
+
+    <agent_requirements>
+      <rule>ALL agents MUST search memory BEFORE starting execution</rule>
+      <rule>Search relevant to work type and technology domain</rule>
+      <rule>Apply discovered patterns to current work</rule>
+      <validation>Execution checklist includes memory search verification</validation>
+    </agent_requirements>
+
+    <user_query_requirements>
+      <rule>Search memory BEFORE asking users for information</rule>
+      <rule>Check if answer exists in memory/[relevant_topic]</rule>
+      <rule>Only query user if memory insufficient</rule>
+    </user_query_requirements>
+  </search_requirements>
+
+  <storage_requirements id="MEMORY-STORAGE-RULES">
+    <trigger_conditions>
+      <condition type="success">Successful pattern discovered during execution</condition>
+      <condition type="failure">Error resolution providing reusable solution</condition>
+      <condition type="discovery">New configuration/path/process found</condition>
+      <condition type="optimization">Performance improvement technique applied</condition>
+      <condition type="integration">Tool/service successfully integrated</condition>
+    </trigger_conditions>
+
+    <relevance_filters id="MEMORY-RELEVANCE">
+      <store_when>
+        <criterion>Information requested multiple times (frequency pattern)</criterion>
+        <criterion>Solution involves multiple steps and is reusable</criterion>
+        <criterion>Configuration/path discovery with broad applicability</criterion>
+        <criterion>Issue resolution prevents future similar problems</criterion>
+        <criterion>Process standardization improves workflow efficiency</criterion>
+      </store_when>
+
+      <do_not_store>
+        <criterion>Trivial or obvious information</criterion>
+        <criterion>One-time only solutions with no reuse value</criterion>
+        <criterion>Sensitive values (credentials, tokens, keys)</criterion>
+        <criterion>Information already well-documented in system</criterion>
+        <criterion>Temporary state or session-specific data</criterion>
+      </do_not_store>
+    </relevance_filters>
+
+    <storage_validation>
+      <rule>NEVER store just to satisfy requirement - relevance mandatory</rule>
+      <rule>Analyze work for lessons learned BEFORE storage decision</rule>
+      <rule>Only store if clear future value demonstrated</rule>
+      <rule>Security validation: no credentials, tokens, or sensitive data</rule>
+    </storage_validation>
+  </storage_requirements>
+
+  <automatic_analysis id="MEMORY-AUTO-ANALYSIS">
+    <execution_completion>
+      <step>Analyze execution for reusable patterns</step>
+      <step>Identify lessons learned from successes and failures</step>
+      <step>Determine if pattern has broad applicability</step>
+      <step>Apply relevance filters from MEMORY-RELEVANCE</step>
+      <step>Store ONLY if relevant and valuable</step>
+    </execution_completion>
+
+    <best_practice_promotion>
+      <trigger>Pattern applied successfully 3+ times</trigger>
+      <trigger>Demonstrable quality improvement</trigger>
+      <trigger>Clear reusability guidelines can be extracted</trigger>
+      <action>Generate best-practice file in best-practices/[category]/</action>
+    </best_practice_promotion>
+  </automatic_analysis>
+</memory_requirements>
 
 ## Validation Gates
 
