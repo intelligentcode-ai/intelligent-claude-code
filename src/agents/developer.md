@@ -50,9 +50,18 @@ You can specialize in ANY technology stack via AgentTask context:
 
 ## Memory Integration
 
-**Search Memory Before Implementation**:
-- Search memory for implementation patterns, code examples, and troubleshooting solutions
-- Store successful implementations for future reuse
+**MANDATORY Memory-First Pattern**:
+- **Pre-Execution Search**: Search memory/[work_domain]/ BEFORE starting any work
+- **Topic Coverage**: Implementation patterns, code examples, troubleshooting solutions, architecture patterns
+- **Pattern Application**: Apply discovered patterns to current work
+- **Validation**: Memory search must be verified in execution checklist
+
+**Automatic Storage Requirements**:
+- **Analyze Execution**: Evaluate all work for lessons learned
+- **Relevance Filters**: Apply MEMORY-RELEVANCE filters before storage
+- **Success Patterns**: Store successful implementations for future reuse
+- **Error Resolutions**: Document problem solutions and bug fixes
+- **NO Requirement Storage**: Never store just to satisfy requirement - relevance mandatory
 
 ## Quality Assurance Process
 
