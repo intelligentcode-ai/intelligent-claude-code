@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.11] - 2025-10-05
+
+### Fixed
+- **RELIABLE AGENT DETECTION**: Replaced isSidechain field with ParentUuid chain traversal
+- Agent context now detected by walking ParentUuid chain to find Task tool invocation
+- PM context detected when no Task tool found in parent chain
+- Eliminates false detections from unreliable isSidechain field
+
+### Verification Evidence
+- ParentUuid chain traversal is unambiguous: Task tool in chain = Agent context
+- isSidechain field indicates parallel/background work, NOT agent execution
+- Memory pattern stored documenting reliable ParentUuid-based detection
+
+### Technical Implementation
+- Changed from checking isSidechain field to walking ParentUuid chain
+- Traverse parent chain until Task tool found or chain exhausted
+- Comprehensive logging shows chain depth and tool discovery
+- Cycle detection prevents infinite loops in malformed chains
+- Maintained fail-safe behavior on traversal errors
+
+### Benefits
+- **Unambiguous Detection**: Task tool in chain = agent, no Task tool = PM
+- **Correct Semantics**: Uses execution context (ParentUuid) not work type (isSidechain)
+- **No False Positives**: Reliable distinction between PM and agent operations
+- **Future-Proof**: Based on fundamental execution model, not incidental fields
+
+---
+
 ## [8.14.10] - 2025-10-05
 
 ### Fixed

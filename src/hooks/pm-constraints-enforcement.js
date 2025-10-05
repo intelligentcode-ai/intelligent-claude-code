@@ -152,79 +152,60 @@ function main() {
   }
 
   function isPMRole(hookInput) {
-    // Detect agent context using isSidechain field from transcript entries
-    // Strategy: Find newest transcript file and check isSidechain field
+    // Detect agent context using ParentUuid chain traversal
+    // Strategy: Walk ParentUuid chain to find Task tool invocation
     //
     // VERIFIED PATTERN:
-    // - Agent sessions have isSidechain: true
-    // - PM sessions have isSidechain: false
-    // - Logs analyzed: govstack, vmware-setup, intelligent-claude-code agent sessions
+    // - Agent execution always starts with Task tool invocation
+    // - PM operations have no Task tool in parent chain
+    // - ParentUuid chain traversal is reliable and unambiguous
 
-    // 1. Extract transcript directory from transcript_path directly
     const transcriptPath = hookInput.transcript_path;
-    const transcriptDir = path.dirname(transcriptPath);
-
-    log(`Using transcript directory: ${transcriptDir}`);
-
-    // 2. Find newest transcript file
-    let newestTranscript = null;
-    let newestMtime = 0;
 
     try {
-      const files = fs.readdirSync(transcriptDir);
-      const jsonlFiles = files.filter(f => f.endsWith('.jsonl'));
+      const content = fs.readFileSync(transcriptPath, 'utf8');
+      const lines = content.trim().split('\n');
+      const entries = lines.map(line => JSON.parse(line));
 
-      for (const file of jsonlFiles) {
-        const filePath = path.join(transcriptDir, file);
-        const stats = fs.statSync(filePath);
-        if (stats.mtimeMs > newestMtime) {
-          newestMtime = stats.mtimeMs;
-          newestTranscript = filePath;
+      // Get the last entry (current operation)
+      const currentEntry = entries[entries.length - 1];
+      let parentUuid = currentEntry.parentUuid;
+
+      log(`Current entry UUID: ${currentEntry.uuid}, toolName: ${currentEntry.toolName || 'none'}`);
+      log(`Starting ParentUuid chain traversal from: ${parentUuid || 'null'}`);
+
+      // Walk the parentUuid chain to find Task tool
+      let visited = new Set();
+      let chainDepth = 0;
+
+      while (parentUuid && !visited.has(parentUuid)) {
+        visited.add(parentUuid);
+        chainDepth++;
+
+        const parent = entries.find(e => e.uuid === parentUuid);
+
+        if (!parent) {
+          log(`ParentUuid chain broken at depth ${chainDepth}: UUID ${parentUuid} not found`);
+          break;
         }
-      }
 
-      if (!newestTranscript) {
-        log('No transcript files found - allowing operation (fail-safe)');
-        return false;
-      }
+        log(`Chain depth ${chainDepth}: UUID ${parent.uuid}, toolName: ${parent.toolName || 'none'}`);
 
-      log(`Using newest transcript: ${path.basename(newestTranscript)}`);
-
-    } catch (dirError) {
-      log(`ERROR: Failed to find transcript: ${dirError.message}`);
-      return false; // Fail-safe: allow operation on errors
-    }
-
-    // 3. Read recent entries (last 10 lines sufficient - just need to check isSidechain)
-    try {
-      const content = fs.readFileSync(newestTranscript, 'utf8');
-      const lines = content.trim().split('\n').slice(-10);
-
-      // 4. Check isSidechain field in recent entries
-      for (const line of lines) {
-        try {
-          const entry = JSON.parse(line);
-          if (entry.hasOwnProperty('isSidechain')) {
-            if (entry.isSidechain === true) {
-              log(`Agent context detected: isSidechain=true in entry ${entry.uuid}`);
-              return false; // Agent context - allow all operations
-            } else if (entry.isSidechain === false) {
-              log(`PM context detected: isSidechain=false in entry ${entry.uuid}`);
-              return true; // PM context - enforce constraints
-            }
-          }
-        } catch (parseError) {
-          continue;
+        if (parent.toolName === "Task") {
+          log(`Agent context detected: Task tool found in parent chain at depth ${chainDepth}`);
+          return false; // Agent context - allow all operations
         }
+
+        parentUuid = parent.parentUuid;
       }
 
-      // 5. No isSidechain field found - fail-safe allow
-      log('No isSidechain field found in recent entries - allowing operation (fail-safe)');
-      return false;
+      // No Task tool in chain = PM context
+      log(`PM context detected: No Task tool in parent chain (traversed ${chainDepth} levels)`);
+      return true; // PM context - enforce constraints
 
-    } catch (readError) {
-      log(`ERROR: Failed to read transcript: ${readError.message}`);
-      return false; // Fail-safe: allow operation on errors
+    } catch (error) {
+      log(`ERROR during ParentUuid traversal: ${error.message}`);
+      return false; // Fail-safe: allow on errors
     }
   }
 
