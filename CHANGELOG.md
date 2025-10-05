@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.7] - 2025-10-05
+
+### Fixed
+- PM constraints hook now uses newest transcript file for accurate agent detection
+- Fixes false positive agent detection in continued sessions (was reading stale transcripts)
+- Hook now dynamically discovers current transcript instead of relying on hookInput.transcript_path
+- Reads only last 100 lines of newest transcript to detect Task tools (agent context)
+
+### Technical Details
+- Derives transcript directory from hookInput.cwd
+- Scans for newest .jsonl file by mtime (modification time)
+- Checks ONLY recent entries (last 100 lines) for Task tool presence
+- Prevents historical Task tools from incorrectly indicating agent context
+- Project-agnostic detection works for ANY project
+- Fail-safe behavior: allows operation on errors
+
+### Root Cause
+- Session continuation used hookInput.transcript_path pointing to OLD session transcript
+- Hook found Task tools from hours ago and incorrectly allowed PM operations
+- PM could edit src/ files in continued sessions (should be BLOCKED)
+
+---
+
 ## [8.14.5] - 2025-10-05
 
 ### Fixed
