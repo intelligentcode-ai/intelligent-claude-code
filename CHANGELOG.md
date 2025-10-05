@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.4] - 2025-10-05
+
+### Fixed
+- Ansible playbook hook merge now uses proper YAML structure
+- Broke complex set_fact into separate hook definition tasks
+- Fixed settings.json merge to generate valid JSON structure
+- TESTED: Both fresh install and merge paths work correctly
+
+### Technical Details
+- Split complex hook definition into 4 separate set_fact tasks
+- Define session_start_hook, user_prompt_submit_hook, pre_tool_use_hook separately
+- Final merge uses simple combine() with proper hook structure
+- Prevents "Expecting ',' delimiter" JSON errors during installation
+
+---
+
 ## [8.14.3] - 2025-10-05
 
 ### Fixed
