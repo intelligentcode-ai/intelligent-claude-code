@@ -245,16 +245,16 @@
       register: existing_settings
 
     - name: Parse existing settings as JSON
-      set_fact:
+      ansible.builtin.set_fact:
         settings_data: "{{ existing_settings.content | b64decode | from_json }}"
 
     - name: Clean up obsolete hooks while preserving user hooks
-      set_fact:
+      ansible.builtin.set_fact:
         cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['SessionStart', 'PreToolUse', 'PostToolUse']) | items2dict }}"
 
     - name: Add SessionStart, UserPromptSubmit, and PreToolUse hooks to cleaned hooks
-      set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'SessionStart': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/session-start.js', 'timeout': 10000, 'failureMode': 'allow'}]}], 'UserPromptSubmit': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/context-injection.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/project-scope-enforcement.js', 'timeout': 5000}, {'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/git-privacy-enforcement.js', 'timeout': 5000}, {'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/pm-constraints-enforcement.js', 'timeout': 5000}]}]})}, recursive=False) }}"
+      ansible.builtin.set_fact:
+        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'SessionStart': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/session-start.js', 'timeout': 10000, 'failureMode': 'allow'}]}], 'UserPromptSubmit': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/context-injection.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/project-scope-enforcement.js', 'timeout': 5000}, {'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/git-privacy-enforcement.js', 'timeout': 5000}, {'type': 'command', 'node ' + claude_install_path + '/hooks/pm-constraints-enforcement.js', 'timeout': 5000}]}]})}, recursive=False) }}"
 
     - name: Write merged settings.json
       copy:
