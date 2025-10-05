@@ -409,6 +409,22 @@ function Install-HookSystem {
             # Register production hooks in settings.json
             $SettingsPath = Join-Path $InstallPath "settings.json"
 
+            # Remove old hook names (graceful cleanup)
+            $OldHooks = @(
+                'pretooluse.js',
+                'user-prompt-submit.js',
+                'pre-commit.js',
+                'installation-protection.js'
+            )
+
+            foreach ($OldHook in $OldHooks) {
+                $OldHookPath = Join-Path $HooksPath $OldHook
+                if (Test-Path $OldHookPath) {
+                    Remove-Item -Path $OldHookPath -Force
+                    Write-Host "  Removed old hook: $OldHook" -ForegroundColor Gray
+                }
+            }
+
             # Register SessionStart hook
             $SessionStartHookPath = Join-Path $HooksPath "session-start.js"
             if (Test-Path $SessionStartHookPath) {
@@ -418,22 +434,22 @@ function Install-HookSystem {
                 Write-Warning "  session-start.js hook not found, skipping SessionStart registration"
             }
 
-            # Register UserPromptSubmit hook
-            $UserPromptSubmitHookPath = Join-Path $HooksPath "user-prompt-submit.js"
+            # Register UserPromptSubmit hook (context-injection.js)
+            $UserPromptSubmitHookPath = Join-Path $HooksPath "context-injection.js"
             if (Test-Path $UserPromptSubmitHookPath) {
                 $HookCommand = "node `"$UserPromptSubmitHookPath`""
                 Register-UserPromptSubmitHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  user-prompt-submit.js hook not found, skipping UserPromptSubmit registration"
+                Write-Warning "  context-injection.js hook not found, skipping UserPromptSubmit registration"
             }
 
-            # Register PreToolUse hook
-            $PreToolUseHookPath = Join-Path $HooksPath "pretooluse.js"
+            # Register PreToolUse hook (pm-constraints-enforcement.js)
+            $PreToolUseHookPath = Join-Path $HooksPath "pm-constraints-enforcement.js"
             if (Test-Path $PreToolUseHookPath) {
                 $HookCommand = "node `"$PreToolUseHookPath`""
                 Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  pretooluse.js hook not found, skipping PreToolUse registration"
+                Write-Warning "  pm-constraints-enforcement.js hook not found, skipping PreToolUse registration"
             }
 
         } else {
@@ -663,10 +679,17 @@ function Uninstall-IntelligentClaudeCode {
     # Unregister hooks from settings.json before removing files
     $SettingsPath = Join-Path $Paths.InstallPath "settings.json"
 
-    # Unregister pretooluse hook
-    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pretooluse.js"
+    # Unregister new hook names
+    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pm-constraints-enforcement.js"
     if (Test-Path $PreToolUseHookPath) {
         $HookCommand = "node `"$PreToolUseHookPath`""
+        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
+    }
+
+    # Unregister old hook names (graceful cleanup)
+    $OldPreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pretooluse.js"
+    if (Test-Path $OldPreToolUseHookPath) {
+        $HookCommand = "node `"$OldPreToolUseHookPath`""
         Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
     }
 
@@ -790,7 +813,7 @@ function Test-Installation {
 
                     $PreHookFound = $false
                     foreach ($Hook in $PreToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pretooluse.js*") {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pm-constraints-enforcement.js*") {
                             $PreHookFound = $true
                             break
                         }
@@ -873,7 +896,7 @@ function Test-Installation {
                     }
 
                     foreach ($Hook in $PreToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pretooluse.js*") {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pm-constraints-enforcement.js*") {
                             throw "FAIL: PreToolUse hook still registered in settings.json after uninstall"
                         }
                     }

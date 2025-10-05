@@ -1,6 +1,10 @@
-# PreToolUse Blocking Hook
+# PM Constraints Enforcement Hook
 
 Real-time enforcement of PM role file operation boundaries and summary file organization.
+
+**Hook Name:** `pm-constraints-enforcement.js` (formerly `pretooluse.js`)
+**Hook Type:** PreToolUse
+**Purpose:** Enforce PM role boundaries and prevent technical work in main scope
 
 ## Overview
 
@@ -76,7 +80,7 @@ Add to `~/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "node /path/to/intelligent-claude-code/src/hooks/pretooluse.js",
+            "command": "node ~/.claude/hooks/pm-constraints-enforcement.js",
             "timeout": 5000
           }
         ]
@@ -91,16 +95,16 @@ Add to `~/.claude/settings.json`:
 **Test PM Blocking:**
 ```bash
 # This should be blocked
-echo '{"tool":"Edit","parameters":{"file_path":"src/test.js"},"context":{"role":"@PM"}}' | node src/hooks/pretooluse.js
+echo '{"tool":"Edit","parameters":{"file_path":"src/test.js"},"context":{"role":"@PM"}}' | node src/hooks/pm-constraints-enforcement.js
 
 # Expected output: {"continue":false,"message":"🚫 PM role is coordination only..."}
-# Expected exit code: 1
+# Expected exit code: 2
 ```
 
 **Test PM Allowing:**
 ```bash
 # This should be allowed
-echo '{"tool":"Edit","parameters":{"file_path":"stories/STORY-001.md"},"context":{"role":"@PM"}}' | node src/hooks/pretooluse.js
+echo '{"tool":"Edit","parameters":{"file_path":"stories/STORY-001.md"},"context":{"role":"@PM"}}' | node src/hooks/pm-constraints-enforcement.js
 
 # Expected output: {"continue":true}
 # Expected exit code: 0
@@ -109,21 +113,21 @@ echo '{"tool":"Edit","parameters":{"file_path":"stories/STORY-001.md"},"context"
 **Test Summary Redirection:**
 ```bash
 # This should be blocked (any role)
-echo '{"tool":"Write","parameters":{"file_path":"SUMMARY.md"},"context":{}}' | node src/hooks/pretooluse.js
+echo '{"tool":"Write","parameters":{"file_path":"SUMMARY.md"},"context":{}}' | node src/hooks/pm-constraints-enforcement.js
 
 # Expected output: {"continue":false,"message":"📋 Summary files belong in ./summaries/..."}
-# Expected exit code: 1
+# Expected exit code: 2
 ```
 
 ## Logging
 
-All hook operations logged to: `~/.claude/logs/YYYY-MM-DD-pretooluse.log`
+All hook operations logged to: `~/.claude/logs/YYYY-MM-DD-pm-constraints-enforcement.log`
 
 **Log Format:**
 ```
-[2025-10-03T10:15:30.123Z] PreToolUse triggered: {"tool":"Edit","parameters":{"file_path":"src/test.js"}...}
-[2025-10-03T10:15:30.124Z] PM role detected, validating file path: src/test.js
-[2025-10-03T10:15:30.125Z] PM operation BLOCKED: src/test.js
+[2025-10-05T10:15:30.123Z] PreToolUse triggered: {"tool":"Edit","parameters":{"file_path":"src/test.js"}...}
+[2025-10-05T10:15:30.124Z] PM role detected, validating file path: src/test.js
+[2025-10-05T10:15:30.125Z] PM operation BLOCKED: src/test.js
 ```
 
 ## Troubleshooting
@@ -131,7 +135,7 @@ All hook operations logged to: `~/.claude/logs/YYYY-MM-DD-pretooluse.log`
 **Hook Not Blocking:**
 1. Check `~/.claude/settings.json` has PreToolUse hook configured
 2. Verify hook path is absolute and correct
-3. Check log file for errors: `~/.claude/logs/YYYY-MM-DD-pretooluse.log`
+3. Check log file for errors: `~/.claude/logs/YYYY-MM-DD-pm-constraints-enforcement.log`
 4. Ensure timeout is sufficient (5000ms recommended)
 
 **False Positives (Blocking Allowed Operations):**
@@ -147,7 +151,7 @@ All hook operations logged to: `~/.claude/logs/YYYY-MM-DD-pretooluse.log`
 ## Exit Codes
 
 - **Exit 0**: Operation allowed, continue
-- **Exit 1**: Operation blocked, show error message
+- **Exit 2**: Operation blocked, show error message (Claude Code requirement)
 - **No timeout**: Hook should complete in <100ms typically
 
 ## Related Documentation

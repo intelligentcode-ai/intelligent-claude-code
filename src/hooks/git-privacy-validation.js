@@ -7,7 +7,7 @@ const os = require('os');
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
   const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-pre-commit.log`);
+  const logFile = path.join(logDir, `${today}-git-privacy-validation.log`);
 
   // Ensure log directory exists
   if (!fs.existsSync(logDir)) {
