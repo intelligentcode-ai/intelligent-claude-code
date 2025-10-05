@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.10] - 2025-10-05
+
+### Fixed
+- **VERIFIED AGENT DETECTION**: Replaced Task tool presence check with isSidechain field from transcript entries
+- Agent sessions reliably detected by `isSidechain: true` in transcript entries
+- PM sessions reliably detected by `isSidechain: false` in transcript entries
+- Eliminates false positives where PM creating agents was incorrectly classified as agent context
+
+### Verification Evidence
+- Analyzed multiple agent sessions across govstack, vmware-setup, and intelligent-claude-code projects
+- All agent transcript entries consistently show `isSidechain: true`
+- All PM transcript entries consistently show `isSidechain: false`
+- Pattern verified with live agent execution test
+
+### Technical Implementation
+- Changed from checking Task tool presence (unreliable) to checking isSidechain field (reliable)
+- Reduced transcript read from 100 lines to 10 lines (more efficient - just need isSidechain check)
+- Added comprehensive logging with isSidechain value detection
+- Maintained fail-safe behavior if isSidechain field not found
+
+### Benefits
+- **Accurate Detection**: Distinguishes PM creating agents vs being an agent
+- **No False Positives**: PM invoking Task tool no longer triggers "agent context" incorrectly
+- **Verified Pattern**: Based on actual transcript analysis across multiple sessions
+- **Efficient**: Reads fewer lines, checks simpler field
+
+---
+
 ## [8.14.9] - 2025-10-05
 
 ### Fixed
