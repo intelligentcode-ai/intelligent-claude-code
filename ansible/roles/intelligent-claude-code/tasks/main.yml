@@ -245,16 +245,47 @@
       register: existing_settings
 
     - name: Parse existing settings as JSON
-      ansible.builtin.set_fact:
+      set_fact:
         settings_data: "{{ existing_settings.content | b64decode | from_json }}"
 
-    - name: Clean up obsolete hooks while preserving user hooks
-      ansible.builtin.set_fact:
-        cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['SessionStart', 'PreToolUse', 'PostToolUse']) | items2dict }}"
+    - name: Define SessionStart hook
+      set_fact:
+        session_start_hook:
+          matcher: '*'
+          hooks:
+            - type: 'command'
+              command: "node {{ claude_install_path }}/hooks/session-start.js"
+              timeout: 10000
+              failureMode: 'allow'
 
-    - name: Add SessionStart, UserPromptSubmit, and PreToolUse hooks to cleaned hooks
-      ansible.builtin.set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'SessionStart': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/session-start.js', 'timeout': 10000, 'failureMode': 'allow'}]}], 'UserPromptSubmit': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/context-injection.js', 'timeout': 15000, 'failureMode': 'allow'}]}], 'PreToolUse': [{'matcher': '*', 'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/project-scope-enforcement.js', 'timeout': 5000}, {'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/git-privacy-enforcement.js', 'timeout': 5000}, {'type': 'command', 'node ' + claude_install_path + '/hooks/pm-constraints-enforcement.js', 'timeout': 5000}]}]})}, recursive=False) }}"
+    - name: Define UserPromptSubmit hook
+      set_fact:
+        user_prompt_submit_hook:
+          matcher: '*'
+          hooks:
+            - type: 'command'
+              command: "node {{ claude_install_path }}/hooks/context-injection.js"
+              timeout: 15000
+              failureMode: 'allow'
+
+    - name: Define PreToolUse hooks
+      set_fact:
+        pre_tool_use_hook:
+          matcher: '*'
+          hooks:
+            - type: 'command'
+              command: "node {{ claude_install_path }}/hooks/project-scope-enforcement.js"
+              timeout: 5000
+            - type: 'command'
+              command: "node {{ claude_install_path }}/hooks/git-privacy-enforcement.js"
+              timeout: 5000
+            - type: 'command'
+              command: "node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js"
+              timeout: 5000
+
+    - name: Merge hooks into settings
+      set_fact:
+        merged_settings: "{{ settings_data | combine({'hooks': {'SessionStart': [session_start_hook], 'UserPromptSubmit': [user_prompt_submit_hook], 'PreToolUse': [pre_tool_use_hook]}}, recursive=True) }}"
 
     - name: Write merged settings.json
       copy:
