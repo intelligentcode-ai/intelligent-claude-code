@@ -47,6 +47,26 @@
 - **l3_settings.auto_discover:** true
 - **l3_settings.continue_on_error:** true
 
+### continue_on_error Clarification
+
+**CRITICAL:** `continue_on_error` applies to ICC PRINCIPLE VIOLATIONS, not deployment/production errors!
+
+**What it controls:**
+- PM behavioral compliance violations (attempting direct technical work, skipping memory search, etc.)
+- NOT deployment failures, infrastructure errors, or production issues
+
+**Settings:**
+- **true (default):** PM continues L3 work discovery after ICC violations, self-corrects and continues
+- **false (strict):** PM stops L3 work discovery on ICC violations, requires manual intervention
+
+**Use Cases:**
+- **true:** Learning environments, exploratory work, flexible projects
+- **false:** Production environments, strict governance, critical systems
+
+**Examples:**
+- PM tries direct file edit (ICC violation) → true: logs, creates AgentTask, continues | false: stops, waits for correction
+- Deployment fails (NOT ICC violation) → true/false: same behavior, agent handles deployment errors
+
 ## Integration
 - **AgentTasks:** L1=approval before, L2=architect review, L3=auto
 - **Memory:** L1=confirm storage, L2=oversight, L3=auto

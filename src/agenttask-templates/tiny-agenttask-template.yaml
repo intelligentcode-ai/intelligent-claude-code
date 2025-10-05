@@ -107,6 +107,34 @@ git_push:
 
 # MANDATORY: Validation Enforcement Section
 validation_enforcement:
+  memory_requirements:
+    pre_execution:
+      - "Memory search completed for [work_type] and [technology_domain] topics"
+      - "Relevant patterns identified and embedded in context"
+      - "Best practices reviewed for applicable guidance"
+      - "Similar implementation patterns discovered and applied"
+      blocked_patterns:
+        - "No memory search needed"
+        - "Skip memory check"
+        - "Too simple for memory"
+        - "No patterns available"
+        - "Fresh implementation without patterns"
+      error_message: "❌ BLOCKED: Memory search is mandatory before execution - search memory/[topic]/ for patterns"
+
+    post_execution:
+      - "Execution analyzed for lessons learned"
+      - "Success/failure patterns identified"
+      - "Relevance filters applied before storage decision"
+      - "Storage ONLY if clear future value demonstrated"
+      - "Security validation: no credentials or sensitive data"
+      blocked_patterns:
+        - "Store to satisfy requirement"
+        - "No learnings to capture"
+        - "Skip memory storage"
+        - "Nothing worth storing"
+        - "Too trivial to document"
+      error_message: "❌ BLOCKED: Automatic analysis mandatory - evaluate execution for reusable patterns"
+
   mandatory_requirements:
     git_operations:
       - "Feature branch creation (if branch_protection enabled)"
