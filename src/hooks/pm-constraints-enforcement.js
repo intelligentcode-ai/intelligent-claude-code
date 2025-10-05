@@ -152,8 +152,13 @@ function main() {
   }
 
   function isPMRole(hookInput) {
-    // Detect agent context by finding Task tool invocations in CURRENT transcript
-    // Strategy: Find newest transcript file dynamically to avoid stale session issues
+    // Detect agent context using isSidechain field from transcript entries
+    // Strategy: Find newest transcript file and check isSidechain field
+    //
+    // VERIFIED PATTERN:
+    // - Agent sessions have isSidechain: true
+    // - PM sessions have isSidechain: false
+    // - Logs analyzed: govstack, vmware-setup, intelligent-claude-code agent sessions
 
     // 1. Extract transcript directory from transcript_path directly
     const transcriptPath = hookInput.transcript_path;
@@ -190,33 +195,32 @@ function main() {
       return false; // Fail-safe: allow operation on errors
     }
 
-    // 3. Read recent entries (last 100 lines)
+    // 3. Read recent entries (last 10 lines sufficient - just need to check isSidechain)
     try {
       const content = fs.readFileSync(newestTranscript, 'utf8');
-      const lines = content.trim().split('\n').slice(-100);
+      const lines = content.trim().split('\n').slice(-10);
 
-      // 4. Check for Task tools in recent entries
-      let taskToolCount = 0;
+      // 4. Check isSidechain field in recent entries
       for (const line of lines) {
         try {
           const entry = JSON.parse(line);
-          if (entry.message?.content?.[0]?.name === 'Task') {
-            taskToolCount++;
-            log(`Found Task tool in recent entries: ${entry.uuid}`);
+          if (entry.hasOwnProperty('isSidechain')) {
+            if (entry.isSidechain === true) {
+              log(`Agent context detected: isSidechain=true in entry ${entry.uuid}`);
+              return false; // Agent context - allow all operations
+            } else if (entry.isSidechain === false) {
+              log(`PM context detected: isSidechain=false in entry ${entry.uuid}`);
+              return true; // PM context - enforce constraints
+            }
           }
         } catch (parseError) {
           continue;
         }
       }
 
-      // 5. Determine context
-      if (taskToolCount > 0) {
-        log(`Agent context detected: ${taskToolCount} Task tool(s) in recent entries`);
-        return false; // Agent context - allow all operations
-      }
-
-      log('No Task tools in recent entries - PM context');
-      return true; // PM context - enforce constraints
+      // 5. No isSidechain field found - fail-safe allow
+      log('No isSidechain field found in recent entries - allowing operation (fail-safe)');
+      return false;
 
     } catch (readError) {
       log(`ERROR: Failed to read transcript: ${readError.message}`);
