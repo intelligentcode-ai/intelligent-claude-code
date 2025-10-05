@@ -4,19 +4,15 @@
       "matcher": "*",
       "hooks": [{
         "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/installation-protection.js",
+        "command": "node {{ claude_install_path }}/hooks/project-scope-enforcement.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/git-privacy-enforcement.js",
         "timeout": 5000
       }, {
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/pretooluse.js",
-        "timeout": 5000
-      }]
-    }],
-    "PreCommit": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/pre-commit.js",
         "timeout": 5000
       }]
     }],

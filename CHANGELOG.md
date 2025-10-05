@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.13.8] - 2025-10-05
+
+### Fixed
+- Git privacy enforcement now uses regex patterns instead of string matching for precision
+- Privacy patterns properly block Claude Code attribution while allowing technical AI terms
+- Pattern `/generated with.*claude/i` blocks "Generated with Claude Code" but allows "AI-generated"
+- Pattern `/co-authored-by.*claude/i` blocks "Co-Authored-By: Claude <...>" attribution
+- Pattern `/claude.*assisted/i` blocks "Claude assisted" but allows "AI assistance"
+- Technical terms like "AI-AGENTIC", "multi-agent", "agent execution" now properly allowed
+
+### Changed
+- Renamed installation-protection.js to project-scope-enforcement.js for clarity
+- Hook chain order updated: project-scope → git-privacy → PM enforcement
+- Removed PreCommit hook registration (GitHub hooks, not Claude Code hooks)
+- Updated ansible playbook with correct hook names and chain order
+- Updated settings.json.j2 template with correct PreToolUse chain
+- Added log cleanup to project-scope-enforcement.js (24-hour retention)
+
+### Documentation
+- Created memory/hooks/git-privacy-enforcement.md documenting regex pattern approach
+- Updated memory/hooks/project-scope-enforcement.md with renamed hook
+- Pattern rationale explains precision benefits of regex over string matching
+
+---
+
 ## [8.13.6] - 2025-10-05
 
 ### Fixed

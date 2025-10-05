@@ -16,6 +16,30 @@ function main() {
     fs.mkdirSync(logDir, { recursive: true });
   }
 
+  function cleanOldLogs(logDir) {
+    try {
+      const files = fs.readdirSync(logDir);
+      const now = Date.now();
+      const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+
+      for (const file of files) {
+        if (!file.endsWith('.log')) continue;
+
+        const filePath = path.join(logDir, file);
+        const stats = fs.statSync(filePath);
+
+        if (now - stats.mtimeMs > maxAge) {
+          fs.unlinkSync(filePath);
+        }
+      }
+    } catch (error) {
+      // Silent fail - don't block hook execution
+    }
+  }
+
+  // Clean old logs at hook start
+  cleanOldLogs(logDir);
+
   function log(message) {
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] ${message}\n`;
