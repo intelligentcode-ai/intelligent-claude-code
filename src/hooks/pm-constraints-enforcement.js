@@ -211,8 +211,27 @@ function main() {
     const blockedCommands = [
       'npm', 'yarn', 'make', 'docker', 'cargo', 'mvn', 'gradle', 'go',
       'kubectl', 'terraform', 'ansible', 'helm', 'systemctl', 'service',
-      'apt', 'yum', 'brew', 'pip', 'gem', 'composer'
+      'apt', 'yum', 'brew', 'pip', 'gem', 'composer',
+      'python', 'python3', 'node', 'ruby', 'perl', 'php',  // Scripting languages
+      'nohup', 'screen', 'tmux',  // Background/session tools
+      'sed', 'awk',  // Stream/text processing (file modification)
+      'vi', 'vim', 'nano', 'emacs'  // Text editors
     ];
+
+    // Check for Python heredoc pattern (python3 << 'PYEOF')
+    if (command.includes('<<') && (command.includes('python') || command.includes('node') || command.includes('ruby'))) {
+      return {
+        allowed: false,
+        message: `🚫 PM role cannot execute inline scripts via heredoc - create AgentTask for technical work
+
+Blocked pattern: Script heredoc (python3 << 'EOF', node << 'EOF', etc.)
+Full command: ${command}
+
+Inline scripts require technical implementation by specialist agents.
+
+Create AgentTask for specialist execution.`
+      };
+    }
 
     // Extract first word (command name) from command string
     const firstWord = command.trim().split(/\s+/)[0];
@@ -227,8 +246,12 @@ function main() {
 Blocked command: ${blocked}
 Full command: ${command}
 
-Build/Deploy tools blocked: npm, yarn, make, docker, cargo, mvn, gradle, go
-System tools blocked: kubectl, terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer
+Build/Deploy tools: npm, yarn, make, docker, cargo, mvn, gradle, go
+System tools: kubectl, terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer
+Scripting languages: python, python3, node, ruby, perl, php
+Background tools: nohup, screen, tmux
+Text processing: sed, awk
+Text editors: vi, vim, nano, emacs
 
 Create AgentTask for specialist execution.`
         };
