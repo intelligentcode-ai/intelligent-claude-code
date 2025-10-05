@@ -108,6 +108,13 @@ function main() {
 
     log(`Compaction detection: ${isCompaction} (method: ${detectionMethod})`);
 
+    // ONLY act on compaction - normal session starts are silent
+    if (!isCompaction) {
+      log(`Normal session start - no action required`);
+      console.log(JSON.stringify(standardOutput));
+      process.exit(0);
+    }
+
     // Detect context compaction or session resumption
     if (isCompaction) {
       // Try to read virtual-team.md content to inject directly
@@ -163,11 +170,6 @@ function main() {
       console.log(JSON.stringify(output));
       process.exit(0);
     }
-
-    // Normal session start - no guidance needed
-    log(`Normal session start - no action required`);
-    console.log(JSON.stringify(standardOutput));
-    process.exit(0);
 
   } catch (error) {
     log(`Error: ${error.message}`);

@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.13] - 2025-10-05
+
+### Fixed
+- **Session-start hook now ONLY fires after compactions**: Early exit for normal session starts prevents unnecessary hook activation
+- Compaction detection remains comprehensive (source field, summary field, message content keywords)
+- Normal session starts are now completely silent - no virtual team system injection unless session was compacted
+- Improves session startup performance and reduces unnecessary context injection
+
+### Benefits
+- Reduced hook overhead on normal session starts
+- Clearer separation between compaction recovery and normal sessions
+- Preserves compaction detection reliability while eliminating false positives
+
+---
+
 ## [8.14.12] - 2025-10-05
 
 ### Fixed
