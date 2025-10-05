@@ -129,7 +129,7 @@ function main() {
 
   function isPMRole(hookInput) {
     // Detect if current operation is within agent context by checking transcript
-    // for ACTIVE Task tool invocations and direct parentUuid chains
+    // for ACTIVE Task tool invocations, direct parentUuid chains, and sidechain indicators
     const transcriptPath = hookInput.transcript_path;
 
     if (!transcriptPath || !fs.existsSync(transcriptPath)) {
@@ -169,7 +169,17 @@ function main() {
         return true;
       }
 
-      // NEW LOGIC: Only consider DIRECT ancestry from current operation
+      // STRATEGY 0: Check for sidechain indicator (most reliable for agent context)
+      // Agents execute in sidechains, so any sidechain operation is agent context
+      for (let i = entries.length - 1; i >= Math.max(0, entries.length - 10); i--) {
+        const entry = entries[i];
+        if (entry.isSidechain === true) {
+          log(`Agent context detected: sidechain indicator found (entry ${entry.uuid})`);
+          return false; // Agent context
+        }
+      }
+
+      // STRATEGY 1: Check if hookInput's parentUuid chain leads to a Task tool
       // Walk backwards from current operation to find nearest Task tool in ancestry
       function findNearestTaskInChain(uuid, visited = new Set(), depth = 0, maxDepth = 20) {
         // Prevent infinite loops and limit depth
@@ -197,7 +207,6 @@ function main() {
         return null;
       }
 
-      // Strategy 1: Check if hookInput's parentUuid chain leads to a Task tool
       if (hookInput.parentUuid) {
         const nearestTask = findNearestTaskInChain(hookInput.parentUuid);
 
@@ -207,7 +216,7 @@ function main() {
         }
       }
 
-      // Strategy 2: Check most recent entries (last 50) for active agent execution
+      // STRATEGY 2: Check most recent entries (last 50) for active agent execution
       // This catches operations that are part of an ongoing agent execution
       for (let i = entries.length - 1; i >= Math.max(0, entries.length - 50); i--) {
         const entry = entries[i];
