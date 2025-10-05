@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.8] - 2025-10-05
+
+### Fixed
+- PM constraints hook now preserves leading dash in transcript directory path
+- Fixed transcript directory lookup failure that prevented PM constraint enforcement
+- Removed incorrect `.replace(/^-/, '')` that stripped leading dash from path transformation
+
+### Technical Details
+- Claude Code transcript directories use format: `~/.claude/projects/-Users-karsten-...` (with leading dash)
+- Previous code transformed `/Users/karsten/...` to `Users-karsten-...` (WRONG - no leading dash)
+- Hook failed to find transcript directory and fell back to fail-safe mode (allowing all operations)
+- PM editing src/ files was incorrectly allowed when it should be BLOCKED
+- Fix: Keep leading dash by removing `.replace(/^-/, '')` from projectKey transformation
+- Line 160: `projectPath.replace(/\//g, '-')` now correctly produces `-Users-karsten-...`
+
+### Root Cause
+- Path transformation logic incorrectly assumed leading dash should be removed
+- Real Claude Code transcript directories include leading dash as part of naming convention
+- Directory existence check failed, causing hook to allow operations in fail-safe mode
+
+---
+
 ## [8.14.7] - 2025-10-05
 
 ### Fixed

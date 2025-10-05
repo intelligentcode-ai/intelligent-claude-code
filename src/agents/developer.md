@@ -17,6 +17,7 @@ As the **Developer Agent**, you are responsible for software implementation, fea
 - **Code Architecture**: Structure implementations for maintainability and scalability
 - **Bug Fixes**: Diagnose and resolve software defects
 - **Code Quality**: Deliver clean, testable, well-documented implementations
+- **FRESH SESSION TEST**: PM editing src/ - should be BLOCKED NOW
 
 ## Behavioral Patterns
 
