@@ -760,6 +760,163 @@ directory_structure:
 | **Large (16-30 pts)** | `true` (minor) | `true` | `true` | `feature_branch` | `true` |
 | **Mega (30+ pts)** | `true` (major) | `true` | `true` | `feature_branch` | `true` |
 
+## PM Constraints and Enforcement
+
+### Overview
+
+The `blocking_enabled` setting controls how PM (Project Manager) role constraint violations are handled by the PreToolUse hook system.
+
+### Configuration
+
+```yaml
+blocking_enabled: true  # Default - recommended for production
+```
+
+**Configuration Hierarchy** (checked in priority order):
+1. `./CLAUDE.md` - Project CLAUDE.md (highest priority)
+2. `./.claude/CLAUDE.md` - Project .claude/CLAUDE.md
+3. `~/.claude/CLAUDE.md` - User global CLAUDE.md (fallback)
+
+### Enforcement Modes
+
+#### BLOCKING Mode (Default)
+
+**When**: `blocking_enabled: true` or setting not found (secure by default)
+
+**Behavior**:
+- PM constraint violations are **blocked** with exit code 2
+- Operations prevented from proceeding
+- Error messages displayed to user
+- Comprehensive logging of violations
+
+**Use Cases**:
+- Production environments
+- Strict governance requirements
+- Team collaboration with enforced roles
+- Security-sensitive projects
+
+**Example Violation**:
+```
+🚫 PM role is coordination only - create AgentTask for technical work
+
+Blocked: src/hooks/example.js
+Reason: PM cannot modify files in src/
+
+Allowed directories: stories, bugs, memory, docs, agenttasks, root *.md files
+```
+
+#### WARNING Mode (Non-Blocking)
+
+**When**: `blocking_enabled: false`
+
+**Behavior**:
+- PM constraint violations log **warnings** with exit code 0
+- Operations allowed to proceed
+- Warnings logged for review
+- Educational feedback provided
+
+**Use Cases**:
+- Learning environments
+- Exploratory work and prototyping
+- Solo developer projects
+- Development and testing of system itself
+
+**Example Warning**:
+```
+⚠️ WARNING (non-blocking): PM role is coordination only
+
+Suggested: Create AgentTask for technical work
+Operation: Edit src/hooks/example.js
+Allowed: Proceeding with operation for learning purposes
+```
+
+### Constraint Types
+
+The `blocking_enabled` setting applies to three types of PM violations:
+
+1. **Summary Files in Root**
+   - Detects: Files matching SUMMARY, REPORT, VALIDATION, ANALYSIS patterns
+   - Suggests: Moving to `./summaries/` directory
+   - Applies to: All roles (PM and agents)
+
+2. **Blocked Bash Commands**
+   - Blocks: npm, yarn, make, docker, cargo, kubectl, terraform, ansible, etc.
+   - Reason: Build/deploy/system commands require specialist agents
+   - PM Allowed: Read-only commands (git status, ls, grep, etc.)
+
+3. **File Operations Outside Allowlist**
+   - PM Allowlist: stories/, bugs/, memory/, docs/, agenttasks/, root *.md
+   - PM Blocklist: src/, lib/, config/, tests/
+   - Tools Checked: Edit, Write, MultiEdit
+
+### Configuration Examples
+
+#### Production Environment (Strict Enforcement)
+
+```yaml
+# CLAUDE.md
+autonomy_level: L2
+blocking_enabled: true   # Enforce PM constraints strictly
+git_privacy: true        # Strip AI mentions from commits
+```
+
+#### Learning Environment (Flexible Exploration)
+
+```yaml
+# CLAUDE.md
+autonomy_level: L3
+blocking_enabled: false  # Allow violations with warnings
+git_privacy: false       # Preserve full commit messages
+```
+
+#### Mixed Environment (Project Override)
+
+**User Global** (`~/.claude/CLAUDE.md`):
+```yaml
+blocking_enabled: true   # Default strict for all projects
+```
+
+**Project** (`./CLAUDE.md`):
+```yaml
+blocking_enabled: false  # Override for this learning project
+```
+
+### Hook Integration
+
+The PM constraints enforcement hook (`pm-constraints-enforcement.js`) automatically:
+
+1. Checks configuration hierarchy for `blocking_enabled`
+2. Defaults to `true` (BLOCKING) if not found
+3. Applies appropriate enforcement mode
+4. Logs mode selection and violations comprehensively
+
+**Hook Logs** (`~/.claude/logs/YYYY-MM-DD-pm-constraints-enforcement.log`):
+```
+[2025-10-05T18:00:00.000Z] Config found at ./CLAUDE.md: blocking_enabled=false
+[2025-10-05T18:00:01.000Z] PM context: isSidechain=false in assistant tool_use entry
+[2025-10-05T18:00:01.001Z] File operation BLOCKED: src/test.js
+[2025-10-05T18:00:01.002Z] ⚠️ WARNING (non-blocking): PM role is coordination only...
+```
+
+### Best Practices
+
+**Recommended Settings**:
+- Production: `blocking_enabled: true` (strict enforcement)
+- Development: `blocking_enabled: true` (learn correct patterns)
+- Learning: `blocking_enabled: false` (explore system behavior)
+- Testing: `blocking_enabled: false` (verify hook logic)
+
+**Migration Strategy**:
+1. Start with `blocking_enabled: false` (learning mode)
+2. Understand PM constraints and AgentTask patterns
+3. Switch to `blocking_enabled: true` (production mode)
+4. Use AgentTask system for all technical work
+
+**Troubleshooting**:
+- Hook not blocking: Check CLAUDE.md for `blocking_enabled: false`
+- Unexpected blocking: Verify configuration hierarchy (project overrides user)
+- Agent operations blocked: Check hook logs for agent detection (should see `isSidechain: true`)
+
 ## Configuration Usage Examples
 
 ### Access Configuration Values
