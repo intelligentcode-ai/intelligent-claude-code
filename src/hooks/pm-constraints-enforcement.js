@@ -233,17 +233,25 @@ Create AgentTask for specialist execution.`
       };
     }
 
-    // Extract first word (command name) from command string
-    const firstWord = command.trim().split(/\s+/)[0];
+    // Split compound commands by && and ; and | to check ALL commands in chain
+    const commandParts = command.split(/&&|;|\|/).map(part => part.trim());
 
-    // Check if command is blocked (exact match OR prefix match with hyphen)
-    for (const blocked of blockedCommands) {
-      if (firstWord === blocked || firstWord.startsWith(blocked + '-')) {
-        return {
-          allowed: false,
-          message: `🚫 PM role cannot execute build/deploy/system commands - create AgentTask for technical work
+    for (const part of commandParts) {
+      // Extract first word (command name) from each part
+      const firstWord = part.trim().split(/\s+/)[0];
+
+      // Skip empty parts
+      if (!firstWord) continue;
+
+      // Check if command is blocked (exact match OR prefix match with hyphen)
+      for (const blocked of blockedCommands) {
+        if (firstWord === blocked || firstWord.startsWith(blocked + '-')) {
+          return {
+            allowed: false,
+            message: `🚫 PM role cannot execute build/deploy/system commands - create AgentTask for technical work
 
 Blocked command: ${blocked}
+Found in: ${part}
 Full command: ${command}
 
 Build/Deploy tools: npm, yarn, make, docker, cargo, mvn, gradle, go
@@ -254,7 +262,8 @@ Text processing: sed, awk
 Text editors: vi, vim, nano, emacs
 
 Create AgentTask for specialist execution.`
-        };
+          };
+        }
       }
     }
 
