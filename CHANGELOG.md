@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.13.4] - 2025-10-05
+
+### Fixed
+- Force /icc-init-system initialization display in active sessions via UserPromptSubmit hook injection
+- Agent now sees and outputs initialization content FIRST TIME instead of saying "running in background"
+- VERSION placeholder properly replaced with actual version number in initialization display
+- Hook intercepts /icc-init-system command and injects complete initialization text via JSON hookSpecificOutput
+
+### Changed
+- UserPromptSubmit hook now detects /icc-init-system command and forces visible output
+- Initialization content read from command file and injected with VERSION replacement
+- Multiple VERSION file search paths for robust version detection
+- Fallback initialization display if file reading fails
+
+---
+
 ## [8.13.3] - 2025-10-05
 
 ### Changed
