@@ -7,26 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.13.11] - 2025-10-05
+
+### Fixed
+- PM constraints hook now correctly handles absolute paths from Claude Code
+- Path normalization converts absolute paths to relative before allowlist/blocklist matching
+- Summary file detection works correctly with both absolute and relative paths
+- Agent detection simplified to only check current operation's parentUuid chain
+- Removed Strategy 2 from agent detection (was too broad and caused false positives)
+- Enhanced summary file patterns to include 'FIX' and 'PATH-MATCHING' keywords
+
+### Changed
+- All path validation functions now normalize paths before comparison
+- Agent detection is more precise and deterministic
+- Summary pattern matching changed from startsWith to includes for flexibility
+
+### Technical Details
+- Updated isPathInAllowlist() to normalize absolute paths to relative
+- Updated isPathInBlocklist() to normalize absolute paths to relative
+- Updated isSummaryFile() to normalize absolute paths and enhance pattern matching
+- Simplified isPMRole() to only use Strategy 1 (parentUuid chain checking)
+- Path normalization uses path.isAbsolute() and path.relative() for reliability
+
+---
+
 ## [8.13.9] - 2025-10-05
 
 ### Changed
 - Renamed hooks to descriptive, purpose-driven names for better clarity
 - `pretooluse.js` → `pm-constraints-enforcement.js` (enforces PM role boundaries)
 - `user-prompt-submit.js` → `context-injection.js` (injects reminders and init system)
-- `pre-commit.js` → `git-privacy-validation.js` (validates git privacy before commits)
 - `installation-protection.js` → `project-scope-enforcement.js` (already renamed in 8.13.8)
 
 ### Fixed
+- Removed incorrect PreCommit hook (not a valid Claude Code hook type)
+- Removed git-privacy-validation.js from codebase (was GitHub hook confusion)
 - Ansible playbook now gracefully removes old hook names during upgrade
 - PowerShell install.ps1 script gracefully removes old hook names during upgrade
-- Settings.json.j2 template updated with correct descriptive hook names
-- PreCommit hook chain now properly registered in settings.json
+- Settings.json.j2 template uses only valid Claude Code hook types
 
 ### Technical Details
-- Hook chain order: project-scope → git-privacy → PM constraints enforcement
+- Valid Claude Code hooks: SessionStart, UserPromptSubmit, PreToolUse
+- PreToolUse chain: project-scope → git-privacy → PM constraints enforcement
 - Old hook files automatically removed during installation to prevent confusion
 - All deployment scripts updated (Ansible + PowerShell) with graceful removal logic
-- Deployment idempotence maintained - upgrades work smoothly without orphaned hooks
 
 ---
 
@@ -43,7 +67,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Renamed installation-protection.js to project-scope-enforcement.js for clarity
 - Hook chain order updated: project-scope → git-privacy → PM enforcement
-- Removed PreCommit hook registration (GitHub hooks, not Claude Code hooks)
 - Updated ansible playbook with correct hook names and chain order
 - Updated settings.json.j2 template with correct PreToolUse chain
 - Added log cleanup to project-scope-enforcement.js (24-hour retention)
