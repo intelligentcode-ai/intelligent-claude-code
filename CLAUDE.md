@@ -15,7 +15,27 @@ l3_settings:
   auto_discover: true
   continue_on_error: true
 git_privacy: false
+blocking_enabled: true  # Default: BLOCKING mode (secure by default)
+                        # Set to false for WARNING mode (non-blocking)
 ```
+
+### Configuration Hierarchy
+Settings checked in priority order:
+1. **Project CLAUDE.md** (`./CLAUDE.md`) - highest priority
+2. **Project .claude/CLAUDE.md** (`./.claude/CLAUDE.md`)
+3. **User global CLAUDE.md** (`~/.claude/CLAUDE.md`) - fallback
+
+### Enforcement Modes
+
+**BLOCKING Mode** (default: `blocking_enabled: true` or undefined):
+- PM constraint violations are **blocked** with error messages
+- Secure by default - violations prevent operations
+- Use for production environments and strict governance
+
+**WARNING Mode** (`blocking_enabled: false`):
+- PM constraint violations log **warnings** but allow operations
+- Operations proceed with comprehensive logging
+- Use for learning environments and exploratory work
 
 ## System Usage
 

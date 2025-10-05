@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.15] - 2025-10-05
+
+### Fixed
+- **Corrected configuration file hierarchy to CLAUDE.md**: Hook now checks CLAUDE.md (project and user-global) instead of config.md
+- Configuration path priority: ./CLAUDE.md, ./.claude/CLAUDE.md, ~/.claude/CLAUDE.md
+- Aligned with system-wide convention where all configuration lives in CLAUDE.md, not separate config files
+
+---
+
 ## [8.14.14] - 2025-10-05
 
 ### Added
