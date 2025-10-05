@@ -157,7 +157,7 @@ function main() {
 
     // 1. Derive transcript directory from cwd
     const projectPath = hookInput.cwd;
-    const projectKey = projectPath.replace(/\//g, '-').replace(/^-/, '');
+    const projectKey = projectPath.replace(/\//g, '-');
     const transcriptDir = path.join(os.homedir(), '.claude', 'projects', projectKey);
 
     log(`Checking transcript directory: ${transcriptDir}`);
