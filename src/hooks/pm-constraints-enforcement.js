@@ -273,10 +273,9 @@ Create AgentTask for specialist execution.`
     return { allowed: true };
   }
 
-  function isPathInAllowlist(filePath, allowlist) {
+  function isPathInAllowlist(filePath, allowlist, projectRoot) {
     // Normalize to relative path if absolute
     let relativePath = filePath;
-    const projectRoot = process.cwd();
 
     if (path.isAbsolute(filePath)) {
       relativePath = path.relative(projectRoot, filePath);
@@ -300,10 +299,9 @@ Create AgentTask for specialist execution.`
     return false;
   }
 
-  function isPathInBlocklist(filePath, blocklist) {
+  function isPathInBlocklist(filePath, blocklist, projectRoot) {
     // Normalize to relative path if absolute
     let relativePath = filePath;
-    const projectRoot = process.cwd();
 
     if (path.isAbsolute(filePath)) {
       relativePath = path.relative(projectRoot, filePath);
@@ -319,10 +317,9 @@ Create AgentTask for specialist execution.`
     return false;
   }
 
-  function isSummaryFile(filePath) {
+  function isSummaryFile(filePath, projectRoot) {
     // Normalize to relative path if absolute
     let relativePath = filePath;
-    const projectRoot = process.cwd();
 
     if (path.isAbsolute(filePath)) {
       relativePath = path.relative(projectRoot, filePath);
@@ -343,17 +340,18 @@ Create AgentTask for specialist execution.`
     return summaryPatterns.some(pattern => upperFileName.includes(pattern));
   }
 
-  function validateSummaryFile(filePath) {
-    if (!isSummaryFile(filePath)) {
+  function validateSummaryFile(filePath, projectRoot) {
+    if (!isSummaryFile(filePath, projectRoot)) {
       return { allowed: true };
     }
 
     const fileName = path.basename(filePath);
     const suggestedPath = `summaries/${fileName}`;
 
-    // Ensure summaries directory exists
-    if (!fs.existsSync('summaries')) {
-      fs.mkdirSync('summaries', { recursive: true });
+    // Ensure summaries directory exists in the project root
+    const summariesDir = path.join(projectRoot, 'summaries');
+    if (!fs.existsSync(summariesDir)) {
+      fs.mkdirSync(summariesDir, { recursive: true });
       log('Created summaries/ directory for summary file redirection');
     }
 
@@ -368,11 +366,11 @@ Please create summary files in the summaries/ directory to keep project root cle
     };
   }
 
-  function validatePMOperation(filePath, tool, paths) {
+  function validatePMOperation(filePath, tool, paths, projectRoot) {
     const { allowlist, blocklist } = paths;
 
     // Check blocklist first (explicit denial)
-    if (isPathInBlocklist(filePath, blocklist)) {
+    if (isPathInBlocklist(filePath, blocklist, projectRoot)) {
       const blockedDir = blocklist.find(p => filePath.startsWith(p + '/'));
       return {
         allowed: false,
@@ -386,7 +384,7 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     }
 
     // Check allowlist (explicit permission)
-    if (isPathInAllowlist(filePath, allowlist)) {
+    if (isPathInAllowlist(filePath, allowlist, projectRoot)) {
       return { allowed: true };
     }
 
@@ -435,6 +433,10 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     const filePath = toolInput.file_path || '';
     const command = toolInput.command || '';
 
+    // Get project root from hookInput.cwd (agent's working directory) or fallback to process.cwd()
+    const projectRoot = hookInput.cwd || process.cwd();
+    log(`Project root: ${projectRoot}`);
+
     if (!tool) {
       log('No tool specified - allowing operation');
       console.log(JSON.stringify({ continue: true }));
@@ -451,7 +453,7 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     }
 
     // Check for summary files in root (applies to ALL roles)
-    const summaryValidation = validateSummaryFile(filePath);
+    const summaryValidation = validateSummaryFile(filePath, projectRoot);
     if (!summaryValidation.allowed) {
       log(`Summary file blocked: ${filePath}`);
       const response = {
@@ -501,7 +503,7 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
         log(`Validating file operation: ${tool} on ${filePath}`);
 
         const paths = getConfiguredPaths();
-        const validation = validatePMOperation(filePath, tool, paths);
+        const validation = validatePMOperation(filePath, tool, paths, projectRoot);
 
         if (!validation.allowed) {
           log(`File operation BLOCKED: ${filePath}`);

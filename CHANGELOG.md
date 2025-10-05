@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.2] - 2025-10-05
+
+### Fixed
+- PM constraints hook now correctly detects agent working directory from hookInput.cwd
+- Hook applies project scope rules relative to agent's project, not hook's project
+- Agents working in other projects are no longer blocked by intelligent-claude-code project scope
+- Path normalization functions now accept projectRoot parameter instead of using process.cwd()
+
+### Technical Details
+- Updated isPathInAllowlist(), isPathInBlocklist(), isSummaryFile() to accept projectRoot parameter
+- Modified validateSummaryFile() to create summaries/ directory in correct project root
+- Updated validatePMOperation() to pass projectRoot to path validation functions
+- Hook now extracts projectRoot from hookInput.cwd (agent's working directory)
+- Fallback to process.cwd() only when hookInput.cwd not available
+
+---
+
 ## [8.14.1] - 2025-10-05
 
 ### Fixed
