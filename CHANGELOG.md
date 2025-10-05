@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.21] - 2025-10-05
+
+### Fixed
+- **Critical: Agent execution context detection**
+- UUID search now skips user messages and file-history-snapshot entries
+- Searches for tool_use or assistant entries to correctly identify agent context
+- Root cause: Hook was finding user messages when searching backwards, missing Task tool in parent chain
+- Solution: Added `&& entry.type !== 'user' && entry.type !== 'file-history-snapshot'` to UUID search
+- Fixes false positives where agents were incorrectly identified as PM context
+- Agents created via Task tool now execute commands without blocking
+
+---
+
 ## [8.14.20] - 2025-10-05
 
 ### Fixed

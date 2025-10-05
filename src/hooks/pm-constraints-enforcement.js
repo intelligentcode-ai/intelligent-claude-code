@@ -187,12 +187,14 @@ function main() {
         }
       }
 
-      // Find LAST existing entry WITH a UUID (skip file-history-snapshot and other meta entries)
+      // Find LAST existing entry WITH a UUID that's NOT a user message or file-history-snapshot
+      // We want tool_use or assistant entries to correctly identify agent context
       let lastEntry = null;
       for (let i = lines.length - 1; i >= 0; i--) {
         try {
           const entry = JSON.parse(lines[i]);
-          if (entry.uuid) {
+          // Skip user messages and file-history-snapshot - we want tool_use or assistant entries
+          if (entry.uuid && entry.type !== 'user' && entry.type !== 'file-history-snapshot') {
             lastEntry = entry;
             break;
           }
