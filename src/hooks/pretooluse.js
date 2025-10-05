@@ -129,7 +129,7 @@ function main() {
 
   function isPMRole(hookInput) {
     // Detect if current operation is within agent context by checking transcript
-    // for Task tool invocations and parentUuid chains
+    // for ACTIVE Task tool invocations and direct parentUuid chains
     const transcriptPath = hookInput.transcript_path;
 
     if (!transcriptPath || !fs.existsSync(transcriptPath)) {
@@ -138,14 +138,14 @@ function main() {
     }
 
     try {
-      // Read last 200 lines of transcript (increased for deeper agent context)
+      // Read last 200 lines of transcript
       const content = fs.readFileSync(transcriptPath, 'utf8');
       const lines = content.trim().split('\n').slice(-200);
 
-      // Parse entries and find Task tool invocations
-      const taskUUIDs = new Set();
+      // Parse entries and build maps
       const entries = [];
       const entryMap = new Map();
+      const taskToolMap = new Map(); // Task UUID -> Task entry
 
       for (const line of lines) {
         try {
@@ -153,9 +153,9 @@ function main() {
           entries.push(entry);
           entryMap.set(entry.uuid, entry);
 
-          // Track Task tool UUIDs (agent spawns)
+          // Track Task tool invocations
           if (entry.message?.content?.[0]?.name === 'Task') {
-            taskUUIDs.add(entry.uuid);
+            taskToolMap.set(entry.uuid, entry);
             log(`Found Task tool UUID: ${entry.uuid}`);
           }
         } catch (parseError) {
@@ -163,54 +163,68 @@ function main() {
         }
       }
 
-      // If no recent Task tools, this is main agent (PM context)
-      if (taskUUIDs.size === 0) {
+      // If no Task tools found, this is PM context
+      if (taskToolMap.size === 0) {
         log('No recent Task tools - PM context');
         return true;
       }
 
-      // Helper function to check if UUID chain leads to Task tool
-      function hasTaskInChain(uuid, visited = new Set()) {
-        // Prevent infinite loops
-        if (visited.has(uuid)) {
-          return false;
+      // NEW LOGIC: Only consider DIRECT ancestry from current operation
+      // Walk backwards from current operation to find nearest Task tool in ancestry
+      function findNearestTaskInChain(uuid, visited = new Set(), depth = 0, maxDepth = 20) {
+        // Prevent infinite loops and limit depth
+        if (visited.has(uuid) || depth > maxDepth) {
+          return null;
         }
         visited.add(uuid);
 
-        // Direct Task tool match
-        if (taskUUIDs.has(uuid)) {
-          return true;
-        }
-
-        // Get entry and check parent chain
         const entry = entryMap.get(uuid);
-        if (entry && entry.parentUuid) {
-          return hasTaskInChain(entry.parentUuid, visited);
+        if (!entry) {
+          return null;
         }
 
-        return false;
+        // Is this entry itself a Task tool?
+        if (taskToolMap.has(uuid)) {
+          log(`Found Task tool in chain at depth ${depth}: ${uuid}`);
+          return uuid;
+        }
+
+        // Check parent
+        if (entry.parentUuid) {
+          return findNearestTaskInChain(entry.parentUuid, visited, depth + 1, maxDepth);
+        }
+
+        return null;
       }
 
-      // Check last 100 entries (expanded from 20) for agent execution context
-      // by walking parentUuid chains back to Task tools
-      for (let i = entries.length - 1; i >= Math.max(0, entries.length - 100); i--) {
+      // Strategy 1: Check if hookInput's parentUuid chain leads to a Task tool
+      if (hookInput.parentUuid) {
+        const nearestTask = findNearestTaskInChain(hookInput.parentUuid);
+
+        if (nearestTask) {
+          log(`Agent context detected: current operation parentUuid chain leads to Task tool ${nearestTask}`);
+          return false; // Agent context
+        }
+      }
+
+      // Strategy 2: Check most recent entries (last 50) for active agent execution
+      // This catches operations that are part of an ongoing agent execution
+      for (let i = entries.length - 1; i >= Math.max(0, entries.length - 50); i--) {
         const entry = entries[i];
 
-        // Check if this entry's parentUuid chain leads to a Task tool
-        if (entry.parentUuid && hasTaskInChain(entry.parentUuid)) {
-          log(`Agent context detected: entry ${entry.uuid} chain leads to Task tool`);
-          return false;
+        // Skip entries without parentUuid
+        if (!entry.parentUuid) {
+          continue;
+        }
+
+        const nearestTask = findNearestTaskInChain(entry.parentUuid);
+        if (nearestTask) {
+          log(`Agent context detected: recent entry ${entry.uuid} chain leads to Task tool ${nearestTask}`);
+          return false; // Agent context
         }
       }
 
-      // ALSO: Check if hookInput itself indicates agent context
-      // The current tool invocation might not be in the transcript yet
-      if (hookInput.parentUuid && hasTaskInChain(hookInput.parentUuid)) {
-        log(`Agent context detected: current operation parentUuid leads to Task tool`);
-        return false;
-      }
-
-      log('No agent context in recent entries - PM context');
+      log('No active agent context detected - PM context');
       return true;
 
     } catch (readError) {
