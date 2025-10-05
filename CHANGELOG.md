@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.12] - 2025-10-05
+
+### Fixed
+- **DEFINITIVE AGENT DETECTION**: Find LAST assistant message with tool_use content and check isSidechain field
+- Hook fires when assistant is about to use a tool - most recent assistant tool_use IS that operation
+- Eliminates false positives from scanning multiple entries or UUID parsing issues
+- Agent context: isSidechain=true in last assistant tool_use entry
+- PM context: isSidechain=false in last assistant tool_use entry
+
+### Technical Implementation
+- Search backwards through transcript for last assistant message with tool_use content
+- Check isSidechain field of that specific entry
+- Avoids complexity of ParentUuid chain traversal and UUID parsing
+- Simple, reliable, unambiguous detection pattern
+
+### Benefits
+- **Precise Detection**: Identifies exact entry for current hook invocation
+- **No Timing Issues**: Always checks the right entry, not old agent context
+- **No UUID Parsing**: Avoids complexity and potential parsing errors
+- **Future-Proof**: Based on transcript structure and hook execution model
+
+---
+
 ## [8.14.11] - 2025-10-05
 
 ### Fixed

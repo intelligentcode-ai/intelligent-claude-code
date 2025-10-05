@@ -152,60 +152,57 @@ function main() {
   }
 
   function isPMRole(hookInput) {
-    // Detect agent context using ParentUuid chain traversal
-    // Strategy: Walk ParentUuid chain to find Task tool invocation
+    // Detect agent context using isSidechain field
+    // Strategy: Find LAST assistant message with tool_use content and check isSidechain
     //
     // VERIFIED PATTERN:
-    // - Agent execution always starts with Task tool invocation
-    // - PM operations have no Task tool in parent chain
-    // - ParentUuid chain traversal is reliable and unambiguous
+    // - Hook fires when assistant is about to use a tool
+    // - Most recent assistant message with tool_use IS that operation
+    // - isSidechain: true = Agent context (allow all)
+    // - isSidechain: false = PM context (enforce constraints)
 
     const transcriptPath = hookInput.transcript_path;
 
     try {
       const content = fs.readFileSync(transcriptPath, 'utf8');
       const lines = content.trim().split('\n');
-      const entries = lines.map(line => JSON.parse(line));
 
-      // Get the last entry (current operation)
-      const currentEntry = entries[entries.length - 1];
-      let parentUuid = currentEntry.parentUuid;
+      // Search backwards for last assistant message with tool_use
+      for (let i = lines.length - 1; i >= 0; i--) {
+        try {
+          const entry = JSON.parse(lines[i]);
 
-      log(`Current entry UUID: ${currentEntry.uuid}, toolName: ${currentEntry.toolName || 'none'}`);
-      log(`Starting ParentUuid chain traversal from: ${parentUuid || 'null'}`);
+          // Check if this is an assistant message with tool_use content
+          if (entry.message?.role === 'assistant' &&
+              Array.isArray(entry.message.content)) {
 
-      // Walk the parentUuid chain to find Task tool
-      let visited = new Set();
-      let chainDepth = 0;
+            // Check if any content item is tool_use
+            const hasToolUse = entry.message.content.some(item =>
+              item.type === 'tool_use'
+            );
 
-      while (parentUuid && !visited.has(parentUuid)) {
-        visited.add(parentUuid);
-        chainDepth++;
-
-        const parent = entries.find(e => e.uuid === parentUuid);
-
-        if (!parent) {
-          log(`ParentUuid chain broken at depth ${chainDepth}: UUID ${parentUuid} not found`);
-          break;
+            if (hasToolUse && entry.hasOwnProperty('isSidechain')) {
+              if (entry.isSidechain === true) {
+                log(`Agent context: isSidechain=true in assistant tool_use entry`);
+                return false; // Agent - allow all
+              } else if (entry.isSidechain === false) {
+                log(`PM context: isSidechain=false in assistant tool_use entry`);
+                return true; // PM - enforce constraints
+              }
+            }
+          }
+        } catch (parseError) {
+          continue; // Skip malformed lines
         }
-
-        log(`Chain depth ${chainDepth}: UUID ${parent.uuid}, toolName: ${parent.toolName || 'none'}`);
-
-        if (parent.toolName === "Task") {
-          log(`Agent context detected: Task tool found in parent chain at depth ${chainDepth}`);
-          return false; // Agent context - allow all operations
-        }
-
-        parentUuid = parent.parentUuid;
       }
 
-      // No Task tool in chain = PM context
-      log(`PM context detected: No Task tool in parent chain (traversed ${chainDepth} levels)`);
-      return true; // PM context - enforce constraints
+      // Fallback if no tool_use entry found
+      log('No assistant tool_use entry found - allowing (fail-safe)');
+      return false;
 
     } catch (error) {
-      log(`ERROR during ParentUuid traversal: ${error.message}`);
-      return false; // Fail-safe: allow on errors
+      log(`ERROR: ${error.message}`);
+      return false; // Fail-safe
     }
   }
 
