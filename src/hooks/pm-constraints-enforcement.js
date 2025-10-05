@@ -152,8 +152,22 @@ function main() {
   }
 
   function isPMRole(hookInput) {
-    // Detect if current operation is within agent context by checking transcript
-    // for ACTIVE Task tool invocations, direct parentUuid chains, and sidechain indicators
+    // PRIMARY STRATEGY: Check if CWD differs from intelligent-claude-code project
+    // Agents working in other projects have different CWD
+    const hookInstallPath = path.dirname(path.dirname(__dirname)); // ~/.claude
+    const operationCwd = hookInput.cwd || process.cwd();
+
+    // Normalize paths for comparison
+    const normalizedHookPath = path.resolve(hookInstallPath);
+    const normalizedOpCwd = path.resolve(operationCwd);
+
+    // If operation is NOT in intelligent-claude-code project, it's an agent
+    if (!normalizedOpCwd.includes('/intelligent-claude-code')) {
+      log(`Agent detected: operation CWD (${normalizedOpCwd}) is not in intelligent-claude-code project`);
+      return false; // Agent in different project
+    }
+
+    // FALLBACK STRATEGY: Check transcript for Task tool invocations
     const transcriptPath = hookInput.transcript_path;
 
     if (!transcriptPath || !fs.existsSync(transcriptPath)) {
@@ -193,11 +207,8 @@ function main() {
         return true;
       }
 
-      // STRATEGY 1: Check if hookInput's parentUuid chain leads to a Task tool
-      // This is the primary and most reliable detection method
-      // Walk backwards from current operation to find nearest Task tool in ancestry
+      // Check if hookInput's parentUuid chain leads to a Task tool
       function findNearestTaskInChain(uuid, visited = new Set(), depth = 0, maxDepth = 20) {
-        // Prevent infinite loops and limit depth
         if (visited.has(uuid) || depth > maxDepth) {
           return null;
         }
@@ -208,13 +219,11 @@ function main() {
           return null;
         }
 
-        // Is this entry itself a Task tool?
         if (taskToolMap.has(uuid)) {
           log(`Found Task tool in chain at depth ${depth}: ${uuid}`);
           return uuid;
         }
 
-        // Check parent
         if (entry.parentUuid) {
           return findNearestTaskInChain(entry.parentUuid, visited, depth + 1, maxDepth);
         }
