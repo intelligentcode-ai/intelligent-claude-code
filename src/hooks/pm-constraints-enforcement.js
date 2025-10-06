@@ -98,18 +98,25 @@ function main() {
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
     const markerFile = path.join(markerDir, `agent-executing-${session_id}`);
 
-    // Check if agent marker exists for this session
-    const isAgentContext = fs.existsSync(markerFile);
-    log(`Agent marker check: ${isAgentContext ? 'EXISTS (Agent context)' : 'MISSING (PM context)'}`);
+    try {
+      if (!fs.existsSync(markerFile)) {
+        log('PM context detected - no marker file');
+        return true;
+      }
 
-    if (isAgentContext) {
-      // AGENT SCOPE: Allow all operations
-      log('Agent context detected - allowing operation');
-      return false; // Not PM context
-    } else {
-      // PM SCOPE: Apply whitelist
-      log('PM context detected - applying whitelist rules');
-      return true; // PM context, enforce constraints
+      const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+      const agentCount = marker.agent_count || 0;
+
+      if (agentCount > 0) {
+        log(`Agent context detected - ${agentCount} active agent(s)`);
+        return false;
+      } else {
+        log('PM context detected - marker exists but agent_count is 0');
+        return true;
+      }
+    } catch (error) {
+      log(`Error reading marker file: ${error.message} - assuming PM context`);
+      return true;
     }
   }
 
