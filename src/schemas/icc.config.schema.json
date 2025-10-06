@@ -1,0 +1,293 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://intelligentcode.ai/schemas/icc.config.schema.json",
+  "title": "Intelligent Claude Code Configuration",
+  "description": "Complete configuration schema for Intelligent Claude Code system",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration version"
+    },
+    "description": {
+      "type": "string",
+      "description": "Configuration description"
+    },
+    "autonomy": {
+      "type": "object",
+      "description": "Autonomy and team maturity settings",
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["L1", "L2", "L3"],
+          "description": "Autonomy level: L1 (manual), L2 (guided), L3 (autonomous)"
+        },
+        "pm_always_active": {
+          "type": "boolean",
+          "description": "Always activate PM role"
+        },
+        "blocking_enabled": {
+          "type": "boolean",
+          "description": "Enable enforcement blocking on violations"
+        },
+        "l3_settings": {
+          "type": "object",
+          "description": "L3 autonomous mode settings",
+          "properties": {
+            "max_parallel": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "description": "Maximum parallel tasks in L3 mode"
+            },
+            "auto_discover": {
+              "type": "boolean",
+              "description": "Auto-discover and execute available work"
+            },
+            "continue_on_error": {
+              "type": "boolean",
+              "description": "Continue on ICC principle violations (not deployment errors)"
+            }
+          }
+        }
+      }
+    },
+    "git": {
+      "type": "object",
+      "description": "Git operation settings",
+      "properties": {
+        "privacy": {
+          "type": "boolean",
+          "description": "Strip AI mentions from commit messages"
+        },
+        "privacy_patterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Patterns to strip when git privacy enabled"
+        },
+        "branch_protection": {
+          "type": "boolean",
+          "description": "Enable main branch protection"
+        },
+        "default_branch": {
+          "type": "string",
+          "description": "Default branch name"
+        },
+        "require_pr_for_main": {
+          "type": "boolean",
+          "description": "Require pull requests for main branch"
+        },
+        "validate_commits": {
+          "type": "boolean",
+          "description": "Validate commit messages"
+        }
+      }
+    },
+    "paths": {
+      "type": "object",
+      "description": "Directory path configurations",
+      "properties": {
+        "story_path": { "type": "string", "description": "Stories directory" },
+        "bug_path": { "type": "string", "description": "Bugs directory" },
+        "memory_path": { "type": "string", "description": "Memory directory" },
+        "docs_path": { "type": "string", "description": "Documentation directory" },
+        "src_path": { "type": "string", "description": "Source code directory" },
+        "test_path": { "type": "string", "description": "Tests directory" },
+        "config_path": { "type": "string", "description": "Configuration directory" },
+        "agenttask_template_path": { "type": "string", "description": "AgentTask templates directory" }
+      }
+    },
+    "team": {
+      "type": "object",
+      "description": "Team collaboration settings",
+      "properties": {
+        "default_reviewer": { "type": "string", "description": "Default code reviewer" },
+        "specialist_creation": { "type": "boolean", "description": "Allow dynamic specialist creation" },
+        "role_validation": { "type": "boolean", "description": "Validate role assignments" }
+      }
+    },
+    "agenttask": {
+      "type": "object",
+      "description": "AgentTask system settings",
+      "properties": {
+        "template_validation": { "type": "boolean", "description": "Validate template compliance" },
+        "complexity_override": { "type": "boolean", "description": "Allow complexity override" },
+        "auto_breakdown": { "type": "boolean", "description": "Auto-breakdown large tasks" },
+        "size_limits": {
+          "type": "object",
+          "description": "Point ranges for each size tier",
+          "properties": {
+            "nano": { "$ref": "#/definitions/sizeRange" },
+            "tiny": { "$ref": "#/definitions/sizeRange" },
+            "medium": { "$ref": "#/definitions/sizeRange" },
+            "large": { "$ref": "#/definitions/sizeRange" },
+            "mega": { "$ref": "#/definitions/sizeRange" }
+          }
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "description": "Workflow settings by AgentTask size",
+      "properties": {
+        "nano": { "$ref": "#/definitions/workflowSettings" },
+        "tiny": { "$ref": "#/definitions/workflowSettings" },
+        "medium": { "$ref": "#/definitions/workflowSettings" },
+        "large": { "$ref": "#/definitions/workflowSettings" },
+        "mega": { "$ref": "#/definitions/workflowSettings" }
+      }
+    },
+    "memory": {
+      "type": "object",
+      "description": "Memory system settings",
+      "properties": {
+        "integration": { "type": "boolean", "description": "Enable memory integration" },
+        "auto_storage": { "type": "boolean", "description": "Auto-store learnings" },
+        "search_before_questions": { "type": "boolean", "description": "Search memory before asking users" },
+        "max_search_results": { "type": "integer", "minimum": 1, "description": "Max search results" },
+        "max_search_tokens": { "type": "integer", "minimum": 100, "description": "Max tokens in search results" },
+        "relevance_threshold": { "type": "integer", "minimum": 0, "maximum": 10, "description": "Min relevance score" }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "description": "Quality assurance settings",
+      "properties": {
+        "enforce_peer_review": { "type": "boolean" },
+        "testing_required": { "type": "boolean" },
+        "documentation_required": { "type": "boolean" },
+        "security_validation": { "type": "boolean" },
+        "compliance_checking": { "type": "boolean" }
+      }
+    },
+    "development": {
+      "type": "object",
+      "description": "Development environment settings",
+      "properties": {
+        "auto_cleanup": { "type": "boolean" },
+        "file_management_strict": { "type": "boolean" },
+        "testing_approach": {
+          "type": "string",
+          "enum": ["minimal", "standard", "comprehensive"]
+        }
+      }
+    },
+    "tools": {
+      "type": "object",
+      "description": "Tool integration settings",
+      "properties": {
+        "context7_enabled": { "type": "boolean" },
+        "sequential_thinking": { "type": "boolean" },
+        "mcp_tools_enabled": { "type": "boolean" }
+      }
+    },
+    "subagents": {
+      "type": "object",
+      "description": "Subagent execution settings",
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": ["sonnet", "opus", "haiku"],
+          "description": "Default model for subagents"
+        },
+        "threshold": { "type": "integer", "minimum": 1, "description": "Complexity threshold for subagent" },
+        "max_concurrent": { "type": "integer", "minimum": 1, "maximum": 10, "description": "Max concurrent subagents" },
+        "auto_delegation": { "type": "boolean", "description": "Auto-delegate to subagents" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "description": "Project-level settings",
+      "properties": {
+        "repository_type": {
+          "type": "string",
+          "enum": ["git", "mercurial", "svn"]
+        },
+        "release_automation": { "type": "boolean" }
+      }
+    },
+    "enforcement": {
+      "type": "object",
+      "description": "Enforcement and validation settings",
+      "properties": {
+        "violation_logging": { "type": "boolean" },
+        "auto_correction": { "type": "boolean" }
+      }
+    },
+    "best_practices": {
+      "type": "object",
+      "description": "Best practices system settings",
+      "properties": {
+        "search_enabled": { "type": "boolean" },
+        "auto_generation": { "type": "boolean" },
+        "promotion_threshold": { "type": "integer", "minimum": 1 },
+        "categories": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "mcp_integrations": {
+      "type": "object",
+      "description": "MCP server integration configurations",
+      "patternProperties": {
+        ".*": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string" },
+            "enabled": { "type": "boolean" },
+            "fallback": { "type": "string" },
+            "config": { "type": "object" }
+          }
+        }
+      }
+    },
+    "cache": {
+      "type": "object",
+      "description": "Cache settings",
+      "properties": {
+        "ttl_minutes": { "type": "integer", "minimum": 1 },
+        "enabled": { "type": "boolean" }
+      }
+    },
+    "logging": {
+      "type": "object",
+      "description": "Logging settings",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "retention_hours": { "type": "integer", "minimum": 1 },
+        "directory": { "type": "string" }
+      }
+    }
+  },
+  "definitions": {
+    "sizeRange": {
+      "type": "object",
+      "properties": {
+        "min": { "type": "integer", "minimum": 0 },
+        "max": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["min", "max"]
+    },
+    "workflowSettings": {
+      "type": "object",
+      "properties": {
+        "version_bump": { "type": "boolean" },
+        "version_type": {
+          "type": "string",
+          "enum": ["patch", "minor", "major"]
+        },
+        "changelog_required": { "type": "boolean" },
+        "pr_required": { "type": "boolean" },
+        "merge_strategy": {
+          "type": "string",
+          "enum": ["direct_commit", "feature_branch"]
+        },
+        "release_automation": { "type": "boolean" },
+        "auto_merge": { "type": "boolean" },
+        "coordination_required": { "type": "boolean" },
+        "breaking_change_assessment": { "type": "boolean" }
+      }
+    }
+  }
+}
