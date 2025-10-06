@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.1] - 2025-10-06
+
+### Bug Fixes
+- **git-enforcement.js**: Fixed JSON output to conform to PreToolUse hook schema
+  - All responses now include required `hookSpecificOutput` structure
+  - `hookEventName: "PreToolUse"` properly set
+  - `permissionDecision: "allow" | "deny"` correctly formatted
+  - Resolves JSON validation errors when hook executes
+
+### Technical Details
+- Updated 7 JSON output locations in git-enforcement.js
+- Changed from simple `{ continue: true }` to proper PreToolUse schema
+- Hook now passes JSON validation successfully
+
+---
+
 ## [8.18.0] - 2025-10-06
 
 ### Added
