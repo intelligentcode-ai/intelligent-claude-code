@@ -545,7 +545,8 @@ function Install-HookSystem {
                 'user-prompt-submit.js',
                 'pre-commit.js',
                 'installation-protection.js',
-                'git-privacy-validation.js'
+                'git-privacy-validation.js',
+                'git-privacy-enforcement.js'
             )
 
             foreach ($OldHook in $OldHooks) {
@@ -592,13 +593,13 @@ function Install-HookSystem {
                 Write-Warning "  project-scope-enforcement.js hook not found, skipping scope enforcement PreToolUse registration"
             }
 
-            # Register PreToolUse hook (git-privacy-enforcement.js)
-            $GitPrivacyHookPath = Join-Path $HooksPath "git-privacy-enforcement.js"
-            if (Test-Path $GitPrivacyHookPath) {
-                $HookCommand = "node `"$GitPrivacyHookPath`""
+            # Register PreToolUse hook (git-enforcement.js)
+            $GitEnforcementHookPath = Join-Path $HooksPath "git-enforcement.js"
+            if (Test-Path $GitEnforcementHookPath) {
+                $HookCommand = "node `"$GitEnforcementHookPath`""
                 Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  git-privacy-enforcement.js hook not found, skipping git privacy PreToolUse registration"
+                Write-Warning "  git-enforcement.js hook not found, skipping git enforcement PreToolUse registration"
             }
 
             # Register PreToolUse hook (pm-constraints-enforcement.js)
