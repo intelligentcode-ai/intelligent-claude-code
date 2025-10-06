@@ -14,7 +14,7 @@
   },
 
   "git": {
-    "privacy": false,
+    "privacy": true,
     "privacy_patterns": [
       "AI",
       "Claude",
@@ -36,7 +36,8 @@
     "src_path": "src",
     "test_path": "tests",
     "config_path": "config",
-    "agenttask_template_path": "agenttask-templates"
+    "agenttask_template_path": "agenttask-templates",
+    "summaries_path": "summaries"
   },
 
   "team": {

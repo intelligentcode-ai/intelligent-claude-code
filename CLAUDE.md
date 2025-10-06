@@ -8,7 +8,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## System Configuration
 
-**Configuration File**: See `icc.config.json` for complete configuration options.
+**Configuration Files**:
+- `icc.config.json` - Core system settings (70+ settings across 15 categories)
+- `icc.workflow.json` - Workflow settings by AgentTask tier (45 settings)
 
 **Quick Settings** (for backward compatibility, add to CLAUDE.md):
 ```yaml
@@ -16,7 +18,9 @@ git_privacy: false
 blocking_enabled: true
 ```
 
-**Note**: The system now uses unified JSON configuration in `icc.config.json`. Legacy YAML settings in CLAUDE.md are still supported for backward compatibility but will trigger migration warnings. See `icc.config.default.json` for all available settings.
+**Note**: The system now uses unified JSON configuration in `icc.config.json` and `icc.workflow.json`. Legacy YAML settings in CLAUDE.md are still supported for backward compatibility but will trigger migration warnings.
+
+**Complete Configuration Guide**: See `/Users/karsten/Nextcloud/Work/Development/intelligentcode-ai/intelligent-claude-code/docs/configuration-guide.md` for comprehensive documentation of all 115+ settings, migration guide, and best practices.
 
 ## System Usage
 

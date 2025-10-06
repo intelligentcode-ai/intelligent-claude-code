@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.15.3] - 2025-10-06
+
+### Added
+- PM allowlist support for icc.config.json and icc.workflow.json root configuration files
+- PM allowlist support for summaries/ directory for summary and report files
+- summaries_path configuration setting in paths section
+- Explicit root config file validation in isPathInAllowlist function
+
+### Changed
+- Updated pm-constraints-enforcement.js to allow PM access to config and summaries files
+- Updated icc.config.schema.json to include summaries_path in paths section
+- Updated icc.config.default.json with summaries_path default value
+- Updated config-loader.js with summaries_path legacy mapping
+- Updated config-loader.js hardcoded defaults to include summaries_path
+
+### Improved
+- PM role can now manage project configuration files directly
+- PM role can now create and manage summary/report files in dedicated directory
+- Configuration system completeness with summaries directory support
+
+---
+
 ## [8.15.2] - 2025-10-06
 
 ### Added

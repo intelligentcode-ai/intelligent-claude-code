@@ -12,6 +12,10 @@
         "timeout": 5000
       }, {
         "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/summary-file-enforcement.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
         "command": "node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js",
         "timeout": 5000
       }]
