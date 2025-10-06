@@ -262,13 +262,23 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
         inputData = fs.readFileSync(0, 'utf8');
       } catch (stdinError) {
         log(`WARN: Failed to read stdin: ${stdinError.message} - allowing operation`);
-        console.log(JSON.stringify({ continue: true }));
+        console.log(JSON.stringify({
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "allow"
+          }
+        }));
         process.exit(0);
       }
     }
 
     if (!inputData.trim()) {
-      console.log(JSON.stringify({ continue: true }));
+      console.log(JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "allow"
+        }
+      }));
       process.exit(0);
     }
 
@@ -282,13 +292,23 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
 
     if (!tool || tool !== 'Bash') {
       log('Not a Bash tool - allowing operation');
-      console.log(JSON.stringify({ continue: true }));
+      console.log(JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "allow"
+        }
+      }));
       process.exit(0);
     }
 
     if (!command) {
       log('No command specified - allowing operation');
-      console.log(JSON.stringify({ continue: true }));
+      console.log(JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "allow"
+        }
+      }));
       process.exit(0);
     }
 
@@ -304,13 +324,12 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
     if (result.blocked) {
       log(`Command BLOCKED: ${result.reason}`);
       const response = {
-        continue: false,
-        suppressOutput: false,
-        decision: {
-          type: 'block',
-          reason: result.reason,
-          message: result.message
-        }
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "deny",
+          permissionDecisionReason: result.reason
+        },
+        systemMessage: result.message
       };
       const responseJson = JSON.stringify(response);
       log(`BLOCKING RESPONSE: ${responseJson}`);
@@ -337,14 +356,24 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
 
     // Allow operation unchanged
     log('No modification or blocking needed - allowing operation');
-    console.log(JSON.stringify({ continue: true }));
+    console.log(JSON.stringify({
+      hookSpecificOutput: {
+        hookEventName: "PreToolUse",
+        permissionDecision: "allow"
+      }
+    }));
     process.exit(0);
 
   } catch (error) {
     log(`Error: ${error.message}`);
     log(`Stack: ${error.stack}`);
     // On error, allow operation to prevent blocking valid work
-    console.log(JSON.stringify({ continue: true }));
+    console.log(JSON.stringify({
+      hookSpecificOutput: {
+        hookEventName: "PreToolUse",
+        permissionDecision: "allow"
+      }
+    }));
     process.exit(0);
   }
 }
