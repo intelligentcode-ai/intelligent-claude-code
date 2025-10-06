@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.0] - 2025-10-06
+
+### Added
+- **Git Enforcement System**: Unified hook replacing git-privacy-enforcement.js
+  - Branch protection: Blocks commits to main when require_pr_for_main=true
+  - Privacy enforcement: Strips AI mentions when git.privacy=true
+  - Preventive execution in PreToolUse hook chain
+  - Two-phase validation: branch protection → privacy enforcement
+
+### Changed
+- **Default Configuration**: git.privacy=true (privacy ON by default)
+- **Default Configuration**: git.branch_protection=true (protection ON by default)
+- **Default Configuration**: git.require_pr_for_main=true (PR workflow required)
+- **Hook Migration**: git-privacy-enforcement.js replaced by git-enforcement.js
+- **Hook Registration**: git-enforcement.js registered in PreToolUse hooks
+
+### Removed
+- git-privacy-enforcement.js (replaced by comprehensive git-enforcement.js)
+
+### Migration
+- Automatic transition: git-privacy-enforcement.js removed during `make install`
+- git-enforcement.js automatically registered in PreToolUse hook chain
+- Configuration values preserved from existing settings
+- No manual intervention required
+
+---
+
 ## [8.17.0] - 2025-10-06
 
 ### Added
