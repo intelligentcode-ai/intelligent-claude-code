@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.16.2] - 2025-10-06
+
+### Security Enhancements
+- **SSH Heredoc Detection**: Fixed critical bypass in infrastructure protection
+  - Now detects SSH commands with heredoc syntax (`ssh host << 'EOF' ... EOF`)
+  - Prevents bypassing IaC enforcement via heredoc-wrapped kubectl/govc commands
+  - Pattern matching now handles both quoted and heredoc SSH command formats
+
+### Infrastructure Protection Improvements
+- **Strengthened IaC Messaging**: Enhanced enforcement messages to emphasize best practices
+  - Explicitly prohibit shell scripts, manual SSH operations, and ad-hoc fixes
+  - Require reusable Playbooks/Charts/Configs instead of imperative commands
+  - Added clear workflow guidance: Create IaC → Test → Commit → Apply
+  - Emphasized principles: repeatability, versionability, testability, documentation
+
+### Test Cases
+All SSH heredoc patterns now properly blocked:
+- `ssh host << 'EOF' kubectl delete pod foo EOF` - BLOCKED
+- `ssh -J jump@host user@host << EOF govc vm.destroy vm EOF` - BLOCKED
+- `ssh host << EOF kubectl patch deployment foo EOF` - BLOCKED
+
+---
+
 ## [8.18.2] - 2025-10-06
 
 ### Critical Bug Fixes
