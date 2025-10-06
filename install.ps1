@@ -592,6 +592,15 @@ function Install-HookSystem {
                 Write-Warning "  summary-file-enforcement.js hook not found, skipping summary-file-enforcement PreToolUse registration"
             }
 
+            # Register PreToolUse hook (agent-infrastructure-protection.js)
+            $InfrastructureProtectionHookPath = Join-Path $HooksPath "agent-infrastructure-protection.js"
+            if (Test-Path $InfrastructureProtectionHookPath) {
+                $HookCommand = "node `"$InfrastructureProtectionHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  agent-infrastructure-protection.js hook not found, skipping agent-infrastructure-protection PreToolUse registration"
+            }
+
             # Register PreToolUse hook (pm-constraints-enforcement.js)
             $PreToolUseHookPath = Join-Path $HooksPath "pm-constraints-enforcement.js"
             if (Test-Path $PreToolUseHookPath) {

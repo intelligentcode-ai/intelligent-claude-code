@@ -23,6 +23,7 @@
     - "{{ claude_install_path }}/agenttask-templates"
     - "{{ claude_install_path }}/hooks"
     - "{{ claude_install_path }}/logs"
+    - "{{ claude_install_path }}/schemas"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -194,6 +195,7 @@
     - project-scope-enforcement.js
     - git-privacy-enforcement.js
     - summary-file-enforcement.js
+    - agent-infrastructure-protection.js
     - subagent-stop.js
     - stop.js
   ignore_errors: yes

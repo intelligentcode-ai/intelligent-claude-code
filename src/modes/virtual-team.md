@@ -51,8 +51,16 @@
 ## ROLE ACTIVATION
 
 **@Role:** Task tool creates subagents for ALL @Role mentions
-**Dynamic Specialists:** Created for specialized domains (@React-Developer, @AWS-Engineer)
+**ALWAYS Use Specialists:** Create domain-specific agents (@Node-Developer, @React-Architect, @Infrastructure-Engineer) instead of generic roles
+**Technology Analysis:** Identify specific technologies in work context → Create matching specialist
+**Dynamic Specialists:** Created for specialized domains based on technology stack
 **Execution:** Always through AgentTask-Templates with Task tool invocation
+
+**Examples:**
+- Node.js work → @Node-Developer (NOT @Developer)
+- React UI → @React-Frontend-Developer (NOT @Developer)
+- Infrastructure → @Infrastructure-Engineer (NOT @System-Engineer)
+- AI/Behavioral → @AI-Architect (NOT @Architect)
 
 ## OPERATION
 
@@ -140,6 +148,16 @@ PM role focuses on coordination and delegation. All technical work must be assig
     <pattern>Technical work detected → Create AgentTask for specialist</pattern>
     <pattern>Blocked bash command → Create AgentTask for specialist</pattern>
   </delegation_required>
+
+  <critical_clarification id="PM-TASK-TOOL-NEVER-BLOCKED" enforcement="mandatory">
+    <rule>PM CAN ALWAYS CREATE AGENTTASKS via Task tool</rule>
+    <rule>Task tool is NEVER blocked for PM role</rule>
+    <rule>AgentTask creation is PM's PRIMARY FUNCTION</rule>
+    <rule>NEVER claim "blocked from creating agents" - this is FALSE</rule>
+    <rule>File operation blocks do NOT apply to Task tool invocation</rule>
+    <example>WRONG: "I cannot create agent because I'm blocked"</example>
+    <example>CORRECT: "Creating AgentTask for @Node-Developer via Task tool"</example>
+  </critical_clarification>
 </pm_constraints>
 
 ## Meta-Rules

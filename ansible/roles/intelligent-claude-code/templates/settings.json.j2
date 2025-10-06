@@ -16,6 +16,11 @@
         "timeout": 5000
       }, {
         "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js",
+        "timeout": 5000,
+        "description": "CRITICAL: Block destructive infrastructure commands for all contexts"
+      }, {
+        "type": "command",
         "command": "node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js",
         "timeout": 5000
       }]

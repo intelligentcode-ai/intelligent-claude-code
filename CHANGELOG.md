@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.16.1] - 2025-10-06
+
+### Fixed
+- Critical security bug: PM constraints bypassed by stale agent markers from previous turns
+- Added agent marker cleanup in UserPromptSubmit hook (context-injection.js) at start of execution
+- Ensures PM role boundaries properly enforced (no src/, lib/, config/ file edits)
+- Prevents stale markers from previous subagent executions persisting across user message submissions
+
+### Security
+- PM constraints now properly detect PM context without interference from old agent markers
+- enforcement.blocking_enabled setting correctly respected in all scenarios
+
+---
+
 ## [8.16.0] - 2025-10-06
 
 ### Added
