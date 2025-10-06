@@ -26,11 +26,13 @@ See `docs/configuration-guide.md` for complete documentation.
 ## Settings Structure
 
 ### Git Settings (git.*)
-- git.privacy (true/false) - MANDATORY validation before git operations
+- git.privacy (true/false) - AI mention stripping (enforced by git-privacy-enforcement.js hook)
+- git.privacy_patterns (array) - Patterns to filter
 - git.branch_protection (true/false)
 - git.default_branch (main/master/develop)
 - git.require_pr_for_main (true/false)
-- git.privacy_patterns (array) - AI mention patterns to filter
+
+**Git Privacy Enforcement**: Automatic via hook - no manual action required
 
 ### Autonomy Settings (autonomy.*)
 - autonomy.level (L1/L2/L3)

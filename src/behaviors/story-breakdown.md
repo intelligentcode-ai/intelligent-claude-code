@@ -40,8 +40,9 @@ Issue found → Document → AgentTask → Assign specialist.
 - Sequential execution via Task tool with full context
 
 ## Tool Access
-**PM Access**: Read/LS/Glob/Grep always, Write/Edit for coordination files only, Bash read-only + coordination.
-**Violations**: Tool blocked → Create AgentTask → Delegate to specialist.
+**PM Access**: Coordination files only (stories/, bugs/, memory/, docs/, agenttasks/, summaries/, root *.md, icc.config.json, icc.workflow.json)
+**Enforcement**: `pm-constraints-enforcement.js` hook enforces automatically
+**Violations**: Tool blocked → Create AgentTask → Delegate to specialist
 
 ---
 *Story breakdown with enforcement and nano/tiny AgentTask restrictions*

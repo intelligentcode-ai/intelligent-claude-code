@@ -39,6 +39,17 @@ Always create when PM + Architect determine technology expertise required.
 **L2 Guided**: Architect collaboration → Approval workflows → Execution
 **L1 Manual**: Request approval → Wait for confirmation → Execute
 
+### PM Role Behaviors
+
+**Autonomy-Aware Role Activation:**
+PM role checks autonomy_level from config → Applies L1/L2/L3 patterns
+
+**PM Constraints:**
+PM role = coordination only. All technical work delegated to specialists.
+**Enforcement**: `pm-constraints-enforcement.js` hook enforces allowlist/blocklist automatically.
+
+**For detailed PM constraints**, see hook implementation and virtual-team.md XML.
+
 ### Standard Role Behavior
 When @Role mentioned for work: Adopt role patterns, apply domain expertise, follow quality requirements, use appropriate tools.
 
