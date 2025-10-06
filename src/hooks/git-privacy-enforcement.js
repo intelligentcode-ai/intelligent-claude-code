@@ -3,11 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-
-// Configuration cache
-let configCache = null;
-let configCacheTime = 0;
-const CONFIG_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const { getSetting } = require('./lib/config-loader');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -50,66 +46,11 @@ function main() {
   }
 
   function loadConfiguration() {
-    const now = Date.now();
-
-    // Return cached config if still valid
-    if (configCache && (now - configCacheTime) < CONFIG_CACHE_TTL) {
-      log('Using cached configuration');
-      return configCache;
-    }
-
+    log('Loading configuration via unified config-loader');
+    const gitPrivacy = getSetting('git.privacy', false);
     const config = {
-      git_privacy: false // Default to disabled
+      git_privacy: gitPrivacy
     };
-
-    try {
-      // Try to load from CLAUDE.md or config.md
-      const possibleConfigPaths = [
-        'CLAUDE.md',
-        'config.md',
-        '.claude/config.md'
-      ];
-
-      for (const configPath of possibleConfigPaths) {
-        if (fs.existsSync(configPath)) {
-          log(`Loading configuration from ${configPath}`);
-          const content = fs.readFileSync(configPath, 'utf8');
-
-          // Parse YAML frontmatter
-          const yamlMatch = content.match(/^---\n([\s\S]*?)\n---/);
-          if (yamlMatch) {
-            const yamlContent = yamlMatch[1];
-            const lines = yamlContent.split('\n');
-
-            for (const line of lines) {
-              const match = line.match(/^git_privacy:\s*(.+)$/);
-              if (match) {
-                const value = match[1].trim().toLowerCase();
-                config.git_privacy = (value === 'true');
-                log(`Loaded git_privacy = ${config.git_privacy} from YAML frontmatter`);
-              }
-            }
-          }
-
-          // Parse markdown key:value pairs
-          const markdownMatches = content.matchAll(/^-?\s*\*?\*?git_privacy\*?\*?:\s*(.+)$/gm);
-          for (const match of markdownMatches) {
-            const value = match[1].trim().toLowerCase();
-            config.git_privacy = (value === 'true');
-            log(`Loaded git_privacy = ${config.git_privacy} from markdown`);
-          }
-
-          break; // Use first config file found
-        }
-      }
-    } catch (error) {
-      log(`Configuration loading error: ${error.message}`);
-    }
-
-    // Cache the configuration
-    configCache = config;
-    configCacheTime = now;
-
     log(`Configuration loaded: git_privacy=${config.git_privacy}`);
     return config;
   }
@@ -133,59 +74,83 @@ function main() {
     return '';
   }
 
-  function validateGitPrivacy(command, config) {
-    // Only check git commit commands
+  function stripAIMentions(message) {
+    let cleaned = message;
+
+    // Privacy patterns to remove (case-insensitive)
+    const privacyPatterns = [
+      /🤖 Generated with \[Claude Code\]\([^)]+\)\s*/gi,
+      /Generated with \[Claude Code\]\([^)]+\)\s*/gi,
+      /Co-Authored-By: Claude <[^>]+>\s*/gi,
+      /Claude assisted in this commit\s*/gi,
+      /\n\n🤖 Generated.*$/s,
+      /\n\nCo-Authored-By: Claude.*$/s
+    ];
+
+    for (const pattern of privacyPatterns) {
+      cleaned = cleaned.replace(pattern, '');
+    }
+
+    // Clean up multiple consecutive newlines
+    cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+
+    // Trim trailing whitespace
+    cleaned = cleaned.trim();
+
+    return cleaned;
+  }
+
+  function modifyGitCommand(command, config) {
+    // Only modify git commit commands
     if (!command.includes('git commit')) {
-      log('Not a git commit command - allowing');
-      return { allowed: true };
+      log('Not a git commit command - no modification needed');
+      return { modified: false, command };
     }
 
     // Check if git_privacy enabled
     if (config.git_privacy !== true) {
-      log('git_privacy disabled - allowing commit');
-      return { allowed: true };
+      log('git_privacy disabled - no modification needed');
+      return { modified: false, command };
     }
 
-    // Extract commit message
+    // Extract and clean commit message
     const message = extractCommitMessage(command);
     if (!message) {
-      log('No commit message found - allowing (may be using editor)');
-      return { allowed: true };
+      log('No commit message found - no modification needed');
+      return { modified: false, command };
     }
 
-    // Privacy patterns (case-insensitive, Claude Code attribution only)
-    const privacyPatterns = [
-      { pattern: /generated with.*claude/i, name: 'Claude generation attribution' },
-      { pattern: /co-authored-by.*claude/i, name: 'Claude co-authorship attribution' },
-      { pattern: /claude.*assisted/i, name: 'Claude assistance attribution' }
-    ];
+    const cleanedMessage = stripAIMentions(message);
 
-    // Check for violations
-    for (const { pattern, name } of privacyPatterns) {
-      if (pattern.test(message)) {
-        log(`BLOCKED: Privacy violation detected - ${name}`);
-        return {
-          allowed: false,
-          message: `🚫 Git privacy enabled - commit message contains Claude Code attribution
-
-Blocked pattern: ${name}
-Pattern regex: ${pattern.source}
-
-git_privacy=true requires neutral commit messages without AI attribution.
-Remove Claude Code mentions from commit message.
-
-Example violations:
-- "Generated with Claude Code"
-- "Co-Authored-By: Claude <noreply@anthropic.com>"
-- "Claude assisted in this commit"
-
-Note: "AI-AGENTIC", "multi-agent", and similar technical terms are allowed.`
-        };
-      }
+    if (cleanedMessage === message) {
+      log('No AI mentions found - no modification needed');
+      return { modified: false, command };
     }
 
-    log('No privacy violations detected - allowing commit');
-    return { allowed: true };
+    log(`Stripped AI mentions from commit message`);
+    log(`Original: ${message.substring(0, 100)}...`);
+    log(`Cleaned: ${cleanedMessage.substring(0, 100)}...`);
+
+    // Reconstruct command with cleaned message
+    let modifiedCommand = command;
+
+    // Handle HEREDOC format
+    if (command.includes('cat <<')) {
+      modifiedCommand = command.replace(
+        /cat <<['"]?EOF['"]?\n([\s\S]+?)\nEOF/,
+        `cat <<'EOF'\n${cleanedMessage}\nEOF`
+      );
+    }
+    // Handle -m flag format
+    else {
+      const escapedMessage = cleanedMessage.replace(/"/g, '\\"');
+      modifiedCommand = command.replace(
+        /git commit.*-m ['"](.+?)['"]/s,
+        `git commit -m "${escapedMessage}"`
+      );
+    }
+
+    return { modified: true, command: modifiedCommand };
   }
 
   try {
@@ -236,27 +201,27 @@ Note: "AI-AGENTIC", "multi-agent", and similar technical terms are allowed.`
     // Load configuration
     const config = loadConfiguration();
 
-    // Validate git privacy
-    const validation = validateGitPrivacy(command, config);
+    // Modify git command if needed
+    const result = modifyGitCommand(command, config);
 
-    if (!validation.allowed) {
-      log(`Git privacy violation - blocking commit`);
+    if (result.modified) {
+      log(`Command modified - returning updated command`);
       const response = {
         hookSpecificOutput: {
           hookEventName: 'PreToolUse',
-          permissionDecision: 'deny',
-          permissionDecisionReason: validation.message
+          modifiedToolInput: {
+            command: result.command
+          }
         }
       };
       const responseJson = JSON.stringify(response);
       log(`RESPONSE: ${responseJson}`);
-      log(`EXIT CODE: 2`);
       console.log(responseJson);
-      process.exit(2);
+      process.exit(0);
     }
 
-    // Allow operation
-    log('Git privacy check passed - allowing operation');
+    // Allow operation unchanged
+    log('No modification needed - allowing operation');
     console.log(JSON.stringify({ continue: true }));
     process.exit(0);
 

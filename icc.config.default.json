@@ -1,0 +1,204 @@
+{
+  "$schema": "./src/schemas/icc.config.schema.json",
+  "version": "1.0.0",
+  "description": "Intelligent Claude Code unified configuration with all 147+ settings",
+
+  "autonomy": {
+    "level": "L2",
+    "pm_always_active": true,
+    "blocking_enabled": true,
+    "l3_settings": {
+      "max_parallel": 5,
+      "auto_discover": true,
+      "continue_on_error": true
+    }
+  },
+
+  "git": {
+    "privacy": false,
+    "privacy_patterns": [
+      "AI",
+      "Claude",
+      "agent",
+      "Generated with Claude Code",
+      "Co-Authored-By: Claude"
+    ],
+    "branch_protection": true,
+    "default_branch": "main",
+    "require_pr_for_main": true,
+    "validate_commits": true
+  },
+
+  "paths": {
+    "story_path": "stories",
+    "bug_path": "bugs",
+    "memory_path": "memory",
+    "docs_path": "docs",
+    "src_path": "src",
+    "test_path": "tests",
+    "config_path": "config",
+    "agenttask_template_path": "agenttask-templates"
+  },
+
+  "team": {
+    "default_reviewer": "@Architect",
+    "specialist_creation": true,
+    "role_validation": true
+  },
+
+  "agenttask": {
+    "template_validation": true,
+    "complexity_override": false,
+    "auto_breakdown": true,
+    "size_limits": {
+      "nano": { "min": 0, "max": 2 },
+      "tiny": { "min": 3, "max": 5 },
+      "medium": { "min": 6, "max": 15 },
+      "large": { "min": 16, "max": 30 },
+      "mega": { "min": 31, "max": 999 }
+    }
+  },
+
+  "workflow": {
+    "nano": {
+      "version_bump": false,
+      "changelog_required": false,
+      "pr_required": false,
+      "merge_strategy": "direct_commit",
+      "release_automation": false
+    },
+    "tiny": {
+      "version_bump": true,
+      "version_type": "patch",
+      "changelog_required": true,
+      "pr_required": false,
+      "merge_strategy": "direct_commit",
+      "release_automation": false
+    },
+    "medium": {
+      "version_bump": true,
+      "version_type": "minor",
+      "changelog_required": true,
+      "pr_required": true,
+      "merge_strategy": "feature_branch",
+      "release_automation": true,
+      "auto_merge": false
+    },
+    "large": {
+      "version_bump": true,
+      "version_type": "minor",
+      "changelog_required": true,
+      "pr_required": true,
+      "merge_strategy": "feature_branch",
+      "release_automation": true,
+      "auto_merge": false,
+      "coordination_required": true
+    },
+    "mega": {
+      "version_bump": true,
+      "version_type": "major",
+      "changelog_required": true,
+      "pr_required": true,
+      "merge_strategy": "feature_branch",
+      "release_automation": true,
+      "auto_merge": false,
+      "coordination_required": true,
+      "breaking_change_assessment": true
+    }
+  },
+
+  "memory": {
+    "integration": true,
+    "auto_storage": true,
+    "search_before_questions": true,
+    "max_search_results": 3,
+    "max_search_tokens": 1000,
+    "relevance_threshold": 6
+  },
+
+  "quality": {
+    "enforce_peer_review": true,
+    "testing_required": true,
+    "documentation_required": true,
+    "security_validation": true,
+    "compliance_checking": true
+  },
+
+  "development": {
+    "auto_cleanup": true,
+    "file_management_strict": true,
+    "testing_approach": "comprehensive"
+  },
+
+  "tools": {
+    "context7_enabled": true,
+    "sequential_thinking": true,
+    "mcp_tools_enabled": true
+  },
+
+  "subagents": {
+    "model": "sonnet",
+    "threshold": 3,
+    "max_concurrent": 5,
+    "auto_delegation": true
+  },
+
+  "project": {
+    "repository_type": "git",
+    "release_automation": true
+  },
+
+  "enforcement": {
+    "violation_logging": true,
+    "auto_correction": true
+  },
+
+  "best_practices": {
+    "search_enabled": true,
+    "auto_generation": true,
+    "promotion_threshold": 3,
+    "categories": [
+      "architecture",
+      "collaboration",
+      "development",
+      "git",
+      "operations",
+      "quality",
+      "security"
+    ]
+  },
+
+  "mcp_integrations": {
+    "memory": {
+      "provider": "mcp__memory",
+      "enabled": false,
+      "fallback": "file-based",
+      "config": {}
+    },
+    "issue_tracking": {
+      "provider": "mcp__github",
+      "enabled": false,
+      "fallback": "file-based",
+      "config": {}
+    },
+    "documentation": {
+      "provider": "file-based",
+      "enabled": true,
+      "fallback": "file-based",
+      "config": {
+        "base_path": "docs/"
+      }
+    }
+  },
+
+  "cache": {
+    "ttl_minutes": 5,
+    "enabled": true
+  },
+
+  "logging": {
+    "enabled": true,
+    "retention_hours": 24,
+    "directory": "~/.claude/logs"
+  }
+}

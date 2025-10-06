@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.15.0] - 2025-10-06
+
+### Added
+- **Unified JSON Configuration System**: Complete icc.config.json with all 147+ settings
+- icc.config.default.json with comprehensive default configuration
+- src/schemas/icc.config.schema.json for IDE autocomplete and validation
+- src/hooks/lib/config-loader.js unified configuration loader module
+- Hierarchical configuration loading: project → user → system defaults
+- 5-minute TTL cache for configuration performance optimization
+- Backward compatibility with legacy YAML/Markdown configuration in CLAUDE.md
+
+### Changed
+- Updated pm-constraints-enforcement.js to use unified config-loader
+- Updated git-privacy-enforcement.js to use unified config-loader
+- Simplified configuration loading in all hooks via shared module
+- Updated Ansible playbook to deploy configuration files
+- Updated PowerShell installation script to deploy configuration files
+- Updated CLAUDE.md to reference icc.config.json with migration guidance
+
+### Improved
+- Configuration management now centralized in single JSON file
+- Deep merge support for configuration hierarchy
+- Legacy configuration auto-migration with warnings
+- Professional default values aligned with best practices
+- Dot notation access for nested configuration values
+
+---
+
 ## [8.14.23] - 2025-10-05
 
 ### Changed

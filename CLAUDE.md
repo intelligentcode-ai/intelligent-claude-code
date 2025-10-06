@@ -8,15 +8,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## System Configuration
 
+**Configuration File**: See `icc.config.json` for complete configuration options.
+
+**Quick Settings** (for backward compatibility, add to CLAUDE.md):
 ```yaml
-autonomy_level: L3
-l3_settings:
-  max_parallel: 5
-  auto_discover: true
-  continue_on_error: true
 git_privacy: false
 blocking_enabled: true
 ```
+
+**Note**: The system now uses unified JSON configuration in `icc.config.json`. Legacy YAML settings in CLAUDE.md are still supported for backward compatibility but will trigger migration warnings. See `icc.config.default.json` for all available settings.
 
 ## System Usage
 

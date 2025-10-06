@@ -3,11 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-
-// Configuration cache
-let configCache = null;
-let configCacheTime = 0;
-const CONFIG_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const { loadConfig, getSetting } = require('./lib/config-loader');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -50,85 +46,27 @@ function main() {
   }
 
   function loadConfiguration() {
-    const now = Date.now();
+    log('Loading configuration via unified config-loader');
+    const config = loadConfig();
 
-    // Return cached config if still valid
-    if (configCache && (now - configCacheTime) < CONFIG_CACHE_TTL) {
-      log('Using cached configuration');
-      return configCache;
-    }
-
-    const config = {
-      story_path: 'stories',
-      bug_path: 'bugs',
-      memory_path: 'memory',
-      docs_path: 'docs',
-      src_path: 'src',
-      test_path: 'tests',
-      config_path: 'config'
+    // Extract path settings
+    const pathConfig = {
+      story_path: config.paths.story_path,
+      bug_path: config.paths.bug_path,
+      memory_path: config.paths.memory_path,
+      docs_path: config.paths.docs_path,
+      src_path: config.paths.src_path,
+      test_path: config.paths.test_path,
+      config_path: config.paths.config_path
     };
 
-    try {
-      // Try to load from CLAUDE.md or config.md
-      const possibleConfigPaths = [
-        'CLAUDE.md',
-        'config.md',
-        '.claude/config.md'
-      ];
-
-      for (const configPath of possibleConfigPaths) {
-        if (fs.existsSync(configPath)) {
-          log(`Loading configuration from ${configPath}`);
-          const content = fs.readFileSync(configPath, 'utf8');
-
-          // Parse YAML frontmatter
-          const yamlMatch = content.match(/^---\n([\s\S]*?)\n---/);
-          if (yamlMatch) {
-            const yamlContent = yamlMatch[1];
-            const lines = yamlContent.split('\n');
-
-            for (const line of lines) {
-              const match = line.match(/^(\w+):\s*(.+)$/);
-              if (match) {
-                const key = match[1];
-                const value = match[2].replace(/^["']|["']$/g, '');
-                if (key in config) {
-                  config[key] = value;
-                  log(`Loaded ${key} = ${value} from YAML frontmatter`);
-                }
-              }
-            }
-          }
-
-          // Parse markdown key:value pairs
-          const markdownMatches = content.matchAll(/^-?\s*\*?\*?(\w+)\*?\*?:\s*(.+)$/gm);
-          for (const match of markdownMatches) {
-            const key = match[1];
-            const value = match[2].replace(/^["']|["']$/g, '');
-            if (key in config) {
-              config[key] = value;
-              log(`Loaded ${key} = ${value} from markdown`);
-            }
-          }
-
-          break; // Use first config file found
-        }
-      }
-    } catch (error) {
-      log(`Configuration loading error: ${error.message}`);
-    }
-
     // Normalize paths (remove trailing slashes)
-    for (const key in config) {
-      config[key] = config[key].replace(/\/$/, '');
+    for (const key in pathConfig) {
+      pathConfig[key] = pathConfig[key].replace(/\/$/, '');
     }
 
-    // Cache the configuration
-    configCache = config;
-    configCacheTime = now;
-
-    log(`Configuration loaded: ${JSON.stringify(config)}`);
-    return config;
+    log(`Configuration loaded: ${JSON.stringify(pathConfig)}`);
+    return pathConfig;
   }
 
   function getConfiguredPaths() {
@@ -329,33 +267,9 @@ Please create summary files in the summaries/ directory to keep project root cle
   }
 
   function getBlockingEnabled() {
-    const configPaths = [
-      path.join(process.cwd(), 'CLAUDE.md'),           // Project CLAUDE.md (highest priority)
-      path.join(process.cwd(), '.claude', 'CLAUDE.md'), // Project .claude/CLAUDE.md
-      path.join(process.env.HOME || os.homedir(), '.claude', 'CLAUDE.md') // User global CLAUDE.md
-    ];
-
-    for (const configPath of configPaths) {
-      try {
-        if (fs.existsSync(configPath)) {
-          const content = fs.readFileSync(configPath, 'utf8');
-
-          // Look for blocking_enabled setting in YAML frontmatter or markdown
-          const match = content.match(/blocking_enabled:\s*(true|false)/i);
-          if (match) {
-            const enabled = match[1].toLowerCase() === 'true';
-            log(`Config found at ${configPath}: blocking_enabled=${enabled}`);
-            return enabled;
-          }
-        }
-      } catch (error) {
-        // Continue to next path
-      }
-    }
-
-    // DEFAULT: blocking enabled (secure by default)
-    log('No blocking_enabled config found in CLAUDE.md - defaulting to TRUE (blocking mode)');
-    return true;
+    const enabled = getSetting('autonomy.blocking_enabled', true);
+    log(`blocking_enabled=${enabled} (from unified config)`);
+    return enabled;
   }
 
   function validatePMOperation(filePath, tool, paths, projectRoot) {
