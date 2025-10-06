@@ -348,6 +348,136 @@ function Register-PreToolUseHook {
     }
 }
 
+function Register-SubagentStopHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering SubagentStop hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.SubagentStop) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "SubagentStop" -Value @() -Force
+        }
+
+        # Convert SubagentStop to array if it's not already
+        if ($Settings.hooks.SubagentStop -isnot [array]) {
+            $Settings.hooks.SubagentStop = @($Settings.hooks.SubagentStop)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.SubagentStop | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                matcher = "*"
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        failureMode = "allow"
+                        timeout = 5000
+                        type = "command"
+                    }
+                )
+            }
+
+            # Add to SubagentStop array
+            $Settings.hooks.SubagentStop += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ SubagentStop hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  SubagentStop hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register SubagentStop hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
+function Register-StopHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering Stop hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.Stop) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "Stop" -Value @() -Force
+        }
+
+        # Convert Stop to array if it's not already
+        if ($Settings.hooks.Stop -isnot [array]) {
+            $Settings.hooks.Stop = @($Settings.hooks.Stop)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.Stop | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                matcher = "*"
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        failureMode = "allow"
+                        timeout = 5000
+                        type = "command"
+                    }
+                )
+            }
+
+            # Add to Stop array
+            $Settings.hooks.Stop += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ Stop hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  Stop hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register Stop hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
 function Install-HookSystem {
     param(
         [Parameter(Mandatory=$true)]
@@ -444,6 +574,15 @@ function Install-HookSystem {
                 Write-Warning "  context-injection.js hook not found, skipping UserPromptSubmit registration"
             }
 
+            # Register PreToolUse hook (agent-marker.js)
+            $AgentMarkerHookPath = Join-Path $HooksPath "agent-marker.js"
+            if (Test-Path $AgentMarkerHookPath) {
+                $HookCommand = "node `"$AgentMarkerHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  agent-marker.js hook not found, skipping agent-marker PreToolUse registration"
+            }
+
             # Register PreToolUse hook (pm-constraints-enforcement.js)
             $PreToolUseHookPath = Join-Path $HooksPath "pm-constraints-enforcement.js"
             if (Test-Path $PreToolUseHookPath) {
@@ -451,6 +590,24 @@ function Install-HookSystem {
                 Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
                 Write-Warning "  pm-constraints-enforcement.js hook not found, skipping PreToolUse registration"
+            }
+
+            # Register SubagentStop hook (subagent-stop.js)
+            $SubagentStopHookPath = Join-Path $HooksPath "subagent-stop.js"
+            if (Test-Path $SubagentStopHookPath) {
+                $HookCommand = "node `"$SubagentStopHookPath`""
+                Register-SubagentStopHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  subagent-stop.js hook not found, skipping SubagentStop registration"
+            }
+
+            # Register Stop hook (stop.js)
+            $StopHookPath = Join-Path $HooksPath "stop.js"
+            if (Test-Path $StopHookPath) {
+                $HookCommand = "node `"$StopHookPath`""
+                Register-StopHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  stop.js hook not found, skipping Stop registration"
             }
 
         } else {
