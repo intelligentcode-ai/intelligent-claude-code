@@ -660,7 +660,30 @@ function Install-IntelligentClaudeCode {
 
     # Deploy hook files to ~/.claude/hooks/
     Install-HookSystem -InstallPath $Paths.InstallPath -SourceDir $SourceDir
-    
+
+    # Copy default configuration JSON
+    Write-Host "  Installing default configuration..." -ForegroundColor Gray
+    $DefaultConfigSource = Join-Path $PSScriptRoot "icc.config.default.json"
+    $DefaultConfigDest = Join-Path $Paths.InstallPath "icc.config.default.json"
+    Copy-Item -Path $DefaultConfigSource -Destination $DefaultConfigDest -Force
+
+    # Copy configuration schema
+    $SchemaSource = Join-Path $SourceDir "schemas\icc.config.schema.json"
+    $SchemaDest = Join-Path $Paths.InstallPath "schemas\icc.config.schema.json"
+    if (-not (Test-Path (Split-Path $SchemaDest))) {
+        New-Item -Path (Split-Path $SchemaDest) -ItemType Directory -Force | Out-Null
+    }
+    Copy-Item -Path $SchemaSource -Destination $SchemaDest -Force
+
+    # Create user config from defaults if not exists
+    $UserConfigPath = Join-Path $Paths.InstallPath "icc.config.json"
+    if (-not (Test-Path $UserConfigPath)) {
+        Write-Host "  Creating user configuration from defaults..." -ForegroundColor Gray
+        Copy-Item -Path $DefaultConfigSource -Destination $UserConfigPath -Force
+    } else {
+        Write-Host "  User configuration preserved: $UserConfigPath" -ForegroundColor Gray
+    }
+
     # Handle CLAUDE.md based on scope
     $ClaudemdPath = if ($Paths.Scope -eq "project") { 
         Join-Path $Paths.ProjectPath "CLAUDE.md" 

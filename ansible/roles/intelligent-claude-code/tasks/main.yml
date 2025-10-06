@@ -211,6 +211,37 @@
     msg: "VERSION file preserved: {{ claude_install_path }}/VERSION already exists - keeping user modifications"
   when: version_copy_result.failed and ansible_verbosity >= 1
 
+- name: Copy default configuration JSON
+  copy:
+    src: "{{ playbook_dir }}/../icc.config.default.json"
+    dest: "{{ claude_install_path }}/icc.config.default.json"
+    mode: '0644'
+    force: yes
+
+- name: Copy configuration schema
+  copy:
+    src: "{{ playbook_dir }}/../src/schemas/icc.config.schema.json"
+    dest: "{{ claude_install_path }}/schemas/icc.config.schema.json"
+    mode: '0644'
+    force: yes
+
+- name: Check if user config exists
+  stat:
+    path: "{{ claude_install_path }}/icc.config.json"
+  register: user_config_exists
+
+- name: Create user config from defaults (ONLY if not exists)
+  copy:
+    src: "{{ playbook_dir }}/../icc.config.default.json"
+    dest: "{{ claude_install_path }}/icc.config.json"
+    mode: '0644'
+  when: not user_config_exists.stat.exists
+
+- name: Display user config notice
+  debug:
+    msg: "User configuration preserved: {{ claude_install_path }}/icc.config.json already exists - keeping user settings"
+  when: user_config_exists.stat.exists and ansible_verbosity >= 1
+
 - name: Check if config.md exists
   stat:
     path: "{{ claude_install_path }}/config.md"
@@ -225,7 +256,7 @@
 
 - name: Display config preservation notice
   debug:
-    msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
+    msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings (legacy - migrate to icc.config.json)"
   when: config_md_exists.stat.exists and ansible_verbosity >= 1
 
 - name: Check if settings.json exists
