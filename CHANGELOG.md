@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.2] - 2025-10-06
+
+### Critical Bug Fixes
+- **agent-infrastructure-protection.js**: Fixed hook that has NEVER worked since creation in v8.17.0
+  - Hook was outputting invalid PreToolUse JSON (`{continue: true}`)
+  - Failed validation silently, allowing ALL infrastructure commands through
+  - Agents could bypass IaC enforcement completely
+  - **Impact**: kubectl patch, govc vm.destroy, Remove-VM all allowed through
+
+### What's Fixed
+- All JSON outputs now use correct PreToolUse schema
+- Hook now ACTUALLY blocks imperative destructive commands
+- Hook now ACTUALLY blocks write operations for agents
+- IaC enforcement finally functional
+- Emergency override mechanism works correctly
+
+### Breaking Changes
+- Agents can NO LONGER use kubectl patch, govc commands, manual VM operations
+- Must use declarative IaC tools: Terraform, Ansible, Helm, CloudFormation
+- To allow specific operations: Add to `enforcement.infrastructure_protection.whitelist`
+
+### Technical Details
+- Fixed 5 JSON output locations in agent-infrastructure-protection.js
+- Changed from `{continue: true}` to proper PreToolUse schema
+- Added `hookSpecificOutput`, `permissionDecision`, `systemMessage`
+
+---
+
 ## [8.18.1] - 2025-10-06
 
 ### Bug Fixes
