@@ -227,25 +227,42 @@
               "type": "boolean",
               "description": "Enforce Infrastructure-as-Code principle (prefer declarative over imperative)"
             },
-            "critical_commands": {
+            "imperative_destructive": {
               "type": "array",
-              "description": "Critical destructive commands (ALWAYS blocked regardless of whitelist)",
+              "description": "Imperative destructive commands (enforce IaC alternatives - suggest Terraform/Ansible instead)",
               "items": { "type": "string" }
             },
-            "pm_blacklist": {
+            "write_operations": {
               "type": "array",
-              "description": "Commands blocked for PM role (all infrastructure tools)",
+              "description": "Write operation commands blocked for agents (kubectl apply, Start-VM, govc vm.power, etc.)",
               "items": { "type": "string" }
             },
-            "agent_blacklist": {
+            "read_operations": {
               "type": "array",
-              "description": "Commands blocked for agents (high-risk manipulation operations)",
+              "description": "Read operation commands (kubectl get, Get-VM, govc vm.info - allowed when read_operations_allowed=true)",
+              "items": { "type": "string" }
+            },
+            "pm_blocked_all": {
+              "type": "array",
+              "description": "All infrastructure tools blocked for PM role (kubectl, govc, PowerShell infrastructure cmdlets, etc.)",
               "items": { "type": "string" }
             },
             "whitelist": {
               "type": "array",
-              "description": "Explicitly allowed commands (overrides blacklist except critical)",
+              "description": "Explicitly allowed commands (overrides blacklist except imperative_destructive)",
               "items": { "type": "string" }
+            },
+            "read_operations_allowed": {
+              "type": "boolean",
+              "description": "Allow read operations for agents (default: true)"
+            },
+            "emergency_override_enabled": {
+              "type": "boolean",
+              "description": "Enable emergency override token functionality (default: false)"
+            },
+            "emergency_override_token": {
+              "type": "string",
+              "description": "Emergency override token for critical operations (use EMERGENCY_OVERRIDE:<token> prefix)"
             }
           }
         },

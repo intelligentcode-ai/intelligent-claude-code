@@ -109,7 +109,7 @@
       "enforce_iac_only": true,
       "emergency_override_enabled": false,
       "read_operations_allowed": true,
-      "critical_destructive": [
+      "imperative_destructive": [
         "govc vm.destroy",
         "govc vm.remove",
         "govc pool.destroy",
@@ -124,7 +124,13 @@
         "vagrant destroy",
         "kubectl delete",
         "kubectl drain",
-        "kubectl cordon"
+        "kubectl cordon",
+        "Remove-VM",
+        "Remove-VirtualDisk",
+        "Remove-VMHardDiskDrive",
+        "Remove-VMSnapshot",
+        "Remove-AzVM",
+        "Remove-AzDisk"
       ],
       "write_operations": [
         "govc vm.power",
@@ -155,7 +161,21 @@
         "kubectl create",
         "kubectl patch",
         "kubectl scale",
-        "kubectl set"
+        "kubectl set",
+        "Start-VM",
+        "Stop-VM",
+        "Restart-VM",
+        "Suspend-VM",
+        "Resume-VM",
+        "New-VM",
+        "Set-VM",
+        "Start-Service",
+        "Stop-Service",
+        "Restart-Service",
+        "New-AzVM",
+        "Start-AzVM",
+        "Stop-AzVM",
+        "Restart-AzVM"
       ],
       "read_operations": [
         "govc vm.info",
@@ -176,7 +196,18 @@
         "kubectl describe",
         "kubectl logs",
         "kubectl top",
-        "kubectl explain"
+        "kubectl explain",
+        "Get-VM",
+        "Get-VMHost",
+        "Get-VMSwitch",
+        "Get-VMNetworkAdapter",
+        "Get-VirtualDisk",
+        "Get-VMHardDiskDrive",
+        "Get-VMSnapshot",
+        "Get-Service",
+        "Get-AzVM",
+        "Get-AzDisk",
+        "Get-AzResource"
       ],
       "pm_blocked_all": [
         "govc",

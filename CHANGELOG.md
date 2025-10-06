@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.17.0] - 2025-10-06
+
+### Added
+- **Infrastructure Protection System**: Comprehensive IaC enforcement with agent-infrastructure-protection.js hook
+  - Read vs write distinction (kubectl get allowed, kubectl apply blocked)
+  - Imperative destructive enforcement (suggest Terraform/Ansible instead)
+  - PowerShell support (31 commands: Get-VM, Start-VM, Remove-VM, etc.)
+  - Emergency override mechanism with token-based authentication
+  - Whitelist override capability
+  - Configuration-based command lists (no hardcoded commands)
+- **Marker Cleanup Diagnostic Logging**: Added comprehensive diagnostic logging to context-injection.js marker cleanup
+- **Infrastructure Protection Documentation**: Complete guide at docs/infrastructure-protection.md
+
+### Changed
+- **BREAKING**: Configuration key renamed `critical_destructive` → `imperative_destructive` (reflects IaC philosophy)
+- **Hook Registration**: agent-infrastructure-protection.js registered in Ansible and PowerShell installers
+- **Configuration Schema**: Updated icc.config.schema.json with all infrastructure protection properties
+- **Marker Cleanup**: Enhanced UserPromptSubmit hook with diagnostic logging for debugging
+
+### Fixed
+- **Critical**: Stale agent markers bypassing PM constraints (security fix)
+- **Infrastructure Enforcement Logic**: Changed from "always block" to "enforce IaC alternatives"
+
+### Security
+- **PM Constraints Bypass**: Fixed stale marker bug causing PM to edit src/ files
+- **Marker Cleanup**: Dual-hook approach (Stop + UserPromptSubmit) ensures complete coverage
+- **Diagnostic Logging**: [MARKER-CLEANUP] logs help identify marker issues
+
+---
+
 ## [8.16.1] - 2025-10-06
 
 ### Fixed
