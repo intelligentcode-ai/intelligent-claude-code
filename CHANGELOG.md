@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.15.5] - 2025-10-06
+
+### Fixed
+- Agent marker race condition for parallel agent execution
+- Reference counting system prevents premature marker deletion
+- Atomic file operations eliminate race conditions in marker updates
+- PM constraints correctly identify agent context with multiple parallel agents
+
+### Added
+- Reference-counted agent marker system with agent_count tracking
+- UUID-based tool_invocation_id for each agent instance
+- Atomic read/write operations with exponential backoff retry logic
+- Agent count validation in pm-constraints-enforcement.js
+
+### Changed
+- agent-marker.js now increments agent count instead of overwriting marker
+- subagent-stop.js decrements agent count and deletes only when count reaches 0
+- pm-constraints-enforcement.js checks agent_count > 0 for agent context detection
+
+### Technical
+- Added crypto.randomUUID() for unique agent identification
+- Implemented temp file + atomic rename pattern for concurrent writes
+- Added retry logic with exponential backoff (10ms, 20ms, 40ms, 80ms, 160ms)
+- Marker file now contains agents array with full agent metadata
+
+---
+
 ## [8.15.4] - 2025-10-06
 
 ### Added
