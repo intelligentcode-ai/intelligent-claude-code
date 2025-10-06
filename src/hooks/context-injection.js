@@ -87,6 +87,22 @@ function main() {
       process.exit(0);
     }
 
+    // CRITICAL: Clean stale agent markers on user prompt submit
+    // User prompt = main scope restart = no active agents
+    // This prevents PM constraints bypass from stale markers
+    const session_id = claudeInput.session_id;
+    if (session_id) {
+      const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}`);
+      if (fs.existsSync(markerFile)) {
+        try {
+          fs.unlinkSync(markerFile);
+          log(`Cleaned stale agent marker on user prompt submit: ${markerFile}`);
+        } catch (error) {
+          log(`Failed to clean agent marker: ${error.message}`);
+        }
+      }
+    }
+
     // Get user prompt from input
     const userPrompt = claudeInput.user_prompt || '';
 

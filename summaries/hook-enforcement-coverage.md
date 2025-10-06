@@ -1,20 +1,21 @@
 # Hook Enforcement Coverage Matrix
 
 **Generated**: 2025-10-06
-**Version**: 8.15.4
+**Version**: 8.16.0
 **Purpose**: Document which behavioral patterns are now enforced via executable hooks vs. markdown guidance
 
 ## Executive Summary
 
-The system has evolved from markdown-based behavioral guidance to executable hook-based enforcement. This analysis identifies 9 enforcement hooks providing reliable code-based enforcement for critical behavioral patterns, enabling simplification of markdown behaviors.
+The system has evolved from markdown-based behavioral guidance to executable hook-based enforcement. This analysis identifies 10 enforcement hooks providing reliable code-based enforcement for critical behavioral patterns, enabling simplification of markdown behaviors.
 
 **Key Findings**:
-- 9 enforcement hooks operational with comprehensive coverage
+- 10 enforcement hooks operational with comprehensive coverage
 - PM role constraints fully enforced via code (no markdown needed)
 - Git privacy automatically enforced (configuration-driven)
 - Project scope protection prevents installation path modification
 - Agent context detection enables PM vs Agent operation differentiation
 - Summary file organization enforced by configuration
+- Infrastructure commands blocked with critical safety protection (NEW v8.16.0)
 
 ## Enforcement Hooks Analysis
 
@@ -339,6 +340,104 @@ Installation updates happen via 'make install' from project source.
 
 **Coverage**: 100% code enforcement - automatic compaction handling
 
+### 10. agent-infrastructure-protection.js (Configuration-Based v8.16.0)
+
+**Trigger**: PreToolUse (Bash - infrastructure commands)
+
+**Purpose**: Configuration-based infrastructure protection with blacklist/whitelist for agents
+
+**Enforcement Rules**:
+1. Check whitelist first - explicit allow overrides blacklist (except critical)
+2. Always block CRITICAL destructive commands (vm.destroy, vm.remove, etc.)
+3. Block agent_blacklist commands when enforcement enabled
+4. Support project-specific configuration overrides
+5. Enforce Infrastructure-as-Code principle
+
+**Configuration Structure** (`enforcement.infrastructure_protection`):
+- `enabled` (boolean) - Enable infrastructure protection (default: true)
+- `enforce_iac_only` (boolean) - Enforce Infrastructure-as-Code principle (default: true)
+- `critical_commands` (array) - ALWAYS blocked regardless of whitelist
+- `pm_blacklist` (array) - Commands blocked for PM role
+- `agent_blacklist` (array) - Commands blocked for agents
+- `whitelist` (array) - Explicitly allowed commands (overrides blacklist except critical)
+
+**Default Blacklists**:
+- **Critical**: govc vm.destroy, govc vm.remove, govc pool.destroy, virsh destroy, qm destroy, etc.
+- **PM Blacklist**: govc, esxcli, vcsa-cli, virsh, vboxmanage, qm, pct, multipass, vagrant, packer, kubectl
+- **Agent Blacklist**: govc vm.power, govc vm.shutdown, virsh shutdown, vboxmanage controlvm, qm shutdown, etc.
+
+**Project Customization**:
+Users can customize in project `icc.config.json` or `.claude/icc.config.json`:
+```json
+{
+  "enforcement": {
+    "infrastructure_protection": {
+      "enabled": true,
+      "whitelist": ["govc vm.info", "kubectl get"]
+    }
+  }
+}
+```
+
+**Error Messages**:
+```
+🚨 CRITICAL: Infrastructure destruction command blocked
+
+Command: govc vm.destroy
+Full command: govc vm.destroy vm-prod-01
+
+This command can PERMANENTLY DESTROY infrastructure:
+- Virtual machines
+- Datastores
+- Resource pools
+- Network configuration
+
+⛔ BLOCKED FOR SAFETY
+
+If this operation is absolutely necessary:
+1. Add to whitelist in icc.config.json: enforcement.infrastructure_protection.whitelist
+2. Document justification and impact
+3. Obtain user confirmation
+4. Execute manually with explicit approval
+
+Infrastructure-as-Code Principle: Use declarative tools (Terraform, Ansible, Pulumi) instead of imperative commands.
+```
+
+```
+⚠️ HIGH-RISK: Infrastructure manipulation command blocked
+
+Command: govc vm.power
+Full command: govc vm.power -off vm-test-01
+
+This command can disrupt running infrastructure:
+- Power off/reboot virtual machines
+- Shutdown/reboot hosts
+- Interrupt production services
+
+🛡️ BLOCKED BY INFRASTRUCTURE PROTECTION
+
+Infrastructure-as-Code Principle Enforcement:
+- Use declarative tools: Terraform, Ansible, Pulumi, CloudFormation
+- Avoid imperative commands that manipulate infrastructure state
+- Document infrastructure changes in code
+
+To allow this specific operation:
+1. Add to whitelist: enforcement.infrastructure_protection.whitelist in icc.config.json
+2. Or disable protection: enforcement.infrastructure_protection.enabled: false
+3. Document why Infrastructure-as-Code approach is not suitable
+
+Project-specific configuration: ./icc.config.json or ./.claude/icc.config.json
+```
+
+**Behavioral Patterns Enforced**:
+- **Configuration-Based Protection**: Blacklist/whitelist approach, not hardcoded
+- **Dual-Layer Protection**: PM blocklist (all tools) + agent blacklist (specific operations)
+- **Infrastructure-as-Code Principle**: Enforce declarative over imperative commands
+- **Project Customization**: User-configurable per project with meaningful defaults
+- **Critical Safety**: Always block destructive operations (bypass whitelist)
+
+**Coverage**: 100% code enforcement - Configuration-based infrastructure protection
+
 ## Coverage Analysis
 
 ### Behavioral Patterns Fully Enforced by Hooks
@@ -654,8 +753,8 @@ Installation updates happen via 'make install' from project source.
 
 ## Metrics
 
-**Total Hooks Analyzed**: 9
-**Behavioral Patterns with 100% Hook Coverage**: 7
+**Total Hooks Analyzed**: 10 (NEW: agent-infrastructure-protection.js in v8.16.0)
+**Behavioral Patterns with 100% Hook Coverage**: 8 (NEW: Infrastructure Safety)
 **Behavioral Patterns with Partial Hook Coverage**: 2
 **Behavioral Patterns with No Hook Coverage**: 8
 
@@ -678,6 +777,7 @@ Hook-based enforcement successfully replaces mechanical enforcement documentatio
 5. **Agent Context Detection**: Reliable PM vs Agent differentiation enabling appropriate constraints
 6. **Educational Reminders**: Dynamic guidance reinforcing behavioral patterns
 7. **Session Continuity**: Automatic compaction detection and recovery
+8. **Infrastructure Safety** (NEW v8.16.0): Critical protection preventing accidental destruction of VMs, datastores, and infrastructure
 
 **Key Achievement**: Separation of enforcement (hooks) from guidance (markdown) enables:
 - Simpler, more focused markdown documentation

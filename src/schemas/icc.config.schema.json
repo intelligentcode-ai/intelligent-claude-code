@@ -215,6 +215,40 @@
           "type": "boolean",
           "description": "Enable enforcement blocking on violations"
         },
+        "infrastructure_protection": {
+          "type": "object",
+          "description": "Configuration-based infrastructure protection with blacklist/whitelist",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable infrastructure protection enforcement"
+            },
+            "enforce_iac_only": {
+              "type": "boolean",
+              "description": "Enforce Infrastructure-as-Code principle (prefer declarative over imperative)"
+            },
+            "critical_commands": {
+              "type": "array",
+              "description": "Critical destructive commands (ALWAYS blocked regardless of whitelist)",
+              "items": { "type": "string" }
+            },
+            "pm_blacklist": {
+              "type": "array",
+              "description": "Commands blocked for PM role (all infrastructure tools)",
+              "items": { "type": "string" }
+            },
+            "agent_blacklist": {
+              "type": "array",
+              "description": "Commands blocked for agents (high-risk manipulation operations)",
+              "items": { "type": "string" }
+            },
+            "whitelist": {
+              "type": "array",
+              "description": "Explicitly allowed commands (overrides blacklist except critical)",
+              "items": { "type": "string" }
+            }
+          }
+        },
         "violation_logging": { "type": "boolean" },
         "auto_correction": { "type": "boolean" }
       }

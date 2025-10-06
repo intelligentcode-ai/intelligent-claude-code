@@ -129,10 +129,12 @@ function main() {
       'python', 'python3', 'node', 'ruby', 'perl', 'php',  // Scripting languages
       'nohup', 'screen', 'tmux',  // Background/session tools
       'sed', 'awk',  // Stream/text processing (file modification)
-      'vi', 'vim', 'nano', 'emacs',  // Text editors
-      // Kubernetes commands (destructive operations)
-      'kubectl'
+      'vi', 'vim', 'nano', 'emacs'  // Text editors
     ];
+
+    // Add infrastructure tools from configuration (PM blacklist - includes kubectl, govc, etc.)
+    const pmInfrastructureBlacklist = getSetting('enforcement.infrastructure_protection.pm_blacklist', []);
+    const allBlockedCommands = [...blockedCommands, ...pmInfrastructureBlacklist];
 
     // Check for Python heredoc pattern (python3 << 'PYEOF')
     if (command.includes('<<') && (command.includes('python') || command.includes('node') || command.includes('ruby'))) {
@@ -160,7 +162,7 @@ Create AgentTask for specialist execution.`
       if (!firstWord) continue;
 
       // Check if command is blocked (exact match OR prefix match with hyphen)
-      for (const blocked of blockedCommands) {
+      for (const blocked of allBlockedCommands) {
         if (firstWord === blocked || firstWord.startsWith(blocked + '-')) {
           return {
             allowed: false,
@@ -172,13 +174,15 @@ Full command: ${command}
 
 Build/Deploy tools: npm, yarn, make, docker, cargo, mvn, gradle, go
 System tools: terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer
-Kubernetes: kubectl (all operations require specialist)
+Infrastructure: ${pmInfrastructureBlacklist.join(', ')} ⚠️ DESTRUCTIVE
 Scripting languages: python, python3, node, ruby, perl, php
 Background tools: nohup, screen, tmux
 Text processing: sed, awk
 Text editors: vi, vim, nano, emacs
 
-Create AgentTask for specialist execution.`
+Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
+All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
+Create AgentTask for specialist execution with explicit approval.`
           };
         }
       }
