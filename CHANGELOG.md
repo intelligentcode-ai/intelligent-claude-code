@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.15.4] - 2025-10-06
+
+### Added
+- summary-file-enforcement.js hook for enforcing summary files in summaries/ directory
+- development.file_management_strict setting to control summary file enforcement
+- Automatic summaries/ directory creation when enforcement triggers
+- Comprehensive logging for summary file enforcement operations
+
+### Changed
+- Updated settings.json.j2 to include summary-file-enforcement hook in PreToolUse
+- Updated Ansible tasks to deploy summary-file-enforcement.js hook
+- Updated install.ps1 to register summary-file-enforcement hook
+- Enhanced icc.config.schema.json with detailed property descriptions for development section
+
+### Improved
+- Cleaner project root by enforcing summary files in dedicated summaries/ directory
+- Configurable enforcement with strict and permissive modes
+- Clear user guidance when summary files are created outside summaries/ directory
+
+---
+
 ## [8.15.3] - 2025-10-06
 
 ### Added
