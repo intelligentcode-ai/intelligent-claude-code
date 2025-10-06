@@ -132,6 +132,7 @@ function parseLegacyValue(config, key, value) {
     'test_path': ['paths', 'test_path'],
     'config_path': ['paths', 'config_path'],
     'agenttask_template_path': ['paths', 'agenttask_template_path'],
+    'summaries_path': ['paths', 'summaries_path'],
     'enforce_peer_review': ['quality', 'enforce_peer_review'],
     'testing_required': ['quality', 'testing_required'],
     'documentation_required': ['quality', 'documentation_required'],
@@ -292,7 +293,7 @@ function getHardcodedDefaults() {
       }
     },
     git: {
-      privacy: false,
+      privacy: true,
       branch_protection: true,
       default_branch: 'main',
       require_pr_for_main: true,
@@ -306,7 +307,8 @@ function getHardcodedDefaults() {
       src_path: 'src',
       test_path: 'tests',
       config_path: 'config',
-      agenttask_template_path: 'agenttask-templates'
+      agenttask_template_path: 'agenttask-templates',
+      summaries_path: 'summaries'
     },
     enforcement: {
       blocking_enabled: true,

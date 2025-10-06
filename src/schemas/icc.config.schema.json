@@ -90,7 +90,8 @@
         "src_path": { "type": "string", "description": "Source code directory" },
         "test_path": { "type": "string", "description": "Tests directory" },
         "config_path": { "type": "string", "description": "Configuration directory" },
-        "agenttask_template_path": { "type": "string", "description": "AgentTask templates directory" }
+        "agenttask_template_path": { "type": "string", "description": "AgentTask templates directory" },
+        "summaries_path": { "type": "string", "description": "Summaries and reports directory" }
       }
     },
     "team": {
@@ -160,11 +161,15 @@
       "type": "object",
       "description": "Development environment settings",
       "properties": {
-        "auto_cleanup": { "type": "boolean" },
-        "file_management_strict": { "type": "boolean" },
+        "auto_cleanup": { "type": "boolean", "description": "Automatically clean up temporary files" },
+        "file_management_strict": {
+          "type": "boolean",
+          "description": "Enforce strict file management (summary files in summaries/ only)"
+        },
         "testing_approach": {
           "type": "string",
-          "enum": ["minimal", "standard", "comprehensive"]
+          "enum": ["minimal", "standard", "comprehensive"],
+          "description": "Testing approach level"
         }
       }
     },

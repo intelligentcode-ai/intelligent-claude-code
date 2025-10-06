@@ -41,11 +41,21 @@
 
 ## Configuration
 
-**Configuration Example (CLAUDE.md):**
-- **autonomy_level:** L3
-- **l3_settings.max_parallel:** 5
-- **l3_settings.auto_discover:** true
-- **l3_settings.continue_on_error:** true
+**Configuration Example (icc.config.json):**
+```json
+{
+  "autonomy": {
+    "level": "L3",
+    "l3_settings": {
+      "max_parallel": 5,
+      "auto_discover": true,
+      "continue_on_error": true
+    }
+  }
+}
+```
+
+See `docs/configuration-guide.md` for complete autonomy configuration options.
 
 ### continue_on_error Clarification
 

@@ -193,6 +193,7 @@
     - pm-constraints-enforcement.js
     - project-scope-enforcement.js
     - git-privacy-enforcement.js
+    - summary-file-enforcement.js
     - subagent-stop.js
     - stop.js
   ignore_errors: yes
