@@ -22,6 +22,37 @@ function main() {
     fs.appendFileSync(logFile, logMessage);
   }
 
+  function extractSSHCommand(command) {
+    // Match SSH command patterns:
+    // ssh user@host "command"
+    // ssh -J jump@host user@host "command"
+    // ssh -i keyfile user@host "command"
+    // ssh user@host << 'EOF' ... EOF (heredoc)
+    // ssh user@host << EOF ... EOF (heredoc)
+
+    // Pattern 1: Quoted commands
+    const quotedPatterns = [
+      /ssh\s+.*?"([^"]+)"/,  // ssh ... "command" (double quotes)
+      /ssh\s+.*?'([^']+)'/,  // ssh ... 'command' (single quotes)
+    ];
+
+    for (const pattern of quotedPatterns) {
+      const match = command.match(pattern);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+
+    // Pattern 2: Heredoc (extract entire heredoc content)
+    const heredocPattern = /ssh\s+.*?<<\s*'?EOF'?\s*([\s\S]*?)\s*EOF/;
+    const heredocMatch = command.match(heredocPattern);
+    if (heredocMatch && heredocMatch[1]) {
+      return heredocMatch[1].trim();
+    }
+
+    return command; // Not SSH, return original
+  }
+
   const standardOutput = {
     hookSpecificOutput: {
       hookEventName: "PreToolUse",
@@ -84,6 +115,10 @@ function main() {
     log(`Checking command: ${command.substring(0, 100)}...`);
     log(`Infrastructure protection: enabled`);
 
+    // Extract actual command (handle SSH wrapping)
+    const actualCommand = extractSSHCommand(command);
+    log(`Actual command after SSH extraction: ${actualCommand.substring(0, 100)}...`);
+
     // Check for emergency override token
     const emergencyOverrideEnabled = getSetting('enforcement.infrastructure_protection.emergency_override_enabled', false);
     const emergencyToken = getSetting('enforcement.infrastructure_protection.emergency_override_token', '');
@@ -112,7 +147,7 @@ function main() {
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
-      if (command.includes(imperativeCmd)) {
+      if (actualCommand.includes(imperativeCmd)) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
@@ -124,24 +159,42 @@ function main() {
             },
             systemMessage: `🏗️ INFRASTRUCTURE-AS-CODE ENFORCEMENT
 
-Imperative destructive command detected: ${command}
+Full command: ${command}
+Remote command: ${actualCommand}
 
 Blocked command: ${imperativeCmd}
 Blocked by: enforcement.infrastructure_protection.imperative_destructive
 
-❌ AVOID: Imperative commands (kubectl delete, govc vm.destroy, Remove-VM)
-✅ USE: Declarative IaC tools instead:
-  • Terraform: terraform destroy
-  • Ansible: state=absent in playbooks
-  • Helm: helm uninstall
-  • CloudFormation: stack deletion
+❌ PROHIBITED APPROACHES:
+  • Imperative commands (kubectl delete, govc vm.destroy, Remove-VM)
+  • Shell scripts with infrastructure commands
+  • Manual SSH operations
+  • Ad-hoc infrastructure modifications
+  • One-off fixes without documentation
 
-WHY: Declarative tools provide:
-  - Version control
-  - Audit trails
-  - Rollback capability
-  - Team visibility
-  - State management
+✅ REQUIRED: REUSABLE INFRASTRUCTURE-AS-CODE
+  • Ansible Playbooks (playbooks/*.yml) - state management
+  • Terraform configurations (*.tf) - infrastructure definition
+  • Helm Charts (charts/*) - Kubernetes applications
+  • CloudFormation templates (*.yaml) - AWS resources
+  • Pulumi programs - multi-cloud infrastructure
+
+WHY IaC ONLY:
+  • Version control - track all changes
+  • Reusability - apply same config to multiple environments
+  • Audit trails - who changed what when
+  • Rollback capability - revert to previous state
+  • Team visibility - everyone sees infrastructure state
+  • Documentation - code IS the documentation
+  • Testing - validate before applying
+  • Idempotency - same result every time
+
+WORKFLOW:
+1. Create reusable playbook/chart/config
+2. Test in development environment
+3. Commit to version control
+4. Apply via IaC tool (ansible-playbook, terraform apply, helm install)
+5. Document in repository
 
 To allow imperative commands: Set enforcement.blocking_enabled=false in icc.config.json
 Emergency override: EMERGENCY_OVERRIDE:<token> <command>
@@ -158,7 +211,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 2: Check whitelist (overrides write/read blacklists, but not imperative destructive)
     for (const allowedCmd of whitelist) {
-      if (command.includes(allowedCmd)) {
+      if (actualCommand.includes(allowedCmd)) {
         log(`ALLOWED: Command in whitelist: ${allowedCmd}`);
         console.log(JSON.stringify(standardOutput));
         process.exit(0);
@@ -167,7 +220,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 3: Check write operations (blocked for agents)
     for (const writeCmd of writeOperations) {
-      if (command.includes(writeCmd)) {
+      if (actualCommand.includes(writeCmd)) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
@@ -176,26 +229,36 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
             permissionDecision: "deny",
             permissionDecisionReason: "Infrastructure write operation blocked for agents"
           },
-          systemMessage: `⚠️ WRITE OPERATION BLOCKED
+          systemMessage: `⚠️ INFRASTRUCTURE MODIFICATION BLOCKED
+
+Full command: ${command}
+Remote command: ${actualCommand}
 
 Blocked command: ${writeCmd}
-Full command: ${command}
 Blocked by: enforcement.infrastructure_protection.write_operations
 
-This command can MODIFY running infrastructure:
-- Power off/reboot virtual machines
-- Start/stop services
-- Create/modify resources
-- Change infrastructure state
+❌ PROHIBITED:
+  • Manual infrastructure modifications via SSH
+  • Shell scripts with kubectl/govc/VM commands
+  • Direct state changes without IaC
+  • Ad-hoc fixes and patches
 
-🛡️ INFRASTRUCTURE PROTECTION ACTIVE
+✅ REQUIRED: Create reusable IaC resources
+  • Ansible Playbooks for configuration management
+  • Helm Charts for Kubernetes deployments
+  • Terraform for infrastructure provisioning
+  • Version-controlled and documented
 
-Use declarative IaC tools: Terraform, Ansible, Pulumi, CloudFormation
+PRINCIPLE: Infrastructure changes MUST be:
+  - Repeatable (works in all environments)
+  - Versionable (committed to git)
+  - Testable (validated before production)
+  - Documented (self-documenting code)
 
-To allow this specific operation:
-1. Add to whitelist: enforcement.infrastructure_protection.whitelist in icc.config.json
-2. Or disable protection: enforcement.infrastructure_protection.enabled: false
-3. Document why Infrastructure-as-Code approach is not suitable
+To allow this operation:
+1. Create reusable playbook/chart/config
+2. Add to whitelist: enforcement.infrastructure_protection.whitelist
+3. Or disable protection: enforcement.infrastructure_protection.enabled: false
 
 Configuration: ./icc.config.json or ./.claude/icc.config.json`
         }));
@@ -205,7 +268,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 4: Check read operations (allowed if read_operations_allowed=true)
     for (const readCmd of readOperations) {
-      if (command.includes(readCmd)) {
+      if (actualCommand.includes(readCmd)) {
         if (readAllowed) {
           log(`ALLOWED: Read operation: ${readCmd}`);
           console.log(JSON.stringify(standardOutput));
