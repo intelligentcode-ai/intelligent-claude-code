@@ -26,10 +26,6 @@
           "type": "boolean",
           "description": "Always activate PM role"
         },
-        "blocking_enabled": {
-          "type": "boolean",
-          "description": "Enable enforcement blocking on violations"
-        },
         "l3_settings": {
           "type": "object",
           "description": "L3 autonomous mode settings",
@@ -210,6 +206,10 @@
       "type": "object",
       "description": "Enforcement and validation settings",
       "properties": {
+        "blocking_enabled": {
+          "type": "boolean",
+          "description": "Enable enforcement blocking on violations"
+        },
         "violation_logging": { "type": "boolean" },
         "auto_correction": { "type": "boolean" }
       }

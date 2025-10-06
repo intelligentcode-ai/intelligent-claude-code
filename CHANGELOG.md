@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.15.1] - 2025-10-06
+
+### Changed
+- Moved `blocking_enabled` from `autonomy` to `enforcement` section for correct semantic grouping
+- Updated icc.config.default.json with proper enforcement.blocking_enabled location
+- Updated src/schemas/icc.config.schema.json to reflect new configuration structure
+- Updated src/hooks/pm-constraints-enforcement.js to use enforcement.blocking_enabled
+- Updated src/hooks/lib/config-loader.js legacy mapping for backward compatibility
+- Added kubectl command blocking to PM constraints (all kubectl operations require specialist agents)
+
+### Fixed
+- Configuration semantic accuracy: blocking_enabled now correctly located in enforcement section
+- PM role can no longer execute kubectl commands directly (prevents destructive Kubernetes operations)
+
+---
+
 ## [8.15.0] - 2025-10-06
 
 ### Added

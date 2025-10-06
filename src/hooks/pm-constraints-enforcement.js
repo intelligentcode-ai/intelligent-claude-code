@@ -113,12 +113,14 @@ function main() {
     // Block build/deploy/system commands in PM scope
     const blockedCommands = [
       'npm', 'yarn', 'make', 'docker', 'cargo', 'mvn', 'gradle', 'go',
-      'kubectl', 'terraform', 'ansible', 'helm', 'systemctl', 'service',
+      'terraform', 'ansible', 'helm', 'systemctl', 'service',
       'apt', 'yum', 'brew', 'pip', 'gem', 'composer',
       'python', 'python3', 'node', 'ruby', 'perl', 'php',  // Scripting languages
       'nohup', 'screen', 'tmux',  // Background/session tools
       'sed', 'awk',  // Stream/text processing (file modification)
-      'vi', 'vim', 'nano', 'emacs'  // Text editors
+      'vi', 'vim', 'nano', 'emacs',  // Text editors
+      // Kubernetes commands (destructive operations)
+      'kubectl'
     ];
 
     // Check for Python heredoc pattern (python3 << 'PYEOF')
@@ -158,7 +160,8 @@ Found in: ${part}
 Full command: ${command}
 
 Build/Deploy tools: npm, yarn, make, docker, cargo, mvn, gradle, go
-System tools: kubectl, terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer
+System tools: terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer
+Kubernetes: kubectl (all operations require specialist)
 Scripting languages: python, python3, node, ruby, perl, php
 Background tools: nohup, screen, tmux
 Text processing: sed, awk
@@ -267,7 +270,7 @@ Please create summary files in the summaries/ directory to keep project root cle
   }
 
   function getBlockingEnabled() {
-    const enabled = getSetting('autonomy.blocking_enabled', true);
+    const enabled = getSetting('enforcement.blocking_enabled', true);
     log(`blocking_enabled=${enabled} (from unified config)`);
     return enabled;
   }

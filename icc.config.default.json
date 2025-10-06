@@ -6,7 +6,6 @@
   "autonomy": {
     "level": "L2",
     "pm_always_active": true,
-    "blocking_enabled": true,
     "l3_settings": {
       "max_parallel": 5,
       "auto_discover": true,
@@ -59,54 +58,6 @@
     }
   },
 
-  "workflow": {
-    "nano": {
-      "version_bump": false,
-      "changelog_required": false,
-      "pr_required": false,
-      "merge_strategy": "direct_commit",
-      "release_automation": false
-    },
-    "tiny": {
-      "version_bump": true,
-      "version_type": "patch",
-      "changelog_required": true,
-      "pr_required": false,
-      "merge_strategy": "direct_commit",
-      "release_automation": false
-    },
-    "medium": {
-      "version_bump": true,
-      "version_type": "minor",
-      "changelog_required": true,
-      "pr_required": true,
-      "merge_strategy": "feature_branch",
-      "release_automation": true,
-      "auto_merge": false
-    },
-    "large": {
-      "version_bump": true,
-      "version_type": "minor",
-      "changelog_required": true,
-      "pr_required": true,
-      "merge_strategy": "feature_branch",
-      "release_automation": true,
-      "auto_merge": false,
-      "coordination_required": true
-    },
-    "mega": {
-      "version_bump": true,
-      "version_type": "major",
-      "changelog_required": true,
-      "pr_required": true,
-      "merge_strategy": "feature_branch",
-      "release_automation": true,
-      "auto_merge": false,
-      "coordination_required": true,
-      "breaking_change_assessment": true
-    }
-  },
-
   "memory": {
     "integration": true,
     "auto_storage": true,
@@ -149,6 +100,7 @@
   },
 
   "enforcement": {
+    "blocking_enabled": true,
     "violation_logging": true,
     "auto_correction": true
   },
