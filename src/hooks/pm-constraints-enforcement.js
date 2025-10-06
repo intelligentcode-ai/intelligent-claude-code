@@ -152,102 +152,22 @@ function main() {
   }
 
   function isPMRole(hookInput) {
-    // Detect agent context by checking if LAST EXISTING entry has Task tool in parent chain
-    // Strategy: PreToolUse fires BEFORE current entry written to transcript
-    //           Start from last existing entry and walk its parent chain
-    //
-    // VERIFIED PATTERN:
-    // - Hook fires BEFORE transcript written (current entry doesn't exist yet)
-    // - Read last EXISTING entry from transcript
-    // - Walk ITS parentUuid chain to find Task tool
-    // - Task tool in chain = Agent context (allow all)
-    // - No Task tool in chain = PM context (enforce constraints)
+    const session_id = hookInput.session_id;
+    const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+    const markerFile = path.join(markerDir, `agent-executing-${session_id}`);
 
-    const transcriptPath = hookInput.transcript_path;
+    // Check if agent marker exists for this session
+    const isAgentContext = fs.existsSync(markerFile);
+    log(`Agent marker check: ${isAgentContext ? 'EXISTS (Agent context)' : 'MISSING (PM context)'}`);
 
-    try {
-      const content = fs.readFileSync(transcriptPath, 'utf8');
-      const lines = content.trim().split('\n');
-
-      if (lines.length === 0) {
-        log('Empty transcript - allowing (fail-safe)');
-        return false;
-      }
-
-      // Parse all entries into map for efficient UUID lookup
-      const entriesMap = new Map();
-      for (const line of lines) {
-        try {
-          const entry = JSON.parse(line);
-          if (entry.uuid) {
-            entriesMap.set(entry.uuid, entry);
-          }
-        } catch (parseError) {
-          continue;
-        }
-      }
-
-      // Find LAST existing entry WITH a UUID that's NOT a user message or file-history-snapshot
-      // We want tool_use or assistant entries to correctly identify agent context
-      let lastEntry = null;
-      for (let i = lines.length - 1; i >= 0; i--) {
-        try {
-          const entry = JSON.parse(lines[i]);
-          // Skip user messages and file-history-snapshot - we want tool_use or assistant entries
-          if (entry.uuid && entry.type !== 'user' && entry.type !== 'file-history-snapshot') {
-            lastEntry = entry;
-            break;
-          }
-        } catch (e) {
-          continue;
-        }
-      }
-
-      if (!lastEntry) {
-        log('No entries with UUID found in transcript - allowing (fail-safe)');
-        return false;
-      }
-
-      log(`Starting from last existing entry: UUID ${lastEntry.uuid}, type: ${lastEntry.type}`);
-
-      // Walk parentUuid chain from last existing entry
-      let currentUuid = lastEntry.parentUuid;
-      let visited = new Set();
-      let chainDepth = 0;
-
-      while (currentUuid && !visited.has(currentUuid)) {
-        visited.add(currentUuid);
-        chainDepth++;
-
-        const parent = entriesMap.get(currentUuid);
-        if (!parent) {
-          log(`ParentUuid chain broken at depth ${chainDepth}: UUID ${currentUuid} not found`);
-          break;
-        }
-
-        // Check if this parent is a Task tool invocation
-        if (parent.message?.content) {
-          const hasTaskTool = Array.isArray(parent.message.content) &&
-            parent.message.content.some(item =>
-              item.type === 'tool_use' && item.name === 'Task'
-            );
-
-          if (hasTaskTool) {
-            log(`Agent context: Task tool found in parent chain at depth ${chainDepth}`);
-            return false; // Agent context - allow all
-          }
-        }
-
-        currentUuid = parent.parentUuid;
-      }
-
-      // No Task tool in chain = PM context
-      log(`PM context: No Task tool in parent chain (traversed ${chainDepth} levels)`);
-      return true; // PM context - enforce constraints
-
-    } catch (error) {
-      log(`ERROR: ${error.message}`);
-      return false; // Fail-safe
+    if (isAgentContext) {
+      // AGENT SCOPE: Allow all operations
+      log('Agent context detected - allowing operation');
+      return false; // Not PM context
+    } else {
+      // PM SCOPE: Apply whitelist
+      log('PM context detected - applying whitelist rules');
+      return true; // PM context, enforce constraints
     }
   }
 

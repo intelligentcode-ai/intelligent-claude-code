@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.14.23] - 2025-10-05
+
+### Changed
+- Implemented marker file system for agent context detection
+- Created dedicated agent-marker.js PreToolUse hook for marker lifecycle
+- Simplified pm-constraints-enforcement.js to check marker existence only
+- Added subagent-stop.js and stop.js hooks for marker cleanup
+- Replaced transcript parsing with file-based state tracking
+- Task tool creates marker file (~/.claude/tmp/agent-executing-{session_id})
+- PreToolUse checks marker: present = agent scope, absent = PM scope
+- Marker deletion on agent completion and session end
+- Resolves agent detection reliability issues and false positive blocking
+
+---
+
 ## [8.14.21] - 2025-10-05
 
 ### Fixed
