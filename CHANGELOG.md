@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.15.2] - 2025-10-06
+
+### Added
+- **Workflow Configuration Separation**: Extracted 45 workflow settings into dedicated icc.workflow.json file
+- icc.workflow.default.json with workflow settings for all 5 AgentTask complexity tiers
+- src/schemas/icc.workflow.schema.json for workflow validation and IDE support
+- Hierarchical workflow configuration loading in config-loader.js
+- Ansible workflow file deployment tasks
+- PowerShell workflow file deployment support
+
+### Changed
+- Reduced icc.config.default.json from 211 to 156 lines (removed workflow section)
+- Main configuration now focuses on 70 core system settings
+- Workflow settings now in separate file for improved clarity
+- Updated config-loader.js to load and merge workflow configuration
+- Updated Ansible playbook to deploy workflow files
+- Updated PowerShell installer to deploy workflow files
+
+### Improved
+- Configuration file organization and maintainability
+- Separation of concerns: system settings vs workflow settings
+- Backward compatibility maintained: workflow section in main config still supported if present
+- Documentation clarity by isolating workflow-specific settings
+
+---
+
 ## [8.15.1] - 2025-10-06
 
 ### Changed
