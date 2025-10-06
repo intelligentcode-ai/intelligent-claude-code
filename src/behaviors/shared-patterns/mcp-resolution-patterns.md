@@ -15,14 +15,13 @@
 ## Configuration Loading
 
 **MCP Configuration Sources:**
-1. **CLAUDE.md**: mcp_integrations section
-2. **config.md**: mcp_integrations section
-3. **Default Values**: false and "file-based" when not configured
+1. **icc.config.json**: mcp_integrations section
+2. **Default Values**: false and "file-based" when not configured
 
 ## Resolution Process
 
 **MCP Resolution Steps:**
-1. **Load MCP Configuration**: Read mcp_integrations from CLAUDE.md/config.md
+1. **Load MCP Configuration**: Read mcp_integrations from icc.config.json
 2. **Check Memory Integration**: Get memory.enabled and memory.provider
 3. **Check Issue Integration**: Get issue_tracking.enabled and issue_tracking.provider
 4. **Check Documentation Integration**: Get documentation.enabled and documentation.provider
@@ -43,36 +42,48 @@
 ## Configuration Examples
 
 ### Full MCP Configuration
-```yaml
-mcp_integrations:
-  memory:
-    provider: "mcp__memory"
-    enabled: true
-    fallback: "file-based"
-  issue_tracking:
-    provider: "mcp__github"
-    enabled: true
-    project: "owner/repo"
-  documentation:
-    provider: "mcp__confluence"
-    enabled: true
-    config:
-      base_path: "docs/"
+```json
+{
+  "mcp_integrations": {
+    "memory": {
+      "provider": "mcp__memory",
+      "enabled": true,
+      "fallback": "file-based"
+    },
+    "issue_tracking": {
+      "provider": "mcp__github",
+      "enabled": true,
+      "project": "owner/repo"
+    },
+    "documentation": {
+      "provider": "mcp__confluence",
+      "enabled": true,
+      "config": {
+        "base_path": "docs/"
+      }
+    }
+  }
+}
 ```
 
 ### Partial MCP Configuration
-```yaml
-mcp_integrations:
-  memory:
-    enabled: true
-    provider: "mcp__memory"
-  # issue_tracking and documentation use defaults
+```json
+{
+  "mcp_integrations": {
+    "memory": {
+      "enabled": true,
+      "provider": "mcp__memory"
+    }
+  }
+}
 ```
+Note: issue_tracking and documentation use defaults when not specified.
 
 ### No MCP Configuration
-```yaml
-# No mcp_integrations section - all use defaults (false, file-based)
+```json
+{}
 ```
+Note: No mcp_integrations section - all use defaults (false, file-based).
 
 ## Resolution Examples
 

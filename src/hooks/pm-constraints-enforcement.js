@@ -57,7 +57,8 @@ function main() {
       docs_path: config.paths.docs_path,
       src_path: config.paths.src_path,
       test_path: config.paths.test_path,
-      config_path: config.paths.config_path
+      config_path: config.paths.config_path,
+      summaries_path: config.paths.summaries_path
     };
 
     // Normalize paths (remove trailing slashes)
@@ -78,7 +79,10 @@ function main() {
         config.bug_path,
         config.memory_path,
         config.docs_path,
-        'agenttasks'  // Always allow agenttasks directory
+        'agenttasks',           // Always allow agenttasks directory
+        'icc.config.json',      // Project configuration file
+        'icc.workflow.json',    // Workflow configuration file
+        'summaries'             // Summaries and reports directory
       ],
       blocklist: [
         config.src_path,
@@ -184,11 +188,17 @@ Create AgentTask for specialist execution.`
       relativePath = path.relative(projectRoot, filePath);
     }
 
-    // Check if file is in root and ends with .md
     const fileName = path.basename(relativePath);
     const dirName = path.dirname(relativePath);
 
+    // Check if file is in root and ends with .md
     if ((dirName === '.' || dirName === '') && fileName.endsWith('.md')) {
+      return true;
+    }
+
+    // Check if file is root config file (icc.config.json or icc.workflow.json)
+    if ((dirName === '.' || dirName === '') &&
+        (fileName === 'icc.config.json' || fileName === 'icc.workflow.json')) {
       return true;
     }
 
