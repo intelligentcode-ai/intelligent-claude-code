@@ -7,26 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [8.16.2] - 2025-10-06
+## [8.18.3] - 2025-10-06
 
-### Security Enhancements
-- **SSH Heredoc Detection**: Fixed critical bypass in infrastructure protection
-  - Now detects SSH commands with heredoc syntax (`ssh host << 'EOF' ... EOF`)
-  - Prevents bypassing IaC enforcement via heredoc-wrapped kubectl/govc commands
-  - Pattern matching now handles both quoted and heredoc SSH command formats
+### Critical Security Fixes
+- **SSH heredoc bypass**: Fixed critical security vulnerability where SSH heredoc commands bypassed all infrastructure protection
+  - Commands like `ssh host << 'EOF' kubectl delete pod foo EOF` were NOT detected
+  - Agents could perform ANY infrastructure operation via heredoc
+  - Complete bypass of IaC enforcement
 
-### Infrastructure Protection Improvements
-- **Strengthened IaC Messaging**: Enhanced enforcement messages to emphasize best practices
-  - Explicitly prohibit shell scripts, manual SSH operations, and ad-hoc fixes
-  - Require reusable Playbooks/Charts/Configs instead of imperative commands
-  - Added clear workflow guidance: Create IaC → Test → Commit → Apply
-  - Emphasized principles: repeatability, versionability, testability, documentation
+### What's Fixed
+- SSH heredoc pattern detection (`ssh host << 'EOF' ... EOF`)
+- SSH heredoc pattern detection (`ssh host << EOF ... EOF`)
+- All infrastructure commands in heredocs now properly blocked
+- kubectl delete, govc vm.destroy, Remove-VM in heredocs BLOCKED
 
-### Test Cases
-All SSH heredoc patterns now properly blocked:
-- `ssh host << 'EOF' kubectl delete pod foo EOF` - BLOCKED
-- `ssh -J jump@host user@host << EOF govc vm.destroy vm EOF` - BLOCKED
-- `ssh host << EOF kubectl patch deployment foo EOF` - BLOCKED
+### Strengthened IaC Messaging
+- Explicitly prohibits shell scripts and manual SSH operations
+- Requires REUSABLE Playbooks, Charts, Configs
+- Added WHY IaC ONLY section with 8 key benefits
+- Included clear 5-step workflow
+- Emphasizes: Repeatability, Versionability, Testability, Documentation
+
+### Breaking Changes
+- Agents can NO LONGER use SSH heredoc for infrastructure commands
+- Must use declarative IaC tools: Ansible Playbooks, Helm Charts, Terraform
+- Shell scripts with kubectl/govc/VM commands PROHIBITED
+
+### Security Impact
+- **Before**: Complete bypass via SSH heredoc
+- **After**: All SSH patterns (quoted + heredoc) properly detected and blocked
 
 ---
 
