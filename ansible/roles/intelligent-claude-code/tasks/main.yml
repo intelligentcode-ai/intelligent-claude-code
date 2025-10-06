@@ -225,6 +225,20 @@
     mode: '0644'
     force: yes
 
+- name: Copy default workflow configuration
+  copy:
+    src: "{{ playbook_dir }}/../icc.workflow.default.json"
+    dest: "{{ claude_install_path }}/icc.workflow.default.json"
+    mode: '0644'
+    force: yes
+
+- name: Copy workflow schema
+  copy:
+    src: "{{ playbook_dir }}/../src/schemas/icc.workflow.schema.json"
+    dest: "{{ claude_install_path }}/schemas/icc.workflow.schema.json"
+    mode: '0644'
+    force: yes
+
 - name: Check if user config exists
   stat:
     path: "{{ claude_install_path }}/icc.config.json"
@@ -241,6 +255,23 @@
   debug:
     msg: "User configuration preserved: {{ claude_install_path }}/icc.config.json already exists - keeping user settings"
   when: user_config_exists.stat.exists and ansible_verbosity >= 1
+
+- name: Check if user workflow config exists
+  stat:
+    path: "{{ claude_install_path }}/icc.workflow.json"
+  register: user_workflow_config
+
+- name: Create user workflow config from defaults (ONLY if not exists)
+  copy:
+    src: "{{ playbook_dir }}/../icc.workflow.default.json"
+    dest: "{{ claude_install_path }}/icc.workflow.json"
+    mode: '0644'
+  when: not user_workflow_config.stat.exists
+
+- name: Display user workflow config notice
+  debug:
+    msg: "User workflow configuration preserved: {{ claude_install_path }}/icc.workflow.json already exists - keeping user settings"
+  when: user_workflow_config.stat.exists and ansible_verbosity >= 1
 
 - name: Check if config.md exists
   stat:

@@ -118,7 +118,7 @@ function parseLegacyValue(config, key, value) {
     'pm_always_active': ['autonomy', 'pm_always_active'],
     'memory_integration': ['memory', 'integration'],
     'max_parallel_tasks': ['autonomy', 'l3_settings', 'max_parallel'],
-    'blocking_enabled': ['autonomy', 'blocking_enabled'],
+    'blocking_enabled': ['enforcement', 'blocking_enabled'],
     'git_privacy': ['git', 'privacy'],
     'branch_protection': ['git', 'branch_protection'],
     'default_branch': ['git', 'default_branch'],
@@ -183,6 +183,36 @@ function parseValue(value) {
 }
 
 /**
+ * Load workflow configuration from hierarchy
+ */
+function loadWorkflowConfig() {
+  // 1. Load default workflow configuration
+  const defaultWorkflowPath = path.join(__dirname, '../../..', 'icc.workflow.default.json');
+  let workflowConfig = loadJsonConfig(defaultWorkflowPath);
+
+  if (!workflowConfig) {
+    console.error('[config-loader] CRITICAL: Default workflow configuration not found');
+    workflowConfig = {};
+  }
+
+  // 2. Try to load user global workflow configuration
+  const userWorkflowPath = path.join(os.homedir(), '.claude', 'icc.workflow.json');
+  const userWorkflow = loadJsonConfig(userWorkflowPath);
+  if (userWorkflow) {
+    workflowConfig = deepMerge(workflowConfig, userWorkflow);
+  }
+
+  // 3. Try to load project workflow configuration
+  const projectWorkflowPath = path.join(process.cwd(), 'icc.workflow.json');
+  const projectWorkflow = loadJsonConfig(projectWorkflowPath);
+  if (projectWorkflow) {
+    workflowConfig = deepMerge(workflowConfig, projectWorkflow);
+  }
+
+  return workflowConfig;
+}
+
+/**
  * Load configuration from hierarchy
  */
 function loadConfig() {
@@ -216,7 +246,13 @@ function loadConfig() {
     config = deepMerge(config, projectConfig);
   }
 
-  // 4. Backward compatibility: Try legacy configurations
+  // 4. Load workflow configuration (separate file)
+  const workflowConfig = loadWorkflowConfig();
+  if (workflowConfig && Object.keys(workflowConfig).length > 0) {
+    config.workflow = workflowConfig;
+  }
+
+  // 5. Backward compatibility: Try legacy configurations
   if (!projectConfig && !userConfig) {
     const legacyPaths = [
       path.join(process.cwd(), 'CLAUDE.md'),
@@ -249,7 +285,6 @@ function getHardcodedDefaults() {
     autonomy: {
       level: 'L2',
       pm_always_active: true,
-      blocking_enabled: true,
       l3_settings: {
         max_parallel: 5,
         auto_discover: true,
@@ -272,6 +307,11 @@ function getHardcodedDefaults() {
       test_path: 'tests',
       config_path: 'config',
       agenttask_template_path: 'agenttask-templates'
+    },
+    enforcement: {
+      blocking_enabled: true,
+      violation_logging: true,
+      auto_correction: true
     }
   };
 }
