@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.16.0] - 2025-10-06
+
+### Added
+- Unified JSON configuration system (icc.config.json + icc.workflow.json) with 115 settings
+- Comprehensive configuration documentation (docs/configuration-guide.md - 677 lines)
+- JSON Schema validation for configuration files
+- kubectl command blocking in PM constraints
+- Summary file enforcement hook (summary-file-enforcement.js)
+- PM allowlist support for config files (icc.config.json, icc.workflow.json)
+- PM allowlist support for summaries/ directory
+- paths.summaries_path configuration setting
+- Reference-counted agent markers for parallel execution
+- Hook enforcement coverage analysis matrix
+- Atomic file operations with retry logic for marker system
+
+### Changed
+- Separated workflow configuration into dedicated icc.workflow.json file
+- Moved blocking_enabled from autonomy to enforcement section (correct semantic location)
+- Enabled git.privacy by default (secure-by-default approach)
+- Updated all behaviors to reference unified JSON configuration
+- Simplified 4 behavior files by removing redundant implementation details (15-40% reduction)
+- Behaviors now reference hook enforcement instead of duplicating mechanics
+
+### Fixed
+- Agent marker race condition in parallel execution (reference counting prevents premature deletion)
+- Configuration naming inconsistencies (autonomy.blocking_enabled → enforcement.blocking_enabled)
+- PM constraints not blocking kubectl commands
+- Legacy YAML configuration loading with backward compatibility
+
+### Documentation
+- Created comprehensive configuration guide (docs/configuration-guide.md)
+- Documented all 115 settings with examples and migration guide
+- Added hook enforcement coverage matrix (summaries/hook-enforcement-coverage.md)
+- Updated behaviors with hook references for implementation details
+
+### Technical Improvements
+- Atomic marker file operations with exponential backoff retry
+- Deep merge configuration hierarchy (project > user > defaults > legacy)
+- TTL-based configuration caching (5 minutes)
+- Migration support from legacy YAML to unified JSON
+
+---
+
 ## [8.15.5] - 2025-10-06
 
 ### Fixed
