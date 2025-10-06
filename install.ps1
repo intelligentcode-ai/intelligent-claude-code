@@ -675,6 +675,17 @@ function Install-IntelligentClaudeCode {
     }
     Copy-Item -Path $SchemaSource -Destination $SchemaDest -Force
 
+    # Copy default workflow configuration JSON
+    Write-Host "  Installing default workflow configuration..." -ForegroundColor Gray
+    $DefaultWorkflowSource = Join-Path $PSScriptRoot "icc.workflow.default.json"
+    $DefaultWorkflowDest = Join-Path $Paths.InstallPath "icc.workflow.default.json"
+    Copy-Item -Path $DefaultWorkflowSource -Destination $DefaultWorkflowDest -Force
+
+    # Copy workflow schema
+    $WorkflowSchemaSource = Join-Path $SourceDir "schemas\icc.workflow.schema.json"
+    $WorkflowSchemaDest = Join-Path $Paths.InstallPath "schemas\icc.workflow.schema.json"
+    Copy-Item -Path $WorkflowSchemaSource -Destination $WorkflowSchemaDest -Force
+
     # Create user config from defaults if not exists
     $UserConfigPath = Join-Path $Paths.InstallPath "icc.config.json"
     if (-not (Test-Path $UserConfigPath)) {
@@ -682,6 +693,15 @@ function Install-IntelligentClaudeCode {
         Copy-Item -Path $DefaultConfigSource -Destination $UserConfigPath -Force
     } else {
         Write-Host "  User configuration preserved: $UserConfigPath" -ForegroundColor Gray
+    }
+
+    # Create user workflow config from defaults if not exists
+    $UserWorkflowPath = Join-Path $Paths.InstallPath "icc.workflow.json"
+    if (-not (Test-Path $UserWorkflowPath)) {
+        Write-Host "  Creating user workflow configuration from defaults..." -ForegroundColor Gray
+        Copy-Item -Path $DefaultWorkflowSource -Destination $UserWorkflowPath -Force
+    } else {
+        Write-Host "  User workflow configuration preserved: $UserWorkflowPath" -ForegroundColor Gray
     }
 
     # Handle CLAUDE.md based on scope
