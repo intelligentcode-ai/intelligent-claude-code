@@ -23,8 +23,10 @@ function main() {
   }
 
   const standardOutput = {
-    continue: true,
-    suppressOutput: true
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse",
+      permissionDecision: "allow"
+    }
   };
 
   try {
@@ -91,8 +93,11 @@ function main() {
       // Remove token from command before execution
       const cleanCommand = command.replace(new RegExp(`EMERGENCY_OVERRIDE:${emergencyToken}\\s*`, 'g'), '');
       console.log(JSON.stringify({
-        ...standardOutput,
-        modifiedCommand: cleanCommand
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "allow",
+          permissionDecisionReason: "Emergency override token accepted"
+        }
       }));
       process.exit(0);
     }
@@ -112,13 +117,12 @@ function main() {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
           console.log(JSON.stringify({
-            continue: false,
-            suppressOutput: false,
-            decision: {
-              type: 'block',
-              reason: 'IaC Enforcement',
-              message: `
-🏗️ INFRASTRUCTURE-AS-CODE ENFORCEMENT
+            hookSpecificOutput: {
+              hookEventName: "PreToolUse",
+              permissionDecision: "deny",
+              permissionDecisionReason: "IaC Enforcement - imperative destructive command detected"
+            },
+            systemMessage: `🏗️ INFRASTRUCTURE-AS-CODE ENFORCEMENT
 
 Imperative destructive command detected: ${command}
 
@@ -142,9 +146,7 @@ WHY: Declarative tools provide:
 To allow imperative commands: Set enforcement.blocking_enabled=false in icc.config.json
 Emergency override: EMERGENCY_OVERRIDE:<token> <command>
 
-Configuration: ./icc.config.json or ./.claude/icc.config.json
-              `.trim()
-            }
+Configuration: ./icc.config.json or ./.claude/icc.config.json`
           }));
           process.exit(0);
         } else {
@@ -169,8 +171,12 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
-          continue: false,
-          displayToUser: `⚠️ WRITE OPERATION: Infrastructure modification command blocked
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: "Infrastructure write operation blocked for agents"
+          },
+          systemMessage: `⚠️ WRITE OPERATION BLOCKED
 
 Blocked command: ${writeCmd}
 Full command: ${command}
@@ -182,12 +188,9 @@ This command can MODIFY running infrastructure:
 - Create/modify resources
 - Change infrastructure state
 
-🛡️ BLOCKED BY INFRASTRUCTURE PROTECTION
+🛡️ INFRASTRUCTURE PROTECTION ACTIVE
 
-Infrastructure-as-Code Principle Enforcement:
-- Use declarative tools: Terraform, Ansible, Pulumi, CloudFormation
-- Avoid imperative commands that modify infrastructure state
-- Document infrastructure changes in code
+Use declarative IaC tools: Terraform, Ansible, Pulumi, CloudFormation
 
 To allow this specific operation:
 1. Add to whitelist: enforcement.infrastructure_protection.whitelist in icc.config.json
@@ -211,8 +214,12 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
           log(`BLOCKED: Read operation disabled: ${readCmd}`);
 
           console.log(JSON.stringify({
-            continue: false,
-            displayToUser: `ℹ️ READ OPERATION: Infrastructure read command blocked
+            hookSpecificOutput: {
+              hookEventName: "PreToolUse",
+              permissionDecision: "deny",
+              permissionDecisionReason: "Infrastructure read operation disabled"
+            },
+            systemMessage: `ℹ️ READ OPERATION BLOCKED
 
 Blocked command: ${readCmd}
 Full command: ${command}
