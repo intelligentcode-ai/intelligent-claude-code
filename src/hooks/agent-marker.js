@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -17,6 +18,68 @@ function main() {
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] ${message}\n`;
     fs.appendFileSync(logFile, logMessage);
+  }
+
+  function generateUUID() {
+    return crypto.randomUUID();
+  }
+
+  function atomicReadMarker(markerFile) {
+    try {
+      if (!fs.existsSync(markerFile)) {
+        return null;
+      }
+      const content = fs.readFileSync(markerFile, 'utf8');
+      return JSON.parse(content);
+    } catch (error) {
+      log(`Failed to read marker: ${error.message}`);
+      return null;
+    }
+  }
+
+  function atomicWriteMarker(markerFile, data, retries = 5) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const tempFile = `${markerFile}.tmp.${Date.now()}.${Math.random()}`;
+        fs.writeFileSync(tempFile, JSON.stringify(data, null, 2));
+        fs.renameSync(tempFile, markerFile);
+        return true;
+      } catch (error) {
+        if (i === retries - 1) {
+          log(`Failed to write marker after ${retries} retries: ${error.message}`);
+          return false;
+        }
+        const delay = Math.pow(2, i) * 10;
+        const end = Date.now() + delay;
+        while (Date.now() < end) {}
+      }
+    }
+    return false;
+  }
+
+  function incrementAgentCount(markerFile, session_id, tool_name) {
+    const marker = atomicReadMarker(markerFile) || {
+      session_id: session_id,
+      agent_count: 0,
+      agents: []
+    };
+
+    const toolInvocationId = generateUUID();
+
+    marker.agents.push({
+      tool_invocation_id: toolInvocationId,
+      created: new Date().toISOString(),
+      tool_name: tool_name
+    });
+
+    marker.agent_count = marker.agents.length;
+
+    log(`Incrementing agent count: ${marker.agent_count} (added ${toolInvocationId})`);
+
+    if (atomicWriteMarker(markerFile, marker)) {
+      return toolInvocationId;
+    }
+    return null;
   }
 
   const standardOutput = {
@@ -63,22 +126,20 @@ function main() {
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
     const markerFile = path.join(markerDir, `agent-executing-${session_id}`);
 
-    // Ensure marker directory exists
     if (!fs.existsSync(markerDir)) {
       fs.mkdirSync(markerDir, { recursive: true });
     }
 
-    // If Task tool, create marker file
     if (tool_name === 'Task') {
       try {
-        fs.writeFileSync(markerFile, JSON.stringify({
-          created: new Date().toISOString(),
-          session_id: session_id,
-          tool_name: tool_name
-        }));
-        log(`Agent marker created: ${markerFile}`);
+        const toolInvocationId = incrementAgentCount(markerFile, session_id, tool_name);
+        if (toolInvocationId) {
+          log(`Agent marker incremented: ${markerFile} (tool_invocation_id: ${toolInvocationId})`);
+        } else {
+          log(`Failed to increment agent marker`);
+        }
       } catch (error) {
-        log(`Failed to create agent marker: ${error.message}`);
+        log(`Failed to increment agent marker: ${error.message}`);
       }
     }
 
