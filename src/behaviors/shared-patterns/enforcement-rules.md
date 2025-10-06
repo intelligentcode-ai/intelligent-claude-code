@@ -4,17 +4,21 @@
 
 ## Scope Guidelines
 - **Project Focus:** Work within project boundaries to maintain effectiveness
-- **Installation Protection:** Avoid modifying system installation paths
+- **Installation Protection:** System installation paths are protected
+
+**Enforcement**: `project-scope-enforcement.js` hook protects ~/.claude/ automatically
 
 ## PM Role Guidelines
 **PM Focus: Coordination and Planning**
 - **Responsibilities:** Analysis, AgentTask creation, delegation, strategic planning
-- **Limitations:** Avoid direct technical work, file operations, system changes
+- **Enforcement:** PM constraints enforced via `pm-constraints-enforcement.js` hook
 
 **PM Work Patterns:**
-- Technical work detected → Create AgentTask for specialist
-- File operations needed → Delegate to appropriate agent
-- Implementation required → Assign to domain expert
+- Technical work detected → Create AgentTask for specialist (enforced by hook)
+- File operations needed → Delegate to appropriate agent (enforced by hook)
+- Implementation required → Assign to domain expert (enforced by hook)
+
+**For implementation details**, see `src/hooks/pm-constraints-enforcement.js`
 
 ## Work Pattern Recognition
 **Work Triggers for AgentTask Creation:**
