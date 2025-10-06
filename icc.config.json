@@ -2,8 +2,5 @@
   "autonomy": {
     "level": "L3",
     "blocking_enabled": true
-  },
-  "git": {
-    "privacy": false
   }
 }
