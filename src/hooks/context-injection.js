@@ -91,16 +91,25 @@ function main() {
     // User prompt = main scope restart = no active agents
     // This prevents PM constraints bypass from stale markers
     const session_id = claudeInput.session_id;
+    log(`[MARKER-CLEANUP] Session ID: ${session_id || 'undefined'}`);
+
     if (session_id) {
       const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}`);
+      log(`[MARKER-CLEANUP] Checking marker: ${markerFile}`);
+
       if (fs.existsSync(markerFile)) {
+        log(`[MARKER-CLEANUP] Marker exists - attempting cleanup`);
         try {
           fs.unlinkSync(markerFile);
           log(`Cleaned stale agent marker on user prompt submit: ${markerFile}`);
         } catch (error) {
           log(`Failed to clean agent marker: ${error.message}`);
         }
+      } else {
+        log(`[MARKER-CLEANUP] No marker file found - clean state`);
       }
+    } else {
+      log(`[MARKER-CLEANUP] No session_id - skipping marker cleanup`);
     }
 
     // Get user prompt from input

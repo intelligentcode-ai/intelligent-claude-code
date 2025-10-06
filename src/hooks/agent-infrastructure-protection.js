@@ -98,13 +98,63 @@ function main() {
     }
 
     // Load configuration-based command lists
-    const criticalDestructive = getSetting('enforcement.infrastructure_protection.critical_destructive', []);
+    const imperativeDestructive = getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
     const writeOperations = getSetting('enforcement.infrastructure_protection.write_operations', []);
     const readOperations = getSetting('enforcement.infrastructure_protection.read_operations', []);
     const whitelist = getSetting('enforcement.infrastructure_protection.whitelist', []);
     const readAllowed = getSetting('enforcement.infrastructure_protection.read_operations_allowed', true);
+    const blockingEnabled = getSetting('enforcement.blocking_enabled', true);
 
-    // Check whitelist first (explicit allow)
+    // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
+    for (const imperativeCmd of imperativeDestructive) {
+      if (command.includes(imperativeCmd)) {
+        if (blockingEnabled) {
+          log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
+
+          console.log(JSON.stringify({
+            continue: false,
+            suppressOutput: false,
+            decision: {
+              type: 'block',
+              reason: 'IaC Enforcement',
+              message: `
+🏗️ INFRASTRUCTURE-AS-CODE ENFORCEMENT
+
+Imperative destructive command detected: ${command}
+
+Blocked command: ${imperativeCmd}
+Blocked by: enforcement.infrastructure_protection.imperative_destructive
+
+❌ AVOID: Imperative commands (kubectl delete, govc vm.destroy, Remove-VM)
+✅ USE: Declarative IaC tools instead:
+  • Terraform: terraform destroy
+  • Ansible: state=absent in playbooks
+  • Helm: helm uninstall
+  • CloudFormation: stack deletion
+
+WHY: Declarative tools provide:
+  - Version control
+  - Audit trails
+  - Rollback capability
+  - Team visibility
+  - State management
+
+To allow imperative commands: Set enforcement.blocking_enabled=false in icc.config.json
+Emergency override: EMERGENCY_OVERRIDE:<token> <command>
+
+Configuration: ./icc.config.json or ./.claude/icc.config.json
+              `.trim()
+            }
+          }));
+          process.exit(0);
+        } else {
+          log(`[IaC-ENFORCEMENT] Imperative destructive detected but blocking disabled: ${command}`);
+          // Continue with warning - blocking disabled
+        }
+      }
+    }
+
+    // Step 2: Check whitelist (overrides write/read blacklists, but not imperative destructive)
     for (const allowedCmd of whitelist) {
       if (command.includes(allowedCmd)) {
         log(`ALLOWED: Command in whitelist: ${allowedCmd}`);
@@ -113,60 +163,30 @@ function main() {
       }
     }
 
-    // Check for critical destructive operations (ALWAYS blocked)
-    for (const criticalCmd of criticalCommands) {
-      if (command.includes(criticalCmd)) {
-        log(`BLOCKED: Critical destructive command detected: ${criticalCmd}`);
+    // Step 3: Check write operations (blocked for agents)
+    for (const writeCmd of writeOperations) {
+      if (command.includes(writeCmd)) {
+        log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
           continue: false,
-          displayToUser: `🚨 CRITICAL: Infrastructure destruction command blocked
+          displayToUser: `⚠️ WRITE OPERATION: Infrastructure modification command blocked
 
-Command: ${criticalCmd}
+Blocked command: ${writeCmd}
 Full command: ${command}
+Blocked by: enforcement.infrastructure_protection.write_operations
 
-This command can PERMANENTLY DESTROY infrastructure:
-- Virtual machines
-- Datastores
-- Resource pools
-- Network configuration
-
-⛔ BLOCKED FOR SAFETY
-
-If this operation is absolutely necessary:
-1. Add to whitelist in icc.config.json: enforcement.infrastructure_protection.whitelist
-2. Document justification and impact
-3. Obtain user confirmation
-4. Execute manually with explicit approval
-
-Infrastructure-as-Code Principle: Use declarative tools (Terraform, Ansible, Pulumi) instead of imperative commands.`
-        }));
-        process.exit(0);
-      }
-    }
-
-    // Check agent-specific blacklist (high-risk manipulation)
-    for (const blacklistedCmd of agentBlacklist) {
-      if (command.includes(blacklistedCmd)) {
-        log(`BLOCKED: Agent blacklist command: ${blacklistedCmd}`);
-
-        console.log(JSON.stringify({
-          continue: false,
-          displayToUser: `⚠️ HIGH-RISK: Infrastructure manipulation command blocked
-
-Command: ${blacklistedCmd}
-Full command: ${command}
-
-This command can disrupt running infrastructure:
+This command can MODIFY running infrastructure:
 - Power off/reboot virtual machines
-- Shutdown/reboot hosts
-- Interrupt production services
+- Start/stop services
+- Create/modify resources
+- Change infrastructure state
 
 🛡️ BLOCKED BY INFRASTRUCTURE PROTECTION
 
 Infrastructure-as-Code Principle Enforcement:
 - Use declarative tools: Terraform, Ansible, Pulumi, CloudFormation
-- Avoid imperative commands that manipulate infrastructure state
+- Avoid imperative commands that modify infrastructure state
 - Document infrastructure changes in code
 
 To allow this specific operation:
@@ -174,9 +194,40 @@ To allow this specific operation:
 2. Or disable protection: enforcement.infrastructure_protection.enabled: false
 3. Document why Infrastructure-as-Code approach is not suitable
 
-Project-specific configuration: ./icc.config.json or ./.claude/icc.config.json`
+Configuration: ./icc.config.json or ./.claude/icc.config.json`
         }));
         process.exit(0);
+      }
+    }
+
+    // Step 4: Check read operations (allowed if read_operations_allowed=true)
+    for (const readCmd of readOperations) {
+      if (command.includes(readCmd)) {
+        if (readAllowed) {
+          log(`ALLOWED: Read operation: ${readCmd}`);
+          console.log(JSON.stringify(standardOutput));
+          process.exit(0);
+        } else {
+          log(`BLOCKED: Read operation disabled: ${readCmd}`);
+
+          console.log(JSON.stringify({
+            continue: false,
+            displayToUser: `ℹ️ READ OPERATION: Infrastructure read command blocked
+
+Blocked command: ${readCmd}
+Full command: ${command}
+Blocked by: enforcement.infrastructure_protection.read_operations
+
+Read operations are currently disabled.
+
+To allow read operations:
+1. Enable in configuration: enforcement.infrastructure_protection.read_operations_allowed: true
+2. Or add to whitelist: enforcement.infrastructure_protection.whitelist
+
+Configuration: ./icc.config.json or ./.claude/icc.config.json`
+          }));
+          process.exit(0);
+        }
       }
     }
 

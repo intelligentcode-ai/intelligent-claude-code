@@ -583,13 +583,31 @@ function Install-HookSystem {
                 Write-Warning "  agent-marker.js hook not found, skipping agent-marker PreToolUse registration"
             }
 
-            # Register PreToolUse hook (summary-file-enforcement.js)
-            $SummaryEnforcementHookPath = Join-Path $HooksPath "summary-file-enforcement.js"
-            if (Test-Path $SummaryEnforcementHookPath) {
-                $HookCommand = "node `"$SummaryEnforcementHookPath`""
+            # Register PreToolUse hook (project-scope-enforcement.js)
+            $ScopeEnforcementHookPath = Join-Path $HooksPath "project-scope-enforcement.js"
+            if (Test-Path $ScopeEnforcementHookPath) {
+                $HookCommand = "node `"$ScopeEnforcementHookPath`""
                 Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  summary-file-enforcement.js hook not found, skipping summary-file-enforcement PreToolUse registration"
+                Write-Warning "  project-scope-enforcement.js hook not found, skipping scope enforcement PreToolUse registration"
+            }
+
+            # Register PreToolUse hook (git-privacy-enforcement.js)
+            $GitPrivacyHookPath = Join-Path $HooksPath "git-privacy-enforcement.js"
+            if (Test-Path $GitPrivacyHookPath) {
+                $HookCommand = "node `"$GitPrivacyHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  git-privacy-enforcement.js hook not found, skipping git privacy PreToolUse registration"
+            }
+
+            # Register PreToolUse hook (pm-constraints-enforcement.js)
+            $PreToolUseHookPath = Join-Path $HooksPath "pm-constraints-enforcement.js"
+            if (Test-Path $PreToolUseHookPath) {
+                $HookCommand = "node `"$PreToolUseHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  pm-constraints-enforcement.js hook not found, skipping PreToolUse registration"
             }
 
             # Register PreToolUse hook (agent-infrastructure-protection.js)
@@ -601,13 +619,13 @@ function Install-HookSystem {
                 Write-Warning "  agent-infrastructure-protection.js hook not found, skipping agent-infrastructure-protection PreToolUse registration"
             }
 
-            # Register PreToolUse hook (pm-constraints-enforcement.js)
-            $PreToolUseHookPath = Join-Path $HooksPath "pm-constraints-enforcement.js"
-            if (Test-Path $PreToolUseHookPath) {
-                $HookCommand = "node `"$PreToolUseHookPath`""
+            # Register PreToolUse hook (summary-file-enforcement.js)
+            $SummaryEnforcementHookPath = Join-Path $HooksPath "summary-file-enforcement.js"
+            if (Test-Path $SummaryEnforcementHookPath) {
+                $HookCommand = "node `"$SummaryEnforcementHookPath`""
                 Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  pm-constraints-enforcement.js hook not found, skipping PreToolUse registration"
+                Write-Warning "  summary-file-enforcement.js hook not found, skipping summary-file-enforcement PreToolUse registration"
             }
 
             # Register SubagentStop hook (subagent-stop.js)
