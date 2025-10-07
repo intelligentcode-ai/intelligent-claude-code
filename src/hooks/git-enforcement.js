@@ -103,7 +103,8 @@ function main() {
       /Co-Authored-By: Claude <[^>]+>\s*/gi,
       /Claude assisted in this commit\s*/gi,
       /\n\n🤖 Generated.*$/s,
-      /\n\nCo-Authored-By: Claude.*$/s
+      /\n\nCo-Authored-By: Claude.*$/s,
+      /\n\nCo-authored-by:.*<.*@.*>\s*/gi  // Block ALL Co-authored-by lines when git.privacy=true
     ];
 
     // Add custom patterns from config
