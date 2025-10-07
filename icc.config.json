@@ -2,5 +2,10 @@
   "autonomy": {
     "level": "L3",
     "blocking_enabled": true
+  },
+  "git": {
+    "privacy": true,
+    "branch_protection": true,
+    "require_pr_for_main": true
   }
 }
