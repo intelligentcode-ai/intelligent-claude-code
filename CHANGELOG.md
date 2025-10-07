@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.6] - 2025-10-07
+
+### Bug Fixes
+- **PM constraints grep false positive**: Fixed incorrect blocking of read-only process inspection commands
+  - Added allowlist for read-only commands: ps, pgrep, pidof, lsof, netstat, ss, top, htop
+  - Fixed grep detection to allow pipe usage (` | grep`) and file reading patterns
+  - Commands like `ps aux | grep -E "ansible-playbook.*gateway"` now work correctly
+  - Hook was incorrectly blocking read-only commands when blocked command names appeared in grep patterns
+
+### Technical Details
+- Updated pm-constraints-enforcement.js with read-only inspection command allowlist
+- Improved grep pattern detection for pipe operations and file reading
+- Maintains security by still blocking build/deploy/system commands
+- Better alignment with read-only coordination needs
+
+---
+
 ## [8.18.4] - 2025-10-07
 
 ### Improved

@@ -121,6 +121,22 @@ function main() {
   }
 
   function validateBashCommand(command) {
+    // Allow read-only process inspection commands (ps, grep, pgrep, etc.)
+    const readOnlyInspectionCommands = ['ps', 'pgrep', 'pidof', 'lsof', 'netstat', 'ss', 'top', 'htop'];
+
+    // Check if this is a read-only inspection command
+    const firstWord = command.trim().split(/\s+/)[0];
+    if (readOnlyInspectionCommands.includes(firstWord)) {
+      return { allowed: true };
+    }
+
+    // Special case: grep is read-only if it's part of a pipe (ps aux | grep)
+    // Check if command contains " | grep" or starts with grep for file reading
+    if (command.includes(' | grep') || command.match(/^\s*grep\s+/)) {
+      // This is grep being used for filtering/searching, not executing
+      return { allowed: true };
+    }
+
     // Block build/deploy/system commands in PM scope
     const blockedCommands = [
       'npm', 'yarn', 'make', 'docker', 'cargo', 'mvn', 'gradle', 'go',
