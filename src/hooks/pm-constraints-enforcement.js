@@ -137,6 +137,23 @@ function main() {
       return { allowed: true };
     }
 
+    // Special case: kubectl read-only commands allowed
+    if (firstWord === 'kubectl') {
+      const readOnlyKubectlSubcommands = [
+        'get', 'describe', 'logs', 'top', 'version', 'cluster-info',
+        'config view', 'api-resources', 'api-versions', 'explain'
+      ];
+
+      // Extract kubectl subcommand (second word after kubectl)
+      const kubectlSubcommand = command.trim().split(/\s+/)[1];
+
+      if (readOnlyKubectlSubcommands.includes(kubectlSubcommand)) {
+        return { allowed: true };
+      }
+
+      // If not read-only, fall through to normal blocking
+    }
+
     // Block build/deploy/system commands in PM scope
     const blockedCommands = [
       'npm', 'yarn', 'make', 'docker', 'cargo', 'mvn', 'gradle', 'go',
@@ -180,6 +197,15 @@ Use Task tool to create specialist agent via AgentTask.`
       // Check if command is blocked (exact match OR prefix match with hyphen)
       for (const blocked of allBlockedCommands) {
         if (firstWord === blocked || firstWord.startsWith(blocked + '-')) {
+          // Provide specific guidance for kubectl commands
+          let kubectlGuidance = '';
+          if (blocked === 'kubectl') {
+            kubectlGuidance = `
+
+kubectl Read-only (ALLOWED): get, describe, logs, top, version, cluster-info, config view, api-resources, api-versions, explain
+kubectl Destructive (BLOCKED): delete, apply, create, patch, replace, scale, rollout, drain, cordon, taint, label, annotate`;
+          }
+
           return {
             allowed: false,
             message: `🚫 PM role cannot execute build/deploy/system commands - create Agents using AgentTasks for technical work
@@ -194,7 +220,7 @@ Infrastructure: ${pmInfrastructureBlacklist.join(', ')} ⚠️ DESTRUCTIVE
 Scripting languages: python, python3, node, ruby, perl, php
 Background tools: nohup, screen, tmux
 Text processing: sed, awk
-Text editors: vi, vim, nano, emacs
+Text editors: vi, vim, nano, emacs${kubectlGuidance}
 
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
 All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
