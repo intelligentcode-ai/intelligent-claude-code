@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.7] - 2025-10-07
+
+### Bug Fixes
+- **PM constraints kubectl read-only**: Fixed incorrect blocking of read-only kubectl commands
+  - Added allowlist for kubectl read-only subcommands: get, describe, logs, top, version, cluster-info, config view, api-resources, api-versions, explain
+  - Commands like `kubectl get nodes` now work correctly for PM coordination
+  - Maintains security by blocking destructive kubectl operations: delete, apply, create, patch, replace, scale, rollout, drain, cordon, taint, label, annotate
+  - Enhanced error messages with kubectl-specific guidance
+
+### Technical Details
+- Updated pm-constraints-enforcement.js with kubectl subcommand detection
+- Improved read-only vs destructive command classification
+- Better alignment with Kubernetes inspection needs
+- PM can now safely inspect cluster state without triggering false positives
+
+---
+
 ## [8.18.6] - 2025-10-07
 
 ### Bug Fixes
