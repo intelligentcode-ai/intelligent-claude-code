@@ -140,14 +140,14 @@ function main() {
     if (command.includes('<<') && (command.includes('python') || command.includes('node') || command.includes('ruby'))) {
       return {
         allowed: false,
-        message: `🚫 PM role cannot execute inline scripts via heredoc - create AgentTask for technical work
+        message: `🚫 PM role cannot execute inline scripts via heredoc - create Agents using AgentTasks for technical work
 
 Blocked pattern: Script heredoc (python3 << 'EOF', node << 'EOF', etc.)
 Full command: ${command}
 
 Inline scripts require technical implementation by specialist agents.
 
-Create AgentTask for specialist execution.`
+Use Task tool to create specialist agent via AgentTask.`
       };
     }
 
@@ -166,7 +166,7 @@ Create AgentTask for specialist execution.`
         if (firstWord === blocked || firstWord.startsWith(blocked + '-')) {
           return {
             allowed: false,
-            message: `🚫 PM role cannot execute build/deploy/system commands - create AgentTask for technical work
+            message: `🚫 PM role cannot execute build/deploy/system commands - create Agents using AgentTasks for technical work
 
 Blocked command: ${blocked}
 Found in: ${part}
@@ -182,7 +182,7 @@ Text editors: vi, vim, nano, emacs
 
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
 All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
-Create AgentTask for specialist execution with explicit approval.`
+Use Task tool to create specialist agent via AgentTask with explicit approval.`
           };
         }
       }
@@ -304,12 +304,13 @@ Please create summary files in the summaries/ directory to keep project root cle
       const blockedDir = blocklist.find(p => filePath.startsWith(p + '/'));
       return {
         allowed: false,
-        message: `🚫 PM role is coordination only - create AgentTask for technical work
+        message: `🚫 PM role is coordination only - create Agents using AgentTasks for technical work
 
 Blocked: ${filePath}
 Reason: PM cannot modify files in ${blockedDir}/
 
-Allowed directories: ${allowlist.join(', ')}, root *.md files`
+Allowed directories: ${allowlist.join(', ')}, root *.md files
+Use Task tool to create specialist agent via AgentTask.`
       };
     }
 
@@ -321,12 +322,13 @@ Allowed directories: ${allowlist.join(', ')}, root *.md files`
     // Not in allowlist = blocked
     return {
       allowed: false,
-      message: `🚫 PM role is coordination only - create AgentTask for technical work
+      message: `🚫 PM role is coordination only - create Agents using AgentTasks for technical work
 
 Blocked: ${filePath}
 Reason: File path not in PM allowlist
 
-Allowed directories: ${allowlist.join(', ')}, root *.md files`
+Allowed directories: ${allowlist.join(', ')}, root *.md files
+Use Task tool to create specialist agent via AgentTask.`
     };
   }
 

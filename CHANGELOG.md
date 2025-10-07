@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.4] - 2025-10-07
+
+### Improved
+- PM constraint error messages now clarify "create Agents using AgentTasks for technical work" instead of "create AgentTask for technical work"
+- Added explicit "Use Task tool to create specialist agent via AgentTask" guidance to all 4 PM constraint error messages
+- Improved user experience by making Task tool usage pattern more obvious when PM constraints are triggered
+
+### Technical
+- Updated pm-constraints-enforcement.js with clearer error message wording
+- Messages now explicitly mention Task tool as the mechanism for creating agents
+- Better alignment with virtual team interaction patterns
+
+**User Feedback Addressed:** "Perhaps adjust the text to be more clear to Claude Code: 'create Agents using AgentTasks for technical work'?"
+
+---
+
 ## [8.18.3] - 2025-10-06
 
 ### Critical Security Fixes
