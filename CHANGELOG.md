@@ -10,15 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.17.0] - 2025-10-08
 
 ### Features
-- **Best-practices system with constraint display integration**: Restructured best-practices to integrate with educational reminder hook
+- **Best-practices system for user-generated patterns**: Created user-focused best practices directory with initial examples
   - Created `best-practices/README.md` with indexed structure (headline + summary + detail link pattern)
-  - Added 6 initial best practice documents:
-    - `agenttask-creation-patterns.md`: Template hierarchy, placeholder resolution, context embedding
-    - `memory-first-workflow.md`: Memory-first query pattern, security-aware storage, automatic application
-    - `git-privacy-patterns.md`: Privacy compliance, branch protection, commit message guidelines
-    - `template-hierarchy-patterns.md`: Template selection, extension system, quality standards
-    - `role-delegation-patterns.md`: PM delegation, specialist selection, quality benefits
-    - `context-embedding-patterns.md`: Self-contained execution, complete context requirements
+  - Added 2 initial USER-FOCUSED example documents (NOT system behaviors):
+    - `memory-storage-retrieval.md`: When to store, what to store, security patterns, retrieval patterns
+    - `git-workflow-patterns.md`: Privacy settings, branch protection, PR workflow, professional commit messages
+  - Best practices are USER-GENERATED, not system documentation
+  - Teams can add their own practices by creating markdown files and updating README
   - Updated constraint display pattern from 2+2 to 3+3+BP (3 situation + 3 cycling + up to 3 best practices)
   - Modified `virtual-team.md` meta-rule: Updated RECURSIVE-DISPLAY format to show 6 constraints + best practices
   - Enhanced `constraint-selector.js`: Separated situation-related (top 3 by relevance) from cycling (rotation-based)
@@ -31,13 +29,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Graceful fallback: Hook continues if README missing or parsing fails
 - Installation hierarchy: Supports project-local, user-global best-practices customization
 - Display format: `📚 Best Practices (if available): • [Title]: [Summary]`
+- Educational reminders remain active via reminders.json (NOT replaced by best practices)
 
 ### Benefits
-- Context-aware educational guidance: Constraints show relevance, best practices show actionable patterns
-- Knowledge discovery: Users learn ICC patterns and proven practices through cycling display
-- Customizable practices: Projects can add own best-practices/README.md
+- Context-aware educational guidance: Constraints show relevance, best practices show actionable user patterns
+- Knowledge discovery: Users learn ICC patterns and proven user practices through cycling display
+- Customizable practices: Projects add own best-practices/README.md with team-specific patterns
 - Non-intrusive learning: Gentle reminders reinforce quality standards
 - Quality culture: Best practices visible during all work interactions
+- Dual guidance system: Educational reminders (system) + best practices (user-generated)
 
 ---
 
