@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.17.0] - 2025-10-08
+
+### Features
+- **Best-practices system with constraint display integration**: Restructured best-practices to integrate with educational reminder hook
+  - Created `best-practices/README.md` with indexed structure (headline + summary + detail link pattern)
+  - Added 6 initial best practice documents:
+    - `agenttask-creation-patterns.md`: Template hierarchy, placeholder resolution, context embedding
+    - `memory-first-workflow.md`: Memory-first query pattern, security-aware storage, automatic application
+    - `git-privacy-patterns.md`: Privacy compliance, branch protection, commit message guidelines
+    - `template-hierarchy-patterns.md`: Template selection, extension system, quality standards
+    - `role-delegation-patterns.md`: PM delegation, specialist selection, quality benefits
+    - `context-embedding-patterns.md`: Self-contained execution, complete context requirements
+  - Updated constraint display pattern from 2+2 to 3+3+BP (3 situation + 3 cycling + up to 3 best practices)
+  - Modified `virtual-team.md` meta-rule: Updated RECURSIVE-DISPLAY format to show 6 constraints + best practices
+  - Enhanced `constraint-selector.js`: Separated situation-related (top 3 by relevance) from cycling (rotation-based)
+  - Updated `context-injection.js`: Added best practices loading and random selection functions
+  - Added Ansible deployment: Best-practices directory now deployed to `~/.claude/best-practices/`
+
+### Technical Details
+- Best practices README parsing: Extracts `## Headline` + summary paragraph pattern
+- Random selection: Shuffles practices and selects up to 3 for display variation
+- Graceful fallback: Hook continues if README missing or parsing fails
+- Installation hierarchy: Supports project-local, user-global best-practices customization
+- Display format: `📚 Best Practices (if available): • [Title]: [Summary]`
+
+### Benefits
+- Context-aware educational guidance: Constraints show relevance, best practices show actionable patterns
+- Knowledge discovery: Users learn ICC patterns and proven practices through cycling display
+- Customizable practices: Projects can add own best-practices/README.md
+- Non-intrusive learning: Gentle reminders reinforce quality standards
+- Quality culture: Best practices visible during all work interactions
+
+---
+
 ## [8.18.7] - 2025-10-07
 
 ### Bug Fixes
