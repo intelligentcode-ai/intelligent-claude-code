@@ -163,15 +163,18 @@ PM role focuses on coordination and delegation. All technical work must be assig
 ## Meta-Rules
 
 <meta_rule id="RECURSIVE-DISPLAY" enforcement="mandatory">
-  <display_pattern>After each response: Display 4 constraints using 2+2 pattern</display_pattern>
+  <display_pattern>After each response: Display 6 constraints using 3+3 pattern + up to 3 best practices</display_pattern>
 
   <pattern_specification>
-    <situation_related count="2">
-      Select 2 constraints most relevant to current conversation context
+    <situation_related count="3">
+      Select 3 constraints most relevant to current conversation context
     </situation_related>
-    <cycling count="2">
+    <cycling count="3">
       Rotate through complete constraint list to ensure all constraints visible over time
     </cycling>
+    <best_practices count="3" optional="true">
+      Load from best-practices/README.md and randomly select up to 3 practices (if README exists)
+    </best_practices>
   </pattern_specification>
 
   <complete_constraint_list>
@@ -201,21 +204,29 @@ PM role focuses on coordination and delegation. All technical work must be assig
 
   <rotation_logic>
     Maintain rotation index through complete constraint list (14 total).
-    Advance by 2 each response. Wrap around after end.
-    Ensures all constraints shown over ~7 responses.
+    Advance by 3 each response. Wrap around after end.
+    Ensures all constraints shown over ~5 responses.
   </rotation_logic>
 
   <format>🎯 Active Constraints:
 
 [CONSTRAINT-ID-1]: Description *(situation)*
 [CONSTRAINT-ID-2]: Description *(situation)*
-[CONSTRAINT-ID-3]: Description *(cycling)*
-[CONSTRAINT-ID-4]: Description *(cycling)*</format>
+[CONSTRAINT-ID-3]: Description *(situation)*
+[CONSTRAINT-ID-4]: Description *(cycling)*
+[CONSTRAINT-ID-5]: Description *(cycling)*
+[CONSTRAINT-ID-6]: Description *(cycling)*
+
+📚 Best Practices (if available):
+• [Best Practice Title]: Summary
+• [Best Practice Title]: Summary
+• [Best Practice Title]: Summary</format>
 
   <purpose>
     Universal constraint exposure across all projects.
     Users learn complete ICC framework through cycling.
     Immediate relevance through situation-related selection.
+    Best practices provide actionable guidance and proven patterns.
   </purpose>
 
   <applicability>ALL agents: Main agent, specialist agents, dynamic specialists</applicability>

@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.17.0] - 2025-10-08
+
+### Features
+- **Best-practices system for user-generated patterns**: Created user-focused best practices directory with initial examples
+  - Created `best-practices/README.md` with indexed structure (headline + summary + detail link pattern)
+  - Added 2 initial USER-FOCUSED example documents (NOT system behaviors):
+    - `memory-storage-retrieval.md`: When to store, what to store, security patterns, retrieval patterns
+    - `git-workflow-patterns.md`: Privacy settings, branch protection, PR workflow, professional commit messages
+  - Best practices are USER-GENERATED, not system documentation
+  - Teams can add their own practices by creating markdown files and updating README
+  - Updated constraint display pattern from 2+2 to 3+3+BP (3 situation + 3 cycling + up to 3 best practices)
+  - Modified `virtual-team.md` meta-rule: Updated RECURSIVE-DISPLAY format to show 6 constraints + best practices
+  - Enhanced `constraint-selector.js`: Separated situation-related (top 3 by relevance) from cycling (rotation-based)
+  - Updated `context-injection.js`: Added best practices loading and random selection functions
+  - Added Ansible deployment: Best-practices directory now deployed to `~/.claude/best-practices/`
+
+### Technical Details
+- Best practices README parsing: Extracts `## Headline` + summary paragraph pattern
+- Random selection: Shuffles practices and selects up to 3 for display variation
+- Graceful fallback: Hook continues if README missing or parsing fails
+- Installation hierarchy: Supports project-local, user-global best-practices customization
+- Display format: `📚 Best Practices (if available): • [Title]: [Summary]`
+- Educational reminders remain active via reminders.json (NOT replaced by best practices)
+
+### Benefits
+- Context-aware educational guidance: Constraints show relevance, best practices show actionable user patterns
+- Knowledge discovery: Users learn ICC patterns and proven user practices through cycling display
+- Customizable practices: Projects add own best-practices/README.md with team-specific patterns
+- Non-intrusive learning: Gentle reminders reinforce quality standards
+- Quality culture: Best practices visible during all work interactions
+- Dual guidance system: Educational reminders (system) + best practices (user-generated)
+
+---
+
 ## [8.18.7] - 2025-10-07
 
 ### Bug Fixes

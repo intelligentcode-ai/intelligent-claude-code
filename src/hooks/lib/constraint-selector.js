@@ -128,10 +128,10 @@ function calculateRelevance(constraint, activeRole, workType) {
 }
 
 /**
- * Select 2-3 most relevant constraints based on conversation context
+ * Select 6 most relevant constraints based on conversation context (3 situation + 3 cycling)
  *
  * @param {string} context - Recent conversation text
- * @returns {Array<Object>} Array of 2-3 most relevant constraint objects with id and text
+ * @returns {Array<Object>} Array of 6 constraint objects with id, text, and type (situation/cycling)
  */
 function selectRelevantConstraints(context) {
   const constraints = loadConstraintIDs();
@@ -143,9 +143,32 @@ function selectRelevantConstraints(context) {
   const activeRole = detectActiveRole(context);
   const workType = classifyWorkType(context);
 
-  // Score all constraints with rotation penalty
+  // Score all constraints
   const scored = constraints.map(constraint => {
-    let score = calculateRelevance(constraint, activeRole, workType);
+    const score = calculateRelevance(constraint, activeRole, workType);
+
+    return {
+      id: constraint.id,
+      text: constraint.text,
+      score: score,
+      category: constraint.category
+    };
+  });
+
+  // Sort by score (highest first)
+  const sortedByRelevance = scored.sort((a, b) => b.score - a.score);
+
+  // Select top 3 as situation-related
+  const situationRelated = sortedByRelevance
+    .slice(0, 3)
+    .map(c => ({ id: c.id, text: c.text, type: 'situation' }));
+
+  // For cycling constraints: prefer ones NOT in top 3 and apply rotation
+  const remainingConstraints = sortedByRelevance.slice(3);
+
+  // Score remaining with rotation penalty
+  const cyclingScored = remainingConstraints.map(constraint => {
+    let score = constraint.score;
 
     // Apply rotation penalty: reduce score if recently displayed
     const recentIndex = recentlyDisplayed.indexOf(constraint.id);
@@ -158,16 +181,18 @@ function selectRelevantConstraints(context) {
     return {
       id: constraint.id,
       text: constraint.text,
-      score: score,
-      category: constraint.category
+      score: score
     };
   });
 
-  // Sort by score (highest first), take top 3
-  const selected = scored
+  // Select top 3 from rotating pool
+  const cycling = cyclingScored
     .sort((a, b) => b.score - a.score)
     .slice(0, 3)
-    .map(c => ({ id: c.id, text: c.text }));
+    .map(c => ({ id: c.id, text: c.text, type: 'cycling' }));
+
+  // Combine situation + cycling
+  const selected = [...situationRelated, ...cycling];
 
   // Update recently displayed tracking
   selected.forEach(constraint => {
