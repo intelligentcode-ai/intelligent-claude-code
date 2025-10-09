@@ -95,12 +95,18 @@ function main() {
 
   function isPMRole(hookInput) {
     const session_id = hookInput.session_id;
+
+    // Generate project hash from project root for project-specific markers
+    const crypto = require('crypto');
+    const projectRoot = hookInput.cwd || process.cwd();
+    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-    const markerFile = path.join(markerDir, `agent-executing-${session_id}`);
+    const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
 
     try {
       if (!fs.existsSync(markerFile)) {
-        log('PM context detected - no marker file');
+        log(`PM context detected - no marker file for project ${projectRoot}`);
         return true;
       }
 
@@ -108,10 +114,10 @@ function main() {
       const agentCount = marker.agent_count || 0;
 
       if (agentCount > 0) {
-        log(`Agent context detected - ${agentCount} active agent(s)`);
+        log(`Agent context detected - ${agentCount} active agent(s) in project ${projectRoot}`);
         return false;
       } else {
-        log('PM context detected - marker exists but agent_count is 0');
+        log(`PM context detected - marker exists but agent_count is 0 for project ${projectRoot}`);
         return true;
       }
     } catch (error) {
