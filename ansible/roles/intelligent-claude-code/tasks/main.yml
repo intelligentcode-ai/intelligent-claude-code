@@ -126,6 +126,19 @@
     msg: "AgentTask templates directory preserved: {{ claude_install_path }}/agenttask-templates/ already exists - keeping user modifications"
   when: agenttask_templates_copy_result.failed and ansible_verbosity >= 1
 
+- name: Copy best-practices directory
+  copy:
+    src: "{{ playbook_dir }}/../best-practices/"
+    dest: "{{ claude_install_path }}/best-practices/"
+    mode: '0644'
+    force: yes
+  register: best_practices_copy_result
+
+- name: Display best-practices preservation notice
+  debug:
+    msg: "Best practices directory preserved: {{ claude_install_path }}/best-practices/ already exists - keeping user modifications"
+  when: best_practices_copy_result.failed and ansible_verbosity >= 1
+
 - name: Copy hooks directory
   synchronize:
     src: "{{ playbook_dir }}/../src/hooks/"
@@ -355,6 +368,10 @@
             - type: 'command'
               command: "node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js"
               timeout: 5000
+            - type: 'command'
+              command: "node {{ claude_install_path }}/hooks/summary-file-enforcement.js"
+              timeout: 5000
+              failureMode: 'allow'
             - type: 'command'
               command: "node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js"
               timeout: 5000

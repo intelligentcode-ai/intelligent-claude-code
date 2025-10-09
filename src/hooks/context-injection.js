@@ -6,6 +6,86 @@ const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
 const { selectRelevantConstraints } = require('./lib/constraint-selector');
 
+/**
+ * Load best practices from README.md
+ *
+ * @returns {Array<Object>} Array of best practice objects with title and summary
+ */
+function loadBestPractices() {
+  try {
+    // Try installation path first, then project path
+    const possiblePaths = [
+      path.join(os.homedir(), '.claude', 'best-practices', 'README.md'),
+      path.join(process.cwd(), 'best-practices', 'README.md'),
+      path.join(process.cwd(), '.claude', 'best-practices', 'README.md')
+    ];
+
+    let readmePath = null;
+    for (const p of possiblePaths) {
+      if (fs.existsSync(p)) {
+        readmePath = p;
+        break;
+      }
+    }
+
+    if (!readmePath) {
+      return [];
+    }
+
+    const content = fs.readFileSync(readmePath, 'utf8');
+    const practices = [];
+
+    // Parse markdown: Extract ## headlines and summary paragraphs
+    const lines = content.split('\n');
+    let currentTitle = null;
+    let currentSummary = null;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+
+      // Match ## Headline
+      if (line.startsWith('## ') && !line.startsWith('###')) {
+        // Save previous practice if exists
+        if (currentTitle && currentSummary) {
+          practices.push({ title: currentTitle, summary: currentSummary });
+        }
+
+        currentTitle = line.replace(/^##\s+/, '').trim();
+        currentSummary = null;
+      }
+      // Find summary (first non-empty, non-link line after headline)
+      else if (currentTitle && !currentSummary && line.length > 0 && !line.startsWith('[') && !line.startsWith('#')) {
+        currentSummary = line;
+      }
+    }
+
+    // Add last practice
+    if (currentTitle && currentSummary) {
+      practices.push({ title: currentTitle, summary: currentSummary });
+    }
+
+    return practices;
+
+  } catch (error) {
+    // Silent fail - return empty array
+    return [];
+  }
+}
+
+/**
+ * Select random best practices
+ *
+ * @param {Array<Object>} practices - Available practices
+ * @param {number} count - Number to select
+ * @returns {Array<Object>} Randomly selected practices
+ */
+function selectRandomBestPractices(practices, count = 3) {
+  if (practices.length === 0) return [];
+
+  const shuffled = [...practices].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(count, practices.length));
+}
+
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
   const today = new Date().toISOString().split('T')[0];
@@ -373,16 +453,42 @@ function main() {
       }
     }
 
-    // Generate simple list constraint display with rotation
+    // Generate constraint display with 3+3 pattern + best practices
     try {
       const constraints = selectRelevantConstraints(userPrompt);
       if (constraints && constraints.length > 0) {
-        const constraintList = constraints.map(c =>
-          `[${c.id}]: ${c.text}`
-        ).join(' | ');
+        // Separate situation and cycling constraints
+        const situation = constraints.filter(c => c.type === 'situation').slice(0, 3);
+        const cycling = constraints.filter(c => c.type === 'cycling').slice(0, 3);
 
-        const constraintDisplay = `🎯 Active Constraints: ${constraintList}`;
-        contextualGuidance.push(constraintDisplay);
+        // Format constraint display
+        const constraintLines = [];
+        constraintLines.push('🎯 Active Constraints:');
+        constraintLines.push('');
+
+        situation.forEach(c => {
+          constraintLines.push(`[${c.id}]: ${c.text} *(situation)*`);
+        });
+
+        cycling.forEach(c => {
+          constraintLines.push(`[${c.id}]: ${c.text} *(cycling)*`);
+        });
+
+        // Try to load best practices
+        const bestPractices = loadBestPractices();
+        if (bestPractices.length > 0) {
+          const selectedPractices = selectRandomBestPractices(bestPractices, 3);
+
+          if (selectedPractices.length > 0) {
+            constraintLines.push('');
+            constraintLines.push('📚 Best Practices (if available):');
+            selectedPractices.forEach(bp => {
+              constraintLines.push(`• ${bp.title}: ${bp.summary}`);
+            });
+          }
+        }
+
+        contextualGuidance.push(constraintLines.join('\n'));
       }
     } catch (error) {
       log(`Constraint selection error: ${error.message}`);
