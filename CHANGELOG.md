@@ -7,6 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.17.2] - 2025-10-09
+
+### Bug Fixes
+- **Summary file enforcement hook**: Fixed tool restriction that only checked Write/Edit operations
+  - Hook now checks ALL file operations in PreToolUse, not just Write and Edit
+  - Prevents agents from creating ALL-CAPITALS summary files via Bash commands (echo, cat, etc.)
+  - Closes bypass vulnerability where Bash commands could circumvent summary file validation
+  - All file paths are now validated regardless of tool type
+
+- **Project-specific agent markers**: Added project hash to agent marker filenames
+  - Markers now include project hash: `agent-executing-{session_id}-{projectHash}`
+  - Prevents cross-project interference when working with multiple projects simultaneously
+  - Project hash generated from project root using MD5 (first 8 chars)
+  - Backward compatibility: Automatically cleans up old-style markers without project hash
+  - Updated both agent-marker.js and pm-constraints-enforcement.js hooks
+  - Enhanced logging shows project root and hash information
+
+### Technical Details
+- **summary-file-enforcement.js**: Removed tool_name restriction at line 65-69
+  - All tools with file_path parameter are now validated
+  - Maintains ALL-CAPITALS filename blocking across all file operations
+
+- **agent-marker.js**: Added project-specific marker generation
+  - Project hash calculation: `crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8)`
+  - Old marker cleanup for backward compatibility
+  - Updated `incrementAgentCount()` signature to include projectRoot parameter
+  - Enhanced logging with project information
+
+- **pm-constraints-enforcement.js**: Updated `isPMRole()` function
+  - Generates same project hash for consistency
+  - Reads project-specific marker files
+  - Enhanced logging messages include project root
+
+### Benefits
+- Complete validation coverage for summary file enforcement
+- No bypass opportunities via alternate tools
+- Clean multi-project workflow without marker conflicts
+- Seamless backward compatibility during upgrade
+
+---
+
 ## [8.17.1] - 2025-10-09
 
 ### Enhancements

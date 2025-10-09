@@ -57,9 +57,10 @@ function main() {
     return false;
   }
 
-  function incrementAgentCount(markerFile, session_id, tool_name) {
+  function incrementAgentCount(markerFile, session_id, tool_name, projectRoot) {
     const marker = atomicReadMarker(markerFile) || {
       session_id: session_id,
+      project_root: projectRoot,
       agent_count: 0,
       agents: []
     };
@@ -123,8 +124,23 @@ function main() {
     const session_id = hookInput.session_id;
     const tool_name = hookInput.tool_name;
 
+    // Generate project hash from project root for project-specific markers
+    const projectRoot = hookInput.cwd || process.cwd();
+    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-    const markerFile = path.join(markerDir, `agent-executing-${session_id}`);
+    const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
+
+    // Cleanup old-style markers without project hash (backward compatibility)
+    const oldMarkerFile = path.join(markerDir, `agent-executing-${session_id}`);
+    if (fs.existsSync(oldMarkerFile)) {
+      try {
+        fs.unlinkSync(oldMarkerFile);
+        log(`Cleaned up old-style marker: ${oldMarkerFile}`);
+      } catch (error) {
+        log(`Failed to cleanup old-style marker: ${error.message}`);
+      }
+    }
 
     if (!fs.existsSync(markerDir)) {
       fs.mkdirSync(markerDir, { recursive: true });
@@ -132,9 +148,9 @@ function main() {
 
     if (tool_name === 'Task') {
       try {
-        const toolInvocationId = incrementAgentCount(markerFile, session_id, tool_name);
+        const toolInvocationId = incrementAgentCount(markerFile, session_id, tool_name, projectRoot);
         if (toolInvocationId) {
-          log(`Agent marker incremented: ${markerFile} (tool_invocation_id: ${toolInvocationId})`);
+          log(`Agent marker incremented: ${markerFile} (project: ${projectRoot}, tool_invocation_id: ${toolInvocationId})`);
         } else {
           log(`Failed to increment agent marker`);
         }
