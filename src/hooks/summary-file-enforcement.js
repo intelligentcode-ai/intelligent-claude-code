@@ -110,8 +110,8 @@ function main() {
 
     log(`Summary file detected: ${fileName}`);
 
-    // Well-known ALL-CAPITALS files that are exceptions
-    const allowedAllCapsFiles = [
+    // Load allowed ALL-CAPITALS files from config (with defaults)
+    const defaultAllCapsFiles = [
       'README.md',
       'LICENSE',
       'LICENSE.md',
@@ -127,6 +127,9 @@ function main() {
       'COPYING',
       'COPYRIGHT'
     ];
+
+    const allowedAllCapsFiles = getSetting('development.allowed_allcaps_files', defaultAllCapsFiles);
+    log(`Allowed ALL-CAPITALS files: ${allowedAllCapsFiles.length} entries`);
 
     // Check for ALL-CAPITALS filename (excluding extension)
     const fileBaseName = fileName.replace(/\.[^/.]+$/, ''); // Remove extension

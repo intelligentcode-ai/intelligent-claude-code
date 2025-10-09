@@ -79,7 +79,23 @@
   "development": {
     "auto_cleanup": true,
     "file_management_strict": true,
-    "testing_approach": "comprehensive"
+    "testing_approach": "comprehensive",
+    "allowed_allcaps_files": [
+      "README.md",
+      "LICENSE",
+      "LICENSE.md",
+      "CLAUDE.md",
+      "CHANGELOG.md",
+      "CONTRIBUTING.md",
+      "AUTHORS",
+      "NOTICE",
+      "PATENTS",
+      "VERSION",
+      "MAKEFILE",
+      "DOCKERFILE",
+      "COPYING",
+      "COPYRIGHT"
+    ]
   },
 
   "tools": {
