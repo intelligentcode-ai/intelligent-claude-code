@@ -465,6 +465,41 @@ Use Task tool to create specialist agent via AgentTask.`
     if (isPMRole(hookInput)) {
       log('PM role active - validating operation');
 
+      // Block Edit/Write/Update tools entirely - require AgentTasks for technical work
+      if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
+        const blockingEnabled = getBlockingEnabled();
+
+        const message = `🚫 PM role cannot modify files directly - create Agents using AgentTasks for technical work
+
+Blocked tool: ${tool}
+File: ${filePath || 'N/A'}
+
+PM role is for coordination only. All file modifications must be performed by specialist agents.
+
+Use Task tool to create specialist agent via AgentTask.`;
+
+        log(`File modification tool blocked: ${tool}`);
+
+        if (blockingEnabled) {
+          const response = {
+            hookSpecificOutput: {
+              hookEventName: 'PreToolUse',
+              permissionDecision: 'deny',
+              permissionDecisionReason: message
+            }
+          };
+          const responseJson = JSON.stringify(response);
+          log(`RESPONSE: ${responseJson}`);
+          log(`EXIT CODE: 2 (BLOCKING MODE)`);
+          console.log(responseJson);
+          process.exit(2);
+        } else {
+          log(`⚠️ WARNING (non-blocking): ${message}`);
+          console.log(JSON.stringify({ continue: true }));
+          process.exit(0);
+        }
+      }
+
       // Validate Bash commands
       if (tool === 'Bash' && command) {
         log(`Validating Bash command: ${command}`);
@@ -500,42 +535,8 @@ Use Task tool to create specialist agent via AgentTask.`
         log(`Bash command ALLOWED: ${command}`);
       }
 
-      // Validate file operations (Edit/Write/MultiEdit)
-      if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit')) {
-        log(`Validating file operation: ${tool} on ${filePath}`);
-
-        const paths = getConfiguredPaths();
-        const validation = validatePMOperation(filePath, tool, paths, projectRoot);
-
-        if (!validation.allowed) {
-          log(`File operation BLOCKED: ${filePath}`);
-
-          const blockingEnabled = getBlockingEnabled();
-
-          if (blockingEnabled) {
-            // BLOCKING MODE (default)
-            const response = {
-              hookSpecificOutput: {
-                hookEventName: 'PreToolUse',
-                permissionDecision: 'deny',
-                permissionDecisionReason: validation.message
-              }
-            };
-            const responseJson = JSON.stringify(response);
-            log(`RESPONSE: ${responseJson}`);
-            log(`EXIT CODE: 2 (BLOCKING MODE)`);
-            console.log(responseJson);
-            process.exit(2);
-          } else {
-            // WARNING MODE (non-blocking)
-            log(`⚠️ WARNING (non-blocking): ${validation.message}`);
-            console.log(JSON.stringify({ continue: true }));
-            process.exit(0);
-          }
-        }
-
-        log(`File operation ALLOWED: ${filePath}`);
-      }
+      // Note: Edit/Write/Update/MultiEdit are now blocked entirely above (lines 469-501)
+      // No file path validation needed - all file modifications require AgentTasks
     }
 
     // Non-PM role or allowed operation

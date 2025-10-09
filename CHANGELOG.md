@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.17.3] - 2025-10-09
+
+### Bug Fixes
+- **PM constraints enforcement**: Fixed PM role being able to use Edit/Write/Update tools directly
+  - Added complete blocking of Edit, Write, Update, and MultiEdit tools in PM context
+  - Previously, hook only validated file paths but allowed Edit/Write operations in coordination directories
+  - PM role now strictly requires AgentTasks via Task tool for ALL file modifications
+  - Clear error message guides users to create specialist agents via AgentTask
+  - Implements strict "NO WORK IN MAIN SCOPE" enforcement for file modifications
+
+### Technical Details
+- **pm-constraints-enforcement.js**: Added tool blocking before file path validation (lines 469-501)
+  - Blocks Edit, Write, Update, MultiEdit entirely when isPMRole returns true
+  - Removed old file path validation logic (now unreachable dead code)
+  - Error message: "PM role cannot modify files directly - create Agents using AgentTasks for technical work"
+  - Respects blocking_enabled configuration setting
+
+### Benefits
+- Complete enforcement of PM coordination-only role
+- No file modification loopholes for PM context
+- All technical work flows through AgentTask system
+- Consistent with system design principles
+
+---
+
 ## [8.17.2] - 2025-10-09
 
 ### Bug Fixes
