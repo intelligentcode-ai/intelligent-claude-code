@@ -60,15 +60,10 @@ function main() {
       process.exit(0);
     }
 
+    // Check all tool operations for file paths, not just Write/Edit
     const tool_name = hookInput.tool_name;
-
-    // Only check Write and Edit operations
-    if (tool_name !== 'Write' && tool_name !== 'Edit') {
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
-    }
-
     const file_path = hookInput.tool_input?.file_path;
+
     if (!file_path) {
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
