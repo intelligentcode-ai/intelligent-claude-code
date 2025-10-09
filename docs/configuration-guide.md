@@ -203,6 +203,24 @@ The system uses unified JSON configuration with hierarchical loading and separat
 - **Default**: "comprehensive"
 - **Description**: Testing approach for implementations
 
+**development.allowed_allcaps_files** (array)
+- **Default**: `["README.md", "LICENSE", "LICENSE.md", "CLAUDE.md", "CHANGELOG.md", "CONTRIBUTING.md", "AUTHORS", "NOTICE", "PATENTS", "VERSION", "MAKEFILE", "DOCKERFILE", "COPYING", "COPYRIGHT"]`
+- **Description**: List of ALL-CAPITALS filenames that are allowed in the project (well-known files)
+- **Example**:
+  ```json
+  {
+    "development": {
+      "allowed_allcaps_files": [
+        "README.md",
+        "LICENSE",
+        "CLAUDE.md",
+        "CUSTOM-FILE.md"
+      ]
+    }
+  }
+  ```
+- **Usage**: Customize which ALL-CAPITALS filenames are permitted in your project. Projects can add their own files to the list.
+
 ### Tool Settings
 
 **tools.context7_enabled** (boolean)

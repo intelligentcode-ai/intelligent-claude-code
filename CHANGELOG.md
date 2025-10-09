@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.17.1] - 2025-10-09
+
+### Enhancements
+- **ALL-CAPITALS filename blocking**: Enhanced summary-file-enforcement hook to block ALL-CAPITALS filenames
+  - Blocks filenames like `PM-CONSTRAINTS-HOOK-FIX-VALIDATION.md`, `ROOT-CAUSE-ANALYSIS.md`, `DEPLOYMENT-REPORT.md`
+  - Suggests lowercase alternatives for better readability: `pm-constraints-hook-fix-validation.md`, `root-cause-analysis.md`
+  - Maintains exceptions for well-known ALL-CAPITALS files: README.md, LICENSE, CLAUDE.md, CHANGELOG.md, CONTRIBUTING.md, AUTHORS, NOTICE, PATENTS, VERSION, MAKEFILE, DOCKERFILE, COPYING, COPYRIGHT
+  - User preference: ALL-CAPITALS filenames considered harder to read in modern development practices
+  - Validation flow: Summary pattern check → ALL-CAPITALS check → Summaries directory check
+  - Clear error messages with suggested alternatives and exception list
+
+### Configuration Enhancement
+- **Configurable ALL-CAPITALS file allowlist**: Added `development.allowed_allcaps_files` setting
+  - Users can now add project-specific ALL-CAPITALS files to the allowlist
+  - Default list includes 14 well-known files (README.md, LICENSE, CLAUDE.md, etc.)
+  - Customize via `icc.config.json` in `development.allowed_allcaps_files` array
+  - Schema validation ensures correct configuration format
+  - Hook loads from config with fallback to default list
+  - Documented in configuration guide with usage examples
+
+### Technical Details
+- Added allowedAllCapsFiles array with 14 well-known exceptions
+- Filename validation checks base name (excluding extension) for ALL-CAPITALS pattern
+- Regular expression validates A-Z, 0-9, underscore, hyphen characters only
+- Suggests lowercase conversion as alternative filename
+- Hook logs blocked filenames with clear reasoning
+- Configuration system integration with `getSetting('development.allowed_allcaps_files', defaultAllCapsFiles)`
+- Schema definition in `icc.config.schema.json` for IDE autocomplete support
+
+### Benefits
+- Enforces consistent lowercase/mixed-case naming convention
+- Improves file readability and discoverability
+- Maintains backward compatibility with standard ALL-CAPITALS files
+- Provides helpful guidance with suggested alternatives
+- Flexible project-specific customization through configuration
+
+---
+
 ## [8.17.0] - 2025-10-08
 
 ### Features

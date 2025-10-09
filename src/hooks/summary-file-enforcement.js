@@ -110,6 +110,55 @@ function main() {
 
     log(`Summary file detected: ${fileName}`);
 
+    // Load allowed ALL-CAPITALS files from config (with defaults)
+    const defaultAllCapsFiles = [
+      'README.md',
+      'LICENSE',
+      'LICENSE.md',
+      'CLAUDE.md',
+      'CHANGELOG.md',
+      'CONTRIBUTING.md',
+      'AUTHORS',
+      'NOTICE',
+      'PATENTS',
+      'VERSION',
+      'MAKEFILE',
+      'DOCKERFILE',
+      'COPYING',
+      'COPYRIGHT'
+    ];
+
+    const allowedAllCapsFiles = getSetting('development.allowed_allcaps_files', defaultAllCapsFiles);
+    log(`Allowed ALL-CAPITALS files: ${allowedAllCapsFiles.length} entries`);
+
+    // Check for ALL-CAPITALS filename (excluding extension)
+    const fileBaseName = fileName.replace(/\.[^/.]+$/, ''); // Remove extension
+    const isAllCaps = fileBaseName === fileBaseName.toUpperCase() &&
+                      fileBaseName.length > 1 &&
+                      /^[A-Z0-9_-]+$/.test(fileBaseName);
+
+    if (isAllCaps && !allowedAllCapsFiles.includes(fileName)) {
+      log(`BLOCKED: ALL-CAPITALS filename not allowed: ${fileName}`);
+
+      // Suggest lowercase alternative
+      const suggestedName = fileName.toLowerCase();
+      const suggestedPath = path.join(summariesPath, suggestedName);
+
+      console.log(JSON.stringify({
+        continue: false,
+        displayToUser: `🚫 ALL-CAPITALS filenames are not allowed in summaries/
+
+Blocked filename: ${fileName}
+Suggested alternative: ${suggestedName}
+
+Well-known exceptions allowed:
+${allowedAllCapsFiles.join(', ')}
+
+Please use lowercase or mixed-case filenames for better readability.`
+      }));
+      process.exit(0);
+    }
+
     // Check if file is in summaries directory
     const normalizedPath = relativePath.replace(/\\/g, '/');
     const summariesPattern = new RegExp(`^${summariesPath}/`, 'i');

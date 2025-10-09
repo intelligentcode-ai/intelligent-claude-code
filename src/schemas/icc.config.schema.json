@@ -170,6 +170,29 @@
           "type": "string",
           "enum": ["minimal", "standard", "comprehensive"],
           "description": "Testing approach level"
+        },
+        "allowed_allcaps_files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of ALL-CAPITALS filenames that are allowed (well-known files like README.md, LICENSE, CLAUDE.md, etc.)",
+          "default": [
+            "README.md",
+            "LICENSE",
+            "LICENSE.md",
+            "CLAUDE.md",
+            "CHANGELOG.md",
+            "CONTRIBUTING.md",
+            "AUTHORS",
+            "NOTICE",
+            "PATENTS",
+            "VERSION",
+            "MAKEFILE",
+            "DOCKERFILE",
+            "COPYING",
+            "COPYRIGHT"
+          ]
         }
       }
     },
