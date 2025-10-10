@@ -335,7 +335,7 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
       const responseJson = JSON.stringify(response);
       log(`BLOCKING RESPONSE: ${responseJson}`);
       console.log(responseJson);
-      process.exit(0);
+      process.exit(2);  // Exit code 2 for deny/block
     }
 
     // MODIFIED: Privacy enforcement applied

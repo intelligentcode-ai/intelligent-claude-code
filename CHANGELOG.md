@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.17.4] - 2025-10-10
+
+### Bug Fixes
+- **Git enforcement hook**: Fixed incorrect exit code for branch protection blocking
+  - Changed process.exit(0) to process.exit(2) when blocking git operations (line 338)
+  - Previously, hook returned success exit code (0) even when denying operations
+  - Now correctly uses exit code 2 for deny/block responses
+  - Aligns with Claude Code hook standards and other enforcement hooks
+
+### Technical Details
+- **git-enforcement.js**: Updated blocking response exit code
+  - Branch protection violations now return: `permissionDecision: "deny"` + `process.exit(2)`
+  - Consistent with pm-constraints-enforcement.js and project-scope-enforcement.js patterns
+  - Exit code standards: 0 = allow, 2 = deny/block
+
+### Benefits
+- Correct hook exit code semantics
+- Consistent enforcement behavior across all hooks
+- Proper Claude Code integration
+
+---
+
 ## [8.17.3] - 2025-10-09
 
 ### Bug Fixes
