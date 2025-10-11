@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -118,7 +119,15 @@ function main() {
     }
 
     const session_id = hookInput.session_id;
-    const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}`);
+
+    // CRITICAL FIX: Include project hash to match agent-marker.js filename format
+    // Without hash, decrement fails to find marker file and count stays stale
+    // This caused PM constraints bypass when marker showed 23 agents as "active"
+    const projectRoot = hookInput.cwd || process.cwd();
+    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+
+    // Use project-specific marker filename matching agent-marker.js
+    const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
 
     if (fs.existsSync(markerFile)) {
       decrementAgentCount(markerFile, session_id);
