@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.17.5] - 2025-10-11
+
+### Bug Fixes
+- **Agent marker reference counting**: Fixed critical marker filename mismatch causing PM constraints bypass
+  - `subagent-stop.js` now includes project hash in marker filename (lines 125-129)
+  - `context-injection.js` now includes project hash in marker filename (lines 179-183)
+  - Previously, agent-marker.js created `agent-executing-{session}-{hash}` but decrement/cleanup looked for `agent-executing-{session}`
+  - Mismatch caused agent count to increment but never decrement, staying permanently at stale values
+  - Stale count (e.g., 23 agents) caused PM constraints to incorrectly allow file operations in main scope
+  - All three hooks now use identical filename format for consistent reference counting
+
+### Technical Details
+- **subagent-stop.js**: Added crypto import and project hash calculation (lines 6, 125-129)
+  - Calculates: `crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8)`
+  - Constructs: `agent-executing-${session_id}-${projectHash}`
+  - Detailed comments explain critical fix and PM constraints bypass impact
+- **context-injection.js**: Added project hash calculation in UserPromptSubmit cleanup (lines 179-183)
+  - Same hash calculation and filename construction as agent-marker.js
+  - Enhanced log message includes project root for debugging
+  - Ensures marker cleanup works correctly when user submits new prompt
+
+### Impact
+- **Before**: Edit operations succeeded in main scope (23 stale agents detected)
+- **After**: PM constraints correctly block operations in main scope (accurate agent count)
+- **Root Cause**: Filename mismatch prevented marker file discovery for decrement/cleanup
+- **Resolution**: All three hooks now use identical project-specific marker filenames
+
+### Benefits
+- Correct agent context detection for PM constraints enforcement
+- Proper marker cleanup when agents complete
+- Accurate reference counting across hook system
+- Prevents PM constraints bypass through stale agent counts
+
+---
+
 ## [8.17.4] - 2025-10-10
 
 ### Bug Fixes
