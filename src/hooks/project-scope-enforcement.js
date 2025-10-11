@@ -118,6 +118,39 @@ function main() {
 
     log(`Tool: ${tool}, FilePath: ${filePath}, Command: ${command}`);
 
+    // Check Read operations on installation directory
+    if (filePath && tool === 'Read') {
+      if (isInstallationPath(filePath)) {
+        // Block read operations on installation directory
+        log(`Installation path read BLOCKED: ${filePath}`);
+        const response = {
+          hookSpecificOutput: {
+            hookEventName: 'PreToolUse',
+            permissionDecision: 'deny',
+            permissionDecisionReason: `🚫 Installation directory is protected - work within project scope only
+
+Blocked: ${filePath}
+Protected: ~/.claude/ directory (system installation)
+
+Reading from installation directory is not permitted.
+Work must remain within project boundaries.
+
+All work must be done within project directories:
+- Project templates and source files
+- Project documentation and memory
+- Project-specific configurations
+
+Installation inspection happens via project source files only.`
+          }
+        };
+        const responseJson = JSON.stringify(response);
+        log(`RESPONSE: ${responseJson}`);
+        log(`EXIT CODE: 2`);
+        console.log(responseJson);
+        process.exit(2);
+      }
+    }
+
     // Check file operations (Edit/Write/MultiEdit)
     if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit')) {
       if (isInstallationPath(filePath)) {

@@ -53,5 +53,42 @@ PM role = coordination only. All technical work delegated to specialists.
 ### Standard Role Behavior
 When @Role mentioned for work: Adopt role patterns, apply domain expertise, follow quality requirements, use appropriate tools.
 
+## Specialist Creation Guidance
+
+<specialist_creation_guidance id="SPECIALIST-SELECTION">
+  <technology_analysis mandatory="true">
+    <detect_context>
+      <signal>package.json → Node.js/JavaScript ecosystem</signal>
+      <signal>requirements.txt → Python ecosystem</signal>
+      <signal>*.jsx/*.tsx → React framework</signal>
+      <signal>terraform/*.tf → Infrastructure as Code</signal>
+      <signal>Dockerfile → Container technology</signal>
+      <signal>kubernetes/*.yaml → Kubernetes orchestration</signal>
+    </detect_context>
+
+    <create_specialist>
+      <pattern>Node.js work → @Node-Developer (NOT @Developer)</pattern>
+      <pattern>React UI → @React-Frontend-Developer (NOT @Developer)</pattern>
+      <pattern>AWS infra → @AWS-Infrastructure-Engineer (NOT @System-Engineer)</pattern>
+      <pattern>Database work → @Database-Engineer (NOT @Developer)</pattern>
+      <pattern>Python ML → @Python-ML-Engineer (NOT @Developer)</pattern>
+      <pattern>Kubernetes ops → @K8s-DevOps-Engineer (NOT @DevOps-Engineer)</pattern>
+    </create_specialist>
+
+    <rationale>
+      <benefit>10+ years domain expertise in technology</benefit>
+      <benefit>Context-aware implementation patterns</benefit>
+      <benefit>Technology-specific best practices</benefit>
+      <benefit>Reduced learning curve and errors</benefit>
+    </rationale>
+  </technology_analysis>
+
+  <hook_integration>
+    <mechanical_check>agent-marker.js detects generic @Developer usage</mechanical_check>
+    <behavioral_guide>This pattern guides technology detection and specialist creation rationale</behavioral_guide>
+    <limitation>Hook suggests specialists, behavioral pattern guides selection reasoning</limitation>
+  </hook_integration>
+</specialist_creation_guidance>
+
 ---
 *Role system with assignment matrix and dynamic creation*

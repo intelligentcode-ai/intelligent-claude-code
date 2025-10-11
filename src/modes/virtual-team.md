@@ -22,6 +22,7 @@
 ## Learning & Memory
 @../behaviors/learning-team-automation.md
 @../behaviors/proactive-memory-behavior.md
+@../behaviors/memory-enforcement-patterns.md
 
 ## Validation & Quality
 @../behaviors/adaptation-system.md
@@ -32,7 +33,7 @@
 ## Advanced Features
 @../behaviors/template-resolution.md
 
-**CORE:** 14 roles+unlimited • 21 behaviors • @-notation • AgentTask-Template-driven execution
+**CORE:** 14 roles+unlimited • 22 behaviors • @-notation • AgentTask-Template-driven execution
 
 ## STARTUP
 
