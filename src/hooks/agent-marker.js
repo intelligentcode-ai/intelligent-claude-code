@@ -151,6 +151,32 @@ function main() {
         const toolInvocationId = incrementAgentCount(markerFile, session_id, tool_name, projectRoot);
         if (toolInvocationId) {
           log(`Agent marker incremented: ${markerFile} (project: ${projectRoot}, tool_invocation_id: ${toolInvocationId})`);
+
+          // Check for generic agent usage and suggest specialists
+          const toolInput = hookInput.tool_input || {};
+          const agentType = (toolInput.agent || '').toLowerCase();
+
+          if (agentType === 'developer') {
+            log('[SUGGESTION] Generic @Developer detected. Consider technology-specific specialist:');
+            log('  - Node.js work → @Node-Developer');
+            log('  - React/Frontend → @React-Frontend-Developer');
+            log('  - Python → @Python-Developer');
+            log('  - Database → @Database-Engineer');
+            log('  See role-system.md SPECIALIST-SELECTION for guidance');
+          } else if (agentType === 'system-engineer') {
+            log('[SUGGESTION] Generic @System-Engineer detected. Consider infrastructure specialist:');
+            log('  - AWS → @AWS-Infrastructure-Engineer');
+            log('  - Kubernetes → @K8s-DevOps-Engineer');
+            log('  - Database → @Database-Engineer');
+            log('  - Container → @Docker-DevOps-Engineer');
+            log('  See role-system.md SPECIALIST-SELECTION for guidance');
+          } else if (agentType === 'devops-engineer') {
+            log('[SUGGESTION] Generic @DevOps-Engineer detected. Consider platform specialist:');
+            log('  - Kubernetes → @K8s-DevOps-Engineer');
+            log('  - AWS → @AWS-DevOps-Engineer');
+            log('  - CI/CD → @Pipeline-DevOps-Engineer');
+            log('  See role-system.md SPECIALIST-SELECTION for guidance');
+          }
         } else {
           log(`Failed to increment agent marker`);
         }
