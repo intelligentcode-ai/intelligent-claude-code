@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.0] - 2025-10-11
+
+### Features
+- **Behavioral enforcement system**: Combined behavioral patterns + hook enforcement for memory-first approach
+  - New `memory-enforcement-patterns.md` with XML-structured guidance (124 lines)
+  - New `main-scope-boundaries.md` defining coordination vs execution thinking (118 lines)
+  - New `pre-agenttask-validation.js` hook mechanically enforces memory search before AgentTask creation
+  - Enhanced `role-system.md` with XML specialist creation guidance
+  - Enhanced `agent-marker.js` detects generic agents and suggests technology specialists
+  - Enhanced `project-scope-enforcement.js` blocks Read operations on ~/.claude/ directory
+
+### Technical Details
+- **Memory-First Enforcement**:
+  - Hook detects Grep tool usage on memory/ directory
+  - Blocks Task tool if no memory search evidence
+  - Behavioral pattern guides WHAT to search and WHY
+  - Clear separation: hooks enforce mechanics, behaviors guide semantics
+
+- **Specialist Agent Selection**:
+  - XML-structured technology detection patterns
+  - Hook logs suggestions for generic agent usage
+  - Behavioral guidance for specialist creation rationale
+  - Examples: Node.js → @Node-Developer, React → @React-Frontend-Developer
+
+- **Scope Enforcement Enhancement**:
+  - Read tool now blocked for ~/.claude/ directory access
+  - Consistent with existing Edit/Write blocking
+  - Complete installation directory protection
+
+### Division of Responsibilities
+- **Hooks**: Mechanical enforcement (detection, blocking, logging)
+- **Behavioral Patterns**: Semantic guidance (WHAT, WHY, rationale, standards)
+- **Clear Documentation**: Realistic expectations throughout
+
+### Benefits
+- Mechanical compliance ensures basic requirements met
+- Semantic guidance drives quality execution
+- Educational approach improves system over time
+- Realistic expectations prevent over-reliance
+- Clear separation of concerns for maintainability
+
+---
+
 ## [8.17.5] - 2025-10-11
 
 ### Bug Fixes

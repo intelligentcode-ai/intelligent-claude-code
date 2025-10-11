@@ -402,6 +402,22 @@ function main() {
       contextualGuidance.push('💡 Infrastructure amnesia WASTES USER TIME - Memory prevents repetition');
     }
 
+    // WORK DETECTION AND MEMORY-FIRST REMINDER
+    const workActionVerbs = ['implement', 'fix', 'create', 'build', 'deploy', 'update', 'modify', 'change', 'add', 'remove', 'delete', 'configure', 'setup', 'install', 'refactor', 'optimize'];
+    const hasWorkAction = workActionVerbs.some(verb => userPrompt.toLowerCase().includes(verb));
+
+    // Track recent memory searches in session (simple heuristic)
+    const memorySearchTerms = ['memory/', 'searched memory', 'from memory', 'memory shows', 'according to memory'];
+    const hasRecentMemorySearch = memorySearchTerms.some(term => userPrompt.toLowerCase().includes(term));
+
+    // Inject memory-first reminder for work requests without recent memory search
+    if (hasWorkAction && !hasRecentMemorySearch) {
+      contextualGuidance.push('💡 MEMORY-FIRST REMINDER: Before creating AgentTask, search memory for patterns:');
+      contextualGuidance.push('   - Grep memory/[work_domain] for similar implementations');
+      contextualGuidance.push('   - Check best-practices/[category] for proven approaches');
+      contextualGuidance.push('   - Embed discoveries in AgentTask context for specialist benefit');
+    }
+
     // AGGRESSIVE MEMORY-FIRST ENFORCEMENT
     const locationQueries = ['where is', 'where are', 'where can', 'path to', 'location of', 'find the', 'access'];
     const credentialQueries = ['pat', 'token', 'credential', 'password', 'auth', 'key', 'secret'];
