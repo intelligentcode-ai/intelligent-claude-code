@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.6] - 2025-10-12
+
+### Bug Fixes
+- **pm-constraints-enforcement.js**: Now correctly enforces PM constraints regardless of bypass permissions mode
+  - Added detection for `permission_mode: 'bypassPermissions'` flag
+  - PM role restrictions are architectural requirements, not user preferences
+  - ansible-playbook and blocked commands now correctly blocked in PM context
+  - Clear logging shows bypass mode detected but constraints enforced
+  - Lines 409-413: Bypass detection with architectural justification
+
+### Technical Details
+- Hook now detects when Claude Code attempts to bypass permissions
+- Logs warning message but continues normal PM constraint enforcement flow
+- Prevents execution of blocked commands like ansible-playbook in PM context
+- PM role restrictions enforce architectural boundaries regardless of user approval
+
+### Rationale
+PM constraints are architectural requirements that define role boundaries:
+- PM role = coordination only (story breakdown, AgentTask creation)
+- Technical work must be delegated to specialist agents
+- Cannot be bypassed through user approval or permission overrides
+- Enforcement ensures system integrity and proper role separation
+
+---
+
 ## [8.18.5] - 2025-10-11
 
 ### Bug Fixes
