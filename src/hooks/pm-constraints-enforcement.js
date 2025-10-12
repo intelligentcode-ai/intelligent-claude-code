@@ -126,6 +126,50 @@ function main() {
     }
   }
 
+  function extractCommandsFromBash(commandString) {
+    // First, remove all quoted strings (both single and double quotes)
+    // Replace with placeholder to maintain word boundaries
+    let cleanedCommand = commandString;
+
+    // Remove double-quoted strings: "text"
+    cleanedCommand = cleanedCommand.replace(/"[^"]*"/g, '""');
+
+    // Remove single-quoted strings: 'text'
+    cleanedCommand = cleanedCommand.replace(/'[^']*'/g, "''");
+
+    // Split by command separators: && || ; |
+    const statements = cleanedCommand.split(/&&|\|\||;|\|/).map(s => s.trim());
+
+    const commands = [];
+
+    for (const statement of statements) {
+      // Remove leading/trailing whitespace
+      const trimmed = statement.trim();
+      if (!trimmed) continue;
+
+      // Split into words
+      const words = trimmed.split(/\s+/);
+
+      // Skip environment variables (FOO=bar, VAR=val)
+      let commandIndex = 0;
+      while (commandIndex < words.length && words[commandIndex].includes('=')) {
+        commandIndex++;
+      }
+
+      if (commandIndex < words.length) {
+        const cmd = words[commandIndex];
+
+        // Extract command name (ignore paths)
+        // If command contains '/', take only the last part (basename)
+        const commandName = cmd.includes('/') ? cmd.split('/').pop() : cmd;
+
+        commands.push(commandName);
+      }
+    }
+
+    return commands;
+  }
+
   function validateBashCommand(command) {
     // Allow read-only process inspection commands (ps, grep, pgrep, etc.)
     const readOnlyInspectionCommands = ['ps', 'pgrep', 'pidof', 'lsof', 'netstat', 'ss', 'top', 'htop'];
@@ -134,6 +178,19 @@ function main() {
     const firstWord = command.trim().split(/\s+/)[0];
     if (readOnlyInspectionCommands.includes(firstWord)) {
       return { allowed: true };
+    }
+
+    // Check for SSH remote execution BEFORE other validation
+    // SSH commands execute quoted strings on remote systems, so we must validate the remote command
+    const sshPattern = /\bssh\b[^"']*["']([^"']+)["']/;
+    const sshMatch = command.match(sshPattern);
+
+    if (sshMatch) {
+      // Extract remote command from quoted string
+      const remoteCommand = sshMatch[1];
+      log(`SSH remote command detected: ${remoteCommand}`);
+      // Recursively validate the FULL remote command (preserves kubectl subcommands)
+      return validateBashCommand(remoteCommand);
     }
 
     // Special case: grep is read-only if it's part of a pipe (ps aux | grep)
@@ -190,19 +247,15 @@ Use Task tool to create specialist agent via AgentTask.`
       };
     }
 
-    // Split compound commands by && and ; and | to check ALL commands in chain
-    const commandParts = command.split(/&&|;|\|/).map(part => part.trim());
+    // Extract actual commands being executed (ignore paths and arguments)
+    const actualCommands = extractCommandsFromBash(command);
 
-    for (const part of commandParts) {
-      // Extract first word (command name) from each part
-      const firstWord = part.trim().split(/\s+/)[0];
-
-      // Skip empty parts
-      if (!firstWord) continue;
-
-      // Check if command is blocked (exact match OR prefix match with hyphen)
+    // Check if ANY actual command is in the blocked list
+    for (const cmd of actualCommands) {
+      // Check against blocked commands
       for (const blocked of allBlockedCommands) {
-        if (firstWord === blocked || firstWord.startsWith(blocked + '-')) {
+        // Match command name exactly or with suffix (e.g., npm vs npm-install)
+        if (cmd === blocked || cmd.startsWith(blocked + '-')) {
           // Provide specific guidance for kubectl commands
           let kubectlGuidance = '';
           if (blocked === 'kubectl') {
@@ -216,8 +269,7 @@ kubectl Destructive (BLOCKED): delete, apply, create, patch, replace, scale, rol
             allowed: false,
             message: `🚫 PM role cannot execute build/deploy/system commands - create Agents using AgentTasks for technical work
 
-Blocked command: ${blocked}
-Found in: ${part}
+Blocked command: ${cmd}
 Full command: ${command}
 
 Build/Deploy tools: npm, yarn, make, docker, cargo, mvn, gradle, go
@@ -252,6 +304,11 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
 
     // Check if file is in root and ends with .md
     if ((dirName === '.' || dirName === '') && fileName.endsWith('.md')) {
+      return true;
+    }
+
+    // Check if file is VERSION in root
+    if ((dirName === '.' || dirName === '') && fileName === 'VERSION') {
       return true;
     }
 
@@ -298,16 +355,11 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
     }
 
     const fileName = path.basename(relativePath);
-    const dirName = path.dirname(relativePath);
-
-    // Check if it's in project root
-    if (dirName !== '.' && dirName !== '') {
-      return false;
-    }
 
     // Check if filename matches summary patterns (case-insensitive)
+    // Check ANY directory, not just project root
     const upperFileName = fileName.toUpperCase();
-    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING'];
+    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING', 'ROOT_CAUSE'];
 
     return summaryPatterns.some(pattern => upperFileName.includes(pattern));
   }
@@ -318,7 +370,9 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
     }
 
     const fileName = path.basename(filePath);
-    const suggestedPath = `summaries/${fileName}`;
+    const isAllCapitals = fileName === fileName.toUpperCase();
+    const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
+    const suggestedPath = `summaries/${suggestedName}`;
 
     // Ensure summaries directory exists in the project root
     const summariesDir = path.join(projectRoot, 'summaries');
@@ -327,14 +381,85 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
       log('Created summaries/ directory for summary file redirection');
     }
 
+    const capitalsWarning = isAllCapitals ? '\n⚠️ Filename is all-capitals - use lowercase for consistency' : '';
+
     return {
       allowed: false,
       message: `📋 Summary files belong in ./summaries/ directory
 
 Blocked: ${filePath}
-Suggested: ${suggestedPath}
+Suggested: ${suggestedPath}${capitalsWarning}
 
 Please create summary files in the summaries/ directory to keep project root clean.`
+    };
+  }
+
+  function validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext = false) {
+    // Check appropriate setting based on context
+    let allowMarkdown;
+
+    if (isAgentContext) {
+      // For agents: check agent-specific setting first, fallback to main setting
+      const agentSetting = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
+      allowMarkdown = agentSetting !== null ? agentSetting : getSetting('enforcement.allow_markdown_outside_allowlist', false);
+    } else {
+      // For main scope: use main setting
+      allowMarkdown = getSetting('enforcement.allow_markdown_outside_allowlist', false);
+    }
+
+    if (allowMarkdown) {
+      return { allowed: true };
+    }
+
+    // Check if file is markdown
+    if (!filePath.endsWith('.md')) {
+      return { allowed: true };
+    }
+
+    // Normalize to relative path if absolute
+    let relativePath = filePath;
+    if (path.isAbsolute(filePath)) {
+      relativePath = path.relative(projectRoot, filePath);
+    }
+
+    // Get configured allowlist
+    const config = loadConfiguration();
+    const allowlist = [
+      config.story_path,
+      config.bug_path,
+      config.memory_path,
+      config.docs_path,
+      'agenttasks',
+      'summaries'
+    ];
+
+    // Check if markdown is in root (root .md files are allowed)
+    const dirName = path.dirname(relativePath);
+    if (dirName === '.' || dirName === '') {
+      return { allowed: true };
+    }
+
+    // Check if markdown is in allowlist directory
+    for (const allowedPath of allowlist) {
+      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
+        return { allowed: true };
+      }
+    }
+
+    // Markdown file outside allowlist and setting is false - block it
+    return {
+      allowed: false,
+      message: `📝 Markdown files outside allowlist directories are blocked by default
+
+Blocked: ${filePath}
+Reason: Markdown files should be in designated directories
+
+Allowed directories for markdown: ${allowlist.join(', ')}, root *.md files
+
+If you specifically requested this file, ask the user to enable:
+enforcement.allow_markdown_outside_allowlist = true in icc.config.json
+
+Or create the file in an appropriate allowlist directory.`
     };
   }
 
@@ -438,10 +563,42 @@ Use Task tool to create specialist agent via AgentTask.`
       process.exit(0);
     }
 
-    // Check for summary files in root (applies to ALL roles)
-    const summaryValidation = validateSummaryFile(filePath, projectRoot);
-    if (!summaryValidation.allowed) {
-      log(`Summary file blocked: ${filePath}`);
+    // Check for summary files in root (applies to Write/Edit/Update only, not Read)
+    if (tool !== 'Read' && filePath.endsWith('.md')) {
+      const summaryValidation = validateSummaryFile(filePath, projectRoot);
+      if (!summaryValidation.allowed) {
+        log(`Summary file blocked: ${filePath}`);
+
+        const blockingEnabled = getBlockingEnabled();
+
+        if (blockingEnabled) {
+          // BLOCKING MODE (default)
+          const response = {
+            hookSpecificOutput: {
+              hookEventName: 'PreToolUse',
+              permissionDecision: 'deny',
+              permissionDecisionReason: summaryValidation.message
+            }
+          };
+          const responseJson = JSON.stringify(response);
+          log(`RESPONSE: ${responseJson}`);
+          log(`EXIT CODE: 2 (BLOCKING MODE)`);
+          console.log(responseJson);
+          process.exit(2);
+        } else {
+          // WARNING MODE (non-blocking)
+          log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
+          console.log(JSON.stringify({ continue: true }));
+          process.exit(0);
+        }
+      }
+    }
+
+    // Check for markdown files outside allowlist (applies to ALL roles)
+    const isAgentContext = !isPMRole(hookInput);
+    const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext);
+    if (!markdownValidation.allowed) {
+      log(`Markdown file outside allowlist blocked: ${filePath}`);
 
       const blockingEnabled = getBlockingEnabled();
 
@@ -451,7 +608,7 @@ Use Task tool to create specialist agent via AgentTask.`
           hookSpecificOutput: {
             hookEventName: 'PreToolUse',
             permissionDecision: 'deny',
-            permissionDecisionReason: summaryValidation.message
+            permissionDecisionReason: markdownValidation.message
           }
         };
         const responseJson = JSON.stringify(response);
@@ -461,7 +618,7 @@ Use Task tool to create specialist agent via AgentTask.`
         process.exit(2);
       } else {
         // WARNING MODE (non-blocking)
-        log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
+        log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
         console.log(JSON.stringify({ continue: true }));
         process.exit(0);
       }
@@ -471,38 +628,36 @@ Use Task tool to create specialist agent via AgentTask.`
     if (isPMRole(hookInput)) {
       log('PM role active - validating operation');
 
-      // Block Edit/Write/Update tools entirely - require AgentTasks for technical work
+      // Block Edit/Write/Update tools ONLY for files not in allowlist
       if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
-        const blockingEnabled = getBlockingEnabled();
+        log(`File modification tool detected: ${tool} on ${filePath}`);
 
-        const message = `🚫 PM role cannot modify files directly - create Agents using AgentTasks for technical work
+        const paths = getConfiguredPaths();
+        const validation = validatePMOperation(filePath, tool, paths, projectRoot);
 
-Blocked tool: ${tool}
-File: ${filePath || 'N/A'}
+        if (!validation.allowed) {
+          const blockingEnabled = getBlockingEnabled();
 
-PM role is for coordination only. All file modifications must be performed by specialist agents.
-
-Use Task tool to create specialist agent via AgentTask.`;
-
-        log(`File modification tool blocked: ${tool}`);
-
-        if (blockingEnabled) {
-          const response = {
-            hookSpecificOutput: {
-              hookEventName: 'PreToolUse',
-              permissionDecision: 'deny',
-              permissionDecisionReason: message
-            }
-          };
-          const responseJson = JSON.stringify(response);
-          log(`RESPONSE: ${responseJson}`);
-          log(`EXIT CODE: 2 (BLOCKING MODE)`);
-          console.log(responseJson);
-          process.exit(2);
+          if (blockingEnabled) {
+            const response = {
+              hookSpecificOutput: {
+                hookEventName: 'PreToolUse',
+                permissionDecision: 'deny',
+                permissionDecisionReason: validation.message
+              }
+            };
+            const responseJson = JSON.stringify(response);
+            log(`RESPONSE: ${responseJson}`);
+            log(`EXIT CODE: 2 (BLOCKING MODE)`);
+            console.log(responseJson);
+            process.exit(2);
+          } else {
+            log(`⚠️ WARNING (non-blocking): ${validation.message}`);
+            console.log(JSON.stringify({ continue: true }));
+            process.exit(0);
+          }
         } else {
-          log(`⚠️ WARNING (non-blocking): ${message}`);
-          console.log(JSON.stringify({ continue: true }));
-          process.exit(0);
+          log(`File modification allowed - ${filePath} is in PM allowlist`);
         }
       }
 

@@ -7,6 +7,252 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.15] - 2025-10-12
+
+### Security Fixes
+- **CRITICAL: SSH Remote Command Execution Bypass**
+  - Lines 130-141: Added SSH pattern detection before quote stripping
+  - SSH commands now validated recursively for remote command content
+  - Prevents PM constraint bypass through remote command execution
+  - Pattern: `/\bssh\b[^"']*["']([^"']+)["']/` extracts remote command
+  - Remote command validated through recursive `extractCommandsFromBash()` call
+
+### Bug Fixed
+- **Before Fix**: `ssh user@host "kubectl delete pod"` → Allowed (BYPASS!)
+- **After Fix**: `ssh user@host "kubectl delete pod"` → Blocked (kubectl validated)
+
+### Expected Behavior
+- ❌ `ssh user@host "kubectl delete pod"` → Remote command: kubectl (blocked)
+- ❌ `ssh user@host "terraform apply"` → Remote command: terraform (blocked)
+- ✅ `ssh user@host "ls -la"` → Remote command: ls (allowed)
+- ✅ `ssh user@host "git status"` → Remote command: git (allowed)
+- ✅ `gh release create --notes "npm"` → Not SSH, normal processing (allowed)
+
+### Technical Details
+- **Vulnerability**: Quote stripping allowed SSH to bypass all PM constraints
+- **Root Cause**: Quote removal prevented validation of commands executed on remote systems
+- **Fix**: SSH commands detected first, remote command extracted and validated recursively
+- **Security Impact**: Complete PM constraint bypass prevented
+- **Memory**: Pattern documented in `memory/security/ssh-remote-command-bypass.md`
+
+---
+
+## [8.18.14] - 2025-10-12
+
+### Bug Fixes
+- **Bash Command Validation**: Fixed false positives when blocked command names appear in quoted strings
+  - Lines 129-171: Updated extractCommandsFromBash to strip quoted strings before parsing
+  - Removes double-quoted strings: "text" → ""
+  - Removes single-quoted strings: 'text' → ''
+  - Maintains word boundaries with empty quote placeholders
+  - Fixes: `gh release create --notes "Example: npm install blocked"` now allowed (command: gh)
+  - Fixes: `git commit -m "ansible playbook added"` now allowed (command: git)
+  - Blocks: `npm install` still blocked (command: npm)
+  - Blocks: `git commit && npm run build` still blocked (command: npm)
+
+### Technical Details
+- **Quote Stripping Logic**: Regex replacement removes quoted content before command extraction
+- **Validation Improvement**: Only validates actual commands, not quoted argument text
+- **Test Cases**:
+  - `gh release create --notes "npm install example"` → Cleaned: `gh release create --notes ""` → Command: gh → Allowed
+  - `gh pr comment --body "terraform apply blocked"` → Cleaned: `gh pr comment --body ""` → Command: gh → Allowed
+  - `git commit -m "docker build example"` → Cleaned: `git commit -m ""` → Command: git → Allowed
+  - `npm install` → Cleaned: `npm install` → Command: npm → Blocked
+
+---
+
+## [8.18.13] - 2025-10-12
+
+### Bug Fixes
+- **Bash Command Validation**: Fixed false positives when command names appear in file paths
+  - Lines 129-161: Added extractCommandsFromBash function to extract actual executable names
+  - Lines 227-268: Updated validateBashCommand to use command extraction instead of regex matching
+  - Handles environment variables (FOO=bar npm install)
+  - Handles command separators (&&, ||, ;, |)
+  - Ignores paths in command names (extracts basename)
+  - Fixes: `cd /ansible/deployments && git diff` now allowed (commands: cd, git)
+  - Fixes: `ls /terraform/modules` now allowed (command: ls)
+  - Blocks: `ansible-playbook deploy.yml` still blocked (command: ansible-playbook)
+  - Blocks: `cd /path && npm install` still blocked (command: npm)
+
+### Technical Details
+- **Command Extraction Logic**: Splits by separators, skips environment variables, extracts basename from paths
+- **Validation Changes**: Now checks extracted commands against blocklist, not entire command string
+- **Test Cases**:
+  - `cd /ansible/deployments && git diff` → Extracted: ['cd', 'git'] → Allowed
+  - `FOO=bar git status` → Extracted: ['git'] → Allowed
+  - `ansible-playbook deploy.yml` → Extracted: ['ansible-playbook'] → Blocked
+  - `terraform apply` → Extracted: ['terraform'] → Blocked
+
+---
+
+## [8.18.12] - 2025-10-12
+
+### Bug Fixes
+- **Markdown Enforcement Logic**: Fixed validation logic and added agent-specific setting
+  - Lines 507-535: Summary validation now only blocks Write/Edit/Update, not Read operations
+  - Lines 337-404: Updated validateMarkdownOutsideAllowlist to accept isAgentContext parameter
+  - Lines 341-348: Added agent-specific setting check with fallback to main setting
+  - Lines 538-539: Markdown validation passes agent context for appropriate setting selection
+  - icc.config.default.json:122: Added allow_markdown_outside_allowlist_agents setting (default: null)
+  - icc.config.json:13: Added agent override setting (true) for this project
+  - Fixes: Read operations no longer blocked by summary validation
+  - Fixes: Agents can have different markdown allowlist behavior from main scope
+
+### Configuration
+- **Agent-Specific Markdown Control**: New setting allows agents to override main markdown allowlist
+  - When `allow_markdown_outside_allowlist_agents` is null, uses main setting value
+  - When explicitly set (true/false), agents use their own setting
+  - This project enables both settings to allow markdown anywhere for all contexts
+
+### Technical Details
+- **Summary Validation**: Only applies to Write/Edit/Update operations (line 507)
+- **Agent Context Detection**: Uses !isPMRole(hookInput) to determine agent context (line 538)
+- **Setting Hierarchy**: Agent setting → Main setting → Default (false)
+- **Testing Scenarios**:
+  - Read `SUMMARY.md` → Allowed (Read operation not validated)
+  - Write `SUMMARY.md` → Blocked (Write operation validated)
+  - Agent writes `random-dir/notes.md` with agent_setting=null, main_setting=false → Blocked
+  - Agent writes `random-dir/notes.md` with agent_setting=true, main_setting=false → Allowed
+  - Main writes `random-dir/notes.md` with main_setting=true → Allowed
+
+---
+
+## [8.18.11] - 2025-10-12
+
+### Features
+- **Markdown File Enforcement**: Block markdown files outside allowlist directories by default
+  - icc.config.default.json:121: Added enforcement.allow_markdown_outside_allowlist (default: false)
+  - src/hooks/pm-constraints-enforcement.js:337-395: Added validateMarkdownOutsideAllowlist function
+  - src/hooks/pm-constraints-enforcement.js:526-553: Added validation call in main flow
+  - Blocks markdown files outside: stories/, bugs/, memory/, docs/, agenttasks/, summaries/
+  - Always allows root .md files (README.md, CHANGELOG.md, etc.)
+  - Applies to ALL roles, not just PM
+  - Clear error message guides users to enable setting or use proper directory
+
+### Configuration
+- **Project Override**: This project enables allow_markdown_outside_allowlist=true
+  - icc.config.json:11-13: Added enforcement.allow_markdown_outside_allowlist setting
+  - Allows markdown files in any directory within intelligent-claude-code project
+  - Other projects default to blocking behavior for cleaner project structure
+
+### Technical Details
+- **Default Behavior**: Markdown files blocked outside allowlist unless explicitly configured
+- **Validation Logic**: Lines 337-395 check file extension, normalize path, verify allowlist
+- **Root Exception**: Lines 367-371 allow root .md files regardless of allowlist
+- **Error Message**: Explains blocked file, allowed directories, and how to enable setting
+- **Testing Scenarios**:
+  - `project-root/README.md` → Allowed (root .md files)
+  - `docs/architecture.md` → Allowed (in allowlist)
+  - `random-dir/SUMMARY.md` → Blocked (outside allowlist)
+  - `nextcloud/ANALYSIS.md` → Blocked (outside allowlist)
+
+---
+
+## [8.18.10] - 2025-10-12
+
+### Bug Fixes
+- **Summary File Validation Hook**: Fixed subdirectory validation and added all-capitals warning
+  - Lines 289-305: Removed project root restriction from isSummaryFile()
+  - Summary files now validated in ANY directory, not just project root
+  - Added 'ROOT_CAUSE' to summaryPatterns array
+  - Lines 307-335: Added all-capitals filename detection
+  - Suggests lowercase filenames for consistency
+  - Fixes bug where `nextcloud/APPAPI_DEFAULT_DAEMON_ROOT_CAUSE.md` wasn't caught
+  - All summary files now correctly redirected to summaries/ directory
+
+### Technical Details
+- **Root Cause**: Lines 301-303 returned false for files not in project root, bypassing validation
+- **Fix Applied**: Removed directory restriction, check filename patterns regardless of location
+- **Examples Now Caught**:
+  - `nextcloud/APPAPI_DEFAULT_DAEMON_ROOT_CAUSE.md` → `summaries/appapi_default_daemon_root_cause.md`
+  - `any/path/ANALYSIS-RESULTS.md` → `summaries/analysis-results.md`
+- **All-Capitals Warning**: Hook now detects and warns about all-capitals filenames
+
+---
+
+## [8.18.9] - 2025-10-12
+
+### Bug Fixes
+- **pm-constraints-enforcement.js**: Fixed Edit/Write allowlist bypass bug
+  - Lines 250-253: Added VERSION file to root file allowlist
+  - Lines 471-502: Changed Edit/Write validation to check allowlist BEFORE blocking
+  - PM role can now edit VERSION, CHANGELOG.md, and other allowlist files
+  - Technical files (src/, lib/, config/, tests/) still correctly blocked
+  - Root cause: Edit/Write tools were blocked unconditionally without checking allowlist
+
+- **Installer Cleanup**: Added SessionStart hook removal to both installers
+  - ansible/tasks/main.yml:315-333: Added jq-based cleanup task before settings merge
+  - install.ps1:157-186: Added Remove-ObsoleteSessionStartHook function
+  - Fixes "Cannot find module session-start.js" error from v8.18.8
+  - Both installers now remove obsolete SessionStart registration during upgrades
+  - Idempotent: Cleanup runs safely on every installation
+
+### Technical Details
+- **Edit/Write Bug**: Lines 467-499 blocked all Edit/Write operations immediately without checking allowlist
+- **Fix Applied**: validatePMOperation() now called first to check file against allowlist/blocklist
+- **VERSION Added**: VERSION file explicitly whitelisted alongside CHANGELOG.md and config files
+- **Testing**: All 12 test cases passed (8 allowed, 4 blocked as expected)
+
+---
+
+## [8.18.8] - 2025-10-12
+
+### Removed
+- **session-start.js hook**: Removed redundant SessionStart hook (lines 1-181)
+  - CLAUDE.md already loads virtual-team.md via @-notation (functional)
+  - Hook only displayed status message (informational, not needed)
+  - Reduces unnecessary hook execution overhead
+  - Simplifies installation and maintenance
+
+### Modified
+- **ansible/roles/intelligent-claude-code/tasks/main.yml**: Removed session-start.js from hook installation and settings.json registration
+  - Line 205: Removed session-start.js from executable hooks list
+  - Lines 333-341: Removed SessionStart hook definition
+  - Line 395: Removed SessionStart from settings merge
+  - Lines 405, 411: Updated hook registration messages (removed "compaction detection")
+- **install.ps1**: Removed SessionStart hook registration function and calls
+  - Lines 222-285: Removed Register-SessionStartHook function (64 lines)
+  - Lines 495-502: Removed SessionStart hook registration call
+
+### Rationale
+Hook provides no functional value:
+- CLAUDE.md handles loading via @~/.claude/modes/virtual-team.md import
+- Status message was informational only (user doesn't need it)
+- Removes unnecessary hook execution on every session start
+- Simplifies installation with fewer moving parts
+
+---
+
+## [8.18.7] - 2025-10-12
+
+### Bug Fixes
+- **pm-constraints-enforcement.js**: Fixed command pattern detection to catch blocked commands with environment variable prefixes
+  - Replaced word-based matching with regex pattern matching for reliable detection
+  - Now correctly blocks commands like `ANSIBLE_CONFIG=... ansible-playbook`
+  - Now correctly blocks commands like `env FOO=bar npm install`
+  - Now correctly blocks commands like `cd dir && ansible-playbook`
+  - Pattern uses word boundaries to prevent false positives (e.g., "make" in "remake")
+  - Lines 193-229: New pattern-based command validation logic
+
+### Technical Details
+- **Root Cause**: Word-based matching extracted first word only, missing commands preceded by env vars
+- **Solution**: Regex pattern `\\b${blocked}(?:-[a-z]+)?\\b` matches command anywhere in string
+- **Word Boundaries**: Prevents false positives while catching all legitimate uses
+- **Hyphenated Variants**: Pattern handles commands like `ansible-playbook`, `git-lfs`, etc.
+- **Case Insensitive**: 'i' flag ensures consistent detection regardless of case
+
+### Test Cases Validated
+- ✅ `ANSIBLE_CONFIG=... ansible-playbook` → BLOCKED
+- ✅ `env FOO=bar ansible-playbook` → BLOCKED
+- ✅ `cd dir && ansible-playbook` → BLOCKED
+- ✅ `FOO=bar BAZ=qux npm install` → BLOCKED
+- ✅ `python3 script.py` → BLOCKED
+- ✅ `remake file` → ALLOWED (word boundary works)
+- ✅ `make test` → BLOCKED
+
+---
+
 ## [8.18.6] - 2025-10-12
 
 ### Bug Fixes

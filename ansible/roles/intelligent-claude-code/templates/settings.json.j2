@@ -25,15 +25,6 @@
         "timeout": 5000
       }]
     }],
-    "SessionStart": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/session-start.js",
-        "timeout": 10000,
-        "failureMode": "allow"
-      }]
-    }],
     "UserPromptSubmit": [{
       "matcher": "*",
       "hooks": [{
