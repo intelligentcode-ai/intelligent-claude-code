@@ -295,16 +295,11 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
     }
 
     const fileName = path.basename(relativePath);
-    const dirName = path.dirname(relativePath);
-
-    // Check if it's in project root
-    if (dirName !== '.' && dirName !== '') {
-      return false;
-    }
 
     // Check if filename matches summary patterns (case-insensitive)
+    // Check ANY directory, not just project root
     const upperFileName = fileName.toUpperCase();
-    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING'];
+    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING', 'ROOT_CAUSE'];
 
     return summaryPatterns.some(pattern => upperFileName.includes(pattern));
   }
@@ -315,7 +310,9 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
     }
 
     const fileName = path.basename(filePath);
-    const suggestedPath = `summaries/${fileName}`;
+    const isAllCapitals = fileName === fileName.toUpperCase();
+    const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
+    const suggestedPath = `summaries/${suggestedName}`;
 
     // Ensure summaries directory exists in the project root
     const summariesDir = path.join(projectRoot, 'summaries');
@@ -324,12 +321,14 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
       log('Created summaries/ directory for summary file redirection');
     }
 
+    const capitalsWarning = isAllCapitals ? '\n⚠️ Filename is all-capitals - use lowercase for consistency' : '';
+
     return {
       allowed: false,
       message: `📋 Summary files belong in ./summaries/ directory
 
 Blocked: ${filePath}
-Suggested: ${suggestedPath}
+Suggested: ${suggestedPath}${capitalsWarning}
 
 Please create summary files in the summaries/ directory to keep project root clean.`
     };
