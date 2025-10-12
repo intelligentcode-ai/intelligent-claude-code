@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.10] - 2025-10-12
+
+### Bug Fixes
+- **Summary File Validation Hook**: Fixed subdirectory validation and added all-capitals warning
+  - Lines 289-305: Removed project root restriction from isSummaryFile()
+  - Summary files now validated in ANY directory, not just project root
+  - Added 'ROOT_CAUSE' to summaryPatterns array
+  - Lines 307-335: Added all-capitals filename detection
+  - Suggests lowercase filenames for consistency
+  - Fixes bug where `nextcloud/APPAPI_DEFAULT_DAEMON_ROOT_CAUSE.md` wasn't caught
+  - All summary files now correctly redirected to summaries/ directory
+
+### Technical Details
+- **Root Cause**: Lines 301-303 returned false for files not in project root, bypassing validation
+- **Fix Applied**: Removed directory restriction, check filename patterns regardless of location
+- **Examples Now Caught**:
+  - `nextcloud/APPAPI_DEFAULT_DAEMON_ROOT_CAUSE.md` → `summaries/appapi_default_daemon_root_cause.md`
+  - `any/path/ANALYSIS-RESULTS.md` → `summaries/analysis-results.md`
+- **All-Capitals Warning**: Hook now detects and warns about all-capitals filenames
+
+---
+
 ## [8.18.9] - 2025-10-12
 
 ### Bug Fixes
