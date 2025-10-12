@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.1] - 2025-10-11
+
+### Bug Fixes
+- **pre-agenttask-validation.js**: Changed from blocking to warning-only enforcement
+  - Hook was blocking ALL agent creation without memory search
+  - Created chicken-and-egg problem: memory is created BY work, not before work
+  - Changed exit code from 2 (deny) to 0 (allow) in all cases
+  - Maintains detection and logging for educational purposes
+  - No longer blocks new work domains or first-time operations
+
+### Technical Details
+- **Lines 96-102**: No Grep detected → Warning + Allow (was: Block)
+- **Lines 107-113**: Grep without memory/ → Warning + Allow (was: Block)
+- **Lines 115-118**: Grep with memory/ → Info + Allow (unchanged)
+- All paths now exit with code 0 (allow operation)
+
+### Rationale
+Memory-first is guidance, not absolute gate:
+- Useful when relevant memory exists
+- Not applicable when memory doesn't exist yet
+- Cannot block new work domains
+- Educational reminders without enforcement
+
+### Impact
+- ✅ Agent creation always succeeds
+- ✅ Educational warnings when appropriate
+- ✅ Detection logic preserved for logging
+- ✅ Chicken-and-egg problem resolved
+
+---
+
 ## [8.18.0] - 2025-10-11
 
 ### Features
