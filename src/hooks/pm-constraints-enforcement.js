@@ -247,6 +247,11 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
       return true;
     }
 
+    // Check if file is VERSION in root
+    if ((dirName === '.' || dirName === '') && fileName === 'VERSION') {
+      return true;
+    }
+
     // Check if file is root config file (icc.config.json or icc.workflow.json)
     if ((dirName === '.' || dirName === '') &&
         (fileName === 'icc.config.json' || fileName === 'icc.workflow.json')) {
@@ -463,38 +468,36 @@ Use Task tool to create specialist agent via AgentTask.`
     if (isPMRole(hookInput)) {
       log('PM role active - validating operation');
 
-      // Block Edit/Write/Update tools entirely - require AgentTasks for technical work
+      // Block Edit/Write/Update tools ONLY for files not in allowlist
       if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
-        const blockingEnabled = getBlockingEnabled();
+        log(`File modification tool detected: ${tool} on ${filePath}`);
 
-        const message = `🚫 PM role cannot modify files directly - create Agents using AgentTasks for technical work
+        const paths = getConfiguredPaths();
+        const validation = validatePMOperation(filePath, tool, paths, projectRoot);
 
-Blocked tool: ${tool}
-File: ${filePath || 'N/A'}
+        if (!validation.allowed) {
+          const blockingEnabled = getBlockingEnabled();
 
-PM role is for coordination only. All file modifications must be performed by specialist agents.
-
-Use Task tool to create specialist agent via AgentTask.`;
-
-        log(`File modification tool blocked: ${tool}`);
-
-        if (blockingEnabled) {
-          const response = {
-            hookSpecificOutput: {
-              hookEventName: 'PreToolUse',
-              permissionDecision: 'deny',
-              permissionDecisionReason: message
-            }
-          };
-          const responseJson = JSON.stringify(response);
-          log(`RESPONSE: ${responseJson}`);
-          log(`EXIT CODE: 2 (BLOCKING MODE)`);
-          console.log(responseJson);
-          process.exit(2);
+          if (blockingEnabled) {
+            const response = {
+              hookSpecificOutput: {
+                hookEventName: 'PreToolUse',
+                permissionDecision: 'deny',
+                permissionDecisionReason: validation.message
+              }
+            };
+            const responseJson = JSON.stringify(response);
+            log(`RESPONSE: ${responseJson}`);
+            log(`EXIT CODE: 2 (BLOCKING MODE)`);
+            console.log(responseJson);
+            process.exit(2);
+          } else {
+            log(`⚠️ WARNING (non-blocking): ${validation.message}`);
+            console.log(JSON.stringify({ continue: true }));
+            process.exit(0);
+          }
         } else {
-          log(`⚠️ WARNING (non-blocking): ${message}`);
-          console.log(JSON.stringify({ continue: true }));
-          process.exit(0);
+          log(`File modification allowed - ${filePath} is in PM allowlist`);
         }
       }
 
