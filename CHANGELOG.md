@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [8.18.2] - 2025-10-11
+## [8.18.3] - 2025-10-11
 
 ### Bug Fixes
 - **pre-agenttask-validation.js**: Changed from blocking to warning-only enforcement
