@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.14] - 2025-10-12
+
+### Bug Fixes
+- **Bash Command Validation**: Fixed false positives when blocked command names appear in quoted strings
+  - Lines 129-171: Updated extractCommandsFromBash to strip quoted strings before parsing
+  - Removes double-quoted strings: "text" → ""
+  - Removes single-quoted strings: 'text' → ''
+  - Maintains word boundaries with empty quote placeholders
+  - Fixes: `gh release create --notes "Example: npm install blocked"` now allowed (command: gh)
+  - Fixes: `git commit -m "ansible playbook added"` now allowed (command: git)
+  - Blocks: `npm install` still blocked (command: npm)
+  - Blocks: `git commit && npm run build` still blocked (command: npm)
+
+### Technical Details
+- **Quote Stripping Logic**: Regex replacement removes quoted content before command extraction
+- **Validation Improvement**: Only validates actual commands, not quoted argument text
+- **Test Cases**:
+  - `gh release create --notes "npm install example"` → Cleaned: `gh release create --notes ""` → Command: gh → Allowed
+  - `gh pr comment --body "terraform apply blocked"` → Cleaned: `gh pr comment --body ""` → Command: gh → Allowed
+  - `git commit -m "docker build example"` → Cleaned: `git commit -m ""` → Command: git → Allowed
+  - `npm install` → Cleaned: `npm install` → Command: npm → Blocked
+
+---
+
 ## [8.18.13] - 2025-10-12
 
 ### Bug Fixes
