@@ -127,6 +127,19 @@ function main() {
   }
 
   function extractCommandsFromBash(commandString) {
+    // Check for remote execution commands (ssh) before quote stripping
+    // SSH commands execute quoted strings on remote systems, so we must validate the remote command
+    const sshPattern = /\bssh\b[^"']*["']([^"']+)["']/;
+    const sshMatch = commandString.match(sshPattern);
+
+    if (sshMatch) {
+      // Extract remote command from quoted string
+      const remoteCommand = sshMatch[1];
+      log(`SSH remote command detected: ${remoteCommand}`);
+      // Recursively validate the remote command
+      return extractCommandsFromBash(remoteCommand);
+    }
+
     // First, remove all quoted strings (both single and double quotes)
     // Replace with placeholder to maintain word boundaries
     let cleanedCommand = commandString;
