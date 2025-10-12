@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.9] - 2025-10-12
+
+### Bug Fixes
+- **pm-constraints-enforcement.js**: Fixed Edit/Write allowlist bypass bug
+  - Lines 250-253: Added VERSION file to root file allowlist
+  - Lines 471-502: Changed Edit/Write validation to check allowlist BEFORE blocking
+  - PM role can now edit VERSION, CHANGELOG.md, and other allowlist files
+  - Technical files (src/, lib/, config/, tests/) still correctly blocked
+  - Root cause: Edit/Write tools were blocked unconditionally without checking allowlist
+
+- **Installer Cleanup**: Added SessionStart hook removal to both installers
+  - ansible/tasks/main.yml:315-333: Added jq-based cleanup task before settings merge
+  - install.ps1:157-186: Added Remove-ObsoleteSessionStartHook function
+  - Fixes "Cannot find module session-start.js" error from v8.18.8
+  - Both installers now remove obsolete SessionStart registration during upgrades
+  - Idempotent: Cleanup runs safely on every installation
+
+### Technical Details
+- **Edit/Write Bug**: Lines 467-499 blocked all Edit/Write operations immediately without checking allowlist
+- **Fix Applied**: validatePMOperation() now called first to check file against allowlist/blocklist
+- **VERSION Added**: VERSION file explicitly whitelisted alongside CHANGELOG.md and config files
+- **Testing**: All 12 test cases passed (8 allowed, 4 blocked as expected)
+
+---
+
 ## [8.18.8] - 2025-10-12
 
 ### Removed
