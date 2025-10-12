@@ -126,6 +126,40 @@ function main() {
     }
   }
 
+  function extractCommandsFromBash(commandString) {
+    // Split by command separators: && || ; |
+    const statements = commandString.split(/&&|\|\||;|\|/).map(s => s.trim());
+
+    const commands = [];
+
+    for (const statement of statements) {
+      // Remove leading/trailing whitespace
+      const trimmed = statement.trim();
+      if (!trimmed) continue;
+
+      // Split into words
+      const words = trimmed.split(/\s+/);
+
+      // Skip environment variables (FOO=bar, VAR=val)
+      let commandIndex = 0;
+      while (commandIndex < words.length && words[commandIndex].includes('=')) {
+        commandIndex++;
+      }
+
+      if (commandIndex < words.length) {
+        const cmd = words[commandIndex];
+
+        // Extract command name (ignore paths)
+        // If command contains '/', take only the last part (basename)
+        const commandName = cmd.includes('/') ? cmd.split('/').pop() : cmd;
+
+        commands.push(commandName);
+      }
+    }
+
+    return commands;
+  }
+
   function validateBashCommand(command) {
     // Allow read-only process inspection commands (ps, grep, pgrep, etc.)
     const readOnlyInspectionCommands = ['ps', 'pgrep', 'pidof', 'lsof', 'netstat', 'ss', 'top', 'htop'];
@@ -190,28 +224,30 @@ Use Task tool to create specialist agent via AgentTask.`
       };
     }
 
-    // Check if ANY blocked command appears ANYWHERE in the command string
-    // This catches commands even when preceded by env vars (FOO=bar npm install)
-    for (const blocked of allBlockedCommands) {
-      // Match as word boundary to avoid false positives (e.g., "make" in "remake")
-      const pattern = new RegExp(`\\b${blocked}(?:-[a-z]+)?\\b`, 'i');
+    // Extract actual commands being executed (ignore paths and arguments)
+    const actualCommands = extractCommandsFromBash(command);
 
-      if (pattern.test(command)) {
-        // Provide specific guidance for kubectl commands
-        let kubectlGuidance = '';
-        if (blocked === 'kubectl') {
-          kubectlGuidance = `
+    // Check if ANY actual command is in the blocked list
+    for (const cmd of actualCommands) {
+      // Check against blocked commands
+      for (const blocked of allBlockedCommands) {
+        // Match command name exactly or with suffix (e.g., npm vs npm-install)
+        if (cmd === blocked || cmd.startsWith(blocked + '-')) {
+          // Provide specific guidance for kubectl commands
+          let kubectlGuidance = '';
+          if (blocked === 'kubectl') {
+            kubectlGuidance = `
 
 kubectl Read-only (ALLOWED): get, describe, logs, top, version, cluster-info, config view, api-resources, api-versions, explain
 kubectl Destructive (BLOCKED): delete, apply, create, patch, replace, scale, rollout, drain, cordon, taint, label, annotate`;
-        }
+          }
 
-        return {
-          allowed: false,
-          message: `🚫 PM role cannot execute build/deploy/system commands - create Agents using AgentTasks for technical work
+          return {
+            allowed: false,
+            message: `🚫 PM role cannot execute build/deploy/system commands - create Agents using AgentTasks for technical work
 
-Blocked command: ${blocked}
-Found in: ${command}
+Blocked command: ${cmd}
+Full command: ${command}
 
 Build/Deploy tools: npm, yarn, make, docker, cargo, mvn, gradle, go
 System tools: terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer
@@ -224,7 +260,8 @@ Text editors: vi, vim, nano, emacs${kubectlGuidance}
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
 All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
 Use Task tool to create specialist agent via AgentTask with explicit approval.`
-        };
+          };
+        }
       }
     }
 
