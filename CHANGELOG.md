@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.15] - 2025-10-12
+
+### Security Fixes
+- **CRITICAL: SSH Remote Command Execution Bypass**
+  - Lines 130-141: Added SSH pattern detection before quote stripping
+  - SSH commands now validated recursively for remote command content
+  - Prevents PM constraint bypass through remote command execution
+  - Pattern: `/\bssh\b[^"']*["']([^"']+)["']/` extracts remote command
+  - Remote command validated through recursive `extractCommandsFromBash()` call
+
+### Bug Fixed
+- **Before Fix**: `ssh user@host "kubectl delete pod"` → Allowed (BYPASS!)
+- **After Fix**: `ssh user@host "kubectl delete pod"` → Blocked (kubectl validated)
+
+### Expected Behavior
+- ❌ `ssh user@host "kubectl delete pod"` → Remote command: kubectl (blocked)
+- ❌ `ssh user@host "terraform apply"` → Remote command: terraform (blocked)
+- ✅ `ssh user@host "ls -la"` → Remote command: ls (allowed)
+- ✅ `ssh user@host "git status"` → Remote command: git (allowed)
+- ✅ `gh release create --notes "npm"` → Not SSH, normal processing (allowed)
+
+### Technical Details
+- **Vulnerability**: Quote stripping allowed SSH to bypass all PM constraints
+- **Root Cause**: Quote removal prevented validation of commands executed on remote systems
+- **Fix**: SSH commands detected first, remote command extracted and validated recursively
+- **Security Impact**: Complete PM constraint bypass prevented
+- **Memory**: Pattern documented in `memory/security/ssh-remote-command-bypass.md`
+
+---
+
 ## [8.18.14] - 2025-10-12
 
 ### Bug Fixes
