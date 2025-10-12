@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.8] - 2025-10-12
+
+### Removed
+- **session-start.js hook**: Removed redundant SessionStart hook (lines 1-181)
+  - CLAUDE.md already loads virtual-team.md via @-notation (functional)
+  - Hook only displayed status message (informational, not needed)
+  - Reduces unnecessary hook execution overhead
+  - Simplifies installation and maintenance
+
+### Modified
+- **ansible/roles/intelligent-claude-code/tasks/main.yml**: Removed session-start.js from hook installation and settings.json registration
+  - Line 205: Removed session-start.js from executable hooks list
+  - Lines 333-341: Removed SessionStart hook definition
+  - Line 395: Removed SessionStart from settings merge
+  - Lines 405, 411: Updated hook registration messages (removed "compaction detection")
+- **install.ps1**: Removed SessionStart hook registration function and calls
+  - Lines 222-285: Removed Register-SessionStartHook function (64 lines)
+  - Lines 495-502: Removed SessionStart hook registration call
+
+### Rationale
+Hook provides no functional value:
+- CLAUDE.md handles loading via @~/.claude/modes/virtual-team.md import
+- Status message was informational only (user doesn't need it)
+- Removes unnecessary hook execution on every session start
+- Simplifies installation with fewer moving parts
+
+---
+
 ## [8.18.7] - 2025-10-12
 
 ### Bug Fixes

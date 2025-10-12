@@ -202,7 +202,6 @@
     mode: '0755'
     state: file
   loop:
-    - session-start.js
     - context-injection.js
     - agent-marker.js
     - pm-constraints-enforcement.js
@@ -331,16 +330,6 @@
       set_fact:
         settings_data: "{{ existing_settings.content | b64decode | from_json }}"
 
-    - name: Define SessionStart hook
-      set_fact:
-        session_start_hook:
-          matcher: '*'
-          hooks:
-            - type: 'command'
-              command: "node {{ claude_install_path }}/hooks/session-start.js"
-              timeout: 10000
-              failureMode: 'allow'
-
     - name: Define UserPromptSubmit hook
       set_fact:
         user_prompt_submit_hook:
@@ -403,7 +392,7 @@
 
     - name: Merge hooks into settings
       set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': {'SessionStart': [session_start_hook], 'UserPromptSubmit': [user_prompt_submit_hook], 'PreToolUse': [pre_tool_use_hook], 'SubagentStop': [subagent_stop_hook], 'Stop': [stop_hook]}}, recursive=True) }}"
+        merged_settings: "{{ settings_data | combine({'hooks': {'UserPromptSubmit': [user_prompt_submit_hook], 'PreToolUse': [pre_tool_use_hook], 'SubagentStop': [subagent_stop_hook], 'Stop': [stop_hook]}}, recursive=True) }}"
 
     - name: Write merged settings.json
       copy:
@@ -413,13 +402,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "SessionStart, UserPromptSubmit, PreToolUse (scope + memory + git + PM + infrastructure), SubagentStop, Stop hooks configured in settings.json - compaction detection, behavioral guidance, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, agent cleanup, and session cleanup active"
+        msg: "UserPromptSubmit, PreToolUse (scope + memory + git + PM + infrastructure), SubagentStop, Stop hooks configured in settings.json - behavioral guidance, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, agent cleanup, and session cleanup active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with SessionStart, UserPromptSubmit, PreToolUse (scope + memory + git + PM + infrastructure), SubagentStop, Stop hooks - compaction detection, behavioral guidance, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, agent cleanup, and session cleanup active"
+    msg: "Settings file created with UserPromptSubmit, PreToolUse (scope + memory + git + PM + infrastructure), SubagentStop, Stop hooks - behavioral guidance, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, agent cleanup, and session cleanup active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
