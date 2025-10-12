@@ -334,9 +334,18 @@ Please create summary files in the summaries/ directory to keep project root cle
     };
   }
 
-  function validateMarkdownOutsideAllowlist(filePath, projectRoot) {
-    // Check if setting allows markdown files outside allowlist
-    const allowMarkdown = getSetting('enforcement.allow_markdown_outside_allowlist', false);
+  function validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext = false) {
+    // Check appropriate setting based on context
+    let allowMarkdown;
+
+    if (isAgentContext) {
+      // For agents: check agent-specific setting first, fallback to main setting
+      const agentSetting = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
+      allowMarkdown = agentSetting !== null ? agentSetting : getSetting('enforcement.allow_markdown_outside_allowlist', false);
+    } else {
+      // For main scope: use main setting
+      allowMarkdown = getSetting('enforcement.allow_markdown_outside_allowlist', false);
+    }
 
     if (allowMarkdown) {
       return { allowed: true };
@@ -494,37 +503,40 @@ Use Task tool to create specialist agent via AgentTask.`
       process.exit(0);
     }
 
-    // Check for summary files in root (applies to ALL roles)
-    const summaryValidation = validateSummaryFile(filePath, projectRoot);
-    if (!summaryValidation.allowed) {
-      log(`Summary file blocked: ${filePath}`);
+    // Check for summary files in root (applies to Write/Edit/Update only, not Read)
+    if (tool !== 'Read' && filePath.endsWith('.md')) {
+      const summaryValidation = validateSummaryFile(filePath, projectRoot);
+      if (!summaryValidation.allowed) {
+        log(`Summary file blocked: ${filePath}`);
 
-      const blockingEnabled = getBlockingEnabled();
+        const blockingEnabled = getBlockingEnabled();
 
-      if (blockingEnabled) {
-        // BLOCKING MODE (default)
-        const response = {
-          hookSpecificOutput: {
-            hookEventName: 'PreToolUse',
-            permissionDecision: 'deny',
-            permissionDecisionReason: summaryValidation.message
-          }
-        };
-        const responseJson = JSON.stringify(response);
-        log(`RESPONSE: ${responseJson}`);
-        log(`EXIT CODE: 2 (BLOCKING MODE)`);
-        console.log(responseJson);
-        process.exit(2);
-      } else {
-        // WARNING MODE (non-blocking)
-        log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
-        console.log(JSON.stringify({ continue: true }));
-        process.exit(0);
+        if (blockingEnabled) {
+          // BLOCKING MODE (default)
+          const response = {
+            hookSpecificOutput: {
+              hookEventName: 'PreToolUse',
+              permissionDecision: 'deny',
+              permissionDecisionReason: summaryValidation.message
+            }
+          };
+          const responseJson = JSON.stringify(response);
+          log(`RESPONSE: ${responseJson}`);
+          log(`EXIT CODE: 2 (BLOCKING MODE)`);
+          console.log(responseJson);
+          process.exit(2);
+        } else {
+          // WARNING MODE (non-blocking)
+          log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
+          console.log(JSON.stringify({ continue: true }));
+          process.exit(0);
+        }
       }
     }
 
     // Check for markdown files outside allowlist (applies to ALL roles)
-    const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot);
+    const isAgentContext = !isPMRole(hookInput);
+    const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext);
     if (!markdownValidation.allowed) {
       log(`Markdown file outside allowlist blocked: ${filePath}`);
 
