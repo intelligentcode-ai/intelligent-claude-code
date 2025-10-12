@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.13] - 2025-10-12
+
+### Bug Fixes
+- **Bash Command Validation**: Fixed false positives when command names appear in file paths
+  - Lines 129-161: Added extractCommandsFromBash function to extract actual executable names
+  - Lines 227-268: Updated validateBashCommand to use command extraction instead of regex matching
+  - Handles environment variables (FOO=bar npm install)
+  - Handles command separators (&&, ||, ;, |)
+  - Ignores paths in command names (extracts basename)
+  - Fixes: `cd /ansible/deployments && git diff` now allowed (commands: cd, git)
+  - Fixes: `ls /terraform/modules` now allowed (command: ls)
+  - Blocks: `ansible-playbook deploy.yml` still blocked (command: ansible-playbook)
+  - Blocks: `cd /path && npm install` still blocked (command: npm)
+
+### Technical Details
+- **Command Extraction Logic**: Splits by separators, skips environment variables, extracts basename from paths
+- **Validation Changes**: Now checks extracted commands against blocklist, not entire command string
+- **Test Cases**:
+  - `cd /ansible/deployments && git diff` → Extracted: ['cd', 'git'] → Allowed
+  - `FOO=bar git status` → Extracted: ['git'] → Allowed
+  - `ansible-playbook deploy.yml` → Extracted: ['ansible-playbook'] → Blocked
+  - `terraform apply` → Extracted: ['terraform'] → Blocked
+
+---
+
 ## [8.18.12] - 2025-10-12
 
 ### Bug Fixes
