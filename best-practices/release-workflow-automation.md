@@ -27,6 +27,41 @@ Configuration-driven release automation that:
 - **Flexibility**: Configuration adapts to project needs
 - **Safety**: Explicit trigger prevents accidental releases
 
+## Quick Start
+
+**WORKING SAMPLE**: Complete, working release configuration is available in [`icc.workflow.default.json`](../icc.workflow.default.json) (lines 56-110).
+
+### Copy Sample to Your Project
+
+```bash
+# Copy the default configuration to your project
+cp icc.workflow.default.json icc.workflow.json
+
+# Or extend with only the release section you need
+```
+
+### Minimal Configuration
+
+If you only want release automation without changing other workflow settings, create `icc.workflow.json`:
+
+```json
+{
+  "release": {
+    "enabled": true,
+    "pipeline": {
+      "merge": { "enabled": true, "strategy": "squash" },
+      "tag": { "enabled": true, "format": "v{version}" },
+      "github_release": { "enabled": true },
+      "cleanup": { "enabled": true }
+    }
+  }
+}
+```
+
+### Default Configuration (Full)
+
+See [`icc.workflow.default.json`](../icc.workflow.default.json) for the complete configuration with all options and helpful comments.
+
 ## Design Principles
 
 ### 1. Configuration Over Code
@@ -49,6 +84,8 @@ Support different release strategies:
 All release artifacts (tags, release notes, commits) comply with git privacy settings automatically.
 
 ## Configuration Schema
+
+**NOTE**: Complete working sample available in [`icc.workflow.default.json`](../icc.workflow.default.json).
 
 ### Primary Configuration (icc.config.json)
 
