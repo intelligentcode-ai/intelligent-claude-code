@@ -27,40 +27,91 @@ Configuration-driven release automation that:
 - **Flexibility**: Configuration adapts to project needs
 - **Safety**: Explicit trigger prevents accidental releases
 
-## Quick Start
+## Implementation Options
 
-**WORKING SAMPLE**: Complete, working release configuration is available in [`icc.workflow.default.json`](../icc.workflow.default.json) (lines 56-110).
+Release automation is implemented AT THE PROJECT LEVEL, not in the system. Choose the approach that fits your workflow:
 
-### Copy Sample to Your Project
+### Option 1: Shell Script (Simplest)
+
+Create `scripts/release.sh`:
 
 ```bash
-# Copy the default configuration to your project
-cp icc.workflow.default.json icc.workflow.json
+#!/bin/bash
+# Release automation script
 
-# Or extend with only the release section you need
+set -e  # Exit on error
+
+PR_NUMBER=$(gh pr view --json number -q .number)
+VERSION=$(cat VERSION)
+
+echo "🚀 Releasing v${VERSION} from PR #${PR_NUMBER}"
+
+# Validate
+echo "→ Validating prerequisites..."
+gh pr checks ${PR_NUMBER} --watch
+git diff-index --quiet HEAD || (echo "Uncommitted changes!" && exit 1)
+
+# Merge
+echo "→ Merging PR..."
+gh pr merge ${PR_NUMBER} --squash --delete-branch
+
+# Tag
+echo "→ Creating tag..."
+git pull
+git tag -a "v${VERSION}" -m "v${VERSION}"
+git push origin "v${VERSION}"
+
+# Release
+echo "→ Creating GitHub release..."
+CHANGELOG=$(sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | sed '1d;$d')
+gh release create "v${VERSION}" --title "v${VERSION}" --notes "${CHANGELOG}"
+
+echo "✅ Release v${VERSION} complete"
 ```
 
-### Minimal Configuration
+Usage: `./scripts/release.sh`
 
-If you only want release automation without changing other workflow settings, create `icc.workflow.json`:
+### Option 2: Makefile Target
 
-```json
-{
-  "release": {
-    "enabled": true,
-    "pipeline": {
-      "merge": { "enabled": true, "strategy": "squash" },
-      "tag": { "enabled": true, "format": "v{version}" },
-      "github_release": { "enabled": true },
-      "cleanup": { "enabled": true }
-    }
-  }
-}
+Add to your project's `Makefile`:
+
+```makefile
+.PHONY: release
+release:
+	@echo "🚀 Starting release process..."
+	@./scripts/release.sh
 ```
 
-### Default Configuration (Full)
+Usage: `make release`
 
-See [`icc.workflow.default.json`](../icc.workflow.default.json) for the complete configuration with all options and helpful comments.
+### Option 3: Custom Command
+
+Create `.claude/commands/release.md`:
+
+```markdown
+You are @PM coordinating a release.
+
+## Task
+Execute the release workflow for the current PR.
+
+## Steps
+1. Validate PR is approved and checks pass
+2. Create AgentTask for @DevOps-Engineer:
+   - Merge PR with squash strategy
+   - Create and push annotated tag
+   - Generate GitHub release from changelog
+   - Delete feature branch
+
+Report completion status.
+```
+
+Usage: `/release` in Claude Code
+
+### Option 4: Natural Language (Recommended)
+
+Just ask: `@PM merge and release`
+
+PM creates AgentTask for @DevOps-Engineer who executes the workflow.
 
 ## Design Principles
 
@@ -83,151 +134,253 @@ Support different release strategies:
 ### 4. Git Privacy Integration
 All release artifacts (tags, release notes, commits) comply with git privacy settings automatically.
 
-## Configuration Schema
+## Implementation Patterns
 
-**NOTE**: Complete working sample available in [`icc.workflow.default.json`](../icc.workflow.default.json).
+### Shell Script Pattern
 
-### Primary Configuration (icc.config.json)
-
-```json
-{
-  "release": {
-    "enabled": true,
-    "pipeline": {
-      "merge": {
-        "strategy": "squash",
-        "delete_branch": true,
-        "require_approval": true
-      },
-      "tag": {
-        "enabled": true,
-        "format": "v{version}",
-        "push": true,
-        "annotated": true
-      },
-      "github_release": {
-        "enabled": true,
-        "generate_notes": true,
-        "draft": false,
-        "prerelease": false
-      },
-      "cleanup": {
-        "delete_local_branch": true,
-        "delete_remote_branch": true
-      }
-    },
-    "trivial_changes": {
-      "auto_release": false,
-      "patterns": ["docs/**", "*.md"]
-    },
-    "validation": {
-      "require_pr_approved": true,
-      "require_checks_passing": true,
-      "require_version_bump": true
-    }
-  }
-}
-```
-
-### Configuration Hierarchy
-1. **Embedded config** (in AgentTasks) - highest priority
-2. **Project config** (./icc.config.json or ./.claude/icc.config.json)
-3. **User global** (~/.claude/icc.config.json)
-4. **System defaults** (icc.config.default.json)
-
-### Key Configuration Options
-
-#### Merge Settings
-- **strategy**: `squash`, `merge`, `rebase`
-- **delete_branch**: Auto-delete feature branch after merge
-- **require_approval**: Block merge without PR approval
-
-#### Tag Settings
-- **enabled**: Create git tags for releases
-- **format**: Tag naming pattern (`v{version}`, `release-{version}`)
-- **push**: Auto-push tags to remote
-- **annotated**: Use annotated tags (recommended)
-
-#### GitHub Release Settings
-- **enabled**: Create GitHub releases
-- **generate_notes**: Auto-generate from PR descriptions
-- **draft**: Create as draft for manual review
-- **prerelease**: Mark as pre-release
-
-#### Cleanup Settings
-- **delete_local_branch**: Remove local feature branch
-- **delete_remote_branch**: Remove remote feature branch
-
-## Command Interface
-
-### Natural Language Triggers
+The simplest approach is a bash script that handles the complete workflow:
 
 ```bash
-# Simple trigger - executes complete pipeline
+#!/bin/bash
+# scripts/release.sh - Complete release automation
+
+set -e  # Exit on error
+
+# Configuration
+MERGE_STRATEGY="squash"
+TAG_FORMAT="v{version}"
+REQUIRE_APPROVAL=true
+
+# Get current state
+PR_NUMBER=$(gh pr view --json number -q .number)
+VERSION=$(cat VERSION)
+TAG_NAME="${TAG_FORMAT/\{version\}/$VERSION}"
+
+echo "🚀 Release Pipeline: v${VERSION} (PR #${PR_NUMBER})"
+
+# Validation
+echo "→ Step 1/5: Validation"
+if [ "$REQUIRE_APPROVAL" = true ]; then
+  gh pr view ${PR_NUMBER} --json reviewDecision -q .reviewDecision | grep -q "APPROVED" || {
+    echo "❌ PR not approved"
+    exit 1
+  }
+fi
+gh pr checks ${PR_NUMBER} --watch || exit 1
+git diff-index --quiet HEAD || { echo "❌ Uncommitted changes"; exit 1; }
+
+# Merge
+echo "→ Step 2/5: Merge"
+gh pr merge ${PR_NUMBER} --${MERGE_STRATEGY} --delete-branch
+
+# Tag
+echo "→ Step 3/5: Tag"
+git pull
+git tag -a "${TAG_NAME}" -m "Release ${TAG_NAME}"
+git push origin "${TAG_NAME}"
+
+# Release
+echo "→ Step 4/5: GitHub Release"
+CHANGELOG=$(sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | sed '1d;$d')
+gh release create "${TAG_NAME}" --title "${TAG_NAME}" --notes "${CHANGELOG}"
+
+# Verification
+echo "→ Step 5/5: Verification"
+gh release view "${TAG_NAME}" --json url -q .url
+
+echo "✅ Release complete: ${TAG_NAME}"
+```
+
+### Makefile Pattern
+
+Integrate release automation into your project's Makefile:
+
+```makefile
+# Makefile - Release automation
+
+.PHONY: release release-dry-run release-draft
+
+# Current version from VERSION file
+VERSION := $(shell cat VERSION)
+TAG := v$(VERSION)
+
+release: ## Execute full release pipeline
+	@echo "🚀 Starting release for $(TAG)..."
+	@./scripts/release.sh
+
+release-dry-run: ## Test release pipeline without execution
+	@echo "🧪 Dry run for $(TAG)..."
+	@PR=$$(gh pr view --json number -q .number); \
+	echo "Would merge PR #$$PR"; \
+	echo "Would create tag $(TAG)"; \
+	echo "Would create release $(TAG)"
+
+release-draft: ## Create draft release for review
+	@echo "📝 Creating draft release $(TAG)..."
+	@gh release create "$(TAG)" --draft --title "$(TAG)" \
+	  --notes "$$(sed -n "/## \[$(VERSION)\]/,/## \[/p" CHANGELOG.md | sed '1d;$$d')"
+
+help: ## Show this help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
+	  awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+```
+
+### Custom Command Pattern
+
+Create a project-specific release command:
+
+```markdown
+# .claude/commands/release.md
+
+You are @PM coordinating a software release.
+
+## Context
+- **Project**: {project_name}
+- **Current Branch**: {current_branch}
+- **Version**: {version from VERSION file}
+
+## Task
+Execute the complete release workflow for the current PR.
+
+## Workflow Steps
+
+### 1. Pre-Release Validation
+Create AgentTask for @QA-Engineer:
+- Verify PR is approved
+- Confirm all CI checks passing
+- Validate version bumped correctly
+- Check CHANGELOG.md updated
+
+### 2. Merge and Tag
+Create AgentTask for @DevOps-Engineer:
+- Merge PR using squash strategy
+- Create annotated tag: v{version}
+- Push tag to remote repository
+- Delete feature branch
+
+### 3. GitHub Release
+Create AgentTask for @DevOps-Engineer:
+- Extract changelog section for version
+- Create GitHub release with changelog
+- Attach any release artifacts
+- Verify release published
+
+### 4. Post-Release
+Create AgentTask for @PM:
+- Update project documentation
+- Notify team of release
+- Close related issues
+- Update project board
+
+## Success Criteria
+- PR merged to main branch
+- Tag created and pushed: v{version}
+- GitHub release published
+- Feature branch deleted
+- Team notified
+
+Report completion status with release URL.
+```
+
+### Natural Language Pattern (Recommended)
+
+The most flexible approach uses natural language with the virtual team:
+
+```bash
+# Simple release
 @PM merge and release
 
-# Specific pipeline control
-@DevOps-Engineer execute release pipeline for PR #42
+# With specific PR
+@PM merge PR #42 and create release
 
-# With options
-@PM merge PR #42 and create release with generated notes
+# Draft release for review
+@PM create draft release for current PR
+
+# Specific workflow steps
+@DevOps-Engineer merge PR, create tag, and publish release
 ```
 
-### Workflow Command
+PM analyzes the request, creates appropriate AgentTasks for @DevOps-Engineer, and orchestrates the complete workflow.
+
+## Usage Examples
+
+### Shell Script Usage
 
 ```bash
-# Execute release pipeline
-/icc-release [--pr PR_NUMBER] [--skip-tag] [--draft]
+# Execute complete release pipeline
+./scripts/release.sh
 
-# Options:
-# --pr: Specific PR to merge (default: current branch PR)
-# --skip-tag: Skip tag creation
-# --draft: Create draft release
-# --no-cleanup: Skip branch cleanup
+# Dry run to test (add to script as option)
+DRY_RUN=true ./scripts/release.sh
+
+# With specific PR (modify script to accept arguments)
+./scripts/release.sh 42
 ```
 
-### Make Target
+### Makefile Usage
 
 ```bash
-# Simple interface
+# Standard release
 make release
 
-# With environment variables
-PR_NUMBER=42 make release
-SKIP_TAG=true make release
+# Test without execution
+make release-dry-run
+
+# Create draft for review
+make release-draft
+
+# Show available targets
+make help
 ```
 
-## Implementation Patterns
+### Natural Language Usage (Recommended)
+
+```bash
+# Simple release trigger
+@PM merge and release
+
+# Specific PR
+@PM merge PR #42 and create release
+
+# Draft release for review
+@PM create draft release for current PR
+
+# Direct assignment
+@DevOps-Engineer execute release pipeline
+```
+
+## How It Works
 
 ### AgentTask-Based Execution
 
-Release pipeline executes through AgentTask system with @DevOps-Engineer:
+When you request a release, PM creates an AgentTask for @DevOps-Engineer:
 
 ```markdown
 ## AgentTask Context
 **Type**: Release Pipeline Execution
 **Agent**: @DevOps-Engineer
-**Trigger**: User command "@PM merge and release"
+**Trigger**: User request "@PM merge and release"
 
 ## Pipeline Steps
 1. Validation (PR approved, checks passing)
-2. Merge (with configured strategy)
+2. Merge (using project's release script)
 3. Tag (create and push annotated tag)
-4. Release (GitHub release with notes)
-5. Cleanup (delete branches)
+4. Release (GitHub release with changelog)
+5. Cleanup (delete feature branches)
 
-## Configuration
-{embedded release configuration from icc.config.json}
-
-## Git Privacy
-Strip patterns: {privacy_patterns from git.privacy_patterns}
+## Project Implementation
+The project provides release automation via:
+- Shell script: scripts/release.sh
+- Make target: make release
+- Custom command: /release
+- Or natural language: "@PM merge and release"
 
 ## Success Criteria
 - PR merged to default branch
 - Tag created and pushed
 - GitHub release published
 - Branches cleaned up
-- All steps comply with git privacy
+- All steps follow project standards
 ```
 
 ### Sequential Pipeline Execution
@@ -330,30 +483,25 @@ All merge commits processed through git privacy enforcement to strip AI mentions
 
 ### 3. Tag Creation
 
-**Tag Format Resolution:**
-```javascript
-// Format: "v{version}"
-// Version: "8.18.9"
-// Result: "v8.18.9"
-
-const tagName = config.release.pipeline.tag.format
-  .replace('{version}', currentVersion);
-```
-
-**Annotated Tag Creation:**
+**Tag Creation with Format:**
 ```bash
+# scripts/release.sh - Tag creation section
+VERSION=$(cat VERSION)
+TAG_FORMAT="v{version}"  # Configure in script
+TAG_NAME="${TAG_FORMAT/\{version\}/$VERSION}"
+
 # Create annotated tag with release notes
-git tag -a v8.18.9 -m "Release v8.18.9
+git tag -a ${TAG_NAME} -m "Release ${TAG_NAME}
 
 feat: release workflow automation
-- Configuration-driven pipeline
+- Project-level shell scripts
 - Simple command interface
 - Git privacy integration
 
-Full release notes: https://github.com/org/repo/releases/v8.18.9"
+Full release notes: https://github.com/org/repo/releases/${TAG_NAME}"
 
 # Push to remote
-git push origin v8.18.9
+git push origin ${TAG_NAME}
 ```
 
 **Git Privacy in Tags:**
@@ -363,26 +511,38 @@ Tag messages processed through privacy enforcement before creation.
 
 **Release Note Generation:**
 
-```javascript
-// Auto-generate from PR descriptions
-const releaseNotes = generateReleaseNotes({
-  prNumber: pr.number,
-  version: currentVersion,
-  privacyPatterns: config.git.privacy_patterns
-});
+```bash
+# scripts/release.sh - GitHub release creation section
+PR_NUMBER=$(gh pr view --json number -q .number)
+VERSION=$(cat VERSION)
 
-// Create release
-gh release create v8.18.9 \
-  --title "Release v8.18.9" \
-  --notes "${releaseNotes}" \
+# Extract release notes from CHANGELOG
+RELEASE_NOTES=$(sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | sed '1d;$d')
+
+# Or auto-generate from PR (git privacy hooks apply)
+# RELEASE_NOTES=$(gh pr view ${PR_NUMBER} --json body -q .body)
+
+# Create release (privacy enforced by git hooks if configured)
+gh release create "v${VERSION}" \
+  --title "Release v${VERSION}" \
+  --notes "${RELEASE_NOTES}" \
   --target main
 ```
 
-**Release Configuration:**
-- **Draft**: Create as draft for manual review before publishing
-- **Prerelease**: Mark as pre-release for testing versions
-- **Generate Notes**: Auto-generate from PR/commit history
-- **Assets**: Attach build artifacts if configured
+**GitHub Release Options:**
+```bash
+# Create draft release for manual review
+gh release create "v${VERSION}" --draft --notes "${NOTES}"
+
+# Create pre-release for testing versions
+gh release create "v${VERSION}" --prerelease --notes "${NOTES}"
+
+# Auto-generate notes from commits
+gh release create "v${VERSION}" --generate-notes
+
+# Attach build artifacts
+gh release create "v${VERSION}" --notes "${NOTES}" dist/*.tar.gz
+```
 
 ### 5. Branch Cleanup
 
@@ -502,27 +662,28 @@ ACTION: Manually delete through GitHub UI or update protection rules
 **Automatic Privacy Enforcement:**
 All release artifacts processed through git privacy enforcement:
 
-```javascript
-// Merge commits
-const mergeMessage = stripPrivacyPatterns(
-  prDescription,
-  config.git.privacy_patterns
-);
+```bash
+# Git privacy hooks automatically enforce pattern stripping
+# No manual intervention needed in scripts
 
-// Tag messages
-const tagMessage = stripPrivacyPatterns(
-  releaseNotes,
-  config.git.privacy_patterns
-);
+# Example: Merge commit (privacy enforced by prepare-commit-msg hook)
+git commit -m "feat: add user authentication
 
-// Release notes
-const cleanReleaseNotes = stripPrivacyPatterns(
-  generatedNotes,
-  config.git.privacy_patterns
-);
+This feature was developed using Claude Code assistance."
+# Hook strips: "using Claude Code assistance" if git.privacy enabled
+
+# Example: Tag annotation (privacy enforced if using git hooks)
+git tag -a v8.18.9 -m "Release v8.18.9
+
+Generated with Claude Code"
+# Hook strips: "Generated with Claude Code" if configured
+
+# Example: GitHub release notes (git hooks don't apply)
+# Project scripts should strip manually if needed
+NOTES=$(gh pr view --json body -q .body | sed 's/Generated with Claude Code//g')
 ```
 
-**Privacy Patterns Stripped:**
+**Privacy Patterns Automatically Stripped by Git Hooks:**
 - AI mentions
 - Claude references
 - Agent keywords
@@ -582,19 +743,12 @@ Every release pipeline execution logged with:
 
 **Scenario:** Fix critical authentication bug
 
-**Workflow Configuration:**
-```json
-{
-  "workflow_settings": {
-    "tiny": {
-      "version_bump": true,
-      "version_type": "patch",
-      "changelog_required": true,
-      "pr_required": false,
-      "merge_strategy": "direct_commit"
-    }
-  }
-}
+**Project Setup:**
+```bash
+# scripts/release.sh configured with:
+MERGE_STRATEGY="squash"
+REQUIRE_APPROVAL=true
+TAG_FORMAT="v{version}"
 ```
 
 **Execution:**
@@ -602,18 +756,20 @@ Every release pipeline execution logged with:
 # 1. User request
 @PM merge PR #45 and release patch
 
-# 2. Pipeline validates
+# 2. PM creates AgentTask for @DevOps-Engineer
+
+# 3. @DevOps-Engineer validates
 - PR #45 approved ✓
 - Checks passing ✓
 - Version bumped: 8.18.9 → 8.18.10 ✓
 
-# 3. Pipeline executes
+# 4. @DevOps-Engineer executes scripts/release.sh
 - Merge: squash merge to main ✓
 - Tag: v8.18.10 created and pushed ✓
-- Release: GitHub release with notes ✓
+- Release: GitHub release with changelog ✓
 - Cleanup: feature branch deleted ✓
 
-# 4. Result
+# 5. Result
 ✅ Release v8.18.10 published
 ```
 
@@ -621,20 +777,12 @@ Every release pipeline execution logged with:
 
 **Scenario:** Add new user authentication system
 
-**Workflow Configuration:**
-```json
-{
-  "workflow_settings": {
-    "medium": {
-      "version_bump": true,
-      "version_type": "minor",
-      "changelog_required": true,
-      "pr_required": true,
-      "merge_strategy": "feature_branch",
-      "release_automation": true
-    }
-  }
-}
+**Project Setup:**
+```makefile
+# Makefile with release automation
+.PHONY: release
+release:
+	@./scripts/release.sh
 ```
 
 **Execution:**
@@ -642,61 +790,48 @@ Every release pipeline execution logged with:
 # 1. User request
 @PM merge and release feature/user-auth
 
-# 2. Pipeline validates
+# 2. PM creates AgentTask for @DevOps-Engineer
+
+# 3. @DevOps-Engineer validates
 - PR #42 approved ✓
 - All checks passing ✓
 - Version bumped: 8.18.10 → 8.19.0 ✓
 - CHANGELOG updated ✓
 
-# 3. Pipeline executes
+# 4. @DevOps-Engineer runs: make release
 - Merge: squash merge to main ✓
 - Tag: v8.19.0 created and pushed ✓
-- Release: Generated notes from PR ✓
+- Release: Changelog notes extracted ✓
 - Cleanup: local and remote branches deleted ✓
 
-# 4. Result
+# 5. Result
 ✅ Release v8.19.0 published
-📝 Release notes auto-generated from PR #42
+📝 Release notes from CHANGELOG.md
 ```
 
 ### Documentation Update (No Release)
 
 **Scenario:** Update README with new instructions
 
-**Workflow Configuration:**
-```json
-{
-  "workflow_settings": {
-    "nano": {
-      "version_bump": false,
-      "changelog_required": false,
-      "pr_required": false,
-      "merge_strategy": "direct_commit",
-      "release_automation": false
-    }
-  },
-  "release": {
-    "trivial_changes": {
-      "auto_release": false,
-      "patterns": ["docs/**", "*.md", "README.md"]
-    }
-  }
-}
-```
+**Project Decision:**
+Documentation updates don't trigger releases.
 
 **Execution:**
 ```bash
-# 1. Commit directly to main
+# 1. Direct commit to main
+@Developer update README with new installation steps
+
+# 2. @Developer commits directly
 git add README.md
 git commit -m "docs: update installation instructions"
 git push origin main
 
-# 2. No release pipeline triggered
-- Nano-sized change (0 points)
-- Documentation-only pattern matched
-- release_automation: false
+# 3. No release needed
+- Documentation-only change
+- No version bump required
+- No release created
 
-# 3. Result
+# 4. Result
 ✅ Documentation updated, no release created
 ```
 
@@ -704,221 +839,202 @@ git push origin main
 
 ### Semantic Release Style
 
-**Configuration:**
-```json
-{
-  "release": {
-    "enabled": true,
-    "pipeline": {
-      "merge": {
-        "strategy": "squash",
-        "require_approval": true
-      },
-      "tag": {
-        "format": "v{version}",
-        "annotated": true
-      },
-      "github_release": {
-        "generate_notes": true,
-        "commit_convention": "conventional"
-      }
-    },
-    "version": {
-      "auto_detect": true,
-      "bump_from_commits": true
-    }
-  }
-}
+**Implementation:**
+```bash
+#!/bin/bash
+# scripts/release.sh - Semantic versioning with conventional commits
+
+# Auto-detect version from commits
+CURRENT_VERSION=$(cat VERSION)
+COMMITS=$(git log --pretty=format:"%s" $(git describe --tags --abbrev=0)..HEAD)
+
+# Determine bump type from commits
+if echo "$COMMITS" | grep -q "^feat!:"; then
+  VERSION_TYPE="major"
+elif echo "$COMMITS" | grep -q "^feat:"; then
+  VERSION_TYPE="minor"
+else
+  VERSION_TYPE="patch"
+fi
+
+# Bump version
+NEW_VERSION=$(semver bump $VERSION_TYPE $CURRENT_VERSION)
+echo $NEW_VERSION > VERSION
+
+# Generate notes from conventional commits
+gh pr merge --squash --delete-branch
+gh release create "v${NEW_VERSION}" --generate-notes
 ```
 
-**Behavior:**
-- Version automatically determined from commit messages
-- Release notes generated from conventional commits
-- Tags follow semantic versioning
-- All releases automated after PR approval
+**Characteristics:**
+- Version determined from commit messages
+- Release notes from conventional commits
+- Automated semantic versioning
+- Fast iteration cycles
 
 ### Manual Approval Style
 
-**Configuration:**
-```json
-{
-  "release": {
-    "enabled": true,
-    "pipeline": {
-      "merge": {
-        "require_approval": true
-      },
-      "github_release": {
-        "draft": true
-      }
-    },
-    "validation": {
-      "require_pr_approved": true,
-      "require_checks_passing": true
-    }
-  }
+**Implementation:**
+```bash
+#!/bin/bash
+# scripts/release.sh - Manual approval with draft releases
+
+PR_NUMBER=$(gh pr view --json number -q .number)
+VERSION=$(cat VERSION)
+
+# Validate approval
+gh pr view ${PR_NUMBER} --json reviewDecision -q .reviewDecision | grep -q "APPROVED" || {
+  echo "❌ PR requires approval before release"
+  exit 1
 }
+
+# Merge
+gh pr merge ${PR_NUMBER} --squash --delete-branch
+
+# Create DRAFT release for manual review
+gh release create "v${VERSION}" --draft --title "v${VERSION}" \
+  --notes "$(sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | sed '1d;$d')"
+
+echo "📝 Draft release created - review and publish manually"
 ```
 
-**Behavior:**
-- All releases require PR approval
-- GitHub releases created as drafts
+**Characteristics:**
+- PR approval required before merge
+- Releases created as drafts
 - Manual review before publishing
 - Explicit publish step required
 
 ### Continuous Deployment Style
 
-**Configuration:**
-```json
-{
-  "release": {
-    "enabled": true,
-    "trivial_changes": {
-      "auto_release": true,
-      "patterns": ["src/**", "lib/**"]
-    },
-    "pipeline": {
-      "merge": {
-        "strategy": "squash",
-        "require_approval": false
-      },
-      "github_release": {
-        "generate_notes": true,
-        "prerelease": true
-      }
-    }
-  }
-}
+**Implementation:**
+```bash
+#!/bin/bash
+# scripts/release.sh - Fast iteration with pre-releases
+
+VERSION=$(cat VERSION)
+PR_NUMBER=$(gh pr view --json number -q .number)
+
+# Merge immediately (for internal/dev releases)
+gh pr merge ${PR_NUMBER} --squash --delete-branch
+
+# Create pre-release tag
+gh release create "v${VERSION}" --prerelease \
+  --title "v${VERSION} (Pre-release)" \
+  --notes "$(gh pr view ${PR_NUMBER} --json body -q .body)"
+
+echo "🚀 Pre-release v${VERSION} deployed"
 ```
 
-**Behavior:**
-- Trivial changes auto-release after merge
+**Characteristics:**
+- Fast merge and release cycle
 - Pre-release tags for testing
-- Fast iteration cycles
-- Production releases still require approval
+- Minimal approval gates for development
+- Production releases use different script
 
 ## Integration Points
 
-### AgentTask System Integration
+### Virtual Team Integration
 
-**Size-Based Workflows:**
-Release pipeline respects AgentTask size workflow settings:
+Release automation integrates with the virtual team system:
 
-```json
-{
-  "workflow_settings": {
-    "nano": {
-      "release_automation": false
-    },
-    "tiny": {
-      "release_automation": false
-    },
-    "medium": {
-      "release_automation": true,
-      "auto_merge": false
-    },
-    "large": {
-      "release_automation": true,
-      "coordination_required": true
-    },
-    "mega": {
-      "release_automation": true,
-      "breaking_change_assessment": true
-    }
-  }
-}
-```
+**Work Classification:**
+- **Simple Releases**: @DevOps-Engineer executes directly via scripts/release.sh
+- **Complex Releases**: @PM coordinates multi-step workflow
+- **Emergency Hotfixes**: Fast-track with minimal gates
+- **Major Releases**: Full coordination with breaking change assessment
 
-**Pipeline Triggering:**
-- **Nano/Tiny**: Manual release trigger only
-- **Medium+**: Auto-trigger pipeline after merge (with approval)
-- **Large/Mega**: Additional coordination and assessment steps
+**Role Responsibilities:**
+- **@PM**: Orchestrates release process, validates readiness
+- **@DevOps-Engineer**: Executes release scripts, handles git operations
+- **@QA-Engineer**: Validates release readiness, confirms tests pass
+- **@Architect**: Reviews breaking changes for major releases
 
 ### Git Privacy Integration
 
 **Automatic Privacy Enforcement:**
-All release artifacts processed through git privacy system:
+Release scripts can integrate with git privacy hooks:
 
-```javascript
-// Release pipeline step
-function createRelease(version, notes) {
-  // Load git privacy configuration
-  const privacyConfig = config.git;
+```bash
+#!/bin/bash
+# scripts/release.sh - With privacy enforcement
 
-  // Strip privacy patterns
-  const cleanNotes = stripPrivacyPatterns(
-    notes,
-    privacyConfig.privacy_patterns
-  );
+# Extract changelog and strip AI mentions if git.privacy enabled
+if git config --get-regexp 'hooks.git-privacy' > /dev/null; then
+  # Git privacy hook will automatically strip patterns
+  NOTES=$(sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | sed '1d;$d')
+else
+  NOTES=$(sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | sed '1d;$d')
+fi
 
-  // Create release with clean notes
-  return gh.createRelease({
-    tag_name: version,
-    body: cleanNotes,
-    draft: config.release.pipeline.github_release.draft
-  });
-}
+# Create release (privacy enforced by git hooks)
+gh release create "v${VERSION}" --title "v${VERSION}" --notes "${NOTES}"
 ```
 
 **Privacy Validation:**
-Pre-release validation checks all artifacts for privacy compliance:
+Git privacy hooks automatically process:
 - Merge commit messages
 - Tag annotations
-- Release notes
-- PR descriptions
+- Release notes (if generated from commits)
+- All git operations
 
-### Hook System Integration
+### Script Validation Patterns
 
-**Pre-Release Validation Hook:**
-```javascript
-// pre-release-validation.js
-module.exports = {
-  name: 'pre-release-validation',
-  type: 'pre-release',
+**Pre-Release Validation:**
+```bash
+#!/bin/bash
+# scripts/validate-release.sh - Pre-release validation
 
-  validate: async (context) => {
-    const checks = [
-      validatePRApproval(context),
-      validateChecksStatus(context),
-      validateVersionBump(context),
-      validateChangelog(context),
-      validateGitPrivacy(context)
-    ];
+validate_pr_approval() {
+  gh pr view ${PR_NUMBER} --json reviewDecision -q .reviewDecision | grep -q "APPROVED"
+}
 
-    const results = await Promise.all(checks);
-    return results.every(r => r.passed);
-  }
-};
+validate_checks_passing() {
+  gh pr checks ${PR_NUMBER} | grep -q "All checks have passed"
+}
+
+validate_version_bump() {
+  git diff main...HEAD VERSION | grep -q "^+[0-9]"
+}
+
+validate_changelog() {
+  grep -q "## \[$(cat VERSION)\]" CHANGELOG.md
+}
+
+# Run all validations
+echo "→ Validating release prerequisites..."
+validate_pr_approval || { echo "❌ PR not approved"; exit 1; }
+validate_checks_passing || { echo "❌ Checks failing"; exit 1; }
+validate_version_bump || { echo "❌ Version not bumped"; exit 1; }
+validate_changelog || { echo "❌ CHANGELOG not updated"; exit 1; }
+
+echo "✅ All validations passed"
 ```
 
-**Post-Release Hook:**
-```javascript
-// post-release-notification.js
-module.exports = {
-  name: 'post-release-notification',
-  type: 'post-release',
+**Post-Release Actions:**
+```bash
+#!/bin/bash
+# scripts/post-release.sh - Post-release actions
 
-  execute: async (context) => {
-    // Log release to audit trail
-    await logRelease(context);
+VERSION=$(cat VERSION)
 
-    // Update project documentation
-    await updateVersionBadge(context.version);
+# Update documentation badges
+sed -i "s/version-[0-9.]*/version-${VERSION}/" README.md
 
-    // Notify team (if configured)
-    if (config.notifications.enabled) {
-      await notifyRelease(context);
-    }
-  }
-};
+# Notify team (optional)
+if [ -n "$SLACK_WEBHOOK" ]; then
+  curl -X POST "$SLACK_WEBHOOK" -d "{\"text\":\"Release v${VERSION} published\"}"
+fi
+
+# Log release
+echo "$(date): v${VERSION}" >> releases.log
 ```
 
 ## Recommendations
 
 ### DO
 
-✅ **Use Configuration Files**
-Define release behavior in `icc.config.json`, not code
+✅ **Use Shell Scripts**
+Simple, testable, version-controlled automation
 
 ✅ **Require Explicit Triggers**
 Never auto-release without user approval
@@ -926,37 +1042,37 @@ Never auto-release without user approval
 ✅ **Validate Before Execution**
 Pre-execution validation prevents mid-pipeline failures
 
-✅ **Integrate Git Privacy**
-All release artifacts comply with privacy settings
+✅ **Integrate with Git Hooks**
+Leverage existing git privacy enforcement
 
-✅ **Support Multiple Strategies**
-Allow projects to choose merge strategy
+✅ **Support Dry-Run Mode**
+Test pipeline without execution
 
 ✅ **Log Everything**
-Comprehensive audit trail for all releases
+Comprehensive audit trail in releases.log
 
-✅ **Test Pipeline Locally**
-Dry-run mode for testing without execution
+✅ **Document Your Workflow**
+Clear README section explaining release process
 
-✅ **Document Configuration**
-Clear examples for different project types
+✅ **Use Natural Language**
+`@PM merge and release` is clearer than commands
 
 ### DON'T
 
-❌ **Don't Hardcode Logic**
-Configuration-driven, not code-driven
+❌ **Don't Hardcode Credentials**
+Use environment variables or gh auth
 
 ❌ **Don't Auto-Release**
-Always require explicit user trigger
+Always require explicit trigger
 
 ❌ **Don't Skip Validation**
 Pre-execution checks prevent errors
 
-❌ **Don't Ignore Privacy**
-Enforce git privacy throughout pipeline
+❌ **Don't Ignore Git Privacy**
+Respect git.privacy configuration
 
-❌ **Don't Force Single Strategy**
-Support different project workflows
+❌ **Don't Over-Complicate**
+Start simple, add features as needed
 
 ❌ **Don't Silent Fail**
 Clear error messages and recovery steps
@@ -964,27 +1080,27 @@ Clear error messages and recovery steps
 ❌ **Don't Skip Cleanup**
 Always clean up branches after release
 
-❌ **Don't Commit Sensitive Data**
+❌ **Don't Commit Secrets**
 Validate artifacts before release
 
 ## Success Metrics
 
 **Efficiency Gains:**
 - Release time reduced from 15+ minutes to 2 minutes
-- Zero missed release steps
-- Consistent release quality
+- Zero missed release steps (automated workflow)
+- Consistent release quality across all releases
 
 **Error Reduction:**
-- Zero git privacy violations in releases
-- Zero tag creation mistakes
-- Zero branch cleanup failures
+- Zero git privacy violations (hook enforcement)
+- Zero tag creation mistakes (validated scripts)
+- Zero branch cleanup failures (automated)
 
 **Flexibility:**
-- Support for 3+ different release strategies
-- Project-specific configuration active
-- Zero hardcoded release logic
+- Multiple implementation patterns available
+- Projects choose approach that fits workflow
+- Easy to customize and extend scripts
 
 **Safety:**
-- 100% explicit approval before merge
-- Pre-execution validation catch rate >95%
-- Audit trail coverage 100%
+- Explicit trigger required for all releases
+- Pre-execution validation prevents errors
+- Comprehensive logging in releases.log
