@@ -10,6 +10,10 @@ Learn when and how to store information in memory for team knowledge sharing.
 Ensure commits comply with privacy settings and follow branch protection workflows.
 [→ Details](./git-workflow-patterns.md)
 
+## Release Workflow Automation
+Configure automated release workflows with simple command interface for efficient PR-to-release pipelines.
+[→ Details](./release-workflow-automation.md)
+
 ---
 
 **Note**: This directory is for user-generated best practices. Add your own by:
