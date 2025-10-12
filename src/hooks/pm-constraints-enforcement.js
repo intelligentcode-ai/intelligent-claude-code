@@ -127,8 +127,18 @@ function main() {
   }
 
   function extractCommandsFromBash(commandString) {
+    // First, remove all quoted strings (both single and double quotes)
+    // Replace with placeholder to maintain word boundaries
+    let cleanedCommand = commandString;
+
+    // Remove double-quoted strings: "text"
+    cleanedCommand = cleanedCommand.replace(/"[^"]*"/g, '""');
+
+    // Remove single-quoted strings: 'text'
+    cleanedCommand = cleanedCommand.replace(/'[^']*'/g, "''");
+
     // Split by command separators: && || ; |
-    const statements = commandString.split(/&&|\|\||;|\|/).map(s => s.trim());
+    const statements = cleanedCommand.split(/&&|\|\||;|\|/).map(s => s.trim());
 
     const commands = [];
 
