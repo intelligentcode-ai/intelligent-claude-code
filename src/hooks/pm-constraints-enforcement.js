@@ -190,35 +190,28 @@ Use Task tool to create specialist agent via AgentTask.`
       };
     }
 
-    // Split compound commands by && and ; and | to check ALL commands in chain
-    const commandParts = command.split(/&&|;|\|/).map(part => part.trim());
+    // Check if ANY blocked command appears ANYWHERE in the command string
+    // This catches commands even when preceded by env vars (FOO=bar npm install)
+    for (const blocked of allBlockedCommands) {
+      // Match as word boundary to avoid false positives (e.g., "make" in "remake")
+      const pattern = new RegExp(`\\b${blocked}(?:-[a-z]+)?\\b`, 'i');
 
-    for (const part of commandParts) {
-      // Extract first word (command name) from each part
-      const firstWord = part.trim().split(/\s+/)[0];
-
-      // Skip empty parts
-      if (!firstWord) continue;
-
-      // Check if command is blocked (exact match OR prefix match with hyphen)
-      for (const blocked of allBlockedCommands) {
-        if (firstWord === blocked || firstWord.startsWith(blocked + '-')) {
-          // Provide specific guidance for kubectl commands
-          let kubectlGuidance = '';
-          if (blocked === 'kubectl') {
-            kubectlGuidance = `
+      if (pattern.test(command)) {
+        // Provide specific guidance for kubectl commands
+        let kubectlGuidance = '';
+        if (blocked === 'kubectl') {
+          kubectlGuidance = `
 
 kubectl Read-only (ALLOWED): get, describe, logs, top, version, cluster-info, config view, api-resources, api-versions, explain
 kubectl Destructive (BLOCKED): delete, apply, create, patch, replace, scale, rollout, drain, cordon, taint, label, annotate`;
-          }
+        }
 
-          return {
-            allowed: false,
-            message: `🚫 PM role cannot execute build/deploy/system commands - create Agents using AgentTasks for technical work
+        return {
+          allowed: false,
+          message: `🚫 PM role cannot execute build/deploy/system commands - create Agents using AgentTasks for technical work
 
 Blocked command: ${blocked}
-Found in: ${part}
-Full command: ${command}
+Found in: ${command}
 
 Build/Deploy tools: npm, yarn, make, docker, cargo, mvn, gradle, go
 System tools: terraform, ansible, helm, systemctl, service, apt, yum, brew, pip, gem, composer
@@ -231,8 +224,7 @@ Text editors: vi, vim, nano, emacs${kubectlGuidance}
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
 All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
 Use Task tool to create specialist agent via AgentTask with explicit approval.`
-          };
-        }
+        };
       }
     }
 
