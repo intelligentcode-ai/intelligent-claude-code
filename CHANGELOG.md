@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.12] - 2025-10-12
+
+### Bug Fixes
+- **Markdown Enforcement Logic**: Fixed validation logic and added agent-specific setting
+  - Lines 507-535: Summary validation now only blocks Write/Edit/Update, not Read operations
+  - Lines 337-404: Updated validateMarkdownOutsideAllowlist to accept isAgentContext parameter
+  - Lines 341-348: Added agent-specific setting check with fallback to main setting
+  - Lines 538-539: Markdown validation passes agent context for appropriate setting selection
+  - icc.config.default.json:122: Added allow_markdown_outside_allowlist_agents setting (default: null)
+  - icc.config.json:13: Added agent override setting (true) for this project
+  - Fixes: Read operations no longer blocked by summary validation
+  - Fixes: Agents can have different markdown allowlist behavior from main scope
+
+### Configuration
+- **Agent-Specific Markdown Control**: New setting allows agents to override main markdown allowlist
+  - When `allow_markdown_outside_allowlist_agents` is null, uses main setting value
+  - When explicitly set (true/false), agents use their own setting
+  - This project enables both settings to allow markdown anywhere for all contexts
+
+### Technical Details
+- **Summary Validation**: Only applies to Write/Edit/Update operations (line 507)
+- **Agent Context Detection**: Uses !isPMRole(hookInput) to determine agent context (line 538)
+- **Setting Hierarchy**: Agent setting → Main setting → Default (false)
+- **Testing Scenarios**:
+  - Read `SUMMARY.md` → Allowed (Read operation not validated)
+  - Write `SUMMARY.md` → Blocked (Write operation validated)
+  - Agent writes `random-dir/notes.md` with agent_setting=null, main_setting=false → Blocked
+  - Agent writes `random-dir/notes.md` with agent_setting=true, main_setting=false → Allowed
+  - Main writes `random-dir/notes.md` with main_setting=true → Allowed
+
+---
+
 ## [8.18.11] - 2025-10-12
 
 ### Features

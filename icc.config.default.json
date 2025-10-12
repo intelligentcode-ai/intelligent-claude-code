@@ -119,6 +119,7 @@
   "enforcement": {
     "blocking_enabled": true,
     "allow_markdown_outside_allowlist": false,
+    "allow_markdown_outside_allowlist_agents": null,
     "violation_logging": true,
     "auto_correction": true,
     "infrastructure_protection": {
