@@ -154,6 +154,37 @@ function Get-SettingsJson {
     }
 }
 
+function Remove-ObsoleteSessionStartHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath
+    )
+
+    try {
+        if (Test-Path $SettingsPath) {
+            Write-Host "  Removing obsolete SessionStart hook from settings.json..." -ForegroundColor Gray
+
+            $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+            if ($Settings.hooks -and $Settings.hooks.PSObject.Properties.Name -contains 'SessionStart') {
+                $Settings.hooks.PSObject.Properties.Remove('SessionStart')
+
+                # Save updated settings
+                $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+                Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+                Write-Host "  ✅ Removed obsolete SessionStart hook from settings.json" -ForegroundColor Green
+            } else {
+                Write-Host "  SessionStart hook not found, skipping cleanup" -ForegroundColor Gray
+            }
+        } else {
+            Write-Host "  No settings.json found, skipping SessionStart cleanup" -ForegroundColor Gray
+        }
+    } catch {
+        Write-Warning "  Failed to remove SessionStart hook: $($_.Exception.Message)"
+    }
+}
+
 function Register-UserPromptSubmitHook {
     param(
         [Parameter(Mandatory=$true)]
@@ -216,71 +247,6 @@ function Register-UserPromptSubmitHook {
 
     } catch {
         Write-Warning "  Failed to register UserPromptSubmit hook in settings.json: $($_.Exception.Message)"
-    }
-}
-
-function Register-SessionStartHook {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$SettingsPath,
-
-        [Parameter(Mandatory=$true)]
-        [string]$HookCommand
-    )
-
-    try {
-        Write-Host "  Registering SessionStart hook in settings.json..." -ForegroundColor Gray
-
-        # Load or create settings
-        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
-
-        # Initialize hooks structure if missing
-        if (-not $Settings.hooks) {
-            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
-        }
-
-        if (-not $Settings.hooks.SessionStart) {
-            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "SessionStart" -Value @() -Force
-        }
-
-        # Convert SessionStart to array if it's not already
-        if ($Settings.hooks.SessionStart -isnot [array]) {
-            $Settings.hooks.SessionStart = @($Settings.hooks.SessionStart)
-        }
-
-        # Check if hook already exists to prevent duplicates
-        $ExistingHook = $Settings.hooks.SessionStart | Where-Object {
-            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
-        }
-
-        if (-not $ExistingHook) {
-            # Create new hook entry
-            $NewHook = [PSCustomObject]@{
-                matcher = "*"
-                hooks = @(
-                    [PSCustomObject]@{
-                        command = $HookCommand
-                        failureMode = "allow"
-                        timeout = 10000
-                        type = "command"
-                    }
-                )
-            }
-
-            # Add to SessionStart array
-            $Settings.hooks.SessionStart += $NewHook
-
-            # Save settings with proper JSON formatting
-            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
-            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
-
-            Write-Host "  ✅ SessionStart hook registered successfully in settings.json" -ForegroundColor Green
-        } else {
-            Write-Host "  SessionStart hook already registered, skipping duplicate registration" -ForegroundColor Yellow
-        }
-
-    } catch {
-        Write-Warning "  Failed to register SessionStart hook in settings.json: $($_.Exception.Message)"
     }
 }
 
@@ -539,6 +505,9 @@ function Install-HookSystem {
             # Register production hooks in settings.json
             $SettingsPath = Join-Path $InstallPath "settings.json"
 
+            # Remove obsolete SessionStart hook from settings.json (v8.18.8+)
+            Remove-ObsoleteSessionStartHook -SettingsPath $SettingsPath
+
             # Remove old hook names (graceful cleanup)
             $OldHooks = @(
                 'pretooluse.js',
@@ -555,15 +524,6 @@ function Install-HookSystem {
                     Remove-Item -Path $OldHookPath -Force
                     Write-Host "  Removed old hook: $OldHook" -ForegroundColor Gray
                 }
-            }
-
-            # Register SessionStart hook
-            $SessionStartHookPath = Join-Path $HooksPath "session-start.js"
-            if (Test-Path $SessionStartHookPath) {
-                $HookCommand = "node `"$SessionStartHookPath`""
-                Register-SessionStartHook -SettingsPath $SettingsPath -HookCommand $HookCommand
-            } else {
-                Write-Warning "  session-start.js hook not found, skipping SessionStart registration"
             }
 
             # Register UserPromptSubmit hook (context-injection.js)

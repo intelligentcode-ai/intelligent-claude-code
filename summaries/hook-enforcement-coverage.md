@@ -9,7 +9,7 @@
 The system has evolved from markdown-based behavioral guidance to executable hook-based enforcement. This analysis identifies 10 enforcement hooks providing reliable code-based enforcement for critical behavioral patterns, enabling simplification of markdown behaviors.
 
 **Key Findings**:
-- 10 enforcement hooks operational with comprehensive coverage
+- 9 enforcement hooks operational with comprehensive coverage (session-start.js removed as redundant)
 - PM role constraints fully enforced via code (no markdown needed)
 - Git privacy automatically enforced (configuration-driven)
 - Project scope protection prevents installation path modification
@@ -309,38 +309,7 @@ Installation updates happen via 'make install' from project source.
 
 **Coverage**: Educational enforcement - reinforces markdown behaviors via reminders
 
-### 9. session-start.js
-
-**Trigger**: SessionStart
-
-**Purpose**: Detect session compaction and reload virtual team system
-
-**Enforcement Rules**:
-1. Detect compaction via multiple methods:
-   - source field = "compact"
-   - summary/compacted/continued fields present
-   - Message content contains compaction keywords
-2. Only act on compaction (normal session starts silent)
-3. Attempt to read and inject virtual-team.md content
-4. Fallback to instruction message if file read fails
-5. Use additionalContext for silent injection
-
-**Blocked Operations**: None (context restoration only)
-
-**Configuration**: None (always active - universal compaction detection)
-
-**Compaction Detection Methods**:
-- Direct source field check
-- Summary field check
-- Message content keyword scan
-
-**Behavioral Patterns Enforced**:
-- **Context Continuity**: Reload virtual team system after compaction
-- **System Resilience**: Automatic recovery from context loss
-
-**Coverage**: 100% code enforcement - automatic compaction handling
-
-### 10. agent-infrastructure-protection.js (Configuration-Based v8.16.0)
+### 9. agent-infrastructure-protection.js (Configuration-Based v8.16.0)
 
 **Trigger**: PreToolUse (Bash - infrastructure commands)
 
@@ -542,21 +511,6 @@ Project-specific configuration: ./icc.config.json or ./.claude/icc.config.json
 - Complete behavioral documentation
 - Detailed pattern explanations
 
-#### 7. Session Continuity (100% Hook Coverage)
-**Enforcement Hook**: session-start.js
-
-**Enforced Patterns**:
-- Compaction detection
-- Virtual team system reload
-- Context restoration
-
-**Redundant Markdown**:
-- Compaction handling mechanics
-
-**Markdown Still Needed**:
-- Session continuity concepts
-- Context restoration rationale
-
 ### Behavioral Patterns Partially Enforced
 
 **Pattern**: AgentTask-First Work Execution
@@ -568,6 +522,11 @@ Project-specific configuration: ./icc.config.json or ./.claude/icc.config.json
 **Hook Coverage**: context-injection.js provides aggressive reminders
 **Markdown Coverage**: Memory search/storage operations
 **Status**: Hooks provide enforcement reminders; markdown provides detailed operations
+
+**Pattern**: Session Continuity
+**Hook Coverage**: REMOVED - session-start.js was redundant (CLAUDE.md handles loading)
+**Markdown Coverage**: CLAUDE.md @-notation loads virtual-team.md automatically
+**Status**: No hook needed - functional loading handled by CLAUDE.md import
 
 ### Behavioral Patterns Not Enforced by Hooks
 
@@ -753,8 +712,8 @@ Project-specific configuration: ./icc.config.json or ./.claude/icc.config.json
 
 ## Metrics
 
-**Total Hooks Analyzed**: 10 (NEW: agent-infrastructure-protection.js in v8.16.0)
-**Behavioral Patterns with 100% Hook Coverage**: 8 (NEW: Infrastructure Safety)
+**Total Hooks Analyzed**: 9 (REMOVED: session-start.js - redundant with CLAUDE.md @-notation)
+**Behavioral Patterns with 100% Hook Coverage**: 7 (REMOVED: Session Continuity - handled by CLAUDE.md)
 **Behavioral Patterns with Partial Hook Coverage**: 2
 **Behavioral Patterns with No Hook Coverage**: 8
 
@@ -776,8 +735,9 @@ Hook-based enforcement successfully replaces mechanical enforcement documentatio
 4. **Project Scope**: Universal protection preventing installation modification
 5. **Agent Context Detection**: Reliable PM vs Agent differentiation enabling appropriate constraints
 6. **Educational Reminders**: Dynamic guidance reinforcing behavioral patterns
-7. **Session Continuity**: Automatic compaction detection and recovery
-8. **Infrastructure Safety** (NEW v8.16.0): Critical protection preventing accidental destruction of VMs, datastores, and infrastructure
+7. **Infrastructure Safety**: Critical protection preventing accidental destruction of VMs, datastores, and infrastructure
+
+**Session Continuity** (REMOVED v8.18.8): session-start.js hook removed as redundant - CLAUDE.md handles loading via @~/.claude/modes/virtual-team.md import
 
 **Key Achievement**: Separation of enforcement (hooks) from guidance (markdown) enables:
 - Simpler, more focused markdown documentation
