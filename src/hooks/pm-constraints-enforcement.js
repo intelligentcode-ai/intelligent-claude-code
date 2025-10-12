@@ -406,6 +406,12 @@ Use Task tool to create specialist agent via AgentTask.`
     const hookInput = JSON.parse(inputData);
     log(`PreToolUse triggered: ${JSON.stringify(hookInput)}`);
 
+    // Check for bypass permissions mode - log but still enforce PM constraints
+    const permissionMode = hookInput.permission_mode || '';
+    if (permissionMode === 'bypassPermissions') {
+      log(`⚠️ BYPASS MODE DETECTED - PM constraints will still be enforced (architectural requirement)`);
+    }
+
     // Extract tool and parameters from Claude Code format
     // Claude Code sends: { tool_name: "Edit", tool_input: { file_path: "..." } }
     const tool = hookInput.tool_name || hookInput.tool || '';
