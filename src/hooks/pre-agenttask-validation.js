@@ -94,64 +94,26 @@ function main() {
       const recentGrep = checkToolHistory('Grep', toolHistory);
 
       if (!recentGrep) {
-        log('BLOCKED: No Grep usage detected before Task tool invocation');
-        const response = {
-          hookSpecificOutput: {
-            hookEventName: 'PreToolUse',
-            permissionDecision: 'deny',
-            permissionDecisionReason: `🚫 Memory search required before AgentTask creation
-
-BLOCKED: Task tool invocation without prior memory search
-
-REQUIREMENT: Use Grep to search memory/ for relevant patterns before creating AgentTask
-
-Example memory searches:
-  - Grep pattern="authentication" path="memory"
-  - Grep pattern="implementation" path="memory/debugging"
-  - Grep pattern="error handling" path="memory/[work_domain]"
-
-REASON: Memory-first approach ensures agents benefit from stored patterns and previous learnings.
-
-See: memory-enforcement-patterns.md for complete guidance`
-          }
-        };
-        console.log(JSON.stringify(response));
-        process.exit(2);
+        log('[WARNING] No Grep usage detected before Task tool invocation - consider searching memory/ for patterns');
+        log('[INFO] Memory-first approach is guidance, not absolute gate - allowing AgentTask creation');
+        // Allow operation - memory might not exist yet for this work domain
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
       }
 
       // Verify Grep accessed memory/ directory
       const memoryAccessed = checkMemoryAccess(recentGrep);
 
       if (!memoryAccessed) {
-        log('BLOCKED: Grep detected but did not access memory/ directory');
-        const response = {
-          hookSpecificOutput: {
-            hookEventName: 'PreToolUse',
-            permissionDecision: 'deny',
-            permissionDecisionReason: `🚫 Memory search must access memory/ directory
-
-BLOCKED: Grep usage detected but did not search memory/
-
-REQUIREMENT: Grep must search within memory/ directory for patterns
-
-Current Grep path: ${recentGrep.parameters.path || 'unknown'}
-Required path pattern: memory/ or memory/[topic]/
-
-Example correct searches:
-  - Grep pattern="authentication" path="memory"
-  - Grep pattern="debugging" path="memory/implementation"
-
-REASON: AgentTask context requires memory patterns from memory/ directory.
-
-See: memory-enforcement-patterns.md for complete guidance`
-          }
-        };
-        console.log(JSON.stringify(response));
-        process.exit(2);
+        log(`[WARNING] Grep detected but did not access memory/ directory - current path: ${recentGrep.parameters.path || 'unknown'}`);
+        log('[INFO] Consider searching memory/ for relevant patterns when available');
+        // Allow operation - Grep might be searching elsewhere appropriately
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
       }
 
       // Memory search compliance verified
-      log(`Memory search compliance verified: Grep accessed ${recentGrep.parameters.path}`);
+      log(`[INFO] Memory search detected: Grep accessed ${recentGrep.parameters.path}`);
       console.log(JSON.stringify({ continue: true }));
       process.exit(0);
     }
