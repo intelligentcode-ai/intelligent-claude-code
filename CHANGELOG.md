@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.7] - 2025-10-12
+
+### Bug Fixes
+- **pm-constraints-enforcement.js**: Fixed command pattern detection to catch blocked commands with environment variable prefixes
+  - Replaced word-based matching with regex pattern matching for reliable detection
+  - Now correctly blocks commands like `ANSIBLE_CONFIG=... ansible-playbook`
+  - Now correctly blocks commands like `env FOO=bar npm install`
+  - Now correctly blocks commands like `cd dir && ansible-playbook`
+  - Pattern uses word boundaries to prevent false positives (e.g., "make" in "remake")
+  - Lines 193-229: New pattern-based command validation logic
+
+### Technical Details
+- **Root Cause**: Word-based matching extracted first word only, missing commands preceded by env vars
+- **Solution**: Regex pattern `\\b${blocked}(?:-[a-z]+)?\\b` matches command anywhere in string
+- **Word Boundaries**: Prevents false positives while catching all legitimate uses
+- **Hyphenated Variants**: Pattern handles commands like `ansible-playbook`, `git-lfs`, etc.
+- **Case Insensitive**: 'i' flag ensures consistent detection regardless of case
+
+### Test Cases Validated
+- ✅ `ANSIBLE_CONFIG=... ansible-playbook` → BLOCKED
+- ✅ `env FOO=bar ansible-playbook` → BLOCKED
+- ✅ `cd dir && ansible-playbook` → BLOCKED
+- ✅ `FOO=bar BAZ=qux npm install` → BLOCKED
+- ✅ `python3 script.py` → BLOCKED
+- ✅ `remake file` → ALLOWED (word boundary works)
+- ✅ `make test` → BLOCKED
+
+---
+
 ## [8.18.6] - 2025-10-12
 
 ### Bug Fixes
