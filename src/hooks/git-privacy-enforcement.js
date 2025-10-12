@@ -48,10 +48,18 @@ function main() {
   function loadConfiguration() {
     log('Loading configuration via unified config-loader');
     const gitPrivacy = getSetting('git.privacy', false);
+    const privacyPatterns = getSetting('git.privacy_patterns', [
+      'AI',
+      'Claude',
+      'agent',
+      'Generated with Claude Code',
+      'Co-Authored-By: Claude'
+    ]);
     const config = {
-      git_privacy: gitPrivacy
+      git_privacy: gitPrivacy,
+      privacy_patterns: privacyPatterns
     };
-    log(`Configuration loaded: git_privacy=${config.git_privacy}`);
+    log(`Configuration loaded: git_privacy=${config.git_privacy}, patterns=${config.privacy_patterns.length}`);
     return config;
   }
 
@@ -74,22 +82,29 @@ function main() {
     return '';
   }
 
-  function stripAIMentions(message) {
+  function stripAIMentions(message, privacyPatterns) {
     let cleaned = message;
 
-    // Privacy patterns to remove (case-insensitive)
-    const privacyPatterns = [
-      /🤖 Generated with \[Claude Code\]\([^)]+\)\s*/gi,
-      /Generated with \[Claude Code\]\([^)]+\)\s*/gi,
-      /Co-Authored-By: Claude <[^>]+>\s*/gi,
-      /Claude assisted in this commit\s*/gi,
-      /\n\n🤖 Generated.*$/s,
-      /\n\nCo-Authored-By: Claude.*$/s
-    ];
+    // First, remove full lines that contain privacy patterns
+    const lines = cleaned.split('\n');
+    const filteredLines = lines.filter(line => {
+      // Check if line contains any privacy pattern
+      for (const pattern of privacyPatterns) {
+        const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedPattern, 'i');
+        if (regex.test(line)) {
+          return false;  // Remove this line
+        }
+      }
+      return true;  // Keep this line
+    });
 
-    for (const pattern of privacyPatterns) {
-      cleaned = cleaned.replace(pattern, '');
-    }
+    cleaned = filteredLines.join('\n');
+
+    // Also remove common markdown variations
+    cleaned = cleaned.replace(/🤖\s*/g, '');  // Remove robot emoji
+    cleaned = cleaned.replace(/Generated with \[Claude Code\]\([^)]+\)/gi, '');
+    cleaned = cleaned.replace(/Co-Authored-By: Claude <[^>]+>/gi, '');
 
     // Clean up multiple consecutive newlines
     cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
@@ -100,7 +115,81 @@ function main() {
     return cleaned;
   }
 
+  function checkPRBodyPrivacy(command, config) {
+    log(`Checking PR/MR body privacy for command: ${command.substring(0, 100)}`);
+
+    // Check if git_privacy enabled
+    if (config.git_privacy !== true) {
+      log('git_privacy disabled - no modification needed');
+      return { allowed: true };
+    }
+
+    log('git_privacy enabled - checking for --body parameter');
+
+    // Extract --body content (supports quoted strings, unquoted strings, and HEREDOC)
+    let bodyMatch;
+
+    // Try simple quoted string first
+    bodyMatch = command.match(/--body\s+["']([^"']+)["']/s);
+    if (bodyMatch) log(`Found body via quoted string: ${bodyMatch[1].substring(0, 50)}`);
+
+    // Try unquoted string (up to next -- flag or end of string)
+    if (!bodyMatch) {
+      bodyMatch = command.match(/--body\s+([^\s][^\s-]*(?:\s+[^\s-]+)*)/);
+      if (bodyMatch) log(`Found body via unquoted string: ${bodyMatch[1].substring(0, 50)}`);
+    }
+
+    // Try HEREDOC format
+    if (!bodyMatch) {
+      bodyMatch = command.match(/--body\s+"?\$\(cat <<['"]?EOF['"]?\n([\s\S]+?)\nEOF\)["']?/);
+      if (bodyMatch) log(`Found body via HEREDOC: ${bodyMatch[1].substring(0, 50)}`);
+    }
+
+    if (!bodyMatch) {
+      log('No --body parameter found - allowing command');
+      return { allowed: true };
+    }
+
+    const body = bodyMatch[1];
+    log(`Checking body for AI mentions: ${body.substring(0, 100)}`);
+    const cleanBody = stripAIMentions(body, config.privacy_patterns || []);
+
+    // Check if modifications were made
+    if (cleanBody !== body) {
+      log('AI mentions found in PR/MR body - blocking with cleaned version');
+      return {
+        allowed: false,
+        message: `🔒 AI mentions detected in PR/MR body
+
+ORIGINAL contained AI mentions that violate git_privacy setting
+
+CLEANED BODY:
+${cleanBody}
+
+Please use the cleaned version above with --body "$(cat <<'EOF'
+${cleanBody}
+EOF
+)"`
+      };
+    }
+
+    log('No AI mentions found - allowing command');
+    return { allowed: true };
+  }
+
   function modifyGitCommand(command, config) {
+    // Check for GitHub CLI PR commands
+    if (command.match(/\bgh\s+pr\s+(create|edit)\b/)) {
+      log('GitHub CLI PR command detected - checking for AI mentions');
+      return checkPRBodyPrivacy(command, config);
+    }
+
+    // Check for GitLab CLI MR commands
+    if (command.match(/\bglab\s+mr\s+(create|edit)\b/)) {
+      log('GitLab CLI MR command detected - checking for AI mentions');
+      return checkPRBodyPrivacy(command, config);
+    }
+
     // Only modify git commit commands
     if (!command.includes('git commit')) {
       log('Not a git commit command - no modification needed');
@@ -120,7 +209,7 @@ function main() {
       return { modified: false, command };
     }
 
-    const cleanedMessage = stripAIMentions(message);
+    const cleanedMessage = stripAIMentions(message, config.privacy_patterns || []);
 
     if (cleanedMessage === message) {
       log('No AI mentions found - no modification needed');
@@ -204,6 +293,20 @@ function main() {
     // Modify git command if needed
     const result = modifyGitCommand(command, config);
 
+    // Handle blocked PR/MR commands
+    if (result.allowed === false) {
+      log(`Command blocked due to privacy violation`);
+      const response = {
+        abort: true,
+        error: result.message
+      };
+      const responseJson = JSON.stringify(response);
+      log(`BLOCKING: ${responseJson}`);
+      console.log(responseJson);
+      process.exit(1);
+    }
+
+    // Handle modified commands
     if (result.modified) {
       log(`Command modified - returning updated command`);
       const response = {
