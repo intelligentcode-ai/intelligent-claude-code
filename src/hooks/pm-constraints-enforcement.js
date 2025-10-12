@@ -334,6 +334,66 @@ Please create summary files in the summaries/ directory to keep project root cle
     };
   }
 
+  function validateMarkdownOutsideAllowlist(filePath, projectRoot) {
+    // Check if setting allows markdown files outside allowlist
+    const allowMarkdown = getSetting('enforcement.allow_markdown_outside_allowlist', false);
+
+    if (allowMarkdown) {
+      return { allowed: true };
+    }
+
+    // Check if file is markdown
+    if (!filePath.endsWith('.md')) {
+      return { allowed: true };
+    }
+
+    // Normalize to relative path if absolute
+    let relativePath = filePath;
+    if (path.isAbsolute(filePath)) {
+      relativePath = path.relative(projectRoot, filePath);
+    }
+
+    // Get configured allowlist
+    const config = loadConfiguration();
+    const allowlist = [
+      config.story_path,
+      config.bug_path,
+      config.memory_path,
+      config.docs_path,
+      'agenttasks',
+      'summaries'
+    ];
+
+    // Check if markdown is in root (root .md files are allowed)
+    const dirName = path.dirname(relativePath);
+    if (dirName === '.' || dirName === '') {
+      return { allowed: true };
+    }
+
+    // Check if markdown is in allowlist directory
+    for (const allowedPath of allowlist) {
+      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
+        return { allowed: true };
+      }
+    }
+
+    // Markdown file outside allowlist and setting is false - block it
+    return {
+      allowed: false,
+      message: `📝 Markdown files outside allowlist directories are blocked by default
+
+Blocked: ${filePath}
+Reason: Markdown files should be in designated directories
+
+Allowed directories for markdown: ${allowlist.join(', ')}, root *.md files
+
+If you specifically requested this file, ask the user to enable:
+enforcement.allow_markdown_outside_allowlist = true in icc.config.json
+
+Or create the file in an appropriate allowlist directory.`
+    };
+  }
+
   function getBlockingEnabled() {
     const enabled = getSetting('enforcement.blocking_enabled', true);
     log(`blocking_enabled=${enabled} (from unified config)`);
@@ -458,6 +518,35 @@ Use Task tool to create specialist agent via AgentTask.`
       } else {
         // WARNING MODE (non-blocking)
         log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
+      }
+    }
+
+    // Check for markdown files outside allowlist (applies to ALL roles)
+    const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot);
+    if (!markdownValidation.allowed) {
+      log(`Markdown file outside allowlist blocked: ${filePath}`);
+
+      const blockingEnabled = getBlockingEnabled();
+
+      if (blockingEnabled) {
+        // BLOCKING MODE (default)
+        const response = {
+          hookSpecificOutput: {
+            hookEventName: 'PreToolUse',
+            permissionDecision: 'deny',
+            permissionDecisionReason: markdownValidation.message
+          }
+        };
+        const responseJson = JSON.stringify(response);
+        log(`RESPONSE: ${responseJson}`);
+        log(`EXIT CODE: 2 (BLOCKING MODE)`);
+        console.log(responseJson);
+        process.exit(2);
+      } else {
+        // WARNING MODE (non-blocking)
+        log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
         console.log(JSON.stringify({ continue: true }));
         process.exit(0);
       }
