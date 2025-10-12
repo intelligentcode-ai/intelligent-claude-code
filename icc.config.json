@@ -7,5 +7,8 @@
     "privacy": true,
     "branch_protection": true,
     "require_pr_for_main": true
+  },
+  "enforcement": {
+    "allow_markdown_outside_allowlist": true
   }
 }

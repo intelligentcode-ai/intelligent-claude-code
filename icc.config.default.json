@@ -118,6 +118,7 @@
 
   "enforcement": {
     "blocking_enabled": true,
+    "allow_markdown_outside_allowlist": false,
     "violation_logging": true,
     "auto_correction": true,
     "infrastructure_protection": {

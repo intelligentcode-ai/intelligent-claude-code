@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.11] - 2025-10-12
+
+### Features
+- **Markdown File Enforcement**: Block markdown files outside allowlist directories by default
+  - icc.config.default.json:121: Added enforcement.allow_markdown_outside_allowlist (default: false)
+  - src/hooks/pm-constraints-enforcement.js:337-395: Added validateMarkdownOutsideAllowlist function
+  - src/hooks/pm-constraints-enforcement.js:526-553: Added validation call in main flow
+  - Blocks markdown files outside: stories/, bugs/, memory/, docs/, agenttasks/, summaries/
+  - Always allows root .md files (README.md, CHANGELOG.md, etc.)
+  - Applies to ALL roles, not just PM
+  - Clear error message guides users to enable setting or use proper directory
+
+### Configuration
+- **Project Override**: This project enables allow_markdown_outside_allowlist=true
+  - icc.config.json:11-13: Added enforcement.allow_markdown_outside_allowlist setting
+  - Allows markdown files in any directory within intelligent-claude-code project
+  - Other projects default to blocking behavior for cleaner project structure
+
+### Technical Details
+- **Default Behavior**: Markdown files blocked outside allowlist unless explicitly configured
+- **Validation Logic**: Lines 337-395 check file extension, normalize path, verify allowlist
+- **Root Exception**: Lines 367-371 allow root .md files regardless of allowlist
+- **Error Message**: Explains blocked file, allowed directories, and how to enable setting
+- **Testing Scenarios**:
+  - `project-root/README.md` → Allowed (root .md files)
+  - `docs/architecture.md` → Allowed (in allowlist)
+  - `random-dir/SUMMARY.md` → Blocked (outside allowlist)
+  - `nextcloud/ANALYSIS.md` → Blocked (outside allowlist)
+
+---
+
 ## [8.18.10] - 2025-10-12
 
 ### Bug Fixes
