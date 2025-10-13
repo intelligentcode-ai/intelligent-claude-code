@@ -360,36 +360,19 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
     return false;
   }
 
-  function isSummaryFile(filePath, projectRoot) {
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
-
-    if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
-    }
-
-    const fileName = path.basename(relativePath);
-
-    // Check if filename matches summary patterns (case-insensitive)
-    // Check ANY directory, not just project root
-    const upperFileName = fileName.toUpperCase();
-    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING', 'ROOT_CAUSE'];
-
-    return summaryPatterns.some(pattern => upperFileName.includes(pattern));
-  }
-
-  function validateSummaryFile(filePath, projectRoot) {
-    if (!isSummaryFile(filePath, projectRoot)) {
+  function validateMarkdownFile(filePath, projectRoot, isAgentContext = false) {
+    // Only validate .md files
+    if (!filePath.endsWith('.md')) {
       return { allowed: true };
     }
 
     const fileName = path.basename(filePath);
     const isAllCapitals = fileName === fileName.toUpperCase();
-    const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
 
-    // Check if all-capitals blocking is enabled
+    // RULE 1: Check all-capitals blocking (if enabled)
     const blockAllCapitals = getSetting('enforcement.block_all_capitals_filenames', false);
     if (isAllCapitals && blockAllCapitals) {
+      const suggestedName = fileName.toLowerCase();
       return {
         allowed: false,
         message: `🚫 ALL-CAPITALS filenames are blocked by configuration
@@ -404,38 +387,49 @@ To allow all-capitals filenames, set: enforcement.block_all_capitals_filenames =
       };
     }
 
-    // Ensure summaries directory exists in the project root
-    const summariesDir = path.join(projectRoot, 'summaries');
-    if (!fs.existsSync(summariesDir)) {
-      fs.mkdirSync(summariesDir, { recursive: true });
-      log('Created summaries/ directory for summary file redirection');
-    }
+    // RULE 2: Check if file matches summary patterns
+    const upperFileName = fileName.toUpperCase();
+    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING', 'ROOT_CAUSE'];
+    const isSummaryFile = summaryPatterns.some(pattern => upperFileName.includes(pattern));
 
-    const capitalsWarning = isAllCapitals ? '\n\n⚠️ WARNING: Filename is ALL-CAPITALS - use lowercase for consistency' : '';
+    if (isSummaryFile) {
+      // If already in summaries/ directory, allow it
+      if (filePath.includes('/summaries/')) {
+        return { allowed: true };
+      }
 
-    return {
-      allowed: false,
-      message: `📋 Summary files must be in current project's summaries/ directory
+      const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
+      const suggestedPath = path.join(projectRoot, 'summaries', suggestedName);
+
+      // Ensure summaries directory exists
+      const summariesDir = path.join(projectRoot, 'summaries');
+      if (!fs.existsSync(summariesDir)) {
+        fs.mkdirSync(summariesDir, { recursive: true });
+        log('Created summaries/ directory for summary file redirection');
+      }
+
+      const capitalsWarning = isAllCapitals ? '\n\n⚠️ WARNING: Filename is ALL-CAPITALS - use lowercase for consistency' : '';
+
+      return {
+        allowed: false,
+        message: `📋 Summary files must be in current project's summaries/ directory
 
 Project Root: ${projectRoot}
 Blocked File: ${filePath}
-Suggested Path: ${path.join(projectRoot, 'summaries', suggestedName)}${capitalsWarning}
+Suggested Path: ${suggestedPath}${capitalsWarning}
 
 Summary files belong in YOUR PROJECT's summaries/ directory.
 If working on external project, the file must go to THAT project's summaries/ directory.`
-    };
-  }
+      };
+    }
 
-  function validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext = false) {
-    // Check appropriate setting based on context
+    // RULE 3: Check markdown outside allowlist (if enabled)
     let allowMarkdown;
 
     if (isAgentContext) {
-      // For agents: check agent-specific setting first, fallback to main setting
       const agentSetting = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
       allowMarkdown = agentSetting !== null ? agentSetting : getSetting('enforcement.allow_markdown_outside_allowlist', false);
     } else {
-      // For main scope: use main setting
       allowMarkdown = getSetting('enforcement.allow_markdown_outside_allowlist', false);
     }
 
@@ -443,20 +437,14 @@ If working on external project, the file must go to THAT project's summaries/ di
       return { allowed: true };
     }
 
-    // Check if file is markdown
-    if (!filePath.endsWith('.md')) {
-      return { allowed: true };
-    }
-
-    // Normalize to relative path if absolute
+    // Check if file is in allowed directories
     let relativePath = filePath;
     if (path.isAbsolute(filePath)) {
       relativePath = path.relative(projectRoot, filePath);
     }
 
-    // Get configured allowlist
     const config = loadConfiguration();
-    const allowlist = [
+    const allowedDirs = [
       config.story_path,
       config.bug_path,
       config.memory_path,
@@ -465,34 +453,33 @@ If working on external project, the file must go to THAT project's summaries/ di
       'summaries'
     ];
 
-    // Check if markdown is in root (root .md files are allowed)
-    const dirName = path.dirname(relativePath);
-    if (dirName === '.' || dirName === '') {
-      return { allowed: true };
+    const isInAllowedDir = allowedDirs.some(dir =>
+      relativePath.startsWith(dir + '/') || relativePath.startsWith(dir + '\\')
+    );
+
+    const isRootMdFile = !relativePath.includes('/') && !relativePath.includes('\\');
+
+    if (!isInAllowedDir && !isRootMdFile) {
+      const capitalsWarning = isAllCapitals ? '\n\n⚠️ Additionally: Filename is ALL-CAPITALS - use lowercase for consistency' : '';
+
+      return {
+        allowed: false,
+        message: `📝 Markdown files restricted to specific directories
+
+Blocked File: ${filePath}
+Project Root: ${projectRoot}
+
+Allowed Directories:
+- ${allowedDirs.join('/')}
+- *.md files in project root${capitalsWarning}
+
+This prevents agents from creating unwanted markdown files throughout the project.
+To allow markdown everywhere, set: enforcement.allow_markdown_outside_allowlist = true`
+      };
     }
 
-    // Check if markdown is in allowlist directory
-    for (const allowedPath of allowlist) {
-      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
-        return { allowed: true };
-      }
-    }
-
-    // Markdown file outside allowlist and setting is false - block it
-    return {
-      allowed: false,
-      message: `📝 Markdown files outside allowlist directories are blocked by default
-
-Blocked: ${filePath}
-Reason: Markdown files should be in designated directories
-
-Allowed directories for markdown: ${allowlist.join(', ')}, root *.md files
-
-If you specifically requested this file, ask the user to enable:
-enforcement.allow_markdown_outside_allowlist = true in icc.config.json
-
-Or create the file in an appropriate allowlist directory.`
-    };
+    // All checks passed
+    return { allowed: true };
   }
 
   function getBlockingEnabled() {
@@ -595,21 +582,21 @@ Use Task tool to create specialist agent via AgentTask.`
       process.exit(0);
     }
 
-    // Check for summary files in root (applies to Write/Edit/Update only, not Read)
+    // Validate markdown files (all-capitals, summary patterns, allowlist)
+    const isAgentContext = !isPMRole(hookInput);
     if (tool !== 'Read' && filePath.endsWith('.md')) {
-      const summaryValidation = validateSummaryFile(filePath, projectRoot);
-      if (!summaryValidation.allowed) {
-        log(`Summary file blocked: ${filePath}`);
+      const markdownValidation = validateMarkdownFile(filePath, projectRoot, isAgentContext);
+      if (!markdownValidation.allowed) {
+        log(`Markdown file blocked: ${filePath}`);
 
         const blockingEnabled = getBlockingEnabled();
 
         if (blockingEnabled) {
-          // BLOCKING MODE (default)
           const response = {
             hookSpecificOutput: {
               hookEventName: 'PreToolUse',
               permissionDecision: 'deny',
-              permissionDecisionReason: summaryValidation.message
+              permissionDecisionReason: markdownValidation.message
             }
           };
           const responseJson = JSON.stringify(response);
@@ -618,41 +605,10 @@ Use Task tool to create specialist agent via AgentTask.`
           console.log(responseJson);
           process.exit(2);
         } else {
-          // WARNING MODE (non-blocking)
-          log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
+          log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
           console.log(JSON.stringify({ continue: true }));
           process.exit(0);
         }
-      }
-    }
-
-    // Check for markdown files outside allowlist (applies to ALL roles)
-    const isAgentContext = !isPMRole(hookInput);
-    const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext);
-    if (!markdownValidation.allowed) {
-      log(`Markdown file outside allowlist blocked: ${filePath}`);
-
-      const blockingEnabled = getBlockingEnabled();
-
-      if (blockingEnabled) {
-        // BLOCKING MODE (default)
-        const response = {
-          hookSpecificOutput: {
-            hookEventName: 'PreToolUse',
-            permissionDecision: 'deny',
-            permissionDecisionReason: markdownValidation.message
-          }
-        };
-        const responseJson = JSON.stringify(response);
-        log(`RESPONSE: ${responseJson}`);
-        log(`EXIT CODE: 2 (BLOCKING MODE)`);
-        console.log(responseJson);
-        process.exit(2);
-      } else {
-        // WARNING MODE (non-blocking)
-        log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
-        console.log(JSON.stringify({ continue: true }));
-        process.exit(0);
       }
     }
 
@@ -728,10 +684,10 @@ Use Task tool to create specialist agent via AgentTask.`
         if (createdFile && createdFile.endsWith('.md')) {
           log(`Bash command creates .md file: ${createdFile}`);
 
-          // Apply summary file validation
-          const summaryValidation = validateSummaryFile(createdFile, projectRoot);
-          if (!summaryValidation.allowed) {
-            log(`Bash file creation blocked (summary validation): ${createdFile}`);
+          // Apply unified markdown validation
+          const markdownValidation = validateMarkdownFile(createdFile, projectRoot, isAgentContext);
+          if (!markdownValidation.allowed) {
+            log(`Bash file creation blocked (markdown validation): ${createdFile}`);
 
             const blockingEnabled = getBlockingEnabled();
 
@@ -740,7 +696,7 @@ Use Task tool to create specialist agent via AgentTask.`
                 hookSpecificOutput: {
                   hookEventName: 'PreToolUse',
                   permissionDecision: 'deny',
-                  permissionDecisionReason: summaryValidation.message
+                  permissionDecisionReason: markdownValidation.message
                 }
               };
               const responseJson = JSON.stringify(response);
@@ -749,7 +705,7 @@ Use Task tool to create specialist agent via AgentTask.`
               console.log(responseJson);
               process.exit(2);
             } else {
-              log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
+              log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
               console.log(JSON.stringify({ continue: true }));
               process.exit(0);
             }

@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.18] - 2025-10-13
+
+### Bug Fixed
+- **Unified Markdown Validation**
+  - Consolidated three separate validation functions into single `validateMarkdownFile()` function
+  - Lines 363-483: Created unified function with all three validation rules in order
+  - Lines 585-613: Updated Write/Edit/Update validation to use unified function
+  - Lines 682-713: Updated Bash file creation validation to use unified function
+  - Removed obsolete `validateSummaryFile()` and `validateMarkdownOutsideAllowlist()` functions
+
+### Problem Before Fix
+- Three separate validation functions with inconsistent rule application:
+  1. `validateSummaryFile()`: Only checked summary patterns, then all-capitals
+  2. `validateMarkdownOutsideAllowlist()`: Only checked allowlist, no all-capitals check
+  3. Bash file creation: Only called `validateSummaryFile()`, bypassed allowlist check
+- Result: Files like `PLAYBOOK-REORGANIZATION-PLAN.md` bypassed all-capitals check (not a summary pattern)
+
+### Solution After Fix
+- One unified `validateMarkdownFile()` function applies ALL rules to ALL .md files:
+  1. RULE 1: Check all-capitals blocking (if enabled) - applies to EVERY .md file
+  2. RULE 2: Check summary patterns - redirect to summaries/ directory
+  3. RULE 3: Check markdown allowlist - restrict to specific directories
+- Same rules apply to Write tool AND Bash tool - complete consistency
+- Files like `PLAYBOOK-REORGANIZATION-PLAN.md` now blocked for all-capitals (when enabled)
+
+### Technical Details
+- **Validation Order**: All-capitals → Summary patterns → Allowlist
+- **Context-Aware**: Supports agent vs main scope for allowlist setting
+- **Directory Creation**: Auto-creates summaries/ directory when needed
+- **Consistent Messages**: Clear error messages with suggestions for all scenarios
+- **Removed Functions**: Deleted `isSummaryFile()`, `validateSummaryFile()`, `validateMarkdownOutsideAllowlist()`
+
+---
+
 ## [8.18.17] - 2025-10-13
 
 ### Bug Fixed
