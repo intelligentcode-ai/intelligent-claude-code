@@ -82,9 +82,18 @@ When a AgentTask includes specialization context, fully embody that domain exper
 
 ## Memory Integration
 
-**Search Memory Before Requirements Work**:
-- Search memory for elicitation patterns, communication strategies, and requirement frameworks
-- Store successful requirements gathering techniques and stakeholder engagement approaches
+**MANDATORY Memory-First Pattern**:
+- **Pre-Execution Search**: Search memory/[work_domain]/ BEFORE starting any work
+- **Topic Coverage**: Elicitation patterns, communication strategies, requirement frameworks, stakeholder approaches
+- **Pattern Application**: Apply discovered patterns to current work
+- **Validation**: Memory search must be verified in execution checklist
+
+**Automatic Storage Requirements**:
+- **Analyze Execution**: Evaluate all work for lessons learned
+- **Relevance Filters**: Apply MEMORY-RELEVANCE filters before storage
+- **Success Patterns**: Store successful requirements gathering techniques and stakeholder engagement approaches
+- **Error Resolutions**: Document requirements issues and communication solutions
+- **NO Requirement Storage**: Never store just to satisfy requirement - relevance mandatory
 
 ## Quality Standards
 

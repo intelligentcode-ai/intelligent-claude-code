@@ -1,6 +1,6 @@
-# Template Enforcement Patterns
+# Template Usage Guidelines
 
-**MANDATORY:** ALL AgentTask creation MUST use templates from hierarchy with COMPLETE placeholder resolution. NO exceptions.
+**Purpose:** AgentTask creation follows template hierarchy with complete placeholder resolution.
 
 ## Core Enforcement Rules
 
@@ -12,7 +12,7 @@
 - `large-agenttask-template.yaml` (16-30 points)
 - `mega-agenttask-template.yaml` (30+ points)
 
-**BLOCKED:** AgentTask creation without templates, unresolved placeholders, runtime config lookups, manual AgentTask structures
+**Requirements:** Use templates from hierarchy, resolve all placeholders, embed configuration values
 
 ### Placeholder Resolution
 **COMMON PLACEHOLDERS:**
@@ -22,11 +22,11 @@
 - `[SYSTEM_NATURE]` → Project system type
 - All placeholders MUST be resolved at generation time
 
-## Error Messages
+## Validation Messages
 
-**TEMPLATE_REQUIRED:** "❌ AgentTask creation without template FORBIDDEN - use template hierarchy"
-**PLACEHOLDER_UNRESOLVED:** "❌ Unresolved placeholder: {placeholder} - resolve during generation"
-**RUNTIME_CONFIG_FORBIDDEN:** "❌ Runtime config lookup forbidden - embed values in AgentTask"
+**TEMPLATE_REQUIRED:** "AgentTask creation requires template from hierarchy"
+**PLACEHOLDER_UNRESOLVED:** "Unresolved placeholder: {placeholder} - resolve during generation"
+**RUNTIME_CONFIG_NEEDED:** "Runtime config lookup detected - embed values in AgentTask"
 
 ## Integration Requirements
 
@@ -36,9 +36,9 @@
 - Validate template completeness
 - Prevent runtime config dependencies
 
-### With Auto-Trigger System  
+### With Auto-Trigger System
 - Template-first flow: complexity → template → placeholder resolution
-- NO manual creation allowed
+- Follow template hierarchy for consistency
 
 ### With Execution System
 - AgentTasks execute with embedded configuration only
@@ -46,4 +46,4 @@
 - All settings pre-resolved and embedded
 
 ---
-*Template enforcement with mandatory placeholder resolution and embedded configuration*
+*Template usage guidelines with placeholder resolution and embedded configuration*

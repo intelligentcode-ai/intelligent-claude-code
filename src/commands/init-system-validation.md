@@ -41,11 +41,11 @@
 ## Validation Errors
 
 **System Component Errors:**
-- **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration hierarchy. Check installation/config.md and project CLAUDE.md"
-- **BEHAVIORAL_PATTERN_LOAD_FAILED**: "❌ Critical: Behavioral patterns failed to load. Check installation/behaviors/ directory"
+- **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration hierarchy. Check src/config.md and project CLAUDE.md"
+- **BEHAVIORAL_PATTERN_LOAD_FAILED**: "❌ Critical: Behavioral patterns failed to load. Check src/behaviors/ directory"
 - **TEMPLATE_VALIDATION_FAILED**: "❌ Error: AgentTask templates failed validation. Check template syntax and structure"
 - **MEMORY_BOOTSTRAP_FAILED**: "⚠️ Warning: Memory system bootstrap failed. Creating minimal fallback structure"
-- **ROLE_DEFINITION_FAILED**: "❌ Error: Role definitions failed to load. Check installation/roles/specialists.md"
+- **ROLE_DEFINITION_FAILED**: "❌ Error: Role definitions failed to load. Check src/roles/specialists.md"
 
 **Recovery & Validation Errors:**
 - **AGENTTASK_SYSTEM_VALIDATION_FAILED**: "❌ Critical: AgentTask system failed comprehensive validation. System not operational"

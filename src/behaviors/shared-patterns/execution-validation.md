@@ -87,7 +87,6 @@
 - Dependencies notified
 - Follow-ups created
 - State validated
-- AgentTask moved to completed/
 
 ## Scope Validation Process
 

@@ -1,0 +1,55 @@
+{
+  "$schema": "./src/schemas/icc.workflow.schema.json",
+  "version": "1.0.0",
+  "description": "Workflow settings by AgentTask complexity tier",
+
+  "nano": {
+    "version_bump": false,
+    "changelog_required": false,
+    "pr_required": false,
+    "merge_strategy": "direct_commit",
+    "release_automation": false
+  },
+
+  "tiny": {
+    "version_bump": true,
+    "version_type": "patch",
+    "changelog_required": true,
+    "pr_required": false,
+    "merge_strategy": "direct_commit",
+    "release_automation": false
+  },
+
+  "medium": {
+    "version_bump": true,
+    "version_type": "minor",
+    "changelog_required": true,
+    "pr_required": true,
+    "merge_strategy": "feature_branch",
+    "release_automation": true,
+    "auto_merge": false
+  },
+
+  "large": {
+    "version_bump": true,
+    "version_type": "minor",
+    "changelog_required": true,
+    "pr_required": true,
+    "merge_strategy": "feature_branch",
+    "release_automation": true,
+    "auto_merge": false,
+    "coordination_required": true
+  },
+
+  "mega": {
+    "version_bump": true,
+    "version_type": "major",
+    "changelog_required": true,
+    "pr_required": true,
+    "merge_strategy": "feature_branch",
+    "release_automation": true,
+    "auto_merge": false,
+    "coordination_required": true,
+    "breaking_change_assessment": true
+  }
+}

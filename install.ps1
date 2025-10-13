@@ -154,6 +154,37 @@ function Get-SettingsJson {
     }
 }
 
+function Remove-ObsoleteSessionStartHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath
+    )
+
+    try {
+        if (Test-Path $SettingsPath) {
+            Write-Host "  Removing obsolete SessionStart hook from settings.json..." -ForegroundColor Gray
+
+            $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+            if ($Settings.hooks -and $Settings.hooks.PSObject.Properties.Name -contains 'SessionStart') {
+                $Settings.hooks.PSObject.Properties.Remove('SessionStart')
+
+                # Save updated settings
+                $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+                Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+                Write-Host "  ✅ Removed obsolete SessionStart hook from settings.json" -ForegroundColor Green
+            } else {
+                Write-Host "  SessionStart hook not found, skipping cleanup" -ForegroundColor Gray
+            }
+        } else {
+            Write-Host "  No settings.json found, skipping SessionStart cleanup" -ForegroundColor Gray
+        }
+    } catch {
+        Write-Warning "  Failed to remove SessionStart hook: $($_.Exception.Message)"
+    }
+}
+
 function Register-UserPromptSubmitHook {
     param(
         [Parameter(Mandatory=$true)]
@@ -189,8 +220,9 @@ function Register-UserPromptSubmitHook {
         }
 
         if (-not $ExistingHook) {
-            # Create new hook entry (note: no matcher field for UserPromptSubmit)
+            # Create new hook entry
             $NewHook = [PSCustomObject]@{
+                matcher = "*"
                 hooks = @(
                     [PSCustomObject]@{
                         command = $HookCommand
@@ -215,6 +247,200 @@ function Register-UserPromptSubmitHook {
 
     } catch {
         Write-Warning "  Failed to register UserPromptSubmit hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
+function Register-PreToolUseHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering PreToolUse hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.PreToolUse) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PreToolUse" -Value @() -Force
+        }
+
+        # Convert PreToolUse to array if it's not already
+        if ($Settings.hooks.PreToolUse -isnot [array]) {
+            $Settings.hooks.PreToolUse = @($Settings.hooks.PreToolUse)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.PreToolUse | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                matcher = "*"
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        timeout = 5000
+                        type = "command"
+                    }
+                )
+            }
+
+            # Add to PreToolUse array
+            $Settings.hooks.PreToolUse += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ PreToolUse hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  PreToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register PreToolUse hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
+function Register-SubagentStopHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering SubagentStop hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.SubagentStop) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "SubagentStop" -Value @() -Force
+        }
+
+        # Convert SubagentStop to array if it's not already
+        if ($Settings.hooks.SubagentStop -isnot [array]) {
+            $Settings.hooks.SubagentStop = @($Settings.hooks.SubagentStop)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.SubagentStop | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                matcher = "*"
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        failureMode = "allow"
+                        timeout = 5000
+                        type = "command"
+                    }
+                )
+            }
+
+            # Add to SubagentStop array
+            $Settings.hooks.SubagentStop += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ SubagentStop hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  SubagentStop hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register SubagentStop hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
+function Register-StopHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering Stop hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.Stop) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "Stop" -Value @() -Force
+        }
+
+        # Convert Stop to array if it's not already
+        if ($Settings.hooks.Stop -isnot [array]) {
+            $Settings.hooks.Stop = @($Settings.hooks.Stop)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.Stop | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                matcher = "*"
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        failureMode = "allow"
+                        timeout = 5000
+                        type = "command"
+                    }
+                )
+            }
+
+            # Add to Stop array
+            $Settings.hooks.Stop += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ Stop hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  Stop hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register Stop hook in settings.json: $($_.Exception.Message)"
     }
 }
 
@@ -279,13 +505,106 @@ function Install-HookSystem {
             # Register production hooks in settings.json
             $SettingsPath = Join-Path $InstallPath "settings.json"
 
-            # Register UserPromptSubmit hook only
-            $UserPromptSubmitHookPath = Join-Path $HooksPath "user-prompt-submit.js"
+            # Remove obsolete SessionStart hook from settings.json (v8.18.8+)
+            Remove-ObsoleteSessionStartHook -SettingsPath $SettingsPath
+
+            # Remove old hook names (graceful cleanup)
+            $OldHooks = @(
+                'pretooluse.js',
+                'user-prompt-submit.js',
+                'pre-commit.js',
+                'installation-protection.js',
+                'git-privacy-validation.js',
+                'git-privacy-enforcement.js'
+            )
+
+            foreach ($OldHook in $OldHooks) {
+                $OldHookPath = Join-Path $HooksPath $OldHook
+                if (Test-Path $OldHookPath) {
+                    Remove-Item -Path $OldHookPath -Force
+                    Write-Host "  Removed old hook: $OldHook" -ForegroundColor Gray
+                }
+            }
+
+            # Register UserPromptSubmit hook (context-injection.js)
+            $UserPromptSubmitHookPath = Join-Path $HooksPath "context-injection.js"
             if (Test-Path $UserPromptSubmitHookPath) {
                 $HookCommand = "node `"$UserPromptSubmitHookPath`""
                 Register-UserPromptSubmitHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
-                Write-Warning "  user-prompt-submit.js hook not found, skipping UserPromptSubmit registration"
+                Write-Warning "  context-injection.js hook not found, skipping UserPromptSubmit registration"
+            }
+
+            # Register PreToolUse hook (agent-marker.js)
+            $AgentMarkerHookPath = Join-Path $HooksPath "agent-marker.js"
+            if (Test-Path $AgentMarkerHookPath) {
+                $HookCommand = "node `"$AgentMarkerHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  agent-marker.js hook not found, skipping agent-marker PreToolUse registration"
+            }
+
+            # Register PreToolUse hook (project-scope-enforcement.js)
+            $ScopeEnforcementHookPath = Join-Path $HooksPath "project-scope-enforcement.js"
+            if (Test-Path $ScopeEnforcementHookPath) {
+                $HookCommand = "node `"$ScopeEnforcementHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  project-scope-enforcement.js hook not found, skipping scope enforcement PreToolUse registration"
+            }
+
+            # Register PreToolUse hook (git-enforcement.js)
+            $GitEnforcementHookPath = Join-Path $HooksPath "git-enforcement.js"
+            if (Test-Path $GitEnforcementHookPath) {
+                $HookCommand = "node `"$GitEnforcementHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  git-enforcement.js hook not found, skipping git enforcement PreToolUse registration"
+            }
+
+            # Register PreToolUse hook (pm-constraints-enforcement.js)
+            $PreToolUseHookPath = Join-Path $HooksPath "pm-constraints-enforcement.js"
+            if (Test-Path $PreToolUseHookPath) {
+                $HookCommand = "node `"$PreToolUseHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  pm-constraints-enforcement.js hook not found, skipping PreToolUse registration"
+            }
+
+            # Register PreToolUse hook (agent-infrastructure-protection.js)
+            $InfrastructureProtectionHookPath = Join-Path $HooksPath "agent-infrastructure-protection.js"
+            if (Test-Path $InfrastructureProtectionHookPath) {
+                $HookCommand = "node `"$InfrastructureProtectionHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  agent-infrastructure-protection.js hook not found, skipping agent-infrastructure-protection PreToolUse registration"
+            }
+
+            # Register PreToolUse hook (summary-file-enforcement.js)
+            $SummaryEnforcementHookPath = Join-Path $HooksPath "summary-file-enforcement.js"
+            if (Test-Path $SummaryEnforcementHookPath) {
+                $HookCommand = "node `"$SummaryEnforcementHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  summary-file-enforcement.js hook not found, skipping summary-file-enforcement PreToolUse registration"
+            }
+
+            # Register SubagentStop hook (subagent-stop.js)
+            $SubagentStopHookPath = Join-Path $HooksPath "subagent-stop.js"
+            if (Test-Path $SubagentStopHookPath) {
+                $HookCommand = "node `"$SubagentStopHookPath`""
+                Register-SubagentStopHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  subagent-stop.js hook not found, skipping SubagentStop registration"
+            }
+
+            # Register Stop hook (stop.js)
+            $StopHookPath = Join-Path $HooksPath "stop.js"
+            if (Test-Path $StopHookPath) {
+                $HookCommand = "node `"$StopHookPath`""
+                Register-StopHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  stop.js hook not found, skipping Stop registration"
             }
 
         } else {
@@ -338,7 +657,50 @@ function Install-IntelligentClaudeCode {
 
     # Deploy hook files to ~/.claude/hooks/
     Install-HookSystem -InstallPath $Paths.InstallPath -SourceDir $SourceDir
-    
+
+    # Copy default configuration JSON
+    Write-Host "  Installing default configuration..." -ForegroundColor Gray
+    $DefaultConfigSource = Join-Path $PSScriptRoot "icc.config.default.json"
+    $DefaultConfigDest = Join-Path $Paths.InstallPath "icc.config.default.json"
+    Copy-Item -Path $DefaultConfigSource -Destination $DefaultConfigDest -Force
+
+    # Copy configuration schema
+    $SchemaSource = Join-Path $SourceDir "schemas\icc.config.schema.json"
+    $SchemaDest = Join-Path $Paths.InstallPath "schemas\icc.config.schema.json"
+    if (-not (Test-Path (Split-Path $SchemaDest))) {
+        New-Item -Path (Split-Path $SchemaDest) -ItemType Directory -Force | Out-Null
+    }
+    Copy-Item -Path $SchemaSource -Destination $SchemaDest -Force
+
+    # Copy default workflow configuration JSON
+    Write-Host "  Installing default workflow configuration..." -ForegroundColor Gray
+    $DefaultWorkflowSource = Join-Path $PSScriptRoot "icc.workflow.default.json"
+    $DefaultWorkflowDest = Join-Path $Paths.InstallPath "icc.workflow.default.json"
+    Copy-Item -Path $DefaultWorkflowSource -Destination $DefaultWorkflowDest -Force
+
+    # Copy workflow schema
+    $WorkflowSchemaSource = Join-Path $SourceDir "schemas\icc.workflow.schema.json"
+    $WorkflowSchemaDest = Join-Path $Paths.InstallPath "schemas\icc.workflow.schema.json"
+    Copy-Item -Path $WorkflowSchemaSource -Destination $WorkflowSchemaDest -Force
+
+    # Create user config from defaults if not exists
+    $UserConfigPath = Join-Path $Paths.InstallPath "icc.config.json"
+    if (-not (Test-Path $UserConfigPath)) {
+        Write-Host "  Creating user configuration from defaults..." -ForegroundColor Gray
+        Copy-Item -Path $DefaultConfigSource -Destination $UserConfigPath -Force
+    } else {
+        Write-Host "  User configuration preserved: $UserConfigPath" -ForegroundColor Gray
+    }
+
+    # Create user workflow config from defaults if not exists
+    $UserWorkflowPath = Join-Path $Paths.InstallPath "icc.workflow.json"
+    if (-not (Test-Path $UserWorkflowPath)) {
+        Write-Host "  Creating user workflow configuration from defaults..." -ForegroundColor Gray
+        Copy-Item -Path $DefaultWorkflowSource -Destination $UserWorkflowPath -Force
+    } else {
+        Write-Host "  User workflow configuration preserved: $UserWorkflowPath" -ForegroundColor Gray
+    }
+
     # Handle CLAUDE.md based on scope
     $ClaudemdPath = if ($Paths.Scope -eq "project") { 
         Join-Path $Paths.ProjectPath "CLAUDE.md" 
@@ -515,14 +877,21 @@ function Uninstall-IntelligentClaudeCode {
     # Unregister hooks from settings.json before removing files
     $SettingsPath = Join-Path $Paths.InstallPath "settings.json"
 
-    # Unregister pre-tool-use hook
-    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pre-tool-use.js"
+    # Unregister new hook names
+    $PreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pm-constraints-enforcement.js"
     if (Test-Path $PreToolUseHookPath) {
         $HookCommand = "node `"$PreToolUseHookPath`""
         Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
     }
 
-    # Unregister post-tool-use hook
+    # Unregister old hook names (graceful cleanup)
+    $OldPreToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "pretooluse.js"
+    if (Test-Path $OldPreToolUseHookPath) {
+        $HookCommand = "node `"$OldPreToolUseHookPath`""
+        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
+    }
+
+    # Unregister post-tool-use hook (legacy)
     $PostToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "post-tool-use.js"
     if (Test-Path $PostToolUseHookPath) {
         $HookCommand = "node `"$PostToolUseHookPath`""
@@ -642,14 +1011,14 @@ function Test-Installation {
 
                     $PreHookFound = $false
                     foreach ($Hook in $PreToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pm-constraints-enforcement.js*") {
                             $PreHookFound = $true
                             break
                         }
                     }
 
                     if (-not $PreHookFound) {
-                        throw "FAIL: Pre-tool-use hook not found in settings.json"
+                        throw "FAIL: PreToolUse hook not found in settings.json"
                     }
                     Write-Host "  ✅ PreToolUse hook registered in settings.json" -ForegroundColor Green
                 } else {
@@ -725,8 +1094,8 @@ function Test-Installation {
                     }
 
                     foreach ($Hook in $PreToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pre-tool-use.js*") {
-                            throw "FAIL: Pre-tool-use hook still registered in settings.json after uninstall"
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pm-constraints-enforcement.js*") {
+                            throw "FAIL: PreToolUse hook still registered in settings.json after uninstall"
                         }
                     }
                 }

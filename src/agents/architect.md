@@ -52,9 +52,18 @@ Apply systematic role assignment based on project scope and work type to create 
 
 ## Memory Integration
 
-**Search Memory Before Design**:
-- Search memory for architecture patterns, system design approaches, and technology selections
-- Store successful patterns for future reuse
+**MANDATORY Memory-First Pattern**:
+- **Pre-Execution Search**: Search memory/[work_domain]/ BEFORE starting any work
+- **Topic Coverage**: Architecture patterns, system design approaches, technology selections, design decisions
+- **Pattern Application**: Apply discovered patterns to current work
+- **Validation**: Memory search must be verified in execution checklist
+
+**Automatic Storage Requirements**:
+- **Analyze Execution**: Evaluate all work for lessons learned
+- **Relevance Filters**: Apply MEMORY-RELEVANCE filters before storage
+- **Success Patterns**: Store successful architecture patterns for future reuse
+- **Design Decisions**: Document technology selections and rationale
+- **NO Requirement Storage**: Never store just to satisfy requirement - relevance mandatory
 
 ## Quality Standards
 

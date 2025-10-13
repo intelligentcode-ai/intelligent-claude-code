@@ -15,6 +15,7 @@ System bootstrap operation that loads configuration, initializes memory, activat
 and prepares the virtual team for work. Can be run by any role or automatically on startup.
 
 **Context Recovery**: This command is designed to work reliably after context loss/memory compaction by explicitly rebuilding system state from project files.
+**Version Display**: Always shows current system version from VERSION file, replacing [CURRENT_VERSION] placeholder.
 
 ## Usage
 `/icc-init-system [autonomy_level] [pm_active]`
@@ -30,8 +31,13 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 ## Initialization Process
 
+### 🎯 INTELLIGENT CLAUDE CODE v[CURRENT_VERSION]
+**System Version:** [CURRENT_VERSION]
+**Virtual Team:** 14 core roles + unlimited specialists
+**Architecture:** AgentTask-driven professional execution
+
 ### 🧠 RELOADING SYSTEM BEHAVIORS
-Loading all behavioral patterns from installation/behaviors/:
+Loading all behavioral patterns from src/behaviors/:
   ✓ config-loader.md - Configuration hierarchy management
   ✓ directory-structure.md - Project structure enforcement
   ✓ learning-team-automation.md - AgentTask learning and pattern capture

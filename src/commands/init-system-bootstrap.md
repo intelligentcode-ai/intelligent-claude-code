@@ -6,9 +6,10 @@
 
 ### Phase 1: Project Root Detection
 1. **Project Root Detection**: Explicitly determine and validate absolute project root path
-2. **Installation Path Resolution**: Detect and validate intelligent-claude-code installation using installation-path-detection patterns
-3. **File System Validation**: Verify critical directories and files exist and are accessible
-4. **Context State Assessment**: Determine if system is in fresh start or recovery-from-context-loss state
+2. **Development Context Check**: If project has src/agenttask-templates/ and src/behaviors/ and VERSION file, prioritize project root for templates
+3. **Installation Path Resolution**: Detect and validate intelligent-claude-code installation using installation-path-detection patterns
+4. **File System Validation**: Verify critical directories and files exist and are accessible
+5. **Context State Assessment**: Determine if system is in fresh start or recovery-from-context-loss state
 
 ### Initialization Output
 
@@ -16,6 +17,7 @@
 - ✓ Working directory: /project/path/
 - ✓ CLAUDE.md found and validated
 - ✓ Project structure confirmed
+- ✓ Development context detected: Using project templates from src/agenttask-templates/
 - ✓ Installation path resolved
 - ✓ Critical directories accessible: src/, memory/, agenttasks/
 

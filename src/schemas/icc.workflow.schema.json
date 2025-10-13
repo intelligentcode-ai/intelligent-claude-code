@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://intelligentcode.ai/schemas/icc.workflow.schema.json",
+  "title": "Intelligent Claude Code Workflow Configuration",
+  "description": "Workflow settings by AgentTask complexity tier",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Workflow configuration version"
+    },
+    "description": {
+      "type": "string",
+      "description": "Workflow configuration description"
+    },
+    "nano": {
+      "$ref": "#/definitions/workflowSettings",
+      "description": "Workflow settings for nano tasks (0-2 points)"
+    },
+    "tiny": {
+      "$ref": "#/definitions/workflowSettings",
+      "description": "Workflow settings for tiny tasks (3-5 points)"
+    },
+    "medium": {
+      "$ref": "#/definitions/workflowSettings",
+      "description": "Workflow settings for medium tasks (6-15 points)"
+    },
+    "large": {
+      "$ref": "#/definitions/workflowSettings",
+      "description": "Workflow settings for large tasks (16-30 points)"
+    },
+    "mega": {
+      "$ref": "#/definitions/workflowSettings",
+      "description": "Workflow settings for mega tasks (30+ points)"
+    }
+  },
+  "required": ["nano", "tiny", "medium", "large", "mega"],
+  "definitions": {
+    "workflowSettings": {
+      "type": "object",
+      "properties": {
+        "version_bump": {
+          "type": "boolean",
+          "description": "Whether to bump version number"
+        },
+        "version_type": {
+          "type": "string",
+          "enum": ["patch", "minor", "major"],
+          "description": "Type of version bump to perform"
+        },
+        "changelog_required": {
+          "type": "boolean",
+          "description": "Whether CHANGELOG.md entry is required"
+        },
+        "pr_required": {
+          "type": "boolean",
+          "description": "Whether pull request is required"
+        },
+        "merge_strategy": {
+          "type": "string",
+          "enum": ["direct_commit", "feature_branch"],
+          "description": "Git merge strategy to use"
+        },
+        "release_automation": {
+          "type": "boolean",
+          "description": "Whether to automate release creation"
+        },
+        "auto_merge": {
+          "type": "boolean",
+          "description": "Whether to automatically merge PRs"
+        },
+        "coordination_required": {
+          "type": "boolean",
+          "description": "Whether coordination with other team members is required"
+        },
+        "breaking_change_assessment": {
+          "type": "boolean",
+          "description": "Whether breaking change assessment is required"
+        }
+      },
+      "required": ["version_bump", "changelog_required", "pr_required", "merge_strategy", "release_automation"]
+    }
+  }
+}
