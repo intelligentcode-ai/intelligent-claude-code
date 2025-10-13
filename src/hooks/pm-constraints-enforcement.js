@@ -170,6 +170,24 @@ function main() {
     return commands;
   }
 
+  function isKubectlReadOnly(command) {
+    // Find kubectl in the command and check if subcommand is read-only
+    const kubectlPattern = /\bkubectl\s+(\S+)/;
+    const kubectlMatch = command.match(kubectlPattern);
+
+    if (!kubectlMatch) {
+      return false; // No kubectl found
+    }
+
+    const kubectlSubcommand = kubectlMatch[1];
+    const readOnlyKubectlSubcommands = [
+      'get', 'describe', 'logs', 'top', 'version', 'cluster-info',
+      'config', 'api-resources', 'api-versions', 'explain'
+    ];
+
+    return readOnlyKubectlSubcommands.includes(kubectlSubcommand);
+  }
+
   function validateBashCommand(command) {
     // Allow read-only process inspection commands (ps, grep, pgrep, etc.)
     const readOnlyInspectionCommands = ['ps', 'pgrep', 'pidof', 'lsof', 'netstat', 'ss', 'top', 'htop'];
@@ -201,19 +219,10 @@ function main() {
     }
 
     // Special case: kubectl read-only commands allowed
-    if (firstWord === 'kubectl') {
-      const readOnlyKubectlSubcommands = [
-        'get', 'describe', 'logs', 'top', 'version', 'cluster-info',
-        'config view', 'api-resources', 'api-versions', 'explain'
-      ];
-
-      // Extract kubectl subcommand (second word after kubectl)
-      const kubectlSubcommand = command.trim().split(/\s+/)[1];
-
-      if (readOnlyKubectlSubcommands.includes(kubectlSubcommand)) {
+    if (firstWord === 'kubectl' || command.includes('kubectl')) {
+      if (isKubectlReadOnly(command)) {
         return { allowed: true };
       }
-
       // If not read-only, fall through to normal blocking
     }
 
@@ -256,12 +265,17 @@ Use Task tool to create specialist agent via AgentTask.`
       for (const blocked of allBlockedCommands) {
         // Match command name exactly or with suffix (e.g., npm vs npm-install)
         if (cmd === blocked || cmd.startsWith(blocked + '-')) {
+          // Special case: kubectl might be read-only even though it's in blocklist
+          if (blocked === 'kubectl' && isKubectlReadOnly(command)) {
+            continue; // Skip blocking for read-only kubectl operations
+          }
+
           // Provide specific guidance for kubectl commands
           let kubectlGuidance = '';
           if (blocked === 'kubectl') {
             kubectlGuidance = `
 
-kubectl Read-only (ALLOWED): get, describe, logs, top, version, cluster-info, config view, api-resources, api-versions, explain
+kubectl Read-only (ALLOWED): get, describe, logs, top, version, cluster-info, config, api-resources, api-versions, explain
 kubectl Destructive (BLOCKED): delete, apply, create, patch, replace, scale, rollout, drain, cordon, taint, label, annotate`;
           }
 

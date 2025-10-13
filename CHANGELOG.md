@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.17] - 2025-10-13
+
+### Bug Fixed
+- **kubectl Read-Only Validation in Command Chains**
+  - Lines 173-189: Added `isKubectlReadOnly()` function to find kubectl anywhere in command
+  - Lines 222-227: Updated early check to use new function for command chains
+  - Lines 268-271: Updated blocklist loop to skip blocking for read-only kubectl operations
+  - kubectl guidance updated: removed "config view", now just "config"
+  - Pattern: `/\bkubectl\s+(\S+)/` finds kubectl anywhere and extracts subcommand
+
+### Before Fix
+- `export KUBECONFIG=... && kubectl get pods` → BLOCKED (firstWord = "export")
+- `kubectl get pods` → ALLOWED (firstWord = "kubectl")
+
+### After Fix
+- `export KUBECONFIG=... && kubectl get pods` → ALLOWED (kubectl found in chain, read-only)
+- `kubectl get pods` → ALLOWED (existing functionality preserved)
+- `export KUBECONFIG=... && kubectl delete pod` → BLOCKED (kubectl found in chain, destructive)
+- `kubectl delete pod` → BLOCKED (existing functionality preserved)
+
+### Technical Details
+- **Problem**: Lines 204-218 only checked kubectl when it was first word
+- **Root Cause**: Command chains started with other commands (export, date, etc.) bypassed kubectl validation
+- **Solution**: New function scans entire command for kubectl and validates subcommand
+- **Read-Only Commands**: get, describe, logs, top, version, cluster-info, config, api-resources, api-versions, explain
+
+---
+
 ## [8.18.16] - 2025-10-13
 
 ### Documentation
