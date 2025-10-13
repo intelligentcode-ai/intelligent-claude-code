@@ -1,0 +1,296 @@
+{
+  "$schema": "./src/schemas/icc.config.schema.json",
+  "version": "1.0.0",
+  "description": "Intelligent Claude Code unified configuration with all 147+ settings",
+
+  "autonomy": {
+    "level": "L2",
+    "pm_always_active": true,
+    "l3_settings": {
+      "max_parallel": 5,
+      "auto_discover": true,
+      "continue_on_error": true
+    }
+  },
+
+  "git": {
+    "privacy": true,
+    "privacy_patterns": [
+      "AI",
+      "Claude",
+      "agent",
+      "Generated with Claude Code",
+      "Co-Authored-By: Claude"
+    ],
+    "branch_protection": true,
+    "default_branch": "main",
+    "require_pr_for_main": true,
+    "validate_commits": true
+  },
+
+  "paths": {
+    "story_path": "stories",
+    "bug_path": "bugs",
+    "memory_path": "memory",
+    "docs_path": "docs",
+    "src_path": "src",
+    "test_path": "tests",
+    "config_path": "config",
+    "agenttask_template_path": "agenttask-templates",
+    "summaries_path": "summaries"
+  },
+
+  "team": {
+    "default_reviewer": "@Architect",
+    "specialist_creation": true,
+    "role_validation": true
+  },
+
+  "agenttask": {
+    "template_validation": true,
+    "complexity_override": false,
+    "auto_breakdown": true,
+    "size_limits": {
+      "nano": { "min": 0, "max": 2 },
+      "tiny": { "min": 3, "max": 5 },
+      "medium": { "min": 6, "max": 15 },
+      "large": { "min": 16, "max": 30 },
+      "mega": { "min": 31, "max": 999 }
+    }
+  },
+
+  "memory": {
+    "integration": true,
+    "auto_storage": true,
+    "search_before_questions": true,
+    "max_search_results": 3,
+    "max_search_tokens": 1000,
+    "relevance_threshold": 6
+  },
+
+  "quality": {
+    "enforce_peer_review": true,
+    "testing_required": true,
+    "documentation_required": true,
+    "security_validation": true,
+    "compliance_checking": true
+  },
+
+  "development": {
+    "auto_cleanup": true,
+    "file_management_strict": true,
+    "testing_approach": "comprehensive",
+    "allowed_allcaps_files": [
+      "README.md",
+      "LICENSE",
+      "LICENSE.md",
+      "CLAUDE.md",
+      "CHANGELOG.md",
+      "CONTRIBUTING.md",
+      "AUTHORS",
+      "NOTICE",
+      "PATENTS",
+      "VERSION",
+      "MAKEFILE",
+      "DOCKERFILE",
+      "COPYING",
+      "COPYRIGHT"
+    ]
+  },
+
+  "tools": {
+    "context7_enabled": true,
+    "sequential_thinking": true,
+    "mcp_tools_enabled": true
+  },
+
+  "subagents": {
+    "model": "sonnet",
+    "threshold": 3,
+    "max_concurrent": 5,
+    "auto_delegation": true
+  },
+
+  "project": {
+    "repository_type": "git",
+    "release_automation": true
+  },
+
+  "enforcement": {
+    "blocking_enabled": true,
+    "block_all_capitals_filenames": false,
+    "allow_markdown_outside_allowlist": false,
+    "allow_markdown_outside_allowlist_agents": null,
+    "violation_logging": true,
+    "auto_correction": true,
+    "infrastructure_protection": {
+      "enabled": true,
+      "enforce_iac_only": true,
+      "emergency_override_enabled": false,
+      "read_operations_allowed": true,
+      "imperative_destructive": [
+        "govc vm.destroy",
+        "govc vm.remove",
+        "govc pool.destroy",
+        "govc datastore.rm",
+        "esxcli vm process kill",
+        "virsh destroy",
+        "virsh undefine",
+        "vboxmanage unregistervm",
+        "qm destroy",
+        "pct destroy",
+        "multipass delete",
+        "vagrant destroy",
+        "kubectl delete",
+        "kubectl drain",
+        "kubectl cordon",
+        "Remove-VM",
+        "Remove-VirtualDisk",
+        "Remove-VMHardDiskDrive",
+        "Remove-VMSnapshot",
+        "Remove-AzVM",
+        "Remove-AzDisk"
+      ],
+      "write_operations": [
+        "govc vm.power",
+        "govc vm.shutdown",
+        "govc vm.reboot",
+        "govc vm.create",
+        "govc host.shutdown",
+        "govc host.reboot",
+        "esxcli system shutdown",
+        "esxcli system reboot",
+        "virsh shutdown",
+        "virsh reboot",
+        "virsh start",
+        "vboxmanage controlvm",
+        "vboxmanage startvm",
+        "qm shutdown",
+        "qm reboot",
+        "qm start",
+        "pct shutdown",
+        "pct reboot",
+        "pct start",
+        "multipass stop",
+        "multipass start",
+        "vagrant halt",
+        "vagrant reload",
+        "vagrant up",
+        "kubectl apply",
+        "kubectl create",
+        "kubectl patch",
+        "kubectl scale",
+        "kubectl set",
+        "Start-VM",
+        "Stop-VM",
+        "Restart-VM",
+        "Suspend-VM",
+        "Resume-VM",
+        "New-VM",
+        "Set-VM",
+        "Start-Service",
+        "Stop-Service",
+        "Restart-Service",
+        "New-AzVM",
+        "Start-AzVM",
+        "Stop-AzVM",
+        "Restart-AzVM"
+      ],
+      "read_operations": [
+        "govc vm.info",
+        "govc ls",
+        "govc find",
+        "esxcli system version",
+        "virsh list",
+        "virsh dominfo",
+        "vboxmanage list",
+        "qm list",
+        "qm status",
+        "pct list",
+        "pct status",
+        "multipass list",
+        "multipass info",
+        "vagrant status",
+        "kubectl get",
+        "kubectl describe",
+        "kubectl logs",
+        "kubectl top",
+        "kubectl explain",
+        "Get-VM",
+        "Get-VMHost",
+        "Get-VMSwitch",
+        "Get-VMNetworkAdapter",
+        "Get-VirtualDisk",
+        "Get-VMHardDiskDrive",
+        "Get-VMSnapshot",
+        "Get-Service",
+        "Get-AzVM",
+        "Get-AzDisk",
+        "Get-AzResource"
+      ],
+      "pm_blocked_all": [
+        "govc",
+        "esxcli",
+        "vcsa-cli",
+        "virsh",
+        "vboxmanage",
+        "qm",
+        "pct",
+        "multipass",
+        "vagrant",
+        "packer"
+      ],
+      "whitelist": [],
+      "emergency_override_token": ""
+    }
+  },
+
+  "best_practices": {
+    "search_enabled": true,
+    "auto_generation": true,
+    "promotion_threshold": 3,
+    "categories": [
+      "architecture",
+      "collaboration",
+      "development",
+      "git",
+      "operations",
+      "quality",
+      "security"
+    ]
+  },
+
+  "mcp_integrations": {
+    "memory": {
+      "provider": "mcp__memory",
+      "enabled": false,
+      "fallback": "file-based",
+      "config": {}
+    },
+    "issue_tracking": {
+      "provider": "mcp__github",
+      "enabled": false,
+      "fallback": "file-based",
+      "config": {}
+    },
+    "documentation": {
+      "provider": "file-based",
+      "enabled": true,
+      "fallback": "file-based",
+      "config": {
+        "base_path": "docs/"
+      }
+    }
+  },
+
+  "cache": {
+    "ttl_minutes": 5,
+    "enabled": true
+  },
+
+  "logging": {
+    "enabled": true,
+    "retention_hours": 24,
+    "directory": "~/.claude/logs"
+  }
+}

@@ -378,7 +378,23 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
     const fileName = path.basename(filePath);
     const isAllCapitals = fileName === fileName.toUpperCase();
     const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
-    const suggestedPath = `summaries/${suggestedName}`;
+
+    // Check if all-capitals blocking is enabled
+    const blockAllCapitals = getSetting('enforcement.block_all_capitals_filenames', false);
+    if (isAllCapitals && blockAllCapitals) {
+      return {
+        allowed: false,
+        message: `🚫 ALL-CAPITALS filenames are blocked by configuration
+
+Blocked File: ${filePath}
+Suggested Name: ${suggestedName}
+
+Current filename: ${fileName} (ALL-CAPITALS)
+Use lowercase: ${suggestedName}
+
+To allow all-capitals filenames, set: enforcement.block_all_capitals_filenames = false`
+      };
+    }
 
     // Ensure summaries directory exists in the project root
     const summariesDir = path.join(projectRoot, 'summaries');
@@ -387,16 +403,18 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
       log('Created summaries/ directory for summary file redirection');
     }
 
-    const capitalsWarning = isAllCapitals ? '\n⚠️ Filename is all-capitals - use lowercase for consistency' : '';
+    const capitalsWarning = isAllCapitals ? '\n\n⚠️ WARNING: Filename is ALL-CAPITALS - use lowercase for consistency' : '';
 
     return {
       allowed: false,
-      message: `📋 Summary files belong in ./summaries/ directory
+      message: `📋 Summary files must be in current project's summaries/ directory
 
-Blocked: ${filePath}
-Suggested: ${suggestedPath}${capitalsWarning}
+Project Root: ${projectRoot}
+Blocked File: ${filePath}
+Suggested Path: ${path.join(projectRoot, 'summaries', suggestedName)}${capitalsWarning}
 
-Please create summary files in the summaries/ directory to keep project root clean.`
+Summary files belong in YOUR PROJECT's summaries/ directory.
+If working on external project, the file must go to THAT project's summaries/ directory.`
     };
   }
 
