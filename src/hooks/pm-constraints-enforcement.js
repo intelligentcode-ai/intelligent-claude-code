@@ -369,12 +369,6 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
       return { allowed: true };
     }
 
-    // If file is already in ANY summaries/ directory, allow it
-    // This handles agents working on external projects with their own summaries/ directories
-    if (filePath.includes('/summaries/')) {
-      return { allowed: true };
-    }
-
     const fileName = path.basename(filePath);
     const isAllCapitals = fileName === fileName.toUpperCase();
     const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
