@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.3] - 2025-10-13
+
+### Fixed
+- Bash file creation validation now prevents agents from bypassing summary file rules using heredoc, echo redirect, or tee commands
+- All bash commands that create .md files are now validated against summary file rules (all-capitals and directory requirements)
+
+---
+
 ## [8.8.2] - 2025-10-13
 
 ### Fixed

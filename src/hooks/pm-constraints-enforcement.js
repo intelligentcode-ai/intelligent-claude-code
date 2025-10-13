@@ -679,9 +679,69 @@ Use Task tool to create specialist agent via AgentTask.`
         }
       }
 
+      // Function to extract file creation patterns from Bash commands
+      function extractFileCreationFromBash(command) {
+        // Pattern 1: cat > file << 'EOF' or cat > file << EOF
+        const heredocPattern = /cat\s*>\s*([^\s<]+)\s*<</;
+        const heredocMatch = command.match(heredocPattern);
+        if (heredocMatch) {
+          return heredocMatch[1].trim();
+        }
+
+        // Pattern 2: echo "..." > file or echo '...' > file
+        const echoPattern = /echo\s+["'][^"']*["']\s*>\s*([^\s;&|]+)/;
+        const echoMatch = command.match(echoPattern);
+        if (echoMatch) {
+          return echoMatch[1].trim();
+        }
+
+        // Pattern 3: tee file
+        const teePattern = /tee\s+([^\s;&|]+)/;
+        const teeMatch = command.match(teePattern);
+        if (teeMatch) {
+          return teeMatch[1].trim();
+        }
+
+        return null;
+      }
+
       // Validate Bash commands
       if (tool === 'Bash' && command) {
         log(`Validating Bash command: ${command}`);
+
+        // Check for file creation patterns
+        const createdFile = extractFileCreationFromBash(command);
+        if (createdFile && createdFile.endsWith('.md')) {
+          log(`Bash command creates .md file: ${createdFile}`);
+
+          // Apply summary file validation
+          const summaryValidation = validateSummaryFile(createdFile, projectRoot);
+          if (!summaryValidation.allowed) {
+            log(`Bash file creation blocked (summary validation): ${createdFile}`);
+
+            const blockingEnabled = getBlockingEnabled();
+
+            if (blockingEnabled) {
+              const response = {
+                hookSpecificOutput: {
+                  hookEventName: 'PreToolUse',
+                  permissionDecision: 'deny',
+                  permissionDecisionReason: summaryValidation.message
+                }
+              };
+              const responseJson = JSON.stringify(response);
+              log(`RESPONSE: ${responseJson}`);
+              log(`EXIT CODE: 2 (BLOCKING MODE)`);
+              console.log(responseJson);
+              process.exit(2);
+            } else {
+              log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
+              console.log(JSON.stringify({ continue: true }));
+              process.exit(0);
+            }
+          }
+        }
+
         const bashValidation = validateBashCommand(command);
 
         if (!bashValidation.allowed) {
