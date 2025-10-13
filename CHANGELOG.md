@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.8.2] - 2025-10-13
+
+### Fixed
+- Summary file validation now allows files in ANY summaries/ directory, enabling agents working on external projects to write to their project's summaries/ directories without blocking
+
+---
+
 ## [8.9.0] - 2025-09-21
 
 ### Changed
