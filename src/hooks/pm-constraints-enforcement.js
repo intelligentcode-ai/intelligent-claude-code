@@ -491,28 +491,6 @@ To allow markdown everywhere, set: enforcement.allow_markdown_outside_allowlist 
   function validatePMOperation(filePath, tool, paths, projectRoot) {
     const { allowlist, blocklist } = paths;
 
-    // CRITICAL: Check if file is outside project boundaries
-    if (path.isAbsolute(filePath)) {
-      const relativePath = path.relative(projectRoot, filePath);
-
-      // If relative path starts with '..' then file is OUTSIDE project root
-      if (relativePath.startsWith('..')) {
-        return {
-          allowed: false,
-          message: `🚫 PROJECT BOUNDARY VIOLATION - File is outside current project
-
-Blocked File: ${filePath}
-Project Root: ${projectRoot}
-Relative Path: ${relativePath}
-
-Main scope operations are restricted to the current project directory only.
-Files in other projects cannot be modified from this project scope.
-
-This is a fundamental architectural boundary to prevent cross-project contamination.`
-        };
-      }
-    }
-
     // Check blocklist first (explicit denial)
     if (isPathInBlocklist(filePath, blocklist, projectRoot)) {
       const blockedDir = blocklist.find(p => filePath.startsWith(p + '/'));
