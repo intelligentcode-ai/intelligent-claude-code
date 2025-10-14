@@ -241,7 +241,14 @@
         "packer"
       ],
       "whitelist": [],
-      "emergency_override_token": ""
+      "emergency_override_token": "",
+      "read_only_operations": {
+        "kubectl": ["get", "describe", "logs", "top", "version", "cluster-info", "config", "api-resources", "api-versions", "explain"],
+        "openstack": ["list", "show", "get"],
+        "aws": ["describe", "list", "get"],
+        "az": ["show", "list", "get"],
+        "gcloud": ["describe", "list", "get"]
+      }
     }
   },
 

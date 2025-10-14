@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.21] - 2025-10-14
+
+### Fixed
+- **Configuration-Driven Infrastructure Read-Only Detection**
+  - Replaced hardcoded `isKubectlReadOnly()` function with generic `isInfrastructureReadOnly(command, tool)` function
+  - Added `enforcement.infrastructure_protection.read_only_operations` configuration in `icc.config.default.json`
+  - Configuration supports kubectl, openstack, aws, az, gcloud with extensible design
+  - Lines 173-192: New generic function reads operations from configuration
+  - Lines 224-232: Updated validateBashCommand() to use generic infrastructure check
+  - Lines 274-291: Updated command blocking loop with generic infrastructure bypass
+  - Lines 281-291: Dynamic error messages show configured read-only operations per tool
+  - Benefits: Single generic function, configuration-driven, user customizable, scales to unlimited tools
+
+### Configuration Schema
+```json
+"enforcement.infrastructure_protection.read_only_operations": {
+  "kubectl": ["get", "describe", "logs", "top", "version", "cluster-info", "config", "api-resources", "api-versions", "explain"],
+  "openstack": ["list", "show", "get"],
+  "aws": ["describe", "list", "get"],
+  "az": ["show", "list", "get"],
+  "gcloud": ["describe", "list", "get"]
+}
+```
+
+---
+
 ## [8.18.18] - 2025-10-13
 
 ### Bug Fixed

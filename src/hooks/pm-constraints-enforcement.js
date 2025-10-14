@@ -170,22 +170,25 @@ function main() {
     return commands;
   }
 
-  function isKubectlReadOnly(command) {
-    // Find kubectl in the command and check if subcommand is read-only
-    const kubectlPattern = /\bkubectl\s+(\S+)/;
-    const kubectlMatch = command.match(kubectlPattern);
+  function isInfrastructureReadOnly(command, tool) {
+    // Get read-only operations for this tool from configuration
+    const readOnlyOps = getSetting(`enforcement.infrastructure_protection.read_only_operations.${tool}`, []);
 
-    if (!kubectlMatch) {
-      return false; // No kubectl found
+    if (readOnlyOps.length === 0) {
+      return false; // No read-only operations configured for this tool
     }
 
-    const kubectlSubcommand = kubectlMatch[1];
-    const readOnlyKubectlSubcommands = [
-      'get', 'describe', 'logs', 'top', 'version', 'cluster-info',
-      'config', 'api-resources', 'api-versions', 'explain'
-    ];
+    // Extract subcommand/operation from command
+    // Pattern: tool subcommand [...args]
+    const pattern = new RegExp(`\\b${tool}\\s+(\\S+)`);
+    const match = command.match(pattern);
 
-    return readOnlyKubectlSubcommands.includes(kubectlSubcommand);
+    if (!match) {
+      return false; // Tool not found in command
+    }
+
+    const subcommand = match[1];
+    return readOnlyOps.includes(subcommand);
   }
 
   function validateBashCommand(command) {
@@ -218,9 +221,11 @@ function main() {
       return { allowed: true };
     }
 
-    // Special case: kubectl read-only commands allowed
-    if (firstWord === 'kubectl' || command.includes('kubectl')) {
-      if (isKubectlReadOnly(command)) {
+    // Check if this is a read-only infrastructure command
+    const infrastructureTools = ['kubectl', 'openstack', 'aws', 'az', 'gcloud'];
+    if (infrastructureTools.some(tool => firstWord === tool || command.includes(tool))) {
+      const tool = infrastructureTools.find(t => firstWord === t || command.includes(t));
+      if (isInfrastructureReadOnly(command, tool)) {
         return { allowed: true };
       }
       // If not read-only, fall through to normal blocking
@@ -266,18 +271,23 @@ Use Task tool to create specialist agent via AgentTask.`
       for (const blocked of allBlockedCommands) {
         // Match command name exactly or with suffix (e.g., npm vs npm-install)
         if (cmd === blocked || cmd.startsWith(blocked + '-')) {
-          // Special case: kubectl might be read-only even though it's in blocklist
-          if (blocked === 'kubectl' && isKubectlReadOnly(command)) {
-            continue; // Skip blocking for read-only kubectl operations
+          // Special case: infrastructure tools might be read-only even though in blocklist
+          const infrastructureTools = ['kubectl', 'openstack', 'aws', 'az', 'gcloud', 'govc'];
+          if (infrastructureTools.includes(blocked) && isInfrastructureReadOnly(command, blocked)) {
+            continue; // Skip blocking for read-only operations
           }
 
-          // Provide specific guidance for kubectl commands
-          let kubectlGuidance = '';
-          if (blocked === 'kubectl') {
-            kubectlGuidance = `
+          // Provide infrastructure-specific guidance
+          let infrastructureGuidance = '';
+          const infrastructureToolsList = ['kubectl', 'openstack', 'aws', 'az', 'gcloud'];
+          if (infrastructureToolsList.includes(blocked)) {
+            const readOnlyOps = getSetting(`enforcement.infrastructure_protection.read_only_operations.${blocked}`, []);
+            if (readOnlyOps.length > 0) {
+              infrastructureGuidance = `
 
-kubectl Read-only (ALLOWED): get, describe, logs, top, version, cluster-info, config, api-resources, api-versions, explain
-kubectl Destructive (BLOCKED): delete, apply, create, patch, replace, scale, rollout, drain, cordon, taint, label, annotate`;
+${blocked} Read-only (ALLOWED): ${readOnlyOps.join(', ')}
+${blocked} Destructive (BLOCKED): all other operations`;
+            }
           }
 
           return {
@@ -293,7 +303,7 @@ Infrastructure: ${pmInfrastructureBlacklist.join(', ')} ⚠️ DESTRUCTIVE
 Scripting languages: python, python3, node, ruby, perl, php
 Background tools: nohup, screen, tmux
 Text processing: sed, awk
-Text editors: vi, vim, nano, emacs${kubectlGuidance}
+Text editors: vi, vim, nano, emacs${infrastructureGuidance}
 
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
 All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
