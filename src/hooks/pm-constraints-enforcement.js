@@ -234,7 +234,8 @@ function main() {
       'python', 'python3', 'node', 'ruby', 'perl', 'php',  // Scripting languages
       'nohup', 'screen', 'tmux',  // Background/session tools
       'sed', 'awk',  // Stream/text processing (file modification)
-      'vi', 'vim', 'nano', 'emacs'  // Text editors
+      'vi', 'vim', 'nano', 'emacs',  // Text editors
+      'openstack', 'kubectl', 'govc', 'aws', 'az', 'gcloud'  // Infrastructure CLI tools
     ];
 
     // Add infrastructure tools from configuration (PM blacklist - includes kubectl, govc, etc.)
