@@ -138,129 +138,148 @@ pull_request:
   reviewer: "[PRE_ASSIGNED_SME]"
 
 # MANDATORY: Validation Enforcement Section
-validation_enforcement:
-  memory_requirements:
-    pre_execution:
-      - "Memory search completed for [work_type] and [technology_domain] topics"
-      - "Relevant patterns identified and embedded in context"
-      - "Best practices reviewed for applicable guidance"
-      - "Similar implementation patterns discovered and applied"
-      - "Multi-file coordination patterns reviewed"
-      blocked_patterns:
-        - "No memory search needed"
-        - "Skip memory check"
-        - "No patterns available"
-        - "Fresh implementation without patterns"
-        - "First-time feature"
-      error_message: "❌ BLOCKED: Memory search is mandatory before execution - search memory/[topic]/ for patterns"
+<validation_enforcement id="MEDIUM-AGENTTASK-VALIDATION">
+  <memory_requirements mandatory="true">
+    <pre_execution>
+      <requirement>Memory search completed for [work_type] and [technology_domain] topics</requirement>
+      <requirement>Relevant patterns identified and embedded in context</requirement>
+      <requirement>Best practices reviewed for applicable guidance</requirement>
+      <requirement>Similar implementation patterns discovered and applied</requirement>
+      <requirement>Multi-file coordination patterns reviewed</requirement>
+    </pre_execution>
+    <blocked_patterns>
+      <pattern>No memory search needed</pattern>
+      <pattern>Skip memory check</pattern>
+      <pattern>No patterns available</pattern>
+      <pattern>Fresh implementation without patterns</pattern>
+      <pattern>First-time feature</pattern>
+    </blocked_patterns>
+    <error_message>❌ BLOCKED: Memory search is mandatory before execution - search memory/[topic]/ for patterns</error_message>
 
-    post_execution:
-      - "Execution analyzed for lessons learned"
-      - "Success/failure patterns identified"
-      - "Multi-file coordination insights captured"
-      - "Relevance filters applied before storage decision"
-      - "Storage ONLY if clear future value demonstrated"
-      - "Security validation: no credentials or sensitive data"
-      blocked_patterns:
-        - "Store to satisfy requirement"
-        - "No learnings to capture"
-        - "Skip memory storage"
-        - "Nothing worth storing"
-        - "Standard implementation"
-      error_message: "❌ BLOCKED: Automatic analysis mandatory - evaluate execution for reusable patterns"
+    <post_execution>
+      <requirement>Execution analyzed for lessons learned</requirement>
+      <requirement>Success/failure patterns identified</requirement>
+      <requirement>Multi-file coordination insights captured</requirement>
+      <requirement>Relevance filters applied before storage decision</requirement>
+      <requirement>Storage ONLY if clear future value demonstrated</requirement>
+      <requirement>Security validation: no credentials or sensitive data</requirement>
+    </post_execution>
+    <post_blocked_patterns>
+      <pattern>Store to satisfy requirement</pattern>
+      <pattern>No learnings to capture</pattern>
+      <pattern>Skip memory storage</pattern>
+      <pattern>Nothing worth storing</pattern>
+      <pattern>Standard implementation</pattern>
+    </post_blocked_patterns>
+    <post_error_message>❌ BLOCKED: Automatic analysis mandatory - evaluate execution for reusable patterns</post_error_message>
+  </memory_requirements>
 
-  mandatory_requirements:
-    git_operations:
-      - "Feature branch creation with proper naming convention"
-      - "Git commit with detailed message following [ID]: [DESCRIPTION] format"
-      - "Git push to feature branch (never directly to main/default)"
-      - "Pull request creation with comprehensive description"
-      - "Privacy filter applied to all git operations"
-      blocked_patterns:
-        - "No git operations needed"
-        - "Skip git workflow"
-        - "Direct push to main"
-        - "No branching required"
-        - "No PR needed"
-        - "Simple merge"
-        - "Direct commit acceptable"
-      error_message: "❌ BLOCKED: Full git workflow with branch protection is mandatory for medium AgentTasks."
-    
-    sme_review:
-      - "Complete technical review checklist with all items verified"
-      - "Multi-file coordination validation"
-      - "Feature completeness assessment"
-      - "Code quality and pattern compliance verification"
-      - "Configuration compliance check"
-      - "Integration testing validation"
-      blocked_patterns:
-        - "No review needed"
-        - "Skip validation steps"
-        - "Obvious implementation"
-        - "Self-evident changes"
-        - "Internal change only"
-        - "Too straightforward for review"
-        - "Developer discretion"
-      error_message: "❌ BLOCKED: Comprehensive SME review is mandatory for all medium complexity AgentTasks."
-    
-    documentation:
-      - "CHANGELOG entry with detailed feature description required"
-      - "README/API documentation updates for user-facing changes"
-      - "Architecture documentation updates if system design affected"
-      - "Inline code documentation for complex logic"
-      - "Integration guides updated if new dependencies introduced"
-      blocked_patterns:
-        - "No documentation needed"
-        - "Self-documenting code"
-        - "Skip CHANGELOG"
-        - "Internal change, no docs"
-        - "Documentation not affected"
-        - "Too technical for user docs"
-        - "Code speaks for itself"
-      error_message: "❌ BLOCKED: Comprehensive documentation updates are mandatory for medium AgentTasks."
+  <mandatory_requirements>
+    <git_operations mandatory="true">
+      <requirement>Feature branch creation with proper naming convention</requirement>
+      <requirement>Git commit with detailed message following [ID]: [DESCRIPTION] format</requirement>
+      <requirement>Git push to feature branch (never directly to main/default)</requirement>
+      <requirement>Pull request creation with comprehensive description</requirement>
+      <requirement>Privacy filter applied to all git operations</requirement>
+      <blocked_patterns>
+        <pattern>No git operations needed</pattern>
+        <pattern>Skip git workflow</pattern>
+        <pattern>Direct push to main</pattern>
+        <pattern>No branching required</pattern>
+        <pattern>No PR needed</pattern>
+        <pattern>Simple merge</pattern>
+        <pattern>Direct commit acceptable</pattern>
+      </blocked_patterns>
+      <error_message>❌ BLOCKED: Full git workflow with branch protection is mandatory for medium AgentTasks.</error_message>
+    </git_operations>
 
-    pull_request_review:
-      - "Assigned SME reviewer must be specified (not generic)"
-      - "Pull request description must include summary, changes, and testing"
-      - "All PR template sections must be completed"
-      - "Integration testing results must be documented"
-      blocked_patterns:
-        - "No reviewer assignment needed"
-        - "Any developer can review"
-        - "Self-review sufficient"
-        - "Skip PR template"
-        - "Minimal description acceptable"
-      error_message: "❌ BLOCKED: Proper SME reviewer assignment and comprehensive PR documentation required."
+    <sme_review mandatory="true">
+      <requirement>Complete technical review checklist with all items verified</requirement>
+      <requirement>Multi-file coordination validation</requirement>
+      <requirement>Feature completeness assessment</requirement>
+      <requirement>Code quality and pattern compliance verification</requirement>
+      <requirement>Configuration compliance check</requirement>
+      <requirement>Integration testing validation</requirement>
+      <blocked_patterns>
+        <pattern>No review needed</pattern>
+        <pattern>Skip validation steps</pattern>
+        <pattern>Obvious implementation</pattern>
+        <pattern>Self-evident changes</pattern>
+        <pattern>Internal change only</pattern>
+        <pattern>Too straightforward for review</pattern>
+        <pattern>Developer discretion</pattern>
+      </blocked_patterns>
+      <error_message>❌ BLOCKED: Comprehensive SME review is mandatory for all medium complexity AgentTasks.</error_message>
+    </sme_review>
 
-    version_management:
-      - "Appropriate version bump (patch/minor) based on change scope"
-      - "Version consistency maintained across all affected components"
-      - "Breaking change assessment completed"
-      blocked_patterns:
-        - "No version change needed"
-        - "Skip versioning"
-        - "Version not applicable"
-        - "Internal change, no version impact"
-      error_message: "❌ BLOCKED: Version management is mandatory for all feature-level changes."
-  
-  workflow:
-    version_bump: "[WORKFLOW_VERSION_BUMP]"
-    version_type: "[WORKFLOW_VERSION_TYPE]"
-    changelog_required: "[WORKFLOW_CHANGELOG_REQUIRED]"
-    pr_required: "[WORKFLOW_PR_REQUIRED]"
-    merge_strategy: "[WORKFLOW_MERGE_STRATEGY]"
-    release_automation: "[WORKFLOW_RELEASE_AUTOMATION]"
-    auto_merge: "[WORKFLOW_AUTO_MERGE]"
-    coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
-    breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
-  
-  enforcement_rules:
-    - "ALL 9 execution steps must be completed in sequential order"
-    - "NO bypass language, skip patterns, or discretionary exceptions allowed"
-    - "MANDATORY full git workflow with feature branch and PR process"
-    - "REQUIRED comprehensive SME review with assigned domain expert"
-    - "MANDATORY documentation updates for all user-impacting changes"
-    - "ENFORCED pull request process with proper reviewer assignment"
+    <documentation mandatory="true">
+      <requirement>CHANGELOG entry with detailed feature description required</requirement>
+      <requirement>README/API documentation updates for user-facing changes</requirement>
+      <requirement>Architecture documentation updates if system design affected</requirement>
+      <requirement>Inline code documentation for complex logic</requirement>
+      <requirement>Integration guides updated if new dependencies introduced</requirement>
+      <blocked_patterns>
+        <pattern>No documentation needed</pattern>
+        <pattern>Self-documenting code</pattern>
+        <pattern>Skip CHANGELOG</pattern>
+        <pattern>Internal change, no docs</pattern>
+        <pattern>Documentation not affected</pattern>
+        <pattern>Too technical for user docs</pattern>
+        <pattern>Code speaks for itself</pattern>
+      </blocked_patterns>
+      <error_message>❌ BLOCKED: Comprehensive documentation updates are mandatory for medium AgentTasks.</error_message>
+    </documentation>
+
+    <pull_request_review mandatory="true">
+      <requirement>Assigned SME reviewer must be specified (not generic)</requirement>
+      <requirement>Pull request description must include summary, changes, and testing</requirement>
+      <requirement>All PR template sections must be completed</requirement>
+      <requirement>Integration testing results must be documented</requirement>
+      <blocked_patterns>
+        <pattern>No reviewer assignment needed</pattern>
+        <pattern>Any developer can review</pattern>
+        <pattern>Self-review sufficient</pattern>
+        <pattern>Skip PR template</pattern>
+        <pattern>Minimal description acceptable</pattern>
+      </blocked_patterns>
+      <error_message>❌ BLOCKED: Proper SME reviewer assignment and comprehensive PR documentation required.</error_message>
+    </pull_request_review>
+
+    <version_management mandatory="true">
+      <requirement>Appropriate version bump (patch/minor) based on change scope</requirement>
+      <requirement>Version consistency maintained across all affected components</requirement>
+      <requirement>Breaking change assessment completed</requirement>
+      <blocked_patterns>
+        <pattern>No version change needed</pattern>
+        <pattern>Skip versioning</pattern>
+        <pattern>Version not applicable</pattern>
+        <pattern>Internal change, no version impact</pattern>
+      </blocked_patterns>
+      <error_message>❌ BLOCKED: Version management is mandatory for all feature-level changes.</error_message>
+    </version_management>
+  </mandatory_requirements>
+
+  <workflow>
+    <version_bump>[WORKFLOW_VERSION_BUMP]</version_bump>
+    <version_type>[WORKFLOW_VERSION_TYPE]</version_type>
+    <changelog_required>[WORKFLOW_CHANGELOG_REQUIRED]</changelog_required>
+    <pr_required>[WORKFLOW_PR_REQUIRED]</pr_required>
+    <merge_strategy>[WORKFLOW_MERGE_STRATEGY]</merge_strategy>
+    <release_automation>[WORKFLOW_RELEASE_AUTOMATION]</release_automation>
+    <auto_merge>[WORKFLOW_AUTO_MERGE]</auto_merge>
+    <coordination_required>[WORKFLOW_COORDINATION_REQUIRED]</coordination_required>
+    <breaking_change_assessment>[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]</breaking_change_assessment>
+  </workflow>
+
+  <enforcement_rules>
+    <rule>ALL 9 execution steps must be completed in sequential order</rule>
+    <rule>NO bypass language, skip patterns, or discretionary exceptions allowed</rule>
+    <rule>MANDATORY full git workflow with feature branch and PR process</rule>
+    <rule>REQUIRED comprehensive SME review with assigned domain expert</rule>
+    <rule>MANDATORY documentation updates for all user-impacting changes</rule>
+    <rule>ENFORCED pull request process with proper reviewer assignment</rule>
+  </enforcement_rules>
+</validation_enforcement>
 
 # MCP Operations Extension Points
 mcp_operations:

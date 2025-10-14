@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.23] - 2025-10-14
+
+### Fixed
+- **AgentTask Template Validation Format Consistency**
+  - Converted all `validation_enforcement` sections from YAML to XML format across 5 templates
+  - Nano template: Lines 71-160 converted to structured XML with `<validation_enforcement id="NANO-AGENTTASK-VALIDATION">`
+  - Tiny template: Lines 109-220 converted with complete memory/git/review/documentation/version requirements
+  - Medium template: Lines 141-282 converted with additional PR review validation section
+  - Large template: Lines 86-206 converted with decomposition, memory, git, review, and docs validation
+  - Mega template: Lines 96-255 converted with epic decomposition, memory, git, review, and docs validation
+  - Benefits: Consistent with behavioral pattern XML structure, improved readability, structured validation rules
+
+### Technical Details
+- All templates now use XML format consistent with `src/behaviors/memory-enforcement-patterns.md` patterns
+- XML structure includes `mandatory="true"` attributes, `<requirement>` tags, `<pattern>` tags, and `<error_message>` tags
+- Large and Mega templates have multiple validation sections embedded in different workflow stages
+- Conversion preserves all validation content while improving structural consistency
+
+---
+
 ## [8.18.21] - 2025-10-14
 
 ### Fixed

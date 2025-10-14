@@ -68,81 +68,96 @@ validation_checklist:
   - "Change pushed to remote"
 
 # MANDATORY: Validation Enforcement Section
-validation_enforcement:
-  memory_requirements:
-    pre_execution:
-      - "Memory search completed for [work_type] and [technology_domain] topics"
-      - "Relevant patterns identified and embedded in context"
-      - "Best practices reviewed for applicable guidance"
-      blocked_patterns:
-        - "No memory search needed"
-        - "Skip memory check"
-        - "Too simple for memory"
-        - "No patterns available"
-      error_message: "❌ BLOCKED: Memory search is mandatory before execution - search memory/[topic]/ for patterns"
+<validation_enforcement id="NANO-AGENTTASK-VALIDATION">
+  <memory_requirements mandatory="true">
+    <pre_execution>
+      <requirement>Memory search completed for [work_type] and [technology_domain] topics</requirement>
+      <requirement>Relevant patterns identified and embedded in context</requirement>
+      <requirement>Best practices reviewed for applicable guidance</requirement>
+    </pre_execution>
+    <blocked_patterns>
+      <pattern>No memory search needed</pattern>
+      <pattern>Skip memory check</pattern>
+      <pattern>Too simple for memory</pattern>
+      <pattern>No patterns available</pattern>
+    </blocked_patterns>
+    <error_message>❌ BLOCKED: Memory search is mandatory before execution - search memory/[topic]/ for patterns</error_message>
 
-    post_execution:
-      - "Execution analyzed for lessons learned"
-      - "Relevance filters applied before storage decision"
-      - "Storage ONLY if clear future value demonstrated"
-      - "Security validation: no credentials or sensitive data"
-      blocked_patterns:
-        - "Store to satisfy requirement"
-        - "No learnings to capture"
-        - "Skip memory storage"
-        - "Nothing worth storing"
-      error_message: "❌ BLOCKED: Automatic analysis mandatory - evaluate execution for reusable patterns"
+    <post_execution>
+      <requirement>Execution analyzed for lessons learned</requirement>
+      <requirement>Relevance filters applied before storage decision</requirement>
+      <requirement>Storage ONLY if clear future value demonstrated</requirement>
+      <requirement>Security validation: no credentials or sensitive data</requirement>
+    </post_execution>
+    <post_blocked_patterns>
+      <pattern>Store to satisfy requirement</pattern>
+      <pattern>No learnings to capture</pattern>
+      <pattern>Skip memory storage</pattern>
+      <pattern>Nothing worth storing</pattern>
+    </post_blocked_patterns>
+    <post_error_message>❌ BLOCKED: Automatic analysis mandatory - evaluate execution for reusable patterns</post_error_message>
+  </memory_requirements>
 
-  mandatory_requirements:
-    git_operations:
-      - "Git branch creation (if required by branch_protection)"
-      - "Git commit with proper message format"
-      - "Git push to remote repository"
-      blocked_patterns:
-        - "No git operations needed"
-        - "Skip git workflow"
-        - "Direct push to main"
-        - "No commit required"
-      error_message: "❌ BLOCKED: Git operations are mandatory for all AgentTasks. No bypass patterns allowed."
-    
-    sme_review:
-      - "Self-review checklist completion"
-      - "Code quality validation"
-      - "Requirements verification"
-      blocked_patterns:
-        - "No review needed"
-        - "Skip validation"
-        - "Self-evident changes"
-        - "Too simple for review"
-      error_message: "❌ BLOCKED: SME review processes are mandatory. All changes require validation."
-    
-    documentation:
-      - "Inline comments for complex logic"
-      - "Update relevant documentation"
-      - "Maintain code clarity"
-      blocked_patterns:
-        - "No documentation needed"
-        - "Self-documenting code"
-        - "Skip comments"
-        - "Obvious implementation"
-      error_message: "❌ BLOCKED: Documentation updates are mandatory for all changes."
-  
-  workflow:
-    version_bump: "[WORKFLOW_VERSION_BUMP]"
-    version_type: "[WORKFLOW_VERSION_TYPE]"
-    changelog_required: "[WORKFLOW_CHANGELOG_REQUIRED]"
-    pr_required: "[WORKFLOW_PR_REQUIRED]"
-    merge_strategy: "[WORKFLOW_MERGE_STRATEGY]"
-    release_automation: "[WORKFLOW_RELEASE_AUTOMATION]"
-    auto_merge: "[WORKFLOW_AUTO_MERGE]"
-    coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
-    breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
-  
-  enforcement_rules:
-    - "ALL validation steps must be explicitly completed"
-    - "NO bypass language or patterns allowed in execution"
-    - "MANDATORY git workflow compliance per configuration"
-    - "REQUIRED self-review completion before marking complete"
+  <mandatory_requirements>
+    <git_operations mandatory="true">
+      <requirement>Git branch creation (if required by branch_protection)</requirement>
+      <requirement>Git commit with proper message format</requirement>
+      <requirement>Git push to remote repository</requirement>
+      <blocked_patterns>
+        <pattern>No git operations needed</pattern>
+        <pattern>Skip git workflow</pattern>
+        <pattern>Direct push to main</pattern>
+        <pattern>No commit required</pattern>
+      </blocked_patterns>
+      <error_message>❌ BLOCKED: Git operations are mandatory for all AgentTasks. No bypass patterns allowed.</error_message>
+    </git_operations>
+
+    <sme_review mandatory="true">
+      <requirement>Self-review checklist completion</requirement>
+      <requirement>Code quality validation</requirement>
+      <requirement>Requirements verification</requirement>
+      <blocked_patterns>
+        <pattern>No review needed</pattern>
+        <pattern>Skip validation</pattern>
+        <pattern>Self-evident changes</pattern>
+        <pattern>Too simple for review</pattern>
+      </blocked_patterns>
+      <error_message>❌ BLOCKED: SME review processes are mandatory. All changes require validation.</error_message>
+    </sme_review>
+
+    <documentation mandatory="true">
+      <requirement>Inline comments for complex logic</requirement>
+      <requirement>Update relevant documentation</requirement>
+      <requirement>Maintain code clarity</requirement>
+      <blocked_patterns>
+        <pattern>No documentation needed</pattern>
+        <pattern>Self-documenting code</pattern>
+        <pattern>Skip comments</pattern>
+        <pattern>Obvious implementation</pattern>
+      </blocked_patterns>
+      <error_message>❌ BLOCKED: Documentation updates are mandatory for all changes.</error_message>
+    </documentation>
+  </mandatory_requirements>
+
+  <workflow>
+    <version_bump>[WORKFLOW_VERSION_BUMP]</version_bump>
+    <version_type>[WORKFLOW_VERSION_TYPE]</version_type>
+    <changelog_required>[WORKFLOW_CHANGELOG_REQUIRED]</changelog_required>
+    <pr_required>[WORKFLOW_PR_REQUIRED]</pr_required>
+    <merge_strategy>[WORKFLOW_MERGE_STRATEGY]</merge_strategy>
+    <release_automation>[WORKFLOW_RELEASE_AUTOMATION]</release_automation>
+    <auto_merge>[WORKFLOW_AUTO_MERGE]</auto_merge>
+    <coordination_required>[WORKFLOW_COORDINATION_REQUIRED]</coordination_required>
+    <breaking_change_assessment>[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]</breaking_change_assessment>
+  </workflow>
+
+  <enforcement_rules>
+    <rule>ALL validation steps must be explicitly completed</rule>
+    <rule>NO bypass language or patterns allowed in execution</rule>
+    <rule>MANDATORY git workflow compliance per configuration</rule>
+    <rule>REQUIRED self-review completion before marking complete</rule>
+  </enforcement_rules>
+</validation_enforcement>
 
 # MCP Operations Extension Points
 mcp_operations:

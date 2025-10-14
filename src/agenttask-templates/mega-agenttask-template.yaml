@@ -93,24 +93,27 @@ epic_decomposition:
       agenttask_type: "large"
       scope: "[SYSTEM_INTEGRATION]"
       dependencies: ["[PHASE_1]", "[PHASE_2]"]
-  validation_enforcement:
-    mandatory_epic_decomposition: true
-    blocking_requirements:
-      - "REQUIRED: Mega AgentTasks MUST be broken into Large AgentTask phases"
-      - "REQUIRED: Each phase must have clear scope and dependencies"
-      - "REQUIRED: Integration phase must coordinate all phases"
-      - "REQUIRED: Phase naming must follow epic-phase format"
-      - "REQUIRED: System-wide changes must follow phased approach"
-    phase_limits:
-      - "All phases must be Large AgentTasks (16-30 points)"
-      - "Phases must use large-agenttask-template.yaml"
-      - "Dependencies must be explicitly documented"
-      - "Integration phase is mandatory for system coordination"
-    epic_requirements:
-      - "Minimum 2 phases required for epic decomposition"
-      - "Maximum 5 phases recommended for manageable coordination"
-      - "Each phase must validate before next phase begins"
-    error_message: "❌ Mega AgentTasks MUST be decomposed into coordinated phases - direct execution FORBIDDEN"
+  <validation_enforcement id="MEGA-EPIC-VALIDATION" mandatory="true">
+    <blocking_requirements>
+      <requirement>Mega AgentTasks MUST be broken into Large AgentTask phases</requirement>
+      <requirement>Each phase must have clear scope and dependencies</requirement>
+      <requirement>Integration phase must coordinate all phases</requirement>
+      <requirement>Phase naming must follow epic-phase format</requirement>
+      <requirement>System-wide changes must follow phased approach</requirement>
+    </blocking_requirements>
+    <phase_limits>
+      <limit>All phases must be Large AgentTasks (16-30 points)</limit>
+      <limit>Phases must use large-agenttask-template.yaml</limit>
+      <limit>Dependencies must be explicitly documented</limit>
+      <limit>Integration phase is mandatory for system coordination</limit>
+    </phase_limits>
+    <epic_requirements>
+      <requirement>Minimum 2 phases required for epic decomposition</requirement>
+      <requirement>Maximum 5 phases recommended for manageable coordination</requirement>
+      <requirement>Each phase must validate before next phase begins</requirement>
+    </epic_requirements>
+    <error_message>❌ Mega AgentTasks MUST be decomposed into coordinated phases - direct execution FORBIDDEN</error_message>
+  </validation_enforcement>
 
 # Risk Management
 risk_management:
@@ -125,39 +128,44 @@ system_coordination:
   testing_strategy: "[COMPREHENSIVE_SYSTEM_TESTING]"
 
 # MANDATORY: Memory-First Requirements
-memory_requirements:
-  pre_execution:
-    - "Memory search completed for [work_type] and [technology_domain] topics"
-    - "System-wide transformation patterns reviewed"
-    - "Architectural change patterns identified"
-    - "Epic-scale coordination patterns discovered"
-    - "Best practices for mega features reviewed"
-    - "Risk mitigation patterns from similar changes applied"
-    blocked_patterns:
-      - "No memory search needed"
-      - "Skip memory check"
-      - "No patterns available"
-      - "Fresh implementation without patterns"
-      - "First system-wide change"
-      - "Unprecedented transformation"
-    error_message: "❌ BLOCKED: Memory search is CRITICAL for mega changes - search memory/[topic]/ for patterns"
+<memory_requirements mandatory="true">
+  <pre_execution>
+    <requirement>Memory search completed for [work_type] and [technology_domain] topics</requirement>
+    <requirement>System-wide transformation patterns reviewed</requirement>
+    <requirement>Architectural change patterns identified</requirement>
+    <requirement>Epic-scale coordination patterns discovered</requirement>
+    <requirement>Best practices for mega features reviewed</requirement>
+    <requirement>Risk mitigation patterns from similar changes applied</requirement>
+  </pre_execution>
+  <blocked_patterns>
+    <pattern>No memory search needed</pattern>
+    <pattern>Skip memory check</pattern>
+    <pattern>No patterns available</pattern>
+    <pattern>Fresh implementation without patterns</pattern>
+    <pattern>First system-wide change</pattern>
+    <pattern>Unprecedented transformation</pattern>
+  </blocked_patterns>
+  <error_message>❌ BLOCKED: Memory search is CRITICAL for mega changes - search memory/[topic]/ for patterns</error_message>
 
-  post_execution:
-    - "Execution analyzed for lessons learned"
-    - "System-wide transformation patterns captured"
-    - "Architectural change insights documented"
-    - "Epic coordination patterns identified"
-    - "Risk management lessons captured"
-    - "Relevance filters applied before storage decision"
-    - "Storage ONLY if clear future value demonstrated"
-    - "Security validation: no credentials or sensitive data"
-    blocked_patterns:
-      - "Store to satisfy requirement"
-      - "No learnings to capture"
-      - "Skip memory storage"
-      - "Nothing worth storing"
-      - "Standard system change"
-    error_message: "❌ BLOCKED: Automatic analysis CRITICAL - mega changes must capture transformation patterns"
+  <post_execution>
+    <requirement>Execution analyzed for lessons learned</requirement>
+    <requirement>System-wide transformation patterns captured</requirement>
+    <requirement>Architectural change insights documented</requirement>
+    <requirement>Epic coordination patterns identified</requirement>
+    <requirement>Risk management lessons captured</requirement>
+    <requirement>Relevance filters applied before storage decision</requirement>
+    <requirement>Storage ONLY if clear future value demonstrated</requirement>
+    <requirement>Security validation: no credentials or sensitive data</requirement>
+  </post_execution>
+  <post_blocked_patterns>
+    <pattern>Store to satisfy requirement</pattern>
+    <pattern>No learnings to capture</pattern>
+    <pattern>Skip memory storage</pattern>
+    <pattern>Nothing worth storing</pattern>
+    <pattern>Standard system change</pattern>
+  </post_blocked_patterns>
+  <post_error_message>❌ BLOCKED: Automatic analysis CRITICAL - mega changes must capture transformation patterns</post_error_message>
+</memory_requirements>
 
 # MANDATORY: Knowledge Management
 knowledge_management:
@@ -165,26 +173,28 @@ knowledge_management:
   capture_insights: "Document architectural transformation approach"
   location: "memory/[topic]/system-changes.md"
 
-# MANDATORY: Git Operations  
+# MANDATORY: Git Operations
 git_operations:
   branch_strategy: "Epic branch with phase branches"
   commit_format: "[ID]: [DESCRIPTION]"
   privacy_filter: "[FROM_CONFIG]"
   coordination: "Merge phases to epic branch systematically"
-  validation_enforcement:
-    mandatory_git_ops: true
-    blocking_requirements:
-      - "REQUIRED: Epic branch must be created for system-wide coordination"
-      - "REQUIRED: Phase branches must be managed systematically"
-      - "REQUIRED: Commit format must follow [ID]: [DESCRIPTION] pattern"
-      - "REQUIRED: Privacy filter must be applied according to config"
-      - "REQUIRED: System-wide changes must follow epic workflow"
-    disallowed_entries:
-      - "No git operations needed"
-      - "Skip git workflow"
-      - "Manual system changes only"
-      - "Direct system modifications"
-    error_message: "❌ Mega AgentTasks MUST follow epic git workflow - 'No git operations needed' is FORBIDDEN"
+  <validation_enforcement id="MEGA-GIT-VALIDATION" mandatory="true">
+    <blocking_requirements>
+      <requirement>Epic branch must be created for system-wide coordination</requirement>
+      <requirement>Phase branches must be managed systematically</requirement>
+      <requirement>Commit format must follow [ID]: [DESCRIPTION] pattern</requirement>
+      <requirement>Privacy filter must be applied according to config</requirement>
+      <requirement>System-wide changes must follow epic workflow</requirement>
+    </blocking_requirements>
+    <disallowed_entries>
+      <pattern>No git operations needed</pattern>
+      <pattern>Skip git workflow</pattern>
+      <pattern>Manual system changes only</pattern>
+      <pattern>Direct system modifications</pattern>
+    </disallowed_entries>
+    <error_message>❌ Mega AgentTasks MUST follow epic git workflow - 'No git operations needed' is FORBIDDEN</error_message>
+  </validation_enforcement>
 
 # MANDATORY: Review Process
 review_process:
@@ -192,25 +202,28 @@ review_process:
   reviewer: "[SYSTEM_ARCHITECT]"
   focus: "System-wide impact and architectural integrity"
   stakeholders: "[KEY_STAKEHOLDERS]"
-  validation_enforcement:
-    mandatory_board_review: true
-    blocking_requirements:
-      - "REQUIRED: Architectural board review must be completed before merge"
-      - "REQUIRED: System-wide impact assessment must be documented"
-      - "REQUIRED: Key stakeholders must approve system changes"
-      - "REQUIRED: Architectural integrity must be validated"
-      - "REQUIRED: System architect approval is mandatory"
-    disallowed_entries:
-      - "No review needed"
-      - "Review not required"
-      - "Skip architectural board review"
-      - "Internal review only"
-    error_message: "❌ Mega AgentTasks MUST have architectural board review - 'No review needed' is FORBIDDEN"
-    stakeholder_requirements:
-      - "System architect approval required"
-      - "Technical lead approval required"
-      - "Security review if applicable"
-      - "Performance impact assessment"
+  <validation_enforcement id="MEGA-REVIEW-VALIDATION" mandatory="true">
+    <blocking_requirements>
+      <requirement>Architectural board review must be completed before merge</requirement>
+      <requirement>System-wide impact assessment must be documented</requirement>
+      <requirement>Key stakeholders must approve system changes</requirement>
+      <requirement>Architectural integrity must be validated</requirement>
+      <requirement>System architect approval is mandatory</requirement>
+    </blocking_requirements>
+    <disallowed_entries>
+      <pattern>No review needed</pattern>
+      <pattern>Review not required</pattern>
+      <pattern>Skip architectural board review</pattern>
+      <pattern>Internal review only</pattern>
+    </disallowed_entries>
+    <error_message>❌ Mega AgentTasks MUST have architectural board review - 'No review needed' is FORBIDDEN</error_message>
+    <stakeholder_requirements>
+      <requirement>System architect approval required</requirement>
+      <requirement>Technical lead approval required</requirement>
+      <requirement>Security review if applicable</requirement>
+      <requirement>Performance impact assessment</requirement>
+    </stakeholder_requirements>
+  </validation_enforcement>
 
 # MANDATORY: Documentation Updates
 documentation_updates:
@@ -218,25 +231,28 @@ documentation_updates:
   architecture_docs: "Complete architecture documentation update"
   user_docs: "Comprehensive user documentation overhaul"
   migration_guide: "Provide migration path for users"
-  validation_enforcement:
-    mandatory_comprehensive_docs: true
-    blocking_requirements:
-      - "REQUIRED: CHANGELOG must document all major system changes"
-      - "REQUIRED: Architecture docs must be completely updated"
-      - "REQUIRED: User documentation must be comprehensively overhauled"
-      - "REQUIRED: Migration guide must be provided for users"
-      - "REQUIRED: System-wide documentation must be synchronized"
-    disallowed_entries:
-      - "No documentation needed"
-      - "Documentation not required"
-      - "Skip documentation updates"
-      - "Minimal documentation only"
-    error_message: "❌ Mega AgentTasks MUST have comprehensive documentation - 'No documentation needed' is FORBIDDEN"
-    documentation_scope:
-      - "System architecture overhaul documentation"
-      - "User impact and migration documentation"
-      - "Developer onboarding updates"
-      - "API and integration documentation updates"
+  <validation_enforcement id="MEGA-DOCS-VALIDATION" mandatory="true">
+    <blocking_requirements>
+      <requirement>CHANGELOG must document all major system changes</requirement>
+      <requirement>Architecture docs must be completely updated</requirement>
+      <requirement>User documentation must be comprehensively overhauled</requirement>
+      <requirement>Migration guide must be provided for users</requirement>
+      <requirement>System-wide documentation must be synchronized</requirement>
+    </blocking_requirements>
+    <disallowed_entries>
+      <pattern>No documentation needed</pattern>
+      <pattern>Documentation not required</pattern>
+      <pattern>Skip documentation updates</pattern>
+      <pattern>Minimal documentation only</pattern>
+    </disallowed_entries>
+    <error_message>❌ Mega AgentTasks MUST have comprehensive documentation - 'No documentation needed' is FORBIDDEN</error_message>
+    <documentation_scope>
+      <item>System architecture overhaul documentation</item>
+      <item>User impact and migration documentation</item>
+      <item>Developer onboarding updates</item>
+      <item>API and integration documentation updates</item>
+    </documentation_scope>
+  </validation_enforcement>
 
 # MANDATORY: Workflow Configuration
 workflow:
