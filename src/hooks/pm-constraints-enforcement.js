@@ -676,24 +676,48 @@ Use Task tool to create specialist agent via AgentTask.`
       // Function to extract file creation patterns from Bash commands
       function extractFileCreationFromBash(command) {
         // Pattern 1: cat > file << 'EOF' or cat > file << EOF
-        const heredocPattern = /cat\s*>\s*([^\s<]+)\s*<</;
-        const heredocMatch = command.match(heredocPattern);
-        if (heredocMatch) {
-          return heredocMatch[1].trim();
+        // Try quoted path first: cat > "path with spaces" << or cat > 'path' <<
+        const quotedHeredocPattern = /cat\s*>\s*["']([^"']+)["']\s*<</;
+        let match = command.match(quotedHeredocPattern);
+        if (match) {
+          return match[1].trim();
+        }
+
+        // Try unquoted path: cat > path <<
+        const unquotedHeredocPattern = /cat\s*>\s*([^\s<]+)\s*<</;
+        match = command.match(unquotedHeredocPattern);
+        if (match) {
+          return match[1].trim();
         }
 
         // Pattern 2: echo "..." > file or echo '...' > file
-        const echoPattern = /echo\s+["'][^"']*["']\s*>\s*([^\s;&|]+)/;
-        const echoMatch = command.match(echoPattern);
-        if (echoMatch) {
-          return echoMatch[1].trim();
+        // Try quoted file path first: echo "text" > "file" or echo "text" > 'file'
+        const quotedEchoPattern = /echo\s+["'][^"']*["']\s*>\s*["']([^"']+)["']/;
+        match = command.match(quotedEchoPattern);
+        if (match) {
+          return match[1].trim();
+        }
+
+        // Try unquoted file path: echo "text" > file
+        const unquotedEchoPattern = /echo\s+["'][^"']*["']\s*>\s*([^\s;&|]+)/;
+        match = command.match(unquotedEchoPattern);
+        if (match) {
+          return match[1].trim();
         }
 
         // Pattern 3: tee file
-        const teePattern = /tee\s+([^\s;&|]+)/;
-        const teeMatch = command.match(teePattern);
-        if (teeMatch) {
-          return teeMatch[1].trim();
+        // Try quoted path first: tee "file" or tee 'file'
+        const quotedTeePattern = /tee\s+["']([^"']+)["']/;
+        match = command.match(quotedTeePattern);
+        if (match) {
+          return match[1].trim();
+        }
+
+        // Try unquoted path: tee file
+        const unquotedTeePattern = /tee\s+([^\s;&|]+)/;
+        match = command.match(unquotedTeePattern);
+        if (match) {
+          return match[1].trim();
         }
 
         return null;
