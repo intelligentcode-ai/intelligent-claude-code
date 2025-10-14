@@ -491,6 +491,28 @@ To allow markdown everywhere, set: enforcement.allow_markdown_outside_allowlist 
   function validatePMOperation(filePath, tool, paths, projectRoot) {
     const { allowlist, blocklist } = paths;
 
+    // CRITICAL: Check if file is outside project boundaries
+    if (path.isAbsolute(filePath)) {
+      const relativePath = path.relative(projectRoot, filePath);
+
+      // If relative path starts with '..' then file is OUTSIDE project root
+      if (relativePath.startsWith('..')) {
+        return {
+          allowed: false,
+          message: `🚫 PROJECT BOUNDARY VIOLATION - File is outside current project
+
+Blocked File: ${filePath}
+Project Root: ${projectRoot}
+Relative Path: ${relativePath}
+
+Main scope operations are restricted to the current project directory only.
+Files in other projects cannot be modified from this project scope.
+
+This is a fundamental architectural boundary to prevent cross-project contamination.`
+        };
+      }
+    }
+
     // Check blocklist first (explicit denial)
     if (isPathInBlocklist(filePath, blocklist, projectRoot)) {
       const blockedDir = blocklist.find(p => filePath.startsWith(p + '/'));
@@ -547,8 +569,21 @@ Use Task tool to create specialist agent via AgentTask.`
       process.exit(0);
     }
 
-    const hookInput = JSON.parse(inputData);
-    log(`PreToolUse triggered: ${JSON.stringify(hookInput)}`);
+    let hookInput;
+    try {
+      hookInput = JSON.parse(inputData);
+      log(`PreToolUse triggered: ${JSON.stringify(hookInput)}`);
+    } catch (parseError) {
+      log(`JSON PARSE ERROR: ${parseError.message}`);
+      log(`Raw input data (first 500 chars): ${inputData.substring(0, 500)}`);
+      log(`Raw input length: ${inputData.length}`);
+      // BLOCK operation on parse error - malformed input is suspicious
+      console.log(JSON.stringify({
+        continue: false,
+        message: `🚫 Hook Input Parse Error\n\nJSON parsing failed: ${parseError.message}\n\nThis may indicate malformed hook data from Claude Code.\nOperation blocked for security.`
+      }));
+      process.exit(0);
+    }
 
     // Check for bypass permissions mode - log but still enforce PM constraints
     const permissionMode = hookInput.permission_mode || '';
