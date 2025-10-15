@@ -433,9 +433,20 @@ Please create summary files in the summaries/ directory to keep project root cle
       'summaries'
     ];
 
+    const fileName = path.basename(relativePath);
+    const isAllCapitals = fileName === fileName.toUpperCase();
+
+    // Check if this is README.md (case-insensitive) - allowed in any directory
+    const isReadme = fileName.toUpperCase() === 'README.MD';
+
     // Check if markdown is in root (root .md files are allowed)
     const dirName = path.dirname(relativePath);
     if (dirName === '.' || dirName === '') {
+      return { allowed: true };
+    }
+
+    // README.md (case-insensitive) allowed anywhere
+    if (isReadme) {
       return { allowed: true };
     }
 
@@ -544,9 +555,81 @@ Use Task tool to create specialist agent via AgentTask.`
     const filePath = toolInput.file_path || '';
     const command = toolInput.command || '';
 
-    // Get project root from hookInput.cwd (agent's working directory) or fallback to process.cwd()
-    const projectRoot = hookInput.cwd || process.cwd();
-    log(`Project root: ${projectRoot}`);
+    // Find actual project root by scanning upward from working directory
+    function findProjectRoot(startPath) {
+      // Project markers in priority order
+      const markers = [
+        '.git',           // Git repository (highest priority)
+        'CLAUDE.md',      // ICC project marker
+        'package.json',   // Node.js project
+        'pyproject.toml', // Python project (modern)
+        'setup.py',       // Python project (legacy)
+        'Cargo.toml',     // Rust project
+        'pom.xml',        // Maven (Java)
+        'build.gradle',   // Gradle (Java/Kotlin)
+        'go.mod',         // Go project
+        'Gemfile',        // Ruby project
+        'composer.json'   // PHP project
+      ];
+
+      let currentPath = path.resolve(startPath);
+      const root = path.parse(currentPath).root;
+
+      // Scan upward from startPath to filesystem root
+      while (currentPath !== root) {
+        // Check each marker
+        for (const marker of markers) {
+          const markerPath = path.join(currentPath, marker);
+          try {
+            if (fs.existsSync(markerPath)) {
+              // Found project marker - this is the root
+              return currentPath;
+            }
+          } catch (error) {
+            // Ignore permission errors, continue search
+          }
+        }
+
+        // Move up one directory
+        const parentPath = path.dirname(currentPath);
+        if (parentPath === currentPath) {
+          break; // Reached filesystem root
+        }
+        currentPath = parentPath;
+      }
+
+      // No project markers found - check if startPath is a common subdirectory
+      const startDirName = path.basename(startPath);
+      const commonSubdirs = ['docs', 'src', 'lib', 'tests', 'test', 'dist', 'build', 'bin'];
+
+      if (commonSubdirs.includes(startDirName)) {
+        // We're in a common subdirectory - parent is likely project root
+        const parentPath = path.dirname(path.resolve(startPath));
+        return parentPath;
+      }
+
+      // Absolute fallback - use startPath (working directory)
+      return startPath;
+    }
+
+    // Get working directory and detect actual project root
+    const cwdPath = hookInput.cwd || process.cwd();
+
+    // Use CLAUDE_PROJECT_DIR if available (authoritative from Claude Code)
+    // Fall back to marker scanning if environment variable not set
+    let projectRoot;
+    let rootSource;
+
+    if (process.env.CLAUDE_PROJECT_DIR) {
+      projectRoot = process.env.CLAUDE_PROJECT_DIR;
+      rootSource = 'CLAUDE_PROJECT_DIR (env)';
+    } else {
+      projectRoot = findProjectRoot(cwdPath);
+      rootSource = 'marker scanning';
+    }
+
+    log(`Working directory: ${cwdPath}`);
+    log(`Project root: ${projectRoot} (source: ${rootSource})`);
 
     if (!tool) {
       log('No tool specified - allowing operation');
