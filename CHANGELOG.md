@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.29] - 2025-10-15
+
+### Fixed
+- **Critical Git Merge Conflict in PM Constraints Hook**
+  - Resolved unresolved merge conflict at lines 715-748 in `src/hooks/pm-constraints-enforcement.js`
+  - Merge conflict made entire hook file syntactically invalid, disabling all PM constraint enforcement
+  - Security impact: Main scope could edit ANY file without restriction during conflict
+  - Conflict contained duplicate/obsolete code referencing deleted `validateMarkdownOutsideAllowlist()` function
+  - Correct implementation already existed at lines 685-713 using unified `validateMarkdownFile()` function
+  - Resolution: Removed entire conflict section (35 lines) including all merge markers
+  - Hook now parses correctly and PM constraints are fully active again
+  - Validated with `node -c` syntax check - no errors
+  - Impact: PM constraints immediately resumed blocking unauthorized file operations
+
+---
+
 ## [8.18.26] - 2025-10-15
 
 ### Fixed
