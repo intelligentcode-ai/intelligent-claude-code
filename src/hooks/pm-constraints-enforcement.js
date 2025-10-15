@@ -587,9 +587,58 @@ Use Task tool to create specialist agent via AgentTask.`
     const filePath = toolInput.file_path || '';
     const command = toolInput.command || '';
 
-    // Get project root from hookInput.cwd (agent's working directory) or fallback to process.cwd()
-    const projectRoot = hookInput.cwd || process.cwd();
-    log(`Project root: ${projectRoot}`);
+    // Find actual project root by scanning upward from working directory
+    function findProjectRoot(startPath) {
+      // Project markers in priority order
+      const markers = [
+        '.git',           // Git repository (highest priority)
+        'CLAUDE.md',      // ICC project marker
+        'package.json',   // Node.js project
+        'pyproject.toml', // Python project (modern)
+        'setup.py',       // Python project (legacy)
+        'Cargo.toml',     // Rust project
+        'pom.xml',        // Maven (Java)
+        'build.gradle',   // Gradle (Java/Kotlin)
+        'go.mod',         // Go project
+        'Gemfile',        // Ruby project
+        'composer.json'   // PHP project
+      ];
+
+      let currentPath = path.resolve(startPath);
+      const root = path.parse(currentPath).root;
+
+      // Scan upward from startPath to filesystem root
+      while (currentPath !== root) {
+        // Check each marker
+        for (const marker of markers) {
+          const markerPath = path.join(currentPath, marker);
+          try {
+            if (fs.existsSync(markerPath)) {
+              // Found project marker - this is the root
+              return currentPath;
+            }
+          } catch (error) {
+            // Ignore permission errors, continue search
+          }
+        }
+
+        // Move up one directory
+        const parentPath = path.dirname(currentPath);
+        if (parentPath === currentPath) {
+          break; // Reached filesystem root
+        }
+        currentPath = parentPath;
+      }
+
+      // No project markers found - use startPath as fallback
+      return startPath;
+    }
+
+    // Get working directory and detect actual project root
+    const cwdPath = hookInput.cwd || process.cwd();
+    const projectRoot = findProjectRoot(cwdPath);
+    log(`Working directory: ${cwdPath}`);
+    log(`Detected project root: ${projectRoot}`);
 
     if (!tool) {
       log('No tool specified - allowing operation');

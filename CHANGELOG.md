@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.25] - 2025-10-15
+
+### Fixed
+- **Critical Project Root Detection Bug in PM Constraints Hook**
+  - Hook was incorrectly using `hookInput.cwd` (current working directory) as project root
+  - When working in subdirectories (e.g., `project/docs/`), hook thought subdirectory WAS the project root
+  - This caused legitimate root files like `README.md` to be incorrectly blocked as "outside project"
+  - Lines 590-641: Added `findProjectRoot()` function with intelligent upward scanning
+  - Project markers scanned in priority order: `.git`, `CLAUDE.md`, `package.json`, `pyproject.toml`, etc.
+  - Function scans from working directory upward to filesystem root to find actual project marker
+  - Added comprehensive logging: both working directory and detected project root are now logged
+  - Impact: README.md and other root .md files now editable from any subdirectory
+  - Benefits: Correct path validation, improved usability, accurate project scope detection
+
+### Technical Details
+- `findProjectRoot(startPath)` scans upward from current directory to find project markers
+- Supports 11 project types: Git, ICC, Node.js, Python, Rust, Java, Go, Ruby, PHP, etc.
+- Falls back to `startPath` only if no markers found (preserves current behavior)
+- Performance: Filesystem scan cached by function scope (only runs once per hook execution)
+- Security: Permission errors ignored during scan to handle restricted directories gracefully
+
+---
+
 ## [8.18.23] - 2025-10-14
 
 ### Fixed
