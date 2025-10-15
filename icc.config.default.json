@@ -118,7 +118,7 @@
 
   "enforcement": {
     "blocking_enabled": true,
-    "block_all_capitals_filenames": false,
+    "block_all_capitals_filenames": true,
     "allow_markdown_outside_allowlist": false,
     "allow_markdown_outside_allowlist_agents": null,
     "violation_logging": true,

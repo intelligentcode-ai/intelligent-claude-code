@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.26] - 2025-10-15
+
+### Fixed
+- **System Default for ALL-CAPITALS Filename Blocking**
+  - Changed `enforcement.block_all_capitals_filenames` from `false` to `true` in `icc.config.default.json`
+  - Line 121: Now enforces lowercase markdown filenames by default for all new ICC installations
+  - Impact: All new projects will automatically block ALL-CAPITALS markdown filenames (except allowlist)
+  - Allowlist preserved: README.md, LICENSE.md, CLAUDE.md, CHANGELOG.md, CONTRIBUTING.md, etc.
+  - Project-level override available via project `icc.config.json` if needed
+
+---
+
 ## [8.18.25] - 2025-10-15
 
 ### Fixed
