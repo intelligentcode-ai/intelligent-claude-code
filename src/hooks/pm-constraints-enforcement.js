@@ -468,9 +468,13 @@ If working on external project, the file must go to THAT project's summaries/ di
       relativePath.startsWith(dir + '/') || relativePath.startsWith(dir + '\\')
     );
 
+    // Check if this is README.md (case-insensitive) - allowed in any directory
+    const isReadme = fileName.toUpperCase() === 'README.MD';
+
     const isRootMdFile = !relativePath.includes('/') && !relativePath.includes('\\');
 
-    if (!isInAllowedDir && !isRootMdFile) {
+    // Allow if: in allowed directory, root .md file, or README.md anywhere
+    if (!isInAllowedDir && !isRootMdFile && !isReadme) {
       const capitalsWarning = isAllCapitals ? '\n\n⚠️ Additionally: Filename is ALL-CAPITALS - use lowercase for consistency' : '';
 
       return {
@@ -630,15 +634,38 @@ Use Task tool to create specialist agent via AgentTask.`
         currentPath = parentPath;
       }
 
-      // No project markers found - use startPath as fallback
+      // No project markers found - check if startPath is a common subdirectory
+      const startDirName = path.basename(startPath);
+      const commonSubdirs = ['docs', 'src', 'lib', 'tests', 'test', 'dist', 'build', 'bin'];
+
+      if (commonSubdirs.includes(startDirName)) {
+        // We're in a common subdirectory - parent is likely project root
+        const parentPath = path.dirname(path.resolve(startPath));
+        return parentPath;
+      }
+
+      // Absolute fallback - use startPath (working directory)
       return startPath;
     }
 
     // Get working directory and detect actual project root
     const cwdPath = hookInput.cwd || process.cwd();
-    const projectRoot = findProjectRoot(cwdPath);
+
+    // Use CLAUDE_PROJECT_DIR if available (authoritative from Claude Code)
+    // Fall back to marker scanning if environment variable not set
+    let projectRoot;
+    let rootSource;
+
+    if (process.env.CLAUDE_PROJECT_DIR) {
+      projectRoot = process.env.CLAUDE_PROJECT_DIR;
+      rootSource = 'CLAUDE_PROJECT_DIR (env)';
+    } else {
+      projectRoot = findProjectRoot(cwdPath);
+      rootSource = 'marker scanning';
+    }
+
     log(`Working directory: ${cwdPath}`);
-    log(`Detected project root: ${projectRoot}`);
+    log(`Project root: ${projectRoot} (source: ${rootSource})`);
 
     if (!tool) {
       log('No tool specified - allowing operation');
