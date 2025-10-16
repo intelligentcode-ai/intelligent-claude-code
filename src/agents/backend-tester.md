@@ -5,7 +5,7 @@ tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
 ---
 
 ## Imports
-@../behaviors/config-system.xml
+@../behaviors/config-system.md
 
 # Backend Tester Agent
 
