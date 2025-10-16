@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.38] - 2025-10-16
+
+### Fixed
+- **Critical Bug: Symlink Path Resolution in Markdown Validation**
+  - Fixed path resolution failure when project accessed via symlink
+  - Previously failed when file path (`/Users/user/Work/`) and project root (`/Users/user/Nextcloud/Work/`) had different prefixes
+  - `path.relative()` returned incorrect upward-traversing path (e.g., `../../../Work/...`) that didn't match allowlist
+  - Added `fs.realpathSync()` to resolve both file path and project root to real absolute paths before comparison
+  - Handles symlinks by following them to actual filesystem locations
+  - Includes error handling with fallback to original calculation if resolution fails
+  - For non-existent files (Write operations), uses original path for file, resolved path for project root
+  - Impact: PM role can now create stories and files in allowlist directories even when project is accessed via symlink
+  - Fixes: "Markdown file outside allowlist blocked" error for files that ARE in allowlist directories
+
+---
+
 ## [8.18.37] - 2025-10-16
 
 ### Fixed

@@ -456,7 +456,15 @@ Please create summary files in the summaries/ directory to keep project root cle
     // Normalize to relative path if absolute
     let relativePath = filePath;
     if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
+      try {
+        // Resolve both paths to handle symlinks properly
+        const realFilePath = fs.existsSync(filePath) ? fs.realpathSync(filePath) : filePath;
+        const realProjectRoot = fs.realpathSync(projectRoot);
+        relativePath = path.relative(realProjectRoot, realFilePath);
+      } catch (error) {
+        // Fallback to original calculation if resolution fails
+        relativePath = path.relative(projectRoot, filePath);
+      }
     }
 
     // Get configured allowlist
