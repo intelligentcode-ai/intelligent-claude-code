@@ -1,258 +1,161 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<behavior id="AGENTTASK-SYSTEM" version="1.0">
-  <metadata>
-    <name>AgentTask System</name>
-    <purpose>In-memory AgentTask creation, execution, integration, and validation</purpose>
-    <enforcement>mandatory</enforcement>
-    <applies_to>All</applies_to>
-  </metadata>
+# AgentTask System
 
-  <!-- All content consolidated into this file - no external imports needed -->
+**MANDATORY:** In-memory AgentTask creation, execution, integration, and validation. Auto-correct violations.
 
-  <!-- AgentTask Creation System -->
-  <creation_system>
-    <core_function>
-      <purpose>Real-time work detection and ephemeral AgentTask creation</purpose>
-      <scope>Main agent only - agents cannot create work items</scope>
-      <requirements>
-        <requirement>Template compliance</requirement>
-        <requirement>Memory-first approach</requirement>
-        <requirement>Complete context</requirement>
-      </requirements>
-      <execution>In-memory AgentTask passed directly to Task tool</execution>
-    </core_function>
+## AgentTask Creation System
 
-    <work_classification>
-      <ephemeral_tasks points="0-5">
-        <description>nano/tiny AgentTasks - in-memory only</description>
-        <patterns>
-          <pattern>Create in-memory AgentTask from template</pattern>
-          <pattern>Pass complete context directly to Task tool</pattern>
-          <pattern>No file creation or storage required</pattern>
-          <pattern>Focus on immediate execution and completion</pattern>
-        </patterns>
-      </ephemeral_tasks>
+### Core Function
+**Purpose**: Real-time work detection and ephemeral AgentTask creation
+**Scope**: Main agent only - agents cannot create work items
+**Requirements**: Template compliance, memory-first approach, complete context
+**Execution**: In-memory AgentTask passed directly to Task tool
 
-      <persistent_work points="6+">
-        <description>Must become STORY/BUG first with file storage</description>
-        <patterns>
-          <pattern>Must become STORY or BUG first</pattern>
-          <pattern>File storage in stories/ or bugs/ directories</pattern>
-          <pattern>Story breakdown into multiple nano/tiny AgentTasks</pattern>
-          <pattern>Each breakdown task follows ephemeral pattern</pattern>
-        </patterns>
-      </persistent_work>
+### Work Classification
 
-      <context_requirement>Complete embedding with resolved placeholders for all sizes</context_requirement>
-    </work_classification>
+<work_classification id="WORK-CLASSIFICATION">
+  <ephemeral_tasks points="0-5">
+    <description>nano/tiny AgentTasks - in-memory only</description>
+    <patterns>
+      <pattern>Create in-memory AgentTask from template</pattern>
+      <pattern>Pass complete context directly to Task tool</pattern>
+      <pattern>No file creation or storage required</pattern>
+      <pattern>Focus on immediate execution and completion</pattern>
+    </patterns>
+  </ephemeral_tasks>
 
-    <in_memory_pattern>
-      <no_file_storage>AgentTasks 0-5 points exist only in memory</no_file_storage>
-      <direct_deployment>Template → Context embedding → Task tool invocation</direct_deployment>
-      <ephemeral_nature>AgentTask content passed as context, not stored as file</ephemeral_nature>
-      <file_operations>Only for Stories (6+ points) requiring breakdown</file_operations>
-    </in_memory_pattern>
+  <persistent_work points="6+">
+    <description>Must become STORY/BUG first with file storage</description>
+    <patterns>
+      <pattern>Must become STORY or BUG first</pattern>
+      <pattern>File storage in stories/ or bugs/ directories</pattern>
+      <pattern>Story breakdown into multiple nano/tiny AgentTasks</pattern>
+      <pattern>Each breakdown task follows ephemeral pattern</pattern>
+    </patterns>
+  </persistent_work>
 
-    <creation_flow>
-      <process>Work detection → Memory search → Template selection → Context embedding → Direct Task tool deployment</process>
-      <quality_gates>
-        <gate>Template compliance</gate>
-        <gate>Complete context</gate>
-        <gate>Resolved placeholders</gate>
-      </quality_gates>
-      <execution>In-memory AgentTask deployed via Task tool to appropriate agent</execution>
-      <storage>Only successful patterns and learnings captured in memory, not AgentTask files</storage>
-    </creation_flow>
-  </creation_system>
+  <context_requirement>Complete embedding with resolved placeholders for all sizes</context_requirement>
+</work_classification>
 
-  <!-- AgentTask Execution -->
-  <execution_system>
-    <core_process>
-      <pattern>Direct execution via Task tool with complete embedded context</pattern>
-      <operation>In-memory operation, no file tracking</operation>
-      <validation>Built-in validation, testing, documentation updates</validation>
-      <summary>Comprehensive summary with automatic memory storage</summary>
-    </core_process>
+### In-Memory Pattern
+**No File Storage**: AgentTasks 0-5 points exist only in memory
+**Direct Deployment**: Template → Context embedding → Task tool invocation
+**Ephemeral Nature**: AgentTask content passed as context, not stored as file
+**File Operations**: Only for Stories (6+ points) requiring breakdown
 
-    <task_tool_invocation>
-      <step number="1">Generate AgentTask with embedded context in memory</step>
-      <step number="2">Identify appropriate specialist agent for work type</step>
-      <step number="3">Deploy AgentTask context to agent via Task tool</step>
-      <step number="4">Agent executes with self-contained context</step>
-      <step number="5">Agent provides comprehensive execution summary</step>
-      <step number="6">Successful patterns automatically stored in memory/</step>
-    </task_tool_invocation>
+### Creation Flow
+**Process**: Work detection → Memory search → Template selection → Context embedding → Direct Task tool deployment
+**Quality Gates**: Template compliance, complete context, resolved placeholders
+**Execution**: In-memory AgentTask deployed via Task tool to appropriate agent
+**Storage**: Only successful patterns and learnings captured in memory, not AgentTask files
 
-    <context_requirements>
-      <requirement>Complete project context from CLAUDE.md</requirement>
-      <requirement>Configuration values (no runtime lookups)</requirement>
-      <requirement>Memory search results</requirement>
-      <requirement>Best practices</requirement>
-      <requirement>All required file paths and content samples</requirement>
-    </context_requirements>
+## AgentTask Execution
 
-    <execution_isolation>
-      <principle>Self-contained context</principle>
-      <principle>No external dependencies</principle>
-      <principle>All configuration pre-embedded</principle>
-      <principle>Memory patterns included</principle>
-      <principle>Project boundaries defined</principle>
-      <principle>Quality standards embedded</principle>
-    </execution_isolation>
+### Core Process
+**Pattern**: Direct execution via Task tool with complete embedded context
+**Operation**: In-memory operation, no file tracking
+**Validation**: Built-in validation, testing, documentation updates
+**Summary**: Comprehensive summary with automatic memory storage
 
-    <quality_standards>
-      <pre_execution>
-        <check>Context completeness verified</check>
-        <check>Placeholders resolved</check>
-        <check>Configuration embedded</check>
-        <check>Agent assignment appropriate</check>
-      </pre_execution>
+### Task Tool Invocation
+1. Generate AgentTask with embedded context in memory
+2. Identify appropriate specialist agent for work type
+3. Deploy AgentTask context to agent via Task tool
+4. Agent executes with self-contained context
+5. Agent provides comprehensive execution summary
+6. Successful patterns automatically stored in memory/
 
-      <during_execution>
-        <check>Agent stays within scope</check>
-        <check>Quality maintained</check>
-        <check>Progress tracked</check>
-      </during_execution>
+### Context Requirements
 
-      <post_execution>
-        <check>Requirements validated</check>
-        <check>Learning captured</check>
-        <check>Memory stored</check>
-        <check>Summary provided</check>
-      </post_execution>
-    </quality_standards>
-  </execution_system>
+<context_requirements id="CONTEXT-REQUIREMENTS" mandatory="true">
+  <requirement>Complete project context from CLAUDE.md</requirement>
+  <requirement>Configuration values (no runtime lookups)</requirement>
+  <requirement>Memory search results</requirement>
+  <requirement>Best practices</requirement>
+  <requirement>All required file paths and content samples</requirement>
+</context_requirements>
 
-  <!-- AgentTask System Integration -->
-  <system_integration>
-    <core_lifecycle>
-      <creation_and_breakdown>
-        <pattern>Auto-breakdown >15 points</pattern>
-        <pattern>Template selection by complexity</pattern>
-        <pattern>Zero placeholders</pattern>
-        <pattern>Complete context</pattern>
-        <pattern>Embedded config</pattern>
-      </creation_and_breakdown>
+### Execution Isolation
+Self-contained context, no external dependencies, all configuration pre-embedded, memory patterns included, project boundaries defined, quality standards embedded
 
-      <execution>
-        <pattern>All AgentTasks execute via agents</pattern>
-        <pattern>Mandatory completion checklist</pattern>
-        <pattern>Self-contained context</pattern>
-      </execution>
+### Quality Standards
+**Pre-Execution**: Context completeness verified, placeholders resolved, configuration embedded, agent assignment appropriate
+**Execution**: Agent stays within scope, quality maintained, progress tracked
+**Post-Execution**: Requirements validated, learning captured, memory stored, summary provided
 
-      <adaptation>
-        <pattern>Real-time context modification</pattern>
-        <pattern>Seamless agent restart</pattern>
-        <pattern>Scope adjustment with template compliance</pattern>
-      </adaptation>
-    </core_lifecycle>
+## AgentTask System Integration
 
-    <integration_points>
-      <template>
-        <aspect>Load from hierarchy</aspect>
-        <aspect>Complete placeholder resolution</aspect>
-        <aspect>Automatic complexity selection</aspect>
-        <aspect>Quality validation</aspect>
-      </template>
+### Core Lifecycle
+**Creation & Breakdown**: Auto-breakdown >15 points, template selection by complexity, zero placeholders, complete context, embedded config
+**Execution**: All AgentTasks execute via agents, mandatory completion checklist, self-contained context
+**Adaptation**: Real-time context modification, seamless agent restart, scope adjustment with template compliance
 
-      <process>
-        <aspect>@PM + architect story breakdown</aspect>
-        <aspect>Role assignment (two-factor)</aspect>
-        <aspect>Memory search</aspect>
-        <aspect>Best practices</aspect>
-      </process>
+### Integration Points
+**Template**: Load from hierarchy, complete placeholder resolution, automatic complexity selection, quality validation
+**Process**: @PM + architect story breakdown, role assignment (two-factor), memory search, best practices
+**Validation**: Template compliance, context completeness, execution readiness, completion verification
+**Workflow**: Story → AgentTask → Execution → Completion with quality gates at each transition
 
-      <validation>
-        <aspect>Template compliance</aspect>
-        <aspect>Context completeness</aspect>
-        <aspect>Execution readiness</aspect>
-        <aspect>Completion verification</aspect>
-      </validation>
+### Error Handling
+Wrong template → Recalculate, use correct. Missing context → Gather before proceeding. Size violations → Auto-breakdown. Execution failures → Adaptation patterns.
 
-      <workflow>
-        <flow>Story → AgentTask → Execution → Completion</flow>
-        <quality_gates>Quality gates at each transition</quality_gates>
-      </workflow>
-    </integration_points>
+## Template Resolution & Validation
 
-    <error_handling>
-      <scenario condition="wrong_template">Recalculate, use correct</scenario>
-      <scenario condition="missing_context">Gather before proceeding</scenario>
-      <scenario condition="size_violations">Auto-breakdown</scenario>
-      <scenario condition="execution_failures">Adaptation patterns</scenario>
-    </error_handling>
-  </system_integration>
+### Core Rules
 
-  <!-- Template Resolution & Validation -->
-  <template_resolution>
-    <core_rules>
-      <main_agent_required>
-        <description>Placeholder resolution requires full context</description>
-        <requirements>
-          <requirement>Config hierarchy</requirement>
-          <requirement>Project root</requirement>
-          <requirement>System nature analysis</requirement>
-          <requirement>Critical files</requirement>
-          <requirement>Memory search</requirement>
-        </requirements>
-        <constraint>AGENTS CANNOT resolve placeholders (isolated context)</constraint>
-      </main_agent_required>
+<template_resolution id="TEMPLATE-RESOLUTION" mandatory="true">
+  <main_agent_required>
+    <description>Placeholder resolution requires full context</description>
+    <requirements>
+      <requirement>Config hierarchy</requirement>
+      <requirement>Project root</requirement>
+      <requirement>System nature analysis</requirement>
+      <requirement>Critical files</requirement>
+      <requirement>Memory search</requirement>
+    </requirements>
+    <constraint>AGENTS CANNOT resolve placeholders (isolated context)</constraint>
+  </main_agent_required>
 
-      <common_placeholders>
-        <category name="config">
-          <placeholder>[FROM_CONFIG]</placeholder>
-          <placeholder>[GIT_PRIVACY]</placeholder>
-          <placeholder>[BRANCH_PROTECTION]</placeholder>
-        </category>
+  <common_placeholders>
+    <category name="config">
+      <placeholder>[FROM_CONFIG]</placeholder>
+      <placeholder>[GIT_PRIVACY]</placeholder>
+      <placeholder>[BRANCH_PROTECTION]</placeholder>
+    </category>
 
-        <category name="context">
-          <placeholder>[PROJECT_ROOT]</placeholder>
-          <placeholder>[SYSTEM_NATURE]</placeholder>
-          <placeholder>[CURRENT_DATE]</placeholder>
-        </category>
+    <category name="context">
+      <placeholder>[PROJECT_ROOT]</placeholder>
+      <placeholder>[SYSTEM_NATURE]</placeholder>
+      <placeholder>[CURRENT_DATE]</placeholder>
+    </category>
 
-        <category name="files">
-          <placeholder>[CRITICAL_FILES]</placeholder>
-          <placeholder>[MEMORY_SEARCH:topic]</placeholder>
-          <placeholder>[PROJECT_OVERVIEW]</placeholder>
-        </category>
-      </common_placeholders>
+    <category name="files">
+      <placeholder>[CRITICAL_FILES]</placeholder>
+      <placeholder>[MEMORY_SEARCH:topic]</placeholder>
+      <placeholder>[PROJECT_OVERVIEW]</placeholder>
+    </category>
+  </common_placeholders>
 
-      <template_source>
-        <tier name="nano" points="0-2"/>
-        <tier name="tiny" points="3-5"/>
-        <tier name="medium" points="6-15"/>
-        <tier name="large" points="16-30"/>
-        <tier name="mega" points="30+"/>
-        <note>Use templates from hierarchy</note>
-      </template_source>
+  <template_source>
+    <tier name="nano" points="0-2"/>
+    <tier name="tiny" points="3-5"/>
+    <tier name="medium" points="6-15"/>
+    <tier name="large" points="16-30"/>
+    <tier name="mega" points="30+"/>
+    <note>Use templates from hierarchy</note>
+  </template_source>
+</template_resolution>
 
-      <resolution_standards>
-        <standard>Zero placeholders before agent execution</standard>
-        <standard>Absolute paths</standard>
-        <standard>Actual config values</standard>
-        <standard>Current dates</standard>
-        <standard>Embedded search results</standard>
-        <standard>Story content</standard>
-        <standard>Role assignment</standard>
-        <standard>Project context</standard>
-      </resolution_standards>
+### Resolution Standards
+Before agent execution: Zero placeholders, absolute paths, actual config values, current dates, embedded search results, story content, role assignment, project context
 
-      <validation_process>
-        <step number="1">Scan for [.*] patterns</step>
-        <step number="2">Replace all placeholders with actual values</step>
-        <step number="3">Validate no unresolved patterns remain</step>
-        <step number="4">Block creation if any placeholders remain</step>
-      </validation_process>
+### Validation Process
+1. Scan for [.*] patterns
+2. Replace all placeholders with actual values
+3. Validate no unresolved patterns remain
+4. Block creation if any placeholders remain
 
-      <auto_correction>
-        <correction trigger="manual_creation">Force template</correction>
-        <correction trigger="unresolved_placeholders">Complete resolution</correction>
-        <correction trigger="wrong_complexity">Recalculate</correction>
-        <correction trigger="runtime_config">Embed values</correction>
-        <correction trigger="agent_attempts">Block, redirect to main agent</correction>
-      </auto_correction>
-    </core_rules>
-  </template_resolution>
+### Auto-Correction
+Manual creation → Force template. Unresolved placeholders → Complete resolution. Wrong complexity → Recalculate. Runtime config → Embed values. Agent attempts → Block, redirect to main agent.
 
-</behavior>
+---
+*Unified AgentTask system with in-memory execution and complete context embedding*

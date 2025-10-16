@@ -1,112 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<behavior>
-  <metadata>
-    <id>sequential-thinking</id>
-    <title>Sequential Thinking Behavior</title>
-    <description>Structured analytical thinking for complex problems. Auto-correct violations.</description>
-    <enforcement>MANDATORY</enforcement>
-    <version>1.0.0</version>
-  </metadata>
+# Sequential Thinking Behavior
 
-  <imports>
-    <import>./shared-patterns/behavioral-decision-matrix.md</import>
-    <import>./shared-patterns/context-validation.md</import>
-    <import>./shared-patterns/memory-operations.md</import>
-  </imports>
+**MANDATORY:** Structured analytical thinking for complex problems. Auto-correct violations.
 
-  <purpose>
-    <description>Structured analytical frameworks for problem decomposition, multi-factor analysis, and systematic reasoning</description>
-  </purpose>
+## Imports
+@./shared-patterns/behavioral-decision-matrix.md
+@./shared-patterns/context-validation.md
+@./shared-patterns/memory-operations.md
 
-  <triggers>
-    <apply_liberally>
-      <context>Multi-step reasoning</context>
-      <context>Request analysis</context>
-      <context>Story breakdown (&gt;10 points)</context>
-      <context>Bug investigation</context>
-      <context>AgentTask planning</context>
-      <context>Architecture evaluation</context>
-      <context>Risk assessment</context>
-      <context>Integration analysis</context>
-    </apply_liberally>
-  </triggers>
+## Purpose
+Structured analytical frameworks for problem decomposition, multi-factor analysis, and systematic reasoning.
 
-  <mcp_integration>
-    <tool>mcp__sequential-thinking__sequentialthinking</tool>
-    <project_context mandatory="true">
-      <requirement>Systematic reasoning with project scope</requirement>
-      <requirement>Multi-factor analysis within AI-AGENTIC system context</requirement>
-      <requirement>Risk assessment for behavioral patterns</requirement>
-      <requirement>Solution comparison with project constraints</requirement>
-      <requirement>ALWAYS include system nature, project root, work boundaries</requirement>
-    </project_context>
-  </mcp_integration>
+## Triggers
+Apply liberally for multi-step reasoning, request analysis, story breakdown (>10 points), bug investigation, AgentTask planning, architecture evaluation, risk assessment, integration analysis.
 
-  <framework_patterns>
-    <problem_analysis steps="6">
-      <step order="1">Problem definition</step>
-      <step order="2">Context analysis</step>
-      <step order="3">Factor identification</step>
-      <step order="4">Impact assessment</step>
-      <step order="5">Decision framework</step>
-      <step order="6">Implementation planning</step>
-    </problem_analysis>
+## MCP Integration
+Use `mcp__sequential-thinking__sequentialthinking` with PROJECT CONTEXT:
+- Systematic reasoning with project scope
+- Multi-factor analysis within AI-AGENTIC system context
+- Risk assessment for behavioral patterns
+- Solution comparison with project constraints
+- ALWAYS include system nature, project root, work boundaries
 
-    <story_breakdown threshold="10 points">
-      <step order="1">Requirements analysis</step>
-      <step order="2">Dependency mapping</step>
-      <step order="3">Complexity assessment</step>
-      <step order="4">Logical grouping</step>
-      <step order="5">Sequential ordering</step>
-      <step order="6">AgentTask generation</step>
-    </story_breakdown>
+## Framework Patterns
 
-    <bug_investigation>
-      <step order="1">Symptom documentation</step>
-      <step order="2">Context gathering</step>
-      <step order="3">Root cause analysis</step>
-      <step order="4">Impact assessment</step>
-      <step order="5">Solution evaluation</step>
-      <step order="6">Implementation planning</step>
-    </bug_investigation>
-  </framework_patterns>
+### Problem Analysis (6 steps)
+1. Problem definition → 2. Context analysis → 3. Factor identification → 4. Impact assessment → 5. Decision framework → 6. Implementation planning
 
-  <integration>
-    <system id="agenttask-creation">
-      <component>Context assembly</component>
-      <component>Complexity calculation</component>
-      <component>Template selection</component>
-      <component>Placeholder resolution</component>
-      <component>Validation</component>
-    </system>
-    <system id="memory">
-      <storage>Store successful frameworks</storage>
-      <storage>Decision records</storage>
-      <storage>Improved approaches</storage>
-      <storage>Recurring patterns</storage>
-    </system>
-    <system id="role-system">
-      <usage>PM analysis</usage>
-      <usage>Architect decisions</usage>
-      <usage>Specialist assessment</usage>
-      <usage>Risk evaluation</usage>
-    </system>
-  </integration>
+### Story Breakdown (>10 points)
+1. Requirements analysis → 2. Dependency mapping → 3. Complexity assessment → 4. Logical grouping → 5. Sequential ordering → 6. AgentTask generation
 
-  <activation_rules>
-    <automatic>
-      <trigger>Multi-step reasoning</trigger>
-      <trigger>User request analysis</trigger>
-      <trigger>All AgentTask creation</trigger>
-      <trigger>Complex stories</trigger>
-      <trigger>Bug investigation</trigger>
-      <trigger>Architecture decisions</trigger>
-      <trigger>Risk assessments</trigger>
-    </automatic>
-    <analysis_depth>
-      <simple steps="3">Simple problems</simple>
-      <medium steps="6">Medium complexity</medium>
-      <complex>Full MCP integration</complex>
-    </analysis_depth>
-  </activation_rules>
-</behavior>
+### Bug Investigation
+1. Symptom documentation → 2. Context gathering → 3. Root cause analysis → 4. Impact assessment → 5. Solution evaluation → 6. Implementation planning
+
+## Integration
+- **AgentTask Creation**: Context assembly, complexity calculation, template selection, placeholder resolution, validation
+- **Memory**: Store successful frameworks, decision records, improved approaches, recurring patterns
+- **Role System**: PM analysis, architect decisions, specialist assessment, risk evaluation
+
+## Activation Rules
+Automatic activation for multi-step reasoning, user request analysis, all AgentTask creation, complex stories, bug investigation, architecture decisions, risk assessments.
+
+**Analysis Depth**: Simple (3 steps), Medium (6 steps), Complex (full MCP integration).
+
+---
+*Structured analytical thinking for complex problem decomposition*

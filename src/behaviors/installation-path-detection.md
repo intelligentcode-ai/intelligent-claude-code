@@ -1,173 +1,142 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<behavior>
-  <metadata>
-    <id>installation-path-detection</id>
-    <title>Installation Path Detection</title>
-    <description>Detect and validate intelligent-claude-code installation paths.</description>
-    <enforcement>MANDATORY</enforcement>
-    <version>1.0.0</version>
-  </metadata>
+# Installation Path Detection
 
-  <path_detection_logic>
-    <installation_detection_hierarchy priority="highest-to-lowest">
-      <level priority="1">
-        <name>Development Context</name>
-        <description>If current project IS the intelligent-claude-code repository, use project_root/</description>
-      </level>
-      <level priority="2">
-        <name>Project Scope</name>
-        <path>project_root/.claude/</path>
-        <description>Project-specific installation</description>
-      </level>
-      <level priority="3">
-        <name>Environment Variable</name>
-        <variable>CLAUDE_INSTALL_PATH</variable>
-      </level>
-      <level priority="4">
-        <name>User Global</name>
-        <path>~/.claude/</path>
-        <description>User-wide installation</description>
-      </level>
-    </installation_detection_hierarchy>
-    <selection_priority>First valid path found wins</selection_priority>
-  </path_detection_logic>
+**MANDATORY:** Detect and validate intelligent-claude-code installation paths.
 
-  <detection_process>
-    <path_validation_steps>
-      <step order="1">Check Development Context: If project has src/agenttask-templates/ and src/behaviors/ and VERSION file, use project_root/ (highest priority)</step>
-      <step order="2">Check Project Claude: Verify project_root/.claude/ exists and valid</step>
-      <step order="3">Environment Variable: Check CLAUDE_INSTALL_PATH environment variable</step>
-      <step order="4">User Global: Fall back to ~/.claude/ if others unavailable</step>
-      <step order="5">Validation: Confirm installation completeness at detected path</step>
-      <step order="6">Cache Result: Store detected path for performance</step>
-    </path_validation_steps>
+## Path Detection Logic
 
-    <installation_completeness_check>
-      <development_context>
-        <required>
-          <component>src/agenttask-templates/ directory with template files</component>
-          <component>src/behaviors/ directory with behavioral patterns</component>
-          <component>src/config.md file with system configuration</component>
-          <component>src/agents/ directory with agent definitions</component>
-          <component>src/commands/ directory with command definitions</component>
-        </required>
-      </development_context>
+**INSTALLATION DETECTION HIERARCHY:**
+1. **Development Context**: If current project IS the intelligent-claude-code repository, use project_root/ (highest priority)
+2. **Project Scope**: project_root/.claude/ (project-specific)
+3. **Environment Variable**: Check CLAUDE_INSTALL_PATH
+4. **User Global**: ~/.claude/ (user-wide installation)
 
-      <installation_context>
-        <required>
-          <component>agenttask-templates/ directory with template files</component>
-          <component>behaviors/ directory with behavioral patterns</component>
-          <component>config.md file with system configuration</component>
-          <component>agents/ directory with agent definitions</component>
-          <component>commands/ directory with command definitions</component>
-        </required>
-      </installation_context>
+**SELECTION PRIORITY:** First valid path found wins
 
-      <validation_process>
-        <step order="1">Context Detection: Determine if development or installation context</step>
-        <step order="2">Directory Check: Verify all required directories exist for detected context</step>
-        <step order="3">File Check: Confirm essential files present in correct locations</step>
-        <step order="4">Content Check: Validate file formats and structure</step>
-        <step order="5">Completeness Score: Calculate installation completeness percentage</step>
-      </validation_process>
-    </installation_completeness_check>
-  </detection_process>
+## Detection Process
 
-  <component_path_resolution>
-    <template_path_resolution>
-      <hierarchy>
-        <path priority="1">project_root/agenttask_template_path</path>
-        <path priority="2" context="development">detected_path/src/agenttask-templates/</path>
-        <path priority="3" context="installation">detected_path/agenttask-templates/</path>
-      </hierarchy>
-      <note>Development context has HIGHEST priority to ensure templates are loaded from THIS project when working on intelligent-claude-code itself</note>
-    </template_path_resolution>
+### Path Validation Steps
+1. **Check Development Context**: If project has src/agenttask-templates/ and src/behaviors/ and VERSION file, use project_root/ (highest priority)
+2. **Check Project Claude**: Verify project_root/.claude/ exists and valid
+3. **Environment Variable**: Check CLAUDE_INSTALL_PATH environment variable
+4. **User Global**: Fall back to ~/.claude/ if others unavailable
+5. **Validation**: Confirm installation completeness at detected path
+6. **Cache Result**: Store detected path for performance
 
-    <behavior_path_resolution>
-      <path context="development">detected_path/src/behaviors/</path>
-      <path context="installation">detected_path/behaviors/</path>
-      <description>System behaviors loaded from installation path</description>
-    </behavior_path_resolution>
+### Installation Completeness Check
+**REQUIRED COMPONENTS:**
 
-    <configuration_path_resolution>
-      <hierarchy>
-        <path priority="1">project_root/config.md</path>
-        <path priority="2">project_root/.claude/config.md</path>
-        <path priority="3" context="development">detected_path/src/config.md</path>
-        <path priority="4" context="installation">detected_path/config.md</path>
-      </hierarchy>
-    </configuration_path_resolution>
+**For Development Context (project_root/):**
+- src/agenttask-templates/ directory with template files
+- src/behaviors/ directory with behavioral patterns
+- src/config.md file with system configuration
+- src/agents/ directory with agent definitions
+- src/commands/ directory with command definitions
 
-    <command_path_resolution>
-      <path>detected_path/src/commands/</path>
-      <config_access>detected_path/src/config.md</config_access>
-    </command_path_resolution>
-  </component_path_resolution>
+**For Installation Context (user/.claude/):**
+- agenttask-templates/ directory with template files
+- behaviors/ directory with behavioral patterns
+- config.md file with system configuration
+- agents/ directory with agent definitions
+- commands/ directory with command definitions
 
-  <caching_strategy>
-    <performance_optimization>
-      <cache_implementation>
-        <cache_key>Based on project root + environment variables</cache_key>
-        <cache_duration>15 minutes (moderate stability)</cache_duration>
-        <invalidation>On environment changes or installation updates</invalidation>
-        <storage>In-memory cache with timestamp validation</storage>
-      </cache_implementation>
-      <cache_benefits>
-        <benefit>Reduced filesystem operations</benefit>
-        <benefit>Faster path resolution</benefit>
-        <benefit>Improved system responsiveness</benefit>
-      </cache_benefits>
-    </performance_optimization>
-  </caching_strategy>
+**VALIDATION PROCESS:**
+1. **Context Detection**: Determine if development or installation context
+2. **Directory Check**: Verify all required directories exist for detected context
+3. **File Check**: Confirm essential files present in correct locations
+4. **Content Check**: Validate file formats and structure
+5. **Completeness Score**: Calculate installation completeness percentage
 
-  <error_handling>
-    <missing_installation>
-      <error_message>Installation not detected. Expected locations: project_root/.claude/, $CLAUDE_INSTALL_PATH, ~/.claude/</error_message>
-      <recovery>Provide installation guidance</recovery>
-    </missing_installation>
-    <invalid_path>
-      <error_message>Path resolution failed for component: path</error_message>
-      <recovery>Fall back to next hierarchy level</recovery>
-    </invalid_path>
-    <performance_degradation>
-      <impact>Performance degradation, no functional impact</impact>
-      <recovery>Continue with slower path resolution</recovery>
-    </performance_degradation>
-  </error_handling>
+## Component Path Resolution
 
-  <integration_points>
-    <template_loading>
-      <capability>Provides installation template path for hierarchy</capability>
-      <capability>Template hierarchy includes installation templates</capability>
-    </template_loading>
-    <configuration_system>
-      <capability>Installation config provides system defaults</capability>
-      <capability>Project templates from configured path</capability>
-      <capability>Installation templates from detected installation path</capability>
-    </configuration_system>
-    <behavior_system>
-      <capability>Installation behaviors loaded from detected path</capability>
-    </behavior_system>
-    <command_system>
-      <capability>Command definitions from installation path</capability>
-      <capability>Configuration access for command functionality</capability>
-    </command_system>
-  </integration_points>
+### Template Path Resolution
+**TEMPLATE HIERARCHY:**
+- Project templates: project_root/agenttask_template_path
+- Development context: detected_path/src/agenttask-templates/
+- Installation context: detected_path/agenttask-templates/
 
-  <migration_support>
-    <legacy_path_support>
-      <compatibility>Support existing ~/.claude/ installations</compatibility>
-      <migration>Graceful migration path for new structure</migration>
-      <transition>Continue functioning during transition period</transition>
-    </legacy_path_support>
-  </migration_support>
+**NOTE:** Development context has HIGHEST priority to ensure templates are loaded from THIS project when working on intelligent-claude-code itself.
 
-  <installation_verification>
-    <health_check>
-      <verification>Path detection successful</verification>
-      <verification>Component completeness verified</verification>
-      <verification>Cache performance optimal</verification>
-      <verification>Configuration hierarchy functional</verification>
-    </health_check>
-  </installation_verification>
-</behavior>
+### Behavior Path Resolution
+**BEHAVIOR LOADING:**
+- Development context: detected_path/src/behaviors/
+- Installation context: detected_path/behaviors/
+- System behaviors loaded from installation path
+
+### Configuration Path Resolution
+**CONFIG HIERARCHY:**
+- Project config: project_root/config.md
+- Project .claude config: project_root/.claude/config.md
+- Development context: detected_path/src/config.md
+- Installation config: detected_path/config.md
+
+### Command Path Resolution
+**COMMAND DEFINITIONS:**
+- Command definitions: detected_path/src/commands/
+- Configuration access: detected_path/src/config.md
+
+## Caching Strategy
+
+### Performance Optimization
+**CACHE IMPLEMENTATION:**
+- **Cache Key**: Based on project root + environment variables
+- **Cache Duration**: 15 minutes (moderate stability)
+- **Invalidation**: On environment changes or installation updates
+- **Storage**: In-memory cache with timestamp validation
+
+### Cache Benefits
+**PERFORMANCE GAINS:**
+- Reduced filesystem operations
+- Faster path resolution
+- Improved system responsiveness
+
+## Error Handling
+
+### Missing Installation
+**ERROR MESSAGE**: "Installation not detected. Expected locations: project_root/.claude/, $CLAUDE_INSTALL_PATH, ~/.claude/"
+**RECOVERY**: Provide installation guidance
+
+### Invalid Path
+**ERROR MESSAGE**: "Path resolution failed for component: path"
+**RECOVERY**: Fall back to next hierarchy level
+
+### Performance Degradation
+**IMPACT**: Performance degradation, no functional impact
+**RECOVERY**: Continue with slower path resolution
+
+## Integration Points
+
+### With Template Loading
+- Provides installation template path for hierarchy
+- Template hierarchy includes installation templates
+
+### With Configuration System
+- Installation config provides system defaults
+- Project templates from configured path
+- Installation templates from detected installation path
+
+### With Behavior System
+- Installation behaviors loaded from detected path
+
+### With Command System
+- Command definitions from installation path
+- Configuration access for command functionality
+
+## Migration Support
+
+### Legacy Path Support
+**BACKWARDS COMPATIBILITY:**
+- Support existing ~/.claude/ installations
+- Graceful migration path for new structure
+- Continue functioning during transition period
+
+## Installation Verification
+
+### Health Check
+**VERIFICATION PROCESS:**
+- Path detection successful
+- Component completeness verified
+- Cache performance optimal
+- Configuration hierarchy functional
+
+---
+*Installation path detection for intelligent-claude-code system*

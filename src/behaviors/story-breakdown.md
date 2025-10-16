@@ -1,89 +1,48 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<behavior>
-  <metadata>
-    <id>story-breakdown</id>
-    <title>Story Breakdown Behavior</title>
-    <description>@PM breaks down stories with architect collaboration. Auto-correct violations.</description>
-    <enforcement>MANDATORY</enforcement>
-    <version>1.0.0</version>
-  </metadata>
+# Story Breakdown Behavior
 
-  <imports>
-    <import>./shared-patterns/template-loading.md</import>
-    <import>./shared-patterns/context-validation.md</import>
-    <import>./shared-patterns/behavioral-decision-matrix.md</import>
-    <import>./shared-patterns/autonomy-patterns.md</import>
-    <import>./shared-patterns/l3-autonomous-behavior.md</import>
-  </imports>
+**MANDATORY:** @PM breaks down stories with architect collaboration. Auto-correct violations.
 
-  <pm_role_rules>
-    <constraint>PM role = coordination only (stories/, bugs/, memory/, docs/, root *.md files)</constraint>
-    <pattern>Technical work → Create AgentTask → Delegate to specialist</pattern>
-    <pattern>Issue found → Document → AgentTask → Assign specialist</pattern>
-  </pm_role_rules>
+## Imports
+@./shared-patterns/template-loading.md
+@./shared-patterns/context-validation.md
+@./shared-patterns/behavioral-decision-matrix.md
+@./shared-patterns/autonomy-patterns.md
+@./shared-patterns/l3-autonomous-behavior.md
 
-  <breakdown_flow>
-    <autonomy_aware_execution>
-      <l3_mode>Auto-select story → Auto-collaborate → Auto-create → Auto-execute</l3_mode>
-      <l2_mode>Architect approval → Create → Execute with oversight</l2_mode>
-      <l1_mode>Request approval at each step</l1_mode>
-    </autonomy_aware_execution>
+## PM Role Rules
+PM role = coordination only (stories/, bugs/, memory/, docs/, root *.md files).
+Technical work → Create AgentTask → Delegate to specialist.
+Issue found → Document → AgentTask → Assign specialist.
 
-    <standard_breakdown_process>
-      <step order="1">@PM reads story → Analyzes scope (AI-AGENTIC/CODE/HYBRID) + work type</step>
-      <step order="2">Selects specialist architect → Two-factor analysis (scope + work type)</step>
-      <step order="3">@PM + Architect collaborate → Role assignment with rationale</step>
-      <step order="4">Creates AgentTasks → ≤5 points direct, ≥6 points story first</step>
-      <step order="5">Story selection → L3: auto-select priority | L2: suggest with architect | L1: ask user</step>
-    </standard_breakdown_process>
-  </breakdown_flow>
+## Breakdown Flow
 
-  <two_factor_analysis>
-    <scope>
-      <type id="ai-agentic">Behavioral patterns</type>
-      <type id="code">Implementation</type>
-      <type id="hybrid">Both behavioral and implementation</type>
-    </scope>
-    <work_type>
-      <type>infra</type>
-      <type>security</type>
-      <type>database</type>
-      <type>implementation</type>
-      <type>AI</type>
-      <type>architecture</type>
-    </work_type>
-    <specialists>Always create domain architects (@React-Architect, @Database-Architect)</specialists>
-  </two_factor_analysis>
+### Autonomy-Aware Execution
+**L3 Mode**: Auto-select story → Auto-collaborate → Auto-create → Auto-execute
+**L2 Mode**: Architect approval → Create → Execute with oversight
+**L1 Mode**: Request approval at each step
 
-  <work_complexity>
-    <tier points="0-5">
-      <name>Direct AgentTask</name>
-      <template>nano/tiny template</template>
-      <execution>Task tool execution</execution>
-    </tier>
-    <tier points="6+">
-      <name>Story file</name>
-      <breakdown>Breakdown into nano/tiny AgentTasks ≤5 points</breakdown>
-      <storage>In-memory AgentTasks for breakdown (not files)</storage>
-      <execution>Sequential execution via Task tool with full context</execution>
-    </tier>
-  </work_complexity>
+### Standard Breakdown Process
+1. @PM reads story → Analyzes scope (AI-AGENTIC/CODE/HYBRID) + work type
+2. Selects specialist architect → Two-factor analysis (scope + work type)
+3. @PM + Architect collaborate → Role assignment with rationale
+4. Creates AgentTasks → ≤5 points direct, ≥6 points story first
+5. Story selection → L3: auto-select priority | L2: suggest with architect | L1: ask user
 
-  <tool_access>
-    <pm_access>
-      <allowed>
-        <path>stories/</path>
-        <path>bugs/</path>
-        <path>memory/</path>
-        <path>docs/</path>
-        <path>agenttasks/</path>
-        <path>summaries/</path>
-        <path>root *.md</path>
-        <path>icc.config.json</path>
-        <path>icc.workflow.json</path>
-      </allowed>
-    </pm_access>
-    <enforcement>pm-constraints-enforcement.js hook enforces automatically</enforcement>
-    <violations>Tool blocked → Create AgentTask → Delegate to specialist</violations>
-  </tool_access>
-</behavior>
+## Two-Factor Analysis
+**Scope**: AI-AGENTIC (behavioral), CODE (implementation), HYBRID (both)
+**Work Type**: infra/security/database/implementation/AI/architecture
+**Specialists**: Always create domain architects (@React-Architect, @Database-Architect)
+
+## Work Complexity
+- **≤5 points**: Direct AgentTask (nano/tiny template) → Task tool execution
+- **6+ points**: Story file → Breakdown into nano/tiny AgentTasks ≤5 points
+- In-memory AgentTasks for breakdown (not files)
+- Sequential execution via Task tool with full context
+
+## Tool Access
+**PM Access**: Coordination files only (stories/, bugs/, memory/, docs/, agenttasks/, summaries/, root *.md, icc.config.json, icc.workflow.json)
+**Enforcement**: `pm-constraints-enforcement.js` hook enforces automatically
+**Violations**: Tool blocked → Create AgentTask → Delegate to specialist
+
+---
+*Story breakdown with enforcement and nano/tiny AgentTask restrictions*
