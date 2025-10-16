@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.29] - 2025-10-16
+
+### Fixed
+- **Bash Heredoc ALL-CAPITALS Filename Bypass**
+  - Added `extractFilePathsFromBashRedirect()` helper function to extract file paths from Bash redirect operators
+  - Added redirect validation in `validateBashCommand()` after kubectl validation (line 243)
+  - PM role can no longer create ALL-CAPITALS markdown files via heredoc/redirect commands
+  - Pattern detection: `cat > file`, `echo > file`, `command > file`, `command >> file`
+  - Provides suggested lowercase filename in error message
+  - Example blocked: `cat > STORY-003-COMPLETION-SUMMARY.md << 'EOF'`
+  - Example suggested: `story-003-completion-summary.md`
+  - Maintains project naming conventions consistency
+
+### Technical Details
+- Lines 173-194: New `extractFilePathsFromBashRedirect()` function
+- Lines 243-271: Redirect validation logic in `validateBashCommand()`
+- Validates ALL-CAPITALS pattern for markdown files in redirects
+- Error message provides clear guidance and suggested lowercase filename
+
 ## [8.18.15] - 2025-10-12
 
 ### Security Fixes
