@@ -3,9 +3,8 @@
 **MANDATORY:** Use learnings and auto-correct violations.
 
 ## Imports
-@./shared-patterns/memory-operations.md
-@./shared-patterns/learning-patterns.md
-@./shared-patterns/best-practices-operations.md
+@./memory-system.md
+@./best-practices-system.md
 
 ## Core Learning Process
 Active learning tracking with proactive memory generation during all operations.

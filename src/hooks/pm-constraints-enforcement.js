@@ -170,6 +170,29 @@ function main() {
     return commands;
   }
 
+  function extractFilePathsFromBashRedirect(command) {
+    // Extract file paths from Bash redirect operators: >, >>, cat >, echo >
+    // Patterns: cat > file, echo > file, command > file, command >> file
+    const redirectPatterns = [
+      /(?:cat|echo|tee)\s+>\s*([^\s<>|&;]+)/,  // cat > file, echo > file, tee > file
+      />\s*([^\s<>|&;]+)/,                      // Any command > file
+      />>\s*([^\s<>|&;]+)/                      // Any command >> file
+    ];
+
+    const filePaths = [];
+
+    for (const pattern of redirectPatterns) {
+      const match = command.match(pattern);
+      if (match && match[1]) {
+        // Extract filename, removing quotes if present
+        let filePath = match[1].replace(/^["']|["']$/g, '');
+        filePaths.push(filePath);
+      }
+    }
+
+    return filePaths;
+  }
+
   function validateBashCommand(command) {
     // Allow read-only process inspection commands (ps, grep, pgrep, etc.)
     const readOnlyInspectionCommands = ['ps', 'pgrep', 'pidof', 'lsof', 'netstat', 'ss', 'top', 'htop'];
@@ -215,6 +238,36 @@ function main() {
       }
 
       // If not read-only, fall through to normal blocking
+    }
+
+    // Check for file creation via Bash redirect (cat >, echo >, >, >>)
+    // Extract file paths and validate for ALL-CAPITALS
+    const redirectedFiles = extractFilePathsFromBashRedirect(command);
+    for (const filePath of redirectedFiles) {
+      if (filePath.endsWith('.md')) {
+        const fileName = path.basename(filePath);
+        const isAllCapitals = fileName === fileName.toUpperCase();
+
+        if (isAllCapitals) {
+          const suggestedName = fileName.toLowerCase();
+          const suggestedPath = filePath.replace(fileName, suggestedName);
+
+          return {
+            allowed: false,
+            message: `🚫 PM role cannot create ALL-CAPITALS markdown files - use lowercase for consistency
+
+Blocked: ${filePath}
+Suggested: ${suggestedPath}
+
+ALL-CAPITALS filenames violate project naming conventions.
+Use lowercase filenames with hyphens for word separation.
+
+Example: story-003-completion-summary.md instead of STORY-003-COMPLETION-SUMMARY.md
+
+Use Write tool with lowercase filename or create AgentTask for file creation.`
+          };
+        }
+      }
     }
 
     // Block build/deploy/system commands in PM scope

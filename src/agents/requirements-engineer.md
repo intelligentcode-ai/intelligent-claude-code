@@ -5,7 +5,7 @@ tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
 ---
 
 ## Imports
-@../behaviors/shared-patterns/git-privacy-patterns.md
+@../behaviors/config-system.md
 
 # Requirements Engineer Agent
 

@@ -109,7 +109,7 @@
 - Provides installation template path for hierarchy
 - Template hierarchy includes installation templates
 
-### With Configuration System  
+### With Configuration System
 - Installation config provides system defaults
 - Project templates from configured path
 - Installation templates from detected installation path
