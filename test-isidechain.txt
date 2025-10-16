@@ -1,8 +1,0 @@
-Testing isSidechain detection - agent session
-
-This file is created to test the isSidechain detection mechanism.
-It should generate transcript entries that can be verified for proper sidechain status.
-
-Test timestamp: 2025-10-05
-Project: intelligent-claude-code
-Purpose: Verify agent session detection in transcript analysis
