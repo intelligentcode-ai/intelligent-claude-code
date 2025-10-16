@@ -7,15 +7,7 @@
     <applies_to>All</applies_to>
   </metadata>
 
-  <imports>
-    <import>@./shared-patterns/template-loading.md</import>
-    <import>@./shared-patterns/memory-operations.md</import>
-    <import>@./shared-patterns/execution-summary.md</import>
-    <import>@./shared-patterns/template-enforcement.md</import>
-    <import>@./shared-patterns/context-validation.md</import>
-    <import>@./shared-patterns/execution-validation.md</import>
-    <import>@./shared-patterns/behavioral-decision-matrix.md</import>
-  </imports>
+  <!-- All content consolidated into this file - no external imports needed -->
 
   <!-- AgentTask Creation System -->
   <creation_system>
