@@ -4,21 +4,21 @@
 @../roles/specialists.md
 
 ## Core System Behaviors
-@../behaviors/agenttask-system.xml
-@../behaviors/memory-system.xml
-@../behaviors/config-system.xml
-@../behaviors/validation-system.xml
-@../behaviors/behavioral-patterns.xml
-@../behaviors/best-practices-system.xml
-@../behaviors/role-system.xml
-@../behaviors/story-breakdown.xml
-@../behaviors/directory-structure.xml
-@../behaviors/naming-numbering-system.xml
-@../behaviors/adaptation-system.xml
-@../behaviors/sequential-thinking.xml
-@../behaviors/learning-team-automation.xml
-@../behaviors/installation-path-detection.xml
-@../behaviors/enforcement-rules.xml
+@../behaviors/agenttask-system.md
+@../behaviors/memory-system.md
+@../behaviors/config-system.md
+@../behaviors/validation-system.md
+@../behaviors/behavioral-patterns.md
+@../behaviors/best-practices-system.md
+@../behaviors/role-system.md
+@../behaviors/story-breakdown.md
+@../behaviors/directory-structure.md
+@../behaviors/naming-numbering-system.md
+@../behaviors/adaptation-system.md
+@../behaviors/sequential-thinking.md
+@../behaviors/learning-team-automation.md
+@../behaviors/installation-path-detection.md
+@../behaviors/enforcement-rules.md
 
 **CORE:** 14 roles+unlimited • 22 behaviors • @-notation • AgentTask-Template-driven execution
 

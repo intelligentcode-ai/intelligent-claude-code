@@ -8,7 +8,7 @@
   </metadata>
 
   <imports>
-    <import>@./config-system.xml</import>
+    <import>@./config-system.md</import>
   </imports>
 
   <!-- STORAGE STRUCTURE -->

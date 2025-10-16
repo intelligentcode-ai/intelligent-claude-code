@@ -4,8 +4,8 @@ Initialize the intelligent-claude-code virtual team system with configuration lo
 
 ## Imports
 
-@../behaviors/installation-path-detection.xml
-@../behaviors/validation-system.xml
+@../behaviors/installation-path-detection.md
+@../behaviors/validation-system.md
 
 ## Behavior
 System bootstrap operation that loads configuration, initializes memory, activates roles,
