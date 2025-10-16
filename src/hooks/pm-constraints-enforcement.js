@@ -448,22 +448,6 @@ Please create summary files in the summaries/ directory to keep project root cle
   }
 
   function validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext = false) {
-    // Check appropriate setting based on context
-    let allowMarkdown;
-
-    if (isAgentContext) {
-      // For agents: check agent-specific setting first, fallback to main setting
-      const agentSetting = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
-      allowMarkdown = agentSetting !== null ? agentSetting : getSetting('enforcement.allow_markdown_outside_allowlist', false);
-    } else {
-      // For main scope: use main setting
-      allowMarkdown = getSetting('enforcement.allow_markdown_outside_allowlist', false);
-    }
-
-    if (allowMarkdown) {
-      return { allowed: true };
-    }
-
     // Check if file is markdown
     if (!filePath.endsWith('.md')) {
       return { allowed: true };
@@ -487,30 +471,43 @@ Please create summary files in the summaries/ directory to keep project root cle
     ];
 
     const fileName = path.basename(relativePath);
-    const isAllCapitals = fileName === fileName.toUpperCase();
-
-    // Check if this is README.md (case-insensitive) - allowed in any directory
-    const isReadme = fileName.toUpperCase() === 'README.MD';
-
-    // Check if markdown is in root (root .md files are allowed)
     const dirName = path.dirname(relativePath);
+
+    // PRIORITY 1: Check if markdown is in root (root .md files are ALWAYS allowed)
     if (dirName === '.' || dirName === '') {
       return { allowed: true };
     }
 
-    // README.md (case-insensitive) allowed anywhere
+    // PRIORITY 2: README.md (case-insensitive) ALWAYS allowed anywhere
+    const isReadme = fileName.toUpperCase() === 'README.MD';
     if (isReadme) {
       return { allowed: true };
     }
 
-    // Check if markdown is in allowlist directory
+    // PRIORITY 3: Check if markdown is in allowlist directory (ALWAYS allowed)
     for (const allowedPath of allowlist) {
       if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
         return { allowed: true };
       }
     }
 
-    // Markdown file outside allowlist and setting is false - block it
+    // PRIORITY 4: File is OUTSIDE allowlist - now check setting
+    let allowMarkdown;
+
+    if (isAgentContext) {
+      // For agents: check agent-specific setting first, fallback to main setting
+      const agentSetting = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
+      allowMarkdown = agentSetting !== null ? agentSetting : getSetting('enforcement.allow_markdown_outside_allowlist', false);
+    } else {
+      // For main scope: use main setting
+      allowMarkdown = getSetting('enforcement.allow_markdown_outside_allowlist', false);
+    }
+
+    if (allowMarkdown) {
+      return { allowed: true };
+    }
+
+    // PRIORITY 5: File is outside allowlist AND setting is false - block it
     return {
       allowed: false,
       message: `📝 Markdown files outside allowlist directories are blocked by default

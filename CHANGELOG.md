@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.36] - 2025-10-16
+
+### Fixed
+- **Critical Bug: PM Constraints Hook Markdown Validation Logic Order**
+  - Fixed backwards validation logic in `validateMarkdownOutsideAllowlist()` function
+  - Previously checked `enforcement.allow_markdown_outside_allowlist` setting BEFORE checking allowlist directories
+  - This blocked legitimate PM role work: creating stories in stories/, config files in root, etc.
+  - Reordered validation logic with clear priority hierarchy:
+    1. Root markdown files → ALWAYS allowed
+    2. README.md anywhere → ALWAYS allowed
+    3. Files in allowlist directories (stories/, bugs/, memory/, docs/, etc.) → ALWAYS allowed
+    4. Files OUTSIDE allowlist → Check setting
+    5. Block only if outside allowlist AND setting=false
+  - Impact: PM role can now create stories and configuration files as intended
+  - Testing: All 5 comprehensive test cases pass with 100% success rate
+
+---
+
 ## [8.18.35] - 2025-10-16
 
 ### Changed
