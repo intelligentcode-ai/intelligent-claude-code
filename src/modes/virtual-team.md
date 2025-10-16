@@ -3,35 +3,22 @@
 ## Core Roles
 @../roles/specialists.md
 
-## AgentTask System Behaviors
-@../behaviors/agenttask-creation-system.md
-@../behaviors/agenttask-execution.md
-@../behaviors/agenttask-system-integration.md
-
-## Shared Pattern Dependencies
-@../behaviors/shared-patterns/summary-validation-patterns.md
-@../behaviors/shared-patterns/work-detection-patterns.md
-
 ## Core System Behaviors
-@../behaviors/config-loader.md
+@../behaviors/agenttask-system.md
+@../behaviors/memory-system.md
+@../behaviors/config-system.md
+@../behaviors/validation-system.md
+@../behaviors/behavioral-patterns.md
+@../behaviors/best-practices-system.md
+@../behaviors/role-system.md
+@../behaviors/story-breakdown.md
 @../behaviors/directory-structure.md
 @../behaviors/naming-numbering-system.md
-@../behaviors/story-breakdown.md
-@../behaviors/role-system.md
-
-## Learning & Memory
-@../behaviors/learning-team-automation.md
-@../behaviors/proactive-memory-behavior.md
-@../behaviors/memory-enforcement-patterns.md
-
-## Validation & Quality
 @../behaviors/adaptation-system.md
-
-## Analytical Frameworks
 @../behaviors/sequential-thinking.md
-
-## Advanced Features
-@../behaviors/template-resolution.md
+@../behaviors/learning-team-automation.md
+@../behaviors/installation-path-detection.md
+@../behaviors/enforcement-rules.md
 
 **CORE:** 14 roles+unlimited • 22 behaviors • @-notation • AgentTask-Template-driven execution
 

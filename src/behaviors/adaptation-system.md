@@ -13,6 +13,7 @@ Maintain template compliance during updates.
 Seamless agent restart with updated context, no manual intervention.
 
 ## Triggers
+
 **User Corrections**: "Actually...", "I meant...", "The correct approach is...", "Change to...", "Use [X] instead..."
 **New Information**: Additional requirements, technical constraints, resource changes, timeline adjustments, scope modifications
 **Error Recovery**: Technical failures, resource access problems, integration complications, quality violations

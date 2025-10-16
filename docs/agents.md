@@ -29,12 +29,6 @@ This directory contains the 14 core Claude Code Subagent definitions with embedd
 - **Unlimited Domain Coverage**: Any technology via specialized AgentTask content
 - **Claude Code Native Integration**: Full compatibility with Claude Code Subagents
 
-## Documentation
-
-- **[ARCHITECTURE.md](ARCHITECTURE.md)**: Dynamic specialization system and technology coverage
-- **[INTEGRATION.md](INTEGRATION.md)**: Claude Code native integration and behavioral patterns
-- **[DEPLOYMENT.md](DEPLOYMENT.md)**: Deployment pipeline and usage patterns
-
 ## Quick Start
 
 1. **Development**: Edit agent definitions in `src/agents/`

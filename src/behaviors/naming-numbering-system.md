@@ -6,6 +6,7 @@
 @./shared-patterns/enforcement-rules.md
 
 ## Format Rules
+
 **Standard**: `<CATEGORY>-<NUMBER>-<TITLE>-<DATE>.md`
 **Categories**: EPIC, STORY, BUG (case sensitive)
 **Numbers**: Zero-padded (001, 002, 003), sequential within category
@@ -15,6 +16,7 @@
 **Examples**: EPIC-001-virtual-team-enhancement-2025-08-26.md, STORY-001-user-authentication-2025-08-26.md
 
 ## Sequential Numbering
+
 **Sequences**: EPIC/STORY/BUG global sequence across project
 **Directory Scanning**: EPIC/STORY in stories/, BUG in bugs/
 
@@ -25,11 +27,13 @@
 4. Verify generated number doesn't exist
 
 ## Validation
+
 **Pre-Creation Checks**: Category in allowed list, number format (zero-padded), title format (lowercase, hyphens), date format (YYYY-MM-DD)
 
-**Auto-Correction**: Category case (story → STORY), number padding (1 → 001), title formatting (spaces → hyphens, lowercase), date generation.
+**Auto-Correction**: Category case (story → STORY), number padding (1 → 001), title formatting (spaces → hyphens, lowercase), date generation
 
 ## Integration
+
 Respect configured paths (story_path, bug_path), generate compliant names before file creation, ensure uniqueness, apply consistent formatting.
 
 ---

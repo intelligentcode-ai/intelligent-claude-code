@@ -4,7 +4,7 @@ Retrieve configuration setting using $ARGUMENTS with hierarchy support.
 
 ## Imports
 
-@../behaviors/shared-patterns/installation-path-detection.md
+@../behaviors/installation-path-detection.md
 
 ## Behavior
 

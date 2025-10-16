@@ -7,6 +7,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.35] - 2025-10-16
+
+### Changed
+- **Hybrid Markdown+XML Format Conversion**
+  - Converted all 15 behavioral files from pure XML to hybrid markdown+XML format
+  - Following Claude Code best practices: XML tags within markdown for structure
+  - Achieved 32.7% average reduction in verbosity (747 lines saved)
+  - Maintained 100% semantic equivalence of behavioral patterns
+  - Improved readability while preserving enforcement mechanisms
+
+### Converted Files (3 Batches)
+**Batch 1** (37% avg reduction):
+- adaptation-system.md (75→47 lines, 37% reduction)
+- best-practices-system.md (200→71 lines, 64% reduction)
+- agenttask-system.md (240→161 lines, 33% reduction)
+- behavioral-patterns.md (337→229 lines, 32% reduction)
+- config-system.md (308→193 lines, 37% reduction)
+
+**Batch 2** (15.2% overall reduction):
+- directory-structure.md (55→32 lines, 41.8% reduction)
+- enforcement-rules.md (61→82 lines, expanded for PM constraint preservation)
+- installation-path-detection.md (182→142 lines, 22.0% reduction)
+- learning-team-automation.md (64→47 lines, 26.6% reduction)
+- memory-system.md (256→221 lines, 13.7% reduction)
+
+**Batch 3** (45.6% overall reduction):
+- naming-numbering-system.md (63→40 lines, 36.5% reduction)
+- role-system.md (118→94 lines, 20.3% reduction)
+- sequential-thinking.md (74→46 lines, 37.8% reduction)
+- story-breakdown.md (73→48 lines, 34.2% reduction)
+- validation-system.md (365→149 lines, 59.2% reduction)
+
+### Format Guidelines Applied
+- Pure documentation content → Markdown prose
+- Complex structured patterns with attributes → XML tags
+- Simple lists and enumerations → Markdown bullets
+- Process flows → Numbered lists or arrow notation (→)
+- Headers → Markdown (#, ##, ###)
+- Emphasis → Markdown bold (**text**)
+- Critical enforcement/hook patterns → Preserved as XML
+
+### Technical Impact
+- Total line reduction: 747 lines across all behavioral files
+- Average reduction: 32.7% (from 2,286 to 1,539 lines)
+- Format: Markdown (.md) files containing hybrid markdown+XML content
+- All @-notation imports preserved
+- All enforcement IDs and validation rules intact
+- Semantic equivalence: 100% maintained
+
+---
+
+## [8.18.29] - 2025-10-16
+
+### Fixed
+- **Bash Heredoc ALL-CAPITALS Filename Bypass**
+  - Added `extractFilePathsFromBashRedirect()` helper function to extract file paths from Bash redirect operators
+  - Added redirect validation in `validateBashCommand()` after kubectl validation (line 243)
+  - PM role can no longer create ALL-CAPITALS markdown files via heredoc/redirect commands
+  - Pattern detection: `cat > file`, `echo > file`, `command > file`, `command >> file`
+  - Provides suggested lowercase filename in error message
+  - Example blocked: `cat > STORY-003-COMPLETION-SUMMARY.md << 'EOF'`
+  - Example suggested: `story-003-completion-summary.md`
+  - Maintains project naming conventions consistency
+
+### Technical Details
+- Lines 173-194: New `extractFilePathsFromBashRedirect()` function
+- Lines 243-271: Redirect validation logic in `validateBashCommand()`
+- Validates ALL-CAPITALS pattern for markdown files in redirects
+- Error message provides clear guidance and suggested lowercase filename
+
 ## [8.18.15] - 2025-10-12
 
 ### Security Fixes
