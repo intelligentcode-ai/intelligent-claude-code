@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.37] - 2025-10-16
+
+### Fixed
+- **Project Scope Enforcement: Remove Read Operation Blocking**
+  - Removed incorrect Read operation blocking from project-scope-enforcement.js hook (lines 121-152)
+  - Previously blocked all Read operations to ~/.claude/ directory
+  - This prevented checking installation logs, reading hook code for debugging, and troubleshooting
+  - Only WRITE operations should be blocked (Edit/Write/MultiEdit), not reads
+  - Impact: Users can now read installation logs in ~/.claude/logs/ and verify hook behavior
+  - Write blocking still functions correctly (except ~/.claude/CLAUDE.md exception)
+  - Bash modifying command blocking still functions correctly
+
+---
+
 ## [8.18.36] - 2025-10-16
 
 ### Fixed
