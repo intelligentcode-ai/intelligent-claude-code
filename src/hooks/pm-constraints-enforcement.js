@@ -278,7 +278,8 @@ Use Write tool with lowercase filename or create AgentTask for file creation.`
       'python', 'python3', 'node', 'ruby', 'perl', 'php',  // Scripting languages
       'nohup', 'screen', 'tmux',  // Background/session tools
       'sed', 'awk',  // Stream/text processing (file modification)
-      'vi', 'vim', 'nano', 'emacs'  // Text editors
+      'vi', 'vim', 'nano', 'emacs',  // Text editors
+      'ssh', 'scp', 'sftp', 'rsync'  // Remote access and file transfer
     ];
 
     // Add infrastructure tools from configuration (PM blacklist - includes kubectl, govc, etc.)
@@ -331,7 +332,8 @@ Infrastructure: ${pmInfrastructureBlacklist.join(', ')} ⚠️ DESTRUCTIVE
 Scripting languages: python, python3, node, ruby, perl, php
 Background tools: nohup, screen, tmux
 Text processing: sed, awk
-Text editors: vi, vim, nano, emacs${kubectlGuidance}
+Text editors: vi, vim, nano, emacs
+Remote access: ssh, scp, sftp, rsync${kubectlGuidance}
 
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
 All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
@@ -448,7 +450,58 @@ Please create summary files in the summaries/ directory to keep project root cle
   }
 
   function validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext = false) {
-    // Check appropriate setting based on context
+    // Check if file is markdown
+    if (!filePath.endsWith('.md')) {
+      return { allowed: true };
+    }
+
+    // Normalize to relative path if absolute
+    let relativePath = filePath;
+    if (path.isAbsolute(filePath)) {
+      try {
+        // Resolve both paths to handle symlinks properly
+        const realFilePath = fs.existsSync(filePath) ? fs.realpathSync(filePath) : filePath;
+        const realProjectRoot = fs.realpathSync(projectRoot);
+        relativePath = path.relative(realProjectRoot, realFilePath);
+      } catch (error) {
+        // Fallback to original calculation if resolution fails
+        relativePath = path.relative(projectRoot, filePath);
+      }
+    }
+
+    // Get configured allowlist
+    const config = loadConfiguration();
+    const allowlist = [
+      config.story_path,
+      config.bug_path,
+      config.memory_path,
+      config.docs_path,
+      'agenttasks',
+      'summaries'
+    ];
+
+    const fileName = path.basename(relativePath);
+    const dirName = path.dirname(relativePath);
+
+    // PRIORITY 1: Check if markdown is in root (root .md files are ALWAYS allowed)
+    if (dirName === '.' || dirName === '') {
+      return { allowed: true };
+    }
+
+    // PRIORITY 2: README.md (case-insensitive) ALWAYS allowed anywhere
+    const isReadme = fileName.toUpperCase() === 'README.MD';
+    if (isReadme) {
+      return { allowed: true };
+    }
+
+    // PRIORITY 3: Check if markdown is in allowlist directory (ALWAYS allowed)
+    for (const allowedPath of allowlist) {
+      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
+        return { allowed: true };
+      }
+    }
+
+    // PRIORITY 4: File is OUTSIDE allowlist - now check setting
     let allowMarkdown;
 
     if (isAgentContext) {
@@ -464,53 +517,7 @@ Please create summary files in the summaries/ directory to keep project root cle
       return { allowed: true };
     }
 
-    // Check if file is markdown
-    if (!filePath.endsWith('.md')) {
-      return { allowed: true };
-    }
-
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
-    if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
-    }
-
-    // Get configured allowlist
-    const config = loadConfiguration();
-    const allowlist = [
-      config.story_path,
-      config.bug_path,
-      config.memory_path,
-      config.docs_path,
-      'agenttasks',
-      'summaries'
-    ];
-
-    const fileName = path.basename(relativePath);
-    const isAllCapitals = fileName === fileName.toUpperCase();
-
-    // Check if this is README.md (case-insensitive) - allowed in any directory
-    const isReadme = fileName.toUpperCase() === 'README.MD';
-
-    // Check if markdown is in root (root .md files are allowed)
-    const dirName = path.dirname(relativePath);
-    if (dirName === '.' || dirName === '') {
-      return { allowed: true };
-    }
-
-    // README.md (case-insensitive) allowed anywhere
-    if (isReadme) {
-      return { allowed: true };
-    }
-
-    // Check if markdown is in allowlist directory
-    for (const allowedPath of allowlist) {
-      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
-        return { allowed: true };
-      }
-    }
-
-    // Markdown file outside allowlist and setting is false - block it
+    // PRIORITY 5: File is outside allowlist AND setting is false - block it
     return {
       allowed: false,
       message: `📝 Markdown files outside allowlist directories are blocked by default

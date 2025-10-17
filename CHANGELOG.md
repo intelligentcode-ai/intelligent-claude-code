@@ -7,6 +7,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.39] - 2025-10-16
+
+### Fixed
+- **PM Role Enforcement: Block SSH and Remote Access Commands**
+  - Added `ssh`, `scp`, `sftp`, `rsync` to PM role blocked commands list
+  - Previously allowed PM role to execute SSH commands directly, violating coordination-only principle
+  - SSH and remote access are infrastructure operations requiring @System-Engineer or @DevOps-Engineer
+  - Updated error message to include new "Remote access" category
+  - Impact: PM role must now delegate all remote access operations to specialist agents via AgentTask
+  - Ensures PM role stays focused on coordination and planning, not technical execution
+
+---
+
+## [8.18.38] - 2025-10-16
+
+### Fixed
+- **Critical Bug: Symlink Path Resolution in Markdown Validation**
+  - Fixed path resolution failure when project accessed via symlink
+  - Previously failed when file path (`/Users/user/Work/`) and project root (`/Users/user/Nextcloud/Work/`) had different prefixes
+  - `path.relative()` returned incorrect upward-traversing path (e.g., `../../../Work/...`) that didn't match allowlist
+  - Added `fs.realpathSync()` to resolve both file path and project root to real absolute paths before comparison
+  - Handles symlinks by following them to actual filesystem locations
+  - Includes error handling with fallback to original calculation if resolution fails
+  - For non-existent files (Write operations), uses original path for file, resolved path for project root
+  - Impact: PM role can now create stories and files in allowlist directories even when project is accessed via symlink
+  - Fixes: "Markdown file outside allowlist blocked" error for files that ARE in allowlist directories
+
+---
+
+## [8.18.37] - 2025-10-16
+
+### Fixed
+- **Project Scope Enforcement: Remove Read Operation Blocking**
+  - Removed incorrect Read operation blocking from project-scope-enforcement.js hook (lines 121-152)
+  - Previously blocked all Read operations to ~/.claude/ directory
+  - This prevented checking installation logs, reading hook code for debugging, and troubleshooting
+  - Only WRITE operations should be blocked (Edit/Write/MultiEdit), not reads
+  - Impact: Users can now read installation logs in ~/.claude/logs/ and verify hook behavior
+  - Write blocking still functions correctly (except ~/.claude/CLAUDE.md exception)
+  - Bash modifying command blocking still functions correctly
+
+---
+
+## [8.18.36] - 2025-10-16
+
+### Fixed
+- **Critical Bug: PM Constraints Hook Markdown Validation Logic Order**
+  - Fixed backwards validation logic in `validateMarkdownOutsideAllowlist()` function
+  - Previously checked `enforcement.allow_markdown_outside_allowlist` setting BEFORE checking allowlist directories
+  - This blocked legitimate PM role work: creating stories in stories/, config files in root, etc.
+  - Reordered validation logic with clear priority hierarchy:
+    1. Root markdown files → ALWAYS allowed
+    2. README.md anywhere → ALWAYS allowed
+    3. Files in allowlist directories (stories/, bugs/, memory/, docs/, etc.) → ALWAYS allowed
+    4. Files OUTSIDE allowlist → Check setting
+    5. Block only if outside allowlist AND setting=false
+  - Impact: PM role can now create stories and configuration files as intended
+  - Testing: All 5 comprehensive test cases pass with 100% success rate
+
+---
+
 ## [8.18.35] - 2025-10-16
 
 ### Changed
