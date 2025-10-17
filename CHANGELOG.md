@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.18.39] - 2025-10-16
+
+### Fixed
+- **PM Role Enforcement: Block SSH and Remote Access Commands**
+  - Added `ssh`, `scp`, `sftp`, `rsync` to PM role blocked commands list
+  - Previously allowed PM role to execute SSH commands directly, violating coordination-only principle
+  - SSH and remote access are infrastructure operations requiring @System-Engineer or @DevOps-Engineer
+  - Updated error message to include new "Remote access" category
+  - Impact: PM role must now delegate all remote access operations to specialist agents via AgentTask
+  - Ensures PM role stays focused on coordination and planning, not technical execution
+
+---
+
 ## [8.18.38] - 2025-10-16
 
 ### Fixed
