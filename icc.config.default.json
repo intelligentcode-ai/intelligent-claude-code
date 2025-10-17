@@ -122,6 +122,8 @@
     "allow_markdown_outside_allowlist_agents": null,
     "violation_logging": true,
     "auto_correction": true,
+    "strict_main_scope": true,
+    "strict_main_scope_message": "Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.",
     "infrastructure_protection": {
       "enabled": true,
       "enforce_iac_only": true,
