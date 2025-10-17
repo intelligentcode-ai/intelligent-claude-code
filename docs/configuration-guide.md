@@ -277,6 +277,29 @@ The system uses unified JSON configuration with hierarchical loading and separat
 - **Default**: true
 - **Description**: Automatically correct violations when possible
 
+**enforcement.strict_main_scope** (boolean)
+- **Default**: true
+- **Description**: Enforces main scope to only perform coordination work
+- **When enabled**: Main scope (outside of agent context) can only:
+  - Read files and search (Read, Grep, Glob)
+  - Create AgentTasks (Task tool)
+  - Track tasks (TodoWrite)
+  - Write to allowlist directories
+  - Execute read-only coordination bash commands
+- **All technical operations**: Must be delegated to specialist agents via Task tool (infrastructure, build, deploy, scripting)
+- **Use Cases**:
+  - Enforce strict delegation to agents
+  - Prevent direct technical work in main scope
+  - Ensure AgentTask-driven workflow
+- **Disable for**:
+  - Rapid prototyping without agent overhead
+  - Single-user simple projects
+  - Debugging and troubleshooting
+
+**enforcement.strict_main_scope_message** (string)
+- **Default**: "Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations."
+- **Description**: Custom message to display when strict main scope enforcement blocks an operation
+
 ### Best Practices Settings
 
 **best_practices.search_enabled** (boolean)

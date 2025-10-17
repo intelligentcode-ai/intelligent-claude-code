@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.0] - 2025-10-16
+
+### Added
+- **Strict Main Scope Enforcement Mode**
+  - NEW setting: `enforcement.strict_main_scope` (boolean, default: true)
+  - Forces main scope to only perform coordination work, delegates ALL technical operations to agents
+  - NEW hook: `main-scope-enforcement.js` (first in PreToolUse chain for early enforcement)
+  - Main scope can ONLY: Read/Grep/Glob, Task tool, TodoWrite, Write to allowlist, read-only bash commands
+  - Main scope BLOCKED: All infrastructure (kubectl, ssh, docker, terraform), build tools (npm, make), scripting (python, node), text processing (sed, awk)
+  - Agents never restricted by strict mode (agent marker bypasses enforcement)
+  - Configurable per-project via `icc.config.json`
+  - Custom error messages via `enforcement.strict_main_scope_message` setting
+  - Documentation added to `docs/configuration-guide.md`
+  - Impact: Enforces AgentTask-driven workflow, ensures main scope stays coordination-only
+  - Goal: Maximum separation of concerns - main scope coordinates, agents execute technical work
+
+---
+
 ## [8.18.39] - 2025-10-16
 
 ### Fixed
