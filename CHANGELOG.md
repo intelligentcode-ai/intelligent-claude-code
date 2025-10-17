@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.1] - 2025-10-17
+
+### Fixed
+- **PM Role Enforcement: Block ALL Heredoc Commands Uniformly**
+  - Expanded heredoc detection from language-specific to universal blocking
+  - Previously only blocked scripting heredocs (python <<, node <<, ruby <<) but allowed shell heredocs (cat <<, echo <<)
+  - This created inconsistency: Write tool blocked for file creation, but heredoc bypass allowed for same operation
+  - Changed detection from `if (command.includes('<<') && (scripting languages))` to `if (command.includes('<<'))`
+  - Now blocks ALL heredoc patterns uniformly:
+    - Shell heredocs: cat << 'EOF', echo <<EOF, tee <<EOF
+    - Scripting heredocs: python << 'EOF', node << 'EOF', ruby << 'EOF'
+  - Updated error message to clarify both shell and scripting heredocs are blocked
+  - Rationale: Heredocs are file creation/code execution operations (technical work)
+  - PM role should use Write tool for file creation, not shell redirects
+  - Agents can still use heredocs (agent marker bypasses PM constraints)
+  - Impact: Consistent enforcement - PM role coordination-only principle maintained
+
+---
+
 ## [8.19.0] - 2025-10-16
 
 ### Added
