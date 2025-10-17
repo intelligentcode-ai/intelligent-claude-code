@@ -286,18 +286,18 @@ Use Write tool with lowercase filename or create AgentTask for file creation.`
     const pmInfrastructureBlacklist = getSetting('enforcement.infrastructure_protection.pm_blacklist', []);
     const allBlockedCommands = [...blockedCommands, ...pmInfrastructureBlacklist];
 
-    // Check for Python heredoc pattern (python3 << 'PYEOF')
-    if (command.includes('<<') && (command.includes('python') || command.includes('node') || command.includes('ruby'))) {
+    // Check for ANY heredoc pattern (<< 'EOF', << EOF, <<EOF, <<-EOF)
+    // This blocks both scripting heredocs (python <<) AND shell heredocs (cat <<, echo <<)
+    if (command.includes('<<')) {
       return {
         allowed: false,
-        message: `🚫 PM role cannot execute inline scripts via heredoc - create Agents using AgentTasks for technical work
+        message: `🚫 PM role cannot execute heredoc commands - create Agents using AgentTasks for technical work
 
-Blocked pattern: Script heredoc (python3 << 'EOF', node << 'EOF', etc.)
+Blocked pattern: Heredoc (cat << 'EOF', python << 'EOF', etc.)
 Full command: ${command}
 
-Inline scripts require technical implementation by specialist agents.
-
-Use Task tool to create specialist agent via AgentTask.`
+Heredoc commands (both shell and scripting) require technical implementation by specialist agents.
+Use Write tool for file creation or Task tool to create specialist agent via AgentTask.`
       };
     }
 
