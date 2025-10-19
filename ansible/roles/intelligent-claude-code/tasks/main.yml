@@ -193,6 +193,7 @@
     - user-prompt-submit.js
     - pre-commit.js
     - installation-protection.js
+    - git-privacy-validation.js
     - git-privacy-enforcement.js
   ignore_errors: yes
 

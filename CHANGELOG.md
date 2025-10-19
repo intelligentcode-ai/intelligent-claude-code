@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.3] - 2025-10-19
+
+### Fixed
+- **Main Scope Enforcement: Fix Agent Marker Detection**
+  - Fixed checkAgentMarker function to correctly detect agent execution context
+  - Previously used process.env.SESSION_ID (always undefined) instead of hookInput.session_id
+  - This caused hook to look for wrong marker file path (agent-executing-unknown-{hash} instead of agent-executing-{session_id}-{hash})
+  - Result: Hook incorrectly blocked legitimate agent operations thinking they were main scope
+  - Changes: Added sessionId parameter to function, removed process.env.SESSION_ID line, pass hookInput.session_id from caller
+  - Impact: Agents can now execute technical operations without being blocked by main scope enforcement
+  - Bug affected all agent operations since strict_main_scope enforcement was introduced
+
+---
+
 ## [8.19.2] - 2025-10-19
 
 ### Fixed

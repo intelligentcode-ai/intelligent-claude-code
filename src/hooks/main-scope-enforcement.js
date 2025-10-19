@@ -53,12 +53,11 @@ function main() {
     fs.appendFileSync(logFile, logMessage);
   }
 
-  function checkAgentMarker(projectRoot) {
+  function checkAgentMarker(projectRoot, sessionId) {
     const crypto = require('crypto');
     const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
 
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-    const sessionId = process.env.SESSION_ID || 'unknown';
     const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
 
     try {
@@ -207,7 +206,7 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
     const projectRoot = process.env.CLAUDE_PROJECT_DIR || cwdPath;
 
     // 1. Check for agent marker (if agent, skip enforcement)
-    const isAgentContext = checkAgentMarker(projectRoot);
+    const isAgentContext = checkAgentMarker(projectRoot, hookInput.session_id);
     if (isAgentContext) {
       log('Agent context detected - strict main scope enforcement skipped');
       console.log(JSON.stringify({ continue: true }));
