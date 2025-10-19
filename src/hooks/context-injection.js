@@ -73,6 +73,31 @@ function loadBestPractices() {
 }
 
 /**
+ * Load virtual-team.md from hierarchy
+ *
+ * @returns {string|null} File content or null if not found
+ */
+function loadVirtualTeamMd() {
+  try {
+    // Search hierarchy: project dev context, then user global
+    const possiblePaths = [
+      path.join(process.cwd(), 'src', 'modes', 'virtual-team.md'),
+      path.join(os.homedir(), '.claude', 'modes', 'virtual-team.md')
+    ];
+
+    for (const filePath of possiblePaths) {
+      if (fs.existsSync(filePath)) {
+        return fs.readFileSync(filePath, 'utf8');
+      }
+    }
+
+    return null;
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
  * Select random best practices
  *
  * @param {Array<Object>} practices - Available practices
@@ -333,28 +358,25 @@ function main() {
 
     // NUCLEAR COMPACTION RESPONSE
     if (isCompacted) {
-      contextualGuidance.push('🔄 COMPACTION DETECTED - VIRTUAL TEAM SYSTEM LOST!');
-      contextualGuidance.push('⚠️ Session was continued/summarized - complete context NOT loaded');
-      contextualGuidance.push('🚨 MANDATORY: Run /icc-init-system IMMEDIATELY');
-      contextualGuidance.push('❌ @Role patterns + AgentTask-Templates WILL NOT WORK without initialization');
-      contextualGuidance.push('🧠 Memory-first approach and best-practices patterns NOT active');
-      contextualGuidance.push('🛑 DO NOT PROCEED with work until complete system is initialized');
-      contextualGuidance.push('💀 COMPACTION = QUALITY DESTRUCTION - Professional standards LOST');
-      contextualGuidance.push('⚡ NUCLEAR BLOCKING ACTIVE - NO work without virtual team restoration');
-      contextualGuidance.push('🔥 EMERGENCY MODE: All behavioral patterns DESTROYED by compression');
+      // Load virtual-team.md content
+      const virtualTeamContent = loadVirtualTeamMd();
 
-      // NUCLEAR WARNING - Force this to the top priority
-      const criticalWarning = [
-        '🚨'.repeat(30),
-        '💥 NUCLEAR: COMPACTED SESSION DETECTED 💥',
-        '⚡ EMERGENCY ACTION REQUIRED: /icc-init-system',
-        '❌ ALL BEHAVIORAL PATTERNS DESTROYED',
-        '🛑 PROFESSIONAL QUALITY IMPOSSIBLE WITHOUT INIT',
-        '💀 COMPACTION = AMATEUR EXECUTION',
-        '🚨'.repeat(30)
-      ].join('\n');
-
-      contextualGuidance.unshift(criticalWarning);
+      if (virtualTeamContent) {
+        // Output complete virtual-team.md file content
+        contextualGuidance.push('🔄 SESSION COMPACTION DETECTED - RESTORING COMPLETE BEHAVIORAL CONTEXT');
+        contextualGuidance.push('');
+        contextualGuidance.push(virtualTeamContent);
+        contextualGuidance.push('');
+        contextualGuidance.push('✅ VIRTUAL TEAM BEHAVIORAL CONTEXT RESTORED');
+        log('Compaction detected - loaded virtual-team.md content');
+      } else {
+        // Fallback if file not found
+        contextualGuidance.push('🔄 COMPACTION DETECTED - VIRTUAL TEAM SYSTEM LOST!');
+        contextualGuidance.push('⚠️ Session was continued/summarized - complete context NOT loaded');
+        contextualGuidance.push('🚨 MANDATORY: Run /icc-init-system IMMEDIATELY');
+        contextualGuidance.push('❌ virtual-team.md file not found - cannot restore behavioral context');
+        log('Compaction detected but virtual-team.md not found');
+      }
     }
 
     // Check for @Role mentions without system initialization
