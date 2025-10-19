@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.2] - 2025-10-19
+
+### Fixed
+- **Compaction Detection: Restore Complete Behavioral Context**
+  - Modified context-injection.js hook to load and output virtual-team.md file content when compaction is detected
+  - Previously showed nuclear warning messages without restoring actual behavioral patterns
+  - Added `loadVirtualTeamMd()` function with search hierarchy: project dev context → user global (~/.claude/modes/virtual-team.md)
+  - When compaction detected, now outputs complete virtual-team.md content to restore full behavioral framework
+  - Fallback to minimal warnings if virtual-team.md file not found
+  - Impact: Session continuations now receive complete behavioral context restoration instead of just warnings
+  - Rationale: Direct behavioral pattern loading is more effective than telling agent to run /icc-init-system
+
+---
+
 ## [8.19.1] - 2025-10-17
 
 ### Fixed
