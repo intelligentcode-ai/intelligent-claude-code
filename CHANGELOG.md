@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.5] - 2025-10-21
+
+### Fixed
+- **Git Enforcement: Narrow Heredoc Blocking to Git Commit Commands Only**
+  - Fixed git-enforcement.js to ONLY block heredoc in `git commit` commands, not all bash commands
+  - Previously blocked ALL commands containing heredoc patterns (`<<` or `cat <<`), including legitimate commands like `gh pr create --body "$(cat <<'EOF'...)"`
+  - Added `isGitCommit` check to verify command starts with `git commit` before blocking heredoc
+  - Impact: Agents can now use heredoc for PR descriptions, documentation, and other non-commit operations while maintaining git privacy enforcement
+
+- **PM Constraints: Add Parent Path Allowlist Configuration**
+  - Added new setting `enforcement.allow_parent_allowlist_paths` (default: false) to allow writes to allowlist directories in parent/sibling paths
+  - When enabled, PM can write to stories/, bugs/, memory/, docs/ directories outside project root
+  - Still blocks non-allowlist directories regardless of location (src/, lib/ remain blocked in parent paths)
+  - Helpful error messages guide users to enable setting when parent path access attempted
+  - Impact: Supports nested project structures where stories/ directory is at parent level (e.g., `/ansible/deployments/stories/` from project root `/ansible/deployments/kubernetes/applications/`)
+
+---
+
 ## [8.19.4] - 2025-10-21
 
 ### Fixed
