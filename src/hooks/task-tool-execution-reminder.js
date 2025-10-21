@@ -18,6 +18,44 @@ function log(message) {
   fs.appendFileSync(logFile, logMessage);
 }
 
+/**
+ * Detect Task tool usage intent from user prompt
+ *
+ * @param {string} userPrompt - The user's submitted prompt
+ * @returns {boolean} True if Task tool usage is likely
+ */
+function detectTaskToolIntent(userPrompt) {
+  const prompt = userPrompt.toLowerCase();
+
+  // Check for @Role mentions (primary indicator)
+  if (userPrompt.includes('@')) {
+    return true;
+  }
+
+  // Check for work request patterns
+  const workIndicators = [
+    'implement', 'fix', 'create', 'build', 'deploy',
+    'update', 'modify', 'change', 'add', 'remove',
+    'delete', 'configure', 'setup', 'install', 'refactor'
+  ];
+
+  if (workIndicators.some(indicator => prompt.includes(indicator))) {
+    return true;
+  }
+
+  // Check for explicit agent/task mentions
+  const explicitIndicators = [
+    'create agent', 'use task tool', 'invoke agent',
+    'create agenttask', 'break down', 'delegate to'
+  ];
+
+  if (explicitIndicators.some(indicator => prompt.includes(indicator))) {
+    return true;
+  }
+
+  return false;
+}
+
 try {
   // Parse hook input
   let inputData = '';
@@ -36,18 +74,18 @@ try {
   }
 
   const hookInput = JSON.parse(inputData);
-  const toolName = hookInput.tool_name || hookInput.tool || '';
+  const userPrompt = hookInput.user_prompt || '';
 
-  // Only trigger for Task tool
-  if (toolName !== 'Task') {
-    log(`Skipping - not Task tool: ${toolName}`);
+  // Detect Task tool usage intent from user prompt
+  if (!detectTaskToolIntent(userPrompt)) {
+    log(`No Task tool intent detected in prompt`);
     console.log(JSON.stringify({ continue: true }));
     process.exit(0);
   }
 
-  log('Task tool invocation detected - injecting synchronous execution reminder');
+  log('Task tool usage intent detected - injecting synchronous execution reminder');
 
-  // Inject reminder via hookSpecificOutput
+  // Inject reminder BEFORE Task tool usage
   const reminder = `
 🚨 CRITICAL: Task Tool Execution is SYNCHRONOUS (BLOCKING)
 
@@ -71,11 +109,16 @@ REMINDER: The Task tool BLOCKS until the agent finishes. You will receive the ag
 complete execution summary. WAIT for it. READ it. THEN continue.
 `;
 
+  // For UserPromptSubmit: Use hookSpecificOutput to inject context
   const response = {
     continue: true,
-    hookSpecificOutput: reminder
+    hookSpecificOutput: {
+      hookEventName: 'UserPromptSubmit',
+      additionalContext: reminder
+    }
   };
 
+  log('Reminder injected via hookSpecificOutput');
   console.log(JSON.stringify(response));
   process.exit(0);
 

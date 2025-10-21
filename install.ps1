@@ -535,6 +535,15 @@ function Install-HookSystem {
                 Write-Warning "  context-injection.js hook not found, skipping UserPromptSubmit registration"
             }
 
+            # Register UserPromptSubmit hook (task-tool-execution-reminder.js)
+            $TaskToolReminderHookPath = Join-Path $HooksPath "task-tool-execution-reminder.js"
+            if (Test-Path $TaskToolReminderHookPath) {
+                $HookCommand = "node `"$TaskToolReminderHookPath`""
+                Register-UserPromptSubmitHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  task-tool-execution-reminder.js hook not found, skipping task-tool-execution-reminder UserPromptSubmit registration"
+            }
+
             # Register PreToolUse hook (agent-marker.js)
             $AgentMarkerHookPath = Join-Path $HooksPath "agent-marker.js"
             if (Test-Path $AgentMarkerHookPath) {
@@ -587,15 +596,6 @@ function Install-HookSystem {
                 Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
                 Write-Warning "  summary-file-enforcement.js hook not found, skipping summary-file-enforcement PreToolUse registration"
-            }
-
-            # Register PreToolUse hook (task-tool-execution-reminder.js)
-            $TaskToolReminderHookPath = Join-Path $HooksPath "task-tool-execution-reminder.js"
-            if (Test-Path $TaskToolReminderHookPath) {
-                $HookCommand = "node `"$TaskToolReminderHookPath`""
-                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
-            } else {
-                Write-Warning "  task-tool-execution-reminder.js hook not found, skipping task-tool-execution-reminder PreToolUse registration"
             }
 
             # Register SubagentStop hook (subagent-stop.js)
