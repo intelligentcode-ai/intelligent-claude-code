@@ -589,6 +589,15 @@ function Install-HookSystem {
                 Write-Warning "  summary-file-enforcement.js hook not found, skipping summary-file-enforcement PreToolUse registration"
             }
 
+            # Register PreToolUse hook (task-tool-execution-reminder.js)
+            $TaskToolReminderHookPath = Join-Path $HooksPath "task-tool-execution-reminder.js"
+            if (Test-Path $TaskToolReminderHookPath) {
+                $HookCommand = "node `"$TaskToolReminderHookPath`""
+                Register-PreToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  task-tool-execution-reminder.js hook not found, skipping task-tool-execution-reminder PreToolUse registration"
+            }
+
             # Register SubagentStop hook (subagent-stop.js)
             $SubagentStopHookPath = Join-Path $HooksPath "subagent-stop.js"
             if (Test-Path $SubagentStopHookPath) {

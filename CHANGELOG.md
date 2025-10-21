@@ -7,6 +7,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.4] - 2025-10-21
+
+### Fixed
+- **Git Enforcement: Fix git.privacy Configuration Key Mismatch**
+  - Fixed git-enforcement.js to use nested config structure `config.git.privacy` instead of flat `config.git_privacy`
+  - Previously checking undefined value, allowing AI mentions to leak into commits even with `"git": { "privacy": true }`
+  - Updated all git configuration references to use nested structure (privacy, branch_protection, require_pr_for_main, default_branch)
+  - Added defensive null check for missing git object
+  - Impact: git.privacy enforcement now works correctly with modern nested config files
+
+- **Git Enforcement: Block Heredoc Commit Messages**
+  - Added heredoc pattern detection to prevent unfilterable commit messages
+  - Blocks git commits using heredoc (`cat <<'EOF'`) when git.privacy=true
+  - PreToolUse hooks execute BEFORE heredoc evaluation, making privacy filtering impossible
+  - Provides clear alternatives: simple -m messages, multiple -m flags, or interactive editor
+  - Impact: Prevents AI mentions from leaking through heredoc commit messages
+
+- **Main Scope Enforcement: Add WebFetch to Coordination Tools Allowlist**
+  - Added WebFetch as allowed read-only information gathering tool in main scope strict mode
+  - WebFetch is consistent with other coordination tools (Read, Grep, Glob)
+  - Enables research and documentation lookup without breaking strict mode
+  - Impact: Main scope can now fetch external documentation without creating agents
+
+- **Main Scope Enforcement: Add All MCP Tools to Allowlist**
+  - Added pattern matching for all `mcp__*` tools as coordination tools
+  - MCP tools are read-only external integrations and should always be allowed
+  - Includes mcp__memory__search_nodes, mcp__context7, and all future MCP tools
+  - Impact: Memory search and other MCP operations no longer blocked in main scope
+
+- **Main Scope Enforcement: Add VERSION File to Root Allowlist**
+  - Added VERSION file to root file allowlist alongside icc.config.json and icc.workflow.json
+  - Previously blocked version bumping operations in main scope
+  - Updated allowed operations message to show VERSION explicitly
+  - Impact: Main scope can now bump VERSION and update CHANGELOG.md without creating agents
+
+- **Constraint Display Enforcement: Fix JSON Serialization Crash**
+  - Fixed constraint-display-enforcement.js PostToolUse hook to use `hookSpecificOutput` instead of modifying stdout
+  - Previously concatenated multiline constraint text to stdout, causing JSON.stringify to crash with "Bad control character in string literal"
+  - Impact: Hook no longer crashes and can successfully append constraint reminders to tool outputs
+
+### Added
+- **Task Tool Execution Reminder Hook**
+  - Created task-tool-execution-reminder.js PreToolUse hook
+  - Injects critical reminder BEFORE every Task tool invocation
+  - Reinforces that Task tool execution is SYNCHRONOUS (blocking)
+  - Prevents agent execution amnesia where main scope starts agents and continues without waiting
+  - Registered in both Ansible and PowerShell installation scripts
+  - Impact: Reduces premature agent stopping and improves agent execution reliability
+
+---
+
+## [8.19.3] - 2025-10-19
+
+### Fixed
+- **Main Scope Enforcement: Fix Agent Marker Detection**
+  - Fixed checkAgentMarker function to correctly detect agent execution context
+  - Previously used process.env.SESSION_ID (always undefined) instead of hookInput.session_id
+  - This caused hook to look for wrong marker file path (agent-executing-unknown-{hash} instead of agent-executing-{session_id}-{hash})
+  - Result: Hook incorrectly blocked legitimate agent operations thinking they were main scope
+  - Changes: Added sessionId parameter to function, removed process.env.SESSION_ID line, pass hookInput.session_id from caller
+  - Impact: Agents can now execute technical operations without being blocked by main scope enforcement
+  - Bug affected all agent operations since strict_main_scope enforcement was introduced
+
+---
+
 ## [8.19.2] - 2025-10-19
 
 ### Fixed

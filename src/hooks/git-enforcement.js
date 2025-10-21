@@ -49,8 +49,24 @@ function main() {
   function loadConfiguration() {
     log('Loading configuration via unified config-loader');
 
-    // Git Privacy Settings (DEFAULT: true)
-    const gitPrivacy = getSetting('git.privacy', true);
+    // Load user global config first for git.privacy (GLOBAL ENFORCEMENT)
+    const userConfigPath = path.join(os.homedir(), '.claude', 'icc.config.json');
+    let globalGitPrivacy = true; // Default to privacy ON
+
+    if (fs.existsSync(userConfigPath)) {
+      try {
+        const userConfig = JSON.parse(fs.readFileSync(userConfigPath, 'utf8'));
+        if (userConfig.git && userConfig.git.privacy !== undefined) {
+          globalGitPrivacy = userConfig.git.privacy;
+          log(`Loaded global git.privacy from user config: ${globalGitPrivacy}`);
+        }
+      } catch (error) {
+        log(`Failed to load user config: ${error.message}`);
+      }
+    }
+
+    // Git Privacy Settings - Use global as default, allow project override
+    const gitPrivacy = getSetting('git.privacy', globalGitPrivacy);
     const privacyPatterns = getSetting('git.privacy_patterns', [
       "AI", "Claude", "agent",
       "Generated with Claude Code",
@@ -63,14 +79,16 @@ function main() {
     const defaultBranch = getSetting('git.default_branch', 'main');
 
     const config = {
-      git_privacy: gitPrivacy,
-      privacy_patterns: privacyPatterns,
-      branch_protection: branchProtection,
-      require_pr_for_main: requirePRforMain,
-      default_branch: defaultBranch
+      git: {
+        privacy: gitPrivacy,
+        branch_protection: branchProtection,
+        require_pr_for_main: requirePRforMain,
+        default_branch: defaultBranch
+      },
+      privacy_patterns: privacyPatterns
     };
 
-    log(`Configuration loaded: git_privacy=${config.git_privacy}, branch_protection=${config.branch_protection}, require_pr_for_main=${config.require_pr_for_main}, default_branch=${config.default_branch}`);
+    log(`Configuration loaded: git.privacy=${config.git.privacy} (global: ${globalGitPrivacy}), git.branch_protection=${config.git.branch_protection}, git.require_pr_for_main=${config.git.require_pr_for_main}, git.default_branch=${config.git.default_branch}`);
     return config;
   }
 
@@ -143,7 +161,7 @@ function main() {
 
   function enforceBranchProtection(config) {
     // Check if branch protection is enabled
-    if (!config.branch_protection || !config.require_pr_for_main) {
+    if (!config.git.branch_protection || !config.git.require_pr_for_main) {
       log('Branch protection disabled - skipping check');
       return { blocked: false };
     }
@@ -156,11 +174,11 @@ function main() {
     }
 
     // Check if committing to protected branch
-    if (currentBranch === config.default_branch) {
-      log(`BLOCKING: Direct commit to ${config.default_branch} branch not allowed`);
+    if (currentBranch === config.git.default_branch) {
+      log(`BLOCKING: Direct commit to ${config.git.default_branch} branch not allowed`);
 
       const errorMessage = `
-🔒 BRANCH PROTECTION: Direct commits to ${config.default_branch} not allowed
+🔒 BRANCH PROTECTION: Direct commits to ${config.git.default_branch} not allowed
 
 Current branch: ${currentBranch}
 Configuration: git.require_pr_for_main = true
@@ -182,7 +200,7 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
       };
     }
 
-    log(`Branch protection check passed - not on ${config.default_branch} branch`);
+    log(`Branch protection check passed - not on ${config.git.default_branch} branch`);
     return { blocked: false };
   }
 
@@ -204,8 +222,40 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
       };
     }
 
-    // STEP 2: Enforce git privacy (if enabled)
-    if (config.git_privacy !== true) {
+    // STEP 2: BLOCK heredoc commits - they can't be privacy-filtered in PreToolUse
+    if (config.git && config.git.privacy === true && (command.includes('<<') || command.includes('cat <<'))) {
+      log('BLOCKING: Heredoc commit messages cannot be privacy-filtered');
+
+      const blockMessage = `🚫 GIT PRIVACY: Heredoc commit messages blocked
+
+git.privacy enforcement cannot filter heredoc content in PreToolUse hooks.
+
+❌ BLOCKED pattern:
+git commit -m "$(cat <<'EOF' ...)"
+
+✅ ALLOWED alternatives:
+1. Simple one-line message:
+   git commit -m "Your commit message"
+
+2. Multi-line with multiple -m flags:
+   git commit -m "Title" -m "Body line 1" -m "Body line 2"
+
+3. Interactive editor:
+   git commit
+   (Opens editor for message - privacy will be applied on commit)
+
+Why: PreToolUse hooks execute BEFORE heredoc is evaluated, making privacy filtering impossible.`;
+
+      return {
+        modified: false,
+        blocked: true,
+        reason: 'Git Privacy - Heredoc Not Supported',
+        message: blockMessage
+      };
+    }
+
+    // STEP 3: Enforce git privacy (if enabled)
+    if (!config.git || config.git.privacy !== true) {
       log('git_privacy disabled - no modification needed');
       return { modified: false, blocked: false, command };
     }
