@@ -120,6 +120,7 @@
     "blocking_enabled": true,
     "allow_markdown_outside_allowlist": false,
     "allow_markdown_outside_allowlist_agents": null,
+    "allow_parent_allowlist_paths": false,
     "violation_logging": true,
     "auto_correction": true,
     "strict_main_scope": true,

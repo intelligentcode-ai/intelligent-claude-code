@@ -347,36 +347,63 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
   }
 
   function isPathInAllowlist(filePath, allowlist, projectRoot) {
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
+    // Normalize to absolute path
+    const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath);
+    const normalizedFilePath = path.normalize(absolutePath);
+    const normalizedProjectRoot = path.normalize(projectRoot);
 
-    if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
-    }
+    // Extract filename and directory
+    const fileName = path.basename(normalizedFilePath);
+    const fileDir = path.dirname(normalizedFilePath);
 
-    const fileName = path.basename(relativePath);
-    const dirName = path.dirname(relativePath);
+    // Check if file is in project root
+    const isInProjectRoot = path.normalize(fileDir) === normalizedProjectRoot;
 
-    // Check if file is in root and ends with .md
-    if ((dirName === '.' || dirName === '') && fileName.endsWith('.md')) {
-      return true;
-    }
-
-    // Check if file is VERSION in root
-    if ((dirName === '.' || dirName === '') && fileName === 'VERSION') {
-      return true;
-    }
-
-    // Check if file is root config file (icc.config.json or icc.workflow.json)
-    if ((dirName === '.' || dirName === '') &&
-        (fileName === 'icc.config.json' || fileName === 'icc.workflow.json')) {
-      return true;
-    }
-
-    // Check if path starts with any allowlist directory
-    for (const allowedPath of allowlist) {
-      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
+    if (isInProjectRoot) {
+      // Allow root *.md files
+      if (fileName.endsWith('.md')) {
         return true;
+      }
+      // Allow root config/version files
+      if (fileName === 'icc.config.json' || fileName === 'icc.workflow.json' || fileName === 'VERSION') {
+        return true;
+      }
+    }
+
+    // Calculate relative path from project root
+    const relativePath = path.relative(normalizedProjectRoot, normalizedFilePath);
+
+    // Check if path is within project boundaries (doesn't start with '..')
+    const isWithinProject = !relativePath.startsWith('..');
+
+    if (isWithinProject) {
+      // Standard check: path within project root
+      for (const allowedPath of allowlist) {
+        if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
+          return true;
+        }
+      }
+    } else {
+      // Path goes outside project root (contains '../')
+      // Check if allow_parent_allowlist_paths is enabled
+      const allowParentPaths = getSetting('enforcement.allow_parent_allowlist_paths', false);
+
+      if (allowParentPaths) {
+        // Split normalized path into components
+        const pathParts = normalizedFilePath.split(path.sep);
+
+        // Check if ANY directory component matches an allowlist directory
+        for (const allowedPath of allowlist) {
+          const allowedIndex = pathParts.indexOf(allowedPath);
+          if (allowedIndex >= 0) {
+            // Found allowlist directory in path
+            // Verify file is actually under this directory (not just same name in path)
+            const reconstructedPath = pathParts.slice(0, allowedIndex + 1).join(path.sep);
+            if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
+              return true;
+            }
+          }
+        }
       }
     }
 
@@ -564,14 +591,41 @@ Use Task tool to create specialist agent via AgentTask.`
     }
 
     // Not in allowlist = blocked
+    // Determine if this is a parent path issue
+    const normalizedFilePath = path.normalize(path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath));
+    const normalizedProjectRoot = path.normalize(projectRoot);
+    const relativePath = path.relative(normalizedProjectRoot, normalizedFilePath);
+    const isParentPath = relativePath.startsWith('..');
+
+    let reason = 'File path not in PM allowlist';
+    let suggestion = 'Or create the file in an appropriate allowlist directory.';
+
+    if (isParentPath) {
+      // Check if the path contains an allowlist directory name
+      const pathParts = normalizedFilePath.split(path.sep);
+      const hasAllowlistDir = allowlist.some(allowed => pathParts.includes(allowed));
+
+      if (hasAllowlistDir) {
+        reason = 'File is in parent/sibling path outside project root';
+        suggestion = `To allow writes to allowlist directories in parent paths, enable:
+enforcement.allow_parent_allowlist_paths = true in icc.config.json
+
+Or create the file within the project root.`;
+      } else {
+        reason = 'File is in parent/sibling path outside project root AND not in allowlist directory';
+      }
+    }
+
     return {
       allowed: false,
       message: `🚫 PM role is coordination only - create Agents using AgentTasks for technical work
 
 Blocked: ${filePath}
-Reason: File path not in PM allowlist
+Reason: ${reason}
 
 Allowed directories: ${allowlist.join(', ')}, root *.md files
+
+${suggestion}
 Use Task tool to create specialist agent via AgentTask.`
     };
   }

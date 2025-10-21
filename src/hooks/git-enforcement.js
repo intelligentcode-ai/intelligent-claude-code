@@ -222,9 +222,11 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
       };
     }
 
-    // STEP 2: BLOCK heredoc commits - they can't be privacy-filtered in PreToolUse
-    if (config.git && config.git.privacy === true && (command.includes('<<') || command.includes('cat <<'))) {
-      log('BLOCKING: Heredoc commit messages cannot be privacy-filtered');
+    // STEP 2: BLOCK heredoc in git commit commands only - they can't be privacy-filtered in PreToolUse
+    const isGitCommit = command.trim().startsWith('git commit');
+
+    if (config.git && config.git.privacy === true && isGitCommit && (command.includes('<<') || command.includes('cat <<'))) {
+      log('BLOCKING: Heredoc in git commit messages cannot be privacy-filtered');
 
       const blockMessage = `🚫 GIT PRIVACY: Heredoc commit messages blocked
 
