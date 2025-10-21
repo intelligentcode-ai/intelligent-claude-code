@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.7] - 2025-10-21
+
+### Fixed
+- **PM Constraints: Fix validateMarkdownOutsideAllowlist for Parent Allowlist Paths**
+  - Fixed validateMarkdownOutsideAllowlist not respecting allow_parent_allowlist_paths setting
+  - Markdown files in parent allowlist directories were incorrectly blocked even with allow_parent_allowlist_paths: true
+  - Added PRIORITY 3.5 check that detects parent paths (relativePath.startsWith('..'))
+  - Implements same path component matching logic as isPathInAllowlist function
+  - When allow_parent_allowlist_paths enabled, allows markdown in parent stories/, bugs/, memory/, docs/ directories
+  - Still blocks markdown in parent non-allowlist directories (src/, lib/, etc.)
+  - Root cause: path.relative() generated ../../stories/file.md which didn't match startsWith('stories/')
+  - Impact: Read/Write operations work correctly for parent allowlist markdown files
+  - Example: Can now read/write ~/parent/stories/file.md from ~/parent/subproject/ when allow_parent_allowlist_paths: true
+
+---
+
 ## [8.19.6] - 2025-10-21
 
 ### Fixed
