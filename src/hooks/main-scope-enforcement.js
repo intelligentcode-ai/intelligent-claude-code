@@ -141,6 +141,55 @@ function main() {
     return false;
   }
 
+  function isAllowedMkdirCommand(command, projectRoot) {
+    // Check if command is mkdir
+    if (!command.trim().startsWith('mkdir')) {
+      return false;
+    }
+
+    // Load configuration
+    const config = loadConfig();
+    const allowlist = [
+      config.paths.story_path || 'stories',
+      config.paths.bug_path || 'bugs',
+      config.paths.memory_path || 'memory',
+      config.paths.docs_path || 'docs',
+      'agenttasks',
+      'summaries'
+    ];
+
+    // Extract directory path from mkdir command
+    // Handles: mkdir dir, mkdir -p dir, mkdir -p /absolute/path/dir
+    const mkdirMatch = command.match(/mkdir\s+(?:-p\s+)?(.+?)(?:\s|$)/);
+    if (!mkdirMatch) {
+      return false;
+    }
+
+    let targetPath = mkdirMatch[1].trim();
+
+    // Remove quotes if present
+    targetPath = targetPath.replace(/^["']|["']$/g, '');
+
+    // Normalize to absolute path
+    const absolutePath = path.isAbsolute(targetPath)
+      ? targetPath
+      : path.join(projectRoot, targetPath);
+
+    const normalizedPath = path.normalize(absolutePath);
+
+    // Split path into components
+    const pathParts = normalizedPath.split(path.sep);
+
+    // Check if ANY path component matches an allowlist directory
+    for (const allowedDir of allowlist) {
+      if (pathParts.includes(allowedDir)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   function blockOperation(reason, tool, detail = '') {
     const customMessage = getSetting('enforcement.strict_main_scope_message',
       'Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.');
@@ -158,6 +207,7 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
 ✅ ALLOWED: Read-only bash (git status, ls, cat, grep, etc.)
+✅ ALLOWED: mkdir for allowlist directories (stories/, bugs/, memory/, docs/)
 
 ❌ BLOCKED: All technical operations (infrastructure, build, deploy, scripting)
 
@@ -264,14 +314,22 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
     // Check Bash operations
     if (tool === 'Bash') {
       const command = toolInput.command || '';
+
       if (isReadOnlyCoordinationCommand(command)) {
         log(`Read-only coordination command allowed: ${command}`);
         console.log(JSON.stringify({ continue: true }));
         process.exit(0);
-      } else {
-        // Block technical bash commands
-        return blockOperation('Technical bash commands not allowed in main scope', tool, command);
       }
+
+      // Check if mkdir for allowlist directory
+      if (isAllowedMkdirCommand(command, projectRoot)) {
+        log(`Mkdir for allowlist directory allowed: ${command}`);
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
+      }
+
+      // Block all other technical bash commands
+      return blockOperation('Technical bash commands not allowed in main scope', tool, command);
     }
 
     // Block all other operations
