@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.6] - 2025-10-21
+
+### Fixed
+- **Main Scope Enforcement: Allow mkdir for Allowlist Directories**
+  - Added validation to allow `mkdir` commands when creating allowlist directories (stories/, bugs/, memory/, docs/, agenttasks/, summaries/)
+  - Previously blocked all mkdir commands as "technical bash commands"
+  - New `isAllowedMkdirCommand` function validates target directory against allowlist
+  - Handles both relative and absolute paths, with or without `-p` flag
+  - Still blocks mkdir for non-allowlist directories (src/, lib/, build/, etc.)
+  - Impact: PM can now create coordination directory structure without agents
+
+- **Task Tool Execution Reminder: Convert to UserPromptSubmit Hook**
+  - Converted task-tool-execution-reminder.js from PreToolUse to UserPromptSubmit hook
+  - Fixed API Error 400 caused by invalid hookSpecificOutput in PreToolUse hook
+  - UserPromptSubmit hooks CAN inject reminders via additionalContext field
+  - Reminder now shown BEFORE Task tool usage (proactive warning about synchronous execution)
+  - Added detection logic for @Role mentions and work request patterns
+  - Updated Ansible and PowerShell installation scripts for UserPromptSubmit registration
+  - Impact: Synchronous execution reminder shown before agent invocations, no JSON validation errors
+
+---
+
 ## [8.19.5] - 2025-10-21
 
 ### Fixed
