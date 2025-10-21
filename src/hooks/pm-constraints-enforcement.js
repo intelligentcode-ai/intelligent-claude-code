@@ -528,6 +528,35 @@ Please create summary files in the summaries/ directory to keep project root cle
       }
     }
 
+    // PRIORITY 3.5: Check parent paths if allow_parent_allowlist_paths enabled
+    // Path goes outside project root (contains '../')
+    const isOutsideProject = relativePath.startsWith('..');
+    if (isOutsideProject) {
+      const allowParentPaths = getSetting('enforcement.allow_parent_allowlist_paths', false);
+
+      if (allowParentPaths) {
+        // Normalize to absolute path for component checking
+        const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath);
+        const normalizedFilePath = path.normalize(absolutePath);
+
+        // Split normalized path into components
+        const pathParts = normalizedFilePath.split(path.sep);
+
+        // Check if ANY directory component matches an allowlist directory
+        for (const allowedPath of allowlist) {
+          const allowedIndex = pathParts.indexOf(allowedPath);
+          if (allowedIndex >= 0) {
+            // Found allowlist directory in path
+            // Verify file is actually under this directory (not just same name in path)
+            const reconstructedPath = pathParts.slice(0, allowedIndex + 1).join(path.sep);
+            if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
+              return { allowed: true };
+            }
+          }
+        }
+      }
+    }
+
     // PRIORITY 4: File is OUTSIDE allowlist - now check setting
     let allowMarkdown;
 
@@ -791,11 +820,12 @@ Use Task tool to create specialist agent via AgentTask.`
       }
     }
 
-    // Check for markdown files outside allowlist (applies to ALL roles)
-    const isAgentContext = !isPMRole(hookInput);
-    const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext);
-    if (!markdownValidation.allowed) {
-      log(`Markdown file outside allowlist blocked: ${filePath}`);
+    // Check for markdown files outside allowlist (applies to Write/Edit/Update only, not Read)
+    if (tool !== 'Read' && filePath.endsWith('.md')) {
+      const isAgentContext = !isPMRole(hookInput);
+      const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext);
+      if (!markdownValidation.allowed) {
+        log(`Markdown file outside allowlist blocked: ${filePath}`);
 
       const blockingEnabled = getBlockingEnabled();
 
@@ -818,6 +848,7 @@ Use Task tool to create specialist agent via AgentTask.`
         log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
         console.log(JSON.stringify({ continue: true }));
         process.exit(0);
+      }
       }
     }
 
