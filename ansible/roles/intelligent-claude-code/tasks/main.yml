@@ -212,6 +212,8 @@
     - git-enforcement.js
     - summary-file-enforcement.js
     - agent-infrastructure-protection.js
+    - constraint-display-enforcement.js
+    - task-tool-execution-reminder.js
     - subagent-stop.js
     - stop.js
   ignore_errors: yes
@@ -394,6 +396,10 @@
               command: "node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js"
               timeout: 5000
               failureMode: 'allow'
+            - type: 'command'
+              command: "node {{ claude_install_path }}/hooks/task-tool-execution-reminder.js"
+              timeout: 5000
+              failureMode: 'allow'
 
     - name: Define SubagentStop hook
       set_fact:
@@ -427,13 +433,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "UserPromptSubmit, PreToolUse (main scope + scope + memory + git + PM + infrastructure), SubagentStop, Stop hooks configured in settings.json - behavioral guidance, main scope enforcement, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, agent cleanup, and session cleanup active"
+        msg: "UserPromptSubmit, PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder), SubagentStop, Stop hooks configured in settings.json - behavioral guidance, main scope enforcement, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, Task tool synchronous execution reminder, agent cleanup, and session cleanup active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with UserPromptSubmit, PreToolUse (main scope + scope + memory + git + PM + infrastructure), SubagentStop, Stop hooks - behavioral guidance, main scope enforcement, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, agent cleanup, and session cleanup active"
+    msg: "Settings file created with UserPromptSubmit, PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder), SubagentStop, Stop hooks - behavioral guidance, main scope enforcement, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, Task tool synchronous execution reminder, agent cleanup, and session cleanup active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -451,5 +457,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: SessionStart compaction + UserPromptSubmit guidance + PreToolUse (main scope + scope + memory + git + PM + infrastructure) + SubagentStop cleanup + Stop cleanup active"
+      - "🔒 Behavioral Hooks: SessionStart compaction + UserPromptSubmit guidance + PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder) + SubagentStop cleanup + Stop cleanup active"
       - "🚀 Use @Role communication to activate team members"

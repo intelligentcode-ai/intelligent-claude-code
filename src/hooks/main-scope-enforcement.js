@@ -108,9 +108,9 @@ function main() {
       return true;
     }
 
-    // Check if file is root config file
+    // Check if file is root config/version file
     if ((dirName === '.' || dirName === '') &&
-        (fileName === 'icc.config.json' || fileName === 'icc.workflow.json')) {
+        (fileName === 'icc.config.json' || fileName === 'icc.workflow.json' || fileName === 'VERSION')) {
       return true;
     }
 
@@ -153,8 +153,10 @@ ${detail ? `Detail: ${detail}` : ''}
 ${customMessage}
 
 Main scope is limited to coordination work:
-✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite
+✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite, WebFetch
+✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/)
+✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
 ✅ ALLOWED: Read-only bash (git status, ls, cat, grep, etc.)
 
 ❌ BLOCKED: All technical operations (infrastructure, build, deploy, scripting)
@@ -231,8 +233,15 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
       process.exit(0);
     }
 
+    // Allow ALL MCP tools (read-only operations like memory search, docs fetch)
+    if (tool && tool.startsWith('mcp__')) {
+      log(`MCP tool allowed in main scope: ${tool}`);
+      console.log(JSON.stringify({ continue: true }));
+      process.exit(0);
+    }
+
     // Allow coordination tools
-    const coordinationTools = ['Read', 'Grep', 'Glob', 'Task', 'TodoWrite'];
+    const coordinationTools = ['Read', 'Grep', 'Glob', 'Task', 'TodoWrite', 'WebFetch'];
     if (coordinationTools.includes(tool)) {
       log(`Coordination tool allowed: ${tool}`);
       console.log(JSON.stringify({ continue: true }));
