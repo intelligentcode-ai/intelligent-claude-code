@@ -67,6 +67,79 @@ function main() {
     return false;
   }
 
+  /**
+   * Check if command is a read-only infrastructure operation
+   */
+  function isReadOnlyInfrastructureCommand(command) {
+    // Read-only infrastructure commands (allowed in main scope)
+    const readOnlyPatterns = [
+      // Kubernetes read operations
+      'kubectl get', 'kubectl describe', 'kubectl logs', 'kubectl exec',
+      // Docker read operations
+      'docker ps', 'docker images', 'docker logs', 'docker inspect',
+      // HTTP requests (ALL allowed - for docs, API data, etc.)
+      'curl', 'wget',
+      // NPM/package manager reads
+      'npm list', 'npm view', 'npm search',
+      'pip list', 'pip show',
+      // Database read operations
+      'mysql -e "SELECT', 'psql -c "SELECT',
+      // System monitoring
+      'systemctl status', 'service status'
+    ];
+
+    const cmd = command.trim();
+
+    // Check if command matches read-only patterns
+    for (const pattern of readOnlyPatterns) {
+      if (cmd.startsWith(pattern)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Check if command is a modifying infrastructure operation
+   */
+  function isModifyingInfrastructureCommand(command) {
+    // Commands that MODIFY external systems (blocked in main scope)
+    const modifyingCommands = [
+      // SSH (always modifying - can execute commands)
+      'ssh', 'scp', 'rsync',
+      // Kubernetes modifications
+      'kubectl apply', 'kubectl create', 'kubectl delete', 'kubectl edit', 'kubectl patch', 'kubectl scale',
+      // Docker modifications
+      'docker run', 'docker start', 'docker stop', 'docker rm', 'docker build', 'docker push',
+      // Infrastructure as code
+      'terraform', 'ansible', 'ansible-playbook',
+      // Package installations
+      'npm install', 'npm uninstall', 'yarn add', 'yarn remove',
+      'pip install', 'pip uninstall',
+      'gem install', 'cargo install',
+      // Build systems
+      'make', 'cmake', 'gradle', 'mvn',
+      // System service modifications
+      'systemctl start', 'systemctl stop', 'systemctl restart',
+      'service start', 'service stop', 'service restart',
+      // Database modifications
+      'mysql -e "INSERT', 'mysql -e "UPDATE', 'mysql -e "DELETE', 'mysql -e "DROP',
+      'psql -c "INSERT', 'psql -c "UPDATE', 'psql -c "DELETE', 'psql -c "DROP'
+    ];
+
+    const cmd = command.trim();
+
+    // Check if command starts with modifying operation
+    for (const modifying of modifyingCommands) {
+      if (cmd.startsWith(modifying)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   try {
     // Parse hook input
     const hookInput = parseHookInput(log);
@@ -152,11 +225,11 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow (git add/commit/push/pull/branch/checkout/merge/reset/stash/tag/remote)
-✅ ALLOWED: Read-only bash (ls, cat, grep, less, more, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
-❌ BLOCKED: All technical operations (infrastructure, build, deploy, scripting)
+❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
+❌ BLOCKED: All other technical operations
 
 To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.json`, log);
       }
@@ -164,14 +237,50 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
 
     // Check Bash operations
     if (tool === 'Bash') {
-      if (isAllowedCoordinationCommand(command)) {
-        log(`Allowed coordination command: ${command}`);
+      const bashCommand = command || '';
+
+      // CRITICAL: Block modifying infrastructure commands
+      if (isModifyingInfrastructureCommand(bashCommand)) {
+        return blockOperation(
+          'Modifying infrastructure commands not allowed in main scope',
+          tool,
+          `The command modifies external systems or infrastructure.
+
+Main scope CANNOT modify infrastructure:
+❌ SSH to servers (ssh always blocked - can execute commands)
+❌ Create/modify containers (docker run, kubectl apply)
+❌ Install packages (npm install, pip install)
+❌ Deploy infrastructure (terraform, ansible)
+❌ Modify databases (INSERT, UPDATE, DELETE)
+
+Main scope CAN read infrastructure:
+✅ kubectl get, kubectl logs, kubectl describe
+✅ docker ps, docker logs, docker inspect
+✅ curl/wget (ALL HTTP requests allowed for docs, API data)
+✅ npm list, pip list
+
+To execute modifying commands:
+1. Create AgentTask via Task tool
+2. Assign to @DevOps-Engineer or @System-Engineer
+3. Agent executes in isolated context`
+        );
+      }
+
+      // Allow read-only infrastructure commands
+      if (isReadOnlyInfrastructureCommand(bashCommand)) {
+        log(`Read-only infrastructure command allowed: ${bashCommand}`);
+        return allowOperation(log);
+      }
+
+      // Then check if allowed coordination command
+      if (isAllowedCoordinationCommand(bashCommand)) {
+        log(`Allowed coordination command: ${bashCommand}`);
         return allowOperation(log);
       }
 
       // Check if mkdir for allowlist directory
-      if (isAllowedMkdirCommand(command, projectRoot)) {
-        log(`Mkdir for allowlist directory allowed: ${command}`);
+      if (isAllowedMkdirCommand(bashCommand, projectRoot)) {
+        log(`Mkdir for allowlist directory allowed: ${bashCommand}`);
         return allowOperation(log);
       }
 
@@ -182,7 +291,7 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
       return blockOperation(`🚫 STRICT MODE: Technical bash commands not allowed in main scope
 
 Tool: ${tool}
-Detail: ${command}
+Detail: ${bashCommand}
 
 ${customMessage}
 
@@ -192,11 +301,11 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow (git add/commit/push/pull/branch/checkout/merge/reset/stash/tag/remote)
-✅ ALLOWED: Read-only bash (ls, cat, grep, less, more, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
-❌ BLOCKED: All technical operations (infrastructure, build, deploy, scripting)
+❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
+❌ BLOCKED: All other technical operations
 
 To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.json`, log);
     }
@@ -217,11 +326,11 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow (git add/commit/push/pull/branch/checkout/merge/reset/stash/tag/remote)
-✅ ALLOWED: Read-only bash (ls, cat, grep, less, more, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
-❌ BLOCKED: All technical operations (infrastructure, build, deploy, scripting)
+❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
+❌ BLOCKED: All other technical operations
 
 To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.json`, log);
 

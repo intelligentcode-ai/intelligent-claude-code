@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.15] - 2025-10-22
+
+### Security
+- **CRITICAL: Infrastructure Command Blocking in Main Scope**
+  - Added distinction between read-only and modifying infrastructure commands
+  - Blocked: SSH (always - can execute remote commands)
+  - Blocked: Infrastructure modifications (kubectl apply, docker run, terraform, ansible)
+  - Blocked: Package installations (npm install, pip install, gem install)
+  - Blocked: Build systems (make, cmake, gradle, mvn)
+  - Blocked: Database modifications (INSERT, UPDATE, DELETE, DROP)
+  - Allowed: Read-only operations (kubectl get/logs, docker ps/logs, systemctl status)
+  - Allowed: HTTP requests (curl/wget - ALL methods for docs, API data, webhooks)
+  - Allowed: Package listing (npm list, pip list)
+
+### Impact
+- Main scope cannot access production infrastructure via SSH
+- Main scope cannot modify containers, Kubernetes resources, or databases
+- Main scope CAN monitor and inspect infrastructure (read-only)
+- Main scope CAN fetch documentation and API data via HTTP
+- Infrastructure modifications MUST go through AgentTask + specialist agents
+- Critical security vulnerability closed
+
+---
+
 ## [8.19.14] - 2025-10-22
 
 ### Added
