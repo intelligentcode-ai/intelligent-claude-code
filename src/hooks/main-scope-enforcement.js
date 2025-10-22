@@ -304,7 +304,7 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
     }
 
     // Allow coordination tools
-    const coordinationTools = ['Read', 'Grep', 'Glob', 'Task', 'TodoWrite', 'WebFetch'];
+    const coordinationTools = ['Read', 'Grep', 'Glob', 'Task', 'TodoWrite', 'WebFetch', 'BashOutput', 'KillShell'];
     if (coordinationTools.includes(tool)) {
       log(`Coordination tool allowed: ${tool}`);
       console.log(JSON.stringify({ continue: true }));
