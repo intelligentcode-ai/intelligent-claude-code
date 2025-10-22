@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.12] - 2025-10-22
+
+### Fixed
+- **CRITICAL: Auto-Create ~/.claude/tmp Directory in Enforcement Hooks**
+  - Added directory creation to main-scope-enforcement.js checkAgentMarker() function
+  - Added directory creation to pm-constraints-enforcement.js isPMRole() function
+  - Root cause: Hooks expected ~/.claude/tmp to exist but didn't create it
+  - Impact: Agent detection failed silently, blocking ALL agent execution in external projects
+  - Evidence: "Main scope detected - no marker file" despite agents executing correctly
+  - Critical fix: Agents now work in ANY project, not just intelligent-claude-code
+  - Directory created with { recursive: true } before first marker file access
+
+### Impact
+- Agents can now execute successfully in ALL external projects
+- Agent context detection works reliably across all environments
+- System fully functional outside intelligent-claude-code repository
+- No more silent agent blocking due to missing directory
+
+---
+
 ## [8.19.11] - 2025-10-22
 
 ### Fixed

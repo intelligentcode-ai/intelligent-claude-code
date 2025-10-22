@@ -58,6 +58,13 @@ function main() {
     const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
 
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+
+    // CRITICAL: Ensure marker directory exists before reading markers
+    if (!fs.existsSync(markerDir)) {
+      fs.mkdirSync(markerDir, { recursive: true });
+      log(`Created marker directory: ${markerDir}`);
+    }
+
     const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
 
     try {
