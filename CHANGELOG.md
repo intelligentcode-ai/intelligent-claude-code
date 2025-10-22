@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.9] - 2025-10-22
+
+### Fixed
+- **PM Constraints: Fix validateSummaryFile Blocking Files Already in summaries/ Directory**
+  - Fixed bug where validateSummaryFile blocked files that were already in the summaries/ directory
+  - Function now checks if file is already in summaries/ before blocking
+  - Added relative path normalization for absolute paths
+  - Cross-platform support for both `/` and `\` path separators
+  - Impact: Agents can now successfully write summary files to summaries/ directory without being blocked
+
+---
+
 ## [8.19.8] - 2025-10-22
 
 ### Fixed
