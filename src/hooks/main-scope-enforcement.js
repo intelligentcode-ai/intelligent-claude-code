@@ -131,15 +131,21 @@ function main() {
     return false;
   }
 
-  function isReadOnlyCoordinationCommand(command) {
-    const readOnlyCommands = [
+  function isAllowedCoordinationCommand(command) {
+    // Allowed commands for coordination work (includes git workflow)
+    const allowedCommands = [
+      // Git operations (workflow commands)
       'git status', 'git log', 'git diff', 'git show',
+      'git add', 'git commit', 'git push', 'git pull',
+      'git branch', 'git checkout', 'git fetch', 'git merge',
+      'git reset', 'git stash', 'git tag',
+      // Read-only information commands
       'ls', 'find', 'cat', 'head', 'tail', 'grep',
       'date', 'pwd', 'whoami', 'echo'
     ];
 
-    // Check if command starts with any read-only command
-    for (const allowed of readOnlyCommands) {
+    // Check if command starts with any allowed command
+    for (const allowed of allowedCommands) {
       if (command.trim().startsWith(allowed)) {
         return true;
       }
@@ -213,7 +219,7 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Read-only bash (git status, ls, cat, grep, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, etc.)
 ✅ ALLOWED: mkdir for allowlist directories (stories/, bugs/, memory/, docs/)
 
 ❌ BLOCKED: All technical operations (infrastructure, build, deploy, scripting)
@@ -322,8 +328,8 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
     if (tool === 'Bash') {
       const command = toolInput.command || '';
 
-      if (isReadOnlyCoordinationCommand(command)) {
-        log(`Read-only coordination command allowed: ${command}`);
+      if (isAllowedCoordinationCommand(command)) {
+        log(`Allowed coordination command: ${command}`);
         console.log(JSON.stringify({ continue: true }));
         process.exit(0);
       }

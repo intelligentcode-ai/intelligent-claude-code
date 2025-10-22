@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.13] - 2025-10-22
+
+### Fixed
+- **CRITICAL: Fix main-scope-enforcement.js Blocking All Git Operations**
+  - Hook was blocking ALL git workflow operations (git add, git commit, git push, etc.)
+  - Renamed `isReadOnlyCoordinationCommand()` to `isAllowedCoordinationCommand()`
+  - Added git workflow commands to allowed list: git add, git commit, git push, git pull, git branch, git checkout, git fetch, git merge, git reset, git stash, git tag
+  - Updated block message to clarify git workflow commands are allowed
+  - Root cause: Function only allowed read-only git commands (status, log, diff, show)
+  - Impact: Agents and main scope can now perform normal git workflow operations
+  - Critical fix: Complete git workflow restored - commits, pushes, branches all work
+
+### Impact
+- Git workflow fully functional in all contexts (main scope and agents)
+- Normal commit/push operations no longer blocked
+- AgentTask execution can complete git operations successfully
+- Fourth critical hook bug fixed in v8.19.x series
+
+---
+
 ## [8.19.12] - 2025-10-22
 
 ### Fixed
