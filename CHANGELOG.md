@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.8] - 2025-10-22
+
+### Fixed
+- **Summary File Enforcement: Add 12 Missing File Type Patterns**
+  - Expanded summaryPatterns array from 9 to 21 patterns to catch additional summary-type files
+  - Added patterns: deployment, verification, configuration, post-mortem, postmortem, monitoring, agenttask, troubleshoot, diagnostic, investigation, incident, resolution
+  - Ensures all summary-type files are properly redirected to summaries/ directory
+  - Prevents summary files from cluttering project root with better pattern coverage
+
+---
+
 ## [8.19.7] - 2025-10-21
 
 ### Fixed
