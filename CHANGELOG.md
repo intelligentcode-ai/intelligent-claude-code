@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.10] - 2025-10-22
+
+### Added
+- **Agent File Location Standards: Universal File Location Guidance for All Agents**
+  - Created file-location-standards.md behavior (127 lines) with comprehensive file type mapping
+  - Summary/report files → summaries/ (pattern: /summary|report|fix|analysis|review|assessment|status|progress|update|deployment|verification|configuration|post-mortem|monitoring|agenttask|troubleshoot|diagnostic|investigation|incident|resolution/i)
+  - Stories/epics → stories/ (6+ points only), bugs → bugs/, memory → memory/[topic]/, docs → docs/architecture/
+  - Pre-write validation rules enforce correct locations before file creation
+  - Config integration via getSetting() for flexible path resolution
+  - All 13 agents updated with @../behaviors/file-location-standards.md import (100% coverage)
+
+### Fixed
+- **Requirements-Engineer: Add Epic and Story Management Section**
+  - Epic creation rules for work requiring 6+ points or multiple stories
+  - Epic breakdown required into individual stories ≤5 points each
+  - Story creation size guidelines (3-5 points for direct implementation)
+  - File location standards preventing summaries in docs/ directory
+  - Clear distinction between epic files (EPIC-NNN-*) and story files (STORY-NNN-*)
+
+### Impact
+- Agents now write files to correct locations (summaries/ not docs/)
+- Requirements-Engineer creates properly-sized epics with breakdown
+- Universal file location compliance across all agent operations
+- Pre-write validation prevents incorrect file placement
+
+---
+
 ## [8.19.9] - 2025-10-22
 
 ### Fixed

@@ -6,6 +6,7 @@ tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
 
 ## Imports
 @../behaviors/config-system.md
+@../behaviors/file-location-standards.md
 
 # AI Engineer Agent
 
