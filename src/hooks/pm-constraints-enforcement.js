@@ -451,6 +451,18 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
       return { allowed: true };
     }
 
+    // Normalize to relative path if absolute
+    let relativePath = filePath;
+    if (path.isAbsolute(filePath)) {
+      relativePath = path.relative(projectRoot, filePath);
+    }
+
+    // Check if file is already in summaries/ directory
+    if (relativePath.startsWith('summaries/') || relativePath.startsWith('summaries\\')) {
+      return { allowed: true };  // Already in correct location!
+    }
+
+    // File is summary-type but NOT in summaries/ - block it
     const fileName = path.basename(filePath);
     const isAllCapitals = fileName === fileName.toUpperCase();
     const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
