@@ -1,90 +1,68 @@
 #!/usr/bin/env node
 
+/**
+ * Summary File Enforcement Hook
+ *
+ * Ensures summary files are created in summaries/ directory.
+ * Blocks ALL-CAPITALS filenames (except well-known exceptions).
+ */
+
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
-// Load unified config
+// Shared libraries
+const { createLogger } = require('./lib/logging');
+const { parseHookInput, extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
 
 function main() {
-  const logDir = path.join(os.homedir(), '.claude', 'logs');
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-summary-enforcement.log`);
-
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-
-  function log(message) {
-    const timestamp = new Date().toISOString();
-    const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync(logFile, logMessage);
-  }
-
-  const standardOutput = {
-    continue: true,
-    suppressOutput: true
-  };
+  const log = createLogger('summary-enforcement');
 
   try {
-    let inputData = '';
-
-    if (process.argv[2]) {
-      inputData = process.argv[2];
-    } else if (process.env.HOOK_INPUT) {
-      inputData = process.env.HOOK_INPUT;
-    } else if (!process.stdin.isTTY) {
-      try {
-        const stdinBuffer = fs.readFileSync(0, 'utf8');
-        if (stdinBuffer && stdinBuffer.trim()) {
-          inputData = stdinBuffer;
-        }
-      } catch (error) {
-        console.log(JSON.stringify(standardOutput));
-        process.exit(0);
-      }
+    // Parse hook input
+    const hookInput = parseHookInput(log);
+    if (!hookInput) {
+      return allowOperation(log, true); // Suppress output
     }
 
-    if (!inputData.trim()) {
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
+    // Extract tool information
+    const { tool, filePath } = extractToolInfo(hookInput);
+
+    if (!filePath) {
+      return allowOperation(log, true);
     }
 
-    let hookInput;
-    try {
-      hookInput = JSON.parse(inputData);
-    } catch (error) {
-      log(`JSON parse error: ${error.message}`);
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
+    // CRITICAL: Only enforce on Write/Edit operations, NOT Read operations
+    if (tool !== 'Write' && tool !== 'Edit') {
+      return allowOperation(log, true);
     }
 
-    // Check all tool operations for file paths, not just Write/Edit
-    const tool_name = hookInput.tool_name;
-    const file_path = hookInput.tool_input?.file_path;
-
-    if (!file_path) {
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
-    }
-
-    // Get project root from hookInput.cwd or fallback to process.cwd()
+    // Get project root from hookInput.cwd or fallback
     const projectRoot = hookInput.cwd || process.cwd();
 
     // Get settings
     const strictMode = getSetting('development.file_management_strict', true);
     const summariesPath = getSetting('paths.summaries_path', 'summaries');
 
-    log(`Checking file: ${file_path}`);
+    log(`Checking file: ${filePath}`);
     log(`Strict mode: ${strictMode}`);
     log(`Summaries path: ${summariesPath}`);
     log(`Project root: ${projectRoot}`);
 
     // Normalize to relative path if absolute
-    let relativePath = file_path;
-    if (path.isAbsolute(file_path)) {
-      relativePath = path.relative(projectRoot, file_path);
+    let relativePath = filePath;
+    if (path.isAbsolute(filePath)) {
+      relativePath = path.relative(projectRoot, filePath);
+    }
+
+    // Exclude stories/ directory - STORY files belong in stories/, not summaries/
+    if (relativePath.startsWith('stories/') || relativePath.includes('/stories/')) {
+      return allowOperation(log, true);
+    }
+
+    // Exclude bugs/ directory - BUG files belong in bugs/, not summaries/
+    if (relativePath.startsWith('bugs/') || relativePath.includes('/bugs/')) {
+      return allowOperation(log, true);
     }
 
     // Check if file is summary-type
@@ -103,8 +81,7 @@ function main() {
 
     if (!isSummaryFile) {
       // Not a summary file, allow
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
+      return allowOperation(log, true);
     }
 
     log(`Summary file detected: ${fileName}`);
@@ -141,11 +118,8 @@ function main() {
 
       // Suggest lowercase alternative
       const suggestedName = fileName.toLowerCase();
-      const suggestedPath = path.join(summariesPath, suggestedName);
 
-      console.log(JSON.stringify({
-        continue: false,
-        displayToUser: `🚫 ALL-CAPITALS filenames are not allowed in summaries/
+      const message = `🚫 ALL-CAPITALS filenames are not allowed in summaries/
 
 Blocked filename: ${fileName}
 Suggested alternative: ${suggestedName}
@@ -153,9 +127,13 @@ Suggested alternative: ${suggestedName}
 Well-known exceptions allowed:
 ${allowedAllCapsFiles.join(', ')}
 
-Please use lowercase or mixed-case filenames for better readability.`
-      }));
-      process.exit(0);
+Please use lowercase or mixed-case filenames for better readability.`;
+
+      const response = {
+        continue: false,
+        displayToUser: message
+      };
+      return sendResponse(response, 0, log);
     }
 
     // Check if file is in summaries directory
@@ -167,8 +145,7 @@ Please use lowercase or mixed-case filenames for better readability.`
     if (isInSummariesDir) {
       // File is in summaries directory, allow
       log(`File in summaries directory - allowed`);
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
+      return allowOperation(log, true);
     }
 
     // Summary file outside summaries directory
@@ -185,9 +162,7 @@ Please use lowercase or mixed-case filenames for better readability.`
         log('Created summaries/ directory for summary file redirection');
       }
 
-      console.log(JSON.stringify({
-        continue: false,
-        displayToUser: `🚫 Summary files must be created in summaries/ directory
+      const message = `🚫 Summary files must be created in summaries/ directory
 
 File management strict mode is enabled.
 
@@ -196,20 +171,22 @@ Suggested: ${suggestedPath}
 
 Please create summary files in the summaries/ directory to keep project root clean.
 
-To disable this enforcement, set development.file_management_strict: false in icc.config.json`
-      }));
-      process.exit(0);
+To disable this enforcement, set development.file_management_strict: false in icc.config.json`;
+
+      const response = {
+        continue: false,
+        displayToUser: message
+      };
+      return sendResponse(response, 0, log);
     } else {
       // Allow with warning
       log(`WARNING: Summary file outside summaries directory (permissive mode)`);
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
+      return allowOperation(log, true);
     }
 
   } catch (error) {
     log(`Error: ${error.message}`);
-    console.log(JSON.stringify(standardOutput));
-    process.exit(0);
+    allowOperation(log, true);
   }
 }
 

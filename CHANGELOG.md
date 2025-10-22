@@ -7,6 +7,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.14] - 2025-10-22
+
+### Added
+- **Hook Shared Libraries: Comprehensive Code Optimization**
+  - Created 6 shared libraries eliminating 498+ lines of duplication (27.6% reduction)
+  - `lib/logging.js` - Unified logging with auto-cleanup
+  - `lib/marker-detection.js` - Agent/PM context detection
+  - `lib/path-utils.js` - Path validation and allowlist checking
+  - `lib/command-validation.js` - Bash command validation
+  - `lib/file-validation.js` - File type validation
+  - `lib/hook-helpers.js` - Common hook patterns
+  - `lib/context-detection.js` - Development context detection
+
+- **Config Protection Hook**
+  - Blocks ALL modifications to icc.config.json and icc.workflow.json
+  - Prevents agents from disabling enforcement or changing autonomy levels
+  - User-only configuration changes enforced
+
+### Fixed
+- **CRITICAL: Git Operations Blocking (v8.19.13 carry-over)**
+  - Added complete git workflow commands to allowed list
+  - Fixed: git add, commit, push, pull, branch, checkout, fetch, merge, reset, stash, tag
+  - Renamed isReadOnlyCoordinationCommand → isAllowedCoordinationCommand
+  - Added wc, ps, top, jobs, bg, fg, which, env to allowed commands
+
+- **CRITICAL: Summary File Enforcement Blocking Reads**
+  - Fixed hook blocking Read operations (should only block Write/Edit)
+  - Added stories/ and bugs/ directory exclusions
+  - STORY/BUG files now properly allowed in their respective directories
+
+- **CRITICAL: Nested Directory Path Matching**
+  - Fixed allowlist checking to recognize directories at ANY level
+  - Now matches: monitoring/stories/, foo/bar/bugs/, etc.
+  - Changed from startsWith check to component-based matching
+
+- **CRITICAL: PM Constraints "undefined/" Directory Bug**
+  - Fixed validatePMOperation showing "PM cannot modify files in undefined/"
+  - Proper relative path conversion for directory name extraction
+  - Clear error messages now show actual blocked directory
+
+- **Development Context Detection**
+  - Shared isDevelopmentContext() function in lib/context-detection.js
+  - Both main-scope and pm-constraints hooks detect intelligent-claude-code repository
+  - Automatic src/ directory access when working on ICC itself
+
+### Refactored
+- **Hook Code Optimization**
+  - main-scope-enforcement.js: 376 → 238 lines (-36.7%)
+  - summary-file-enforcement.js: 239 → 195 lines (-18.4%)
+  - project-scope-enforcement.js: 208 → 107 lines (-48.6%)
+  - Total: 283 lines eliminated from 3 hooks
+  - All hooks now use shared libraries (DRY principle)
+
+### Impact
+- Zero code duplication across all hooks
+- 498+ lines of code eliminated (27.6% reduction)
+- Single source of truth for all shared logic
+- Easier maintenance and consistency
+- Config security enforced (user-only changes)
+- Complete git workflow restored
+- Nested directory structures properly supported
+
+---
+
 ## [8.19.13] - 2025-10-22
 
 ### Fixed

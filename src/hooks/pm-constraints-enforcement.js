@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { loadConfig, getSetting } = require('./lib/config-loader');
+const { isDevelopmentContext } = require('./lib/context-detection');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -70,20 +71,28 @@ function main() {
     return pathConfig;
   }
 
-  function getConfiguredPaths() {
+  function getConfiguredPaths(projectRoot) {
     const config = loadConfiguration();
 
+    const allowlist = [
+      config.story_path,
+      config.bug_path,
+      config.memory_path,
+      config.docs_path,
+      'agenttasks',           // Always allow agenttasks directory
+      'icc.config.json',      // Project configuration file
+      'icc.workflow.json',    // Workflow configuration file
+      'summaries'             // Summaries and reports directory
+    ];
+
+    // In development context, allow src/ directory edits
+    if (isDevelopmentContext(projectRoot)) {
+      allowlist.push('src');
+      log('Development context detected - src/ added to PM allowlist');
+    }
+
     return {
-      allowlist: [
-        config.story_path,
-        config.bug_path,
-        config.memory_path,
-        config.docs_path,
-        'agenttasks',           // Always allow agenttasks directory
-        'icc.config.json',      // Project configuration file
-        'icc.workflow.json',    // Workflow configuration file
-        'summaries'             // Summaries and reports directory
-      ],
+      allowlist: allowlist,
       blocklist: [
         config.src_path,
         config.test_path,
@@ -132,6 +141,9 @@ function main() {
       return true;
     }
   }
+
+  // Note: isDevelopmentContext() is now provided by shared library
+  // Location: src/hooks/lib/context-detection.js
 
   function extractCommandsFromBash(commandString) {
     // First, remove all quoted strings (both single and double quotes)
@@ -620,7 +632,17 @@ Or create the file in an appropriate allowlist directory.`
 
     // Check blocklist first (explicit denial)
     if (isPathInBlocklist(filePath, blocklist, projectRoot)) {
-      const blockedDir = blocklist.find(p => filePath.startsWith(p + '/'));
+      // Convert to relative path for proper directory matching
+      let relativePath = filePath;
+      if (path.isAbsolute(filePath)) {
+        relativePath = path.relative(projectRoot, filePath);
+      }
+
+      // Find which blocklist directory contains this file
+      const blockedDir = blocklist.find(p =>
+        relativePath.startsWith(p + '/') || relativePath === p
+      ) || path.dirname(relativePath).split(path.sep)[0];
+
       return {
         allowed: false,
         message: `🚫 PM role is coordination only - create Agents using AgentTasks for technical work
@@ -879,7 +901,7 @@ Use Task tool to create specialist agent via AgentTask.`
       if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
         log(`File modification tool detected: ${tool} on ${filePath}`);
 
-        const paths = getConfiguredPaths();
+        const paths = getConfiguredPaths(projectRoot);
         const validation = validatePMOperation(filePath, tool, paths, projectRoot);
 
         if (!validation.allowed) {
