@@ -91,7 +91,11 @@ function main() {
     const summaryPatterns = [
       /summary/i, /report/i, /fix/i,
       /analysis/i, /review/i, /assessment/i,
-      /status/i, /progress/i, /update/i
+      /status/i, /progress/i, /update/i,
+      /deployment/i, /verification/i, /configuration/i,
+      /post-mortem/i, /postmortem/i, /monitoring/i,
+      /agenttask/i, /troubleshoot/i, /diagnostic/i,
+      /investigation/i, /incident/i, /resolution/i
     ];
 
     const fileName = path.basename(relativePath);
