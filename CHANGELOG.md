@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.11] - 2025-10-22
+
+### Fixed
+- **CRITICAL: Fix summary-file-enforcement.js Blocking All Read Operations**
+  - Hook was blocking ALL file operations including Read, causing agents to stop immediately
+  - Added tool filtering: Only enforce on Write/Edit operations, allow all Read operations
+  - Added agenttasks/ directory exclusion: Task definitions are not summaries
+  - Updated comment to clarify enforcement scope (line 63)
+  - Root cause: Hook checked all tools without filtering by operation type
+  - Impact: Agents can now successfully read AGENTTASK files without being blocked
+  - Critical fix: System was completely non-functional for AgentTask-based workflows
+
+---
+
 ## [8.19.10] - 2025-10-22
 
 ### Added
