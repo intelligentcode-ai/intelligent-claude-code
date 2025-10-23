@@ -444,70 +444,6 @@ function Register-StopHook {
     }
 }
 
-function Register-PostToolUseHook {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$SettingsPath,
-
-        [Parameter(Mandatory=$true)]
-        [string]$HookCommand
-    )
-
-    try {
-        Write-Host "  Registering PostToolUse hook in settings.json..." -ForegroundColor Gray
-
-        # Load or create settings
-        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
-
-        # Initialize hooks structure if missing
-        if (-not $Settings.hooks) {
-            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
-        }
-
-        if (-not $Settings.hooks.PostToolUse) {
-            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PostToolUse" -Value @() -Force
-        }
-
-        # Convert PostToolUse to array if it's not already
-        if ($Settings.hooks.PostToolUse -isnot [array]) {
-            $Settings.hooks.PostToolUse = @($Settings.hooks.PostToolUse)
-        }
-
-        # Check if hook already exists to prevent duplicates
-        $ExistingHook = $Settings.hooks.PostToolUse | Where-Object {
-            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
-        }
-
-        if (-not $ExistingHook) {
-            # Create new hook entry
-            $NewHook = [PSCustomObject]@{
-                matcher = "Write|Edit|Task|Bash"
-                hooks = @(
-                    [PSCustomObject]@{
-                        command = $HookCommand
-                        failureMode = "allow"
-                        timeout = 5000
-                        type = "command"
-                    }
-                )
-            }
-
-            # Add to PostToolUse array
-            $Settings.hooks.PostToolUse += $NewHook
-
-            # Save settings with proper JSON formatting
-            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
-            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
-
-            Write-Host "  ✅ PostToolUse hook registered successfully in settings.json" -ForegroundColor Green
-        } else {
-            Write-Host "  PostToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
-        }
-
-    } catch {
-        Write-Warning "  Failed to register PostToolUse hook in settings.json: $($_.Exception.Message)"
-    }
-}
 
 function Install-HookSystem {
     param(
@@ -580,7 +516,8 @@ function Install-HookSystem {
                 'pre-commit.js',
                 'installation-protection.js',
                 'git-privacy-validation.js',
-                'git-privacy-enforcement.js'
+                'git-privacy-enforcement.js',
+                'constraint-display-enforcement.js'
             )
 
             foreach ($OldHook in $OldHooks) {
@@ -679,15 +616,6 @@ function Install-HookSystem {
                 Register-StopHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
                 Write-Warning "  stop.js hook not found, skipping Stop registration"
-            }
-
-            # Register PostToolUse hook (constraint-display-enforcement.js)
-            $ConstraintDisplayHookPath = Join-Path $HooksPath "constraint-display-enforcement.js"
-            if (Test-Path $ConstraintDisplayHookPath) {
-                $HookCommand = "node `"$ConstraintDisplayHookPath`""
-                Register-PostToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
-            } else {
-                Write-Warning "  constraint-display-enforcement.js hook not found, skipping PostToolUse registration"
             }
 
         } else {
@@ -885,7 +813,7 @@ function Unregister-HookFromSettings {
         [string]$HookCommand,
 
         [Parameter(Mandatory=$true)]
-        [ValidateSet("PreToolUse", "PostToolUse")]
+        [ValidateSet("PreToolUse")]
         [string]$HookType
     )
 
@@ -972,20 +900,6 @@ function Uninstall-IntelligentClaudeCode {
     if (Test-Path $OldPreToolUseHookPath) {
         $HookCommand = "node `"$OldPreToolUseHookPath`""
         Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
-    }
-
-    # Unregister PostToolUse hook (constraint-display-enforcement.js)
-    $ConstraintDisplayHookPath = Join-Path $Paths.InstallPath "hooks" "constraint-display-enforcement.js"
-    if (Test-Path $ConstraintDisplayHookPath) {
-        $HookCommand = "node `"$ConstraintDisplayHookPath`""
-        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PostToolUse"
-    }
-
-    # Unregister old post-tool-use hook (legacy)
-    $OldPostToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "post-tool-use.js"
-    if (Test-Path $OldPostToolUseHookPath) {
-        $HookCommand = "node `"$OldPostToolUseHookPath`""
-        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PostToolUse"
     }
 
     if ($Force) {
@@ -1115,29 +1029,6 @@ function Test-Installation {
                     throw "FAIL: PreToolUse hooks structure not found in settings.json"
                 }
 
-                # Check PostToolUse hook registration
-                if ($TestSettings.hooks -and $TestSettings.hooks.PostToolUse) {
-                    $PostToolUseHooks = if ($TestSettings.hooks.PostToolUse -is [array]) {
-                        $TestSettings.hooks.PostToolUse
-                    } else {
-                        @($TestSettings.hooks.PostToolUse)
-                    }
-
-                    $PostHookFound = $false
-                    foreach ($Hook in $PostToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*constraint-display-enforcement.js*") {
-                            $PostHookFound = $true
-                            break
-                        }
-                    }
-
-                    if (-not $PostHookFound) {
-                        throw "FAIL: Constraint display enforcement hook not found in settings.json"
-                    }
-                    Write-Host "  ✅ PostToolUse hook registered in settings.json" -ForegroundColor Green
-                } else {
-                    throw "FAIL: PostToolUse hooks structure not found in settings.json"
-                }
 
             } catch {
                 throw "FAIL: Failed to verify settings.json hook registration: $($_.Exception.Message)"
@@ -1186,21 +1077,6 @@ function Test-Installation {
                     foreach ($Hook in $PreToolUseHooks) {
                         if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pm-constraints-enforcement.js*") {
                             throw "FAIL: PreToolUse hook still registered in settings.json after uninstall"
-                        }
-                    }
-                }
-
-                # Check PostToolUse hook removal
-                if ($TestSettings.hooks -and $TestSettings.hooks.PostToolUse) {
-                    $PostToolUseHooks = if ($TestSettings.hooks.PostToolUse -is [array]) {
-                        $TestSettings.hooks.PostToolUse
-                    } else {
-                        @($TestSettings.hooks.PostToolUse)
-                    }
-
-                    foreach ($Hook in $PostToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*constraint-display-enforcement.js*") {
-                            throw "FAIL: Constraint display enforcement hook still registered in settings.json after uninstall"
                         }
                     }
                 }

@@ -195,6 +195,7 @@
     - installation-protection.js
     - git-privacy-validation.js
     - git-privacy-enforcement.js
+    - constraint-display-enforcement.js
   ignore_errors: yes
 
 - name: Make production hook scripts executable
@@ -212,7 +213,6 @@
     - git-enforcement.js
     - summary-file-enforcement.js
     - agent-infrastructure-protection.js
-    - constraint-display-enforcement.js
     - task-tool-execution-reminder.js
     - subagent-stop.js
     - stop.js
@@ -421,19 +421,9 @@
               timeout: 5000
               failureMode: 'allow'
 
-    - name: Define PostToolUse hook
-      set_fact:
-        post_tool_use_hook:
-          matcher: 'Write|Edit|Task|Bash'
-          hooks:
-            - type: 'command'
-              command: "node {{ claude_install_path }}/hooks/constraint-display-enforcement.js"
-              timeout: 5000
-              failureMode: 'allow'
-
     - name: Merge hooks into settings
       set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': {'UserPromptSubmit': [user_prompt_submit_hook], 'PreToolUse': [pre_tool_use_hook], 'PostToolUse': [post_tool_use_hook], 'SubagentStop': [subagent_stop_hook], 'Stop': [stop_hook]}}, recursive=True) }}"
+        merged_settings: "{{ settings_data | combine({'hooks': {'UserPromptSubmit': [user_prompt_submit_hook], 'PreToolUse': [pre_tool_use_hook], 'SubagentStop': [subagent_stop_hook], 'Stop': [stop_hook]}}, recursive=True) }}"
 
     - name: Write merged settings.json
       copy:
@@ -443,13 +433,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "UserPromptSubmit, PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder), PostToolUse (constraint display), SubagentStop, Stop hooks configured in settings.json - behavioral guidance, main scope enforcement, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, Task tool synchronous execution reminder, constraint display enforcement, agent cleanup, and session cleanup active"
+        msg: "UserPromptSubmit, PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder), SubagentStop, Stop hooks configured in settings.json - behavioral guidance, main scope enforcement, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, Task tool synchronous execution reminder, agent cleanup, and session cleanup active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with UserPromptSubmit, PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder), PostToolUse (constraint display), SubagentStop, Stop hooks - behavioral guidance, main scope enforcement, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, Task tool synchronous execution reminder, constraint display enforcement, agent cleanup, and session cleanup active"
+    msg: "Settings file created with UserPromptSubmit, PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder), SubagentStop, Stop hooks - behavioral guidance, main scope enforcement, scope protection, memory enforcement, git enforcement (privacy + branch protection), PM constraints, infrastructure protection, Task tool synchronous execution reminder, agent cleanup, and session cleanup active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -467,5 +457,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: SessionStart compaction + UserPromptSubmit guidance + PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder) + PostToolUse (constraint display) + SubagentStop cleanup + Stop cleanup active"
+      - "🔒 Behavioral Hooks: UserPromptSubmit guidance + PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder) + SubagentStop cleanup + Stop cleanup active"
       - "🚀 Use @Role communication to activate team members"

@@ -539,6 +539,27 @@ function main() {
       // Silently fail - don't block hook execution
     }
 
+    // Add explicit constraint display enforcement reminder
+    contextualGuidance.push('');
+    contextualGuidance.push('🎯 CONSTRAINT DISPLAY MANDATORY:');
+    contextualGuidance.push('');
+    contextualGuidance.push('End EVERY response with:');
+    contextualGuidance.push('');
+    contextualGuidance.push('🎯 Active Constraints:');
+    contextualGuidance.push('[CONSTRAINT-ID]: Description *(situation)*');
+    contextualGuidance.push('[CONSTRAINT-ID]: Description *(situation)*');
+    contextualGuidance.push('[CONSTRAINT-ID]: Description *(situation)*');
+    contextualGuidance.push('[CONSTRAINT-ID]: Description *(cycling)*');
+    contextualGuidance.push('[CONSTRAINT-ID]: Description *(cycling)*');
+    contextualGuidance.push('[CONSTRAINT-ID]: Description *(cycling)*');
+    contextualGuidance.push('');
+    contextualGuidance.push('📚 Best Practices:');
+    contextualGuidance.push('• Practice: Summary');
+    contextualGuidance.push('• Practice: Summary');
+    contextualGuidance.push('• Practice: Summary');
+    contextualGuidance.push('');
+    contextualGuidance.push('Display 6 constraints (3 situation + 3 cycling) and up to 3 best practices.');
+
     // Build comprehensive context
     const fullContext = contextualGuidance.join('\n');
 

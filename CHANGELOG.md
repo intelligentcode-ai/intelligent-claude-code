@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.2] - 2025-10-23
+
+### Fixed
+- **Constraint Display Enforcement**: Corrected enforcement mechanism
+  - Removed incorrect PostToolUse hook approach (constraint-display-enforcement.js)
+  - Strengthened UserPromptSubmit hook (context-injection.js) with explicit enforcement reminder
+  - Constraint display now enforced behaviorally via injected context, not mechanically via PostToolUse
+  - Installation cleanup: Automatically removes old constraint-display-enforcement.js file
+  - Ansible and PowerShell scripts updated to remove PostToolUse hook registration
+  - Test suite updated to reflect behavioral enforcement approach
+
+### Rationale
+- PostToolUse hooks execute after tool completion, which is too late for behavioral enforcement
+- UserPromptSubmit hook provides correct injection point for behavioral guidance
+- Explicit reminder in injected context ensures constraint display compliance
+- Behavioral enforcement more appropriate than mechanical hook interception
+
+---
+
 ## [8.20.1] - 2025-10-23
 
 ### Added
