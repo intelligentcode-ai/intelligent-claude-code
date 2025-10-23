@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.0] - 2025-10-23
+
+### Added
+- **Universal Tool Blacklist System**: Comprehensive tool restriction framework
+  - Three-tier blacklist: universal, main_scope_only, agents_only
+  - System-level defaults in icc.config.default.json
+  - Per-project customization via icc.config.json
+  - Shared library: src/hooks/lib/tool-blacklist.js
+
+- **Enforcement Integration**: All PreToolUse hooks check universal blacklist
+  - main-scope-enforcement.js: Checks universal + main_scope_only
+  - pm-constraints-enforcement.js: Checks universal + main_scope_only
+  - agent-marker.js: Checks universal + agents_only
+
+- **Agent Tool Restrictions**: Prevents agent recursion and misuse
+  - Agents blocked from Task tool (prevents sub-agent creation)
+  - Agents blocked from SlashCommand tool (user-facing only)
+  - Agents blocked from Skill tool (user-facing only)
+
+- **Destructive Command Protection**: Universal blocks for dangerous operations
+  - Blocks: rm -rf /, dd if=/dev/zero, mkfs, fdisk, format c:
+  - Applies to EVERYONE (main scope + agents)
+
+### Security
+- **Critical**: Agents can no longer create sub-agents (Task tool blocked)
+- **Critical**: Universal destructive command protection across all contexts
+- **Enhancement**: Centralized tool restriction management
+
+### Configuration
+- New setting: `enforcement.tool_blacklist` with three categories
+- Projects can extend blacklist via icc.config.json
+- System defaults in icc.config.default.json
+
+---
+
 ## [8.19.17] - 2025-10-23
 
 ### Security

@@ -18,6 +18,7 @@ const { isDevelopmentContext } = require('./lib/context-detection');
 const { isAgentContext } = require('./lib/marker-detection');
 const { isPathInAllowlist } = require('./lib/path-utils');
 const { isAllowedCoordinationCommand } = require('./lib/command-validation');
+const { checkToolBlacklist } = require('./lib/tool-blacklist');
 
 function main() {
   const log = createLogger('main-scope-enforcement');
@@ -171,6 +172,55 @@ function main() {
     if (!tool) {
       log('No tool specified - allowing operation');
       return allowOperation(log);
+    }
+
+    // ========================================================================
+    // CRITICAL: Check tool blacklist FIRST (universal + main_scope_only)
+    // This check MUST happen before any allowlist checks to ensure blacklist
+    // takes precedence over all other rules. Universal blacklist blocks
+    // dangerous operations system-wide, while main_scope_only blacklist
+    // enforces AgentTask-driven execution pattern.
+    // ========================================================================
+    const blacklistResult = checkToolBlacklist(tool, toolInput, 'main_scope');
+    if (blacklistResult.blocked) {
+      log(`Tool blocked by blacklist: ${tool} (${blacklistResult.list})`);
+      return blockOperation(
+        `Tool blocked by ${blacklistResult.list} blacklist`,
+        tool,
+        `Tool "${tool}" is blocked by the ${blacklistResult.reason}.
+
+Blacklist type: ${blacklistResult.list}
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Main Scope MUST WAIT for agents to complete
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → WAIT → Complete
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → WAIT for all → Complete
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`,
+        log
+      );
     }
 
     // Allow ALL MCP tools (read-only operations)

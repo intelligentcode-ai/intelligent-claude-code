@@ -244,6 +244,27 @@
       ],
       "whitelist": [],
       "emergency_override_token": ""
+    },
+    "tool_blacklist": {
+      "universal": [
+        "rm -rf /",
+        "dd if=/dev/zero of=/dev/sda",
+        "mkfs",
+        "fdisk /dev/sda",
+        "> /dev/sda",
+        "format c:"
+      ],
+      "main_scope_only": [
+        "Write",
+        "Edit",
+        "MultiEdit",
+        "NotebookEdit"
+      ],
+      "agents_only": [
+        "Task",
+        "SlashCommand",
+        "Skill"
+      ]
     }
   },
 

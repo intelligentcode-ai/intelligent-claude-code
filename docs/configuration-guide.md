@@ -300,6 +300,118 @@ The system uses unified JSON configuration with hierarchical loading and separat
 - **Default**: "Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations."
 - **Description**: Custom message to display when strict main scope enforcement blocks an operation
 
+#### Universal Tool Blacklist System
+
+The tool blacklist system provides comprehensive tool restriction management across all execution contexts.
+
+**enforcement.tool_blacklist** (object)
+- **Description**: Three-tier tool blacklist system for universal tool restrictions
+- **Categories**:
+  - **universal**: Tools blocked for EVERYONE (main scope + agents)
+  - **main_scope_only**: Tools blocked for main scope and PM ONLY
+  - **agents_only**: Tools blocked for agents ONLY
+
+**enforcement.tool_blacklist.universal** (array of strings)
+- **Default**: `["rm -rf /", "dd if=/dev/zero", "mkfs", "fdisk", "format c:", "> /dev/sda"]`
+- **Description**: Destructive operations blocked for ALL contexts
+- **Purpose**: System-wide safety protection against catastrophic commands
+- **Applies to**: Main scope, PM scope, and all agents
+- **Examples**:
+  ```json
+  {
+    "enforcement": {
+      "tool_blacklist": {
+        "universal": [
+          "rm -rf /",
+          "dd if=/dev/zero",
+          "mkfs",
+          "fdisk",
+          "format c:",
+          "> /dev/sda"
+        ]
+      }
+    }
+  }
+  ```
+
+**enforcement.tool_blacklist.main_scope_only** (array of strings)
+- **Default**: `["Write", "Edit", "MultiEdit", "Bash", "NotebookEdit"]`
+- **Description**: Tools blocked for main scope coordination work
+- **Purpose**: Enforce AgentTask-driven execution pattern
+- **Applies to**: Main scope and PM scope only (agents can use these tools)
+- **Rationale**: Main scope performs coordination, agents perform technical work
+- **Examples**:
+  ```json
+  {
+    "enforcement": {
+      "tool_blacklist": {
+        "main_scope_only": [
+          "Write",
+          "Edit",
+          "MultiEdit",
+          "Bash",
+          "NotebookEdit"
+        ]
+      }
+    }
+  }
+  ```
+
+**enforcement.tool_blacklist.agents_only** (array of strings)
+- **Default**: `["Task", "SlashCommand", "Skill"]`
+- **Description**: Tools blocked for agents to prevent recursion and misuse
+- **Purpose**: Prevent agents from creating sub-agents or invoking user-facing commands
+- **Applies to**: All agents only (main scope can use these tools)
+- **Security**: Prevents infinite agent recursion via Task tool
+- **Examples**:
+  ```json
+  {
+    "enforcement": {
+      "tool_blacklist": {
+        "agents_only": [
+          "Task",
+          "SlashCommand",
+          "Skill"
+        ]
+      }
+    }
+  }
+  ```
+
+**Per-Project Customization**:
+
+Projects can extend the blacklist in their `icc.config.json`:
+
+```json
+{
+  "enforcement": {
+    "tool_blacklist": {
+      "universal": [
+        "project-specific-dangerous-command"
+      ],
+      "main_scope_only": [
+        "CustomTool"
+      ],
+      "agents_only": [
+        "WebFetch"
+      ]
+    }
+  }
+}
+```
+
+**Merge Strategy**: Project blacklists are **additive** with system defaults. Project-specific entries are merged with system defaults, not replaced.
+
+**Hook Integration**: All PreToolUse hooks check the universal blacklist:
+- `main-scope-enforcement.js`: Checks universal + main_scope_only
+- `pm-constraints-enforcement.js`: Checks universal + main_scope_only
+- `agent-marker.js`: Checks universal + agents_only
+
+**Error Messages**: When a tool is blocked, the error message clearly states:
+- Which blacklist blocked the tool (universal, main_scope_only, or agents_only)
+- The tool that was blocked
+- The context where blocking occurred
+
 ### Best Practices Settings
 
 **best_practices.search_enabled** (boolean)
