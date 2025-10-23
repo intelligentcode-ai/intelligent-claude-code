@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.1] - 2025-10-23
+
+### Added
+- **PostToolUse Hook Activation**: Automated constraint display enforcement
+  - Ansible playbook: Registers PostToolUse hook with constraint-display-enforcement.js
+  - PowerShell script: Registers PostToolUse hook with constraint-display-enforcement.js
+  - Activates after significant tools: Write, Edit, Task, Bash
+  - No manual settings.json configuration required
+
+### Enhancement
+- Installation system now automatically configures PostToolUse hooks
+- Mechanical constraint display enforcement active by default after installation
+- Test suite verifies PostToolUse hook registration and unregistration
+
+---
+
 ## [8.20.0] - 2025-10-23
 
 ### Added

@@ -444,6 +444,71 @@ function Register-StopHook {
     }
 }
 
+function Register-PostToolUseHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$HookCommand
+    )
+
+    try {
+        Write-Host "  Registering PostToolUse hook in settings.json..." -ForegroundColor Gray
+
+        # Load or create settings
+        $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+        # Initialize hooks structure if missing
+        if (-not $Settings.hooks) {
+            $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
+        }
+
+        if (-not $Settings.hooks.PostToolUse) {
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "PostToolUse" -Value @() -Force
+        }
+
+        # Convert PostToolUse to array if it's not already
+        if ($Settings.hooks.PostToolUse -isnot [array]) {
+            $Settings.hooks.PostToolUse = @($Settings.hooks.PostToolUse)
+        }
+
+        # Check if hook already exists to prevent duplicates
+        $ExistingHook = $Settings.hooks.PostToolUse | Where-Object {
+            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
+        }
+
+        if (-not $ExistingHook) {
+            # Create new hook entry
+            $NewHook = [PSCustomObject]@{
+                matcher = "Write|Edit|Task|Bash"
+                hooks = @(
+                    [PSCustomObject]@{
+                        command = $HookCommand
+                        failureMode = "allow"
+                        timeout = 5000
+                        type = "command"
+                    }
+                )
+            }
+
+            # Add to PostToolUse array
+            $Settings.hooks.PostToolUse += $NewHook
+
+            # Save settings with proper JSON formatting
+            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+            Write-Host "  ✅ PostToolUse hook registered successfully in settings.json" -ForegroundColor Green
+        } else {
+            Write-Host "  PostToolUse hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+        }
+
+    } catch {
+        Write-Warning "  Failed to register PostToolUse hook in settings.json: $($_.Exception.Message)"
+    }
+}
+
 function Install-HookSystem {
     param(
         [Parameter(Mandatory=$true)]
@@ -614,6 +679,15 @@ function Install-HookSystem {
                 Register-StopHook -SettingsPath $SettingsPath -HookCommand $HookCommand
             } else {
                 Write-Warning "  stop.js hook not found, skipping Stop registration"
+            }
+
+            # Register PostToolUse hook (constraint-display-enforcement.js)
+            $ConstraintDisplayHookPath = Join-Path $HooksPath "constraint-display-enforcement.js"
+            if (Test-Path $ConstraintDisplayHookPath) {
+                $HookCommand = "node `"$ConstraintDisplayHookPath`""
+                Register-PostToolUseHook -SettingsPath $SettingsPath -HookCommand $HookCommand
+            } else {
+                Write-Warning "  constraint-display-enforcement.js hook not found, skipping PostToolUse registration"
             }
 
         } else {
@@ -900,10 +974,17 @@ function Uninstall-IntelligentClaudeCode {
         Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
     }
 
-    # Unregister post-tool-use hook (legacy)
-    $PostToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "post-tool-use.js"
-    if (Test-Path $PostToolUseHookPath) {
-        $HookCommand = "node `"$PostToolUseHookPath`""
+    # Unregister PostToolUse hook (constraint-display-enforcement.js)
+    $ConstraintDisplayHookPath = Join-Path $Paths.InstallPath "hooks" "constraint-display-enforcement.js"
+    if (Test-Path $ConstraintDisplayHookPath) {
+        $HookCommand = "node `"$ConstraintDisplayHookPath`""
+        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PostToolUse"
+    }
+
+    # Unregister old post-tool-use hook (legacy)
+    $OldPostToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "post-tool-use.js"
+    if (Test-Path $OldPostToolUseHookPath) {
+        $HookCommand = "node `"$OldPostToolUseHookPath`""
         Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PostToolUse"
     }
 
@@ -1044,14 +1125,14 @@ function Test-Installation {
 
                     $PostHookFound = $false
                     foreach ($Hook in $PostToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*post-tool-use.js*") {
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*constraint-display-enforcement.js*") {
                             $PostHookFound = $true
                             break
                         }
                     }
 
                     if (-not $PostHookFound) {
-                        throw "FAIL: Post-tool-use hook not found in settings.json"
+                        throw "FAIL: Constraint display enforcement hook not found in settings.json"
                     }
                     Write-Host "  ✅ PostToolUse hook registered in settings.json" -ForegroundColor Green
                 } else {
@@ -1118,8 +1199,8 @@ function Test-Installation {
                     }
 
                     foreach ($Hook in $PostToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*post-tool-use.js*") {
-                            throw "FAIL: Post-tool-use hook still registered in settings.json after uninstall"
+                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*constraint-display-enforcement.js*") {
+                            throw "FAIL: Constraint display enforcement hook still registered in settings.json after uninstall"
                         }
                     }
                 }
