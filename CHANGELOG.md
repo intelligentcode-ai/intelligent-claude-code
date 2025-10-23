@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.17] - 2025-10-23
+
+### Security
+- **CRITICAL: Fixed ALL-CAPITALS Filename Bypass in summary-file-enforcement.js**
+  - Hook was allowing ALL-CAPITALS filenames when files were created directly in summaries/ directory
+  - ALL-CAPITALS check now happens BEFORE directory location check
+  - ALL-CAPITALS files blocked REGARDLESS of location (unless in explicit allowed list)
+  - Security bypass eliminated - enforcement now consistent across all directory contexts
+
+### Impact
+- ALL-CAPITALS files no longer bypass enforcement when created in summaries/ directory
+- Hook logic reordered to prevent location-based bypass patterns
+- Critical security vulnerability closed
+
+---
+
 ## [8.19.16] - 2025-10-23
 
 ### Enhanced

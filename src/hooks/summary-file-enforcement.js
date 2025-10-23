@@ -86,6 +86,13 @@ function main() {
 
     log(`Summary file detected: ${fileName}`);
 
+    // STEP 1: Check if file is in summaries directory (determine location first)
+    const normalizedPath = relativePath.replace(/\\/g, '/');
+    const summariesPattern = new RegExp(`^${summariesPath}/`, 'i');
+    const isInSummariesDir = summariesPattern.test(normalizedPath) ||
+                            normalizedPath.includes(`/${summariesPath}/`);
+
+    // STEP 2: Check for ALL-CAPITALS filename BEFORE allowing (even in summaries/)
     // Load allowed ALL-CAPITALS files from config (with defaults)
     const defaultAllCapsFiles = [
       'README.md',
@@ -113,16 +120,21 @@ function main() {
                       fileBaseName.length > 1 &&
                       /^[A-Z0-9_-]+$/.test(fileBaseName);
 
+    // CRITICAL: Block ALL-CAPITALS files REGARDLESS of location (unless in allowed list)
     if (isAllCaps && !allowedAllCapsFiles.includes(fileName)) {
-      log(`BLOCKED: ALL-CAPITALS filename not allowed: ${fileName}`);
+      log(`BLOCKED: ALL-CAPITALS filename not allowed: ${fileName} (even in summaries/)`);
 
       // Suggest lowercase alternative
       const suggestedName = fileName.toLowerCase();
+      const locationNote = isInSummariesDir
+        ? 'File is in summaries/ but ALL-CAPITALS naming is still not allowed.'
+        : 'File should also be moved to summaries/ directory.';
 
       const message = `🚫 ALL-CAPITALS filenames are not allowed in summaries/
 
 Blocked filename: ${fileName}
 Suggested alternative: ${suggestedName}
+${locationNote}
 
 Well-known exceptions allowed:
 ${allowedAllCapsFiles.join(', ')}
@@ -165,15 +177,10 @@ To execute blocked operation:
       return sendResponse(response, 0, log);
     }
 
-    // Check if file is in summaries directory
-    const normalizedPath = relativePath.replace(/\\/g, '/');
-    const summariesPattern = new RegExp(`^${summariesPath}/`, 'i');
-    const isInSummariesDir = summariesPattern.test(normalizedPath) ||
-                            normalizedPath.includes(`/${summariesPath}/`);
-
+    // STEP 3: If file is in summaries directory and passes ALL-CAPITALS check, allow
     if (isInSummariesDir) {
-      // File is in summaries directory, allow
-      log(`File in summaries directory - allowed`);
+      // File is in summaries directory and has proper casing, allow
+      log(`File in summaries directory with proper casing - allowed`);
       return allowOperation(log, true);
     }
 
