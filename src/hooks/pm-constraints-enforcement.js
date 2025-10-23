@@ -283,7 +283,36 @@ Use lowercase filenames with hyphens for word separation.
 
 Example: story-003-completion-summary.md instead of STORY-003-COMPLETION-SUMMARY.md
 
-Use Write tool with lowercase filename or create AgentTask for file creation.`
+Use Write tool with lowercase filename or create AgentTask for file creation.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Main Scope MUST WAIT for agents to complete
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → WAIT → Complete
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → WAIT for all → Complete
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
           };
         }
       }
@@ -316,7 +345,36 @@ Blocked pattern: Heredoc (cat << 'EOF', python << 'EOF', etc.)
 Full command: ${command}
 
 Heredoc commands (both shell and scripting) require technical implementation by specialist agents.
-Use Write tool for file creation or Task tool to create specialist agent via AgentTask.`
+Use Write tool for file creation or Task tool to create specialist agent via AgentTask.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Main Scope MUST WAIT for agents to complete
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → WAIT → Complete
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → WAIT for all → Complete
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
       };
     }
 
@@ -356,7 +414,36 @@ Remote access: ssh, scp, sftp, rsync${kubectlGuidance}
 
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
 All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
-Use Task tool to create specialist agent via AgentTask with explicit approval.`
+Use Task tool to create specialist agent via AgentTask with explicit approval.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Main Scope MUST WAIT for agents to complete
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → WAIT → Complete
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → WAIT for all → Complete
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
           };
         }
       }
@@ -617,7 +704,36 @@ Allowed directories for markdown: ${allowlist.join(', ')}, root *.md files
 If you specifically requested this file, ask the user to enable:
 enforcement.allow_markdown_outside_allowlist = true in icc.config.json
 
-Or create the file in an appropriate allowlist directory.`
+Or create the file in an appropriate allowlist directory.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Main Scope MUST WAIT for agents to complete
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → WAIT → Complete
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → WAIT for all → Complete
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
     };
   }
 
@@ -651,7 +767,36 @@ Blocked: ${filePath}
 Reason: PM cannot modify files in ${blockedDir}/
 
 Allowed directories: ${allowlist.join(', ')}, root *.md files
-Use Task tool to create specialist agent via AgentTask.`
+Use Task tool to create specialist agent via AgentTask.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Main Scope MUST WAIT for agents to complete
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → WAIT → Complete
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → WAIT for all → Complete
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
       };
     }
 
@@ -696,7 +841,36 @@ Reason: ${reason}
 Allowed directories: ${allowlist.join(', ')}, root *.md files
 
 ${suggestion}
-Use Task tool to create specialist agent via AgentTask.`
+Use Task tool to create specialist agent via AgentTask.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Main Scope MUST WAIT for agents to complete
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → WAIT → Complete
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → WAIT for all → Complete
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
     };
   }
 

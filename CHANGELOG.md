@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.19.16] - 2025-10-23
+
+### Enhanced
+- **Hook Blocking Messages: AgentTask Execution Pattern**
+  - Enhanced all hook blocking messages with comprehensive 4-point execution pattern
+  - Added clear guidance on Task tool usage and WAIT requirement
+  - Included parallel execution examples (multiple Task tool calls in single message)
+  - Added template usage guidance (nano/tiny for direct execution, 6+ points for story-first)
+  - Improved user experience with actionable examples for sequential and parallel work
+  - Hooks updated: main-scope-enforcement.js, pm-constraints-enforcement.js, summary-file-enforcement.js
+
+### Impact
+- Users receive comprehensive execution guidance when hooks block operations
+- Clear examples of sequential vs parallel AgentTask execution patterns
+- Reduced confusion about proper AgentTask and Task tool usage
+- Better understanding of template selection based on complexity
+- Enhanced educational value of hook enforcement messages
+
+---
+
 ## [8.19.15] - 2025-10-22
 
 ### Security

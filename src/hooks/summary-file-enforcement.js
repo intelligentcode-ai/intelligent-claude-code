@@ -127,7 +127,36 @@ Suggested alternative: ${suggestedName}
 Well-known exceptions allowed:
 ${allowedAllCapsFiles.join(', ')}
 
-Please use lowercase or mixed-case filenames for better readability.`;
+Please use lowercase or mixed-case filenames for better readability.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Main Scope MUST WAIT for agents to complete
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → WAIT → Complete
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → WAIT for all → Complete
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`;
 
       const response = {
         continue: false,
