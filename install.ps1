@@ -185,6 +185,37 @@ function Remove-ObsoleteSessionStartHook {
     }
 }
 
+function Remove-ObsoletePostToolUseHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath
+    )
+
+    try {
+        if (Test-Path $SettingsPath) {
+            Write-Host "  Removing obsolete PostToolUse hook from settings.json..." -ForegroundColor Gray
+
+            $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+            if ($Settings.hooks -and $Settings.hooks.PSObject.Properties.Name -contains 'PostToolUse') {
+                $Settings.hooks.PSObject.Properties.Remove('PostToolUse')
+
+                # Save updated settings
+                $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+                Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+                Write-Host "  ✅ Removed obsolete PostToolUse hook from settings.json" -ForegroundColor Green
+            } else {
+                Write-Host "  PostToolUse hook not found, skipping cleanup" -ForegroundColor Gray
+            }
+        } else {
+            Write-Host "  No settings.json found, skipping PostToolUse cleanup" -ForegroundColor Gray
+        }
+    } catch {
+        Write-Warning "  Failed to remove PostToolUse hook: $($_.Exception.Message)"
+    }
+}
+
 function Register-UserPromptSubmitHook {
     param(
         [Parameter(Mandatory=$true)]
@@ -508,6 +539,9 @@ function Install-HookSystem {
 
             # Remove obsolete SessionStart hook from settings.json (v8.18.8+)
             Remove-ObsoleteSessionStartHook -SettingsPath $SettingsPath
+
+            # Remove obsolete PostToolUse hook from settings.json (v8.20.3+)
+            Remove-ObsoletePostToolUseHook -SettingsPath $SettingsPath
 
             # Remove old hook names (graceful cleanup)
             $OldHooks = @(

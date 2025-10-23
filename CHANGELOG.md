@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.3] - 2025-10-23
+
+### Fixed
+- **PostToolUse Hook Cleanup**: Automatic removal from settings.json
+  - Ansible playbook: Added task to remove PostToolUse registration from settings.json
+  - PowerShell script: Added Remove-ObsoletePostToolUseHook function to clean up settings.json
+  - Prevents errors when deleted constraint-display-enforcement.js file is referenced in settings.json
+  - Existing installations automatically cleaned up during installation/upgrade
+  - Completes the transition from mechanical PostToolUse enforcement to behavioral enforcement
+
+### Technical Details
+- PostToolUse hook registration removed from settings.json via jq (Ansible) or PowerShell JSON manipulation
+- Cleanup happens automatically during installation, ensuring no orphaned hook references
+- Follows same pattern as SessionStart hook cleanup (v8.18.8+)
+
+---
+
 ## [8.20.2] - 2025-10-23
 
 ### Fixed

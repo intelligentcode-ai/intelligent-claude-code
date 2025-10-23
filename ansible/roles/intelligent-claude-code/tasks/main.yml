@@ -336,6 +336,26 @@
     msg: "{{ sessionstart_cleanup.stdout }}"
   when: settings_json_exists.stat.exists
 
+- name: Remove obsolete PostToolUse hook from settings.json
+  shell: |
+    if [ -f "{{ claude_install_path }}/settings.json" ]; then
+      jq 'del(.hooks.PostToolUse)' "{{ claude_install_path }}/settings.json" > "{{ claude_install_path }}/settings.json.tmp"
+      mv "{{ claude_install_path }}/settings.json.tmp" "{{ claude_install_path }}/settings.json"
+      echo "Removed PostToolUse hook"
+    else
+      echo "No settings.json found, skipping cleanup"
+    fi
+  args:
+    executable: /bin/bash
+  register: posttooluse_cleanup
+  changed_when: "'Removed PostToolUse hook' in posttooluse_cleanup.stdout"
+  when: settings_json_exists.stat.exists
+
+- name: Display PostToolUse cleanup result
+  debug:
+    msg: "{{ posttooluse_cleanup.stdout }}"
+  when: settings_json_exists.stat.exists
+
 - name: Create settings.json with hook registration (ONLY if not exists)
   template:
     src: settings.json.j2
