@@ -55,17 +55,40 @@ function main() {
       relativePath = path.relative(projectRoot, filePath);
     }
 
-    // Exclude stories/ directory - STORY files belong in stories/, not summaries/
-    if (relativePath.startsWith('stories/') || relativePath.includes('/stories/')) {
+    const fileName = path.basename(relativePath);
+
+    // STEP 1: Directory-based exclusions (highest priority)
+    // These directories have specific file type rules
+    const allowedDirectories = [
+      'stories/',    // STORY/EPIC files
+      'bugs/',       // BUG files
+      'docs/',       // Documentation
+      'agenttasks/', // AgentTask YAML files
+      'src/',        // Source code
+      'tests/',      // Test files
+      'config/'      // Configuration files
+    ];
+
+    for (const dir of allowedDirectories) {
+      if (relativePath.startsWith(dir) || relativePath.includes(`/${dir}`)) {
+        log(`File in ${dir} directory - allowing`);
+        return allowOperation(log, true);
+      }
+    }
+
+    // STEP 2: Root directory special files
+    const rootAllowedFiles = [
+      'VERSION', 'README.md', 'CLAUDE.md', 'CHANGELOG.md',
+      'LICENSE', 'LICENSE.md', '.gitignore', 'package.json',
+      'icc.config.json', 'icc.workflow.json'
+    ];
+
+    if (!relativePath.includes('/') && rootAllowedFiles.includes(fileName)) {
+      log(`Root directory allowed file: ${fileName}`);
       return allowOperation(log, true);
     }
 
-    // Exclude bugs/ directory - BUG files belong in bugs/, not summaries/
-    if (relativePath.startsWith('bugs/') || relativePath.includes('/bugs/')) {
-      return allowOperation(log, true);
-    }
-
-    // Check if file is summary-type
+    // STEP 3: Now check if remaining files are summary-type
     const summaryPatterns = [
       /summary/i, /report/i, /fix/i,
       /analysis/i, /review/i, /assessment/i,
@@ -76,11 +99,10 @@ function main() {
       /investigation/i, /incident/i, /resolution/i
     ];
 
-    const fileName = path.basename(relativePath);
     const isSummaryFile = summaryPatterns.some(pattern => pattern.test(fileName));
 
     if (!isSummaryFile) {
-      // Not a summary file, allow
+      log('Not a summary file - allowing');
       return allowOperation(log, true);
     }
 
