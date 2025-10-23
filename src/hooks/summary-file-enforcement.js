@@ -55,6 +55,14 @@ function main() {
       relativePath = path.relative(projectRoot, filePath);
     }
 
+    // DEBUG: Log all path information
+    log(`=== PATH DEBUG ===`);
+    log(`Original filePath: ${filePath}`);
+    log(`Project root (cwd): ${projectRoot}`);
+    log(`Relative path: ${relativePath}`);
+    log(`Path is absolute: ${path.isAbsolute(filePath)}`);
+    log(`=== END DEBUG ===`);
+
     const fileName = path.basename(relativePath);
 
     // STEP 1: Directory-based exclusions (highest priority)
