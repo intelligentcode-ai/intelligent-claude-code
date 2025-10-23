@@ -6,6 +6,7 @@ const os = require('os');
 const { loadConfig, getSetting } = require('./lib/config-loader');
 const { isDevelopmentContext } = require('./lib/context-detection');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
+const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -535,66 +536,6 @@ To execute blocked operation:
     return false;
   }
 
-  function isSummaryFile(filePath, projectRoot) {
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
-
-    if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
-    }
-
-    const fileName = path.basename(relativePath);
-
-    // Check if filename matches summary patterns (case-insensitive)
-    // Check ANY directory, not just project root
-    const upperFileName = fileName.toUpperCase();
-    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING', 'ROOT_CAUSE'];
-
-    return summaryPatterns.some(pattern => upperFileName.includes(pattern));
-  }
-
-  function validateSummaryFile(filePath, projectRoot) {
-    if (!isSummaryFile(filePath, projectRoot)) {
-      return { allowed: true };
-    }
-
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
-    if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
-    }
-
-    // Check if file is already in summaries/ directory
-    if (relativePath.startsWith('summaries/') || relativePath.startsWith('summaries\\')) {
-      return { allowed: true };  // Already in correct location!
-    }
-
-    // File is summary-type but NOT in summaries/ - block it
-    const fileName = path.basename(filePath);
-    const isAllCapitals = fileName === fileName.toUpperCase();
-    const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
-    const suggestedPath = `summaries/${suggestedName}`;
-
-    // Ensure summaries directory exists in the project root
-    const summariesDir = path.join(projectRoot, 'summaries');
-    if (!fs.existsSync(summariesDir)) {
-      fs.mkdirSync(summariesDir, { recursive: true });
-      log('Created summaries/ directory for summary file redirection');
-    }
-
-    const capitalsWarning = isAllCapitals ? '\n⚠️ Filename is all-capitals - use lowercase for consistency' : '';
-
-    return {
-      allowed: false,
-      message: `📋 Summary files belong in ./summaries/ directory
-
-Blocked: ${filePath}
-Suggested: ${suggestedPath}${capitalsWarning}
-
-Please create summary files in the summaries/ directory to keep project root clean.`
-    };
-  }
-
   function validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext = false) {
     // Check if file is markdown
     if (!filePath.endsWith('.md')) {
@@ -1065,7 +1006,7 @@ To execute blocked operation:
 
     // Check for summary files in root (applies to Write/Edit/Update only, not Read)
     if (tool !== 'Read' && filePath.endsWith('.md')) {
-      const summaryValidation = validateSummaryFile(filePath, projectRoot);
+      const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
       if (!summaryValidation.allowed) {
         log(`Summary file blocked: ${filePath}`);
 

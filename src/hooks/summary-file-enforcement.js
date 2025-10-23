@@ -14,6 +14,7 @@ const path = require('path');
 const { createLogger } = require('./lib/logging');
 const { parseHookInput, extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
+const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
   const log = createLogger('summary-enforcement');
@@ -63,60 +64,19 @@ function main() {
     log(`Path is absolute: ${path.isAbsolute(filePath)}`);
     log(`=== END DEBUG ===`);
 
+    // Use shared validation logic
+    const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
+
+    // If not a summary file or already in correct location, allow
+    if (summaryValidation.allowed) {
+      log('File validation passed - allowing');
+      return allowOperation(log, true);
+    }
+
     const fileName = path.basename(relativePath);
+    log(`Summary file detected outside summaries/: ${fileName}`);
 
-    // STEP 1: Directory-based exclusions (highest priority)
-    // These directories have specific file type rules
-    const allowedDirectories = [
-      'stories/',    // STORY/EPIC files
-      'bugs/',       // BUG files
-      'docs/',       // Documentation
-      'agenttasks/', // AgentTask YAML files
-      'src/',        // Source code
-      'tests/',      // Test files
-      'config/'      // Configuration files
-    ];
-
-    for (const dir of allowedDirectories) {
-      if (relativePath.startsWith(dir) || relativePath.includes(`/${dir}`)) {
-        log(`File in ${dir} directory - allowing`);
-        return allowOperation(log, true);
-      }
-    }
-
-    // STEP 2: Root directory special files
-    const rootAllowedFiles = [
-      'VERSION', 'README.md', 'CLAUDE.md', 'CHANGELOG.md',
-      'LICENSE', 'LICENSE.md', '.gitignore', 'package.json',
-      'icc.config.json', 'icc.workflow.json'
-    ];
-
-    if (!relativePath.includes('/') && rootAllowedFiles.includes(fileName)) {
-      log(`Root directory allowed file: ${fileName}`);
-      return allowOperation(log, true);
-    }
-
-    // STEP 3: Now check if remaining files are summary-type
-    const summaryPatterns = [
-      /summary/i, /report/i, /fix/i,
-      /analysis/i, /review/i, /assessment/i,
-      /status/i, /progress/i, /update/i,
-      /deployment/i, /verification/i, /configuration/i,
-      /post-mortem/i, /postmortem/i, /monitoring/i,
-      /agenttask/i, /troubleshoot/i, /diagnostic/i,
-      /investigation/i, /incident/i, /resolution/i
-    ];
-
-    const isSummaryFile = summaryPatterns.some(pattern => pattern.test(fileName));
-
-    if (!isSummaryFile) {
-      log('Not a summary file - allowing');
-      return allowOperation(log, true);
-    }
-
-    log(`Summary file detected: ${fileName}`);
-
-    // STEP 1: Check if file is in summaries directory (determine location first)
+    // Check if already in summaries directory for ALL-CAPITALS validation
     const normalizedPath = relativePath.replace(/\\/g, '/');
     const summariesPattern = new RegExp(`^${summariesPath}/`, 'i');
     const isInSummariesDir = summariesPattern.test(normalizedPath) ||
@@ -216,26 +176,10 @@ To execute blocked operation:
 
     // Summary file outside summaries directory
     if (strictMode) {
-      // Block with guidance
+      // Block with guidance - use message from shared validation
       log(`BLOCKED: Summary file outside summaries directory (strict mode)`);
 
-      const suggestedPath = path.join(summariesPath, fileName);
-
-      // Ensure summaries directory exists in the project root
-      const summariesDir = path.join(projectRoot, summariesPath);
-      if (!fs.existsSync(summariesDir)) {
-        fs.mkdirSync(summariesDir, { recursive: true });
-        log('Created summaries/ directory for summary file redirection');
-      }
-
-      const message = `🚫 Summary files must be created in summaries/ directory
-
-File management strict mode is enabled.
-
-Blocked: ${relativePath}
-Suggested: ${suggestedPath}
-
-Please create summary files in the summaries/ directory to keep project root clean.
+      const message = `${summaryValidation.message}
 
 To disable this enforcement, set development.file_management_strict: false in icc.config.json`;
 

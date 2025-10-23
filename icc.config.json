@@ -10,6 +10,11 @@
   },
   "enforcement": {
     "allow_markdown_outside_allowlist": true,
-    "allow_markdown_outside_allowlist_agents": true
+    "allow_markdown_outside_allowlist_agents": true,
+    "tool_blacklist": {
+        "universal": [
+          "make install"
+        ]
+      }
   }
 }
