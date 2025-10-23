@@ -144,19 +144,19 @@ Please use lowercase or mixed-case filenames for better readability.
 🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
 
 1. Main Scope Creates AgentTasks ONLY via Task tool
-2. Main Scope MUST WAIT for agents to complete
+2. Agent response = Agent completed (process results immediately)
 3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
 4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
 
 Example - Sequential Work:
-  Task tool → @Developer (fix bug) → WAIT → Complete
+  Task tool → @Developer (fix bug) → Agent returns → Process results
 
 Example - Parallel Work (PREFERRED):
   Single message with multiple Task tool calls:
   - Task tool → @Developer (fix bug A)
   - Task tool → @Developer (fix bug B)
   - Task tool → @QA-Engineer (test feature C)
-  All execute in parallel → WAIT for all → Complete
+  All execute in parallel → Agents return → Process results
 
 Template Usage:
   - 0-2 points: nano-agenttask-template.yaml
