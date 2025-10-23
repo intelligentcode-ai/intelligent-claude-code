@@ -64,25 +64,10 @@ function main() {
     log(`Path is absolute: ${path.isAbsolute(filePath)}`);
     log(`=== END DEBUG ===`);
 
-    // Use shared validation logic
-    const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
-
-    // If not a summary file or already in correct location, allow
-    if (summaryValidation.allowed) {
-      log('File validation passed - allowing');
-      return allowOperation(log, true);
-    }
-
+    // Get filename early for ALL-CAPITALS check
     const fileName = path.basename(relativePath);
-    log(`Summary file detected outside summaries/: ${fileName}`);
 
-    // Check if already in summaries directory for ALL-CAPITALS validation
-    const normalizedPath = relativePath.replace(/\\/g, '/');
-    const summariesPattern = new RegExp(`^${summariesPath}/`, 'i');
-    const isInSummariesDir = summariesPattern.test(normalizedPath) ||
-                            normalizedPath.includes(`/${summariesPath}/`);
-
-    // STEP 2: Check for ALL-CAPITALS filename BEFORE allowing (even in summaries/)
+    // STEP 1: ALL-CAPITALS check (highest priority - blocks everywhere)
     // Load allowed ALL-CAPITALS files from config (with defaults)
     const defaultAllCapsFiles = [
       'README.md',
@@ -112,19 +97,15 @@ function main() {
 
     // CRITICAL: Block ALL-CAPITALS files REGARDLESS of location (unless in allowed list)
     if (isAllCaps && !allowedAllCapsFiles.includes(fileName)) {
-      log(`BLOCKED: ALL-CAPITALS filename not allowed: ${fileName} (even in summaries/)`);
+      log(`BLOCKED: ALL-CAPITALS filename not allowed: ${fileName} (blocks everywhere)`);
 
       // Suggest lowercase alternative
       const suggestedName = fileName.toLowerCase();
-      const locationNote = isInSummariesDir
-        ? 'File is in summaries/ but ALL-CAPITALS naming is still not allowed.'
-        : 'File should also be moved to summaries/ directory.';
 
-      const message = `🚫 ALL-CAPITALS filenames are not allowed in summaries/
+      const message = `🚫 ALL-CAPITALS filenames are not allowed
 
 Blocked filename: ${fileName}
 Suggested alternative: ${suggestedName}
-${locationNote}
 
 Well-known exceptions allowed:
 ${allowedAllCapsFiles.join(', ')}
@@ -166,6 +147,24 @@ To execute blocked operation:
       };
       return sendResponse(response, 0, log);
     }
+
+    // STEP 2: Summary placement validation (after ALL-CAPITALS passes)
+    // Use shared validation logic
+    const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
+
+    // If not a summary file or already in correct location, allow
+    if (summaryValidation.allowed) {
+      log('File validation passed - allowing');
+      return allowOperation(log, true);
+    }
+
+    log(`Summary file detected outside summaries/: ${fileName}`);
+
+    // Check if already in summaries directory
+    const normalizedPath = relativePath.replace(/\\/g, '/');
+    const summariesPattern = new RegExp(`^${summariesPath}/`, 'i');
+    const isInSummariesDir = summariesPattern.test(normalizedPath) ||
+                            normalizedPath.includes(`/${summariesPath}/`);
 
     // STEP 3: If file is in summaries directory and passes ALL-CAPITALS check, allow
     if (isInSummariesDir) {
