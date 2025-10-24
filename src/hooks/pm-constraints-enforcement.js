@@ -215,7 +215,7 @@ function main() {
     return filePaths;
   }
 
-  function validateBashCommand(command) {
+  function validateBashCommand(command, projectRoot) {
     // Allow read-only process inspection commands (ps, grep, pgrep, etc.)
     const readOnlyInspectionCommands = ['ps', 'pgrep', 'pidof', 'lsof', 'netstat', 'ss', 'top', 'htop'];
 
@@ -235,7 +235,7 @@ function main() {
       const remoteCommand = sshMatch[1];
       log(`SSH remote command detected: ${remoteCommand}`);
       // Recursively validate the FULL remote command (preserves kubectl subcommands)
-      return validateBashCommand(remoteCommand);
+      return validateBashCommand(remoteCommand, projectRoot);
     }
 
     // Special case: grep is read-only if it's part of a pipe (ps aux | grep)
@@ -1126,7 +1126,7 @@ To execute blocked operation:
       // Validate Bash commands
       if (tool === 'Bash' && command) {
         log(`Validating Bash command: ${command}`);
-        const bashValidation = validateBashCommand(command);
+        const bashValidation = validateBashCommand(command, projectRoot);
 
         if (!bashValidation.allowed) {
           log(`Bash command BLOCKED: ${command}`);
