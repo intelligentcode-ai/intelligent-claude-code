@@ -311,6 +311,29 @@ The system uses unified JSON configuration with hierarchical loading and separat
 - **Default**: "Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations."
 - **Description**: Custom message to display when strict main scope enforcement blocks an operation
 
+**enforcement.heredoc_allowed_commands** (array of strings)
+- **Default**: `["git", "gh", "glab", "hub"]`
+- **Description**: Commands allowed to use heredoc syntax in PM scope
+- **Purpose**: Whitelist specific commands that require heredoc for legitimate operations (e.g., git commit messages, PR descriptions)
+- **Applies to**: PM scope Bash command validation only
+- **Rationale**:
+  - Git workflows commonly use heredoc for multi-line commit messages and PR bodies
+  - GitHub CLI tools (gh, glab, hub) use heredoc for issue/PR descriptions
+  - Other heredoc usage (python <<, cat <<, etc.) remains blocked and requires AgentTask delegation
+- **Examples**:
+  - **Allowed**: `git commit -m "$(cat <<'EOF' ...)"`
+  - **Allowed**: `gh pr create --body "$(cat <<'EOF' ...)"`
+  - **Blocked**: `python <<'EOF'` (requires AgentTask)
+  - **Blocked**: `cat <<'EOF' > script.sh` (requires AgentTask)
+- **Configuration Example**:
+  ```json
+  {
+    "enforcement": {
+      "heredoc_allowed_commands": ["git", "gh", "glab", "hub", "custom-cli"]
+    }
+  }
+  ```
+
 #### Universal Tool Blacklist System
 
 The tool blacklist system provides comprehensive tool restriction management across all execution contexts.

@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.5] - 2025-10-24
+
+### Added
+- **Heredoc Allowed Commands Whitelist**: Whitelist approach for PM heredoc usage
+  - New `enforcement.heredoc_allowed_commands` configuration setting in config-loader.js defaults
+  - Default allowed commands: `["git", "gh", "glab", "hub"]` for git workflows
+  - PM hook now checks whitelist before blocking heredoc commands
+  - Git commit messages with heredoc syntax now work: `git commit -m "$(cat <<'EOF' ...)"`
+  - GitHub CLI tools (gh, glab, hub) can use heredoc for PR/issue descriptions
+  - Non-whitelisted heredocs (python, cat, etc.) still blocked, require AgentTask delegation
+  - Configurable via `.icc/enforcement.json` or `enforcement.heredoc_allowed_commands` in config
+
+### Changed
+- Updated pm-constraints-enforcement.js heredoc validation logic
+  - Whitelist check using `getEnforcementSetting('heredoc_allowed_commands')`
+  - Command extraction and validation before blocking
+  - Improved error messages showing allowed commands list
+- Enhanced enforcement.default.json with heredoc_allowed_commands entry
+- Updated configuration-guide.md with comprehensive heredoc whitelist documentation
+
+### Technical Details
+- Uses enforcement-loader.js for configuration loading with 5-minute cache
+- Whitelist check extracts first command word and validates against allowed list
+- Allows continuation to other validation checks when whitelisted command detected
+- Project-specific customization via .icc/enforcement.json file
+- Full backward compatibility with existing enforcement configuration
+
+---
+
 ## [8.20.4] - 2025-10-24
 
 ### Added
