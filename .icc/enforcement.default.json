@@ -1,7 +1,8 @@
 {
   "$schema": "../src/schemas/icc.enforcement.schema.json",
   "version": "1.0.0",
-  "description": "Intelligent Claude Code enforcement configuration with consolidated whitelists and blacklists",
+  "description": "⚠️ DEPRECATED: This file is deprecated. All enforcement settings have been migrated to icc.config.json under the 'enforcement' key. This file will be removed in a future version.",
+  "_migration_note": "Use icc.config.json with enforcement.tool_blacklist, enforcement.allowed_allcaps_files, and enforcement.heredoc_allowed_commands instead.",
 
   "tool_blacklist": {
     "universal": [

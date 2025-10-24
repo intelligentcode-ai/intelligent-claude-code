@@ -24,6 +24,7 @@
     - "{{ claude_install_path }}/hooks"
     - "{{ claude_install_path }}/logs"
     - "{{ claude_install_path }}/schemas"
+    - "{{ claude_install_path }}/.icc"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -257,6 +258,13 @@
   copy:
     src: "{{ playbook_dir }}/../src/schemas/icc.workflow.schema.json"
     dest: "{{ claude_install_path }}/schemas/icc.workflow.schema.json"
+    mode: '0644'
+    force: yes
+
+- name: Copy enforcement defaults to .icc directory
+  copy:
+    src: "{{ playbook_dir }}/../.icc/enforcement.default.json"
+    dest: "{{ claude_install_path }}/.icc/enforcement.default.json"
     mode: '0644'
     force: yes
 

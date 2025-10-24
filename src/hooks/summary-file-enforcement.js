@@ -14,7 +14,6 @@ const path = require('path');
 const { createLogger } = require('./lib/logging');
 const { parseHookInput, extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
-const { getEnforcementSetting } = require('./lib/enforcement-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
@@ -69,8 +68,8 @@ function main() {
     const fileName = path.basename(relativePath);
 
     // STEP 1: ALL-CAPITALS check (highest priority - blocks everywhere)
-    // Load allowed ALL-CAPITALS files from enforcement configuration
-    const allowedAllCapsFiles = getEnforcementSetting(projectRoot, 'allowed_allcaps_files', [
+    // Load allowed ALL-CAPITALS files from unified configuration
+    const allowedAllCapsFiles = getSetting('enforcement.allowed_allcaps_files', [
       'README.md',
       'LICENSE',
       'LICENSE.md',
@@ -144,7 +143,7 @@ To execute blocked operation:
         continue: false,
         displayToUser: message
       };
-      return sendResponse(response, 0, log);
+      return sendResponse(response, 2, log);
     }
 
     // STEP 2: Summary placement validation (after ALL-CAPITALS passes)
@@ -185,7 +184,7 @@ To disable this enforcement, set development.file_management_strict: false in ic
         continue: false,
         displayToUser: message
       };
-      return sendResponse(response, 0, log);
+      return sendResponse(response, 2, log);
     } else {
       // Allow with warning
       log(`WARNING: Summary file outside summaries directory (permissive mode)`);

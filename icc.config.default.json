@@ -109,6 +109,70 @@
     "auto_correction": true,
     "strict_main_scope": true,
     "strict_main_scope_message": "Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.",
+    "tool_blacklist": {
+      "universal": [
+        "rm -rf /",
+        "dd if=/dev/zero of=/dev/sda",
+        "mkfs",
+        "fdisk /dev/sda",
+        "> /dev/sda",
+        "format c:"
+      ],
+      "main_scope_only": [
+        "Write",
+        "Edit",
+        "MultiEdit",
+        "NotebookEdit"
+      ],
+      "agents_only": [
+        "Task",
+        "SlashCommand",
+        "Skill"
+      ],
+      "infrastructure": [
+        "govc",
+        "esxcli",
+        "vcsa-cli",
+        "virsh",
+        "vboxmanage",
+        "qm",
+        "pct",
+        "multipass",
+        "vagrant",
+        "packer",
+        "kubectl",
+        "helm",
+        "terraform",
+        "ansible-playbook",
+        "docker",
+        "docker-compose",
+        "az",
+        "gcloud",
+        "aws"
+      ]
+    },
+    "allowed_allcaps_files": [
+      "README.md",
+      "LICENSE",
+      "LICENSE.md",
+      "CLAUDE.md",
+      "CHANGELOG.md",
+      "CONTRIBUTING.md",
+      "AUTHORS",
+      "NOTICE",
+      "PATENTS",
+      "VERSION",
+      "MAKEFILE",
+      "DOCKERFILE",
+      "COPYING",
+      "COPYRIGHT"
+    ],
+    "heredoc_allowed_commands": [
+      "git",
+      "gh",
+      "glab",
+      "hub"
+    ],
     "infrastructure_protection": {
       "enabled": true,
       "enforce_iac_only": true,

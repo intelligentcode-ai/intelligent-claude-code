@@ -8,7 +8,7 @@
  * with support for universal, context-specific, and per-project blacklists.
  */
 
-const { loadEnforcement } = require('./enforcement-loader');
+const { getSetting } = require('./config-loader');
 
 /**
  * Check if a tool is blocked based on context and blacklist configuration
@@ -29,20 +29,17 @@ const { loadEnforcement } = require('./enforcement-loader');
  * }
  */
 function checkToolBlacklist(tool, toolInput, context, projectRoot = process.cwd()) {
-  // Load enforcement configuration
-  let enforcement;
+  // Load tool blacklist from unified configuration
+  let blacklist;
   try {
-    enforcement = loadEnforcement(projectRoot);
+    blacklist = getSetting('enforcement.tool_blacklist', {});
   } catch (error) {
-    // Fail open if enforcement cannot be loaded
+    // Fail open if configuration cannot be loaded
     return { blocked: false };
   }
 
-  // Extract tool blacklist configuration
-  const blacklist = enforcement?.tool_blacklist;
-
   // If no blacklist configured, allow operation
-  if (!blacklist) {
+  if (!blacklist || Object.keys(blacklist).length === 0) {
     return { blocked: false };
   }
 

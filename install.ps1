@@ -700,6 +700,21 @@ function Install-IntelligentClaudeCode {
         }
     }
 
+    # Create .icc directory and copy enforcement defaults
+    Write-Host "  Installing enforcement defaults..." -ForegroundColor Gray
+    $IccDir = Join-Path $Paths.InstallPath ".icc"
+    if (-not (Test-Path $IccDir)) {
+        New-Item -Path $IccDir -ItemType Directory -Force | Out-Null
+    }
+
+    $EnforcementSrc = Join-Path $PSScriptRoot ".icc\enforcement.default.json"
+    $EnforcementDest = Join-Path $IccDir "enforcement.default.json"
+    if (Test-Path $EnforcementSrc) {
+        Copy-Item -Path $EnforcementSrc -Destination $EnforcementDest -Force
+    } else {
+        Write-Warning "Enforcement defaults not found: $EnforcementSrc"
+    }
+
     # Deploy hook files to ~/.claude/hooks/
     Install-HookSystem -InstallPath $Paths.InstallPath -SourceDir $SourceDir
 

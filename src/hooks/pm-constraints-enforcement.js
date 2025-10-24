@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { loadConfig, getSetting } = require('./lib/config-loader');
-const { getEnforcementSetting } = require('./lib/enforcement-loader');
 const { isDevelopmentContext } = require('./lib/context-detection');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
@@ -333,15 +332,15 @@ To execute blocked operation:
       'ssh', 'scp', 'sftp', 'rsync'  // Remote access and file transfer
     ];
 
-    // Add infrastructure tools from enforcement configuration (PM blacklist - includes kubectl, govc, etc.)
-    const pmInfrastructureBlacklist = getEnforcementSetting(projectRoot, 'infrastructure_protection.pm_blacklist', []);
+    // Add infrastructure tools from unified configuration (infrastructure_protection.pm_blacklist)
+    const pmInfrastructureBlacklist = getSetting('enforcement.tool_blacklist.infrastructure', []);
     const allBlockedCommands = [...blockedCommands, ...pmInfrastructureBlacklist];
 
     // Check for ANY heredoc pattern (<< 'EOF', << EOF, <<EOF, <<-EOF)
     // Whitelist approach: Allow specific commands (git, gh, glab, hub) to use heredocs
     if (command.includes('<<')) {
-      // Load heredoc allowed commands from enforcement config
-      const allowedHeredocCommands = getEnforcementSetting(projectRoot, 'heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
+      // Load heredoc allowed commands from unified config
+      const allowedHeredocCommands = getSetting('enforcement.heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
 
       // Extract the actual command being executed
       const cmdStart = command.trim().split(/\s+/)[0];
@@ -434,7 +433,7 @@ Text editors: vi, vim, nano, emacs
 Remote access: ssh, scp, sftp, rsync${kubectlGuidance}
 
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
-All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
+All infrastructure tools are configurable in: enforcement.tool_blacklist.infrastructure
 Use Task tool to create specialist agent via AgentTask with explicit approval.
 
 🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:

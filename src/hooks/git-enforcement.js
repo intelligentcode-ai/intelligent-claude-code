@@ -125,11 +125,15 @@ function main() {
       /\n\nCo-authored-by:.*<.*@.*>\s*/gi  // Block ALL Co-authored-by lines when git.privacy=true
     ];
 
-    // Add custom patterns from config
+    // Add custom patterns from config with word boundaries
     for (const pattern of patterns) {
       // Escape special regex characters
       const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      regexPatterns.push(new RegExp(escaped, 'gi'));
+      // Add word boundaries for simple words, keep full pattern for phrases
+      const patternWithBoundaries = pattern.split(/\s+/).length === 1
+        ? `\\b${escaped}\\b`
+        : escaped;
+      regexPatterns.push(new RegExp(patternWithBoundaries, 'gi'));
     }
 
     for (const pattern of regexPatterns) {
@@ -263,10 +267,14 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
           /Claude assisted in this commit/gi
         ];
 
-        // Add custom patterns from config
+        // Add custom patterns from config with word boundaries
         for (const pattern of privacyPatterns) {
           const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          regexPatterns.push(new RegExp(escaped, 'gi'));
+          // Add word boundaries for simple words, keep full pattern for phrases
+          const patternWithBoundaries = pattern.split(/\s+/).length === 1
+            ? `\\b${escaped}\\b`
+            : escaped;
+          regexPatterns.push(new RegExp(patternWithBoundaries, 'gi'));
         }
 
         for (const pattern of regexPatterns) {
