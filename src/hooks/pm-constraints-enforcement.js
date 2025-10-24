@@ -395,7 +395,8 @@ To execute blocked operation:
 2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
 3. Wait for agent completion
 4. Agent provides comprehensive summary with results`
-      };
+        };
+      }
     }
 
     // Extract actual commands being executed (ignore paths and arguments)
