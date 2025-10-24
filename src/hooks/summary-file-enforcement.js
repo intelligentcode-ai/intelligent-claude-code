@@ -14,6 +14,7 @@ const path = require('path');
 const { createLogger } = require('./lib/logging');
 const { parseHookInput, extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
+const { getEnforcementSetting } = require('./lib/enforcement-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
@@ -68,8 +69,8 @@ function main() {
     const fileName = path.basename(relativePath);
 
     // STEP 1: ALL-CAPITALS check (highest priority - blocks everywhere)
-    // Load allowed ALL-CAPITALS files from config (with defaults)
-    const defaultAllCapsFiles = [
+    // Load allowed ALL-CAPITALS files from enforcement configuration
+    const allowedAllCapsFiles = getEnforcementSetting(projectRoot, 'allowed_allcaps_files', [
       'README.md',
       'LICENSE',
       'LICENSE.md',
@@ -84,9 +85,7 @@ function main() {
       'DOCKERFILE',
       'COPYING',
       'COPYRIGHT'
-    ];
-
-    const allowedAllCapsFiles = getSetting('development.allowed_allcaps_files', defaultAllCapsFiles);
+    ]);
     log(`Allowed ALL-CAPITALS files: ${allowedAllCapsFiles.length} entries`);
 
     // Check for ALL-CAPITALS filename (excluding extension)

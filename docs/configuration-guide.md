@@ -7,14 +7,25 @@ Comprehensive guide to Intelligent Claude Code unified JSON configuration system
 The system uses unified JSON configuration with hierarchical loading and separate workflow settings.
 
 **Configuration Files**:
-- `icc.config.json` - Core system settings (70+ settings across 15 categories)
-- `icc.workflow.json` - Workflow settings by AgentTask tier (45 settings)
+- `config.json` - Core system settings (70+ settings across 15 categories)
+- `workflow.json` - Workflow settings by AgentTask tier (45 settings)
+- `enforcement.json` - Enforcement rules and thresholds (added in v8.20+)
+
+**Configuration Directory Structure**:
+- `.icc/` - Recommended location for configuration files (v8.20+)
+- Root `icc.*.json` - Legacy location (still supported for backward compatibility)
+- `.claude/icc.*.json` - User-global configuration location
 
 **Configuration Hierarchy** (highest to lowest priority):
-1. Project configuration (`./icc.config.json`, `./icc.workflow.json`)
-2. User global configuration (`~/.claude/icc.config.json`, `~/.claude/icc.workflow.json`)
+1. Project configuration (`.icc/config.json` → `icc.config.json` → `.claude/icc.config.json`)
+2. User global configuration (`~/.claude/.icc/config.json` → `~/.claude/icc.config.json`)
 3. System defaults (`~/.claude/icc.config.default.json`, `~/.claude/icc.workflow.default.json`)
 4. Legacy YAML (backward compatibility only, triggers migration warning)
+
+**Migration Path**:
+- New projects: Use `.icc/config.json` and `.icc/workflow.json`
+- Existing projects: Both root `icc.*.json` and `.icc/*.json` locations supported
+- System automatically searches in priority order: `.icc/` → root → `.claude/`
 
 ## Core Configuration (icc.config.json)
 

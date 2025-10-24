@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { loadConfig, getSetting } = require('./lib/config-loader');
+const { getEnforcementSetting } = require('./lib/enforcement-loader');
 const { isDevelopmentContext } = require('./lib/context-detection');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
@@ -332,19 +333,36 @@ To execute blocked operation:
       'ssh', 'scp', 'sftp', 'rsync'  // Remote access and file transfer
     ];
 
-    // Add infrastructure tools from configuration (PM blacklist - includes kubectl, govc, etc.)
-    const pmInfrastructureBlacklist = getSetting('enforcement.infrastructure_protection.pm_blacklist', []);
+    // Add infrastructure tools from enforcement configuration (PM blacklist - includes kubectl, govc, etc.)
+    const pmInfrastructureBlacklist = getEnforcementSetting(projectRoot, 'infrastructure_protection.pm_blacklist', []);
     const allBlockedCommands = [...blockedCommands, ...pmInfrastructureBlacklist];
 
     // Check for ANY heredoc pattern (<< 'EOF', << EOF, <<EOF, <<-EOF)
-    // This blocks both scripting heredocs (python <<) AND shell heredocs (cat <<, echo <<)
+    // Whitelist approach: Allow specific commands (git, gh, glab, hub) to use heredocs
     if (command.includes('<<')) {
-      return {
-        allowed: false,
-        message: `🚫 PM role cannot execute heredoc commands - create Agents using AgentTasks for technical work
+      // Load heredoc allowed commands from enforcement config
+      const allowedHeredocCommands = getEnforcementSetting(projectRoot, 'heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
+
+      // Extract the actual command being executed
+      const cmdStart = command.trim().split(/\s+/)[0];
+
+      // Check if command is in allowed list
+      const isAllowed = allowedHeredocCommands.some(allowed =>
+        command.trim().startsWith(allowed + ' ') || command.trim().startsWith(allowed + '\n')
+      );
+
+      if (isAllowed) {
+        log(`Allowing heredoc for whitelisted command: ${cmdStart}`);
+        // Continue with other validation - don't return here
+      } else {
+        return {
+          allowed: false,
+          message: `🚫 PM role cannot execute heredoc commands - create Agents using AgentTasks for technical work
 
 Blocked pattern: Heredoc (cat << 'EOF', python << 'EOF', etc.)
 Full command: ${command}
+
+Allowed heredoc commands: ${allowedHeredocCommands.join(', ')}
 
 Heredoc commands (both shell and scripting) require technical implementation by specialist agents.
 Use Write tool for file creation or Task tool to create specialist agent via AgentTask.
@@ -940,7 +958,7 @@ To execute blocked operation:
     log(`Tool: ${tool}, FilePath: ${filePath}, Command: ${command}`);
 
     // CRITICAL: Check tool blacklist FIRST (universal + main_scope_only for PM)
-    const blacklistResult = checkToolBlacklist(tool, toolInput, 'pm');
+    const blacklistResult = checkToolBlacklist(tool, toolInput, 'pm', projectRoot);
     if (blacklistResult.blocked) {
       log(`Tool blocked by blacklist: ${tool} (${blacklistResult.list})`);
 

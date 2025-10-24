@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.4] - 2025-10-24
+
+### Added
+- **Cleaner .icc/ Folder Structure**: Organized configuration files in dedicated directory
+  - Configuration files now stored in `.icc/` directory instead of project root
+  - Priority search order: `.icc/config.json` → `icc.config.json` → `.claude/icc.config.json`
+  - Backward compatibility maintained for root `icc.*.json` files
+  - Updated config-loader.js with findConfigFile() function for hierarchical search
+  - Documentation updated with migration path and directory structure
+
+### Changed
+- Moved `icc.config.json` to `.icc/config.json` in this project
+- Updated .gitignore to include `.icc/*.local.json` pattern
+- Enhanced configuration-guide.md with .icc/ structure documentation
+
+### Technical Details
+- config-loader.js now searches `.icc/` directory first, then root, then `.claude/`
+- Workflow configuration also supports new directory structure
+- Existing projects can continue using root location or migrate to `.icc/`
+- System automatically uses first found configuration file in priority order
+
+---
+
 ## [8.20.3] - 2025-10-23
 
 ### Fixed

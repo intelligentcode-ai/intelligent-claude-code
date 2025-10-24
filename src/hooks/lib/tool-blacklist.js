@@ -8,7 +8,7 @@
  * with support for universal, context-specific, and per-project blacklists.
  */
 
-const { loadConfig } = require('./config-loader');
+const { loadEnforcement } = require('./enforcement-loader');
 
 /**
  * Check if a tool is blocked based on context and blacklist configuration
@@ -16,6 +16,7 @@ const { loadConfig } = require('./config-loader');
  * @param {string} tool - Tool name (e.g., "Write", "Edit", "Bash", "Task")
  * @param {Object} toolInput - Tool input parameters (e.g., { command: "...", file_path: "..." })
  * @param {string} context - Execution context: 'main_scope', 'agent', or 'pm'
+ * @param {string} projectRoot - Project root directory (optional, defaults to cwd)
  * @returns {Object} Result object with:
  *   - blocked: boolean - true if tool is blocked
  *   - reason: string - Human-readable reason for blocking
@@ -27,18 +28,18 @@ const { loadConfig } = require('./config-loader');
  *   console.log(`Tool blocked: ${result.reason} (${result.list})`);
  * }
  */
-function checkToolBlacklist(tool, toolInput, context) {
-  // Load configuration
-  let config;
+function checkToolBlacklist(tool, toolInput, context, projectRoot = process.cwd()) {
+  // Load enforcement configuration
+  let enforcement;
   try {
-    config = loadConfig();
+    enforcement = loadEnforcement(projectRoot);
   } catch (error) {
-    // Fail open if config cannot be loaded
+    // Fail open if enforcement cannot be loaded
     return { blocked: false };
   }
 
   // Extract tool blacklist configuration
-  const blacklist = config?.enforcement?.tool_blacklist;
+  const blacklist = enforcement?.tool_blacklist;
 
   // If no blacklist configured, allow operation
   if (!blacklist) {
