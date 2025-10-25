@@ -7,14 +7,25 @@ Comprehensive guide to Intelligent Claude Code unified JSON configuration system
 The system uses unified JSON configuration with hierarchical loading and separate workflow settings.
 
 **Configuration Files**:
-- `icc.config.json` - Core system settings (70+ settings across 15 categories)
-- `icc.workflow.json` - Workflow settings by AgentTask tier (45 settings)
+- `config.json` - Core system settings (70+ settings across 15 categories)
+- `workflow.json` - Workflow settings by AgentTask tier (45 settings)
+- `enforcement.json` - Enforcement rules and thresholds (added in v8.20+)
+
+**Configuration Directory Structure**:
+- `.icc/` - Recommended location for configuration files (v8.20+)
+- Root `icc.*.json` - Legacy location (still supported for backward compatibility)
+- `.claude/icc.*.json` - User-global configuration location
 
 **Configuration Hierarchy** (highest to lowest priority):
-1. Project configuration (`./icc.config.json`, `./icc.workflow.json`)
-2. User global configuration (`~/.claude/icc.config.json`, `~/.claude/icc.workflow.json`)
+1. Project configuration (`.icc/config.json` → `icc.config.json` → `.claude/icc.config.json`)
+2. User global configuration (`~/.claude/.icc/config.json` → `~/.claude/icc.config.json`)
 3. System defaults (`~/.claude/icc.config.default.json`, `~/.claude/icc.workflow.default.json`)
 4. Legacy YAML (backward compatibility only, triggers migration warning)
+
+**Migration Path**:
+- New projects: Use `.icc/config.json` and `.icc/workflow.json`
+- Existing projects: Both root `icc.*.json` and `.icc/*.json` locations supported
+- System automatically searches in priority order: `.icc/` → root → `.claude/`
 
 ## Core Configuration (icc.config.json)
 
@@ -299,6 +310,141 @@ The system uses unified JSON configuration with hierarchical loading and separat
 **enforcement.strict_main_scope_message** (string)
 - **Default**: "Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations."
 - **Description**: Custom message to display when strict main scope enforcement blocks an operation
+
+**enforcement.heredoc_allowed_commands** (array of strings)
+- **Default**: `["git", "gh", "glab", "hub"]`
+- **Description**: Commands allowed to use heredoc syntax in PM scope
+- **Purpose**: Whitelist specific commands that require heredoc for legitimate operations (e.g., git commit messages, PR descriptions)
+- **Applies to**: PM scope Bash command validation only
+- **Rationale**:
+  - Git workflows commonly use heredoc for multi-line commit messages and PR bodies
+  - GitHub CLI tools (gh, glab, hub) use heredoc for issue/PR descriptions
+  - Other heredoc usage (python <<, cat <<, etc.) remains blocked and requires AgentTask delegation
+- **Examples**:
+  - **Allowed**: `git commit -m "$(cat <<'EOF' ...)"`
+  - **Allowed**: `gh pr create --body "$(cat <<'EOF' ...)"`
+  - **Blocked**: `python <<'EOF'` (requires AgentTask)
+  - **Blocked**: `cat <<'EOF' > script.sh` (requires AgentTask)
+- **Configuration Example**:
+  ```json
+  {
+    "enforcement": {
+      "heredoc_allowed_commands": ["git", "gh", "glab", "hub", "custom-cli"]
+    }
+  }
+  ```
+
+#### Universal Tool Blacklist System
+
+The tool blacklist system provides comprehensive tool restriction management across all execution contexts.
+
+**enforcement.tool_blacklist** (object)
+- **Description**: Three-tier tool blacklist system for universal tool restrictions
+- **Categories**:
+  - **universal**: Tools blocked for EVERYONE (main scope + agents)
+  - **main_scope_only**: Tools blocked for main scope and PM ONLY
+  - **agents_only**: Tools blocked for agents ONLY
+
+**enforcement.tool_blacklist.universal** (array of strings)
+- **Default**: `["rm -rf /", "dd if=/dev/zero", "mkfs", "fdisk", "format c:", "> /dev/sda"]`
+- **Description**: Destructive operations blocked for ALL contexts
+- **Purpose**: System-wide safety protection against catastrophic commands
+- **Applies to**: Main scope, PM scope, and all agents
+- **Examples**:
+  ```json
+  {
+    "enforcement": {
+      "tool_blacklist": {
+        "universal": [
+          "rm -rf /",
+          "dd if=/dev/zero",
+          "mkfs",
+          "fdisk",
+          "format c:",
+          "> /dev/sda"
+        ]
+      }
+    }
+  }
+  ```
+
+**enforcement.tool_blacklist.main_scope_only** (array of strings)
+- **Default**: `["Write", "Edit", "MultiEdit", "Bash", "NotebookEdit"]`
+- **Description**: Tools blocked for main scope coordination work
+- **Purpose**: Enforce AgentTask-driven execution pattern
+- **Applies to**: Main scope and PM scope only (agents can use these tools)
+- **Rationale**: Main scope performs coordination, agents perform technical work
+- **Examples**:
+  ```json
+  {
+    "enforcement": {
+      "tool_blacklist": {
+        "main_scope_only": [
+          "Write",
+          "Edit",
+          "MultiEdit",
+          "Bash",
+          "NotebookEdit"
+        ]
+      }
+    }
+  }
+  ```
+
+**enforcement.tool_blacklist.agents_only** (array of strings)
+- **Default**: `["Task", "SlashCommand", "Skill"]`
+- **Description**: Tools blocked for agents to prevent recursion and misuse
+- **Purpose**: Prevent agents from creating sub-agents or invoking user-facing commands
+- **Applies to**: All agents only (main scope can use these tools)
+- **Security**: Prevents infinite agent recursion via Task tool
+- **Examples**:
+  ```json
+  {
+    "enforcement": {
+      "tool_blacklist": {
+        "agents_only": [
+          "Task",
+          "SlashCommand",
+          "Skill"
+        ]
+      }
+    }
+  }
+  ```
+
+**Per-Project Customization**:
+
+Projects can extend the blacklist in their `icc.config.json`:
+
+```json
+{
+  "enforcement": {
+    "tool_blacklist": {
+      "universal": [
+        "project-specific-dangerous-command"
+      ],
+      "main_scope_only": [
+        "CustomTool"
+      ],
+      "agents_only": [
+        "WebFetch"
+      ]
+    }
+  }
+}
+```
+
+**Merge Strategy**: Project blacklists are **additive** with system defaults. Project-specific entries are merged with system defaults, not replaced.
+
+**Hook Integration**: All PreToolUse hooks check the universal blacklist:
+- `main-scope-enforcement.js`: Checks universal + main_scope_only
+- `pm-constraints-enforcement.js`: Checks universal + main_scope_only
+- `agent-marker.js`: Checks universal + agents_only
+
+**Error Messages**: When a tool is blocked, the error message clearly states:
+- Which blacklist blocked the tool (universal, main_scope_only, or agents_only)
+- The tool that was blocked
+- The context where blocking occurred
 
 ### Best Practices Settings
 

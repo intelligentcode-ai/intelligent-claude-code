@@ -4,6 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { loadConfig, getSetting } = require('./lib/config-loader');
+const { isDevelopmentContext } = require('./lib/context-detection');
+const { checkToolBlacklist } = require('./lib/tool-blacklist');
+const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -70,20 +73,28 @@ function main() {
     return pathConfig;
   }
 
-  function getConfiguredPaths() {
+  function getConfiguredPaths(projectRoot) {
     const config = loadConfiguration();
 
+    const allowlist = [
+      config.story_path,
+      config.bug_path,
+      config.memory_path,
+      config.docs_path,
+      'agenttasks',           // Always allow agenttasks directory
+      'icc.config.json',      // Project configuration file
+      'icc.workflow.json',    // Workflow configuration file
+      'summaries'             // Summaries and reports directory
+    ];
+
+    // In development context, allow src/ directory edits
+    if (isDevelopmentContext(projectRoot)) {
+      allowlist.push('src');
+      log('Development context detected - src/ added to PM allowlist');
+    }
+
     return {
-      allowlist: [
-        config.story_path,
-        config.bug_path,
-        config.memory_path,
-        config.docs_path,
-        'agenttasks',           // Always allow agenttasks directory
-        'icc.config.json',      // Project configuration file
-        'icc.workflow.json',    // Workflow configuration file
-        'summaries'             // Summaries and reports directory
-      ],
+      allowlist: allowlist,
       blocklist: [
         config.src_path,
         config.test_path,
@@ -102,6 +113,13 @@ function main() {
     const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
 
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+
+    // CRITICAL: Ensure marker directory exists before reading markers
+    if (!fs.existsSync(markerDir)) {
+      fs.mkdirSync(markerDir, { recursive: true });
+      log(`Created marker directory: ${markerDir}`);
+    }
+
     const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
 
     try {
@@ -125,6 +143,9 @@ function main() {
       return true;
     }
   }
+
+  // Note: isDevelopmentContext() is now provided by shared library
+  // Location: src/hooks/lib/context-detection.js
 
   function extractCommandsFromBash(commandString) {
     // First, remove all quoted strings (both single and double quotes)
@@ -193,7 +214,7 @@ function main() {
     return filePaths;
   }
 
-  function validateBashCommand(command) {
+  function validateBashCommand(command, projectRoot) {
     // Allow read-only process inspection commands (ps, grep, pgrep, etc.)
     const readOnlyInspectionCommands = ['ps', 'pgrep', 'pidof', 'lsof', 'netstat', 'ss', 'top', 'htop'];
 
@@ -213,7 +234,7 @@ function main() {
       const remoteCommand = sshMatch[1];
       log(`SSH remote command detected: ${remoteCommand}`);
       // Recursively validate the FULL remote command (preserves kubectl subcommands)
-      return validateBashCommand(remoteCommand);
+      return validateBashCommand(remoteCommand, projectRoot);
     }
 
     // Special case: grep is read-only if it's part of a pipe (ps aux | grep)
@@ -264,7 +285,36 @@ Use lowercase filenames with hyphens for word separation.
 
 Example: story-003-completion-summary.md instead of STORY-003-COMPLETION-SUMMARY.md
 
-Use Write tool with lowercase filename or create AgentTask for file creation.`
+Use Write tool with lowercase filename or create AgentTask for file creation.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Agent response = Agent completed (process results immediately)
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → Agent returns → Process results
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → Agents return → Process results
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
           };
         }
       }
@@ -282,23 +332,70 @@ Use Write tool with lowercase filename or create AgentTask for file creation.`
       'ssh', 'scp', 'sftp', 'rsync'  // Remote access and file transfer
     ];
 
-    // Add infrastructure tools from configuration (PM blacklist - includes kubectl, govc, etc.)
-    const pmInfrastructureBlacklist = getSetting('enforcement.infrastructure_protection.pm_blacklist', []);
+    // Add infrastructure tools from unified configuration (infrastructure_protection.pm_blacklist)
+    const pmInfrastructureBlacklist = getSetting('enforcement.tool_blacklist.infrastructure', []);
     const allBlockedCommands = [...blockedCommands, ...pmInfrastructureBlacklist];
 
     // Check for ANY heredoc pattern (<< 'EOF', << EOF, <<EOF, <<-EOF)
-    // This blocks both scripting heredocs (python <<) AND shell heredocs (cat <<, echo <<)
+    // Whitelist approach: Allow specific commands (git, gh, glab, hub) to use heredocs
     if (command.includes('<<')) {
-      return {
-        allowed: false,
-        message: `🚫 PM role cannot execute heredoc commands - create Agents using AgentTasks for technical work
+      // Load heredoc allowed commands from unified config
+      const allowedHeredocCommands = getSetting('enforcement.heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
+
+      // Extract the actual command being executed
+      const cmdStart = command.trim().split(/\s+/)[0];
+
+      // Check if command is in allowed list
+      const isAllowed = allowedHeredocCommands.some(allowed =>
+        command.trim().startsWith(allowed + ' ') || command.trim().startsWith(allowed + '\n')
+      );
+
+      if (isAllowed) {
+        log(`Allowing heredoc for whitelisted command: ${cmdStart}`);
+        // Continue with other validation - don't return here
+      } else {
+        return {
+          allowed: false,
+          message: `🚫 PM role cannot execute heredoc commands - create Agents using AgentTasks for technical work
 
 Blocked pattern: Heredoc (cat << 'EOF', python << 'EOF', etc.)
 Full command: ${command}
 
+Allowed heredoc commands: ${allowedHeredocCommands.join(', ')}
+
 Heredoc commands (both shell and scripting) require technical implementation by specialist agents.
-Use Write tool for file creation or Task tool to create specialist agent via AgentTask.`
-      };
+Use Write tool for file creation or Task tool to create specialist agent via AgentTask.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Agent response = Agent completed (process results immediately)
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → Agent returns → Process results
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → Agents return → Process results
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
+        };
+      }
     }
 
     // Extract actual commands being executed (ignore paths and arguments)
@@ -336,8 +433,37 @@ Text editors: vi, vim, nano, emacs
 Remote access: ssh, scp, sftp, rsync${kubectlGuidance}
 
 Infrastructure-as-Code Principle: Use declarative tools, not imperative commands.
-All infrastructure tools are configurable in: enforcement.infrastructure_protection.pm_blacklist
-Use Task tool to create specialist agent via AgentTask with explicit approval.`
+All infrastructure tools are configurable in: enforcement.tool_blacklist.infrastructure
+Use Task tool to create specialist agent via AgentTask with explicit approval.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Agent response = Agent completed (process results immediately)
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → Agent returns → Process results
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → Agents return → Process results
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
           };
         }
       }
@@ -426,66 +552,6 @@ Use Task tool to create specialist agent via AgentTask with explicit approval.`
     }
 
     return false;
-  }
-
-  function isSummaryFile(filePath, projectRoot) {
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
-
-    if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
-    }
-
-    const fileName = path.basename(relativePath);
-
-    // Check if filename matches summary patterns (case-insensitive)
-    // Check ANY directory, not just project root
-    const upperFileName = fileName.toUpperCase();
-    const summaryPatterns = ['SUMMARY', 'REPORT', 'VALIDATION', 'ANALYSIS', 'FIX', 'PATH-MATCHING', 'ROOT_CAUSE'];
-
-    return summaryPatterns.some(pattern => upperFileName.includes(pattern));
-  }
-
-  function validateSummaryFile(filePath, projectRoot) {
-    if (!isSummaryFile(filePath, projectRoot)) {
-      return { allowed: true };
-    }
-
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
-    if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
-    }
-
-    // Check if file is already in summaries/ directory
-    if (relativePath.startsWith('summaries/') || relativePath.startsWith('summaries\\')) {
-      return { allowed: true };  // Already in correct location!
-    }
-
-    // File is summary-type but NOT in summaries/ - block it
-    const fileName = path.basename(filePath);
-    const isAllCapitals = fileName === fileName.toUpperCase();
-    const suggestedName = isAllCapitals ? fileName.toLowerCase() : fileName;
-    const suggestedPath = `summaries/${suggestedName}`;
-
-    // Ensure summaries directory exists in the project root
-    const summariesDir = path.join(projectRoot, 'summaries');
-    if (!fs.existsSync(summariesDir)) {
-      fs.mkdirSync(summariesDir, { recursive: true });
-      log('Created summaries/ directory for summary file redirection');
-    }
-
-    const capitalsWarning = isAllCapitals ? '\n⚠️ Filename is all-capitals - use lowercase for consistency' : '';
-
-    return {
-      allowed: false,
-      message: `📋 Summary files belong in ./summaries/ directory
-
-Blocked: ${filePath}
-Suggested: ${suggestedPath}${capitalsWarning}
-
-Please create summary files in the summaries/ directory to keep project root clean.`
-    };
   }
 
   function validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext = false) {
@@ -598,7 +664,36 @@ Allowed directories for markdown: ${allowlist.join(', ')}, root *.md files
 If you specifically requested this file, ask the user to enable:
 enforcement.allow_markdown_outside_allowlist = true in icc.config.json
 
-Or create the file in an appropriate allowlist directory.`
+Or create the file in an appropriate allowlist directory.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Agent response = Agent completed (process results immediately)
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → Agent returns → Process results
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → Agents return → Process results
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
     };
   }
 
@@ -613,7 +708,17 @@ Or create the file in an appropriate allowlist directory.`
 
     // Check blocklist first (explicit denial)
     if (isPathInBlocklist(filePath, blocklist, projectRoot)) {
-      const blockedDir = blocklist.find(p => filePath.startsWith(p + '/'));
+      // Convert to relative path for proper directory matching
+      let relativePath = filePath;
+      if (path.isAbsolute(filePath)) {
+        relativePath = path.relative(projectRoot, filePath);
+      }
+
+      // Find which blocklist directory contains this file
+      const blockedDir = blocklist.find(p =>
+        relativePath.startsWith(p + '/') || relativePath === p
+      ) || path.dirname(relativePath).split(path.sep)[0];
+
       return {
         allowed: false,
         message: `🚫 PM role is coordination only - create Agents using AgentTasks for technical work
@@ -622,7 +727,36 @@ Blocked: ${filePath}
 Reason: PM cannot modify files in ${blockedDir}/
 
 Allowed directories: ${allowlist.join(', ')}, root *.md files
-Use Task tool to create specialist agent via AgentTask.`
+Use Task tool to create specialist agent via AgentTask.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Agent response = Agent completed (process results immediately)
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → Agent returns → Process results
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → Agents return → Process results
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
       };
     }
 
@@ -667,7 +801,36 @@ Reason: ${reason}
 Allowed directories: ${allowlist.join(', ')}, root *.md files
 
 ${suggestion}
-Use Task tool to create specialist agent via AgentTask.`
+Use Task tool to create specialist agent via AgentTask.
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Agent response = Agent completed (process results immediately)
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → Agent returns → Process results
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → Agents return → Process results
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
     };
   }
 
@@ -794,6 +957,64 @@ Use Task tool to create specialist agent via AgentTask.`
 
     log(`Tool: ${tool}, FilePath: ${filePath}, Command: ${command}`);
 
+    // CRITICAL: Check tool blacklist FIRST (universal + main_scope_only for PM)
+    const blacklistResult = checkToolBlacklist(tool, toolInput, 'pm', projectRoot);
+    if (blacklistResult.blocked) {
+      log(`Tool blocked by blacklist: ${tool} (${blacklistResult.list})`);
+
+      const blockingEnabled = getBlockingEnabled();
+
+      if (blockingEnabled) {
+        const response = {
+          hookSpecificOutput: {
+            hookEventName: 'PreToolUse',
+            permissionDecision: 'deny',
+            permissionDecisionReason: `Tool blocked by ${blacklistResult.list} blacklist
+
+Tool "${tool}" is blocked by the ${blacklistResult.reason}.
+
+Blacklist type: ${blacklistResult.list}
+
+🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
+
+1. Main Scope Creates AgentTasks ONLY via Task tool
+2. Agent response = Agent completed (process results immediately)
+3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
+4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
+
+Example - Sequential Work:
+  Task tool → @Developer (fix bug) → Agent returns → Process results
+
+Example - Parallel Work (PREFERRED):
+  Single message with multiple Task tool calls:
+  - Task tool → @Developer (fix bug A)
+  - Task tool → @Developer (fix bug B)
+  - Task tool → @QA-Engineer (test feature C)
+  All execute in parallel → Agents return → Process results
+
+Template Usage:
+  - 0-2 points: nano-agenttask-template.yaml
+  - 3-5 points: tiny-agenttask-template.yaml
+  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
+  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
+
+To execute blocked operation:
+1. Create AgentTask using appropriate template
+2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
+3. Wait for agent completion
+4. Agent provides comprehensive summary with results`
+          }
+        };
+        log(`RESPONSE: ${JSON.stringify(response)}`);
+        console.log(JSON.stringify(response));
+        process.exit(2);
+      } else {
+        log(`⚠️ WARNING (non-blocking): Tool blocked by blacklist: ${tool}`);
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
+      }
+    }
+
     // Always allow Task tool (agent creation) - no PM restrictions apply
     if (tool === 'Task') {
       log('Task tool invocation - always allowed (agent creation)');
@@ -803,7 +1024,7 @@ Use Task tool to create specialist agent via AgentTask.`
 
     // Check for summary files in root (applies to Write/Edit/Update only, not Read)
     if (tool !== 'Read' && filePath.endsWith('.md')) {
-      const summaryValidation = validateSummaryFile(filePath, projectRoot);
+      const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
       if (!summaryValidation.allowed) {
         log(`Summary file blocked: ${filePath}`);
 
@@ -872,7 +1093,7 @@ Use Task tool to create specialist agent via AgentTask.`
       if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
         log(`File modification tool detected: ${tool} on ${filePath}`);
 
-        const paths = getConfiguredPaths();
+        const paths = getConfiguredPaths(projectRoot);
         const validation = validatePMOperation(filePath, tool, paths, projectRoot);
 
         if (!validation.allowed) {
@@ -904,7 +1125,7 @@ Use Task tool to create specialist agent via AgentTask.`
       // Validate Bash commands
       if (tool === 'Bash' && command) {
         log(`Validating Bash command: ${command}`);
-        const bashValidation = validateBashCommand(command);
+        const bashValidation = validateBashCommand(command, projectRoot);
 
         if (!bashValidation.allowed) {
           log(`Bash command BLOCKED: ${command}`);

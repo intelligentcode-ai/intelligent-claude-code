@@ -125,11 +125,15 @@ function main() {
       /\n\nCo-authored-by:.*<.*@.*>\s*/gi  // Block ALL Co-authored-by lines when git.privacy=true
     ];
 
-    // Add custom patterns from config
+    // Add custom patterns from config with word boundaries
     for (const pattern of patterns) {
       // Escape special regex characters
       const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      regexPatterns.push(new RegExp(escaped, 'gi'));
+      // Add word boundaries for simple words, keep full pattern for phrases
+      const patternWithBoundaries = pattern.split(/\s+/).length === 1
+        ? `\\b${escaped}\\b`
+        : escaped;
+      regexPatterns.push(new RegExp(patternWithBoundaries, 'gi'));
     }
 
     for (const pattern of regexPatterns) {
@@ -222,38 +226,88 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
       };
     }
 
-    // STEP 2: BLOCK heredoc in git commit commands only - they can't be privacy-filtered in PreToolUse
+    // STEP 2: Check git commit messages for AI mentions (including heredoc content)
     const isGitCommit = command.trim().startsWith('git commit');
 
-    if (config.git && config.git.privacy === true && isGitCommit && (command.includes('<<') || command.includes('cat <<'))) {
-      log('BLOCKING: Heredoc in git commit messages cannot be privacy-filtered');
+    if (config.git && config.git.privacy === true && isGitCommit) {
+      let commitMessage = '';
 
-      const blockMessage = `🚫 GIT PRIVACY: Heredoc commit messages blocked
+      // Extract message from heredoc if present
+      if (command.includes('<<')) {
+        // Match heredoc pattern: <<'EOF' ... EOF or <<EOF ... EOF
+        const heredocMatch = command.match(/<<\s*['"]?(\w+)['"]?\s*\n([\s\S]*?)\n\1/);
+        if (heredocMatch) {
+          commitMessage = heredocMatch[2];
+          log(`Extracted heredoc content (${commitMessage.length} chars)`);
+        }
+      } else {
+        // Extract from -m "message" flags
+        const messageMatches = command.match(/-m\s+["']([^"']+)["']/g);
+        if (messageMatches) {
+          commitMessage = messageMatches.map(m => m.replace(/-m\s+["']([^"']+)["']/, '$1')).join('\n');
+        }
+      }
 
-git.privacy enforcement cannot filter heredoc content in PreToolUse hooks.
+      // Apply privacy filtering to extracted message
+      if (commitMessage) {
+        const privacyPatterns = config.privacy_patterns || [
+          "AI", "Claude", "agent",
+          "Generated with Claude Code",
+          "Co-Authored-By: Claude"
+        ];
 
-❌ BLOCKED pattern:
-git commit -m "$(cat <<'EOF' ...)"
+        let filteredMessage = commitMessage;
+        let hasAIMentions = false;
 
-✅ ALLOWED alternatives:
-1. Simple one-line message:
-   git commit -m "Your commit message"
+        // Build regex patterns and check for matches
+        const regexPatterns = [
+          /🤖 Generated with \[Claude Code\]\([^)]+\)/gi,
+          /Generated with \[Claude Code\]\([^)]+\)/gi,
+          /Co-Authored-By: Claude <[^>]+>/gi,
+          /Claude assisted in this commit/gi
+        ];
 
-2. Multi-line with multiple -m flags:
-   git commit -m "Title" -m "Body line 1" -m "Body line 2"
+        // Add custom patterns from config with word boundaries
+        for (const pattern of privacyPatterns) {
+          const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          // Add word boundaries for simple words, keep full pattern for phrases
+          const patternWithBoundaries = pattern.split(/\s+/).length === 1
+            ? `\\b${escaped}\\b`
+            : escaped;
+          regexPatterns.push(new RegExp(patternWithBoundaries, 'gi'));
+        }
 
-3. Interactive editor:
-   git commit
-   (Opens editor for message - privacy will be applied on commit)
+        for (const pattern of regexPatterns) {
+          if (pattern.test(filteredMessage)) {
+            hasAIMentions = true;
+            filteredMessage = filteredMessage.replace(pattern, '[FILTERED]');
+          }
+        }
 
-Why: PreToolUse hooks execute BEFORE heredoc is evaluated, making privacy filtering impossible.`;
+        if (hasAIMentions) {
+          log(`AI mentions detected in commit message - would be filtered`);
 
-      return {
-        modified: false,
-        blocked: true,
-        reason: 'Git Privacy - Heredoc Not Supported',
-        message: blockMessage
-      };
+          return {
+            modified: false,
+            blocked: true,
+            reason: 'Git Privacy - AI Mentions Detected',
+            message: `🚫 GIT PRIVACY: AI mentions detected in commit message
+
+git.privacy=true blocks AI mentions from commit messages.
+
+Original message contained AI-related content that would be filtered.
+
+Filtered version:
+${filteredMessage}
+
+✅ To proceed:
+1. Remove AI mentions from commit message
+2. Or disable git.privacy in icc.config.json`
+          };
+        }
+
+        log(`Commit message clean - no AI mentions detected`);
+      }
     }
 
     // STEP 3: Enforce git privacy (if enabled)
