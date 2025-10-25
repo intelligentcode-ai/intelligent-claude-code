@@ -245,6 +245,12 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
   }
 
   function modifyGitCommand(command, config) {
+    // Allow gh CLI commands (GitHub API operations, not repository modifications)
+    if (command.trim().startsWith('gh ')) {
+      log('GitHub CLI command - allowing operation');
+      return { modified: false, blocked: false, command };
+    }
+
     // Only modify git commit commands
     if (!command.includes('git commit')) {
       log('Not a git commit command - no modification needed');

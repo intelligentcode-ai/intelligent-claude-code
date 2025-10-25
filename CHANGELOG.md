@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.18] - 2025-10-25
+
+### Fixed
+- Git enforcement hook now allows GitHub CLI (gh) commands
+- Fixed blocking of `gh release create`, `gh pr create`, and other gh API operations
+- gh commands are GitHub API operations that don't modify the repository
+
+### Technical Details
+- Added explicit allow-list for commands starting with `gh ` in git-enforcement.js
+- gh commands bypass branch protection checks (they don't modify repository)
+- Allows release creation, PR operations, and issue management via gh CLI
+
+---
+
 ## [8.20.17] - 2025-10-25
 
 ### Fixed
