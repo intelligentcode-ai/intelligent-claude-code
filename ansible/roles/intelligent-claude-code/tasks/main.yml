@@ -176,7 +176,6 @@
     mode: '0755'
     state: file
   loop:
-    - session-start-dummy.js
     - user-prompt-submit.js
     - stop.js
   ignore_errors: yes
