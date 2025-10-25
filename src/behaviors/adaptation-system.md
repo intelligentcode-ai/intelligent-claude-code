@@ -1,47 +1,116 @@
 # Adaptation System
 
-**MANDATORY:** Dynamic AgentTask adaptation and seamless agent restart. Auto-correct violations.
+**MANDATORY:** Dynamic AgentTask adaptation, user correction integration, and seamless agent restart patterns.
 
 ## Imports
 @./shared-patterns/learning-patterns.md
 @./shared-patterns/best-practices-integration.md
 @./shared-patterns/context-validation.md
 
-## Core Principles
-Real-time AgentTask context modification when corrections provided.
-Maintain template compliance during updates.
-Seamless agent restart with updated context, no manual intervention.
+## Core Adaptation Principles
 
-## Triggers
+### Dynamic AgentTask Updates
+**REAL-TIME ADAPTATION:** Modify AgentTask context when corrections or new information provided
+**TEMPLATE COMPLIANCE:** Maintain template structure during updates
+**EXECUTION CONTINUITY:** Seamless continuation without manual intervention
 
-**User Corrections**: "Actually...", "I meant...", "The correct approach is...", "Change to...", "Use [X] instead..."
-**New Information**: Additional requirements, technical constraints, resource changes, timeline adjustments, scope modifications
-**Error Recovery**: Technical failures, resource access problems, integration complications, quality violations
+### User Correction Integration
+**CORRECTION DETECTION:** Identify when users provide corrections or clarifications
+**CONTEXT UPDATES:** Integrate corrections into AgentTask context
+**VALIDATION:** Ensure corrections maintain AgentTask integrity
+
+### Agent Restart Patterns
+**SEAMLESS TRANSITION:** Restart agents with updated AgentTask context
+**STATE PRESERVATION:** Maintain relevant progress and context
+**AUTOMATIC EXECUTION:** No manual intervention required
+
+## Adaptation Triggers
+
+### Correction Patterns
+**USER SIGNALS:**
+- "Actually, it should..."
+- "I meant..."
+- "The correct approach is..."
+- "Change the requirement to..."
+- "Use [different tool/method] instead..."
+
+### Information Updates
+**NEW CONTEXT:**
+- Additional requirements discovered
+- Technical constraints identified
+- Resource availability changes
+- Timeline adjustments
+- Scope modifications
+
+### Error Recovery
+**EXECUTION ISSUES:**
+- Technical approach failures
+- Resource access problems
+- Integration complications
+- Quality standard violations
 
 ## Adaptation Process
 
 ### Detection & Analysis
-1. Identify correction/update signals
-2. Assess impact on current AgentTask
-3. Determine extent of required changes
-4. Validate changes maintain AgentTask integrity
+1. **Pattern Recognition**: Identify correction/update signals
+2. **Context Analysis**: Assess impact on current AgentTask
+3. **Scope Evaluation**: Determine extent of required changes
+4. **Validation Check**: Ensure changes maintain AgentTask integrity
 
-### Context Update
-1. Preserve template structure
-2. Modify affected context areas
-3. Ensure no conflicts introduced
-4. Record adaptation rationale
+### AgentTask Context Update
+1. **Preserve Structure**: Maintain template compliance
+2. **Update Sections**: Modify affected context areas
+3. **Validate Changes**: Ensure no conflicts introduced
+4. **Document Updates**: Record adaptation rationale
 
 ### Agent Transition
-1. Package updated AgentTask context
-2. Seamless restart with updated context
-3. Maintain relevant progress
-4. Resume work automatically
+1. **Context Preparation**: Package updated AgentTask context
+2. **Agent Restart**: Seamless transition to updated context
+3. **State Preservation**: Maintain relevant progress
+4. **Execution Continuation**: Resume work with new context
 
-## Integration
-- **AgentTask System**: Maintain template structure, preserve complexity scoring, support breakdown when scope expands
-- **Role System**: Role reassignment, specialist creation, architect consultation for major changes
-- **Memory System**: Store successful patterns, learn from corrections, apply proven transition strategies
+## Quality Assurance
+
+### Adaptation Validation
+**ENSURE:**
+- Template compliance maintained
+- Context completeness preserved
+- No conflicting requirements introduced
+- Quality standards upheld
+
+### Transition Quality
+**VERIFY:**
+- Smooth agent restart
+- Context preservation
+- Execution continuity
+- No manual intervention required
+
+### Learning Integration
+**CAPTURE:**
+- Successful adaptation patterns
+- Common correction types
+- Effective transition strategies
+- Quality improvement opportunities
+
+## Integration Points
+
+### With AgentTask System
+- Maintain template structure during updates
+- Preserve complexity scoring accuracy
+- Ensure validation compliance
+- Support breakdown when scope expands
+
+### With Role System
+- Role reassignment when scope changes
+- Specialist creation for new requirements
+- Architect consultation for major changes
+- Quality standard maintenance
+
+### With Memory System
+- Store successful adaptation patterns
+- Learn from correction types
+- Improve detection accuracy
+- Apply proven transition strategies
 
 ---
 *Dynamic adaptation system for AgentTask updates and user corrections*
