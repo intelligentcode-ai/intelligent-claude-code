@@ -7,9 +7,14 @@
   register: config_file_stat
   failed_when: false
 
-- name: Fail if MCP config file does not exist
-  fail:
-    msg: "MCP configuration file not found: {{ mcp_config_file }}"
+- name: Set flag to skip MCP integration if config not found
+  set_fact:
+    skip_mcp_integration: true
+  when: not config_file_stat.stat.exists
+
+- name: Log MCP integration skip
+  debug:
+    msg: "MCP configuration file not provided or not found. Skipping MCP integration."
   when: not config_file_stat.stat.exists
 
 - name: Read MCP configuration file
@@ -17,38 +22,42 @@
     src: "{{ mcp_config_file }}"
   register: mcp_config_raw
   failed_when: false
+  when: config_file_stat.stat.exists
 
 - name: Handle file read errors
   fail:
     msg: "Failed to read MCP configuration file: {{ mcp_config_file }}. Check file permissions."
-  when: mcp_config_raw.failed
+  when: config_file_stat.stat.exists and mcp_config_raw.failed
 
 - name: Decode and validate JSON syntax
   set_fact:
     mcp_config_data: "{{ mcp_config_raw.content | b64decode | from_json }}"
   failed_when: false
   register: json_parse_result
+  when: config_file_stat.stat.exists
 
 - name: Handle JSON syntax errors
   fail:
     msg: "Invalid JSON syntax in MCP configuration file: {{ mcp_config_file }}. Please check JSON formatting."
-  when: json_parse_result.failed
+  when: config_file_stat.stat.exists and json_parse_result.failed
 
 - name: Validate required JSON structure
   fail:
     msg: "MCP configuration must contain 'mcpServers' object"
-  when: "'mcpServers' not in mcp_config_data"
+  when: config_file_stat.stat.exists and 'mcpServers' not in mcp_config_data
 
 - name: Validate MCP servers structure
   fail:
     msg: "MCP server '{{ item.key }}' missing required 'command' field"
-  when: "'command' not in item.value"
-  loop: "{{ mcp_config_data.mcpServers | dict2items }}"
+  when: config_file_stat.stat.exists and 'command' not in item.value
+  loop: "{{ mcp_config_data.mcpServers | dict2items | default([]) }}"
 
 - name: Count MCP servers for processing
   set_fact:
     mcp_servers_count: "{{ mcp_config_data.mcpServers | length }}"
+  when: config_file_stat.stat.exists
 
 - name: Log successful validation
   debug:
     msg: "MCP configuration validated successfully. Found {{ mcp_servers_count }} MCP servers."
+  when: config_file_stat.stat.exists

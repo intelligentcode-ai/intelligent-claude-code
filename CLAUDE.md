@@ -4,23 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, command chain coordination, behavioral framework guidance, and AgentTask-driven execution. This repository contains the configuration templates, behavioral patterns, and installation system for the virtual team enhancement.
+**Intelligent Claude Code** transforms Claude Code into an intelligent virtual development team with 14 specialized roles, command chain coordination, behavioral framework guidance, and PRB-driven execution. This repository contains the configuration templates, behavioral patterns, and installation system for the virtual team enhancement.
 
 ## System Configuration
 
-**Configuration Files**:
-- `icc.config.json` - Core system settings (70+ settings across 15 categories)
-- `icc.workflow.json` - Workflow settings by AgentTask tier (45 settings)
-
-**Quick Settings** (for backward compatibility, add to CLAUDE.md):
 ```yaml
-git_privacy: false
-blocking_enabled: true
+autonomy_level: L3
+l3_settings:
+  max_parallel: 5
+  auto_discover: true
+  continue_on_error: true
 ```
-
-**Note**: The system now uses unified JSON configuration in `icc.config.json` and `icc.workflow.json`. Legacy YAML settings in CLAUDE.md are still supported for backward compatibility but will trigger migration warnings.
-
-**Complete Configuration Guide**: See `/Users/karsten/Nextcloud/Work/Development/intelligentcode-ai/intelligent-claude-code/docs/configuration-guide.md` for comprehensive documentation of all 115+ settings, migration guide, and best practices.
 
 ## System Usage
 
@@ -39,7 +33,7 @@ The system is designed for natural @Role communication rather than command-based
 ```bash
 # Virtual Team Interaction (Primary Usage Pattern)
 @PM Build me a [project]        # Start any project with PM coordination
-@PM break down [story]          # Convert story to AgentTasks (6+ points become stories first)
+@PM break down [story]          # Convert story to PRBs  
 @PM what story next?            # Select next story with architect
 @PM status update               # Get project status and next actions
 
@@ -56,16 +50,13 @@ The system is designed for natural @Role communication rather than command-based
 @DevOps-Engineer deploy [env]   # Deployment operations
 ```
 
-### Essential Commands (Only 4)
+### Essential Commands (Only 3)
 
-The system includes only 4 essential commands for specific system functions:
+The system includes only 3 essential commands for specific system functions:
 
 ```bash
 # System Initialization (run once after installation)
 /icc-init-system                # Initialize virtual team system
-
-# Version Check (verify system version)
-/icc-version                    # Display current system version
 
 # Configuration Access (when needed)
 /icc-get-setting [key]          # Get specific configuration value
@@ -87,7 +78,6 @@ The system includes only 4 essential commands for specific system functions:
 
 **Use Essential Commands for** (System Functions Only):
 - System initialization: `/icc-init-system` (once after installation)
-- Version check: `/icc-version` (verify system version)
 - Configuration queries: `/icc-get-setting git_privacy` (when needed)
 - Memory exploration: `/icc-search-memory authentication` (when exploring patterns)
 
@@ -105,7 +95,7 @@ make install MCP_CONFIG=./config/mcps.json  # Install with MCP servers
 The system implements a **14-role virtual development team** that operates through natural @Role communication patterns:
 
 1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for ANY technology domain when expertise is needed
-2. **AgentTask Engine**: In-memory AgentTask system with 5 complexity tiers (Nano, Tiny for immediate execution; 6+ points become stories first) for single-pass execution
+2. **PRB Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
 3. **Memory System**: File-based memory storage (version-controlled in `memory/`) with automatic topic-based organization and pattern capture
 4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
 5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and PRB validation
@@ -121,7 +111,10 @@ your-project/                  # YOUR project (any structure you want!)
 ├── src/                       # Your code
 ├── memory/                    # Version-controlled learning storage
 │   └── [topic]/               # Organized by topic
-└── stories/                   # User stories for breakdown (6+ points)
+├── prbs/                      # Version-controlled PRBs
+│   ├── ready/                 # Ready to execute
+│   └── completed/             # Executed PRBs
+└── stories/                   # User stories for PRB generation (NEW!)
     └── drafts/                # Work-in-progress stories
 ```
 
@@ -136,26 +129,26 @@ The system adapts to YOUR structure via CLAUDE.md configuration!
    - Have defined scope, tools, and YAML frontmatter
    - Located in `src/agents/` directory
    - Examples: ai-engineer, developer, architect, database-engineer
-   - Purpose: EXECUTE technical work through in-memory AgentTasks
+   - Purpose: EXECUTE technical work through PRBs
 
 2. **BEHAVIORS (Main Agent Steering Patterns)**:
    - Guide how the MAIN AGENT behaves
    - NOT executed as subagents - they steer main agent actions
    - Located in `src/behaviors/` directory
-   - Examples: story-breakdown.md, agenttask-enforcement.md, config-loader.md
+   - Examples: story-breakdown.md, prb-enforcement.md, config-loader.md
    - When user types "@PM", main agent follows story-breakdown.md behavior
    - Main agent can act as MANY roles: @PM, @Architect, @Security-Architect, etc.
    - Purpose: STEER main agent behavioral patterns
 
 3. **COMMANDS (Essential System Functions)**:
-   - Only 4 essential commands remain for specific system functions
+   - Only 3 essential commands remain for specific system functions
    - Primary interaction is through @Role patterns, not commands
    - Can be triggered by MULTIPLE sources:
      * **USERS DIRECTLY** - Manual invocation (/icc-init-system, /icc-get-setting, /icc-search-memory)
      * **BEHAVIORS** - Called when behaviors need specific functionality
      * **SYSTEM PROCESSES** - Initialization, automation, etc.
    - Located in `src/commands/` directory
-   - Essential commands: icc-init-system.md, icc-version.md, icc-get-setting.md, icc-search-memory.md
+   - Essential commands: icc-get-setting.md, icc-init-system.md, icc-search-memory.md
    - Purpose: PROVIDE core system functionality when @Role patterns are insufficient
 
 **CRITICAL RELATIONSHIPS:**
@@ -174,15 +167,15 @@ The system adapts to YOUR structure via CLAUDE.md configuration!
   - Example: "Can @PM break this down?" (Planning conversation)
   - Result: NO execution happens - purely conversational planning
 
-**ONLY Execution Path: Work Request → AgentTask Creation → Task Tool → Agent:**
-- **Process**: Work request → Main agent creates in-memory AgentTask → Task tool invocation → Agent executes
-- **Example**: User says "Fix the auth bug" → Main agent creates AgentTask → Task tool → @Developer executes
-- **Example**: User says "Remove unused files" → Main agent creates AgentTask → Task tool → @AI-Engineer executes
-- **Critical**: Agent execution ONLY happens through Task tool with complete AgentTask context
+**ONLY Execution Path: Work Request → PRB Creation → Task Tool → Agent:**
+- **Process**: Work request → Main agent creates PRB → Task tool invocation → Agent executes
+- **Example**: User says "Fix the auth bug" → Main agent creates PRB → Task tool → @Developer executes
+- **Example**: User says "Remove unused files" → Main agent creates PRB → Task tool → @AI-Engineer executes
+- **Critical**: Agent execution ONLY happens through Task tool with complete PRB context
 
-**NEVER Valid: Direct @Role Execution Without AgentTask:**
-- **BLOCKED**: @Role mentions that attempt immediate execution without AgentTask creation
-- **BLOCKED**: Bypassing AgentTask creation and jumping straight to agent work
+**NEVER Valid: Direct @Role Execution Without PRB:**
+- **BLOCKED**: @Role mentions that attempt immediate execution without PRB creation
+- **BLOCKED**: Bypassing PRB creation and jumping straight to agent work
 - **BLOCKED**: Agent deployment without Task tool and self-contained context
 
 ### Key Architectural Patterns
@@ -190,35 +183,30 @@ The system adapts to YOUR structure via CLAUDE.md configuration!
 1. **@Role Communication Pattern**: Primary interaction through natural @Role mentions, not commands
 2. **Task Tool Pattern**: 13 technical agents execute as subagents via Task tool
 3. **Behavioral Role Pattern**: Main agent acts as different roles (@PM, @Architect) via behaviors
-4. **Essential Command Pattern**: Only 4 commands provide core system functionality
-5. **Context Loading**: CLAUDE.md provides all context, AgentTasks are self-contained in-memory
+4. **Essential Command Pattern**: Only 3 commands provide core system functionality
+5. **Context Loading**: CLAUDE.md provides all context, PRBs are self-contained
 6. **Memory-First**: All operations check memory before action, store results automatically
-7. **Learning System**: AgentTask-driven pattern capture and application
+7. **Learning System**: PRB-driven pattern capture and application
 8. **Autonomy Levels**: L1 (manual approval), L2 (architect approval), L3 (full autonomous)
-9. **Story-First Workflow**: Work ≥6 points becomes stories first, then broken into nano/tiny AgentTasks
 
-### AgentTask Execution
+### PRB Execution
 
-The system uses in-memory AgentTasks for single-pass execution with full project context:
+The system uses Product Requirement Blueprints for single-pass execution with full project context:
 
-**AgentTask Complexity Tiers & Workflow**:
-- **Nano (0-2 points)**: Trivial one-line changes → Direct AgentTask execution
-- **Tiny (3-5 points)**: Simple single-file tasks → Direct AgentTask execution
-- **Medium+ (6+ points)**: Multi-file features → Story creation first, then breakdown to nano/tiny AgentTasks
+**PRB Complexity Tiers**:
+- **Nano (0-2 points)**: Trivial one-line changes
+- **Tiny (3-5 points)**: Simple single-file tasks
+- **Medium (6-15 points)**: Standard multi-file features
+- **Large (16-30 points)**: Complex features with sub-PRBs
+- **Mega (30+ points)**: System-wide changes
 
-**Story-First Workflow** (6+ points):
-1. Work request ≥6 points → Create story in stories/ directory
-2. @PM + Architect break down story → Multiple nano/tiny AgentTasks
-3. Sequential execution of AgentTasks ≤5 points each
-4. No file storage for AgentTasks - all in-memory execution
-
-**AgentTask Features**:
+**PRB Features**:
 1. **Context Integration**: CLAUDE.md, memory search, best practices
 2. **Project Standards**: Coding style, architecture patterns, IaC standards
 3. **Code Pattern Search**: Find and reuse existing implementations
 4. **External Documentation**: Context7 real-time docs, project wikis
 5. **Behavioral Customization**: Project-specific execution styles
-6. **In-Memory Execution**: No file storage, complete context embedded
+6. **Draft Support**: Generate PRBs from specifications in .claude/drafts/
 
 **Project Configuration** (in CLAUDE.md):
 - Best practices paths
@@ -229,7 +217,7 @@ The system uses in-memory AgentTasks for single-pass execution with full project
 
 ## Workflow Configuration
 
-### Workflow Settings by AgentTask Size
+### Workflow Settings by PRB Size
 
 ```yaml
 workflow_settings:
@@ -303,14 +291,13 @@ Tests verify:
 
 ### Key Implementation Notes
 
-1. **CONTEXT LOADING**: AgentTasks include complete context - CLAUDE.md and memory search results upfront
-2. **SINGLE-PASS EXECUTION**: Each AgentTask contains everything needed for complete execution
-3. **COMPLEXITY-BASED WORKFLOW**: ≤5 points = direct AgentTask; ≥6 points = story first, then breakdown
+1. **CONTEXT LOADING**: PRBs include complete context - CLAUDE.md and memory search results upfront
+2. **SINGLE-PASS EXECUTION**: Each PRB contains everything needed for complete execution
+3. **COMPLEXITY-BASED SELECTION**: System auto-selects PRB template based on complexity score
 4. **Role in Title**: Every work item MUST include role in square brackets: "[Role] Description"
-5. **Autonomous Execution**: AgentTasks enable reliable autonomous work without workflow interruptions
+5. **Autonomous Execution**: PRBs enable reliable autonomous work without workflow interruptions
 6. **Version Bumping**: Always bump version before git operations
 7. **Git Privacy**: Strip AI mentions when git_privacy=true before commits
-8. **In-Memory Processing**: AgentTasks execute in-memory, no file storage required
 
 ### System Features
 
@@ -321,9 +308,9 @@ Tests verify:
 - **Dynamic Specialists**: Auto-create domain experts (@React-Developer, @AWS-Engineer) with 10+ years expertise
 - **Learning Culture**: Automatic memory storage during @Role work, successful patterns stored for reuse
 - **Parallel Execution**: Up to 5 non-conflicting tasks execute simultaneously
-- **Self-Correcting**: Automatic violation detection and correction through AgentTask validation
+- **Self-Correcting**: Automatic violation detection and correction through PRB validation
 - **Memory Integration**: File-based storage with automatic search, relationships, and exponential aging
-- **Story Management**: Complex work (6+ points) becomes stories, broken into nano/tiny AgentTasks by @PM and architect collaboration
+- **Story Management**: Natural language stories converted to PRBs by @PM and architect collaboration
 
 ## Hook System (Educational Reminders)
 
@@ -334,7 +321,7 @@ The system includes a **dynamic educational reminder system** that helps reinfor
 The hook system shows **educational reminders** randomly (5-15% chance) to help users internalize best practices:
 
 - **25+ Behavioral Reminders**: Extracted from core system patterns
-- **"NO WORK IN MAIN SCOPE" Enforcement**: Strong reminders about AgentTask-driven execution
+- **"NO WORK IN MAIN SCOPE" Enforcement**: Strong reminders about PRB-driven execution
 - **Educational Only**: No blocking or interruption - purely educational messages
 - **Dynamic Configuration**: JSON-based customization with priority loading
 
@@ -343,14 +330,14 @@ The hook system shows **educational reminders** randomly (5-15% chance) to help 
 ```
 🎯 REMINDER: @Role Communication Pattern
 Use @PM, @Developer, @AI-Engineer for natural team interaction
-Work requests should follow: User → AgentTask → Task Tool → Agent
+Work requests should follow: User → PRB → Task Tool → Agent
 
 🎯 REMINDER: Memory-First Approach
 Always search memory before asking users for information
 Store learnings automatically during @Role work
 
 🎯 REMINDER: NO WORK IN MAIN SCOPE
-Main agent = AgentTask creation ONLY
+Main agent = PRB creation ONLY
 All work execution happens via Task tool + agents
 ```
 
@@ -414,45 +401,13 @@ your-project/
         └── reminders.json    # System reminders
 ```
 
-### Constraint Display Customization
-
-The hook system also displays **context-aware constraint enforcement rules** in structured XML format:
-
-**Display Example:**
-```xml
-🎯 Active Constraints:
-<constraints>
-  <constraint id="RECURSIVE-DISPLAY">After each response, display 2-3 relevant constraint IDs</constraint>
-  <constraint id="AGENTTASK-CORE">Use hierarchy, resolve placeholders, embed configuration</constraint>
-  <constraint id="PM-DELEGATE">Issue found → Document → Create AgentTask → Assign specialist</constraint>
-</constraints>
-```
-
-**Customization Hierarchy** (highest to lowest priority):
-1. **Project-local**: `.claude/modes/virtual-team.md` (project-specific constraints)
-2. **User-global**: `~/.claude/modes/virtual-team.md` (personal constraint overrides)
-
-**How to Customize:**
-Create `.claude/modes/virtual-team.md` in your project with custom XML constraints:
-
-```xml
-<pm_constraints id="PM-CORE">
-  <allowed_operations id="PM-FILE-OPS">
-    <operation type="coordination">Story breakdown and AgentTask creation</operation>
-  </allowed_operations>
-</pm_constraints>
-```
-
-Constraint text is extracted directly from the XML structure—no hardcoded mappings needed!
-
 ### Benefits
 
 - **Non-Intrusive Learning**: Gentle reinforcement without blocking workflow
 - **Pattern Internalization**: Helps users learn architectural patterns naturally
-- **Customizable**: Project teams can add their own standards, reminders, and constraints
+- **Customizable**: Project teams can add their own standards and reminders
 - **Preserved Customizations**: Personal and project customizations survive system updates
 - **Quality Culture**: Reinforces best practices and team standards
-- **Context-Aware Display**: Shows relevant constraints based on conversation context
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
@@ -461,11 +416,7 @@ ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
 - ALWAYS use neutral language in PRs, MRs, Releases, Commits!
 - ALWAYS respect GIT PRIVACY settings!
-- ALWAYS retrieve and RESPECT the scope of the project when creating AgentTasks!
+- ALWAYS retrieve and RESPECT the scope of the project when creating PRBs!
 - Bug-Fixes only yield build number changes.
 - No behavioural file should be longer than 125 lines!
 - NO CODE OR PSEUDO-CODE WHATSOEVER!
-
-
-# Remember
-**NEVER** work outside this project! **NEVER** write in ~/.claude and subdirectories!
