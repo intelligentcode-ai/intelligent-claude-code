@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.16] - 2025-10-25
+
+### Fixed
+- Git privacy hook no longer blocks technical terms like AGENTTASK-CORE
+- Added whitelist for technical constraint IDs to prevent false positives
+- Commit messages with AGENTTASK system terms now allowed
+- Real assistant mentions still correctly filtered
+
+### Technical Details
+- Whitelist includes: AGENTTASK, AGENTTASK-CORE, AGENTTASK-TEMPLATE, AGENTTASK-PLACEHOLDERS, AGENTTASK-CONTEXT, AGENTTASK-SIZE, AGENTTASK-ROLES
+- Whitelist check happens before privacy pattern matching
+- Pattern matches within whitelisted terms are skipped
+
+---
+
 ## [8.20.15] - 2025-10-25
 
 ### Fixed
