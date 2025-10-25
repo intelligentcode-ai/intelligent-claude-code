@@ -22,6 +22,39 @@ function main() {
     fs.appendFileSync(logFile, logMessage);
   }
 
+  function cleanupCurrentProjectMarkers(projectRoot, log) {
+    const crypto = require('crypto');
+    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+    const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+
+    try {
+      if (!fs.existsSync(markerDir)) {
+        return;
+      }
+
+      const files = fs.readdirSync(markerDir);
+      const currentProjectMarkers = files.filter(f =>
+        f.startsWith('agent-executing-') && f.endsWith(`-${projectHash}`)
+      );
+
+      if (currentProjectMarkers.length > 0) {
+        log(`Found ${currentProjectMarkers.length} markers for current project (hash: ${projectHash})`);
+      }
+
+      currentProjectMarkers.forEach(markerFile => {
+        const fullPath = path.join(markerDir, markerFile);
+        try {
+          fs.unlinkSync(fullPath);
+          log(`Cleaned up marker: ${markerFile}`);
+        } catch (error) {
+          log(`Failed to clean marker ${markerFile}: ${error.message}`);
+        }
+      });
+    } catch (error) {
+      log(`Marker cleanup error: ${error.message}`);
+    }
+  }
+
   const standardOutput = {
     continue: true,
     suppressOutput: true
@@ -62,6 +95,10 @@ function main() {
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
+
+    // Clean up any agent markers from previous turn for current project
+    const projectRoot = claudeInput.cwd || process.cwd();
+    cleanupCurrentProjectMarkers(projectRoot, log);
 
     // Get user prompt from input
     const userPrompt = claudeInput.user_prompt || '';
