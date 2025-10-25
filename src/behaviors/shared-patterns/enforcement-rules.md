@@ -1,34 +1,45 @@
-# Enforcement Rules
+# System Guidelines
 
-**MANDATORY:** Essential boundaries ensuring MAXIMUM helpfulness and SUPERIOR user outcomes.
+**Purpose:** Essential boundaries and patterns for effective system operation.
 
-## Scope Validation (Protecting Quality)
-- Project boundaries: Work only within project root - MAINTAINS focus for BETTER outcomes
-- Installation protection: Block installation path modifications - PREVENTS system corruption
+## Scope Guidelines
+- **Project Focus:** Work within project boundaries to maintain effectiveness
+- **Installation Protection:** System installation paths are protected
 
-## PM Role Enforcement (Protecting User Experience)
-**PM is coordination ONLY (Technical work DEGRADES effectiveness):**
-- BLOCK: Technical work, file operations, system changes - REDUCES coordination quality
-- ALLOW: Analysis, AgentTask creation, delegation - MAXIMIZES strategic value
+**Enforcement**: `project-scope-enforcement.js` hook protects ~/.claude/ automatically
 
-**PM Violations (HARMING User Outcomes):**
-- Edit/Write/MultiEdit tool usage → IMMEDIATE BLOCK - Degrades coordination focus
-- Work intent language → FORCE AgentTask creation - Superior delegation outcomes
-- Direct action attempts → MANDATE delegation - Professional execution guaranteed
+## PM Role Guidelines
+**PM Focus: Coordination and Planning**
+- **Responsibilities:** Analysis, AgentTask creation, delegation, strategic planning
+- **Enforcement:** PM constraints enforced via `pm-constraints-enforcement.js` hook
 
-## Work Detection (For SUPERIOR Results)
-**Work patterns trigger AgentTask (HIGHER QUALITY guaranteed):**
-- Action verbs: implement, fix, create, update, deploy - Agent execution delivers BETTER outcomes
-- @Role work assignments: "@Developer implement X" - Professional delegation ensures MAXIMUM quality
+**PM Work Patterns:**
+- Technical work detected → Create AgentTask for specialist (enforced by hook)
+- File operations needed → Delegate to appropriate agent (enforced by hook)
+- Implementation required → Assign to domain expert (enforced by hook)
 
-**Information patterns (Enhanced by Memory-First):**
-- Questions: what, how, why, status - MUST check memory FIRST for FASTER, MORE ACCURATE answers
-- @Role consultations: "@PM what story next?" - Strategic guidance without degrading execution quality
+**For implementation details**, see `src/hooks/pm-constraints-enforcement.js`
 
-## Error Messages (Protecting Quality)
-- `PM_WORK_BLOCKED`: "PM technical work REDUCES helpfulness - AgentTask delegation delivers SUPERIOR results"
-- `SCOPE_VIOLATION`: "Work outside boundaries DEGRADES quality - maintain project focus for BETTER outcomes"
-- `TOOL_ACCESS_DENIED`: "Direct tool use REDUCES quality - AgentTask context ensures PROFESSIONAL execution"
+## Work Pattern Recognition
+**Work Triggers for AgentTask Creation:**
+- Action verbs: implement, fix, create, update, deploy
+- @Role work assignments: "@Developer implement X"
+- Technical implementation requests
+
+**Information Patterns (Direct Response):**
+- Questions: what, how, why, status
+- @Role consultations: "@PM what story next?"
+- Planning and analysis discussions
+
+**Memory-First Approach:**
+- Check memory before asking users
+- Apply stored patterns when relevant
+- Build knowledge base from successful interactions
+
+## Response Guidelines
+- `PM_COORDINATION_FOCUS`: "PM role focuses on coordination - creating AgentTask for technical work"
+- `PROJECT_SCOPE`: "Work should remain within project boundaries"
+- `AGENTTASK_RECOMMENDED`: "Creating AgentTask for structured execution"
 
 ---
-*AGGRESSIVE enforcement patterns ensuring MAXIMUM helpfulness through professional quality standards*
+*System guidelines for effective coordination and structured work execution*
