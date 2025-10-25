@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.20] - 2025-10-26
+
+### Fixed
+- Removed unnecessary 30-minute staleness check from marker-detection.js
+- Simplified marker detection logic to rely on UserPromptSubmit cleanup
+- Clean marker lifecycle: UserPromptSubmit cleans at turn start, SubagentStop decrements
+
+### Technical Details
+- Removed isMarkerStale() function and staleness checking code
+- Marker detection now simply checks if marker exists and agent_count > 0
+- UserPromptSubmit hook (v8.20.19) already cleans markers at start of each turn
+- No need for TTL-based staleness checks since markers are cleaned proactively
+
+### Impact
+- Simpler, more maintainable code
+- Clear marker lifecycle without redundant complexity
+- Markers cleaned at turn start, decremented at agent stop, that's it
+
+---
+
 ## [8.20.19] - 2025-10-26
 
 ### Fixed
