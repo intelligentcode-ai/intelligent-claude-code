@@ -80,9 +80,6 @@ NOTES.md
 # Claude configuration (user-specific, not source code)
 .claude/
 
-# ICC configuration (local overrides only)
-.icc/*.local.json
-
 # CRITICAL: Memory must NEVER be committed - local learning only!
 # If you see memory/ files in git status, DO NOT COMMIT THEM
 memory/
