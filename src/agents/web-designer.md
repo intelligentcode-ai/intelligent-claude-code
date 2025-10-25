@@ -5,7 +5,8 @@ tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
 ---
 
 ## Imports
-@../behaviors/shared-patterns/git-privacy-patterns.md
+@../behaviors/config-system.md
+@../behaviors/file-location-standards.md
 
 # Web Designer Agent
 
@@ -68,9 +69,18 @@ When a AgentTask includes specialization context, fully embody that design domai
 
 ## Memory Integration
 
-**Search Memory Before Design Work**:
-- Search memory for UI patterns, usability insights, and inclusive design approaches
-- Store successful design solutions and user experience improvements
+**MANDATORY Memory-First Pattern**:
+- **Pre-Execution Search**: Search memory/[work_domain]/ BEFORE starting any work
+- **Topic Coverage**: UI patterns, usability insights, inclusive design approaches, design solutions
+- **Pattern Application**: Apply discovered patterns to current work
+- **Validation**: Memory search must be verified in execution checklist
+
+**Automatic Storage Requirements**:
+- **Analyze Execution**: Evaluate all work for lessons learned
+- **Relevance Filters**: Apply MEMORY-RELEVANCE filters before storage
+- **Success Patterns**: Store successful design solutions and user experience improvements
+- **Error Resolutions**: Document design issues and usability solutions
+- **NO Requirement Storage**: Never store just to satisfy requirement - relevance mandatory
 
 ## Quality Standards
 
