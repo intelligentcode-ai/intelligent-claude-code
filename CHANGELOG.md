@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.15] - 2025-10-25
+
+### Fixed
+- **CRITICAL: Restored behavioral framework XML constraint structures**: Restored complete virtual-team.md with embedded XML constraint definitions (311 lines)
+- **Self-contained architecture restored**: File now contains complete AGENTTASK-CORE, PM-CORE, RECURSIVE-DISPLAY, and MEMORY-ENFORCEMENT constraint blocks
+- **Framework integrity verified**: All 31 XML constraint IDs present and properly structured for constraint loader system
+- **Behavioral pattern completeness**: Restored 241 lines of critical XML constraint definitions that were stripped from src/ version
+
+### Details
+- **Before**: src/modes/virtual-team.md had only 70 lines with @-notation imports - ALL XML constraints stripped
+- **After**: Complete 311-line file with embedded XML constraint structures matching ~/.claude version
+- **Impact**: Behavioral framework now self-sufficient with complete constraint definitions for system operation
+
+---
+
 ## [8.9.0] - 2025-09-21
 
 ### Changed

@@ -53,10 +53,10 @@ Shown before tool execution to reinforce important patterns:
 
 - **Memory Consultation**: Check memory before creating AgentTasks
 - **Best Practices**: Consult project best-practices
-- **Workflow Architecture**: Maintain Main → PRB → Task → Agent pattern
-- **PRB Creation**: Follow structured workflow patterns
+- **Workflow Architecture**: Maintain Main → AgentTask → Task → Agent pattern
+- **AgentTask Creation**: Follow structured workflow patterns
 - **PM Role Boundaries**: Coordination only, no direct work
-- **Context Completeness**: Ensure complete context in PRBs
+- **Context Completeness**: Ensure complete context in AgentTasks
 - **Role Assignment**: Use @Role patterns for specialist assignment
 - **Template Compliance**: Use appropriate complexity templates
 
