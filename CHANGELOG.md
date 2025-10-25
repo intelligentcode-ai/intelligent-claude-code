@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.17] - 2025-10-25
+
+### Fixed
+- **CRITICAL: Stale agent markers bypass enforcement after crash/exit**: Fixed staleness check to use most recent agent instead of first agent
+- Agent markers older than 30 minutes automatically detected and removed
+- Markers without timestamps treated as stale and cleaned up
+- Enforcement now properly applies across all projects instead of being permanently bypassed
+
+### Technical Details
+- Modified `src/hooks/lib/marker-detection.js` isAgentContext() function
+- Changed staleness check from `marker.agents[0]` (first) to `marker.agents[marker.agents.length - 1]` (most recent)
+- Added MAX_MARKER_AGE_MS = 30 minutes threshold
+- Auto-cleanup on read prevents stale markers from accumulating
+- Safe default: markers without timestamps are treated as stale
+
+### Root Cause
+- SubagentStop hook works perfectly when agents complete normally
+- BUT when Claude Code crashes/exits abruptly, SubagentStop hook NEVER runs
+- Marker files stay forever, permanently bypassing ALL enforcement
+
+### Impact
+- Fixes bug where crash recovery leaves stale markers bypassing ALL enforcement hooks
+- Stale markers from days/weeks ago (Oct 6, 22, 24, 25) no longer bypass enforcement
+- Restores proper git commit blocking, filename enforcement, summary file validation
+- No manual cleanup needed - markers auto-expire after 30 minutes
+
+---
+
 ## [8.20.16] - 2025-10-25
 
 ### Fixed

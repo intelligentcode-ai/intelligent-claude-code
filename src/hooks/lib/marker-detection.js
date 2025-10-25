@@ -65,6 +65,41 @@ function isAgentContext(projectRoot, sessionId, log) {
     const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
     const agentCount = marker.agent_count || 0;
 
+    // CRITICAL FIX: Check marker staleness to prevent old markers from bypassing enforcement
+    if (marker.agents && marker.agents.length > 0) {
+      // Check most recent agent (last in array) for staleness
+      const mostRecentAgent = marker.agents[marker.agents.length - 1];
+
+      if (mostRecentAgent.created) {
+        const markerAge = Date.now() - new Date(mostRecentAgent.created).getTime();
+        const MAX_MARKER_AGE_MS = 30 * 60 * 1000; // 30 minutes
+
+        if (markerAge > MAX_MARKER_AGE_MS) {
+          // Stale marker - clean up and return false
+          try {
+            fs.unlinkSync(markerFile);
+            if (log) {
+              log(`Cleaned up stale agent marker (age: ${Math.floor(markerAge / 1000 / 60)} minutes)`);
+            }
+          } catch (cleanupErr) {
+            // Ignore cleanup errors
+          }
+          return false;
+        }
+      } else {
+        // No timestamp - treat as stale
+        try {
+          fs.unlinkSync(markerFile);
+          if (log) {
+            log('Cleaned up agent marker without timestamp');
+          }
+        } catch (cleanupErr) {
+          // Ignore cleanup errors
+        }
+        return false;
+      }
+    }
+
     if (agentCount > 0) {
       if (log) {
         log(`Agent context detected - ${agentCount} active agent(s)`);
