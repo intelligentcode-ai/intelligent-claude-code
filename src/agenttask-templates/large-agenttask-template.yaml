@@ -102,37 +102,6 @@ coordination:
   integration_points: "[HOW_COMPONENTS_CONNECT]"
   validation_strategy: "[HOW_TO_TEST_INTEGRATION]"
 
-# MANDATORY: Memory-First Requirements
-memory_requirements:
-  pre_execution:
-    - "Memory search completed for [work_type] and [technology_domain] topics"
-    - "Complex feature coordination patterns reviewed"
-    - "Multi-component integration patterns identified"
-    - "Best practices for large-scale features reviewed"
-    - "Similar architecture patterns discovered and applied"
-    blocked_patterns:
-      - "No memory search needed"
-      - "Skip memory check"
-      - "No patterns available"
-      - "Fresh implementation without patterns"
-      - "First complex feature"
-    error_message: "❌ BLOCKED: Memory search is mandatory before execution - search memory/[topic]/ for patterns"
-
-  post_execution:
-    - "Execution analyzed for lessons learned"
-    - "Complex coordination patterns identified and captured"
-    - "Multi-component integration insights documented"
-    - "Relevance filters applied before storage decision"
-    - "Storage ONLY if clear future value demonstrated"
-    - "Security validation: no credentials or sensitive data"
-    blocked_patterns:
-      - "Store to satisfy requirement"
-      - "No learnings to capture"
-      - "Skip memory storage"
-      - "Nothing worth storing"
-      - "Standard feature implementation"
-    error_message: "❌ BLOCKED: Automatic analysis mandatory - large features must capture coordination patterns"
-
 # MANDATORY: Knowledge Management
 knowledge_management:
   capture_patterns: "Store complex feature coordination patterns"
