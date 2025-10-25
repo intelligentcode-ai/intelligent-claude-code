@@ -263,7 +263,7 @@
 
 - name: Copy enforcement defaults to .icc directory
   copy:
-    src: "{{ playbook_dir }}/../.icc/enforcement.default.json"
+    src: "{{ playbook_dir }}/../../.icc/enforcement.default.json"
     dest: "{{ claude_install_path }}/.icc/enforcement.default.json"
     mode: '0644'
     force: yes
