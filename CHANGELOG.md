@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.19] - 2025-10-26
+
+### Fixed
+- UserPromptSubmit hook now cleans up agent execution markers at start of each turn
+- Markers for current project are removed when new user input is received
+- Ensures fresh execution state for each conversation turn
+- 30-minute TTL now serves as fallback for crashed sessions only
+
+### Technical Details
+- Added cleanupCurrentProjectMarkers() function to user-prompt-submit.js
+- Cleanup occurs immediately after input parsing (before any other processing)
+- Uses same MD5 hash logic as agent-marker.js for project identification
+- Removes all agent-executing-* markers matching current project hash
+- Logged cleanup operations for debugging and monitoring
+
+### Impact
+- Prevents marker accumulation across conversation turns
+- Fresh start guaranteed for each user interaction
+- Reduces reliance on 30-minute TTL cleanup
+- Improves marker lifecycle management and system reliability
+
+---
+
 ## [8.20.18] - 2025-10-25
 
 ### Fixed
