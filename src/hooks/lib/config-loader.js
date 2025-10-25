@@ -184,6 +184,26 @@ function parseValue(value) {
 }
 
 /**
+ * Find configuration file in priority order
+ */
+function findConfigFile(projectRoot, filename) {
+  const baseFilename = filename.replace('icc.', '');
+  const searchPaths = [
+    path.join(projectRoot, '.icc', baseFilename),      // .icc/config.json
+    path.join(projectRoot, filename),                   // icc.config.json
+    path.join(projectRoot, '.claude', filename)         // .claude/icc.config.json
+  ];
+
+  for (const searchPath of searchPaths) {
+    if (fs.existsSync(searchPath)) {
+      return searchPath;
+    }
+  }
+
+  return null;
+}
+
+/**
  * Load workflow configuration from hierarchy
  */
 function loadWorkflowConfig() {
@@ -197,17 +217,21 @@ function loadWorkflowConfig() {
   }
 
   // 2. Try to load user global workflow configuration
-  const userWorkflowPath = path.join(os.homedir(), '.claude', 'icc.workflow.json');
-  const userWorkflow = loadJsonConfig(userWorkflowPath);
-  if (userWorkflow) {
-    workflowConfig = deepMerge(workflowConfig, userWorkflow);
+  const userWorkflowPath = findConfigFile(path.join(os.homedir(), '.claude'), 'icc.workflow.json');
+  if (userWorkflowPath) {
+    const userWorkflow = loadJsonConfig(userWorkflowPath);
+    if (userWorkflow) {
+      workflowConfig = deepMerge(workflowConfig, userWorkflow);
+    }
   }
 
   // 3. Try to load project workflow configuration
-  const projectWorkflowPath = path.join(process.cwd(), 'icc.workflow.json');
-  const projectWorkflow = loadJsonConfig(projectWorkflowPath);
-  if (projectWorkflow) {
-    workflowConfig = deepMerge(workflowConfig, projectWorkflow);
+  const projectWorkflowPath = findConfigFile(process.cwd(), 'icc.workflow.json');
+  if (projectWorkflowPath) {
+    const projectWorkflow = loadJsonConfig(projectWorkflowPath);
+    if (projectWorkflow) {
+      workflowConfig = deepMerge(workflowConfig, projectWorkflow);
+    }
   }
 
   return workflowConfig;
@@ -234,17 +258,23 @@ function loadConfig() {
   }
 
   // 2. Try to load user global configuration
-  const userConfigPath = path.join(os.homedir(), '.claude', 'icc.config.json');
-  const userConfig = loadJsonConfig(userConfigPath);
-  if (userConfig) {
-    config = deepMerge(config, userConfig);
+  const userConfigPath = findConfigFile(path.join(os.homedir(), '.claude'), 'icc.config.json');
+  let userConfig = null;
+  if (userConfigPath) {
+    userConfig = loadJsonConfig(userConfigPath);
+    if (userConfig) {
+      config = deepMerge(config, userConfig);
+    }
   }
 
   // 3. Try to load project configuration
-  const projectConfigPath = path.join(process.cwd(), 'icc.config.json');
-  const projectConfig = loadJsonConfig(projectConfigPath);
-  if (projectConfig) {
-    config = deepMerge(config, projectConfig);
+  const projectConfigPath = findConfigFile(process.cwd(), 'icc.config.json');
+  let projectConfig = null;
+  if (projectConfigPath) {
+    projectConfig = loadJsonConfig(projectConfigPath);
+    if (projectConfig) {
+      config = deepMerge(config, projectConfig);
+    }
   }
 
   // 4. Load workflow configuration (separate file)
@@ -313,7 +343,8 @@ function getHardcodedDefaults() {
     enforcement: {
       blocking_enabled: true,
       violation_logging: true,
-      auto_correction: true
+      auto_correction: true,
+      heredoc_allowed_commands: ['git', 'gh', 'glab', 'hub']
     }
   };
 }

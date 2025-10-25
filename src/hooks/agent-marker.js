@@ -5,6 +5,10 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 
+// Shared libraries
+const { blockOperation } = require('./lib/hook-helpers');
+const { checkToolBlacklist } = require('./lib/tool-blacklist');
+
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
   const today = new Date().toISOString().split('T')[0];
@@ -144,6 +148,43 @@ function main() {
 
     if (!fs.existsSync(markerDir)) {
       fs.mkdirSync(markerDir, { recursive: true });
+    }
+
+    // Check if agent context exists (marker file present)
+    const isAgentContext = fs.existsSync(markerFile);
+
+    // CRITICAL: Check tool blacklist for agents (universal + agents_only)
+    // This prevents agents from using Task (recursion), SlashCommand, Skill
+    if (isAgentContext) {
+      log('Agent context detected - checking agent tool blacklist');
+
+      const toolInput = hookInput.tool_input || {};
+      const blacklistResult = checkToolBlacklist(tool_name, toolInput, 'agent');
+
+      if (blacklistResult.blocked) {
+        log(`Agent tool blocked by blacklist: ${tool_name} (${blacklistResult.list})`);
+        return blockOperation(
+          `Tool blocked for agents: ${tool_name}`,
+          tool_name,
+          `Tool "${tool_name}" is blocked for agents by the ${blacklistResult.reason}.
+
+Blacklist type: ${blacklistResult.list}
+
+Agents cannot use:
+- Task (prevents agent recursion - agents cannot create sub-agents)
+- SlashCommand (slash commands are user-facing only)
+- Skill (skills are user-facing only)
+
+Agents should focus on their assigned work using allowed tools:
+✅ Read, Write, Edit - File operations
+✅ Bash - System commands
+✅ Grep, Glob - Search operations
+✅ All MCP tools - MCP integrations
+
+If you are an agent and need to delegate work, your AgentTask should be broken down by the main scope instead.`,
+          log
+        );
+      }
     }
 
     if (tool_name === 'Task') {

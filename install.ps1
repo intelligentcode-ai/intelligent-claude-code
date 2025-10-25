@@ -185,6 +185,37 @@ function Remove-ObsoleteSessionStartHook {
     }
 }
 
+function Remove-ObsoletePostToolUseHook {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SettingsPath
+    )
+
+    try {
+        if (Test-Path $SettingsPath) {
+            Write-Host "  Removing obsolete PostToolUse hook from settings.json..." -ForegroundColor Gray
+
+            $Settings = Get-SettingsJson -SettingsPath $SettingsPath
+
+            if ($Settings.hooks -and $Settings.hooks.PSObject.Properties.Name -contains 'PostToolUse') {
+                $Settings.hooks.PSObject.Properties.Remove('PostToolUse')
+
+                # Save updated settings
+                $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+                Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+                Write-Host "  ✅ Removed obsolete PostToolUse hook from settings.json" -ForegroundColor Green
+            } else {
+                Write-Host "  PostToolUse hook not found, skipping cleanup" -ForegroundColor Gray
+            }
+        } else {
+            Write-Host "  No settings.json found, skipping PostToolUse cleanup" -ForegroundColor Gray
+        }
+    } catch {
+        Write-Warning "  Failed to remove PostToolUse hook: $($_.Exception.Message)"
+    }
+}
+
 function Register-UserPromptSubmitHook {
     param(
         [Parameter(Mandatory=$true)]
@@ -444,6 +475,7 @@ function Register-StopHook {
     }
 }
 
+
 function Install-HookSystem {
     param(
         [Parameter(Mandatory=$true)]
@@ -508,6 +540,9 @@ function Install-HookSystem {
             # Remove obsolete SessionStart hook from settings.json (v8.18.8+)
             Remove-ObsoleteSessionStartHook -SettingsPath $SettingsPath
 
+            # Remove obsolete PostToolUse hook from settings.json (v8.20.3+)
+            Remove-ObsoletePostToolUseHook -SettingsPath $SettingsPath
+
             # Remove old hook names (graceful cleanup)
             $OldHooks = @(
                 'pretooluse.js',
@@ -515,7 +550,8 @@ function Install-HookSystem {
                 'pre-commit.js',
                 'installation-protection.js',
                 'git-privacy-validation.js',
-                'git-privacy-enforcement.js'
+                'git-privacy-enforcement.js',
+                'constraint-display-enforcement.js'
             )
 
             foreach ($OldHook in $OldHooks) {
@@ -662,6 +698,21 @@ function Install-IntelligentClaudeCode {
         } else {
             Write-Warning "Source directory not found: $SourcePath"
         }
+    }
+
+    # Create .icc directory and copy enforcement defaults
+    Write-Host "  Installing enforcement defaults..." -ForegroundColor Gray
+    $IccDir = Join-Path $Paths.InstallPath ".icc"
+    if (-not (Test-Path $IccDir)) {
+        New-Item -Path $IccDir -ItemType Directory -Force | Out-Null
+    }
+
+    $EnforcementSrc = Join-Path $PSScriptRoot ".icc\enforcement.default.json"
+    $EnforcementDest = Join-Path $IccDir "enforcement.default.json"
+    if (Test-Path $EnforcementSrc) {
+        Copy-Item -Path $EnforcementSrc -Destination $EnforcementDest -Force
+    } else {
+        Write-Warning "Enforcement defaults not found: $EnforcementSrc"
     }
 
     # Deploy hook files to ~/.claude/hooks/
@@ -811,7 +862,7 @@ function Unregister-HookFromSettings {
         [string]$HookCommand,
 
         [Parameter(Mandatory=$true)]
-        [ValidateSet("PreToolUse", "PostToolUse")]
+        [ValidateSet("PreToolUse")]
         [string]$HookType
     )
 
@@ -898,13 +949,6 @@ function Uninstall-IntelligentClaudeCode {
     if (Test-Path $OldPreToolUseHookPath) {
         $HookCommand = "node `"$OldPreToolUseHookPath`""
         Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PreToolUse"
-    }
-
-    # Unregister post-tool-use hook (legacy)
-    $PostToolUseHookPath = Join-Path $Paths.InstallPath "hooks" "post-tool-use.js"
-    if (Test-Path $PostToolUseHookPath) {
-        $HookCommand = "node `"$PostToolUseHookPath`""
-        Unregister-HookFromSettings -SettingsPath $SettingsPath -HookCommand $HookCommand -HookType "PostToolUse"
     }
 
     if ($Force) {
@@ -1034,29 +1078,6 @@ function Test-Installation {
                     throw "FAIL: PreToolUse hooks structure not found in settings.json"
                 }
 
-                # Check PostToolUse hook registration
-                if ($TestSettings.hooks -and $TestSettings.hooks.PostToolUse) {
-                    $PostToolUseHooks = if ($TestSettings.hooks.PostToolUse -is [array]) {
-                        $TestSettings.hooks.PostToolUse
-                    } else {
-                        @($TestSettings.hooks.PostToolUse)
-                    }
-
-                    $PostHookFound = $false
-                    foreach ($Hook in $PostToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*post-tool-use.js*") {
-                            $PostHookFound = $true
-                            break
-                        }
-                    }
-
-                    if (-not $PostHookFound) {
-                        throw "FAIL: Post-tool-use hook not found in settings.json"
-                    }
-                    Write-Host "  ✅ PostToolUse hook registered in settings.json" -ForegroundColor Green
-                } else {
-                    throw "FAIL: PostToolUse hooks structure not found in settings.json"
-                }
 
             } catch {
                 throw "FAIL: Failed to verify settings.json hook registration: $($_.Exception.Message)"
@@ -1105,21 +1126,6 @@ function Test-Installation {
                     foreach ($Hook in $PreToolUseHooks) {
                         if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*pm-constraints-enforcement.js*") {
                             throw "FAIL: PreToolUse hook still registered in settings.json after uninstall"
-                        }
-                    }
-                }
-
-                # Check PostToolUse hook removal
-                if ($TestSettings.hooks -and $TestSettings.hooks.PostToolUse) {
-                    $PostToolUseHooks = if ($TestSettings.hooks.PostToolUse -is [array]) {
-                        $TestSettings.hooks.PostToolUse
-                    } else {
-                        @($TestSettings.hooks.PostToolUse)
-                    }
-
-                    foreach ($Hook in $PostToolUseHooks) {
-                        if ($Hook.hooks -and $Hook.hooks[0] -and $Hook.hooks[0].command -like "*post-tool-use.js*") {
-                            throw "FAIL: Post-tool-use hook still registered in settings.json after uninstall"
                         }
                     }
                 }
