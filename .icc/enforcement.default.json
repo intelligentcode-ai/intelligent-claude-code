@@ -1,0 +1,76 @@
+{
+  "$schema": "../src/schemas/icc.enforcement.schema.json",
+  "version": "1.0.0",
+  "description": "⚠️ DEPRECATED: This file is deprecated. All enforcement settings have been migrated to icc.config.json under the 'enforcement' key. This file will be removed in a future version.",
+  "_migration_note": "Use icc.config.json with enforcement.tool_blacklist, enforcement.allowed_allcaps_files, and enforcement.heredoc_allowed_commands instead.",
+
+  "tool_blacklist": {
+    "universal": [
+      "rm -rf /",
+      "dd if=/dev/zero of=/dev/sda",
+      "mkfs",
+      "fdisk /dev/sda",
+      "> /dev/sda",
+      "format c:"
+    ],
+    "main_scope_only": [
+      "Write",
+      "Edit",
+      "MultiEdit",
+      "NotebookEdit"
+    ],
+    "agents_only": [
+      "Task",
+      "SlashCommand",
+      "Skill"
+    ]
+  },
+
+  "infrastructure_protection": {
+    "pm_blacklist": [
+      "govc",
+      "esxcli",
+      "vcsa-cli",
+      "virsh",
+      "vboxmanage",
+      "qm",
+      "pct",
+      "multipass",
+      "vagrant",
+      "packer",
+      "kubectl",
+      "helm",
+      "terraform",
+      "ansible-playbook",
+      "docker",
+      "docker-compose",
+      "az",
+      "gcloud",
+      "aws"
+    ]
+  },
+
+  "allowed_allcaps_files": [
+    "README.md",
+    "LICENSE",
+    "LICENSE.md",
+    "CLAUDE.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "AUTHORS",
+    "NOTICE",
+    "PATENTS",
+    "VERSION",
+    "MAKEFILE",
+    "DOCKERFILE",
+    "COPYING",
+    "COPYRIGHT"
+  ],
+
+  "heredoc_allowed_commands": [
+    "git",
+    "gh",
+    "glab",
+    "hub"
+  ]
+}

@@ -24,6 +24,7 @@
     - "{{ claude_install_path }}/hooks"
     - "{{ claude_install_path }}/logs"
     - "{{ claude_install_path }}/schemas"
+    - "{{ claude_install_path }}/.icc"
 
 - name: Check if CLAUDE.md exists
   stat:
@@ -195,6 +196,7 @@
     - installation-protection.js
     - git-privacy-validation.js
     - git-privacy-enforcement.js
+    - constraint-display-enforcement.js
   ignore_errors: yes
 
 - name: Make production hook scripts executable
@@ -212,7 +214,6 @@
     - git-enforcement.js
     - summary-file-enforcement.js
     - agent-infrastructure-protection.js
-    - constraint-display-enforcement.js
     - task-tool-execution-reminder.js
     - subagent-stop.js
     - stop.js
@@ -257,6 +258,13 @@
   copy:
     src: "{{ playbook_dir }}/../src/schemas/icc.workflow.schema.json"
     dest: "{{ claude_install_path }}/schemas/icc.workflow.schema.json"
+    mode: '0644'
+    force: yes
+
+- name: Copy enforcement defaults to .icc directory
+  copy:
+    src: "{{ playbook_dir }}/../.icc/enforcement.default.json"
+    dest: "{{ claude_install_path }}/.icc/enforcement.default.json"
     mode: '0644'
     force: yes
 
@@ -334,6 +342,26 @@
 - name: Display SessionStart cleanup result
   debug:
     msg: "{{ sessionstart_cleanup.stdout }}"
+  when: settings_json_exists.stat.exists
+
+- name: Remove obsolete PostToolUse hook from settings.json
+  shell: |
+    if [ -f "{{ claude_install_path }}/settings.json" ]; then
+      jq 'del(.hooks.PostToolUse)' "{{ claude_install_path }}/settings.json" > "{{ claude_install_path }}/settings.json.tmp"
+      mv "{{ claude_install_path }}/settings.json.tmp" "{{ claude_install_path }}/settings.json"
+      echo "Removed PostToolUse hook"
+    else
+      echo "No settings.json found, skipping cleanup"
+    fi
+  args:
+    executable: /bin/bash
+  register: posttooluse_cleanup
+  changed_when: "'Removed PostToolUse hook' in posttooluse_cleanup.stdout"
+  when: settings_json_exists.stat.exists
+
+- name: Display PostToolUse cleanup result
+  debug:
+    msg: "{{ posttooluse_cleanup.stdout }}"
   when: settings_json_exists.stat.exists
 
 - name: Create settings.json with hook registration (ONLY if not exists)
@@ -457,5 +485,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: SessionStart compaction + UserPromptSubmit guidance + PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder) + SubagentStop cleanup + Stop cleanup active"
+      - "🔒 Behavioral Hooks: UserPromptSubmit guidance + PreToolUse (main scope + scope + memory + git + PM + infrastructure + Task reminder) + SubagentStop cleanup + Stop cleanup active"
       - "🚀 Use @Role communication to activate team members"

@@ -7,6 +7,309 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.5] - 2025-10-24
+
+### Added
+- **Heredoc Allowed Commands Whitelist**: Whitelist approach for PM heredoc usage
+  - New `enforcement.heredoc_allowed_commands` configuration setting in config-loader.js defaults
+  - Default allowed commands: `["git", "gh", "glab", "hub"]` for git workflows
+  - PM hook now checks whitelist before blocking heredoc commands
+  - Git commit messages with heredoc syntax now work: `git commit -m "$(cat <<'EOF' ...)"`
+  - GitHub CLI tools (gh, glab, hub) can use heredoc for PR/issue descriptions
+  - Non-whitelisted heredocs (python, cat, etc.) still blocked, require AgentTask delegation
+  - Configurable via `.icc/enforcement.json` or `enforcement.heredoc_allowed_commands` in config
+
+### Changed
+- Updated pm-constraints-enforcement.js heredoc validation logic
+  - Whitelist check using `getEnforcementSetting('heredoc_allowed_commands')`
+  - Command extraction and validation before blocking
+  - Improved error messages showing allowed commands list
+- Enhanced enforcement.default.json with heredoc_allowed_commands entry
+- Updated configuration-guide.md with comprehensive heredoc whitelist documentation
+
+### Technical Details
+- Uses enforcement-loader.js for configuration loading with 5-minute cache
+- Whitelist check extracts first command word and validates against allowed list
+- Allows continuation to other validation checks when whitelisted command detected
+- Project-specific customization via .icc/enforcement.json file
+- Full backward compatibility with existing enforcement configuration
+
+---
+
+## [8.20.4] - 2025-10-24
+
+### Added
+- **Cleaner .icc/ Folder Structure**: Organized configuration files in dedicated directory
+  - Configuration files now stored in `.icc/` directory instead of project root
+  - Priority search order: `.icc/config.json` → `icc.config.json` → `.claude/icc.config.json`
+  - Backward compatibility maintained for root `icc.*.json` files
+  - Updated config-loader.js with findConfigFile() function for hierarchical search
+  - Documentation updated with migration path and directory structure
+
+### Changed
+- Moved `icc.config.json` to `.icc/config.json` in this project
+- Updated .gitignore to include `.icc/*.local.json` pattern
+- Enhanced configuration-guide.md with .icc/ structure documentation
+
+### Technical Details
+- config-loader.js now searches `.icc/` directory first, then root, then `.claude/`
+- Workflow configuration also supports new directory structure
+- Existing projects can continue using root location or migrate to `.icc/`
+- System automatically uses first found configuration file in priority order
+
+---
+
+## [8.20.3] - 2025-10-23
+
+### Fixed
+- **PostToolUse Hook Cleanup**: Automatic removal from settings.json
+  - Ansible playbook: Added task to remove PostToolUse registration from settings.json
+  - PowerShell script: Added Remove-ObsoletePostToolUseHook function to clean up settings.json
+  - Prevents errors when deleted constraint-display-enforcement.js file is referenced in settings.json
+  - Existing installations automatically cleaned up during installation/upgrade
+  - Completes the transition from mechanical PostToolUse enforcement to behavioral enforcement
+
+### Technical Details
+- PostToolUse hook registration removed from settings.json via jq (Ansible) or PowerShell JSON manipulation
+- Cleanup happens automatically during installation, ensuring no orphaned hook references
+- Follows same pattern as SessionStart hook cleanup (v8.18.8+)
+
+---
+
+## [8.20.2] - 2025-10-23
+
+### Fixed
+- **Constraint Display Enforcement**: Corrected enforcement mechanism
+  - Removed incorrect PostToolUse hook approach (constraint-display-enforcement.js)
+  - Strengthened UserPromptSubmit hook (context-injection.js) with explicit enforcement reminder
+  - Constraint display now enforced behaviorally via injected context, not mechanically via PostToolUse
+  - Installation cleanup: Automatically removes old constraint-display-enforcement.js file
+  - Ansible and PowerShell scripts updated to remove PostToolUse hook registration
+  - Test suite updated to reflect behavioral enforcement approach
+
+### Rationale
+- PostToolUse hooks execute after tool completion, which is too late for behavioral enforcement
+- UserPromptSubmit hook provides correct injection point for behavioral guidance
+- Explicit reminder in injected context ensures constraint display compliance
+- Behavioral enforcement more appropriate than mechanical hook interception
+
+---
+
+## [8.20.1] - 2025-10-23
+
+### Added
+- **PostToolUse Hook Activation**: Automated constraint display enforcement
+  - Ansible playbook: Registers PostToolUse hook with constraint-display-enforcement.js
+  - PowerShell script: Registers PostToolUse hook with constraint-display-enforcement.js
+  - Activates after significant tools: Write, Edit, Task, Bash
+  - No manual settings.json configuration required
+
+### Enhancement
+- Installation system now automatically configures PostToolUse hooks
+- Mechanical constraint display enforcement active by default after installation
+- Test suite verifies PostToolUse hook registration and unregistration
+
+---
+
+## [8.20.0] - 2025-10-23
+
+### Added
+- **Universal Tool Blacklist System**: Comprehensive tool restriction framework
+  - Three-tier blacklist: universal, main_scope_only, agents_only
+  - System-level defaults in icc.config.default.json
+  - Per-project customization via icc.config.json
+  - Shared library: src/hooks/lib/tool-blacklist.js
+
+- **Enforcement Integration**: All PreToolUse hooks check universal blacklist
+  - main-scope-enforcement.js: Checks universal + main_scope_only
+  - pm-constraints-enforcement.js: Checks universal + main_scope_only
+  - agent-marker.js: Checks universal + agents_only
+
+- **Agent Tool Restrictions**: Prevents agent recursion and misuse
+  - Agents blocked from Task tool (prevents sub-agent creation)
+  - Agents blocked from SlashCommand tool (user-facing only)
+  - Agents blocked from Skill tool (user-facing only)
+
+- **Destructive Command Protection**: Universal blocks for dangerous operations
+  - Blocks: rm -rf /, dd if=/dev/zero, mkfs, fdisk, format c:
+  - Applies to EVERYONE (main scope + agents)
+
+### Security
+- **Critical**: Agents can no longer create sub-agents (Task tool blocked)
+- **Critical**: Universal destructive command protection across all contexts
+- **Enhancement**: Centralized tool restriction management
+
+### Configuration
+- New setting: `enforcement.tool_blacklist` with three categories
+- Projects can extend blacklist via icc.config.json
+- System defaults in icc.config.default.json
+
+---
+
+## [8.19.17] - 2025-10-23
+
+### Security
+- **CRITICAL: Fixed ALL-CAPITALS Filename Bypass in summary-file-enforcement.js**
+  - Hook was allowing ALL-CAPITALS filenames when files were created directly in summaries/ directory
+  - ALL-CAPITALS check now happens BEFORE directory location check
+  - ALL-CAPITALS files blocked REGARDLESS of location (unless in explicit allowed list)
+  - Security bypass eliminated - enforcement now consistent across all directory contexts
+
+### Impact
+- ALL-CAPITALS files no longer bypass enforcement when created in summaries/ directory
+- Hook logic reordered to prevent location-based bypass patterns
+- Critical security vulnerability closed
+
+---
+
+## [8.19.16] - 2025-10-23
+
+### Enhanced
+- **Hook Blocking Messages: AgentTask Execution Pattern**
+  - Enhanced all hook blocking messages with comprehensive 4-point execution pattern
+  - Added clear guidance on Task tool usage and WAIT requirement
+  - Included parallel execution examples (multiple Task tool calls in single message)
+  - Added template usage guidance (nano/tiny for direct execution, 6+ points for story-first)
+  - Improved user experience with actionable examples for sequential and parallel work
+  - Hooks updated: main-scope-enforcement.js, pm-constraints-enforcement.js, summary-file-enforcement.js
+
+### Impact
+- Users receive comprehensive execution guidance when hooks block operations
+- Clear examples of sequential vs parallel AgentTask execution patterns
+- Reduced confusion about proper AgentTask and Task tool usage
+- Better understanding of template selection based on complexity
+- Enhanced educational value of hook enforcement messages
+
+---
+
+## [8.19.15] - 2025-10-22
+
+### Security
+- **CRITICAL: Infrastructure Command Blocking in Main Scope**
+  - Added distinction between read-only and modifying infrastructure commands
+  - Blocked: SSH (always - can execute remote commands)
+  - Blocked: Infrastructure modifications (kubectl apply, docker run, terraform, ansible)
+  - Blocked: Package installations (npm install, pip install, gem install)
+  - Blocked: Build systems (make, cmake, gradle, mvn)
+  - Blocked: Database modifications (INSERT, UPDATE, DELETE, DROP)
+  - Allowed: Read-only operations (kubectl get/logs, docker ps/logs, systemctl status)
+  - Allowed: HTTP requests (curl/wget - ALL methods for docs, API data, webhooks)
+  - Allowed: Package listing (npm list, pip list)
+
+### Impact
+- Main scope cannot access production infrastructure via SSH
+- Main scope cannot modify containers, Kubernetes resources, or databases
+- Main scope CAN monitor and inspect infrastructure (read-only)
+- Main scope CAN fetch documentation and API data via HTTP
+- Infrastructure modifications MUST go through AgentTask + specialist agents
+- Critical security vulnerability closed
+
+---
+
+## [8.19.14] - 2025-10-22
+
+### Added
+- **Hook Shared Libraries: Comprehensive Code Optimization**
+  - Created 6 shared libraries eliminating 498+ lines of duplication (27.6% reduction)
+  - `lib/logging.js` - Unified logging with auto-cleanup
+  - `lib/marker-detection.js` - Agent/PM context detection
+  - `lib/path-utils.js` - Path validation and allowlist checking
+  - `lib/command-validation.js` - Bash command validation
+  - `lib/file-validation.js` - File type validation
+  - `lib/hook-helpers.js` - Common hook patterns
+  - `lib/context-detection.js` - Development context detection
+
+- **Config Protection Hook**
+  - Blocks ALL modifications to icc.config.json and icc.workflow.json
+  - Prevents agents from disabling enforcement or changing autonomy levels
+  - User-only configuration changes enforced
+
+### Fixed
+- **CRITICAL: Git Operations Blocking (v8.19.13 carry-over)**
+  - Added complete git workflow commands to allowed list
+  - Fixed: git add, commit, push, pull, branch, checkout, fetch, merge, reset, stash, tag
+  - Renamed isReadOnlyCoordinationCommand → isAllowedCoordinationCommand
+  - Added wc, ps, top, jobs, bg, fg, which, env to allowed commands
+
+- **CRITICAL: Summary File Enforcement Blocking Reads**
+  - Fixed hook blocking Read operations (should only block Write/Edit)
+  - Added stories/ and bugs/ directory exclusions
+  - STORY/BUG files now properly allowed in their respective directories
+
+- **CRITICAL: Nested Directory Path Matching**
+  - Fixed allowlist checking to recognize directories at ANY level
+  - Now matches: monitoring/stories/, foo/bar/bugs/, etc.
+  - Changed from startsWith check to component-based matching
+
+- **CRITICAL: PM Constraints "undefined/" Directory Bug**
+  - Fixed validatePMOperation showing "PM cannot modify files in undefined/"
+  - Proper relative path conversion for directory name extraction
+  - Clear error messages now show actual blocked directory
+
+- **Development Context Detection**
+  - Shared isDevelopmentContext() function in lib/context-detection.js
+  - Both main-scope and pm-constraints hooks detect intelligent-claude-code repository
+  - Automatic src/ directory access when working on ICC itself
+
+### Refactored
+- **Hook Code Optimization**
+  - main-scope-enforcement.js: 376 → 238 lines (-36.7%)
+  - summary-file-enforcement.js: 239 → 195 lines (-18.4%)
+  - project-scope-enforcement.js: 208 → 107 lines (-48.6%)
+  - Total: 283 lines eliminated from 3 hooks
+  - All hooks now use shared libraries (DRY principle)
+
+### Impact
+- Zero code duplication across all hooks
+- 498+ lines of code eliminated (27.6% reduction)
+- Single source of truth for all shared logic
+- Easier maintenance and consistency
+- Config security enforced (user-only changes)
+- Complete git workflow restored
+- Nested directory structures properly supported
+
+---
+
+## [8.19.13] - 2025-10-22
+
+### Fixed
+- **CRITICAL: Fix main-scope-enforcement.js Blocking All Git Operations**
+  - Hook was blocking ALL git workflow operations (git add, git commit, git push, etc.)
+  - Renamed `isReadOnlyCoordinationCommand()` to `isAllowedCoordinationCommand()`
+  - Added git workflow commands to allowed list: git add, git commit, git push, git pull, git branch, git checkout, git fetch, git merge, git reset, git stash, git tag
+  - Updated block message to clarify git workflow commands are allowed
+  - Root cause: Function only allowed read-only git commands (status, log, diff, show)
+  - Impact: Agents and main scope can now perform normal git workflow operations
+  - Critical fix: Complete git workflow restored - commits, pushes, branches all work
+
+### Impact
+- Git workflow fully functional in all contexts (main scope and agents)
+- Normal commit/push operations no longer blocked
+- AgentTask execution can complete git operations successfully
+- Fourth critical hook bug fixed in v8.19.x series
+
+---
+
+## [8.19.12] - 2025-10-22
+
+### Fixed
+- **CRITICAL: Auto-Create ~/.claude/tmp Directory in Enforcement Hooks**
+  - Added directory creation to main-scope-enforcement.js checkAgentMarker() function
+  - Added directory creation to pm-constraints-enforcement.js isPMRole() function
+  - Root cause: Hooks expected ~/.claude/tmp to exist but didn't create it
+  - Impact: Agent detection failed silently, blocking ALL agent execution in external projects
+  - Evidence: "Main scope detected - no marker file" despite agents executing correctly
+  - Critical fix: Agents now work in ANY project, not just intelligent-claude-code
+  - Directory created with { recursive: true } before first marker file access
+
+### Impact
+- Agents can now execute successfully in ALL external projects
+- Agent context detection works reliably across all environments
+- System fully functional outside intelligent-claude-code repository
+- No more silent agent blocking due to missing directory
+
+---
+
 ## [8.19.11] - 2025-10-22
 
 ### Fixed
