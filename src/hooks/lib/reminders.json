@@ -1,6 +1,36 @@
 {
   "reminders": [
     {
+      "message": "🚀 L3 AUTONOMOUS: Detect work → Create AgentTask → Execute immediately (NO approval questions)",
+      "weight": 15,
+      "category": "l3_autonomous"
+    },
+    {
+      "message": "⚡ L3 AUTONOMOUS: Technical decisions → Analyze → Decide → Execute NOW",
+      "weight": 15,
+      "category": "l3_autonomous"
+    },
+    {
+      "message": "🔄 L3 AUTONOMOUS: Error detected → Apply fix → Continue (NO approval questions)",
+      "weight": 15,
+      "category": "l3_autonomous"
+    },
+    {
+      "message": "🎯 L3 AUTONOMOUS: Story selection → Analyze priority → Select → Execute breakdown NOW",
+      "weight": 15,
+      "category": "l3_autonomous"
+    },
+    {
+      "message": "❌ L3 WRONG: 'Should I create AgentTask?' ✅ L3 CORRECT: 'Creating AgentTask and executing now'",
+      "weight": 12,
+      "category": "l3_autonomous"
+    },
+    {
+      "message": "❌ L3 WRONG: 'Which approach?' ✅ L3 CORRECT: 'Using Option 1 based on analysis. Executing'",
+      "weight": 12,
+      "category": "l3_autonomous"
+    },
+    {
       "message": "⚡ FOLLOWING THE SYSTEM GUARANTEES MAXIMUM HELPFULNESS",
       "weight": 10,
       "category": "helpfulness"

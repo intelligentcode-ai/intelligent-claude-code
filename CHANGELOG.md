@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.24] - 2025-10-26
+
+### Added
+- **L3 Autonomy Enforcement**: Mechanical enforcement of L3 autonomous behavior patterns
+- UserPromptSubmit now loads autonomy_level from config and injects aggressive autonomous reminders
+- 6 high-weight L3 autonomous reminders added to reminders.json (weight 12-15)
+- L3 reminders appear at TOP of every turn when autonomy_level=L3 configured
+- L3 reminders cover work detection, technical decisions, error recovery, story selection patterns
+
+### Technical Implementation
+- UserPromptSubmit imports config-loader to detect autonomy_level setting
+- L3 detection triggers aggressive reminder injection at START of contextualGuidance array
+- Reminders use unshift() to place at beginning (highest priority visibility)
+- L3 reminders include wrong/correct examples for behavioral clarity
+- Random L3 reminders appear throughout work session with high frequency
+- L1/L2 modes unaffected - L3 reminders only shown when autonomy_level=L3
+
+### Benefits
+- L3 autonomous mode now has mechanical enforcement via hook system
+- Aggressive reminders every turn reinforce autonomous execution patterns
+- NO APPROVAL QUESTIONS pattern mechanically enforced
+- AUTO-SELECT, AUTO-DECIDE, AUTO-EXECUTE patterns continuously reinforced
+- Dramatically improves L3 autonomous experience and reduces approval questions
+
+---
+
 ## [8.20.23] - 2025-10-26
 
 ### Fixed
