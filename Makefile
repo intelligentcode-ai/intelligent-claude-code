@@ -7,6 +7,20 @@ SHELL := /bin/bash
 
 .PHONY: install uninstall test help clean
 
+# Resolve relative paths to absolute paths before passing to Ansible
+# This ensures paths work regardless of Ansible's working directory
+ifdef MCP_CONFIG
+    MCP_CONFIG_ABS := $(shell realpath $(MCP_CONFIG) 2>/dev/null || echo $(MCP_CONFIG))
+else
+    MCP_CONFIG_ABS :=
+endif
+
+ifdef ENV_FILE
+    ENV_FILE_ABS := $(shell realpath $(ENV_FILE) 2>/dev/null || echo $(ENV_FILE))
+else
+    ENV_FILE_ABS :=
+endif
+
 # Default shows help
 help:
 	@echo "Intelligent Claude Code - Installation"
@@ -89,8 +103,8 @@ install:
 			-c local \
 			-e "ansible_shell_type=sh" \
 			-e "target_path=$(TARGET_PATH)" \
-			-e "mcp_config_file=$(MCP_CONFIG)" \
-			-e "env_file=$(ENV_FILE)"; \
+			-e "mcp_config_file=$(MCP_CONFIG_ABS)" \
+			-e "env_file=$(ENV_FILE_ABS)"; \
 	else \
 		if [ -z "$(USER)" ]; then \
 			echo "ERROR: USER parameter required for remote installation!"; \
@@ -105,8 +119,8 @@ install:
 				-i "$(USER)@$(HOST)," \
 				-k -e "ansible_ssh_pass=$(PASS)" \
 				-e "target_path=$(TARGET_PATH)" \
-				-e "mcp_config_file=$(MCP_CONFIG)" \
-				-e "env_file=$(ENV_FILE)"; \
+				-e "mcp_config_file=$(MCP_CONFIG_ABS)" \
+				-e "env_file=$(ENV_FILE_ABS)"; \
 		else \
 			echo "Using SSH key authentication..."; \
 			ANSIBLE_STDOUT_CALLBACK=actionable \
@@ -114,8 +128,8 @@ install:
 				-i "$(USER)@$(HOST)," \
 				-e "ansible_ssh_private_key_file=$(KEY)" \
 				-e "target_path=$(TARGET_PATH)" \
-				-e "mcp_config_file=$(MCP_CONFIG)" \
-				-e "env_file=$(ENV_FILE)"; \
+				-e "mcp_config_file=$(MCP_CONFIG_ABS)" \
+				-e "env_file=$(ENV_FILE_ABS)"; \
 		fi \
 	fi
 
