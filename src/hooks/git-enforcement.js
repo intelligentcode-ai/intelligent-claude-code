@@ -68,9 +68,14 @@ function main() {
     // Git Privacy Settings - Use global as default, allow project override
     const gitPrivacy = getSetting('git.privacy', globalGitPrivacy);
     const privacyPatterns = getSetting('git.privacy_patterns', [
-      "AI", "Claude", "agent",
+      "Generated with \\[Claude Code\\]",
       "Generated with Claude Code",
-      "Co-Authored-By: Claude"
+      "Co-Authored-By: Claude",
+      "Co-authored-by: Claude",
+      "🤖 Generated with",
+      "Claude assisted",
+      "AI assisted",
+      "claude.com/claude-code"
     ]);
 
     // Branch Protection Settings (DEFAULT: true)
@@ -251,9 +256,14 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
       // Apply privacy filtering to extracted message
       if (commitMessage) {
         const privacyPatterns = config.privacy_patterns || [
-          "AI", "Claude", "agent",
+          "Generated with \\[Claude Code\\]",
           "Generated with Claude Code",
-          "Co-Authored-By: Claude"
+          "Co-Authored-By: Claude",
+          "Co-authored-by: Claude",
+          "🤖 Generated with",
+          "Claude assisted",
+          "AI assisted",
+          "claude.com/claude-code"
         ];
 
         let filteredMessage = commitMessage;
