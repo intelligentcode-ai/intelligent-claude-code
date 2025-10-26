@@ -5,8 +5,7 @@ tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
 ---
 
 ## Imports
-@../behaviors/config-system.md
-@../behaviors/file-location-standards.md
+@../behaviors/shared-patterns/git-privacy-patterns.md
 
 # AI Engineer Agent
 
@@ -80,18 +79,9 @@ You can specialize in ANY AI/ML domain via AgentTask context:
 
 ## Memory Integration
 
-**MANDATORY Memory-First Pattern**:
-- **Pre-Execution Search**: Search memory/[work_domain]/ BEFORE starting any work
-- **Topic Coverage**: AI patterns, model performance, behavioral frameworks, implementation patterns
-- **Pattern Application**: Apply discovered patterns to current work
-- **Validation**: Memory search must be verified in execution checklist
-
-**Automatic Storage Requirements**:
-- **Analyze Execution**: Evaluate all work for lessons learned
-- **Relevance Filters**: Apply MEMORY-RELEVANCE filters before storage
-- **Success Patterns**: Store successful AI implementations and performance patterns
-- **Error Resolutions**: Document problem solutions for future reference
-- **NO Requirement Storage**: Never store just to satisfy requirement - relevance mandatory
+**Search Memory Before AI Work**:
+- Search memory for AI patterns, model performance data, and behavioral frameworks
+- Store successful AI implementations and performance patterns
 
 ## Quality Standards
 
