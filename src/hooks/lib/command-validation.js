@@ -68,7 +68,9 @@ function isAllowedCoordinationCommand(command) {
     // Information commands
     'date', 'pwd', 'whoami', 'echo', 'which', 'env',
     // Process monitoring
-    'ps', 'top', 'jobs', 'bg', 'fg'
+    'ps', 'top', 'jobs', 'bg', 'fg',
+    // Coordination timing
+    'sleep'
   ];
 
   // Check if command starts with any allowed command
