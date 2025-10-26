@@ -22,7 +22,7 @@ function main() {
     fs.appendFileSync(logFile, logMessage);
   }
 
-  function cleanupCurrentProjectMarkers(projectRoot, log) {
+  function cleanupCurrentProjectMarkers(projectRoot, sessionId, log) {
     const crypto = require('crypto');
     const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
@@ -33,15 +33,14 @@ function main() {
       }
 
       const files = fs.readdirSync(markerDir);
-      const currentProjectMarkers = files.filter(f =>
-        f.startsWith('agent-executing-') && f.endsWith(`-${projectHash}`)
+
+      // ONLY clean markers for CURRENT SESSION + CURRENT PROJECT
+      const currentSessionProjectMarkers = files.filter(f =>
+        f.startsWith(`agent-executing-${sessionId}-`) && f.endsWith(`-${projectHash}`)
       );
 
-      if (currentProjectMarkers.length > 0) {
-        log(`Found ${currentProjectMarkers.length} markers for current project (hash: ${projectHash})`);
-      }
-
-      currentProjectMarkers.forEach(markerFile => {
+      // DELETE ALL MARKERS for this session+project combination
+      currentSessionProjectMarkers.forEach(markerFile => {
         const fullPath = path.join(markerDir, markerFile);
         try {
           fs.unlinkSync(fullPath);
@@ -50,6 +49,10 @@ function main() {
           log(`Failed to clean marker ${markerFile}: ${error.message}`);
         }
       });
+
+      if (currentSessionProjectMarkers.length > 0) {
+        log(`Cleaned ${currentSessionProjectMarkers.length} markers for session ${sessionId}, project ${projectHash}`);
+      }
     } catch (error) {
       log(`Marker cleanup error: ${error.message}`);
     }
@@ -96,9 +99,12 @@ function main() {
       process.exit(0);
     }
 
-    // Clean up any agent markers from previous turn for current project
+    // Get session ID from input
+    const sessionId = claudeInput.session_id || 'unknown';
+
+    // Clean up any agent markers from previous turn for current session+project
     const projectRoot = claudeInput.cwd || process.cwd();
-    cleanupCurrentProjectMarkers(projectRoot, log);
+    cleanupCurrentProjectMarkers(projectRoot, sessionId, log);
 
     // Get user prompt from input
     const userPrompt = claudeInput.user_prompt || '';
