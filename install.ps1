@@ -194,6 +194,7 @@ function Register-ProductionHooks {
             )
             SubagentStop = @(
                 [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\subagent-stop.js`""; timeout = 5000; failureMode = "allow" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\post-agent-file-validation.js`""; timeout = 5000; failureMode = "allow" }) }
             )
             Stop = @(
                 [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\stop.js`""; timeout = 5000; failureMode = "allow" }) }
@@ -212,7 +213,7 @@ function Register-ProductionHooks {
         $JsonOutput = $Settings | ConvertTo-Json -Depth 10
         Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
 
-        Write-Host "  ✅ All 14 production hooks registered successfully in settings.json" -ForegroundColor Green
+        Write-Host "  ✅ All 15 production hooks registered successfully in settings.json" -ForegroundColor Green
 
     } catch {
         Write-Warning "  Failed to register production hooks in settings.json: $($_.Exception.Message)"
@@ -228,7 +229,7 @@ function Install-HookSystem {
         [string]$SourceDir
     )
 
-    Write-Host "Installing hook system..." -ForegroundColor Yellow
+    Write-Host "Installing hook system (15 production hooks)..." -ForegroundColor Yellow
 
     try {
         # Create hooks directory structure

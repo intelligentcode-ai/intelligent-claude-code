@@ -257,6 +257,7 @@
             - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/task-tool-execution-reminder.js', timeout: 5000, failureMode: 'allow' }]
           SubagentStop:
             - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/subagent-stop.js', timeout: 5000, failureMode: 'allow' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/post-agent-file-validation.js', timeout: 5000, failureMode: 'allow' }]
           Stop:
             - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/stop.js', timeout: 5000, failureMode: 'allow' }]
 
@@ -272,13 +273,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "All 14 production hooks configured in settings.json - comprehensive enforcement active"
+        msg: "All 15 production hooks configured in settings.json - comprehensive enforcement active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with all 14 production hooks - comprehensive enforcement active"
+    msg: "Settings file created with all 15 production hooks - comprehensive enforcement active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -296,5 +297,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: All 14 production hooks active (PreToolUse, UserPromptSubmit, SubagentStop, Stop)"
+      - "🔒 Behavioral Hooks: All 15 production hooks active (PreToolUse, UserPromptSubmit, SubagentStop, Stop)"
       - "🚀 Use @Role communication to activate team members"

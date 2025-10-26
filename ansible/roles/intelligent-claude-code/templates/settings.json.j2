@@ -93,6 +93,13 @@
         "timeout": 5000,
         "failureMode": "allow"
       }]
+    }, {
+      "hooks": [{
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/post-agent-file-validation.js",
+        "timeout": 5000,
+        "failureMode": "allow"
+      }]
     }],
     "Stop": [{
       "hooks": [{

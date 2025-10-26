@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.27] - 2025-10-26
+
+### Added
+- **Post-Agent File Validation**: New SubagentStop hook validates file placements after agent execution
+- **src/hooks/post-agent-file-validation.js**: Non-blocking advisory validation for agent-created files
+- **Agent Directory Enforcement**: Extends directory enforcement to agent operations (previously only main/PM scope)
+- **Git Status Integration**: Scans modified files using git status to detect agent file creations
+- **Advisory Corrections**: Provides git mv commands for fixing misplaced files without blocking agent work
+
+### Enhanced
+- **ansible/roles/intelligent-claude-code/tasks/main.yml**: Added post-agent-file-validation.js to SubagentStop hooks
+- **ansible/roles/intelligent-claude-code/templates/settings.json.j2**: Registered new validation hook
+- **install.ps1**: PowerShell installation updated with 15 production hooks (was 14)
+- **Hook Count**: System now has 15 production hooks total across all events
+
+### Benefits
+- Agents can no longer bypass directory enforcement (previously only main/PM were enforced)
+- Non-blocking advisory approach prevents breaking agent execution
+- Clear git mv commands provided for easy file corrections
+- Complete enforcement coverage across main scope, PM constraints, and agent operations
+- Catches violations like analysis files in docs/ instead of summaries/
+
+---
+
 ## [8.20.26] - 2025-10-26
 
 ### Added
