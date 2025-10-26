@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.23] - 2025-10-26
+
+### Fixed
+- **CRITICAL ENFORCEMENT FIX**: UserPromptSubmit now cleans ALL project markers regardless of session
+- Fixed enforcement bypass caused by same-session but previous-agent-execution markers remaining
+- Simplified marker cleanup to delete ALL markers for current project at each user turn
+- Removed session-based filtering that allowed old markers from previous turns to bypass enforcement
+
+### Root Cause
+Previous implementation only cleaned markers from DIFFERENT sessions, leaving markers from SAME session but PREVIOUS agent executions. This caused enforcement bypass when:
+1. Turn 1: Agent executes → Creates marker → Completes → Marker remains (same session)
+2. Turn 2: Main scope edits file → Old marker still there → Enforcement bypassed
+
+### Technical Changes
+- UserPromptSubmit cleanup function now deletes ALL markers for current project
+- Removed sessionId parameter and session-based filtering logic
+- Ensures clean slate at start of each user turn
+- Pattern: User submits prompt = NEW turn starting = Clean ALL markers
+
+---
+
 ## [8.20.21] - 2025-10-26
 
 ### Fixed
