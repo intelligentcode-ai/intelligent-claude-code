@@ -266,6 +266,31 @@
       "category": "autonomy"
     },
     {
+      "message": "📁 DIRECTORY ROUTING: STORY-*.md, EPIC-*.md, BUG-*.md → stories/ (NOT docs/)",
+      "weight": 10,
+      "category": "directory_routing"
+    },
+    {
+      "message": "📁 DIRECTORY ROUTING: AGENTTASK-*.yaml → agenttasks/ (check filename pattern)",
+      "weight": 10,
+      "category": "directory_routing"
+    },
+    {
+      "message": "📁 DIRECTORY ROUTING: Random/summary files → summaries/ (default location)",
+      "weight": 8,
+      "category": "directory_routing"
+    },
+    {
+      "message": "📁 DIRECTORY ROUTING: Documentation (architecture.md, api.md) → docs/ (NOT summaries/)",
+      "weight": 8,
+      "category": "directory_routing"
+    },
+    {
+      "message": "📁 DIRECTORY ROUTING: Root files (CLAUDE.md, VERSION) → project root only",
+      "weight": 7,
+      "category": "directory_routing"
+    },
+    {
       "message": "🧹 Clean up unnecessary resources and temporary files after execution",
       "weight": 5,
       "category": "cleanup"
