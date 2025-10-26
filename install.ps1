@@ -154,17 +154,17 @@ function Get-SettingsJson {
     }
 }
 
-function Register-UserPromptSubmitHook {
+function Register-ProductionHooks {
     param(
         [Parameter(Mandatory=$true)]
         [string]$SettingsPath,
 
         [Parameter(Mandatory=$true)]
-        [string]$HookCommand
+        [string]$HooksPath
     )
 
     try {
-        Write-Host "  Registering UserPromptSubmit hook in settings.json..." -ForegroundColor Gray
+        Write-Host "  Registering all 14 production hooks in settings.json..." -ForegroundColor Gray
 
         # Load or create settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
@@ -174,47 +174,48 @@ function Register-UserPromptSubmitHook {
             $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
         }
 
-        if (-not $Settings.hooks.UserPromptSubmit) {
-            $Settings.hooks | Add-Member -MemberType NoteProperty -Name "UserPromptSubmit" -Value @() -Force
+        # Define all production hooks
+        $ProductionHooks = [PSCustomObject]@{
+            PreToolUse = @(
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\git-enforcement.js`""; timeout = 5000; failureMode = "allow" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\main-scope-enforcement.js`""; timeout = 5000; failureMode = "deny" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pm-constraints-enforcement.js`""; timeout = 5000; failureMode = "deny" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-infrastructure-protection.js`""; timeout = 5000; failureMode = "deny" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-marker.js`""; timeout = 5000; failureMode = "allow" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\config-protection.js`""; timeout = 5000; failureMode = "deny" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pre-agenttask-validation.js`""; timeout = 5000; failureMode = "allow" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\project-scope-enforcement.js`""; timeout = 5000; failureMode = "deny" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\summary-file-enforcement.js`""; timeout = 5000; failureMode = "deny" }) }
+            )
+            UserPromptSubmit = @(
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\user-prompt-submit.js`""; timeout = 15000; failureMode = "allow" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\context-injection.js`""; timeout = 5000; failureMode = "allow" }) }
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\task-tool-execution-reminder.js`""; timeout = 5000; failureMode = "allow" }) }
+            )
+            SubagentStop = @(
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\subagent-stop.js`""; timeout = 5000; failureMode = "allow" }) }
+            )
+            Stop = @(
+                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\stop.js`""; timeout = 5000; failureMode = "allow" }) }
+            )
         }
 
-        # Convert UserPromptSubmit to array if it's not already
-        if ($Settings.hooks.UserPromptSubmit -isnot [array]) {
-            $Settings.hooks.UserPromptSubmit = @($Settings.hooks.UserPromptSubmit)
-        }
-
-        # Check if hook already exists to prevent duplicates
-        $ExistingHook = $Settings.hooks.UserPromptSubmit | Where-Object {
-            $_.hooks -and $_.hooks[0] -and $_.hooks[0].command -eq $HookCommand
-        }
-
-        if (-not $ExistingHook) {
-            # Create new hook entry (note: no matcher field for UserPromptSubmit)
-            $NewHook = [PSCustomObject]@{
-                hooks = @(
-                    [PSCustomObject]@{
-                        command = $HookCommand
-                        failureMode = "allow"
-                        timeout = 15000
-                        type = "command"
-                    }
-                )
+        # Replace all production hooks
+        foreach ($HookType in @("PreToolUse", "UserPromptSubmit", "SubagentStop", "Stop")) {
+            if ($Settings.hooks.PSObject.Properties.Name -contains $HookType) {
+                $Settings.hooks.PSObject.Properties.Remove($HookType)
             }
-
-            # Add to UserPromptSubmit array
-            $Settings.hooks.UserPromptSubmit += $NewHook
-
-            # Save settings with proper JSON formatting
-            $JsonOutput = $Settings | ConvertTo-Json -Depth 10
-            Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
-
-            Write-Host "  ✅ UserPromptSubmit hook registered successfully in settings.json" -ForegroundColor Green
-        } else {
-            Write-Host "  UserPromptSubmit hook already registered, skipping duplicate registration" -ForegroundColor Yellow
+            $Settings.hooks | Add-Member -MemberType NoteProperty -Name $HookType -Value $ProductionHooks.$HookType -Force
         }
+
+        # Save settings with proper JSON formatting
+        $JsonOutput = $Settings | ConvertTo-Json -Depth 10
+        Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
+
+        Write-Host "  ✅ All 14 production hooks registered successfully in settings.json" -ForegroundColor Green
 
     } catch {
-        Write-Warning "  Failed to register UserPromptSubmit hook in settings.json: $($_.Exception.Message)"
+        Write-Warning "  Failed to register production hooks in settings.json: $($_.Exception.Message)"
     }
 }
 
@@ -276,17 +277,9 @@ function Install-HookSystem {
             $CopiedFiles = @(Get-ChildItem -Path $HooksPath -Recurse -File)
             Write-Host "  Successfully copied $($CopiedFiles.Count) hook files" -ForegroundColor Green
 
-            # Register production hooks in settings.json
+            # Register all production hooks in settings.json
             $SettingsPath = Join-Path $InstallPath "settings.json"
-
-            # Register UserPromptSubmit hook only
-            $UserPromptSubmitHookPath = Join-Path $HooksPath "user-prompt-submit.js"
-            if (Test-Path $UserPromptSubmitHookPath) {
-                $HookCommand = "node `"$UserPromptSubmitHookPath`""
-                Register-UserPromptSubmitHook -SettingsPath $SettingsPath -HookCommand $HookCommand
-            } else {
-                Write-Warning "  user-prompt-submit.js hook not found, skipping UserPromptSubmit registration"
-            }
+            Register-ProductionHooks -SettingsPath $SettingsPath -HooksPath $HooksPath
 
         } else {
             Write-Warning "Source hooks directory not found: $SourceHooksPath"

@@ -300,7 +300,7 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
 ❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
@@ -429,7 +429,7 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
 ❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
@@ -483,7 +483,7 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
 ❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
