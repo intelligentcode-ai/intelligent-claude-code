@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.25] - 2025-10-26
+
+### Added
+- **Filename-Based Directory Enforcement**: New enforcement system routes files to correct directories based on filename patterns
+- **src/hooks/lib/directory-enforcement.js**: Library module for filename pattern matching and directory validation
+- **Pattern-Based Routing**: STORY/EPIC/BUG files to stories/, AGENTTASK files to agenttasks/, docs to docs/, others to summaries/
+- **Suggested Path Feedback**: Clear error messages showing both current and suggested correct path
+
+### Enhanced
+- **src/hooks/main-scope-enforcement.js**: Integrated directory enforcement check for Write/Edit operations
+- **src/hooks/pm-constraints-enforcement.js**: Added directory enforcement validation for PM file operations
+- **Error Messages**: Comprehensive feedback with directory routing rules and suggested corrections
+
+### Benefits
+- Prevents files from being written to wrong directories based on filename
+- Automatic routing of STORY/BUG/EPIC files to stories/ directory
+- AGENTTASK files correctly placed in agenttasks/ directory
+- Documentation files routed to docs/, summaries to summaries/
+- Clear user guidance with suggested correct paths
+
+---
+
 ## [8.20.24] - 2025-10-26
 
 ### Added
