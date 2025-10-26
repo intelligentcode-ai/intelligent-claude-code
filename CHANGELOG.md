@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.28] - 2025-10-26
+
+### Fixed
+- **MCP Config Relative Paths**: Makefile now resolves relative paths to absolute before passing to Ansible
+- **User-Friendly Installation**: Users can now use `make install MCP_CONFIG=../mcp-servers/mcp-servers.json` without path resolution errors
+- **Path Resolution Logic**: Added `realpath` resolution for MCP_CONFIG and ENV_FILE variables in Makefile
+
+### Enhanced
+- **Makefile (lines 10-22)**: Added path resolution variables MCP_CONFIG_ABS and ENV_FILE_ABS
+- **Makefile (lines 106-107, 122-123, 131-132)**: Updated all ansible-playbook invocations to use absolute path variables
+- **Backward Compatibility**: Absolute paths continue to work unchanged
+
+### Benefits
+- Relative paths work from user's working directory (e.g., ../path/to/config.json)
+- No more "MCP configuration file not found" errors with valid relative paths
+- Clean implementation with path resolution in Makefile before Ansible execution
+- No Ansible playbook changes required
+
+---
+
 ## [8.20.27] - 2025-10-26
 
 ### Added
