@@ -114,39 +114,6 @@ function main() {
   function stripAIMentions(message, patterns) {
     let cleaned = message;
 
-    // Technical term whitelist - these terms should NEVER trigger privacy blocking
-    const technicalTermWhitelist = [
-      'AGENTTASK',
-      'AGENTTASK-CORE',
-      'AGENTTASK-TEMPLATE',
-      'AGENTTASK-PLACEHOLDERS',
-      'AGENTTASK-CONTEXT',
-      'AGENTTASK-SIZE',
-      'AGENTTASK-ROLES'
-    ];
-
-    // Check if message contains ONLY whitelisted technical terms
-    function isWhitelistedContext(text, pattern) {
-      // For each whitelist term, check if the pattern match is within that term
-      for (const term of technicalTermWhitelist) {
-        // Check if text contains this technical term
-        if (new RegExp(term, 'gi').test(text)) {
-          // Check if the pattern matches within this term
-          const termMatches = text.match(new RegExp(term, 'gi'));
-          if (termMatches) {
-            for (const termMatch of termMatches) {
-              // Create a fresh pattern test for this term
-              const patternCopy = new RegExp(pattern.source, pattern.flags);
-              if (patternCopy.test(termMatch)) {
-                return true; // Pattern is part of whitelisted term
-              }
-            }
-          }
-        }
-      }
-      return false;
-    }
-
     // Build regex patterns from configuration
     const regexPatterns = [
       /🤖 Generated with \[Claude Code\]\([^)]+\)\s*/gi,
@@ -170,10 +137,7 @@ function main() {
     }
 
     for (const pattern of regexPatterns) {
-      // Skip if pattern match is within whitelisted technical term
-      if (!isWhitelistedContext(cleaned, pattern)) {
-        cleaned = cleaned.replace(pattern, '');
-      }
+      cleaned = cleaned.replace(pattern, '');
     }
 
     // Clean up multiple consecutive newlines
@@ -245,12 +209,6 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
   }
 
   function modifyGitCommand(command, config) {
-    // Allow gh CLI commands (GitHub API operations, not repository modifications)
-    if (command.trim().startsWith('gh ')) {
-      log('GitHub CLI command - allowing operation');
-      return { modified: false, blocked: false, command };
-    }
-
     // Only modify git commit commands
     if (!command.includes('git commit')) {
       log('Not a git commit command - no modification needed');
@@ -298,38 +256,6 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
           "Co-Authored-By: Claude"
         ];
 
-        // Technical term whitelist - these terms should NEVER trigger privacy blocking
-        const technicalTermWhitelist = [
-          'AGENTTASK',
-          'AGENTTASK-CORE',
-          'AGENTTASK-TEMPLATE',
-          'AGENTTASK-PLACEHOLDERS',
-          'AGENTTASK-CONTEXT',
-          'AGENTTASK-SIZE',
-          'AGENTTASK-ROLES'
-        ];
-
-        // Check if pattern match is within whitelisted technical term
-        function isWhitelistedContext(text, pattern) {
-          for (const term of technicalTermWhitelist) {
-            // Check if text contains this technical term
-            if (new RegExp(term, 'gi').test(text)) {
-              // Check if the pattern matches within this term
-              const termMatches = text.match(new RegExp(term, 'gi'));
-              if (termMatches) {
-                for (const termMatch of termMatches) {
-                  // Create a fresh pattern test for this term
-                  const patternCopy = new RegExp(pattern.source, pattern.flags);
-                  if (patternCopy.test(termMatch)) {
-                    return true; // Pattern is part of whitelisted term
-                  }
-                }
-              }
-            }
-          }
-          return false;
-        }
-
         let filteredMessage = commitMessage;
         let hasAIMentions = false;
 
@@ -352,8 +278,7 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
         }
 
         for (const pattern of regexPatterns) {
-          // Skip if pattern match is within whitelisted technical term
-          if (pattern.test(filteredMessage) && !isWhitelistedContext(filteredMessage, pattern)) {
+          if (pattern.test(filteredMessage)) {
             hasAIMentions = true;
             filteredMessage = filteredMessage.replace(pattern, '[FILTERED]');
           }

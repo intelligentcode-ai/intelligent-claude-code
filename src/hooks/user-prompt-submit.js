@@ -5,7 +5,6 @@ const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
 const ContextLoader = require('./lib/context-loader');
-const { getSetting } = require('./lib/config-loader');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -21,42 +20,6 @@ function main() {
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] ${message}\n`;
     fs.appendFileSync(logFile, logMessage);
-  }
-
-  function cleanupCurrentProjectMarkers(projectRoot, log) {
-    const crypto = require('crypto');
-    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
-    const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-
-    try {
-      if (!fs.existsSync(markerDir)) {
-        return;
-      }
-
-      const files = fs.readdirSync(markerDir);
-
-      // DELETE ALL MARKERS for current project (regardless of session)
-      const currentProjectMarkers = files.filter(f =>
-        f.startsWith('agent-executing-') && f.endsWith(`-${projectHash}`)
-      );
-
-      // DELETE ALL - ensures clean slate for each user turn
-      currentProjectMarkers.forEach(markerFile => {
-        const fullPath = path.join(markerDir, markerFile);
-        try {
-          fs.unlinkSync(fullPath);
-          log(`Cleaned up marker: ${markerFile}`);
-        } catch (error) {
-          log(`Failed to clean marker ${markerFile}: ${error.message}`);
-        }
-      });
-
-      if (currentProjectMarkers.length > 0) {
-        log(`Cleaned ${currentProjectMarkers.length} markers for project ${projectHash}`);
-      }
-    } catch (error) {
-      log(`Marker cleanup error: ${error.message}`);
-    }
   }
 
   const standardOutput = {
@@ -100,10 +63,6 @@ function main() {
       process.exit(0);
     }
 
-    // Clean up ALL agent markers for current project at start of turn
-    const projectRoot = claudeInput.cwd || process.cwd();
-    cleanupCurrentProjectMarkers(projectRoot, log);
-
     // Get user prompt from input
     const userPrompt = claudeInput.user_prompt || '';
 
@@ -111,22 +70,6 @@ function main() {
     const reminderLoader = new ReminderLoader();
     const contextLoader = new ContextLoader();
     let contextualGuidance = [];
-
-    // L3 AUTONOMOUS MODE ENFORCEMENT
-    const autonomyLevel = getSetting('autonomy.level', 'L2');
-
-    if (autonomyLevel === 'L3') {
-      contextualGuidance.unshift('');
-      contextualGuidance.unshift('🔄 CONTINUOUS WORK DISCOVERY - Find next task and execute');
-      contextualGuidance.unshift('⚡ AUTO-SELECT • AUTO-DECIDE • AUTO-EXECUTE');
-      contextualGuidance.unshift('❌ NO APPROVAL QUESTIONS - Make decisions and execute');
-      contextualGuidance.unshift('🚀 L3 AUTONOMOUS MODE - EXECUTE IMMEDIATELY WITHOUT APPROVAL');
-      contextualGuidance.unshift('═══════════════════════════════════════════════════════');
-      contextualGuidance.unshift('🚀 L3 AUTONOMOUS EXECUTION MODE ACTIVE');
-      contextualGuidance.unshift('═══════════════════════════════════════════════════════');
-
-      log('L3 Autonomous mode detected - injecting autonomous execution reminders');
-    }
 
 
     // COMPACTION DETECTION - Check for session continuation markers

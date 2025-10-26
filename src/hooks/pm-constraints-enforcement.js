@@ -120,50 +120,6 @@ function main() {
       log(`Created marker directory: ${markerDir}`);
     }
 
-    // CRITICAL: Clean stale markers for current project BEFORE checking agent context
-    // This prevents stale markers from bypassing enforcement
-    try {
-      const files = fs.readdirSync(markerDir);
-      const currentProjectMarkers = files.filter(f =>
-        f.startsWith('agent-executing-') && f.endsWith(`-${projectHash}`)
-      );
-
-      const maxAge = 4 * 60 * 60 * 1000; // 4 hours
-      let cleanedCount = 0;
-
-      currentProjectMarkers.forEach(markerFile => {
-        const fullPath = path.join(markerDir, markerFile);
-        try {
-          const marker = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-
-          // Check 1: Different session_id (stale from previous session)
-          const isDifferentSession = marker.session_id && marker.session_id !== session_id;
-
-          // Check 2: File modification time too old (fallback for corrupted markers)
-          const stats = fs.statSync(fullPath);
-          const age = Date.now() - stats.mtimeMs;
-          const isTooOld = age > maxAge;
-
-          if (isDifferentSession || isTooOld) {
-            const reason = isDifferentSession
-              ? `different session (${marker.session_id} vs ${session_id})`
-              : `too old (${Math.round(age / 1000 / 60)} minutes)`;
-            log(`Cleaning stale marker: ${markerFile} - ${reason}`);
-            fs.unlinkSync(fullPath);
-            cleanedCount++;
-          }
-        } catch (error) {
-          log(`Error processing marker ${markerFile}: ${error.message}`);
-        }
-      });
-
-      if (cleanedCount > 0) {
-        log(`Cleaned ${cleanedCount} stale marker(s) for project ${projectRoot}`);
-      }
-    } catch (error) {
-      log(`Marker cleanup error: ${error.message}`);
-    }
-
     const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
 
     try {
@@ -174,12 +130,6 @@ function main() {
 
       const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
       const agentCount = marker.agent_count || 0;
-
-      // CRITICAL: Verify marker session_id matches current session_id
-      if (marker.session_id !== session_id) {
-        log(`Stale marker detected - session mismatch (marker: ${marker.session_id}, current: ${session_id})`);
-        return true; // Treat stale markers as PM context
-      }
 
       if (agentCount > 0) {
         log(`Agent context detected - ${agentCount} active agent(s) in project ${projectRoot}`);
