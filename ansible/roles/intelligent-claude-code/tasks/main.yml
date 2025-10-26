@@ -236,11 +236,33 @@
 
     - name: Clean up obsolete hooks while preserving user hooks
       set_fact:
-        cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['SessionStart', 'PreToolUse', 'PostToolUse']) | items2dict }}"
+        cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['SessionStart', 'PreToolUse', 'PostToolUse', 'UserPromptSubmit', 'SubagentStop', 'Stop']) | items2dict }}"
 
-    - name: Add UserPromptSubmit hook to cleaned hooks
+    - name: Load production hooks configuration from template
       set_fact:
-        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine({'UserPromptSubmit': [{'hooks': [{'type': 'command', 'command': 'node ' + claude_install_path + '/hooks/user-prompt-submit.js', 'timeout': 15000, 'failureMode': 'allow'}]}]})}, recursive=False) }}"
+        production_hooks:
+          PreToolUse:
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/git-enforcement.js', timeout: 5000, failureMode: 'allow' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/main-scope-enforcement.js', timeout: 5000, failureMode: 'deny' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js', timeout: 5000, failureMode: 'deny' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js', timeout: 5000, failureMode: 'deny' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/agent-marker.js', timeout: 5000, failureMode: 'allow' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/config-protection.js', timeout: 5000, failureMode: 'deny' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/pre-agenttask-validation.js', timeout: 5000, failureMode: 'allow' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/project-scope-enforcement.js', timeout: 5000, failureMode: 'deny' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/summary-file-enforcement.js', timeout: 5000, failureMode: 'deny' }]
+          UserPromptSubmit:
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/user-prompt-submit.js', timeout: 15000, failureMode: 'allow' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/context-injection.js', timeout: 5000, failureMode: 'allow' }]
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/task-tool-execution-reminder.js', timeout: 5000, failureMode: 'allow' }]
+          SubagentStop:
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/subagent-stop.js', timeout: 5000, failureMode: 'allow' }]
+          Stop:
+            - hooks: [{ type: 'command', command: 'node {{ claude_install_path }}/hooks/stop.js', timeout: 5000, failureMode: 'allow' }]
+
+    - name: Merge production hooks with cleaned hooks
+      set_fact:
+        merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine(production_hooks)}, recursive=False) }}"
 
     - name: Write merged settings.json
       copy:
@@ -250,13 +272,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "UserPromptSubmit hook configured in settings.json - optimal behavioral guidance active"
+        msg: "All 14 production hooks configured in settings.json - comprehensive enforcement active"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with UserPromptSubmit hook registration - behavioral guidance active"
+    msg: "Settings file created with all 14 production hooks - comprehensive enforcement active"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -274,5 +296,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: UserPromptSubmit guidance active"
+      - "🔒 Behavioral Hooks: All 14 production hooks active (PreToolUse, UserPromptSubmit, SubagentStop, Stop)"
       - "🚀 Use @Role communication to activate team members"
