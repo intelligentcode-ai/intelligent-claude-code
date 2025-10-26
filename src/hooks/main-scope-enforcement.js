@@ -19,6 +19,7 @@ const { isAgentContext } = require('./lib/marker-detection');
 const { isPathInAllowlist } = require('./lib/path-utils');
 const { isAllowedCoordinationCommand } = require('./lib/command-validation');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
+const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 
 function main() {
   const log = createLogger('main-scope-enforcement');
@@ -238,6 +239,30 @@ To execute blocked operation:
 
     // Check Write/Edit operations
     if (tool === 'Write' || tool === 'Edit') {
+      // FILENAME-BASED DIRECTORY ENFORCEMENT
+      if (!isCorrectDirectory(filePath, projectRoot)) {
+        const suggestedPath = getSuggestedPath(filePath, projectRoot);
+
+        return blockOperation(
+          `Wrong directory for filename pattern`,
+          tool,
+          `File "${path.basename(filePath)}" should be in a different directory based on its filename pattern.
+
+Current path: ${filePath}
+Suggested path: ${suggestedPath}
+
+DIRECTORY ROUTING RULES:
+- STORY-*.md, EPIC-*.md, BUG-*.md → stories/
+- AGENTTASK-*.yaml → agenttasks/
+- Root files (CLAUDE.md, VERSION, etc.) → project root
+- Documentation files (architecture.md, api.md) → docs/
+- Everything else → summaries/
+
+Please use the correct directory for this file type.`,
+          log
+        );
+      }
+
       // Build allowlist for file path checking
       const config = loadConfig();
       const allowlist = [
