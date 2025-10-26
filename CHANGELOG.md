@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.24] - 2025-10-26
+
+### Added
+- **L3 Autonomy Mechanical Enforcement**: Two-layer hook-based enforcement system for L3 autonomous execution mode
+- **UserPromptSubmit L3 Detection**: Hook now loads autonomy_level from config and injects aggressive autonomous reminders when L3 active
+- **High-Weight L3 Reminders**: 6 new L3 reminders (weight 12-15) covering work detection, decisions, errors, and story selection
+- **Wrong/Correct Examples**: Clear behavioral examples showing incorrect approval-seeking vs correct autonomous execution
+- **Continuous Reinforcement**: L3 reminders injected at TOP of context EVERY turn for maximum visibility
+
+### Enhanced
+- **src/hooks/user-prompt-submit.js**: Added L3 detection logic with config-loader integration and aggressive reminder injection
+- **src/hooks/lib/reminders.json**: Added 6 L3 autonomous reminders with highest weights in system (12-15)
+- **Autonomous Execution Flow**: Mechanical enforcement reduces approval questions and improves autonomous speed
+
+### Removed
+- **Deployment Permission Patterns**: Removed outdated deployment permission enforcement from all agents, templates, and behaviors
+- **Legacy Permission Checks**: Cleaned up make install permission patterns across all documentation
+
+### Benefits
+- Mechanical L3 enforcement via hook system (not just behavioral guidance)
+- Continuous reinforcement at start of every conversation turn
+- Dramatically reduced approval questions in L3 autonomous mode
+- Improved autonomous execution speed and user experience
+- L1/L2 modes completely unaffected by L3 enhancements
+- Clear wrong/correct examples for pattern learning
+
+---
+
 ## [8.9.0] - 2025-09-21
 
 ### Changed
