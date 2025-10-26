@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.26] - 2025-10-26
+
+### Added
+- **Complete Hook Registration**: ALL 14 production hooks now registered in Ansible playbook and PowerShell script
+- **Hook Registration Documentation**: docs/hook-registration-reference.md with complete hook-to-event mapping
+- **Main Scope Sleep Allowlist**: Added sleep command to coordination allowlist for CI timing and rate limiting
+- **9 PreToolUse Hooks**: git-enforcement, main-scope-enforcement, pm-constraints-enforcement, agent-infrastructure-protection, agent-marker, config-protection, pre-agenttask-validation, project-scope-enforcement, summary-file-enforcement
+- **3 UserPromptSubmit Hooks**: user-prompt-submit, context-injection, task-tool-execution-reminder
+- **1 SubagentStop Hook**: subagent-stop
+- **1 Stop Hook**: stop
+
+### Fixed
+- **Git Enforcement Privacy Patterns**: Replaced overly broad patterns (AI, Claude, agent) with specific attribution patterns only
+- **Legitimate Technical Mentions**: Now allows commit messages like "Fix mentions" or "Register role" without blocking
+- **Specific Attribution Blocking**: Still blocks "Generated with Claude Code", "Co-Authored-By: Claude", and other attribution markers
+- **Privacy Pattern List**: "Generated with \\[Claude Code\\]", "Generated with Claude Code", "Co-Authored-By: Claude", "Co-authored-by: Claude", "🤖 Generated with", "Claude assisted", "assisted", "claude.com/claude-code"
+
+### Enhanced
+- **src/hooks/git-enforcement.js**: Fixed privacy patterns in two locations (lines 70-79 and 253-267)
+- **src/hooks/lib/command-validation.js**: Added sleep to allowed coordination commands
+- **src/hooks/main-scope-enforcement.js**: Updated documentation to reflect sleep allowlist
+- **ansible/roles/intelligent-claude-code/tasks/main.yml**: Complete hook registration for all 14 hooks
+- **ansible/roles/intelligent-claude-code/templates/settings.json.j2**: All hooks properly configured
+- **install.ps1**: PowerShell installation with all hooks registered
+
+### Benefits
+- Complete enforcement coverage with all hooks active
+- Git privacy enforcement now allows legitimate technical discussions
+- Main scope can coordinate timing for CI checks and rate limiting
+- Clear documentation of all hook registrations and configurations
+- Proper attribution blocking without preventing normal development work
+
+---
+
 ## [8.20.25] - 2025-10-26
 
 ### Added
