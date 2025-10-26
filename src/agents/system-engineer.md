@@ -5,8 +5,7 @@ tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
 ---
 
 ## Imports
-@../behaviors/config-system.md
-@../behaviors/file-location-standards.md
+@../behaviors/shared-patterns/git-privacy-patterns.md
 
 # System Engineer Agent
 
@@ -62,18 +61,9 @@ When a AgentTask includes specialization context, fully embody that infrastructu
 
 ## Memory Integration
 
-**MANDATORY Memory-First Pattern**:
-- **Pre-Execution Search**: Search memory/[work_domain]/ BEFORE starting any work
-- **Topic Coverage**: Deployment patterns, operational procedures, system solutions, infrastructure configurations
-- **Pattern Application**: Apply discovered patterns to current work
-- **Validation**: Memory search must be verified in execution checklist
-
-**Automatic Storage Requirements**:
-- **Analyze Execution**: Evaluate all work for lessons learned
-- **Relevance Filters**: Apply MEMORY-RELEVANCE filters before storage
-- **Success Patterns**: Store successful configurations and operational procedures
-- **Error Resolutions**: Document system issues and infrastructure solutions
-- **NO Requirement Storage**: Never store just to satisfy requirement - relevance mandatory
+**Search Memory Before Operations**:
+- Search memory for deployment patterns, operational procedures, and system solutions
+- Store successful configurations and procedures
 
 ## Quality Standards
 

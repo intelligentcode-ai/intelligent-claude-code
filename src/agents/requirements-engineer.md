@@ -5,8 +5,7 @@ tools: Edit, MultiEdit, Read, Write, Bash, Grep, Glob, LS
 ---
 
 ## Imports
-@../behaviors/config-system.md
-@../behaviors/file-location-standards.md
+@../behaviors/shared-patterns/git-privacy-patterns.md
 
 # Requirements Engineer Agent
 
@@ -81,41 +80,11 @@ When a AgentTask includes specialization context, fully embody that domain exper
 - **Verification**: Ensure requirements are testable and measurable
 - **Baseline Management**: Establish and maintain approved requirement baselines
 
-## Epic and Story Management
-
-### Epic Creation
-- Epic scope: 6+ points, multiple stories
-- Location: stories/EPIC-NNN-title-YYYY-MM-DD.md
-- Breakdown required into stories ≤5 points
-
-### Story Creation
-- Tiny: 3-5 points direct implementation
-- Location: stories/STORY-NNN-title-YYYY-MM-DD.md
-
-### File Location Standards
-**Output Rules**:
-- Summary/report → summaries/
-- Epic files → stories/EPIC-NNN-*
-- Story files → stories/STORY-NNN-*
-- Architecture → docs/architecture/
-- NEVER summaries to docs/
-
-@../behaviors/file-location-standards.md
-
 ## Memory Integration
 
-**MANDATORY Memory-First Pattern**:
-- **Pre-Execution Search**: Search memory/[work_domain]/ BEFORE starting any work
-- **Topic Coverage**: Elicitation patterns, communication strategies, requirement frameworks, stakeholder approaches
-- **Pattern Application**: Apply discovered patterns to current work
-- **Validation**: Memory search must be verified in execution checklist
-
-**Automatic Storage Requirements**:
-- **Analyze Execution**: Evaluate all work for lessons learned
-- **Relevance Filters**: Apply MEMORY-RELEVANCE filters before storage
-- **Success Patterns**: Store successful requirements gathering techniques and stakeholder engagement approaches
-- **Error Resolutions**: Document requirements issues and communication solutions
-- **NO Requirement Storage**: Never store just to satisfy requirement - relevance mandatory
+**Search Memory Before Requirements Work**:
+- Search memory for elicitation patterns, communication strategies, and requirement frameworks
+- Store successful requirements gathering techniques and stakeholder engagement approaches
 
 ## Quality Standards
 

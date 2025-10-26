@@ -124,41 +124,6 @@ system_coordination:
   integration_strategy: "[SYSTEM_WIDE_INTEGRATION_APPROACH]"
   testing_strategy: "[COMPREHENSIVE_SYSTEM_TESTING]"
 
-# MANDATORY: Memory-First Requirements
-memory_requirements:
-  pre_execution:
-    - "Memory search completed for [work_type] and [technology_domain] topics"
-    - "System-wide transformation patterns reviewed"
-    - "Architectural change patterns identified"
-    - "Epic-scale coordination patterns discovered"
-    - "Best practices for mega features reviewed"
-    - "Risk mitigation patterns from similar changes applied"
-    blocked_patterns:
-      - "No memory search needed"
-      - "Skip memory check"
-      - "No patterns available"
-      - "Fresh implementation without patterns"
-      - "First system-wide change"
-      - "Unprecedented transformation"
-    error_message: "❌ BLOCKED: Memory search is CRITICAL for mega changes - search memory/[topic]/ for patterns"
-
-  post_execution:
-    - "Execution analyzed for lessons learned"
-    - "System-wide transformation patterns captured"
-    - "Architectural change insights documented"
-    - "Epic coordination patterns identified"
-    - "Risk management lessons captured"
-    - "Relevance filters applied before storage decision"
-    - "Storage ONLY if clear future value demonstrated"
-    - "Security validation: no credentials or sensitive data"
-    blocked_patterns:
-      - "Store to satisfy requirement"
-      - "No learnings to capture"
-      - "Skip memory storage"
-      - "Nothing worth storing"
-      - "Standard system change"
-    error_message: "❌ BLOCKED: Automatic analysis CRITICAL - mega changes must capture transformation patterns"
-
 # MANDATORY: Knowledge Management
 knowledge_management:
   capture_patterns: "Store system-wide change patterns"

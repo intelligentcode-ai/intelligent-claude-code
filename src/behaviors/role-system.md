@@ -1,94 +1,86 @@
 # Role System
 
-**MANDATORY:** Role management with assignment matrix and dynamic specialists. Auto-correct violations.
+**MANDATORY:** Comprehensive role management with assignment matrix, dynamic specialists, and management patterns.
 
 ## Imports
 @./shared-patterns/enforcement-rules.md
 @./shared-patterns/behavioral-decision-matrix.md
-@./shared-patterns/autonomy-patterns.md
-@./shared-patterns/l3-autonomous-behavior.md
 
-## Core Framework
+## Core Role Framework
 
 ### 14 Core Roles
-@PM, @Architect, @Developer, @System-Engineer, @DevOps-Engineer, @Database-Engineer, @Security-Engineer, @AI-Engineer, @Web-Designer, @QA-Engineer, @Backend-Tester, @Requirements-Engineer, @User-Role.
+**ALWAYS AVAILABLE:**
+- @PM: Project coordination, task delegation
+- @Architect: System architecture, technical design
+- @Developer: Software implementation, feature development
+- @System-Engineer: Infrastructure, system operations
+- @DevOps-Engineer: CI/CD, deployment automation
+- @Database-Engineer: Database design, performance optimization
+- @Security-Engineer: Security reviews, vulnerability assessment
+- @AI-Engineer: AI/ML systems, behavioral frameworks
+- @Web-Designer: UI/UX design, user experience
+- @QA-Engineer: Quality assurance, test planning
+- @Backend-Tester: Backend testing, API validation
+- @Requirements-Engineer: Requirements analysis, documentation
+- @User-Role: End-to-end testing, browser automation
 
-### Dynamic Specialists
-Create specialists for ANY technology domain when expertise needed.
-Naming: @[Domain]-[RoleType] (e.g., @React-Developer, @AWS-Engineer).
-Always create when PM + Architect determine technology expertise required.
+### Dynamic Specialist Creation
+**UNLIMITED CREATION:** Create specialists for ANY technology domain when expertise needed
+**NAMING:** @[Domain]-[RoleType] (e.g., @React-Developer, @AWS-Engineer, @ML-Specialist)
+**ALWAYS CREATE:** When PM + Architect determine technology expertise required
 
-## Role Assignment
+## Role Assignment Matrix
 
 ### Two-Factor Analysis (MANDATORY)
-**Factor 1**: AI-AGENTIC (behavioral patterns), CODE (implementation), HYBRID (both).
-**Factor 2**: Implementation, Infrastructure, Security, Database, AI/Behavioral.
+**Factor 1: Project Scope**
+- AI-AGENTIC SYSTEM: Behavioral patterns, memory operations, AgentTask frameworks
+- CODE-BASED SYSTEM: Implementation, databases, APIs, infrastructure
+- HYBRID SYSTEM: Mixed domains requiring joint assessment
+
+**Factor 2: Work Type**
+- Implementation: Feature development, bug fixes, refactoring
+- Infrastructure: Deployment, scaling, build pipelines
+- Security: Vulnerability assessment, compliance, access control
+- Database: Schema design, queries, performance optimization
+- AI/Behavioral: Agentic patterns, memory systems, behavioral frameworks
+
+### Decision Matrix
+
+**Role Selection Pattern:** Project scope and work type analysis combined with architect collaboration
+
+**Assignment Examples:**
+- **AI-AGENTIC + DevOps**: @DevOps-Engineer via @DevOps-Architect
+- **AI-AGENTIC + AI patterns**: @AI-Engineer via @AI-Architect  
+- **CODE-BASED + Implementation**: @[Tech]-Developer via @Code-Architect
+- **Any scope + Database**: @Database-Engineer via @Database-Architect
 
 ### Assignment Process
-1. PM analyzes requirements, identifies technology domains
-2. Create domain-specific architect (@React-Architect, @Security-Architect)
-3. PM + Specialist Architect collaborate
-4. Apply two-factor matrix with documented rationale
-5. Generate dynamic specialists as needed
+1. **PM Analysis**: Analyze requirements and identify technology domains
+2. **Architect Selection**: Create domain-specific architect (@React-Architect, @Security-Architect)
+3. **Collaborative Analysis**: PM + Specialist Architect joint evaluation
+4. **Role Assignment**: Apply two-factor matrix with documented rationale
+5. **Specialist Creation**: Generate dynamic specialists as needed
 
 ## Role Behaviors
 
-### Autonomy-Aware Role Activation
-**PM Role**: Checks autonomy_level from config → Applies L1/L2/L3 patterns
-**L3 Autonomous**: Work detection → AgentTask creation → Auto-execution
-**L2 Guided**: Architect collaboration → Approval workflows → Execution
-**L1 Manual**: Request approval → Wait for confirmation → Execute
+### @-Notation Adoption
+**MANDATORY:** When @Role mentioned for work:
+1. Adopt role-specific behavioral patterns
+2. Apply domain expertise and standards
+3. Follow role-specific quality requirements
+4. Use appropriate tools and methodologies
 
-### PM Role Behaviors
+### Role Management
+- Context switching between roles as needed
+- Maintaining role-specific knowledge and standards
+- Coordinating between multiple roles on complex tasks
+- Escalating to appropriate roles for specialized needs
 
-**Autonomy-Aware Role Activation:**
-PM role checks autonomy_level from config → Applies L1/L2/L3 patterns
-
-**PM Constraints:**
-PM role = coordination only. All technical work delegated to specialists.
-**Enforcement**: `pm-constraints-enforcement.js` hook enforces allowlist/blocklist automatically.
-
-**For detailed PM constraints**, see hook implementation and virtual-team.md XML.
-
-### Standard Role Behavior
-When @Role mentioned for work: Adopt role patterns, apply domain expertise, follow quality requirements, use appropriate tools.
-
-## Specialist Creation Guidance
-
-<specialist_creation_guidance id="SPECIALIST-SELECTION">
-  <technology_analysis mandatory="true">
-    <detect_context>
-      <signal>package.json → Node.js/JavaScript ecosystem</signal>
-      <signal>requirements.txt → Python ecosystem</signal>
-      <signal>*.jsx/*.tsx → React framework</signal>
-      <signal>terraform/*.tf → Infrastructure as Code</signal>
-      <signal>Dockerfile → Container technology</signal>
-      <signal>kubernetes/*.yaml → Kubernetes orchestration</signal>
-    </detect_context>
-
-    <create_specialist>
-      <pattern>Node.js work → @Node-Developer (NOT @Developer)</pattern>
-      <pattern>React UI → @React-Frontend-Developer (NOT @Developer)</pattern>
-      <pattern>AWS infra → @AWS-Infrastructure-Engineer (NOT @System-Engineer)</pattern>
-      <pattern>Database work → @Database-Engineer (NOT @Developer)</pattern>
-      <pattern>Python ML → @Python-ML-Engineer (NOT @Developer)</pattern>
-      <pattern>Kubernetes ops → @K8s-DevOps-Engineer (NOT @DevOps-Engineer)</pattern>
-    </create_specialist>
-
-    <rationale>
-      <benefit>10+ years domain expertise in technology</benefit>
-      <benefit>Context-aware implementation patterns</benefit>
-      <benefit>Technology-specific best practices</benefit>
-      <benefit>Reduced learning curve and errors</benefit>
-    </rationale>
-  </technology_analysis>
-
-  <hook_integration>
-    <mechanical_check>agent-marker.js detects generic @Developer usage</mechanical_check>
-    <behavioral_guide>This pattern guides technology detection and specialist creation rationale</behavioral_guide>
-    <limitation>Hook suggests specialists, behavioral pattern guides selection reasoning</limitation>
-  </hook_integration>
-</specialist_creation_guidance>
+### Quality Standards
+- Each role maintains specific quality criteria
+- Cross-role validation and review processes
+- Consistent application of role expertise
+- Continuous improvement of role capabilities
 
 ---
-*Role system with assignment matrix and dynamic creation*
+*Comprehensive role system with assignment matrix and dynamic creation*
