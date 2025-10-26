@@ -92,63 +92,6 @@ function main() {
     return config;
   }
 
-  function extractCommitMessage(command) {
-    // Handle: git commit -m "message"
-    const singleQuoteMatch = command.match(/git commit.*-m ['"](.+?)['"]/s);
-    if (singleQuoteMatch) {
-      log(`Extracted message from -m flag: ${singleQuoteMatch[1]}`);
-      return singleQuoteMatch[1];
-    }
-
-    // Handle: git commit -m "$(cat <<'EOF' ... EOF)"
-    const heredocMatch = command.match(/cat <<['"]?EOF['"]?\n([\s\S]+?)\nEOF/);
-    if (heredocMatch) {
-      log(`Extracted message from HEREDOC: ${heredocMatch[1]}`);
-      return heredocMatch[1];
-    }
-
-    log('No commit message extracted');
-    return '';
-  }
-
-  function stripAIMentions(message, patterns) {
-    let cleaned = message;
-
-    // Build regex patterns from configuration
-    const regexPatterns = [
-      /🤖 Generated with \[Claude Code\]\([^)]+\)\s*/gi,
-      /Generated with \[Claude Code\]\([^)]+\)\s*/gi,
-      /Co-Authored-By: Claude <[^>]+>\s*/gi,
-      /Claude assisted in this commit\s*/gi,
-      /\n\n🤖 Generated.*$/s,
-      /\n\nCo-Authored-By: Claude.*$/s,
-      /\n\nCo-authored-by:.*<.*@.*>\s*/gi  // Block ALL Co-authored-by lines when git.privacy=true
-    ];
-
-    // Add custom patterns from config with word boundaries
-    for (const pattern of patterns) {
-      // Escape special regex characters
-      const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      // Add word boundaries for simple words, keep full pattern for phrases
-      const patternWithBoundaries = pattern.split(/\s+/).length === 1
-        ? `\\b${escaped}\\b`
-        : escaped;
-      regexPatterns.push(new RegExp(patternWithBoundaries, 'gi'));
-    }
-
-    for (const pattern of regexPatterns) {
-      cleaned = cleaned.replace(pattern, '');
-    }
-
-    // Clean up multiple consecutive newlines
-    cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
-
-    // Trim trailing whitespace
-    cleaned = cleaned.trim();
-
-    return cleaned;
-  }
-
   function getCurrentBranch() {
     try {
       const branch = execSync('git branch --show-current', {
@@ -226,7 +169,7 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
       };
     }
 
-    // STEP 2: Check git commit messages for AI mentions (including heredoc content)
+    // STEP 2: Check git commit messages for AI mentions (BLOCKING ONLY)
     const isGitCommit = command.trim().startsWith('git commit');
 
     if (config.git && config.git.privacy === true && isGitCommit) {
@@ -248,7 +191,7 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
         }
       }
 
-      // Apply privacy filtering to extracted message
+      // Check for AI mentions and BLOCK if found
       if (commitMessage) {
         const privacyPatterns = config.privacy_patterns || [
           "AI", "Claude", "agent",
@@ -256,15 +199,14 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
           "Co-Authored-By: Claude"
         ];
 
-        let filteredMessage = commitMessage;
-        let hasAIMentions = false;
+        const detectedPatterns = [];
 
         // Build regex patterns and check for matches
         const regexPatterns = [
-          /🤖 Generated with \[Claude Code\]\([^)]+\)/gi,
-          /Generated with \[Claude Code\]\([^)]+\)/gi,
-          /Co-Authored-By: Claude <[^>]+>/gi,
-          /Claude assisted in this commit/gi
+          { pattern: /🤖 Generated with \[Claude Code\]\([^)]+\)/gi, name: '🤖 Generated with [Claude Code]' },
+          { pattern: /Generated with \[Claude Code\]\([^)]+\)/gi, name: 'Generated with [Claude Code]' },
+          { pattern: /Co-Authored-By: Claude <[^>]+>/gi, name: 'Co-Authored-By: Claude' },
+          { pattern: /Claude assisted in this commit/gi, name: 'Claude assisted in this commit' }
         ];
 
         // Add custom patterns from config with word boundaries
@@ -274,35 +216,45 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
           const patternWithBoundaries = pattern.split(/\s+/).length === 1
             ? `\\b${escaped}\\b`
             : escaped;
-          regexPatterns.push(new RegExp(patternWithBoundaries, 'gi'));
+          regexPatterns.push({
+            pattern: new RegExp(patternWithBoundaries, 'gi'),
+            name: pattern
+          });
         }
 
-        for (const pattern of regexPatterns) {
-          if (pattern.test(filteredMessage)) {
-            hasAIMentions = true;
-            filteredMessage = filteredMessage.replace(pattern, '[FILTERED]');
+        // Check each pattern
+        for (const { pattern, name } of regexPatterns) {
+          if (pattern.test(commitMessage)) {
+            detectedPatterns.push(`  - ${name}`);
           }
         }
 
-        if (hasAIMentions) {
-          log(`AI mentions detected in commit message - would be filtered`);
+        // BLOCK if AI mentions found
+        if (detectedPatterns.length > 0) {
+          log(`AI mentions detected in commit message - BLOCKING`);
 
           return {
             modified: false,
             blocked: true,
-            reason: 'Git Privacy - AI Mentions Detected',
-            message: `🚫 GIT PRIVACY: AI mentions detected in commit message
+            reason: 'Git Privacy Violation',
+            message: `🚫 GIT PRIVACY VIOLATION: AI mentions detected in commit message
 
-git.privacy=true blocks AI mentions from commit messages.
+Detected patterns:
+${detectedPatterns.join('\n')}
 
-Original message contained AI-related content that would be filtered.
-
-Filtered version:
-${filteredMessage}
+When git.privacy=true, commit messages must not contain:
+- References to AI, Claude, agents
+- "Generated with Claude Code"
+- "Co-Authored-By: Claude"
+- Other AI-related mentions
 
 ✅ To proceed:
-1. Remove AI mentions from commit message
-2. Or disable git.privacy in icc.config.json`
+1. Remove these mentions from your commit message manually
+2. Run the commit command again
+3. Or disable git.privacy in ~/.claude/icc.config.json
+
+The system will NOT automatically strip these mentions.
+You must remove them manually to maintain awareness of commit content.`
           };
         }
 
@@ -310,50 +262,9 @@ ${filteredMessage}
       }
     }
 
-    // STEP 3: Enforce git privacy (if enabled)
-    if (!config.git || config.git.privacy !== true) {
-      log('git_privacy disabled - no modification needed');
-      return { modified: false, blocked: false, command };
-    }
-
-    // Extract and clean commit message
-    const message = extractCommitMessage(command);
-    if (!message) {
-      log('No commit message found - no modification needed');
-      return { modified: false, blocked: false, command };
-    }
-
-    const cleanedMessage = stripAIMentions(message, config.privacy_patterns);
-
-    if (cleanedMessage === message) {
-      log('No AI mentions found - no modification needed');
-      return { modified: false, blocked: false, command };
-    }
-
-    log(`Stripped AI mentions from commit message`);
-    log(`Original: ${message.substring(0, 100)}...`);
-    log(`Cleaned: ${cleanedMessage.substring(0, 100)}...`);
-
-    // Reconstruct command with cleaned message
-    let modifiedCommand = command;
-
-    // Handle HEREDOC format
-    if (command.includes('cat <<')) {
-      modifiedCommand = command.replace(
-        /cat <<['"]?EOF['"]?\n([\s\S]+?)\nEOF/,
-        `cat <<'EOF'\n${cleanedMessage}\nEOF`
-      );
-    }
-    // Handle -m flag format
-    else {
-      const escapedMessage = cleanedMessage.replace(/"/g, '\\"');
-      modifiedCommand = command.replace(
-        /git commit.*-m ['"](.+?)['"]/s,
-        `git commit -m "${escapedMessage}"`
-      );
-    }
-
-    return { modified: true, blocked: false, command: modifiedCommand };
+    // No blocking or modification needed
+    log('Privacy check passed - allowing operation');
+    return { modified: false, blocked: false, command };
   }
 
   try {

@@ -1,5 +1,37 @@
 {
   "hooks": {
+    "PreToolUse": [{
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node {{ claude_install_path }}/hooks/git-enforcement.js",
+          "timeout": 15000,
+          "failureMode": "allow"
+        },
+        {
+          "type": "command",
+          "command": "node {{ claude_install_path }}/hooks/main-scope-enforcement.js",
+          "timeout": 15000,
+          "failureMode": "allow"
+        },
+        {
+          "type": "command",
+          "command": "node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js",
+          "timeout": 15000,
+          "failureMode": "allow"
+        }
+      ],
+      "matcher": "*"
+    }],
+    "SubagentStop": [{
+      "hooks": [{
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/subagent-stop.js",
+        "timeout": 15000,
+        "failureMode": "allow"
+      }],
+      "matcher": "*"
+    }],
     "UserPromptSubmit": [{
       "hooks": [{
         "type": "command",
