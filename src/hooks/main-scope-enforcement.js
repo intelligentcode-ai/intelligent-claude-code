@@ -15,7 +15,7 @@ const { createLogger } = require('./lib/logging');
 const { parseHookInput, extractToolInfo, getProjectRoot, allowOperation, blockOperation } = require('./lib/hook-helpers');
 const { loadConfig, getSetting } = require('./lib/config-loader');
 const { isDevelopmentContext } = require('./lib/context-detection');
-const { isAgentContext } = require('./lib/marker-detection');
+const { isAgentContext, cleanStaleMarkersForProject } = require('./lib/marker-detection');
 const { isPathInAllowlist } = require('./lib/path-utils');
 const { isAllowedCoordinationCommand } = require('./lib/command-validation');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
@@ -152,6 +152,10 @@ function main() {
 
     // Get project root
     const projectRoot = getProjectRoot(hookInput);
+
+    // CRITICAL: Clean stale markers BEFORE checking agent context
+    // This prevents stale markers from different sessions bypassing enforcement
+    cleanStaleMarkersForProject(projectRoot, hookInput.session_id, log);
 
     // Check for agent marker (if agent, skip enforcement)
     if (isAgentContext(projectRoot, hookInput.session_id, log)) {
