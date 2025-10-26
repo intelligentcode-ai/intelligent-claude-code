@@ -68,9 +68,14 @@ function main() {
     // Git Privacy Settings - Use global as default, allow project override
     const gitPrivacy = getSetting('git.privacy', globalGitPrivacy);
     const privacyPatterns = getSetting('git.privacy_patterns', [
-      "AI", "Claude", "agent",
+      "Generated with \\[Claude Code\\]",
       "Generated with Claude Code",
-      "Co-Authored-By: Claude"
+      "Co-Authored-By: Claude",
+      "Co-authored-by: Claude",
+      "🤖 Generated with",
+      "Claude assisted",
+      "AI assisted",
+      "claude.com/claude-code"
     ]);
 
     // Branch Protection Settings (DEFAULT: true)
@@ -194,9 +199,14 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
       // Check for AI mentions and BLOCK if found
       if (commitMessage) {
         const privacyPatterns = config.privacy_patterns || [
-          "AI", "Claude", "agent",
+          "Generated with \\[Claude Code\\]",
           "Generated with Claude Code",
-          "Co-Authored-By: Claude"
+          "Co-Authored-By: Claude",
+          "Co-authored-by: Claude",
+          "🤖 Generated with",
+          "Claude assisted",
+          "AI assisted",
+          "claude.com/claude-code"
         ];
 
         const detectedPatterns = [];
@@ -237,19 +247,21 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
             modified: false,
             blocked: true,
             reason: 'Git Privacy Violation',
-            message: `🚫 GIT PRIVACY VIOLATION: AI mentions detected in commit message
+            message: `🚫 GIT PRIVACY VIOLATION: Attribution mentions detected in commit message
 
 Detected patterns:
 ${detectedPatterns.join('\n')}
 
 When git.privacy=true, commit messages must not contain:
-- References to AI, Claude, agents
-- "Generated with Claude Code"
-- "Co-Authored-By: Claude"
-- Other AI-related mentions
+- "Generated with [Claude Code]" or "Generated with Claude Code"
+- "Co-Authored-By: Claude" or "Co-authored-by: Claude"
+- "🤖 Generated with" or "Claude assisted" or "AI assisted"
+- "claude.com/claude-code" links
+
+Note: Legitimate mentions of AI, Claude, or agent in technical contexts are allowed.
 
 ✅ To proceed:
-1. Remove these mentions from your commit message manually
+1. Remove these attribution mentions from your commit message manually
 2. Run the commit command again
 3. Or disable git.privacy in ~/.claude/icc.config.json
 
