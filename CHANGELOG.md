@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.21] - 2025-10-26
+
+### Fixed
+- **CRITICAL SECURITY**: Fixed broken agent detection causing complete enforcement bypass
+- Session-aware marker detection prevents stale markers from different sessions bypassing enforcement
+- Added defensive marker cleanup in enforcement hooks before agent context checks
+- isAgentContext() now verifies marker session_id matches current session_id
+- Stale markers automatically cleaned when session mismatch detected
+
+### Root Causes Fixed
+1. **UserPromptSubmit hook not executing**: Cleanup function was not running (no log file created)
+2. **Stale markers causing false agent detection**: Old markers from Oct 6, 22, 23, 24, 26 remained in ~/.claude/tmp/
+3. **Wrong enforcement logic**: Agent detection returned true for stale markers, completely skipping enforcement
+4. **Missing session validation**: isAgentContext() only checked agent_count > 0, ignored session_id mismatch
+
+### Security Impact
+- Main scope was editing files outside allowlist (e.g., govstack project cert-manager-deployment.yml)
+- Main scope was running ansible-playbook commands (infrastructure modification)
+- Complete bypass of strict_main_scope enforcement when stale markers existed
+- All enforcement rules were skipped when old markers detected
+
+### Technical Changes
+- marker-detection.js: Session-aware isAgentContext() with automatic stale marker cleanup
+- marker-detection.js: New cleanStaleMarkersForProject() function with 4-hour TTL
+- main-scope-enforcement.js: Defensive cleanup before agent context check
+- pm-constraints-enforcement.js: Defensive cleanup in isPMRole() before agent detection
+- Both enforcement hooks now validate session_id match and clean stale markers
+
+### Testing
+- Tested marker cleanup with different session IDs - stale markers properly removed
+- Verified enforcement now blocks main scope file operations correctly
+- Confirmed agents can still run infrastructure commands via Task tool
+- Validated session-aware detection prevents multi-day-old markers from bypassing enforcement
+
+---
+
 ## [8.20.20] - 2025-10-26
 
 ### Fixed
