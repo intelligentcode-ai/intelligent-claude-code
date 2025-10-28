@@ -3,20 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { initializeHook } = require('./lib/logging');
 
-// Logging setup
-const logDir = path.join(os.homedir(), '.claude', 'logs');
-const logFile = path.join(logDir, `${new Date().toISOString().split('T')[0]}-task-tool-execution-reminder.log`);
-
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir, { recursive: true });
-}
-
-function log(message) {
-  const timestamp = new Date().toISOString();
-  const logMessage = `[${timestamp}] ${message}\n`;
-  fs.appendFileSync(logFile, logMessage);
-}
+// Initialize hook with shared library function
+const { log, hookInput } = initializeHook('task-tool-execution-reminder');
 
 /**
  * Detect Task tool usage intent from user prompt

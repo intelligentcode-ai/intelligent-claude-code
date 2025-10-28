@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const { parseHookInput, extractToolInfo, allowOperation, blockOperation } = require('./lib/hook-helpers');
-const { createLogger } = require('./lib/logging');
+const { extractToolInfo, allowOperation, blockOperation } = require('./lib/hook-helpers');
+const { initializeHook } = require('./lib/logging');
 
 /**
  * Configuration Protection Hook
@@ -16,11 +16,10 @@ const { createLogger } = require('./lib/logging');
  */
 
 function main() {
-  const log = createLogger('config-protection');
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('config-protection');
 
   try {
-    const hookInput = parseHookInput(log);
-
     if (!hookInput) {
       log('No hook input - allowing operation');
       return allowOperation(log);

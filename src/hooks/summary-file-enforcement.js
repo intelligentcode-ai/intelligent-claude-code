@@ -11,17 +11,16 @@ const fs = require('fs');
 const path = require('path');
 
 // Shared libraries
-const { createLogger } = require('./lib/logging');
-const { parseHookInput, extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
+const { initializeHook } = require('./lib/logging');
+const { extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
-  const log = createLogger('summary-enforcement');
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('summary-enforcement');
 
   try {
-    // Parse hook input
-    const hookInput = parseHookInput(log);
     if (!hookInput) {
       return allowOperation(log, true); // Suppress output
     }

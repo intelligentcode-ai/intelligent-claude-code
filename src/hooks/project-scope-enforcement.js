@@ -11,13 +11,14 @@ const path = require('path');
 const os = require('os');
 
 // Shared libraries
-const { createLogger } = require('./lib/logging');
-const { parseHookInput, extractToolInfo, allowOperation, blockOperation } = require('./lib/hook-helpers');
+const { initializeHook } = require('./lib/logging');
+const { extractToolInfo, allowOperation, blockOperation } = require('./lib/hook-helpers');
 const { isInstallationPath } = require('./lib/path-utils');
 const { isModifyingBashCommand } = require('./lib/command-validation');
 
 function main() {
-  const log = createLogger('project-scope-enforcement');
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('project-scope-enforcement');
 
   // Helper function for allowed exception check
   function isAllowedException(filePath) {
@@ -28,8 +29,6 @@ function main() {
   }
 
   try {
-    // Parse hook input
-    const hookInput = parseHookInput(log);
     if (!hookInput) {
       return allowOperation(log);
     }

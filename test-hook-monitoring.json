@@ -1,0 +1,12 @@
+{
+  "session_id": "66ada395-4aa4-423f-b71a-34501c362888",
+  "cwd": "/Users/karsten/Work/Engineering/ansible/deployments/kubernetes/applications",
+  "permission_mode": "bypassPermissions",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "/Users/karsten/Work/Engineering/ansible/deployments/kubernetes/applications/monitoring/group_vars/all.yml",
+    "old_string": "test",
+    "new_string": "test2"
+  }
+}

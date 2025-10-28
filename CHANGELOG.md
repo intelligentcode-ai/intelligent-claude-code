@@ -7,6 +7,112 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.35] - 2025-10-29
+
+### Fixed
+- **Hook Registration Structure**: Corrected hooks.json structure to ensure all 15 hooks are properly registered
+  - Consolidated all PreToolUse hooks into single array (was registering only first hook per event)
+  - Added required matcher field for PreToolUse hooks
+  - Removed invalid failureMode field from hook configurations
+  - Set executable permissions (755) for all 15 hook scripts
+  - Documented --allow-dangerously-skip-permissions flag for development
+  - Root cause: Array structure caused only first hook per event to register (11 of 15 hooks were non-functional)
+  - Impact: All 15 behavioral hooks now properly registered and functional
+
+---
+
+## [8.20.41] - 2025-10-28
+
+### Refactored
+- **Hook Initialization Library**: Eliminated code duplication by consolidating hook initialization into shared initializeHook() function
+  - Created initializeHook(hookName) in logging.js
+  - Function handles input parsing from stdin/argv/env
+  - Returns { log, hookInput } object for immediate use
+  - Updated all 15 hooks to use shared initialization function
+  - Reduced maintenance points from 15 to 1
+  - Zero code duplication for hook initialization logic
+  - DRY principle properly applied
+
+---
+
+## [8.20.40] - 2025-10-28
+
+### Fixed
+- **Complete Hook Logging Migration**: Updated ALL remaining 11 hooks to use createLogger() with normalized project paths
+  - Critical fix: pm-constraints-enforcement.js now creates project-specific log files
+  - This was causing monitoring operations to have no logs (logs went to wrong file)
+  - Updated hooks: agent-infrastructure-protection, agent-marker, context-injection, git-enforcement, pm-constraints-enforcement, post-agent-file-validation, pre-agenttask-validation, stop, subagent-stop, task-tool-execution-reminder, user-prompt-submit
+  - All 15 hooks now use consistent createLogger() pattern (4 from v8.20.39 + 11 from this fix)
+  - Resolves user frustration: "I WAS RUNNING MAKE INSTALL MULTIPLE TIMES!" - src/hooks/ files finally updated
+
+---
+
+## [8.20.39] - 2025-10-28
+
+### Fixed
+- **Normalized Path Logging**: Added normalized project path to hook log filenames for multi-project debugging
+  - Modified logging.js createLogger() to accept hookInput parameter
+  - Added normalizePath() function: home→~, /→-, strip leading dash
+  - Updated log filename format: ${date}-${normalizedPath}-${hookName}.log
+  - Example: 2025-10-28-~-Work-Engineering-ansible-deployments-pm-constraints-enforcement.log
+  - Updated 4 hooks (project-scope-enforcement, main-scope-enforcement, config-protection, summary-file-enforcement) to pass hookInput
+  - Backwards compatible: hookInput parameter optional with default null
+  - Resolves critical logging design flaw where missing logs went unnoticed across multiple projects
+
+---
+
+## [8.20.38] - 2025-10-28
+
+### Fixed
+- **Silent Exit Logging**: Added warning log when empty input data causes silent exit in pm-constraints-enforcement.js
+  - Log appears before exit at line 860 to explain why operation was allowed
+  - Message indicates empty input received after checking argv, env, and stdin
+  - Enables diagnosis of monitoring operations that result in empty input
+
+---
+
+## [8.20.37] - 2025-10-28
+
+### Fixed
+- **Hook Entry Logging**: Added entry log to pm-constraints-enforcement.js to detect invocation vs silent exits
+  - Entry log appears as first statement after log() function definition
+  - Helps distinguish between hook invoked-but-silent vs not-invoked-at-all
+  - Critical for debugging hook execution flow in monitoring operations
+
+---
+
+## [8.20.36] - 2025-10-28
+
+### Fixed
+- **Hook Invocation Bug Analysis**: Corrected previous incorrect analysis of global hook invocation failure
+  - Previous analysis incorrectly claimed per-window behavior was "by design"
+  - CONFIRMED: This is a Claude Code platform BUG, not intended behavior
+  - Global hook registration does NOT result in global invocation across windows
+  - Platform isolates hook calls per window/instance (security bypass)
+  - Documented platform limitation and per-project workaround
+  - Analysis stored in summaries/AGENTTASK-017-hook-global-invocation-bug-analysis.md
+- **Memory Correction**: Updated memory/hooks/hook-invocation-project-scoping.md with warning
+  - Added notice that original analysis was incorrect
+  - Redirected to corrected bug analysis
+
+---
+
+## [8.20.35] - 2025-10-28
+
+### Added
+- **Hook Investigation**: Comprehensive analysis of hook invocation failure for monitoring window operations
+  - Identified root cause: Claude Code's hook system is project-scoped, not truly global
+  - Documented multi-window behavior and project context isolation
+  - Created memory entry for hook invocation project scoping pattern
+  - Report stored in summaries/AGENTTASK-016-hook-invocation-failure-analysis.md
+- **Memory Entry**: Hook invocation project scoping pattern
+  - Documents project-scoped hook invocation architecture
+  - Explains why hooks don't trigger across different Claude Code windows
+  - Provides solutions for ensuring project context detection
+  - Stored in memory/hooks/hook-invocation-project-scoping.md
+
+---
+
 ## [8.20.34] - 2025-10-28
 
 ### Added

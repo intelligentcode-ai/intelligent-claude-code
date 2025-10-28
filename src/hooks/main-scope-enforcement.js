@@ -11,8 +11,8 @@
 const path = require('path');
 
 // Shared libraries
-const { createLogger } = require('./lib/logging');
-const { parseHookInput, extractToolInfo, getProjectRoot, allowOperation, blockOperation } = require('./lib/hook-helpers');
+const { initializeHook } = require('./lib/logging');
+const { extractToolInfo, getProjectRoot, allowOperation, blockOperation } = require('./lib/hook-helpers');
 const { loadConfig, getSetting } = require('./lib/config-loader');
 const { isDevelopmentContext } = require('./lib/context-detection');
 const { isAgentContext } = require('./lib/marker-detection');
@@ -22,7 +22,8 @@ const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 
 function main() {
-  const log = createLogger('main-scope-enforcement');
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('main-scope-enforcement');
 
   /**
    * Check if mkdir command is for allowlist directory
@@ -183,8 +184,6 @@ function main() {
   }
 
   try {
-    // Parse hook input
-    const hookInput = parseHookInput(log);
     if (!hookInput) {
       return allowOperation(log);
     }
