@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.36] - 2025-10-28
+
+### Fixed
+- **Hook Invocation Bug Analysis**: Corrected previous incorrect analysis of global hook invocation failure
+  - Previous analysis incorrectly claimed per-window behavior was "by design"
+  - CONFIRMED: This is a Claude Code platform BUG, not intended behavior
+  - Global hook registration does NOT result in global invocation across windows
+  - Platform isolates hook calls per window/instance (security bypass)
+  - Documented platform limitation and per-project workaround
+  - Analysis stored in summaries/AGENTTASK-017-hook-global-invocation-bug-analysis.md
+- **Memory Correction**: Updated memory/hooks/hook-invocation-project-scoping.md with warning
+  - Added notice that original analysis was incorrect
+  - Redirected to corrected bug analysis
+
+---
+
 ## [8.20.35] - 2025-10-28
 
 ### Added
