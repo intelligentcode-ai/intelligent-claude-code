@@ -16,10 +16,14 @@ const { createLogger } = require('./lib/logging');
  */
 
 function main() {
-  const log = createLogger('config-protection');
+  // Create initial logger without project path for parsing
+  const initialLog = createLogger('config-protection');
 
   try {
-    const hookInput = parseHookInput(log);
+    const hookInput = parseHookInput(initialLog);
+
+    // Create logger with project path now that we have hookInput
+    const log = createLogger('config-protection', hookInput);
 
     if (!hookInput) {
       log('No hook input - allowing operation');

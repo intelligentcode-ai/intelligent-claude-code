@@ -51,14 +51,47 @@ function cleanOldLogs(logDir) {
 }
 
 /**
+ * Normalize path for log filename
+ * @param {string} pathStr - Path to normalize
+ * @returns {string} Normalized path (home → ~, / → -, strip leading dash)
+ */
+function normalizePath(pathStr) {
+  if (!pathStr) return 'unknown';
+
+  // Replace home directory with ~
+  const homeDir = os.homedir();
+  let normalized = pathStr.replace(homeDir, '~');
+
+  // Replace slashes with dashes
+  normalized = normalized.replace(/\//g, '-');
+
+  // Strip leading dash
+  if (normalized.startsWith('-')) {
+    normalized = normalized.substring(1);
+  }
+
+  return normalized;
+}
+
+/**
  * Create logger function for specific hook
  * @param {string} hookName - Name of the hook (e.g., 'pm-constraints-enforcement')
+ * @param {Object} hookInput - Optional hook input containing cwd for path normalization
  * @returns {Function} Logger function
  */
-function createLogger(hookName) {
+function createLogger(hookName, hookInput = null) {
   const logDir = getLogDir();
   const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-${hookName}.log`);
+
+  // Include normalized project path in log filename if available
+  let logFileName = `${today}`;
+  if (hookInput && hookInput.cwd) {
+    const normalizedPath = normalizePath(hookInput.cwd);
+    logFileName += `-${normalizedPath}`;
+  }
+  logFileName += `-${hookName}.log`;
+
+  const logFile = path.join(logDir, logFileName);
 
   ensureLogDir();
   cleanOldLogs(logDir);

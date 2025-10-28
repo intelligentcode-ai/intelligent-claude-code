@@ -17,7 +17,8 @@ const { isInstallationPath } = require('./lib/path-utils');
 const { isModifyingBashCommand } = require('./lib/command-validation');
 
 function main() {
-  const log = createLogger('project-scope-enforcement');
+  // Create initial logger without project path for parsing
+  const initialLog = createLogger('project-scope-enforcement');
 
   // Helper function for allowed exception check
   function isAllowedException(filePath) {
@@ -29,7 +30,10 @@ function main() {
 
   try {
     // Parse hook input
-    const hookInput = parseHookInput(log);
+    const hookInput = parseHookInput(initialLog);
+
+    // Create logger with project path now that we have hookInput
+    const log = createLogger('project-scope-enforcement', hookInput);
     if (!hookInput) {
       return allowOperation(log);
     }

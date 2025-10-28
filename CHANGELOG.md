@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.39] - 2025-10-28
+
+### Fixed
+- **Normalized Path Logging**: Added normalized project path to hook log filenames for multi-project debugging
+  - Modified logging.js createLogger() to accept hookInput parameter
+  - Added normalizePath() function: home→~, /→-, strip leading dash
+  - Updated log filename format: ${date}-${normalizedPath}-${hookName}.log
+  - Example: 2025-10-28-~-Work-Engineering-ansible-deployments-pm-constraints-enforcement.log
+  - Updated 4 hooks (project-scope-enforcement, main-scope-enforcement, config-protection, summary-file-enforcement) to pass hookInput
+  - Backwards compatible: hookInput parameter optional with default null
+  - Resolves critical logging design flaw where missing logs went unnoticed across multiple projects
+
+---
+
 ## [8.20.38] - 2025-10-28
 
 ### Fixed

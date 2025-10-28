@@ -17,11 +17,16 @@ const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
-  const log = createLogger('summary-enforcement');
+  // Create initial logger without project path for parsing
+  const initialLog = createLogger('summary-enforcement');
 
   try {
     // Parse hook input
-    const hookInput = parseHookInput(log);
+    const hookInput = parseHookInput(initialLog);
+
+    // Create logger with project path now that we have hookInput
+    const log = createLogger('summary-enforcement', hookInput);
+
     if (!hookInput) {
       return allowOperation(log, true); // Suppress output
     }

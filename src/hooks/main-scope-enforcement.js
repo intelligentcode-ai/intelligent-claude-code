@@ -22,7 +22,8 @@ const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 
 function main() {
-  const log = createLogger('main-scope-enforcement');
+  // Create initial logger without project path for parsing
+  const initialLog = createLogger('main-scope-enforcement');
 
   /**
    * Check if mkdir command is for allowlist directory
@@ -184,7 +185,11 @@ function main() {
 
   try {
     // Parse hook input
-    const hookInput = parseHookInput(log);
+    const hookInput = parseHookInput(initialLog);
+
+    // Create logger with project path now that we have hookInput
+    const log = createLogger('main-scope-enforcement', hookInput);
+
     if (!hookInput) {
       return allowOperation(log);
     }
