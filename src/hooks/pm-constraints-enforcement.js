@@ -7,6 +7,7 @@ const { loadConfig, getSetting } = require('./lib/config-loader');
 const { isDevelopmentContext } = require('./lib/context-detection');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
+const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 
 function main() {
   const logDir = path.join(os.homedir(), '.claude', 'logs');
@@ -1092,6 +1093,44 @@ To execute blocked operation:
       // Block Edit/Write/Update tools ONLY for files not in allowlist
       if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
         log(`File modification tool detected: ${tool} on ${filePath}`);
+
+        // FILENAME-BASED DIRECTORY ENFORCEMENT
+        if (!isCorrectDirectory(filePath, projectRoot)) {
+          const suggestedPath = getSuggestedPath(filePath, projectRoot);
+
+          const blockingEnabled = getBlockingEnabled();
+
+          if (blockingEnabled) {
+            const response = {
+              hookSpecificOutput: {
+                hookEventName: 'PreToolUse',
+                permissionDecision: 'deny',
+                permissionDecisionReason: `Wrong directory for filename pattern
+
+File "${path.basename(filePath)}" should be in a different directory based on its filename pattern.
+
+Current path: ${filePath}
+Suggested path: ${suggestedPath}
+
+DIRECTORY ROUTING RULES:
+- STORY-*.md, EPIC-*.md, BUG-*.md → stories/
+- AGENTTASK-*.yaml → agenttasks/
+- Root files (CLAUDE.md, VERSION, etc.) → project root
+- Documentation files (architecture.md, api.md) → docs/
+- Everything else → summaries/
+
+Please use the correct directory for this file type.`
+              }
+            };
+            const responseJson = JSON.stringify(response);
+            log(`RESPONSE: ${responseJson}`);
+            log(`EXIT CODE: 2 (BLOCKING MODE)`);
+            console.log(responseJson);
+            process.exit(2);
+          } else {
+            log(`⚠️ WARNING (non-blocking): Wrong directory for filename pattern: ${filePath}`);
+          }
+        }
 
         const paths = getConfiguredPaths(projectRoot);
         const validation = validatePMOperation(filePath, tool, paths, projectRoot);

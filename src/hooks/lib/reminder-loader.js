@@ -3,20 +3,35 @@ const path = require('path');
 
 class ReminderLoader {
   constructor() {
-    this.reminders = this._loadReminders();
+    // No caching - load fresh each time for better randomization
   }
 
   getReminder() {
-    const reminders = this.reminders.reminders || this.reminders.preAction || [];
+    // Load fresh reminders each time to ensure variety
+    const reminderData = this._loadReminders();
+    const reminders = reminderData.reminders || reminderData.preAction || [];
     if (reminders.length === 0) return '';
 
+    // Shuffle array before selection for better variety
+    const shuffled = this._shuffleArray(reminders);
+
     // If using new format with weights, use weighted selection
-    if (reminders[0] && typeof reminders[0] === 'object' && reminders[0].weight) {
-      return this._getWeightedReminder(reminders);
+    if (shuffled[0] && typeof shuffled[0] === 'object' && shuffled[0].weight) {
+      return this._getWeightedReminder(shuffled);
     }
 
     // Legacy format - simple random selection
-    return reminders[Math.floor(Math.random() * reminders.length)];
+    return shuffled[Math.floor(Math.random() * shuffled.length)];
+  }
+
+  _shuffleArray(array) {
+    // Fisher-Yates shuffle for true randomization
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }
 
   _getWeightedReminder(reminders) {

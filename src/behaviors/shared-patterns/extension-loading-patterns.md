@@ -11,12 +11,14 @@
 ## Extension Structure
 
 **Valid Extension Sections:**
-- `all:` - Applied to every template size
+- `all:` - Applied to every executable template size
 - `nano:` - Applied to nano-agenttask-template.yaml (0-2 points)
 - `tiny:` - Applied to tiny-agenttask-template.yaml (3-5 points)
 - `medium:` - Applied to medium-agenttask-template.yaml (6-15 points)
-- `large:` - Applied to large-agenttask-template.yaml (16-30 points)
-- `mega:` - Applied to mega-agenttask-template.yaml (30+ points)
+
+**DEPRECATED SECTIONS (Work >15 pts becomes STORY):**
+- `large:` - DEPRECATED (16-30 points → STORY in ./stories/)
+- `mega:` - DEPRECATED (30+ points → STORY in ./stories/)
 
 ## Loading Process
 
@@ -24,7 +26,7 @@
 1. **Check Project Root**: Look for `{project_root}/agenttask-extensions.yaml`
 2. **Check Claude Directory**: If not found, look for `{project_root}/.claude/agenttask-extensions.yaml`
 3. **Parse YAML Structure**: Validate extension file syntax
-4. **Validate Sections**: Ensure only valid sections (all, nano, tiny, medium, large, mega)
+4. **Validate Sections**: Recognize sections (all, nano, tiny, medium) - warn about deprecated sections (large, mega)
 5. **Store Extensions**: Keep in memory for merging during AgentTask generation
 6. **Handle Missing**: If no extension file found, continue with base templates only
 
@@ -32,13 +34,14 @@
 
 **Structure Requirements:**
 - Valid YAML syntax
-- Only recognized section names (all, nano, tiny, medium, large, mega)
+- Recognized section names (all, nano, tiny, medium)
+- Deprecated sections (large, mega) trigger warning
 - Nested structure allowed within sections
 - Override markers: `"!override value"` for replacements
 
 **Error Handling:**
 - `EXTENSION_SYNTAX_ERROR`: "❌ Extension file syntax error: {error_details}"
-- `INVALID_SECTION`: "❌ Invalid extension section: {section_name}"
+- `DEPRECATED_SECTION`: "⚠️ Deprecated extension section: {section_name} - work >15 pts becomes STORY"
 - `FILE_READ_ERROR`: "❌ Cannot read extension file: {file_path}"
 
 ## Extension Storage Format
@@ -50,8 +53,7 @@ extensions:
   nano: {extension_content}
   tiny: {extension_content}
   medium: {extension_content}
-  large: {extension_content}
-  mega: {extension_content}
+# large and mega sections deprecated (ignored if present)
 ```
 
 ## Integration Points

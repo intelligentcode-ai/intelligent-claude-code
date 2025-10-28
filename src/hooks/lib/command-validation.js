@@ -66,7 +66,7 @@ function isAllowedCoordinationCommand(command) {
     // File reading and searching
     'ls', 'find', 'cat', 'head', 'tail', 'grep', 'less', 'more', 'wc',
     // Information commands
-    'date', 'pwd', 'whoami', 'echo', 'which', 'env',
+    'date', 'pwd', 'whoami', 'echo', 'which', 'env', 'sleep',
     // Process monitoring
     'ps', 'top', 'jobs', 'bg', 'fg'
   ];

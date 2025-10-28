@@ -19,6 +19,7 @@ const { isAgentContext } = require('./lib/marker-detection');
 const { isPathInAllowlist } = require('./lib/path-utils');
 const { isAllowedCoordinationCommand } = require('./lib/command-validation');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
+const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 
 function main() {
   const log = createLogger('main-scope-enforcement');
@@ -72,12 +73,13 @@ function main() {
    * Check if command is a read-only infrastructure operation
    */
   function isReadOnlyInfrastructureCommand(command) {
-    // Read-only infrastructure commands (allowed in main scope)
-    const readOnlyPatterns = [
-      // Kubernetes read operations
-      'kubectl get', 'kubectl describe', 'kubectl logs', 'kubectl exec',
-      // Docker read operations
-      'docker ps', 'docker images', 'docker logs', 'docker inspect',
+    const cmd = command.trim();
+
+    // Load read operations from config
+    const readOperations = getSetting('enforcement.infrastructure_protection.read_operations', []);
+
+    // Additional read-only patterns not in infrastructure_protection
+    const additionalReadPatterns = [
       // HTTP requests (ALL allowed - for docs, API data, etc.)
       'curl', 'wget',
       // NPM/package manager reads
@@ -86,13 +88,16 @@ function main() {
       // Database read operations
       'mysql -e "SELECT', 'psql -c "SELECT',
       // System monitoring
-      'systemctl status', 'service status'
+      'systemctl status', 'service status',
+      // Docker read operations
+      'docker ps', 'docker images', 'docker logs', 'docker inspect'
     ];
 
-    const cmd = command.trim();
+    // Combine config-based and additional patterns
+    const allReadPatterns = [...readOperations, ...additionalReadPatterns];
 
     // Check if command matches read-only patterns
-    for (const pattern of readOnlyPatterns) {
+    for (const pattern of allReadPatterns) {
       if (cmd.startsWith(pattern)) {
         return true;
       }
@@ -102,15 +107,50 @@ function main() {
   }
 
   /**
+   * Extract embedded command from SSH command string
+   * @param {string} sshCommand - SSH command to parse
+   * @returns {string|null} Embedded command or null if not found
+   */
+  function extractSSHEmbeddedCommand(sshCommand) {
+    // Match patterns like: ssh user@host "command" or ssh -i key user@host 'command'
+    const singleQuoteMatch = sshCommand.match(/\bssh\b[^']*'([^']+)'/);
+    if (singleQuoteMatch) {
+      return singleQuoteMatch[1];
+    }
+
+    const doubleQuoteMatch = sshCommand.match(/\bssh\b[^"]*"([^"]+)"/);
+    if (doubleQuoteMatch) {
+      return doubleQuoteMatch[1];
+    }
+
+    return null;
+  }
+
+  /**
    * Check if command is a modifying infrastructure operation
    */
   function isModifyingInfrastructureCommand(command) {
-    // Commands that MODIFY external systems (blocked in main scope)
-    const modifyingCommands = [
-      // SSH (always modifying - can execute commands)
-      'ssh', 'scp', 'rsync',
-      // Kubernetes modifications
-      'kubectl apply', 'kubectl create', 'kubectl delete', 'kubectl edit', 'kubectl patch', 'kubectl scale',
+    const cmd = command.trim();
+
+    // CRITICAL: Check SSH commands FIRST - extract and validate embedded command
+    if (cmd.startsWith('ssh ')) {
+      const embeddedCommand = extractSSHEmbeddedCommand(cmd);
+      if (embeddedCommand) {
+        // Recursively check if embedded command is modifying
+        return isModifyingInfrastructureCommand(embeddedCommand);
+      }
+      // SSH without detectable embedded command - block by default (can execute arbitrary commands)
+      return true;
+    }
+
+    // Load write and imperative destructive operations from config
+    const writeOperations = getSetting('enforcement.infrastructure_protection.write_operations', []);
+    const imperativeDestructive = getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
+
+    // Additional modifying patterns not in infrastructure_protection
+    const additionalModifyingPatterns = [
+      // SCP and rsync (SSH-related file transfer - always modifying)
+      'scp', 'rsync',
       // Docker modifications
       'docker run', 'docker start', 'docker stop', 'docker rm', 'docker build', 'docker push',
       // Infrastructure as code
@@ -129,10 +169,11 @@ function main() {
       'psql -c "INSERT', 'psql -c "UPDATE', 'psql -c "DELETE', 'psql -c "DROP'
     ];
 
-    const cmd = command.trim();
+    // Combine all modifying operations
+    const allModifyingCommands = [...writeOperations, ...imperativeDestructive, ...additionalModifyingPatterns];
 
     // Check if command starts with modifying operation
-    for (const modifying of modifyingCommands) {
+    for (const modifying of allModifyingCommands) {
       if (cmd.startsWith(modifying)) {
         return true;
       }
@@ -238,6 +279,30 @@ To execute blocked operation:
 
     // Check Write/Edit operations
     if (tool === 'Write' || tool === 'Edit') {
+      // FILENAME-BASED DIRECTORY ENFORCEMENT
+      if (!isCorrectDirectory(filePath, projectRoot)) {
+        const suggestedPath = getSuggestedPath(filePath, projectRoot);
+
+        return blockOperation(
+          `Wrong directory for filename pattern`,
+          tool,
+          `File "${path.basename(filePath)}" should be in a different directory based on its filename pattern.
+
+Current path: ${filePath}
+Suggested path: ${suggestedPath}
+
+DIRECTORY ROUTING RULES:
+- STORY-*.md, EPIC-*.md, BUG-*.md → stories/
+- AGENTTASK-*.yaml → agenttasks/
+- Root files (CLAUDE.md, VERSION, etc.) → project root
+- Documentation files (architecture.md, api.md) → docs/
+- Everything else → summaries/
+
+Please use the correct directory for this file type.`,
+          log
+        );
+      }
+
       // Build allowlist for file path checking
       const config = loadConfig();
       const allowlist = [
@@ -275,7 +340,7 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
 ❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
@@ -404,7 +469,7 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
 ❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
@@ -458,7 +523,7 @@ Main scope is limited to coordination work:
 ✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, etc.)
+✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
 ✅ ALLOWED: mkdir for allowlist directories
 
 ❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)

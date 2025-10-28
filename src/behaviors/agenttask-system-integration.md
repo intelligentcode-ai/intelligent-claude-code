@@ -13,12 +13,15 @@
 ## Core AgentTask Lifecycle
 
 ### Creation & Breakdown
-**SIZE LIMIT:** Auto-breakdown AgentTasks >15 complexity points
-**TEMPLATE SELECTION:** Based on complexity score (Nano/Tiny/Medium/Large/Mega)
+**SIZE LIMIT:** Maximum 15 points (medium) for executable AgentTasks
+**TEMPLATE SELECTION:** Nano (0-2), Tiny (3-5), Medium (6-15) only
+**LARGE WORK:** >15 points becomes STORY in ./stories/ for breakdown
 **VALIDATION:** Zero placeholders, complete context, embedded config
+**NO FILE WRITES:** AgentTask context passed directly to Task tool
 
 ### Execution Patterns
-**SUBAGENT REQUIRED:** All AgentTasks execute via AGENTS
+**DIRECT TASK TOOL:** AgentTask context passed to Task tool immediately (no file writes)
+**SUBAGENT REQUIRED:** All AgentTasks execute via specialized agents
 **COMPLETION CHECKLIST:** Mandatory validation before marking complete
 **CONTEXT PRESERVATION:** Self-contained execution with no external dependencies
 
@@ -56,9 +59,9 @@
 ## Error Handling
 
 ### Auto-Correction
-- Wrong template → Recalculate complexity, use correct template
+- Wrong template → Recalculate complexity, use correct template (nano/tiny/medium only)
 - Missing context → Gather required context before proceeding
-- Size violations → Automatic breakdown into compliant AgentTasks
+- Size violations (>15 pts) → Create STORY in ./stories/ for breakdown
 - Execution failures → Adaptation patterns with context updates
 
 ### Recovery Patterns

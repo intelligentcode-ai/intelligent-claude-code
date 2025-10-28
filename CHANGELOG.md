@@ -7,6 +7,240 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.32] - 2025-10-28
+
+### Changed
+- **AgentTask Execution Model**: Updated behavioral patterns to implement new execution model
+  - Only Nano (0-2 pts), Tiny (3-5 pts), Medium (6-15 pts) AgentTasks are executable
+  - Executable AgentTasks passed DIRECTLY to Task tool - NO file writes
+  - Work >15 points becomes STORY in ./stories/ directory for breakdown
+  - Large (16-30 pts) and Mega (30+ pts) templates deprecated for AgentTask execution
+  - Maximum executable AgentTask complexity: 15 points
+
+### Updated
+- **Behavioral Patterns**: Updated all AgentTask-related behavioral patterns
+  - src/behaviors/agenttask-creation-system.md: Updated size limits and execution flow
+  - src/behaviors/agenttask-auto-trigger.md: Updated to 15-point maximum
+  - src/behaviors/agenttask-enforcement.md: Added size enforcement rules
+  - src/behaviors/story-breakdown.md: Updated AgentTask generation process
+  - src/behaviors/shared-patterns/template-enforcement.md: Separated executable vs story templates
+  - src/behaviors/shared-patterns/template-loading.md: Clarified executable template tiers
+  - src/behaviors/template-resolution.md: Updated template source section
+
+- **Documentation**: Updated CLAUDE.md to reflect new execution model
+  - AgentTask Engine description updated to show executable tiers
+  - Added Story System explanation for work >15 points
+  - Complexity Tiers section updated with execution model details
+  - Clarified direct Task tool invocation (no file writes)
+
+### Technical Details
+- **Execution Flow**: AgentTasks ≤15 points → Context passed to Task tool directly
+- **Story Creation**: Work >15 points → Written to ./stories/ for PM breakdown
+- **Template Deprecation**: large-agenttask-template.yaml and mega-agenttask-template.yaml deprecated for AgentTask execution
+- **Quality Enforcement**: Size limits enforced through behavioral patterns, not hooks
+
+---
+
+## [8.20.31] - 2025-10-28
+
+### Fixed
+- **Config Integration Bug**: Fixed main-scope-enforcement.js to properly use config-based infrastructure protection
+  - Hook was NOT using the config system - hardcoded patterns ignored icc.config.default.json configuration
+  - Replaced hardcoded command lists with getSetting() calls to enforcement.infrastructure_protection settings
+  - Read operations now loaded from enforcement.infrastructure_protection.read_operations (kubectl get, describe, logs, etc.)
+  - Write operations now loaded from enforcement.infrastructure_protection.write_operations (kubectl apply, patch, scale, etc.)
+  - Imperative destructive operations now loaded from enforcement.infrastructure_protection.imperative_destructive (kubectl delete, drain, etc.)
+  - Enables project-specific overrides via icc.config.json without modifying hook code
+
+### Technical Details
+- **src/hooks/main-scope-enforcement.js (lines 75-107)**: isReadOnlyInfrastructureCommand() now loads read_operations from config
+- **src/hooks/main-scope-enforcement.js (lines 132-183)**: isModifyingInfrastructureCommand() now loads write_operations and imperative_destructive from config
+- **Pattern Composition**: Config-based patterns combined with additional patterns for comprehensive coverage
+- **Backward Compatibility**: Default fallback arrays ensure functionality if config unavailable
+- **Project Customization**: Projects can override lists in their own icc.config.json for specific requirements
+
+---
+
+## [8.20.30] - 2025-10-28
+
+### Fixed
+- **Critical SSH Enforcement Bypass**: Fixed security vulnerability where SSH-wrapped kubectl commands bypassed enforcement
+  - SSH commands with embedded modifying operations (kubectl delete, rollout, etc.) now properly BLOCKED
+  - SSH commands with embedded read-only operations (kubectl get, logs) now properly ALLOWED
+  - Recursive command parsing extracts and validates embedded commands in SSH wrappers
+  - Prevents execution of: `ssh user@host "kubectl delete pod test"`, `ssh ... "kubectl rollout restart ..."`
+
+### Security
+- **SSH Command Parsing**: Implements intelligent SSH command extraction and recursive validation
+  - Extracts commands from both single and double quoted SSH patterns
+  - Recursively validates embedded commands against modifying operation list
+  - Blocks SSH without detectable embedded command (arbitrary command execution risk)
+- **Test Coverage**: 8 test cases verified including SSH+kubectl combinations, direct commands, and documentation safety
+
+### Technical Details
+- **src/hooks/main-scope-enforcement.js (lines 105-123)**: Added extractSSHEmbeddedCommand() function
+- **src/hooks/main-scope-enforcement.js (lines 128-140)**: SSH detection moved to FIRST check with recursive validation
+- **Pattern Matching**: Regex patterns match `ssh ... "command"` and `ssh ... 'command'` variations
+- **Recursion Safety**: Embedded command validated through same isModifyingInfrastructureCommand() function
+- **Documentation Safe**: Echo, cat, and other documentation commands remain ALLOWED
+
+---
+
+## [8.20.29] - 2025-10-28
+
+### Fixed
+- **Critical kubectl Command Blocking**: Added missing kubectl commands to main scope enforcement
+  - Added: kubectl rollout, kubectl set, kubectl expose, kubectl label, kubectl annotate
+  - Added: kubectl replace, kubectl drain, kubectl cordon, kubectl uncordon, kubectl taint
+  - Prevents main scope from executing infrastructure modification commands
+- **SSH Command Blocking**: Verified SSH blocking properly catches all patterns including embedded commands
+  - Blocks: `ssh user@host "kubectl get pods"` and all other SSH variations
+  - SSH is always blocked in main scope as it can execute arbitrary commands
+
+### Security
+- **Infrastructure Protection**: Closed enforcement gaps that allowed:
+  - kubectl rollout restart operations to bypass main scope restrictions
+  - SSH-based command execution to bypass enforcement
+  - Other kubectl modification commands not in previous blocking list
+- **Complete kubectl Coverage**: All modifying kubectl operations now blocked in main scope
+- **Comprehensive Testing**: Validated 19 test cases covering blocked and allowed patterns
+
+### Technical Details
+- **src/hooks/main-scope-enforcement.js (lines 115-116)**: Added 10 missing kubectl commands to modifyingCommands array
+- **Test Coverage**: All kubectl rollout, set, expose, label, annotate, replace, drain, cordon, uncordon, taint commands blocked
+- **SSH Detection**: Confirmed .startsWith() pattern correctly blocks all SSH variations
+- **Allowed Operations**: kubectl get, describe, logs, top, explain remain permitted (read-only)
+
+---
+
+## [8.20.28] - 2025-10-26
+
+### Fixed
+- **MCP Config Relative Paths**: Makefile now resolves relative paths to absolute before passing to Ansible
+- **User-Friendly Installation**: Users can now use `make install MCP_CONFIG=../mcp-servers/mcp-servers.json` without path resolution errors
+- **Path Resolution Logic**: Added `realpath` resolution for MCP_CONFIG and ENV_FILE variables in Makefile
+
+### Enhanced
+- **Makefile (lines 10-22)**: Added path resolution variables MCP_CONFIG_ABS and ENV_FILE_ABS
+- **Makefile (lines 106-107, 122-123, 131-132)**: Updated all ansible-playbook invocations to use absolute path variables
+- **Backward Compatibility**: Absolute paths continue to work unchanged
+
+### Benefits
+- Relative paths work from user's working directory (e.g., ../path/to/config.json)
+- No more "MCP configuration file not found" errors with valid relative paths
+- Clean implementation with path resolution in Makefile before Ansible execution
+- No Ansible playbook changes required
+
+---
+
+## [8.20.27] - 2025-10-26
+
+### Added
+- **Post-Agent File Validation**: New SubagentStop hook validates file placements after agent execution
+- **src/hooks/post-agent-file-validation.js**: Non-blocking advisory validation for agent-created files
+- **Agent Directory Enforcement**: Extends directory enforcement to agent operations (previously only main/PM scope)
+- **Git Status Integration**: Scans modified files using git status to detect agent file creations
+- **Advisory Corrections**: Provides git mv commands for fixing misplaced files without blocking agent work
+
+### Enhanced
+- **ansible/roles/intelligent-claude-code/tasks/main.yml**: Added post-agent-file-validation.js to SubagentStop hooks
+- **ansible/roles/intelligent-claude-code/templates/settings.json.j2**: Registered new validation hook
+- **install.ps1**: PowerShell installation updated with 15 production hooks (was 14)
+- **Hook Count**: System now has 15 production hooks total across all events
+
+### Benefits
+- Agents can no longer bypass directory enforcement (previously only main/PM were enforced)
+- Non-blocking advisory approach prevents breaking agent execution
+- Clear git mv commands provided for easy file corrections
+- Complete enforcement coverage across main scope, PM constraints, and agent operations
+- Catches violations like analysis files in docs/ instead of summaries/
+
+---
+
+## [8.20.26] - 2025-10-26
+
+### Added
+- **Complete Hook Registration**: ALL 14 production hooks now registered in Ansible playbook and PowerShell script
+- **Hook Registration Documentation**: docs/hook-registration-reference.md with complete hook-to-event mapping
+- **Main Scope Sleep Allowlist**: Added sleep command to coordination allowlist for CI timing and rate limiting
+- **9 PreToolUse Hooks**: git-enforcement, main-scope-enforcement, pm-constraints-enforcement, agent-infrastructure-protection, agent-marker, config-protection, pre-agenttask-validation, project-scope-enforcement, summary-file-enforcement
+- **3 UserPromptSubmit Hooks**: user-prompt-submit, context-injection, task-tool-execution-reminder
+- **1 SubagentStop Hook**: subagent-stop
+- **1 Stop Hook**: stop
+
+### Fixed
+- **Git Enforcement Privacy Patterns**: Replaced overly broad patterns (AI, Claude, agent) with specific attribution patterns only
+- **Legitimate Technical Mentions**: Now allows commit messages like "Fix mentions" or "Register role" without blocking
+- **Specific Attribution Blocking**: Still blocks "Generated with Claude Code", "Co-Authored-By: Claude", and other attribution markers
+- **Privacy Pattern List**: "Generated with \\[Claude Code\\]", "Generated with Claude Code", "Co-Authored-By: Claude", "Co-authored-by: Claude", "🤖 Generated with", "Claude assisted", "assisted", "claude.com/claude-code"
+
+### Enhanced
+- **src/hooks/git-enforcement.js**: Fixed privacy patterns in two locations (lines 70-79 and 253-267)
+- **src/hooks/lib/command-validation.js**: Added sleep to allowed coordination commands
+- **src/hooks/main-scope-enforcement.js**: Updated documentation to reflect sleep allowlist
+- **ansible/roles/intelligent-claude-code/tasks/main.yml**: Complete hook registration for all 14 hooks
+- **ansible/roles/intelligent-claude-code/templates/settings.json.j2**: All hooks properly configured
+- **install.ps1**: PowerShell installation with all hooks registered
+
+### Benefits
+- Complete enforcement coverage with all hooks active
+- Git privacy enforcement now allows legitimate technical discussions
+- Main scope can coordinate timing for CI checks and rate limiting
+- Clear documentation of all hook registrations and configurations
+- Proper attribution blocking without preventing normal development work
+
+---
+
+## [8.20.25] - 2025-10-26
+
+### Added
+- **Filename-Based Directory Enforcement**: New enforcement system routes files to correct directories based on filename patterns
+- **src/hooks/lib/directory-enforcement.js**: Library module for filename pattern matching and directory validation
+- **Pattern-Based Routing**: STORY/EPIC/BUG files to stories/, AGENTTASK files to agenttasks/, docs to docs/, others to summaries/
+- **Suggested Path Feedback**: Clear error messages showing both current and suggested correct path
+
+### Enhanced
+- **src/hooks/main-scope-enforcement.js**: Integrated directory enforcement check for Write/Edit operations
+- **src/hooks/pm-constraints-enforcement.js**: Added directory enforcement validation for PM file operations
+- **Error Messages**: Comprehensive feedback with directory routing rules and suggested corrections
+
+### Benefits
+- Prevents files from being written to wrong directories based on filename
+- Automatic routing of STORY/BUG/EPIC files to stories/ directory
+- AGENTTASK files correctly placed in agenttasks/ directory
+- Documentation files routed to docs/, summaries to summaries/
+- Clear user guidance with suggested correct paths
+
+---
+
+## [8.20.24] - 2025-10-26
+
+### Added
+- **L3 Autonomy Mechanical Enforcement**: Two-layer hook-based enforcement system for L3 autonomous execution mode
+- **UserPromptSubmit L3 Detection**: Hook now loads autonomy_level from config and injects aggressive autonomous reminders when L3 active
+- **High-Weight L3 Reminders**: 6 new L3 reminders (weight 12-15) covering work detection, decisions, errors, and story selection
+- **Wrong/Correct Examples**: Clear behavioral examples showing incorrect approval-seeking vs correct autonomous execution
+- **Continuous Reinforcement**: L3 reminders injected at TOP of context EVERY turn for maximum visibility
+
+### Enhanced
+- **src/hooks/user-prompt-submit.js**: Added L3 detection logic with config-loader integration and aggressive reminder injection
+- **src/hooks/lib/reminders.json**: Added 6 L3 autonomous reminders with highest weights in system (12-15)
+- **Autonomous Execution Flow**: Mechanical enforcement reduces approval questions and improves autonomous speed
+
+### Removed
+- **Deployment Permission Patterns**: Removed outdated deployment permission enforcement from all agents, templates, and behaviors
+- **Legacy Permission Checks**: Cleaned up make install permission patterns across all documentation
+
+### Benefits
+- Mechanical L3 enforcement via hook system (not just behavioral guidance)
+- Continuous reinforcement at start of every conversation turn
+- Dramatically reduced approval questions in L3 autonomous mode
+- Improved autonomous execution speed and user experience
+- L1/L2 modes completely unaffected by L3 enhancements
+- Clear wrong/correct examples for pattern learning
+
+---
+
 ## [8.9.0] - 2025-09-21
 
 ### Changed

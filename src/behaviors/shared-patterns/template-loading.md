@@ -14,11 +14,14 @@
 
 ## Standard Templates
 
+**Executable AgentTask Templates (Passed to Task tool):**
 - `nano-agenttask-template.yaml` - Trivial changes (0-2 points)
-- `tiny-agenttask-template.yaml` - Single-file tasks (3-5 points)  
+- `tiny-agenttask-template.yaml` - Single-file tasks (3-5 points)
 - `medium-agenttask-template.yaml` - Multi-file features (6-15 points)
-- `large-agenttask-template.yaml` - Complex features (16-30 points)
-- `mega-agenttask-template.yaml` - System-wide changes (30+ points)
+
+**Story Templates (Written to ./stories/):**
+- Work >15 points becomes STORY for breakdown
+- Large/Mega AgentTask templates deprecated
 
 ## Template Loading Process
 
