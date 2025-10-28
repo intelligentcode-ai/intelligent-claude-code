@@ -73,12 +73,13 @@ function main() {
    * Check if command is a read-only infrastructure operation
    */
   function isReadOnlyInfrastructureCommand(command) {
-    // Read-only infrastructure commands (allowed in main scope)
-    const readOnlyPatterns = [
-      // Kubernetes read operations
-      'kubectl get', 'kubectl describe', 'kubectl logs', 'kubectl exec',
-      // Docker read operations
-      'docker ps', 'docker images', 'docker logs', 'docker inspect',
+    const cmd = command.trim();
+
+    // Load read operations from config
+    const readOperations = getSetting('enforcement.infrastructure_protection.read_operations', []);
+
+    // Additional read-only patterns not in infrastructure_protection
+    const additionalReadPatterns = [
       // HTTP requests (ALL allowed - for docs, API data, etc.)
       'curl', 'wget',
       // NPM/package manager reads
@@ -87,13 +88,16 @@ function main() {
       // Database read operations
       'mysql -e "SELECT', 'psql -c "SELECT',
       // System monitoring
-      'systemctl status', 'service status'
+      'systemctl status', 'service status',
+      // Docker read operations
+      'docker ps', 'docker images', 'docker logs', 'docker inspect'
     ];
 
-    const cmd = command.trim();
+    // Combine config-based and additional patterns
+    const allReadPatterns = [...readOperations, ...additionalReadPatterns];
 
     // Check if command matches read-only patterns
-    for (const pattern of readOnlyPatterns) {
+    for (const pattern of allReadPatterns) {
       if (cmd.startsWith(pattern)) {
         return true;
       }
@@ -139,14 +143,14 @@ function main() {
       return true;
     }
 
-    // Commands that MODIFY external systems (blocked in main scope)
-    const modifyingCommands = [
+    // Load write and imperative destructive operations from config
+    const writeOperations = getSetting('enforcement.infrastructure_protection.write_operations', []);
+    const imperativeDestructive = getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
+
+    // Additional modifying patterns not in infrastructure_protection
+    const additionalModifyingPatterns = [
       // SCP and rsync (SSH-related file transfer - always modifying)
       'scp', 'rsync',
-      // Kubernetes modifications
-      'kubectl apply', 'kubectl create', 'kubectl delete', 'kubectl edit', 'kubectl patch', 'kubectl scale',
-      'kubectl rollout', 'kubectl set', 'kubectl expose', 'kubectl label', 'kubectl annotate',
-      'kubectl replace', 'kubectl drain', 'kubectl cordon', 'kubectl uncordon', 'kubectl taint',
       // Docker modifications
       'docker run', 'docker start', 'docker stop', 'docker rm', 'docker build', 'docker push',
       // Infrastructure as code
@@ -165,8 +169,11 @@ function main() {
       'psql -c "INSERT', 'psql -c "UPDATE', 'psql -c "DELETE', 'psql -c "DROP'
     ];
 
+    // Combine all modifying operations
+    const allModifyingCommands = [...writeOperations, ...imperativeDestructive, ...additionalModifyingPatterns];
+
     // Check if command starts with modifying operation
-    for (const modifying of modifyingCommands) {
+    for (const modifying of allModifyingCommands) {
       if (cmd.startsWith(modifying)) {
         return true;
       }
