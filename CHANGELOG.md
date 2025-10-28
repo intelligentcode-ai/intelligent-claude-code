@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.37] - 2025-10-28
+
+### Fixed
+- **Hook Entry Logging**: Added entry log to pm-constraints-enforcement.js to detect invocation vs silent exits
+  - Entry log appears as first statement after log() function definition
+  - Helps distinguish between hook invoked-but-silent vs not-invoked-at-all
+  - Critical for debugging hook execution flow in monitoring operations
+
+---
+
 ## [8.20.36] - 2025-10-28
 
 ### Fixed

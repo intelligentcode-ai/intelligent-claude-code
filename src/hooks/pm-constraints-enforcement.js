@@ -49,6 +49,9 @@ function main() {
     fs.appendFileSync(logFile, logMessage);
   }
 
+  // ENTRY LOG: Detect hook invocation vs silent exits
+  log('=== HOOK ENTRY: pm-constraints-enforcement.js invoked ===');
+
   function loadConfiguration() {
     log('Loading configuration via unified config-loader');
     const config = loadConfig();
