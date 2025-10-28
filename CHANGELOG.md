@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.29] - 2025-10-28
+
+### Fixed
+- **Critical kubectl Command Blocking**: Added missing kubectl commands to main scope enforcement
+  - Added: kubectl rollout, kubectl set, kubectl expose, kubectl label, kubectl annotate
+  - Added: kubectl replace, kubectl drain, kubectl cordon, kubectl uncordon, kubectl taint
+  - Prevents main scope from executing infrastructure modification commands
+- **SSH Command Blocking**: Verified SSH blocking properly catches all patterns including embedded commands
+  - Blocks: `ssh user@host "kubectl get pods"` and all other SSH variations
+  - SSH is always blocked in main scope as it can execute arbitrary commands
+
+### Security
+- **Infrastructure Protection**: Closed enforcement gaps that allowed:
+  - kubectl rollout restart operations to bypass main scope restrictions
+  - SSH-based command execution to bypass enforcement
+  - Other kubectl modification commands not in previous blocking list
+- **Complete kubectl Coverage**: All modifying kubectl operations now blocked in main scope
+- **Comprehensive Testing**: Validated 19 test cases covering blocked and allowed patterns
+
+### Technical Details
+- **src/hooks/main-scope-enforcement.js (lines 115-116)**: Added 10 missing kubectl commands to modifyingCommands array
+- **Test Coverage**: All kubectl rollout, set, expose, label, annotate, replace, drain, cordon, uncordon, taint commands blocked
+- **SSH Detection**: Confirmed .startsWith() pattern correctly blocks all SSH variations
+- **Allowed Operations**: kubectl get, describe, logs, top, explain remain permitted (read-only)
+
+---
+
 ## [8.20.28] - 2025-10-26
 
 ### Fixed
