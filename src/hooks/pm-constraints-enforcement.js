@@ -8,46 +8,11 @@ const { isDevelopmentContext } = require('./lib/context-detection');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
+const { initializeHook } = require('./lib/logging');
 
 function main() {
-  const logDir = path.join(os.homedir(), '.claude', 'logs');
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-pm-constraints-enforcement.log`);
-
-  // Ensure log directory exists
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-
-  function cleanOldLogs(logDir) {
-    try {
-      const files = fs.readdirSync(logDir);
-      const now = Date.now();
-      const maxAge = 24 * 60 * 60 * 1000; // 24 hours
-
-      for (const file of files) {
-        if (!file.endsWith('.log')) continue;
-
-        const filePath = path.join(logDir, file);
-        const stats = fs.statSync(filePath);
-
-        if (now - stats.mtimeMs > maxAge) {
-          fs.unlinkSync(filePath);
-        }
-      }
-    } catch (error) {
-      // Silent fail - don't block hook execution
-    }
-  }
-
-  // Clean old logs at hook start
-  cleanOldLogs(logDir);
-
-  function log(message) {
-    const timestamp = new Date().toISOString();
-    const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync(logFile, logMessage);
-  }
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('pm-constraints-enforcement');
 
   // ENTRY LOG: Detect hook invocation vs silent exits
   log('=== HOOK ENTRY: pm-constraints-enforcement.js invoked ===');
@@ -839,30 +804,13 @@ To execute blocked operation:
   }
 
   try {
-    // Parse input from multiple sources
-    let inputData = '';
-
-    if (process.argv[2]) {
-      inputData = process.argv[2];
-    } else if (process.env.HOOK_INPUT) {
-      inputData = process.env.HOOK_INPUT;
-    } else if (!process.stdin.isTTY) {
-      try {
-        inputData = fs.readFileSync(0, 'utf8');
-      } catch (stdinError) {
-        log(`WARN: Failed to read stdin: ${stdinError.message} - allowing operation`);
-        console.log(JSON.stringify({ continue: true }));
-        process.exit(0);
-      }
-    }
-
-    if (!inputData.trim()) {
-      log('WARN: Empty input data received after checking argv, env, and stdin - allowing operation');
+    // hookInput already parsed earlier for logging
+    if (!hookInput) {
+      log('WARN: Empty input data - allowing operation');
       console.log(JSON.stringify({ continue: true }));
       process.exit(0);
     }
 
-    const hookInput = JSON.parse(inputData);
     log(`PreToolUse triggered: ${JSON.stringify(hookInput)}`);
 
     // Check for bypass permissions mode - log but still enforce PM constraints

@@ -5,46 +5,11 @@ const path = require('path');
 const os = require('os');
 const { execSync } = require('child_process');
 const { getSetting } = require('./lib/config-loader');
+const { initializeHook } = require('./lib/logging');
 
 function main() {
-  const logDir = path.join(os.homedir(), '.claude', 'logs');
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-git-enforcement.log`);
-
-  // Ensure log directory exists
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-
-  function cleanOldLogs(logDir) {
-    try {
-      const files = fs.readdirSync(logDir);
-      const now = Date.now();
-      const maxAge = 24 * 60 * 60 * 1000; // 24 hours
-
-      for (const file of files) {
-        if (!file.endsWith('.log')) continue;
-
-        const filePath = path.join(logDir, file);
-        const stats = fs.statSync(filePath);
-
-        if (now - stats.mtimeMs > maxAge) {
-          fs.unlinkSync(filePath);
-        }
-      }
-    } catch (error) {
-      // Silent fail - don't block hook execution
-    }
-  }
-
-  // Clean old logs at hook start
-  cleanOldLogs(logDir);
-
-  function log(message) {
-    const timestamp = new Date().toISOString();
-    const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync(logFile, logMessage);
-  }
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('git-enforcement');
 
   function loadConfiguration() {
     log('Loading configuration via unified config-loader');
@@ -367,29 +332,8 @@ ${filteredMessage}
   }
 
   try {
-    // Parse input from multiple sources
-    let inputData = '';
-
-    if (process.argv[2]) {
-      inputData = process.argv[2];
-    } else if (process.env.HOOK_INPUT) {
-      inputData = process.env.HOOK_INPUT;
-    } else if (!process.stdin.isTTY) {
-      try {
-        inputData = fs.readFileSync(0, 'utf8');
-      } catch (stdinError) {
-        log(`WARN: Failed to read stdin: ${stdinError.message} - allowing operation`);
-        console.log(JSON.stringify({
-          hookSpecificOutput: {
-            hookEventName: "PreToolUse",
-            permissionDecision: "allow"
-          }
-        }));
-        process.exit(0);
-      }
-    }
-
-    if (!inputData.trim()) {
+    // hookInput already parsed earlier for logging
+    if (!hookInput) {
       console.log(JSON.stringify({
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
@@ -399,7 +343,6 @@ ${filteredMessage}
       process.exit(0);
     }
 
-    const hookInput = JSON.parse(inputData);
     log(`Git enforcement check triggered: ${JSON.stringify(hookInput)}`);
 
     // Extract tool and parameters

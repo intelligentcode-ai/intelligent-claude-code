@@ -103,9 +103,54 @@ function createLogger(hookName, hookInput = null) {
   };
 }
 
+/**
+ * Initialize hook with input parsing and logging
+ * Consolidates duplicated initialization code across all hooks
+ *
+ * @param {string} hookName - Name of the hook (e.g., 'pm-constraints-enforcement')
+ * @returns {Object} Object containing { log, hookInput }
+ */
+function initializeHook(hookName) {
+  // Parse hook input from multiple sources
+  let hookInput;
+  try {
+    let inputData = '';
+
+    // Check argv[2] first
+    if (process.argv[2]) {
+      inputData = process.argv[2];
+    }
+    // Check HOOK_INPUT environment variable
+    else if (process.env.HOOK_INPUT) {
+      inputData = process.env.HOOK_INPUT;
+    }
+    // Read from stdin if available
+    else if (!process.stdin.isTTY) {
+      try {
+        inputData = fs.readFileSync(0, 'utf8');
+      } catch (stdinError) {
+        // Silent fail for stdin read
+      }
+    }
+
+    // Parse JSON if data available
+    if (inputData.trim()) {
+      hookInput = JSON.parse(inputData);
+    }
+  } catch (error) {
+    // If parsing fails, hookInput will be undefined
+  }
+
+  // Create logger with normalized project path
+  const log = createLogger(hookName, hookInput);
+
+  return { log, hookInput };
+}
+
 module.exports = {
   getLogDir,
   ensureLogDir,
   cleanOldLogs,
-  createLogger
+  createLogger,
+  initializeHook
 };

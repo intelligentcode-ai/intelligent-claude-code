@@ -11,22 +11,16 @@ const fs = require('fs');
 const path = require('path');
 
 // Shared libraries
-const { createLogger } = require('./lib/logging');
-const { parseHookInput, extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
+const { initializeHook } = require('./lib/logging');
+const { extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
-  // Create initial logger without project path for parsing
-  const initialLog = createLogger('summary-enforcement');
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('summary-enforcement');
 
   try {
-    // Parse hook input
-    const hookInput = parseHookInput(initialLog);
-
-    // Create logger with project path now that we have hookInput
-    const log = createLogger('summary-enforcement', hookInput);
-
     if (!hookInput) {
       return allowOperation(log, true); // Suppress output
     }

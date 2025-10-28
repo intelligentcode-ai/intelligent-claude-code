@@ -3,22 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { initializeHook } = require('./lib/logging');
 
 function main() {
-  const logDir = path.join(os.homedir(), '.claude', 'logs');
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-pre-agenttask-validation.log`);
-
-  // Ensure log directory exists
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-
-  function log(message) {
-    const timestamp = new Date().toISOString();
-    const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync(logFile, logMessage);
-  }
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('pre-agenttask-validation');
 
   function checkToolHistory(targetTool, recentTools) {
     // Check recent tool history for specific tool usage
@@ -51,29 +40,12 @@ function main() {
   }
 
   try {
-    // Parse input from multiple sources
-    let inputData = '';
-
-    if (process.argv[2]) {
-      inputData = process.argv[2];
-    } else if (process.env.HOOK_INPUT) {
-      inputData = process.env.HOOK_INPUT;
-    } else if (!process.stdin.isTTY) {
-      try {
-        inputData = fs.readFileSync(0, 'utf8');
-      } catch (stdinError) {
-        log(`WARN: Failed to read stdin: ${stdinError.message} - allowing operation`);
-        console.log(JSON.stringify({ continue: true }));
-        process.exit(0);
-      }
-    }
-
-    if (!inputData.trim()) {
+    // hookInput already parsed earlier for logging
+    if (!hookInput) {
       console.log(JSON.stringify({ continue: true }));
       process.exit(0);
     }
 
-    const hookInput = JSON.parse(inputData);
     log(`Pre-AgentTask validation triggered: ${JSON.stringify(hookInput)}`);
 
     // Extract tool and parameters

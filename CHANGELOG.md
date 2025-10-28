@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.41] - 2025-10-28
+
+### Refactored
+- **Hook Initialization Library**: Eliminated code duplication by consolidating hook initialization into shared initializeHook() function
+  - Created initializeHook(hookName) in logging.js
+  - Function handles input parsing from stdin/argv/env
+  - Returns { log, hookInput } object for immediate use
+  - Updated all 15 hooks to use shared initialization function
+  - Reduced maintenance points from 15 to 1
+  - Zero code duplication for hook initialization logic
+  - DRY principle properly applied
+
+---
+
+## [8.20.40] - 2025-10-28
+
+### Fixed
+- **Complete Hook Logging Migration**: Updated ALL remaining 11 hooks to use createLogger() with normalized project paths
+  - Critical fix: pm-constraints-enforcement.js now creates project-specific log files
+  - This was causing monitoring operations to have no logs (logs went to wrong file)
+  - Updated hooks: agent-infrastructure-protection, agent-marker, context-injection, git-enforcement, pm-constraints-enforcement, post-agent-file-validation, pre-agenttask-validation, stop, subagent-stop, task-tool-execution-reminder, user-prompt-submit
+  - All 15 hooks now use consistent createLogger() pattern (4 from v8.20.39 + 11 from this fix)
+  - Resolves user frustration: "I WAS RUNNING MAKE INSTALL MULTIPLE TIMES!" - src/hooks/ files finally updated
+
+---
+
 ## [8.20.39] - 2025-10-28
 
 ### Fixed
