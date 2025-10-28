@@ -5,14 +5,16 @@
 ## Core Enforcement Rules
 
 ### Template Requirements
-**TEMPLATE SOURCE:** Only templates from hierarchy:
+**EXECUTABLE AGENTTASK TEMPLATES (Passed to Task tool):**
 - `nano-agenttask-template.yaml` (0-2 points)
-- `tiny-agenttask-template.yaml` (3-5 points) 
+- `tiny-agenttask-template.yaml` (3-5 points)
 - `medium-agenttask-template.yaml` (6-15 points)
-- `large-agenttask-template.yaml` (16-30 points)
-- `mega-agenttask-template.yaml` (30+ points)
 
-**BLOCKED:** AgentTask creation without templates, unresolved placeholders, runtime config lookups, manual AgentTask structures
+**STORY TEMPLATES (Written to ./stories/):**
+- Work >15 points becomes STORY, not AgentTask
+- Large/Mega templates deprecated for AgentTask execution
+
+**BLOCKED:** AgentTask creation without templates, unresolved placeholders, runtime config lookups, manual AgentTask structures, AgentTasks >15 points
 
 ### Placeholder Resolution
 **COMMON PLACEHOLDERS:**

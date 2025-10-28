@@ -95,10 +95,11 @@ make install MCP_CONFIG=./config/mcps.json  # Install with MCP servers
 The system implements a **14-role virtual development team** that operates through natural @Role communication patterns:
 
 1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for ANY technology domain when expertise is needed
-2. **AgentTask Engine**: Product Requirement Blueprint system with 5 complexity tiers (Nano, Tiny, Medium, Large, Mega) for single-pass execution
-3. **Memory System**: File-based memory storage (version-controlled in `memory/`) with automatic topic-based organization and pattern capture
-4. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
-5. **Behavioral Enforcement**: Mandatory patterns with auto-correction and AgentTask validation
+2. **AgentTask Engine**: Product Requirement Blueprint system with executable tiers (Nano, Tiny, Medium) passed directly to Task tool
+3. **Story System**: Work >15 points becomes STORY in ./stories/ for breakdown into executable AgentTasks
+4. **Memory System**: File-based memory storage (version-controlled in `memory/`) with automatic topic-based organization and pattern capture
+5. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
+6. **Behavioral Enforcement**: Mandatory patterns with auto-correction and AgentTask validation
 
 ### Your Project Structure
 ```
@@ -194,11 +195,15 @@ The system adapts to YOUR structure via CLAUDE.md configuration!
 The system uses Product Requirement Blueprints for single-pass execution with full project context:
 
 **AgentTask Complexity Tiers**:
-- **Nano (0-2 points)**: Trivial one-line changes
-- **Tiny (3-5 points)**: Simple single-file tasks
-- **Medium (6-15 points)**: Standard multi-file features
-- **Large (16-30 points)**: Complex features with sub-AgentTasks
-- **Mega (30+ points)**: System-wide changes
+- **Nano (0-2 points)**: Trivial one-line changes - passed to Task tool directly
+- **Tiny (3-5 points)**: Simple single-file tasks - passed to Task tool directly
+- **Medium (6-15 points)**: Standard multi-file features - passed to Task tool directly
+- **Large (16-30 points)**: Create STORY in ./stories/ for breakdown
+- **Mega (30+ points)**: Create STORY in ./stories/ for breakdown
+
+**Execution Model**:
+- AgentTasks ≤15 points: Context passed directly to Task tool (NO file writes)
+- Work >15 points: Written as STORY to ./stories/ for PM breakdown
 
 **AgentTask Features**:
 1. **Context Integration**: CLAUDE.md, memory search, best practices

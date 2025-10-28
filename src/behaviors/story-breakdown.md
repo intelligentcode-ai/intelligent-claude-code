@@ -65,18 +65,19 @@ Dynamic specialist architect creation:
 ## AgentTask Generation
 
 Size management:
-- All stories broken into nano/tiny AgentTasks ≤5 points only
-- No large AgentTasks: All work broken into multiple nano/tiny AgentTasks ≤5 points each
-- Maximum AgentTask size: 5 points (tiny) - no exceptions
+- Stories broken into nano/tiny/medium AgentTasks ≤15 points
+- Maximum executable AgentTask: 15 points (medium) - no exceptions
+- Work >15 points: Create STORY in ./stories/ for breakdown first
 - Sequential numbering: AgentTask-001, AgentTask-002, AgentTask-003 under same parent story
 
 Auto-breakdown process:
 1. Analyze complexity: Calculate total story complexity points
 2. Sequential thinking: Use mcp__sequential-thinking__sequentialthinking for story analysis with project context
-3. Breakdown enforcement: Decompose into nano/tiny AgentTasks ≤5 points using sequential thinking
-4. Generate sub-AgentTasks: Each ≤5 points with specific focus and project scope awareness
+3. Breakdown enforcement: Decompose into nano/tiny/medium AgentTasks ≤15 points using sequential thinking
+4. Generate sub-AgentTasks: Each ≤15 points with specific focus and project scope awareness
 5. Sequential numbering: Under same parent with dependencies documented
-6. Fail-safe: If auto-breakdown fails, block with manual breakdown request
+6. Direct execution: Pass AgentTask context to Task tool (NO file writes)
+7. Fail-safe: If auto-breakdown fails, block with manual breakdown request
 
 ## Story Selection
 
