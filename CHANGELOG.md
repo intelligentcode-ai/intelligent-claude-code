@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.31] - 2025-10-28
+
+### Fixed
+- **Config Integration Bug**: Fixed main-scope-enforcement.js to properly use config-based infrastructure protection
+  - Hook was NOT using the config system - hardcoded patterns ignored icc.config.default.json configuration
+  - Replaced hardcoded command lists with getSetting() calls to enforcement.infrastructure_protection settings
+  - Read operations now loaded from enforcement.infrastructure_protection.read_operations (kubectl get, describe, logs, etc.)
+  - Write operations now loaded from enforcement.infrastructure_protection.write_operations (kubectl apply, patch, scale, etc.)
+  - Imperative destructive operations now loaded from enforcement.infrastructure_protection.imperative_destructive (kubectl delete, drain, etc.)
+  - Enables project-specific overrides via icc.config.json without modifying hook code
+
+### Technical Details
+- **src/hooks/main-scope-enforcement.js (lines 75-107)**: isReadOnlyInfrastructureCommand() now loads read_operations from config
+- **src/hooks/main-scope-enforcement.js (lines 132-183)**: isModifyingInfrastructureCommand() now loads write_operations and imperative_destructive from config
+- **Pattern Composition**: Config-based patterns combined with additional patterns for comprehensive coverage
+- **Backward Compatibility**: Default fallback arrays ensure functionality if config unavailable
+- **Project Customization**: Projects can override lists in their own icc.config.json for specific requirements
+
+---
+
 ## [8.20.30] - 2025-10-28
 
 ### Fixed
