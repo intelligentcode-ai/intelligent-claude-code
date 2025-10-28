@@ -103,13 +103,46 @@ function main() {
   }
 
   /**
+   * Extract embedded command from SSH command string
+   * @param {string} sshCommand - SSH command to parse
+   * @returns {string|null} Embedded command or null if not found
+   */
+  function extractSSHEmbeddedCommand(sshCommand) {
+    // Match patterns like: ssh user@host "command" or ssh -i key user@host 'command'
+    const singleQuoteMatch = sshCommand.match(/\bssh\b[^']*'([^']+)'/);
+    if (singleQuoteMatch) {
+      return singleQuoteMatch[1];
+    }
+
+    const doubleQuoteMatch = sshCommand.match(/\bssh\b[^"]*"([^"]+)"/);
+    if (doubleQuoteMatch) {
+      return doubleQuoteMatch[1];
+    }
+
+    return null;
+  }
+
+  /**
    * Check if command is a modifying infrastructure operation
    */
   function isModifyingInfrastructureCommand(command) {
+    const cmd = command.trim();
+
+    // CRITICAL: Check SSH commands FIRST - extract and validate embedded command
+    if (cmd.startsWith('ssh ')) {
+      const embeddedCommand = extractSSHEmbeddedCommand(cmd);
+      if (embeddedCommand) {
+        // Recursively check if embedded command is modifying
+        return isModifyingInfrastructureCommand(embeddedCommand);
+      }
+      // SSH without detectable embedded command - block by default (can execute arbitrary commands)
+      return true;
+    }
+
     // Commands that MODIFY external systems (blocked in main scope)
     const modifyingCommands = [
-      // SSH (always modifying - can execute commands)
-      'ssh', 'scp', 'rsync',
+      // SCP and rsync (SSH-related file transfer - always modifying)
+      'scp', 'rsync',
       // Kubernetes modifications
       'kubectl apply', 'kubectl create', 'kubectl delete', 'kubectl edit', 'kubectl patch', 'kubectl scale',
       'kubectl rollout', 'kubectl set', 'kubectl expose', 'kubectl label', 'kubectl annotate',
@@ -131,8 +164,6 @@ function main() {
       'mysql -e "INSERT', 'mysql -e "UPDATE', 'mysql -e "DELETE', 'mysql -e "DROP',
       'psql -c "INSERT', 'psql -c "UPDATE', 'psql -c "DELETE', 'psql -c "DROP'
     ];
-
-    const cmd = command.trim();
 
     // Check if command starts with modifying operation
     for (const modifying of modifyingCommands) {

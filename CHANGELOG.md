@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.30] - 2025-10-28
+
+### Fixed
+- **Critical SSH Enforcement Bypass**: Fixed security vulnerability where SSH-wrapped kubectl commands bypassed enforcement
+  - SSH commands with embedded modifying operations (kubectl delete, rollout, etc.) now properly BLOCKED
+  - SSH commands with embedded read-only operations (kubectl get, logs) now properly ALLOWED
+  - Recursive command parsing extracts and validates embedded commands in SSH wrappers
+  - Prevents execution of: `ssh user@host "kubectl delete pod test"`, `ssh ... "kubectl rollout restart ..."`
+
+### Security
+- **SSH Command Parsing**: Implements intelligent SSH command extraction and recursive validation
+  - Extracts commands from both single and double quoted SSH patterns
+  - Recursively validates embedded commands against modifying operation list
+  - Blocks SSH without detectable embedded command (arbitrary command execution risk)
+- **Test Coverage**: 8 test cases verified including SSH+kubectl combinations, direct commands, and documentation safety
+
+### Technical Details
+- **src/hooks/main-scope-enforcement.js (lines 105-123)**: Added extractSSHEmbeddedCommand() function
+- **src/hooks/main-scope-enforcement.js (lines 128-140)**: SSH detection moved to FIRST check with recursive validation
+- **Pattern Matching**: Regex patterns match `ssh ... "command"` and `ssh ... 'command'` variations
+- **Recursion Safety**: Embedded command validated through same isModifyingInfrastructureCommand() function
+- **Documentation Safe**: Echo, cat, and other documentation commands remain ALLOWED
+
+---
+
 ## [8.20.29] - 2025-10-28
 
 ### Fixed
