@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.33] - 2025-10-28
+
+### Fixed
+- **Merge Conflict Resolution**: Resolved 28 merge conflicts by accepting server changes
+  - Synchronized local main with origin/main (resolved 250/272 commit divergence)
+  - All behavioral patterns, hooks, and templates updated to server versions
+  - Documentation patterns added for future conflict resolution
+
+---
+
 ## [8.20.32] - 2025-10-28
 
 ### Changed
