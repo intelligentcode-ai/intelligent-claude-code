@@ -112,6 +112,8 @@ function main() {
       'ssh', 'scp', 'rsync',
       // Kubernetes modifications
       'kubectl apply', 'kubectl create', 'kubectl delete', 'kubectl edit', 'kubectl patch', 'kubectl scale',
+      'kubectl rollout', 'kubectl set', 'kubectl expose', 'kubectl label', 'kubectl annotate',
+      'kubectl replace', 'kubectl drain', 'kubectl cordon', 'kubectl uncordon', 'kubectl taint',
       // Docker modifications
       'docker run', 'docker start', 'docker stop', 'docker rm', 'docker build', 'docker push',
       // Infrastructure as code
