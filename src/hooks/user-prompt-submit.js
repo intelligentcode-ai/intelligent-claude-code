@@ -63,6 +63,29 @@ function main() {
       process.exit(0);
     }
 
+    // MARKER CLEANUP - Delete stale agent markers for current project
+    // This ensures PM constraints correctly detect main scope context
+    try {
+      const crypto = require('crypto');
+      const projectRoot = claudeInput.cwd || process.cwd();
+      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const sessionId = claudeInput.session_id;
+
+      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+
+      if (fs.existsSync(markerDir)) {
+        const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+        if (fs.existsSync(markerFile)) {
+          fs.unlinkSync(markerFile);
+          log(`Deleted stale marker file for project ${projectRoot}`);
+        }
+      }
+    } catch (markerError) {
+      log(`Marker cleanup error: ${markerError.message}`);
+      // Non-fatal - continue execution
+    }
+
     // Get user prompt from input
     const userPrompt = claudeInput.user_prompt || '';
 

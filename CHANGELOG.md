@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.34] - 2025-10-28
+
+### Added
+- **Best Practice**: Promoted version-bump-and-release workflow to best-practices/git/
+  - Documented complete version bump workflow with gh CLI integration
+  - Includes branch protection, git privacy, and GitHub authentication patterns
+  - Proven workflow used successfully 2+ times
+
+### Fixed
+- **UserPromptSubmit Hook Marker Cleanup**: Added automatic stale agent marker cleanup
+  - Deletes project-specific agent markers at start of each user prompt
+  - Ensures PM constraints hook correctly detects main scope context
+  - Prevents stale markers from bypassing enforcement (agent_count > 0)
+  - Non-fatal cleanup with error logging for resilience
+  - Addresses critical bug where stale markers caused enforcement bypass
+
+---
+
 ## [8.20.33] - 2025-10-28
 
 ### Fixed
