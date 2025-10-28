@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.35] - 2025-10-29
+
+### Fixed
+- **Hook Registration Structure**: Corrected hooks.json structure to ensure all 15 hooks are properly registered
+  - Consolidated all PreToolUse hooks into single array (was registering only first hook per event)
+  - Added required matcher field for PreToolUse hooks
+  - Removed invalid failureMode field from hook configurations
+  - Set executable permissions (755) for all 15 hook scripts
+  - Documented --allow-dangerously-skip-permissions flag for development
+  - Root cause: Array structure caused only first hook per event to register (11 of 15 hooks were non-functional)
+  - Impact: All 15 behavioral hooks now properly registered and functional
+
+---
+
 ## [8.20.41] - 2025-10-28
 
 ### Refactored
