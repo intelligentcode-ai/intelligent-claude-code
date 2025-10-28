@@ -857,6 +857,7 @@ To execute blocked operation:
     }
 
     if (!inputData.trim()) {
+      log('WARN: Empty input data received after checking argv, env, and stdin - allowing operation');
       console.log(JSON.stringify({ continue: true }));
       process.exit(0);
     }

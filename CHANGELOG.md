@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.38] - 2025-10-28
+
+### Fixed
+- **Silent Exit Logging**: Added warning log when empty input data causes silent exit in pm-constraints-enforcement.js
+  - Log appears before exit at line 860 to explain why operation was allowed
+  - Message indicates empty input received after checking argv, env, and stdin
+  - Enables diagnosis of monitoring operations that result in empty input
+
+---
+
 ## [8.20.37] - 2025-10-28
 
 ### Fixed
