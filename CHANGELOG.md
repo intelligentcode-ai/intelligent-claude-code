@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.35] - 2025-10-28
+
+### Added
+- **Hook Investigation**: Comprehensive analysis of hook invocation failure for monitoring window operations
+  - Identified root cause: Claude Code's hook system is project-scoped, not truly global
+  - Documented multi-window behavior and project context isolation
+  - Created memory entry for hook invocation project scoping pattern
+  - Report stored in summaries/AGENTTASK-016-hook-invocation-failure-analysis.md
+- **Memory Entry**: Hook invocation project scoping pattern
+  - Documents project-scoped hook invocation architecture
+  - Explains why hooks don't trigger across different Claude Code windows
+  - Provides solutions for ensuring project context detection
+  - Stored in memory/hooks/hook-invocation-project-scoping.md
+
+---
+
 ## [8.20.34] - 2025-10-28
 
 ### Added
