@@ -1,5 +1,7 @@
-# Large AgentTask Template - Complex Features (16-30 points)
-# For sophisticated multi-component features requiring coordination
+# Large AgentTask Template - DEPRECATED
+# DO NOT USE: Work >15 points must become STORY in ./stories/ for breakdown
+# Maximum executable AgentTask: 15 points (medium)
+# This template preserved for reference only
 
 git_privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"

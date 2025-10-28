@@ -95,8 +95,8 @@ make install MCP_CONFIG=./config/mcps.json  # Install with MCP servers
 The system implements a **14-role virtual development team** that operates through natural @Role communication patterns:
 
 1. **Role System**: 14 specialized roles (@PM, @Architect, @Developer, etc.) with unlimited dynamic specialist creation for ANY technology domain when expertise is needed
-2. **AgentTask Engine**: Product Requirement Blueprint system with executable tiers (Nano, Tiny, Medium) passed directly to Task tool
-3. **Story System**: Work >15 points becomes STORY in ./stories/ for breakdown into executable AgentTasks
+2. **AgentTask Engine**: Executable AgentTasks (Nano 0-2, Tiny 3-5, Medium 6-15 pts) passed directly to Task tool
+3. **Story System**: Work >15 points MUST become STORY in ./stories/ for PM+Architect breakdown
 4. **Memory System**: File-based memory storage (version-controlled in `memory/`) with automatic topic-based organization and pattern capture
 5. **Configuration Hierarchy**: Embedded → Project → User → System defaults with dynamic loading
 6. **Behavioral Enforcement**: Mandatory patterns with auto-correction and AgentTask validation
@@ -112,10 +112,7 @@ your-project/                  # YOUR project (any structure you want!)
 ├── src/                       # Your code
 ├── memory/                    # Version-controlled learning storage
 │   └── [topic]/               # Organized by topic
-├── agenttasks/                # Version-controlled AgentTasks
-│   ├── ready/                 # Ready to execute
-│   └── completed/             # Executed AgentTasks
-└── stories/                   # User stories for AgentTask generation (NEW!)
+└── stories/                   # User stories for breakdown (work >15 pts)
     └── drafts/                # Work-in-progress stories
 ```
 
