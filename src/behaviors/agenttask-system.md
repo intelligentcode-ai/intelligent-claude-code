@@ -13,34 +13,37 @@
 ### Work Classification
 
 <work_classification id="WORK-CLASSIFICATION">
-  <ephemeral_tasks points="0-5">
-    <description>nano/tiny AgentTasks - in-memory only</description>
+  <executable_tasks points="0-15">
+    <description>Nano/Tiny/Medium AgentTasks - passed directly to Task tool</description>
     <patterns>
+      <pattern>nano (0-2 pts): Trivial one-line changes</pattern>
+      <pattern>tiny (3-5 pts): Simple single-file tasks</pattern>
+      <pattern>medium (6-15 pts): Multi-file features</pattern>
       <pattern>Create in-memory AgentTask from template</pattern>
       <pattern>Pass complete context directly to Task tool</pattern>
       <pattern>No file creation or storage required</pattern>
       <pattern>Focus on immediate execution and completion</pattern>
     </patterns>
-  </ephemeral_tasks>
+  </executable_tasks>
 
-  <persistent_work points="6+">
-    <description>Must become STORY/BUG first with file storage</description>
+  <story_work points="16+">
+    <description>Work >15 points MUST become STORY in ./stories/</description>
     <patterns>
-      <pattern>Must become STORY or BUG first</pattern>
-      <pattern>File storage in stories/ or bugs/ directories</pattern>
-      <pattern>Story breakdown into multiple nano/tiny AgentTasks</pattern>
-      <pattern>Each breakdown task follows ephemeral pattern</pattern>
+      <pattern>Create STORY file in ./stories/ directory</pattern>
+      <pattern>PM + Architect breakdown into ≤15 point AgentTasks</pattern>
+      <pattern>Each breakdown task follows executable pattern (nano/tiny/medium)</pattern>
+      <pattern>NO AgentTasks >15 points allowed</pattern>
     </patterns>
-  </persistent_work>
+  </story_work>
 
-  <context_requirement>Complete embedding with resolved placeholders for all sizes</context_requirement>
+  <context_requirement>Complete embedding with resolved placeholders for all executable sizes</context_requirement>
 </work_classification>
 
 ### In-Memory Pattern
-**No File Storage**: AgentTasks 0-5 points exist only in memory
+**No File Storage**: Executable AgentTasks (0-15 points) exist only in memory
 **Direct Deployment**: Template → Context embedding → Task tool invocation
 **Ephemeral Nature**: AgentTask content passed as context, not stored as file
-**File Operations**: Only for Stories (6+ points) requiring breakdown
+**File Operations**: Only for Stories (>15 points) written to ./stories/
 
 ### Creation Flow
 **Process**: Work detection → Memory search → Template selection → Context embedding → Direct Task tool deployment
@@ -136,12 +139,12 @@ Wrong template → Recalculate, use correct. Missing context → Gather before p
   </common_placeholders>
 
   <template_source>
-    <tier name="nano" points="0-2"/>
-    <tier name="tiny" points="3-5"/>
-    <tier name="medium" points="6-15"/>
-    <tier name="large" points="16-30"/>
-    <tier name="mega" points="30+"/>
-    <note>Use templates from hierarchy</note>
+    <tier name="nano" points="0-2" status="executable"/>
+    <tier name="tiny" points="3-5" status="executable"/>
+    <tier name="medium" points="6-15" status="executable"/>
+    <tier name="large" points="16-30" status="deprecated">DEPRECATED - create STORY instead</tier>
+    <tier name="mega" points="30+" status="deprecated">DEPRECATED - create STORY instead</tier>
+    <note>Use executable templates from hierarchy (nano/tiny/medium only)</note>
   </template_source>
 </template_resolution>
 

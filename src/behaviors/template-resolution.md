@@ -33,12 +33,12 @@
 | **Project** | `[PROJECT_OVERVIEW]` | Project description from CLAUDE.md |
 
 ### Template Source
-**MANDATORY:** Only use templates from hierarchy:
+**MANDATORY:** Only use executable AgentTask templates from hierarchy:
 - `nano-agenttask-template.yaml` (0-2 points)
 - `tiny-agenttask-template.yaml` (3-5 points)
 - `medium-agenttask-template.yaml` (6-15 points)
-- `large-agenttask-template.yaml` (16-30 points)
-- `mega-agenttask-template.yaml` (30+ points)
+
+**Work >15 points:** Create STORY in ./stories/ instead of AgentTask
 
 ### Resolution Standards
 **BEFORE AGENT execution:**

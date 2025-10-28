@@ -19,18 +19,19 @@
 - EPIC-001-virtual-team-enhancement-2025-08-26.md
 - STORY-001-user-authentication-2025-08-26.md
 - BUG-005-naming-format-inconsistency-2025-08-26.md
-- STORY-001-AGENTTASK-001-implement-auth-backend-2025-08-26.agenttask.yaml
+
+**NOTE:** AgentTasks (≤15 pts) no longer use file-based naming - context passed directly to Task tool
 
 ## Sequential Numbering
 
 ### Number Sequences
 - **EPIC/STORY/BUG:** Global sequence across project
-- **AGENTTASK:** Parent-scoped sequence (STORY-001-AGENTTASK-001, STORY-001-AGENTTASK-002)
+- **AGENTTASK:** Logical numbering only (no files created)
 
 ### Directory Scanning
 **EPIC/STORY:** Search `stories/` directory
-**BUG:** Search `bugs/` directory  
-**AGENTTASK:** Search `agenttasks/ready/` and `agenttasks/completed/` directories
+**BUG:** Search `bugs/` directory
+**AGENTTASK:** No file scanning (passed to Task tool directly)
 
 ### Number Generation Process
 1. **Scope Determination**: Global (EPIC/STORY/BUG) vs Parent-scoped (AGENTTASK)
@@ -43,11 +44,12 @@
 
 ### Pre-Creation Validation
 **CHECK:**
-- Category in allowed list (EPIC, STORY, BUG, AGENTTASK)
+- Category in allowed list (EPIC, STORY, BUG)
 - Number format (zero-padded, sequential)
 - Title format (lowercase, hyphens only)
 - Date format (YYYY-MM-DD)
-- Parent reference exists (for AGENTTASKs)
+
+**NOTE:** AGENTTASK category no longer creates files - validation not needed
 
 ### Auto-Correction
 **COMMON FIXES:**
@@ -71,10 +73,10 @@
 - Follow standard directory organization
 
 ### With Work Item Creation
-- Generate compliant names before file creation
-- Validate parent references for AGENTTASKs
+- Generate compliant names before file creation (STORY, BUG, EPIC only)
 - Ensure uniqueness across project scope
 - Apply consistent formatting rules
+- AgentTasks use logical naming only (no file creation)
 
 ### With Memory System
 - Store naming patterns and corrections

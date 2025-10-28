@@ -10,11 +10,14 @@
 
 ## Size Mapping
 
-**nano (0-2 pts)** → workflow_settings.nano.*
-**tiny (3-5 pts)** → workflow_settings.tiny.*
-**medium (6-15 pts)** → workflow_settings.medium.*
-**large (16-30 pts)** → workflow_settings.large.*
-**mega (30+ pts)** → workflow_settings.mega.*
+**EXECUTABLE AGENTTASKS (Passed to Task tool):**
+- **nano (0-2 pts)** → workflow_settings.nano.*
+- **tiny (3-5 pts)** → workflow_settings.tiny.*
+- **medium (6-15 pts)** → workflow_settings.medium.*
+
+**DEPRECATED (Work >15 pts becomes STORY):**
+- **large (16-30 pts)** → DEPRECATED - create STORY instead
+- **mega (30+ pts)** → DEPRECATED - create STORY instead
 
 ## Integration
 

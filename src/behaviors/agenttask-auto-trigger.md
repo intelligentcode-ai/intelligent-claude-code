@@ -12,20 +12,22 @@ Auto-detect work and generate AgentTask using templates.
 ## Core Rules
 
 **Work Detection**: Implementation intent triggers AgentTask generation
-**Size Limits**: ≤5 points (nano/tiny), larger work becomes STORY/BUG first
+**Size Limits**: ≤15 points (nano/tiny/medium), larger work becomes STORY first
 **Context**: Memory-first approach with embedded patterns
 
 ## Generation Process
 
 **Flow**: Work detection → Memory search → Template selection → Context embedding → Agent execution
 **Requirements**: Complete context, memory patterns, resolved placeholders
-**Templates**: nano (0-2 pts), tiny (3-5 pts) only
+**Templates**: nano (0-2 pts), tiny (3-5 pts), medium (6-15 pts)
+**Execution**: Pass to Task tool directly (NO file writes)
 
 ## Integration Points
 
-**Deduplication**: Check existing AgentTasks before creation
+**Deduplication**: Check existing stories/AgentTasks before creation
 **Memory Integration**: Embed relevant patterns in AgentTask context
 **Context Loading**: Complete project context with configuration values
+**Story Creation**: Work >15 points written to ./stories/ for breakdown
 
 ---
-*AgentTask auto-trigger with breakdown enforcement and nano/tiny restrictions*
+*AgentTask auto-trigger with breakdown enforcement and 15-point maximum*

@@ -65,18 +65,25 @@ Dynamic specialist architect creation:
 ## AgentTask Generation
 
 Size management:
-- All stories broken into nano/tiny AgentTasks ≤5 points only
-- No large AgentTasks: All work broken into multiple nano/tiny AgentTasks ≤5 points each
-- Maximum AgentTask size: 5 points (tiny) - no exceptions
-- Sequential numbering: AgentTask-001, AgentTask-002, AgentTask-003 under same parent story
+- Stories broken into nano/tiny/medium AgentTasks ≤15 points only
+- Maximum executable AgentTask: 15 points (medium) - ABSOLUTE limit
+- Work >15 points: MUST become STORY in ./stories/ for breakdown first
+- NO AgentTask files written - context passed directly to Task tool
+- Sequential numbering: AgentTask-001, AgentTask-002, AgentTask-003 (logical only, no files)
 
 Auto-breakdown process:
 1. Analyze complexity: Calculate total story complexity points
 2. Sequential thinking: Use mcp__sequential-thinking__sequentialthinking for story analysis with project context
-3. Breakdown enforcement: Decompose into nano/tiny AgentTasks ≤5 points using sequential thinking
-4. Generate sub-AgentTasks: Each ≤5 points with specific focus and project scope awareness
-5. Sequential numbering: Under same parent with dependencies documented
-6. Fail-safe: If auto-breakdown fails, block with manual breakdown request
+3. Breakdown enforcement: Decompose into nano/tiny/medium AgentTasks ≤15 points using sequential thinking
+4. Generate sub-AgentTasks: Each ≤15 points with specific focus and project scope awareness
+5. Sequential numbering: Logical numbering under parent (no file writes)
+6. Direct execution: Pass complete AgentTask context to Task tool immediately
+7. Fail-safe: If auto-breakdown fails, block with manual breakdown request
+
+Execution model:
+- Nano/Tiny/Medium (≤15 pts): Pass context directly to Task tool for immediate execution
+- Large work (>15 pts): Write STORY to ./stories/ for PM+Architect breakdown
+- NO AgentTask files created - all execution via in-memory context passed to Task tool
 
 ## Story Selection
 
@@ -130,4 +137,4 @@ Simple invocation patterns:
 - "@PM analyze the stories and create AgentTasks"
 
 ---
-*Story breakdown with enforcement and nano/tiny AgentTask restrictions*
+*Story breakdown with 15-point maximum and direct Task tool execution*

@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.32] - 2025-10-28
+
+### Changed
+- **AgentTask Execution Model**: Updated behavioral patterns to implement new execution model
+  - Only Nano (0-2 pts), Tiny (3-5 pts), Medium (6-15 pts) AgentTasks are executable
+  - Executable AgentTasks passed DIRECTLY to Task tool - NO file writes
+  - Work >15 points becomes STORY in ./stories/ directory for breakdown
+  - Large (16-30 pts) and Mega (30+ pts) templates deprecated for AgentTask execution
+  - Maximum executable AgentTask complexity: 15 points
+
+### Updated
+- **Behavioral Patterns**: Updated all AgentTask-related behavioral patterns
+  - src/behaviors/agenttask-creation-system.md: Updated size limits and execution flow
+  - src/behaviors/agenttask-auto-trigger.md: Updated to 15-point maximum
+  - src/behaviors/agenttask-enforcement.md: Added size enforcement rules
+  - src/behaviors/story-breakdown.md: Updated AgentTask generation process
+  - src/behaviors/shared-patterns/template-enforcement.md: Separated executable vs story templates
+  - src/behaviors/shared-patterns/template-loading.md: Clarified executable template tiers
+  - src/behaviors/template-resolution.md: Updated template source section
+
+- **Documentation**: Updated CLAUDE.md to reflect new execution model
+  - AgentTask Engine description updated to show executable tiers
+  - Added Story System explanation for work >15 points
+  - Complexity Tiers section updated with execution model details
+  - Clarified direct Task tool invocation (no file writes)
+
+### Technical Details
+- **Execution Flow**: AgentTasks ≤15 points → Context passed to Task tool directly
+- **Story Creation**: Work >15 points → Written to ./stories/ for PM breakdown
+- **Template Deprecation**: large-agenttask-template.yaml and mega-agenttask-template.yaml deprecated for AgentTask execution
+- **Quality Enforcement**: Size limits enforced through behavioral patterns, not hooks
+
+---
+
 ## [8.20.31] - 2025-10-28
 
 ### Fixed
