@@ -183,7 +183,6 @@
     - git-enforcement.js
     - main-scope-enforcement.js
     - pm-constraints-enforcement.js
-    - post-agent-file-validation.js
     - pre-agenttask-validation.js
     - project-scope-enforcement.js
     - stop.js
@@ -274,7 +273,6 @@
           SubagentStop:
             - hooks:
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/subagent-stop.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/post-agent-file-validation.js', timeout: 5000 }
           Stop:
             - hooks:
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/stop.js', timeout: 5000 }

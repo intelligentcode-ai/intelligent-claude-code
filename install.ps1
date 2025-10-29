@@ -205,7 +205,6 @@ function Register-ProductionHooks {
                 [PSCustomObject]@{
                     hooks = @(
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\subagent-stop.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\post-agent-file-validation.js`""; timeout = 5000 }
                     )
                 }
             )

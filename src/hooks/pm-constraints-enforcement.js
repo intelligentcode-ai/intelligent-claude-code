@@ -1038,26 +1038,22 @@ To execute blocked operation:
       }
     }
 
-    // Check if PM role and validate
-    if (isPMRole(hookInput)) {
-      log('PM role active - validating operation');
+    // UNIVERSAL FILE VALIDATION (applies to ALL contexts - main scope AND agents)
+    if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
+      log(`File modification tool detected: ${tool} on ${filePath}`);
 
-      // Block Edit/Write/Update tools ONLY for files not in allowlist
-      if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
-        log(`File modification tool detected: ${tool} on ${filePath}`);
+      // FILENAME-BASED DIRECTORY ENFORCEMENT - applies universally
+      if (!isCorrectDirectory(filePath, projectRoot)) {
+        const suggestedPath = getSuggestedPath(filePath, projectRoot);
 
-        // FILENAME-BASED DIRECTORY ENFORCEMENT
-        if (!isCorrectDirectory(filePath, projectRoot)) {
-          const suggestedPath = getSuggestedPath(filePath, projectRoot);
+        const blockingEnabled = getBlockingEnabled();
 
-          const blockingEnabled = getBlockingEnabled();
-
-          if (blockingEnabled) {
-            const response = {
-              hookSpecificOutput: {
-                hookEventName: 'PreToolUse',
-                permissionDecision: 'deny',
-                permissionDecisionReason: `Wrong directory for filename pattern
+        if (blockingEnabled) {
+          const response = {
+            hookSpecificOutput: {
+              hookEventName: 'PreToolUse',
+              permissionDecision: 'deny',
+              permissionDecisionReason: `Wrong directory for filename pattern
 
 File "${path.basename(filePath)}" should be in a different directory based on its filename pattern.
 
@@ -1072,18 +1068,25 @@ DIRECTORY ROUTING RULES:
 - Everything else → summaries/
 
 Please use the correct directory for this file type.`
-              }
-            };
-            const responseJson = JSON.stringify(response);
-            log(`RESPONSE: ${responseJson}`);
-            log(`EXIT CODE: 2 (BLOCKING MODE)`);
-            console.log(responseJson);
-            process.exit(2);
-          } else {
-            log(`⚠️ WARNING (non-blocking): Wrong directory for filename pattern: ${filePath}`);
-          }
+            }
+          };
+          const responseJson = JSON.stringify(response);
+          log(`RESPONSE: ${responseJson}`);
+          log(`EXIT CODE: 2 (BLOCKING MODE)`);
+          console.log(responseJson);
+          process.exit(2);
+        } else {
+          log(`⚠️ WARNING (non-blocking): Wrong directory for filename pattern: ${filePath}`);
         }
+      }
+    }
 
+    // PM-SPECIFIC RESTRICTIONS (only for PM role)
+    if (isPMRole(hookInput)) {
+      log('PM role active - validating operation');
+
+      // Block Edit/Write/Update tools ONLY for files not in PM allowlist
+      if (tool === 'Edit' || tool === 'Write' || tool === 'Update' || tool === 'MultiEdit') {
         const paths = getConfiguredPaths(projectRoot);
         const validation = validatePMOperation(filePath, tool, paths, projectRoot);
 

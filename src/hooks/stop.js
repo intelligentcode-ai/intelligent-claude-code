@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 const { initializeHook } = require('./lib/logging');
 
 function main() {
@@ -22,7 +23,12 @@ function main() {
     }
 
     const session_id = hookInput.session_id;
-    const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}`);
+
+    // Calculate project hash to match agent-marker.js format
+    const projectRoot = hookInput.cwd || process.cwd();
+    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+
+    const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
 
     // Delete agent marker file on session stop
     if (fs.existsSync(markerFile)) {
