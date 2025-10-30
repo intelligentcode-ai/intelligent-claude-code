@@ -1,0 +1,214 @@
+{
+  "constraints": [
+    {
+      "id": "PM-NO-TECHNICAL-WORK",
+      "text": "PM role is coordination ONLY - no technical work, file operations, or direct fixes",
+      "category": "PM Guidelines",
+      "weight": 10
+    },
+    {
+      "id": "PM-DELEGATION-REQUIRED",
+      "text": "PM must delegate all technical work via AgentTask creation to specialist roles",
+      "category": "PM Guidelines",
+      "weight": 10
+    },
+    {
+      "id": "PM-TOOL-RESTRICTIONS",
+      "text": "PM allowed tools: Read, LS, Glob, Grep only - Edit/Write/MultiEdit blocked",
+      "category": "PM Guidelines",
+      "weight": 9
+    },
+    {
+      "id": "AGENTTASK-TEMPLATE-REQUIRED",
+      "text": "ALL AgentTasks MUST use templates from hierarchy (nano/tiny/medium/large/mega)",
+      "category": "AgentTask Requirements",
+      "weight": 10
+    },
+    {
+      "id": "AGENTTASK-NO-PLACEHOLDERS",
+      "text": "Zero placeholders allowed - all [.*] patterns must be resolved before execution",
+      "category": "AgentTask Requirements",
+      "weight": 10
+    },
+    {
+      "id": "AGENTTASK-SELF-CONTAINED",
+      "text": "AgentTasks must be self-contained with all context, config, and memory embedded",
+      "category": "AgentTask Requirements",
+      "weight": 9
+    },
+    {
+      "id": "AGENTTASK-SIZE-LIMITS",
+      "text": "Maximum 15 points (medium) for executable AgentTasks - larger work becomes STORY",
+      "category": "Size Limits",
+      "weight": 10
+    },
+    {
+      "id": "MEMORY-FIRST-MANDATORY",
+      "text": "Search memory/ before ANY work or questions - prevents repetition and errors",
+      "category": "Memory Operations",
+      "weight": 10
+    },
+    {
+      "id": "MEMORY-LOCATION-QUERIES",
+      "text": "NEVER ask for paths/credentials/configs without searching memory FIRST",
+      "category": "Memory Operations",
+      "weight": 10
+    },
+    {
+      "id": "MEMORY-STORAGE-REQUIRED",
+      "text": "Store successful patterns and solutions in memory/ - failure degrades future help",
+      "category": "Memory Operations",
+      "weight": 9
+    },
+    {
+      "id": "BEST-PRACTICES-FIRST",
+      "text": "Check best-practices/ before implementation for proven approaches",
+      "category": "Best Practices",
+      "weight": 9
+    },
+    {
+      "id": "BEST-PRACTICES-PROMOTION",
+      "text": "Evaluate if successful patterns (3+ uses) should be promoted to best-practices/",
+      "category": "Best Practices",
+      "weight": 8
+    },
+    {
+      "id": "WORK-REQUIRES-AGENTTASK",
+      "text": "ALL work requests trigger AgentTask creation - NO direct work in main scope",
+      "category": "Work Detection",
+      "weight": 10
+    },
+    {
+      "id": "NO-MAIN-SCOPE-WORK",
+      "text": "Main agent creates AgentTasks ONLY - agents execute work for superior quality",
+      "category": "Work Detection",
+      "weight": 10
+    },
+    {
+      "id": "ROLE-ASSIGNMENT-TWO-FACTOR",
+      "text": "Role assignment via two-factor analysis: project scope + work type",
+      "category": "Role Assignment",
+      "weight": 8
+    },
+    {
+      "id": "DYNAMIC-SPECIALISTS-ALWAYS",
+      "text": "ALWAYS create specialist roles when technology expertise needed (unlimited creation)",
+      "category": "Role Assignment",
+      "weight": 9
+    },
+    {
+      "id": "GIT-PRIVACY-COMPLIANCE",
+      "text": "Respect git_privacy settings - filter AI mentions before commits when enabled",
+      "category": "Git Operations",
+      "weight": 9
+    },
+    {
+      "id": "GIT-VERSION-BUMP",
+      "text": "Version bumping required before git operations per workflow settings",
+      "category": "Git Operations",
+      "weight": 8
+    },
+    {
+      "id": "GIT-BRANCH-PROTECTION",
+      "text": "Follow branch_protection and require_pr_for_main settings in workflows",
+      "category": "Git Operations",
+      "weight": 8
+    },
+    {
+      "id": "CONTEXT-COMPLETENESS",
+      "text": "Complete context required: system nature, project root, config values, critical files",
+      "category": "Context Requirements",
+      "weight": 9
+    },
+    {
+      "id": "TEMPLATE-HIERARCHY",
+      "text": "Load templates from hierarchy: project → installation → system defaults",
+      "category": "Template Compliance",
+      "weight": 8
+    },
+    {
+      "id": "STORY-BREAKDOWN-PM-ARCHITECT",
+      "text": "Story breakdown requires @PM + specialist Architect collaboration",
+      "category": "Story Management",
+      "weight": 9
+    },
+    {
+      "id": "STORY-MAX-15-POINTS",
+      "text": "Stories broken into AgentTasks ≤15 points - larger work stays as STORY for breakdown",
+      "category": "Story Management",
+      "weight": 10
+    },
+    {
+      "id": "EXECUTION-SUMMARY-REQUIRED",
+      "text": "Comprehensive execution summary with evidence required at completion",
+      "category": "Validation",
+      "weight": 8
+    },
+    {
+      "id": "PROOF-NOT-CLAIMS",
+      "text": "Show proof of work with file paths and changes - no unsupported completion claims",
+      "category": "Validation",
+      "weight": 9
+    },
+    {
+      "id": "QUALITY-GATES-MANDATORY",
+      "text": "Quality gates must pass before marking AgentTask complete",
+      "category": "Validation",
+      "weight": 8
+    },
+    {
+      "id": "AUTONOMY-LEVEL-RESPECT",
+      "text": "Respect autonomy_level settings (L1/L2/L3) for execution decisions",
+      "category": "Autonomy",
+      "weight": 7
+    },
+    {
+      "id": "L3-CONTINUOUS-DISCOVERY",
+      "text": "L3 autonomy enables continuous work discovery and execution",
+      "category": "Autonomy",
+      "weight": 6
+    },
+    {
+      "id": "DIRECTORY-ROUTING-STORIES",
+      "text": "STORY-*.md, EPIC-*.md, BUG-*.md → stories/ directory (NOT docs/)",
+      "category": "Directory Structure",
+      "weight": 9
+    },
+    {
+      "id": "DIRECTORY-ROUTING-AGENTTASKS",
+      "text": "AgentTasks passed to Task tool directly - NO file writes for executable work",
+      "category": "Directory Structure",
+      "weight": 10
+    },
+    {
+      "id": "PARALLEL-EXECUTION",
+      "text": "System supports up to 5 parallel non-conflicting tasks",
+      "category": "Execution",
+      "weight": 6
+    },
+    {
+      "id": "SEQUENTIAL-THINKING",
+      "text": "Apply sequential thinking for multi-step reasoning and complex analysis",
+      "category": "Thinking",
+      "weight": 8
+    },
+    {
+      "id": "RECURSIVE-DISPLAY",
+      "text": "Display 6 constraints (3 situation + 3 cycling) and up to 3 best practices at response end",
+      "category": "Meta Rules",
+      "weight": 10
+    },
+    {
+      "id": "ARCHITECTURE-PATTERN",
+      "text": "MANDATORY: ALL WORK → AgentTask → Task Tool → Agent = Maximum helpfulness",
+      "category": "Architecture",
+      "weight": 10
+    },
+    {
+      "id": "ROLE-SEPARATION",
+      "text": "Main agent coordination, subagents execution - clear separation of concerns",
+      "category": "Architecture",
+      "weight": 9
+    }
+  ]
+}

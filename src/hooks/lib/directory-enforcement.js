@@ -55,8 +55,15 @@ function getCorrectDirectory(filename, projectRoot) {
  * @returns {boolean} - True if file is in correct directory
  */
 function isCorrectDirectory(filePath, projectRoot) {
+  const basename = path.basename(filePath);
+
+  // ONLY apply directory enforcement to .md files
+  if (!basename.endsWith('.md')) {
+    return true; // Non-.md files exempt from enforcement
+  }
+
   const actualDir = path.dirname(filePath);
-  const expectedDir = getCorrectDirectory(path.basename(filePath), projectRoot);
+  const expectedDir = getCorrectDirectory(basename, projectRoot);
 
   const normalizedActual = path.normalize(actualDir);
   const normalizedExpected = path.normalize(expectedDir);

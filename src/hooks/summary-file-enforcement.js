@@ -37,8 +37,36 @@ function main() {
       return allowOperation(log, true);
     }
 
+    // CRITICAL: Skip ALL validation for agents - only apply to main scope
+    // Check for agent marker files to detect agent context
+    const crypto = require('crypto');
+    const os = require('os');
+
     // Get project root from hookInput.cwd or fallback
     const projectRoot = hookInput.cwd || process.cwd();
+
+    // Check for agent marker file (same logic as pm-constraints-enforcement.js)
+    const sessionId = hookInput.session_id || '';
+    if (sessionId && projectRoot) {
+      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+      const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+      if (fs.existsSync(markerFile)) {
+        try {
+          const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+          const agentCount = marker.agent_count || 0;
+
+          if (agentCount > 0) {
+            log('Agent context detected - skipping summary file enforcement');
+            return allowOperation(log, true);
+          }
+        } catch (err) {
+          // Marker file error - continue with validation
+          log(`Warning: Could not read agent marker file: ${err.message}`);
+        }
+      }
+    }
 
     // Get settings
     const strictMode = getSetting('development.file_management_strict', true);
@@ -139,8 +167,11 @@ To execute blocked operation:
 4. Agent provides comprehensive summary with results`;
 
       const response = {
-        continue: false,
-        displayToUser: message
+        hookSpecificOutput: {
+          hookEventName: 'PreToolUse',
+          permissionDecision: 'deny',
+          permissionDecisionReason: message
+        }
       };
       return sendResponse(response, 2, log);
     }
@@ -180,8 +211,11 @@ To execute blocked operation:
 To disable this enforcement, set development.file_management_strict: false in icc.config.json`;
 
       const response = {
-        continue: false,
-        displayToUser: message
+        hookSpecificOutput: {
+          hookEventName: 'PreToolUse',
+          permissionDecision: 'deny',
+          permissionDecisionReason: message
+        }
       };
       return sendResponse(response, 2, log);
     } else {

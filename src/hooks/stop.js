@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 const { initializeHook } = require('./lib/logging');
 
 function main() {
@@ -17,30 +18,46 @@ function main() {
   try {
     // hookInput already parsed earlier for logging
     if (!hookInput) {
+      log('[STOP-CLEANUP] No hook input - exiting cleanly');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
 
     const session_id = hookInput.session_id;
-    const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}`);
+    const projectRoot = hookInput.cwd || process.cwd();
 
-    // Delete agent marker file on session stop
-    if (fs.existsSync(markerFile)) {
-      try {
-        fs.unlinkSync(markerFile);
-        log(`Agent marker deleted on session stop: ${markerFile}`);
-      } catch (error) {
-        log(`Failed to delete agent marker: ${error.message}`);
+    log(`[STOP-CLEANUP] Session ending: ${session_id || 'undefined'}`);
+    log(`[STOP-CLEANUP] Project root: ${projectRoot}`);
+
+    // DEFENSIVE CLEANUP: Delete ALL agent markers for this session/project
+    // Session end = NO agents can be running anymore
+    if (session_id) {
+      // Calculate project hash to match agent-marker.js format
+      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
+
+      log(`[STOP-CLEANUP] Checking marker: ${markerFile}`);
+
+      // Delete agent marker file on session stop
+      if (fs.existsSync(markerFile)) {
+        try {
+          fs.unlinkSync(markerFile);
+          log(`[STOP-CLEANUP] ✅ Deleted marker on session end - clean shutdown`);
+        } catch (error) {
+          log(`[STOP-CLEANUP] ❌ Failed to delete marker: ${error.message}`);
+        }
+      } else {
+        log(`[STOP-CLEANUP] ✅ No marker found - already clean`);
       }
     } else {
-      log(`Agent marker not found on session stop: ${markerFile}`);
+      log(`[STOP-CLEANUP] ⚠️ No session_id - skipping marker cleanup`);
     }
 
     console.log(JSON.stringify(standardOutput));
     process.exit(0);
 
   } catch (error) {
-    log(`Error: ${error.message}`);
+    log(`[STOP-CLEANUP] Error: ${error.message}`);
     console.log(JSON.stringify(standardOutput));
     process.exit(0);
   }
