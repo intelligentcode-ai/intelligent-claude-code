@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.36] - 2025-10-30
+
+### Fixed
+- **Defensive Marker Cleanup at Session Restart Points**: Added critical defensive cleanup layers to prevent stale agent markers
+  - Root cause: SubagentStop hook not invoked consistently by Claude Code, leaving stale markers
+  - Impact: pm-constraints-enforcement saw "active agents" and bypassed all validation
+  - Session-start hook: Now deletes stale markers on session start (defensive layer 3)
+  - Stop hook: Enhanced logging with explicit cleanup messages (defensive layer 4)
+  - UserPromptSubmit: Already had cleanup (defensive layer 2, implemented previously)
+  - SubagentStop: Primary cleanup when working (defensive layer 1)
+  - Result: Even if SubagentStop fails, markers get cleaned up at multiple restart points
+  - All hooks use consistent [HOOK-CLEANUP] logging format for easier monitoring
+
+---
+
 ## [8.20.35] - 2025-10-29
 
 ### Fixed
