@@ -185,6 +185,7 @@
     - pm-constraints-enforcement.js
     - pre-agenttask-validation.js
     - project-scope-enforcement.js
+    - session-start-dummy.js
     - stop.js
     - subagent-stop.js
     - summary-file-enforcement.js
@@ -265,6 +266,9 @@
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/pre-agenttask-validation.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/project-scope-enforcement.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/summary-file-enforcement.js', timeout: 5000 }
+          SessionStart:
+            - hooks:
+                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/session-start-dummy.js', timeout: 5000 }
           UserPromptSubmit:
             - hooks:
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/user-prompt-submit.js', timeout: 15000 }

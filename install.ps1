@@ -164,7 +164,7 @@ function Register-ProductionHooks {
     )
 
     try {
-        Write-Host "  Registering all 14 production hooks in settings.json..." -ForegroundColor Gray
+        Write-Host "  Registering all 15 production hooks in settings.json..." -ForegroundColor Gray
 
         # Load or create settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
@@ -189,6 +189,13 @@ function Register-ProductionHooks {
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pre-agenttask-validation.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\project-scope-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\summary-file-enforcement.js`""; timeout = 5000 }
+                    )
+                }
+            )
+            SessionStart = @(
+                [PSCustomObject]@{
+                    hooks = @(
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\session-start-dummy.js`""; timeout = 5000 }
                     )
                 }
             )
@@ -218,7 +225,7 @@ function Register-ProductionHooks {
         }
 
         # Replace all production hooks
-        foreach ($HookType in @("PreToolUse", "UserPromptSubmit", "SubagentStop", "Stop")) {
+        foreach ($HookType in @("PreToolUse", "SessionStart", "UserPromptSubmit", "SubagentStop", "Stop")) {
             if ($Settings.hooks.PSObject.Properties.Name -contains $HookType) {
                 $Settings.hooks.PSObject.Properties.Remove($HookType)
             }
