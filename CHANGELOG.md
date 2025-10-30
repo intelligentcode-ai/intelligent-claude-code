@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.39] - 2025-10-30
+
+### Fixed
+- **Summary File Enforcement - Agent Context Bypass**: Fixed critical bug blocking agents from working on infrastructure files
+  - Root cause: Hook applied main scope restrictions to agents, blocking legitimate infrastructure files
+  - Impact: Agents blocked from updating files like rollout/tasks/compute/standalone-vm-deployment.yml
+  - Solution: Added agent marker detection to skip ALL validation when agent context detected
+  - Logic: Check for agent marker file, if agent_count > 0 bypass enforcement entirely
+  - Reference: Uses same agent detection pattern as pm-constraints-enforcement.js
+  - Result: Agents can now modify ANY file, main scope still restricted to stories/, bugs/, docs/, agenttasks/, summaries/, root .md files
+
+---
+
 ## [8.20.38] - 2025-10-30
 
 ### Fixed
