@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.38] - 2025-10-30
+
+### Fixed
+- **Summary File Enforcement - Correct Hook Response Format**: Fixed critical bug where summary-file-enforcement used wrong response format causing main scope to stop
+  - Root cause: Used legacy {continue: false, displayToUser: message} format instead of hookSpecificOutput
+  - Impact: Blocking ALL-CAPITALS filenames and summary placement caused main scope to hang
+  - Solution: Changed 2 response objects to use hookSpecificOutput with permissionDecision: 'deny'
+  - Affected locations: Lines 141-145 (ALL-CAPITALS blocking), Lines 182-186 (summary file blocking)
+  - Reference: pm-constraints-enforcement.js uses correct hookSpecificOutput format throughout
+  - Result: Hook now properly denies operations without stopping main scope
+
+---
+
+## [8.20.37] - 2025-10-30
+
+### Fixed
+- **Hook Exit Codes - Use exit(0) for All Responses**: Fixed critical bug where pm-constraints-enforcement used process.exit(2) for deny responses
+  - Root cause: Hook used exit code 2 when blocking operations, Claude Code interpreted as hook failure
+  - Impact: Blocked operations caused main scope to stop working ("stopped continuation" error)
+  - Solution: Changed all 6 process.exit(2) calls to process.exit(0) in pm-constraints-enforcement.js
+  - Hook exit codes: 0 = success (check JSON for allow/deny), non-zero = hook failure/crash
+  - Deny responses: permissionDecision: 'deny' + exit(0) = successful denial without stopping main scope
+  - Updated log messages from "EXIT CODE: 2 (BLOCKING MODE)" to "EXIT CODE: 0 (DENY)" for clarity
+  - Result: Hook can properly deny operations without causing main scope failures
+
+---
+
 ## [8.20.36] - 2025-10-30
 
 ### Fixed

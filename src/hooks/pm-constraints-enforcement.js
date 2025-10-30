@@ -960,7 +960,7 @@ To execute blocked operation:
         };
         log(`RESPONSE: ${JSON.stringify(response)}`);
         console.log(JSON.stringify(response));
-        process.exit(2);
+        process.exit(0);
       } else {
         log(`⚠️ WARNING (non-blocking): Tool blocked by blacklist: ${tool}`);
         console.log(JSON.stringify({ continue: true }));
@@ -994,9 +994,9 @@ To execute blocked operation:
           };
           const responseJson = JSON.stringify(response);
           log(`RESPONSE: ${responseJson}`);
-          log(`EXIT CODE: 2 (BLOCKING MODE)`);
+          log(`EXIT CODE: 0 (DENY)`);
           console.log(responseJson);
-          process.exit(2);
+          process.exit(0);
         } else {
           // WARNING MODE (non-blocking)
           log(`⚠️ WARNING (non-blocking): ${summaryValidation.message}`);
@@ -1026,9 +1026,9 @@ To execute blocked operation:
         };
         const responseJson = JSON.stringify(response);
         log(`RESPONSE: ${responseJson}`);
-        log(`EXIT CODE: 2 (BLOCKING MODE)`);
+        log(`EXIT CODE: 0 (DENY)`);
         console.log(responseJson);
-        process.exit(2);
+        process.exit(0);
       } else {
         // WARNING MODE (non-blocking)
         log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
@@ -1072,9 +1072,9 @@ Please use the correct directory for this file type.`
           };
           const responseJson = JSON.stringify(response);
           log(`RESPONSE: ${responseJson}`);
-          log(`EXIT CODE: 2 (BLOCKING MODE)`);
+          log(`EXIT CODE: 0 (DENY)`);
           console.log(responseJson);
-          process.exit(2);
+          process.exit(0);
         } else {
           log(`⚠️ WARNING (non-blocking): Wrong directory for filename pattern: ${filePath}`);
         }
@@ -1103,9 +1103,9 @@ Please use the correct directory for this file type.`
             };
             const responseJson = JSON.stringify(response);
             log(`RESPONSE: ${responseJson}`);
-            log(`EXIT CODE: 2 (BLOCKING MODE)`);
+            log(`EXIT CODE: 0 (DENY)`);
             console.log(responseJson);
-            process.exit(2);
+            process.exit(0);
           } else {
             log(`⚠️ WARNING (non-blocking): ${validation.message}`);
             console.log(JSON.stringify({ continue: true }));
@@ -1137,9 +1137,9 @@ Please use the correct directory for this file type.`
             };
             const responseJson = JSON.stringify(response);
             log(`RESPONSE: ${responseJson}`);
-            log(`EXIT CODE: 2 (BLOCKING MODE)`);
+            log(`EXIT CODE: 0 (DENY)`);
             console.log(responseJson);
-            process.exit(2);
+            process.exit(0);
           } else {
             // WARNING MODE (non-blocking)
             log(`⚠️ WARNING (non-blocking): ${bashValidation.message}`);

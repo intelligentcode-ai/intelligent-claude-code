@@ -139,8 +139,11 @@ To execute blocked operation:
 4. Agent provides comprehensive summary with results`;
 
       const response = {
-        continue: false,
-        displayToUser: message
+        hookSpecificOutput: {
+          hookEventName: 'PreToolUse',
+          permissionDecision: 'deny',
+          permissionDecisionReason: message
+        }
       };
       return sendResponse(response, 2, log);
     }
@@ -180,8 +183,11 @@ To execute blocked operation:
 To disable this enforcement, set development.file_management_strict: false in icc.config.json`;
 
       const response = {
-        continue: false,
-        displayToUser: message
+        hookSpecificOutput: {
+          hookEventName: 'PreToolUse',
+          permissionDecision: 'deny',
+          permissionDecisionReason: message
+        }
       };
       return sendResponse(response, 2, log);
     } else {
