@@ -109,6 +109,21 @@
     "auto_correction": true,
     "strict_main_scope": true,
     "strict_main_scope_message": "Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.",
+    "pm_allowed_bash_commands": [
+      "git status",
+      "git log",
+      "git diff",
+      "git show",
+      "git branch",
+      "git config",
+      "git remote",
+      "git tag",
+      "gh pr list",
+      "gh pr view",
+      "gh pr status",
+      "gh issue list",
+      "gh issue view"
+    ],
     "tool_blacklist": {
       "universal": [
         "rm -rf /",

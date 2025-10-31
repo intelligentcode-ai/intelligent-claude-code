@@ -193,6 +193,22 @@ function main() {
       return { allowed: true };
     }
 
+    // Check PM-allowed bash commands from configuration
+    const pmAllowedBashCommands = getSetting('enforcement.pm_allowed_bash_commands', [
+      'git status', 'git log', 'git diff', 'git show', 'git branch',
+      'git config', 'git remote', 'git tag',
+      'gh pr list', 'gh pr view', 'gh pr status',
+      'gh issue list', 'gh issue view'
+    ]);
+
+    // Check if command starts with any allowed pattern
+    for (const allowedCmd of pmAllowedBashCommands) {
+      if (command.trim().startsWith(allowedCmd + ' ') || command.trim() === allowedCmd) {
+        log(`PM-allowed command: ${allowedCmd} (full command: ${command})`);
+        return { allowed: true };
+      }
+    }
+
     // Check for SSH remote execution BEFORE other validation
     // SSH commands execute quoted strings on remote systems, so we must validate the remote command
     const sshPattern = /\bssh\b[^"']*["']([^"']+)["']/;
