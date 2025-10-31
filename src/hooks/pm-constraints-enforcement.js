@@ -9,6 +9,7 @@ const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 const { initializeHook } = require('./lib/logging');
+const { isAllowedCoordinationCommand } = require('./lib/command-validation');
 
 function main() {
   // Initialize hook with shared library function
@@ -193,18 +194,21 @@ function main() {
       return { allowed: true };
     }
 
-    // Check PM-allowed bash commands from configuration
-    const pmAllowedBashCommands = getSetting('enforcement.pm_allowed_bash_commands', [
-      'git status', 'git log', 'git diff', 'git show', 'git branch',
-      'git config', 'git remote', 'git tag',
+    // Check if command is allowed coordination command (unified with main-scope)
+    if (isAllowedCoordinationCommand(command)) {
+      log(`PM-allowed coordination command: ${command}`);
+      return { allowed: true };
+    }
+
+    // Additionally check PM-specific commands from configuration (gh CLI, etc.)
+    const pmExtraCommands = getSetting('enforcement.pm_allowed_bash_commands', [
       'gh pr list', 'gh pr view', 'gh pr status',
       'gh issue list', 'gh issue view'
     ]);
 
-    // Check if command starts with any allowed pattern
-    for (const allowedCmd of pmAllowedBashCommands) {
+    for (const allowedCmd of pmExtraCommands) {
       if (command.trim().startsWith(allowedCmd + ' ') || command.trim() === allowedCmd) {
-        log(`PM-allowed command: ${allowedCmd} (full command: ${command})`);
+        log(`PM-allowed extra command: ${allowedCmd} (full command: ${command})`);
         return { allowed: true };
       }
     }
