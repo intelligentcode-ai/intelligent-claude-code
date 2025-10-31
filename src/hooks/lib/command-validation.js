@@ -63,6 +63,7 @@ function isAllowedCoordinationCommand(command) {
     'git add', 'git commit', 'git push', 'git pull',
     'git branch', 'git checkout', 'git fetch', 'git merge',
     'git reset', 'git stash', 'git tag', 'git remote', 'git config',
+    'git rev-parse', 'git rev-list', 'git describe',
     // File reading and searching
     'ls', 'find', 'cat', 'head', 'tail', 'grep', 'less', 'more', 'wc',
     // Information commands
