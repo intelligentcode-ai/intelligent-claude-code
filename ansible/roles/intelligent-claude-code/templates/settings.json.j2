@@ -4,6 +4,10 @@
       "matcher": "*",
       "hooks": [{
         "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/agent-marker.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
         "command": "node {{ claude_install_path }}/hooks/git-enforcement.js",
         "timeout": 5000
       }, {
@@ -17,10 +21,6 @@
       }, {
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js",
-        "timeout": 5000
-      }, {
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/agent-marker.js",
         "timeout": 5000
       }, {
         "type": "command",
@@ -59,10 +59,6 @@
       "hooks": [{
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/subagent-stop.js",
-        "timeout": 5000
-      }, {
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/post-agent-file-validation.js",
         "timeout": 5000
       }]
     }],

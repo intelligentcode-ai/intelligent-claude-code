@@ -257,11 +257,11 @@
           PreToolUse:
             - matcher: "*"
               hooks:
+                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/agent-marker.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/git-enforcement.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/main-scope-enforcement.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/agent-marker.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/config-protection.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/pre-agenttask-validation.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/project-scope-enforcement.js', timeout: 5000 }

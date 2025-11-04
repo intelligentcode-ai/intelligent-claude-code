@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.42] - 2025-11-04
+
+### Fixed
+- **Agent Marker Hook Execution Order**: Fixed critical bug where agents were blocked from running commands
+  - Root cause: agent-marker.js ran AFTER main-scope-enforcement.js in PreToolUse hook chain
+  - Impact: main-scope-enforcement detected no marker and blocked agent commands (sudo wg show, ip route show, etc.)
+  - Hook execution order: git-enforcement → main-scope-enforcement → ... → agent-marker (WRONG - marker created too late!)
+  - Solution: Moved agent-marker.js to FIRST position in PreToolUse hook chain
+  - New order: agent-marker → git-enforcement → main-scope-enforcement → ... (marker created before checks)
+  - Updated files: ansible/roles/intelligent-claude-code/tasks/main.yml (production_hooks), ansible/roles/intelligent-claude-code/templates/settings.json.j2
+  - Removed non-existent hook: post-agent-file-validation.js from SubagentStop hooks
+  - Result: Agent markers created before enforcement hooks check, agents can run network debugging commands
+
+---
+
 ## [8.20.39] - 2025-10-30
 
 ### Fixed
