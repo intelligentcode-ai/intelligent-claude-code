@@ -101,6 +101,7 @@ function main() {
       'LICENSE',
       'LICENSE.md',
       'CLAUDE.md',
+      'SKILL.md',
       'CHANGELOG.md',
       'CONTRIBUTING.md',
       'AUTHORS',

@@ -24,7 +24,7 @@ function getCorrectDirectory(filename, projectRoot) {
   const rootWhitelist = [
     'CLAUDE.md', 'VERSION', 'icc.config.json', 'icc.workflow.json',
     'README.md', 'CHANGELOG.md', 'LICENSE', '.gitignore',
-    'Makefile', 'package.json', 'package-lock.json'
+    'Makefile', 'package.json', 'package-lock.json', 'config.md'
   ];
   if (rootWhitelist.includes(basename)) {
     return projectRoot;
