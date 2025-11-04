@@ -344,6 +344,7 @@
   "logging": {
     "enabled": true,
     "retention_hours": 24,
-    "directory": "~/.claude/logs"
+    "directory": "~/.claude/logs",
+    "agent_marker_log_level": "INFO"
   }
 }
