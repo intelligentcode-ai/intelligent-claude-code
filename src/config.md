@@ -40,6 +40,10 @@ context7_enabled: true
 sequential_thinking: true
 mcp_tools_enabled: true
 
+# Logging
+logging:
+  agent_marker_log_level: "INFO"  # ERROR, WARN, INFO, DEBUG
+
 # Subagents
 subagent_model: "sonnet"
 subagent_threshold: 3
