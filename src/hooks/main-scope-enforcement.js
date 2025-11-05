@@ -195,6 +195,50 @@ function main() {
     const projectRoot = getProjectRoot(hookInput);
 
     // Check for agent marker (if agent, skip enforcement)
+    const crypto = require('crypto');
+    const os = require('os');
+    const sessionId = hookInput.session_id || '';
+
+    if (sessionId && projectRoot) {
+      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+      const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+      // DIAGNOSTIC: Log what we're looking for
+      log(`DIAGNOSTIC: Looking for marker file:`);
+      log(`DIAGNOSTIC: - Session ID: ${sessionId}`);
+      log(`DIAGNOSTIC: - Project Root: ${projectRoot}`);
+      log(`DIAGNOSTIC: - Project Hash: ${projectHash}`);
+      log(`DIAGNOSTIC: - Marker File: ${markerFile}`);
+      log(`DIAGNOSTIC: - File exists: ${fs.existsSync(markerFile)}`);
+
+      if (fs.existsSync(markerFile)) {
+        log(`DIAGNOSTIC: Marker file found, reading content...`);
+        try {
+          const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+          log(`DIAGNOSTIC: Marker content - agent_count: ${marker.agent_count}`);
+          if (marker.agent_count > 0) {
+            log('Agent context detected - strict main scope enforcement skipped');
+            return allowOperation(log);
+          }
+        } catch (err) {
+          log(`DIAGNOSTIC: Error reading marker file: ${err.message}`);
+        }
+      } else {
+        log(`DIAGNOSTIC: Marker file NOT found - checking if other marker files exist`);
+        try {
+          if (fs.existsSync(markerDir)) {
+            const allMarkers = fs.readdirSync(markerDir).filter(f => f.startsWith('agent-executing-'));
+            log(`DIAGNOSTIC: Other marker files in tmp: ${allMarkers.join(', ') || 'none'}`);
+          } else {
+            log(`DIAGNOSTIC: Marker directory does not exist: ${markerDir}`);
+          }
+        } catch (err) {
+          log(`DIAGNOSTIC: Error listing marker files: ${err.message}`);
+        }
+      }
+    }
+
     if (isAgentContext(projectRoot, hookInput.session_id, log)) {
       log('Agent context detected - strict main scope enforcement skipped');
       return allowOperation(log);
