@@ -92,35 +92,14 @@ function main() {
 
     const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
 
-    // DIAGNOSTIC: Log what we're looking for
-    log(`DIAGNOSTIC: Looking for marker file:`);
-    log(`DIAGNOSTIC: - Session ID: ${session_id}`);
-    log(`DIAGNOSTIC: - Project Root: ${projectRoot}`);
-    log(`DIAGNOSTIC: - Project Hash: ${projectHash}`);
-    log(`DIAGNOSTIC: - Marker File: ${markerFile}`);
-    log(`DIAGNOSTIC: - File exists: ${fs.existsSync(markerFile)}`);
-
     try {
       if (!fs.existsSync(markerFile)) {
-        log(`DIAGNOSTIC: Marker file NOT found - checking if other marker files exist`);
-        try {
-          if (fs.existsSync(markerDir)) {
-            const allMarkers = fs.readdirSync(markerDir).filter(f => f.startsWith('agent-executing-'));
-            log(`DIAGNOSTIC: Other marker files in tmp: ${allMarkers.join(', ') || 'none'}`);
-          } else {
-            log(`DIAGNOSTIC: Marker directory does not exist: ${markerDir}`);
-          }
-        } catch (err) {
-          log(`DIAGNOSTIC: Error listing marker files: ${err.message}`);
-        }
         log(`PM context detected - no marker file for project ${projectRoot}`);
         return true;
       }
 
-      log(`DIAGNOSTIC: Marker file found, reading content...`);
       const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
       const agentCount = marker.agent_count || 0;
-      log(`DIAGNOSTIC: Marker content - agent_count: ${agentCount}`);
 
       if (agentCount > 0) {
         log(`Agent context detected - ${agentCount} active agent(s) in project ${projectRoot}`);
@@ -130,7 +109,6 @@ function main() {
         return true;
       }
     } catch (error) {
-      log(`DIAGNOSTIC: Error reading marker file: ${error.message}`);
       log(`Error reading marker file: ${error.message} - assuming PM context`);
       return true;
     }
