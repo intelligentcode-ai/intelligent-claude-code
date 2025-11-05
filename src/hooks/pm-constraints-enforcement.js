@@ -1028,116 +1028,67 @@ To execute blocked operation:
 
     // Check for markdown files outside allowlist (applies to Write/Edit/Update only, not Read)
     if (tool !== 'Read' && filePath.endsWith('.md')) {
-      // CRITICAL: Selective directory enforcement for agents
-      // Skip enforcement for normal project files but KEEP enforcement for summary-type files
-      const crypto = require('crypto');
-      const os = require('os');
-      const sessionId = hookInput.session_id || '';
+      // Check if this is a summary-type file that should always be routed to ./summaries/
+      const fileName = path.basename(filePath);
+      const isSummaryFile = /^(FIX|RESULT|SUMMARY|COMPLETION|EXECUTION|ANALYSIS)-.*\.md$/i.test(fileName);
 
-      // Check if this is a summary-type file that ALWAYS needs enforcement
-      const fileName = path.basename(filePath).toUpperCase();
-      const isSummaryFile = /^(FIX|RESULT|SUMMARY|ANALYSIS|REPORT|LOG|OUTPUT)-/.test(fileName);
+      // If it's NOT a summary file, allow agents to skip enforcement
+      let shouldApplyMarkdownValidation = true;
 
-      if (!isSummaryFile && sessionId && projectRoot) {
-        const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
-        const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-        const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+      if (!isSummaryFile) {
+        // Only skip enforcement for non-summary files when agents are running
+        const crypto = require('crypto');
+        const os = require('os');
+        const sessionId = hookInput.session_id || '';
 
-        if (fs.existsSync(markerFile)) {
-          try {
-            const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
-            if (marker.agent_count > 0) {
-              log('Agent context detected - skipping markdown directory enforcement for normal project files');
-              // Continue to next validation - don't exit here
-            } else {
-              // PM context - apply markdown validation
-              if (isSummaryFile) {
-                log(`Summary-type file detected: ${fileName} - applying directory enforcement`);
+        if (sessionId && projectRoot) {
+          const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+          const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+          const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+          if (fs.existsSync(markerFile)) {
+            try {
+              const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+              if (marker.agent_count > 0) {
+                log('Agent context detected - skipping markdown directory enforcement for non-summary file');
+                shouldApplyMarkdownValidation = false;
               }
-              // PM context - apply markdown validation
-              const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
-              if (!markdownValidation.allowed) {
-                log(`Markdown file outside allowlist blocked: ${filePath}`);
-
-                const blockingEnabled = getBlockingEnabled();
-
-                if (blockingEnabled) {
-                  // BLOCKING MODE (default)
-                  const response = {
-                    hookSpecificOutput: {
-                      hookEventName: 'PreToolUse',
-                      permissionDecision: 'deny',
-                      permissionDecisionReason: markdownValidation.message
-                    }
-                  };
-                  const responseJson = JSON.stringify(response);
-                  log(`RESPONSE: ${responseJson}`);
-                  log(`EXIT CODE: 0 (DENY)`);
-                  console.log(responseJson);
-                  process.exit(0);
-                } else {
-                  // WARNING MODE (non-blocking)
-                  log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
-                  console.log(JSON.stringify({ continue: true }));
-                  process.exit(0);
-                }
-              }
-            }
-          } catch (err) {
-            // Marker file error - assume PM context and continue with validation
-            log(`Warning: Could not read agent marker file: ${err.message}`);
-            const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
-            if (!markdownValidation.allowed) {
-              log(`Markdown file outside allowlist blocked: ${filePath}`);
-
-              const blockingEnabled = getBlockingEnabled();
-
-              if (blockingEnabled) {
-                const response = {
-                  hookSpecificOutput: {
-                    hookEventName: 'PreToolUse',
-                    permissionDecision: 'deny',
-                    permissionDecisionReason: markdownValidation.message
-                  }
-                };
-                const responseJson = JSON.stringify(response);
-                log(`RESPONSE: ${responseJson}`);
-                log(`EXIT CODE: 0 (DENY)`);
-                console.log(responseJson);
-                process.exit(0);
-              } else {
-                log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
-                console.log(JSON.stringify({ continue: true }));
-                process.exit(0);
-              }
+            } catch (err) {
+              log(`Warning: Could not read agent marker file: ${err.message}`);
             }
           }
-        } else {
-          // No marker file - PM context, apply validation
-          const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
-          if (!markdownValidation.allowed) {
-            log(`Markdown file outside allowlist blocked: ${filePath}`);
+        }
+      } else {
+        log('Summary-type file detected - enforcing directory routing even for agents');
+      }
 
-            const blockingEnabled = getBlockingEnabled();
+      // Apply markdown validation if needed
+      if (shouldApplyMarkdownValidation) {
+        const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
+        if (!markdownValidation.allowed) {
+          log(`Markdown file outside allowlist blocked: ${filePath}`);
 
-            if (blockingEnabled) {
-              const response = {
-                hookSpecificOutput: {
-                  hookEventName: 'PreToolUse',
-                  permissionDecision: 'deny',
-                  permissionDecisionReason: markdownValidation.message
-                }
-              };
-              const responseJson = JSON.stringify(response);
-              log(`RESPONSE: ${responseJson}`);
-              log(`EXIT CODE: 0 (DENY)`);
-              console.log(responseJson);
-              process.exit(0);
-            } else {
-              log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
-              console.log(JSON.stringify({ continue: true }));
-              process.exit(0);
-            }
+          const blockingEnabled = getBlockingEnabled();
+
+          if (blockingEnabled) {
+            // BLOCKING MODE (default)
+            const response = {
+              hookSpecificOutput: {
+                hookEventName: 'PreToolUse',
+                permissionDecision: 'deny',
+                permissionDecisionReason: markdownValidation.message
+              }
+            };
+            const responseJson = JSON.stringify(response);
+            log(`RESPONSE: ${responseJson}`);
+            log(`EXIT CODE: 0 (DENY)`);
+            console.log(responseJson);
+            process.exit(0);
+          } else {
+            // WARNING MODE (non-blocking)
+            log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
+            console.log(JSON.stringify({ continue: true }));
+            process.exit(0);
           }
         }
       }

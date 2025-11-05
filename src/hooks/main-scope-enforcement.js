@@ -279,37 +279,36 @@ To execute blocked operation:
 
     // Check Write/Edit operations
     if (tool === 'Write' || tool === 'Edit') {
-      // CRITICAL: Selective directory enforcement for agents
-      // Skip enforcement for normal project files but KEEP enforcement for summary-type files
-      const crypto = require('crypto');
-      const os = require('os');
-      const sessionId = hookInput.session_id || '';
+      // Check if this is a summary-type file that should always be routed to ./summaries/
+      const fileName = path.basename(filePath);
+      const isSummaryFile = /^(FIX|RESULT|SUMMARY|COMPLETION|EXECUTION|ANALYSIS)-.*\.md$/i.test(fileName);
 
-      // Check if this is a summary-type file that ALWAYS needs enforcement
-      const fileName = path.basename(filePath).toUpperCase();
-      const isSummaryFile = /^(FIX|RESULT|SUMMARY|ANALYSIS|REPORT|LOG|OUTPUT)-/.test(fileName);
+      // If it's a summary file, enforce directory even for agents
+      if (!isSummaryFile) {
+        // Only skip enforcement for non-summary files when agents are running
+        const crypto = require('crypto');
+        const os = require('os');
+        const sessionId = hookInput.session_id || '';
 
-      if (!isSummaryFile && sessionId && projectRoot) {
-        const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
-        const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-        const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+        if (sessionId && projectRoot) {
+          const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+          const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+          const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
 
-        if (fs.existsSync(markerFile)) {
-          try {
-            const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
-            if (marker.agent_count > 0) {
-              log('Agent context detected - skipping directory enforcement for normal project files');
-              return allowOperation(log, true);
+          if (fs.existsSync(markerFile)) {
+            try {
+              const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+              if (marker.agent_count > 0) {
+                log('Agent context detected - skipping directory enforcement for non-summary file');
+                return allowOperation(log, true);
+              }
+            } catch (err) {
+              log(`Warning: Could not read agent marker: ${err.message}`);
             }
-          } catch (err) {
-            log(`Warning: Could not read agent marker: ${err.message}`);
           }
         }
-      }
-
-      // If we reach here: either it's a summary file OR main scope - apply directory enforcement
-      if (isSummaryFile) {
-        log(`Summary-type file detected: ${fileName} - applying directory enforcement`);
+      } else {
+        log('Summary-type file detected - enforcing directory routing even for agents');
       }
 
       // FILENAME-BASED DIRECTORY ENFORCEMENT
