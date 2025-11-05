@@ -1028,12 +1028,17 @@ To execute blocked operation:
 
     // Check for markdown files outside allowlist (applies to Write/Edit/Update only, not Read)
     if (tool !== 'Read' && filePath.endsWith('.md')) {
-      // CRITICAL: Skip markdown directory enforcement for agents
+      // CRITICAL: Selective directory enforcement for agents
+      // Skip enforcement for normal project files but KEEP enforcement for summary-type files
       const crypto = require('crypto');
       const os = require('os');
       const sessionId = hookInput.session_id || '';
 
-      if (sessionId && projectRoot) {
+      // Check if this is a summary-type file that ALWAYS needs enforcement
+      const fileName = path.basename(filePath).toUpperCase();
+      const isSummaryFile = /^(FIX|RESULT|SUMMARY|ANALYSIS|REPORT|LOG|OUTPUT)-/.test(fileName);
+
+      if (!isSummaryFile && sessionId && projectRoot) {
         const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
         const markerDir = path.join(os.homedir(), '.claude', 'tmp');
         const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
@@ -1042,9 +1047,13 @@ To execute blocked operation:
           try {
             const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
             if (marker.agent_count > 0) {
-              log('Agent context detected - skipping markdown directory enforcement');
+              log('Agent context detected - skipping markdown directory enforcement for normal project files');
               // Continue to next validation - don't exit here
             } else {
+              // PM context - apply markdown validation
+              if (isSummaryFile) {
+                log(`Summary-type file detected: ${fileName} - applying directory enforcement`);
+              }
               // PM context - apply markdown validation
               const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
               if (!markdownValidation.allowed) {

@@ -279,12 +279,17 @@ To execute blocked operation:
 
     // Check Write/Edit operations
     if (tool === 'Write' || tool === 'Edit') {
-      // CRITICAL: Skip directory enforcement for agents - only apply to main scope
+      // CRITICAL: Selective directory enforcement for agents
+      // Skip enforcement for normal project files but KEEP enforcement for summary-type files
       const crypto = require('crypto');
       const os = require('os');
       const sessionId = hookInput.session_id || '';
 
-      if (sessionId && projectRoot) {
+      // Check if this is a summary-type file that ALWAYS needs enforcement
+      const fileName = path.basename(filePath).toUpperCase();
+      const isSummaryFile = /^(FIX|RESULT|SUMMARY|ANALYSIS|REPORT|LOG|OUTPUT)-/.test(fileName);
+
+      if (!isSummaryFile && sessionId && projectRoot) {
         const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
         const markerDir = path.join(os.homedir(), '.claude', 'tmp');
         const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
@@ -293,7 +298,7 @@ To execute blocked operation:
           try {
             const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
             if (marker.agent_count > 0) {
-              log('Agent context detected - skipping directory enforcement');
+              log('Agent context detected - skipping directory enforcement for normal project files');
               return allowOperation(log, true);
             }
           } catch (err) {
@@ -302,7 +307,12 @@ To execute blocked operation:
         }
       }
 
-      // FILENAME-BASED DIRECTORY ENFORCEMENT (main scope only)
+      // If we reach here: either it's a summary file OR main scope - apply directory enforcement
+      if (isSummaryFile) {
+        log(`Summary-type file detected: ${fileName} - applying directory enforcement`);
+      }
+
+      // FILENAME-BASED DIRECTORY ENFORCEMENT
       if (!isCorrectDirectory(filePath, projectRoot)) {
         const suggestedPath = getSuggestedPath(filePath, projectRoot);
 
