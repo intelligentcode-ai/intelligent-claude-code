@@ -279,13 +279,19 @@ To execute blocked operation:
 
     // Check Write/Edit operations
     if (tool === 'Write' || tool === 'Edit') {
-      // Check if this is a summary-type file that should always be routed to ./summaries/
-      const fileName = path.basename(filePath);
-      const isSummaryFile = /^(FIX|RESULT|SUMMARY|COMPLETION|EXECUTION|ANALYSIS)-.*\.md$/i.test(fileName);
+      // Import getCorrectDirectory from directory-enforcement.js
+      const { getCorrectDirectory } = require('./lib/directory-enforcement');
 
-      // If it's a summary file, enforce directory even for agents
-      if (!isSummaryFile) {
-        // Only skip enforcement for non-summary files when agents are running
+      const fileName = path.basename(filePath);
+      const correctDir = getCorrectDirectory(fileName, projectRoot);
+
+      // Check if this file SHOULD be routed (has a pattern match)
+      // If correctDir is summaries/ AND filename doesn't match routing patterns, skip enforcement for agents
+      const shouldRoute = correctDir !== path.join(projectRoot, 'summaries') ||
+                          fileName.match(/^(STORY|EPIC|BUG|AGENTTASK)-/);
+
+      if (!shouldRoute) {
+        // File doesn't match routing patterns - skip enforcement for agents
         const crypto = require('crypto');
         const os = require('os');
         const sessionId = hookInput.session_id || '';
@@ -299,7 +305,7 @@ To execute blocked operation:
             try {
               const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
               if (marker.agent_count > 0) {
-                log('Agent context detected - skipping directory enforcement for non-summary file');
+                log('Agent context + no routing pattern - skipping enforcement');
                 return allowOperation(log, true);
               }
             } catch (err) {
@@ -308,7 +314,7 @@ To execute blocked operation:
           }
         }
       } else {
-        log('Summary-type file detected - enforcing directory routing even for agents');
+        log('File matches routing pattern - enforcing directory even for agents');
       }
 
       // FILENAME-BASED DIRECTORY ENFORCEMENT

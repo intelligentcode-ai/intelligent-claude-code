@@ -1028,15 +1028,22 @@ To execute blocked operation:
 
     // Check for markdown files outside allowlist (applies to Write/Edit/Update only, not Read)
     if (tool !== 'Read' && filePath.endsWith('.md')) {
-      // Check if this is a summary-type file that should always be routed to ./summaries/
-      const fileName = path.basename(filePath);
-      const isSummaryFile = /^(FIX|RESULT|SUMMARY|COMPLETION|EXECUTION|ANALYSIS)-.*\.md$/i.test(fileName);
+      // Import getCorrectDirectory from directory-enforcement.js
+      const { getCorrectDirectory } = require('./lib/directory-enforcement');
 
-      // If it's NOT a summary file, allow agents to skip enforcement
+      const fileName = path.basename(filePath);
+      const correctDir = getCorrectDirectory(fileName, projectRoot);
+
+      // Check if this file SHOULD be routed (has a pattern match)
+      // If correctDir is summaries/ AND filename doesn't match routing patterns, skip enforcement for agents
+      const shouldRoute = correctDir !== path.join(projectRoot, 'summaries') ||
+                          fileName.match(/^(STORY|EPIC|BUG|AGENTTASK)-/);
+
+      // If it's NOT a routing pattern file, allow agents to skip enforcement
       let shouldApplyMarkdownValidation = true;
 
-      if (!isSummaryFile) {
-        // Only skip enforcement for non-summary files when agents are running
+      if (!shouldRoute) {
+        // File doesn't match routing patterns - skip enforcement for agents
         const crypto = require('crypto');
         const os = require('os');
         const sessionId = hookInput.session_id || '';
@@ -1050,7 +1057,7 @@ To execute blocked operation:
             try {
               const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
               if (marker.agent_count > 0) {
-                log('Agent context detected - skipping markdown directory enforcement for non-summary file');
+                log('Agent context + no routing pattern - skipping enforcement');
                 shouldApplyMarkdownValidation = false;
               }
             } catch (err) {
@@ -1059,7 +1066,7 @@ To execute blocked operation:
           }
         }
       } else {
-        log('Summary-type file detected - enforcing directory routing even for agents');
+        log('File matches routing pattern - enforcing directory routing even for agents');
       }
 
       // Apply markdown validation if needed
