@@ -37,44 +37,10 @@ function main() {
       return allowOperation(log, true);
     }
 
-    // CRITICAL: Skip ALL validation for agents - only apply to main scope
-    // Check for agent marker files to detect agent context
-    const crypto = require('crypto');
-    const os = require('os');
-
     // Get project root from hookInput.cwd or fallback
     const projectRoot = hookInput.cwd || process.cwd();
 
-    // Check for agent marker file (same logic as pm-constraints-enforcement.js)
-    const sessionId = hookInput.session_id || '';
-    if (sessionId && projectRoot) {
-      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
-      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-      const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
-
-      if (fs.existsSync(markerFile)) {
-        try {
-          const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
-          const agentCount = marker.agent_count || 0;
-
-          if (agentCount > 0) {
-            log('Agent context detected - skipping summary file enforcement');
-            return allowOperation(log, true);
-          }
-        } catch (err) {
-          // Marker file error - continue with validation
-          log(`Warning: Could not read agent marker file: ${err.message}`);
-        }
-      }
-    }
-
-    // Get settings
-    const strictMode = getSetting('development.file_management_strict', true);
-    const summariesPath = getSetting('paths.summaries_path', 'summaries');
-
     log(`Checking file: ${filePath}`);
-    log(`Strict mode: ${strictMode}`);
-    log(`Summaries path: ${summariesPath}`);
     log(`Project root: ${projectRoot}`);
 
     // Normalize to relative path if absolute
@@ -94,7 +60,7 @@ function main() {
     // Get filename early for ALL-CAPITALS check
     const fileName = path.basename(relativePath);
 
-    // STEP 1: ALL-CAPITALS check (highest priority - blocks everywhere)
+    // STEP 1: ALL-CAPITALS check (highest priority - blocks EVERYONE including agents)
     // Load allowed ALL-CAPITALS files from unified configuration
     const allowedAllCapsFiles = getSetting('enforcement.allowed_allcaps_files', [
       'README.md',
@@ -177,7 +143,42 @@ To execute blocked operation:
       return sendResponse(response, 2, log);
     }
 
-    // STEP 2: Summary placement validation (after ALL-CAPITALS passes)
+    // STEP 2: Agent context check - skip remaining validation for agents
+    // Check for agent marker files to detect agent context
+    const crypto = require('crypto');
+    const os = require('os');
+
+    // Check for agent marker file (same logic as pm-constraints-enforcement.js)
+    const sessionId = hookInput.session_id || '';
+    if (sessionId && projectRoot) {
+      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+      const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+      if (fs.existsSync(markerFile)) {
+        try {
+          const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+          const agentCount = marker.agent_count || 0;
+
+          if (agentCount > 0) {
+            log('Agent context detected - skipping remaining validation (ALL-CAPITALS already checked)');
+            return allowOperation(log, true);
+          }
+        } catch (err) {
+          // Marker file error - continue with validation
+          log(`Warning: Could not read agent marker file: ${err.message}`);
+        }
+      }
+    }
+
+    // Get settings
+    const strictMode = getSetting('development.file_management_strict', true);
+    const summariesPath = getSetting('paths.summaries_path', 'summaries');
+
+    log(`Strict mode: ${strictMode}`);
+    log(`Summaries path: ${summariesPath}`);
+
+    // STEP 3: Summary placement validation (after ALL-CAPITALS passes and agent check)
     // Use shared validation logic
     const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
 
@@ -195,7 +196,7 @@ To execute blocked operation:
     const isInSummariesDir = summariesPattern.test(normalizedPath) ||
                             normalizedPath.includes(`/${summariesPath}/`);
 
-    // STEP 3: If file is in summaries directory and passes ALL-CAPITALS check, allow
+    // STEP 4: If file is in summaries directory and passes ALL-CAPITALS check, allow
     if (isInSummariesDir) {
       // File is in summaries directory and has proper casing, allow
       log(`File in summaries directory with proper casing - allowed`);
