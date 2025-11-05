@@ -9,6 +9,7 @@
  */
 
 const path = require('path');
+const fs = require('fs');
 
 // Shared libraries
 const { initializeHook } = require('./lib/logging');
@@ -278,7 +279,30 @@ To execute blocked operation:
 
     // Check Write/Edit operations
     if (tool === 'Write' || tool === 'Edit') {
-      // FILENAME-BASED DIRECTORY ENFORCEMENT
+      // CRITICAL: Skip directory enforcement for agents - only apply to main scope
+      const crypto = require('crypto');
+      const os = require('os');
+      const sessionId = hookInput.session_id || '';
+
+      if (sessionId && projectRoot) {
+        const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+        const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+        const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+        if (fs.existsSync(markerFile)) {
+          try {
+            const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+            if (marker.agent_count > 0) {
+              log('Agent context detected - skipping directory enforcement');
+              return allowOperation(log, true);
+            }
+          } catch (err) {
+            log(`Warning: Could not read agent marker: ${err.message}`);
+          }
+        }
+      }
+
+      // FILENAME-BASED DIRECTORY ENFORCEMENT (main scope only)
       if (!isCorrectDirectory(filePath, projectRoot)) {
         const suggestedPath = getSuggestedPath(filePath, projectRoot);
 
