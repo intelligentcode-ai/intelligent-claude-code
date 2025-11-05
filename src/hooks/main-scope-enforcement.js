@@ -293,7 +293,7 @@ To execute blocked operation:
     }
 
     // Allow coordination tools
-    const coordinationTools = ['Read', 'Grep', 'Glob', 'Task', 'TodoWrite', 'WebFetch', 'BashOutput', 'KillShell'];
+    const coordinationTools = ['Read', 'Grep', 'Glob', 'Task', 'TodoWrite', 'WebFetch', 'WebSearch', 'BashOutput', 'KillShell'];
     if (coordinationTools.includes(tool)) {
       log(`Coordination tool allowed: ${tool}`);
       return allowOperation(log);
