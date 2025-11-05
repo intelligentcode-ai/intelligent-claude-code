@@ -68,7 +68,16 @@ function isCorrectDirectory(filePath, projectRoot) {
   const normalizedActual = path.normalize(actualDir);
   const normalizedExpected = path.normalize(expectedDir);
 
-  return normalizedActual === normalizedExpected;
+  // Allow exact match OR file in subdirectory of expected directory
+  if (normalizedActual === normalizedExpected) {
+    return true;
+  }
+
+  // Check if actualDir is a subdirectory of expectedDir
+  const relativePath = path.relative(normalizedExpected, normalizedActual);
+  const isSubdir = relativePath && !relativePath.startsWith('..') && !path.isAbsolute(relativePath);
+
+  return isSubdir;
 }
 
 /**
