@@ -9,8 +9,8 @@
   },
   "enforcement": {
     "blocking_enabled": true,
-    "allow_markdown_outside_allowlist": true,
-    "allow_markdown_outside_allowlist_agents": true,
+    "allow_markdown_outside_allowlist": false,
+    "allow_markdown_outside_allowlist_agents": false,
     "tool_blacklist": {
         "universal": [
           "make install"

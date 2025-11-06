@@ -129,22 +129,49 @@ function allowOperation(log, suppress = false) {
 
 /**
  * Get project root from hook input with fallback
+ * CRITICAL: Normalizes paths to ensure consistent hashing
  * @param {Object} hookInput - Parsed hook input
- * @returns {string} Project root path
+ * @returns {string} Normalized project root path
  */
 function getProjectRoot(hookInput) {
+  const path = require('path');
+  let projectRoot;
+
   // Priority 1: Environment variable (authoritative from Claude Code)
   if (process.env.CLAUDE_PROJECT_DIR) {
-    return process.env.CLAUDE_PROJECT_DIR;
+    projectRoot = process.env.CLAUDE_PROJECT_DIR;
   }
-
   // Priority 2: Hook input cwd
-  if (hookInput && hookInput.cwd) {
-    return hookInput.cwd;
+  else if (hookInput && hookInput.cwd) {
+    projectRoot = hookInput.cwd;
+  }
+  // Priority 3: Process cwd
+  else {
+    projectRoot = process.cwd();
   }
 
-  // Priority 3: Process cwd
-  return process.cwd();
+  // CRITICAL: Normalize path before any operations
+  // Remove trailing slashes, resolve to absolute, normalize separators
+  let normalizedPath = path.resolve(projectRoot);
+
+  // Ensure no trailing slash (except root)
+  if (normalizedPath.length > 1 && normalizedPath.endsWith(path.sep)) {
+    normalizedPath = normalizedPath.slice(0, -1);
+  }
+
+  return normalizedPath;
+}
+
+/**
+ * Generate consistent project hash from normalized project root
+ * CRITICAL: Always uses normalized path to ensure consistent hashing
+ * @param {Object} hookInput - Parsed hook input
+ * @returns {string} 8-character MD5 hash of normalized project root
+ */
+function generateProjectHash(hookInput) {
+  const crypto = require('crypto');
+  const projectRoot = getProjectRoot(hookInput);
+  return crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
 }
 
 /**
@@ -170,5 +197,6 @@ module.exports = {
   blockOperation,
   allowOperation,
   getProjectRoot,
+  generateProjectHash,
   extractToolInfo
 };

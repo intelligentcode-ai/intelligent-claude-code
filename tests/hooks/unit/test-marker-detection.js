@@ -15,7 +15,7 @@ const {
   isAgentContext,
   isPMRole,
   getMarkerDir
-} = require(path.join(os.homedir(), '.claude', 'hooks', 'lib', 'marker-detection'));
+} = require('../../../src/hooks/lib/marker-detection');
 
 // Test data
 const testProjectRoot1 = '/test/project/path1';

@@ -10,8 +10,13 @@ const path = require('path');
 function getCorrectDirectory(filename, projectRoot) {
   const basename = path.basename(filename);
 
-  // STORY/EPIC/BUG patterns → stories/
-  if (basename.match(/^(STORY|EPIC|BUG)-\d+-.*\.md$/)) {
+  // BUG patterns → bugs/
+  if (basename.match(/^BUG-\d+-.*\.md$/)) {
+    return path.join(projectRoot, 'bugs');
+  }
+
+  // STORY/EPIC patterns → stories/
+  if (basename.match(/^(STORY|EPIC)-\d+-.*\.md$/)) {
     return path.join(projectRoot, 'stories');
   }
 

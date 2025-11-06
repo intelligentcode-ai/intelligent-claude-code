@@ -13,7 +13,7 @@ const {
   allowResponse,
   allowResponseSuppressed,
   blockResponse
-} = require('/Users/karsten/.claude/hooks/lib/hook-helpers.js');
+} = require('../../../src/hooks/lib/hook-helpers.js');
 
 // Store original environment
 const originalEnv = { ...process.env };

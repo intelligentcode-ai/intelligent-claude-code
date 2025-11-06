@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.65] - 2025-11-06
+
+### Fixed
+- CRITICAL: Fixed path normalization bug in hook system (STORY-006)
+- Added generateProjectHash() helper function in hook-helpers.js for consistent hash generation
+- Updated isPMRole() in pm-constraints-enforcement.js to use centralized hash generation
+- getProjectRoot() now normalizes all paths (removes trailing slashes, resolves to absolute)
+- Ensures consistent project hash regardless of trailing slashes or path format variations
+- Fixes agent blocking issue where marker files couldn't be found due to hash mismatch
+- All 17 STORY-006 regression tests now pass
+
+---
+
 ## [8.20.63] - 2025-11-06
 
 ### Fixed

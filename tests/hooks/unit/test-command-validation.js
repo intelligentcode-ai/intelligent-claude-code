@@ -12,7 +12,7 @@ const {
   isAllowedCoordinationCommand,
   validateBashCommand,
   isModifyingBashCommand
-} = require('/Users/karsten/.claude/hooks/lib/command-validation.js');
+} = require('../../../src/hooks/lib/command-validation.js');
 
 // Test extractCommandsFromBash()
 const extractionTests = {
@@ -127,10 +127,11 @@ const validationTests = {
   },
 
   'allows kubectl non-read-only when not in blacklist': () => {
-    // Note: kubectl destructive commands are only blocked if kubectl is in pm_blacklist config
+    // SPECIFICATION: kubectl destructive commands depend on .icc/config.json blacklist
+    // Configuration: enforcement.tool_blacklist.main_scope_only or universal
+    // BEHAVIOR: Without blacklist config, kubectl delete is allowed
     const result = validateBashCommand('kubectl delete pod test');
-    // In test environment without pm_blacklist config, this is allowed by default
-    assert.strictEqual(result.allowed, true, 'kubectl delete allowed without blacklist config');
+    assert.strictEqual(result.allowed, true, 'kubectl delete allowed without blacklist config per spec');
   },
 
   'validates SSH remote command': () => {

@@ -10,6 +10,7 @@ const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 const { initializeHook } = require('./lib/logging');
 const { isAllowedCoordinationCommand } = require('./lib/command-validation');
+const { getProjectRoot, generateProjectHash } = require('./lib/hook-helpers');
 
 function main() {
   // Initialize hook with shared library function
@@ -78,10 +79,10 @@ function main() {
   function isPMRole(hookInput) {
     const session_id = hookInput.session_id;
 
-    // Generate project hash from project root for project-specific markers
-    const crypto = require('crypto');
-    const projectRoot = hookInput.cwd || process.cwd();
-    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+    // CRITICAL: Use generateProjectHash() for consistent hash generation
+    // This ensures the same hash is generated for marker creation and lookup
+    const projectHash = generateProjectHash(hookInput);
+    const projectRoot = getProjectRoot(hookInput);
 
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
 
@@ -1046,12 +1047,11 @@ To execute blocked operation:
 
       if (!shouldRoute) {
         // File doesn't match routing patterns - skip enforcement for agents
-        const crypto = require('crypto');
-        const os = require('os');
         const sessionId = hookInput.session_id || '';
 
         if (sessionId && projectRoot) {
-          const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+          // Use generateProjectHash() for consistent hash generation
+          const projectHash = generateProjectHash(hookInput);
           const markerDir = path.join(os.homedir(), '.claude', 'tmp');
           const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
 

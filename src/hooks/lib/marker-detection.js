@@ -32,11 +32,21 @@ function ensureMarkerDir(log) {
 
 /**
  * Generate project hash from project root
+ * CRITICAL: Normalizes path before hashing to ensure consistency
  * @param {string} projectRoot - Project root path
  * @returns {string} 8-character MD5 hash
  */
 function generateProjectHash(projectRoot) {
-  return crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+  // CRITICAL: Normalize before hashing
+  // Ensures same path with/without trailing slash = same hash
+  let normalizedRoot = path.resolve(projectRoot);
+
+  // Ensure no trailing slash (except root)
+  if (normalizedRoot.length > 1 && normalizedRoot.endsWith(path.sep)) {
+    normalizedRoot = normalizedRoot.slice(0, -1);
+  }
+
+  return crypto.createHash('md5').update(normalizedRoot).digest('hex').substring(0, 8);
 }
 
 /**
