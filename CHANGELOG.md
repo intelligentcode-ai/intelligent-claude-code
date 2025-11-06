@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.58] - 2025-11-06
+
+### Added
+- Unit tests for marker-detection.js validating hash generation and agent detection
+- Tests for generateProjectHash() consistency and uniqueness
+- Tests for isAgentContext() with various marker file scenarios
+- Tests for isPMRole() inverse logic
+
+---
+
 ## [8.20.57] - 2025-11-06
 
 ### Added
