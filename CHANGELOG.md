@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.59] - 2025-11-06
+
+### Added
+- Unit tests for command-validation.js validating command parsing and security boundaries
+- Tests for extractCommandsFromBash() with pipes, heredocs, quotes, environment variables
+- Tests for validateBashCommand() security boundaries (allowed vs blocked commands)
+- Tests for isAllowedCoordinationCommand() coordination command allowlist
+- Tests for isModifyingBashCommand() installation directory modification detection
+- STORY-009 completed: Full test infrastructure with unit tests for all hook utilities
+
+---
+
 ## [8.20.58] - 2025-11-06
 
 ### Added
