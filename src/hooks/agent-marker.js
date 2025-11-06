@@ -145,10 +145,16 @@ function main() {
 
     // Generate project hash from project root for project-specific markers
     const projectRoot = getProjectRoot(hookInput);
+    log(`[MARKER-CREATE] projectRoot from getProjectRoot: "${projectRoot}"`);
+    log(`[MARKER-CREATE] hookInput.cwd: "${hookInput.cwd || 'undefined'}"`);
+    log(`[MARKER-CREATE] process.env.CLAUDE_PROJECT_DIR: "${process.env.CLAUDE_PROJECT_DIR || 'undefined'}"`);
+    log(`[MARKER-CREATE] process.cwd(): "${process.cwd()}"`);
     const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+    log(`[MARKER-CREATE] projectHash: "${projectHash}"`);
 
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
     const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
+    log(`[MARKER-CREATE] Full marker path: "${markerFile}"`);
 
     if (shouldLog('DEBUG')) {
       // DEFENSIVE: Log marker file path calculation

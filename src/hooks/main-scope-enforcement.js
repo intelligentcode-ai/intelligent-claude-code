@@ -193,6 +193,10 @@ function main() {
 
     // Get project root
     const projectRoot = getProjectRoot(hookInput);
+    log(`[MARKER-CHECK] projectRoot from getProjectRoot: "${projectRoot}"`);
+    log(`[MARKER-CHECK] hookInput.cwd: "${hookInput.cwd || 'undefined'}"`);
+    log(`[MARKER-CHECK] process.env.CLAUDE_PROJECT_DIR: "${process.env.CLAUDE_PROJECT_DIR || 'undefined'}"`);
+    log(`[MARKER-CHECK] process.cwd(): "${process.cwd()}"`);
 
     // Check for agent marker (if agent, skip enforcement)
     const crypto = require('crypto');
@@ -201,8 +205,11 @@ function main() {
 
     if (sessionId && projectRoot) {
       const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      log(`[MARKER-CHECK] projectHash: "${projectHash}"`);
       const markerDir = path.join(os.homedir(), '.claude', 'tmp');
       const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+      log(`[MARKER-CHECK] Full marker path: "${markerFile}"`);
+      log(`[MARKER-CHECK] Marker file exists: ${fs.existsSync(markerFile)}`);
 
       if (fs.existsSync(markerFile)) {
         try {

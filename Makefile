@@ -240,3 +240,23 @@ clean:
 	@rm -rf ~/.ansible/tmp/ansible-tmp-* 2>/dev/null || true
 	@echo "✓ Test directories removed"
 	@echo "✓ Ansible temp files cleaned"
+
+# Hook system test targets
+test-hooks: ## Run hook system test suite
+	@bash tests/run-tests.sh
+
+test-unit: ## Run unit tests only
+	@if [ -d "tests/hooks/unit" ] && [ "$$(ls -A tests/hooks/unit/*.js 2>/dev/null)" ]; then \
+		node tests/hooks/unit/*.js; \
+	else \
+		echo "No unit tests found yet"; \
+	fi
+
+test-integration: ## Run integration tests only
+	@if [ -d "tests/hooks/integration" ] && [ "$$(ls -A tests/hooks/integration/*.js 2>/dev/null)" ]; then \
+		node tests/hooks/integration/*.js; \
+	else \
+		echo "No integration tests found yet"; \
+	fi
+
+.PHONY: test-hooks test-unit test-integration
