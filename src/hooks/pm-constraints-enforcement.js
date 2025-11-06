@@ -54,7 +54,8 @@ function main() {
       'agenttasks',           // Always allow agenttasks directory
       'icc.config.json',      // Project configuration file
       'icc.workflow.json',    // Workflow configuration file
-      'summaries'             // Summaries and reports directory
+      'summaries',            // Summaries and reports directory
+      'tests'                 // Allow test file creation for comprehensive coverage
     ];
 
     // In development context, allow src/ directory edits
@@ -571,7 +572,8 @@ To execute blocked operation:
       config.memory_path,
       config.docs_path,
       'agenttasks',
-      'summaries'
+      'summaries',
+      'tests'  // Allow test file creation for comprehensive coverage
     ];
 
     const fileName = path.basename(relativePath);

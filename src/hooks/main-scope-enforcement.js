@@ -41,7 +41,8 @@ function main() {
       config.paths.memory_path || 'memory',
       config.paths.docs_path || 'docs',
       'agenttasks',
-      'summaries'
+      'summaries',
+      'tests'  // Allow test file creation for comprehensive coverage
     ];
 
     // Extract directory path from mkdir command
@@ -378,7 +379,8 @@ Please use the correct directory for this file type.`,
         config.paths.memory_path,
         config.paths.docs_path,
         'agenttasks',
-        'summaries'
+        'summaries',
+        'tests'  // Allow test file creation for comprehensive coverage
       ];
 
       // In development context, allow src/ directory edits
@@ -404,7 +406,7 @@ ${customMessage}
 Main scope is limited to coordination work:
 ✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite, WebFetch, BashOutput, KillShell
 ✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
-✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
+✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/, tests/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
 ✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
@@ -533,7 +535,7 @@ ${customMessage}
 Main scope is limited to coordination work:
 ✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite, WebFetch, BashOutput, KillShell
 ✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
-✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
+✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/, tests/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
 ✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
@@ -587,7 +589,7 @@ ${customMessage}
 Main scope is limited to coordination work:
 ✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite, WebFetch, BashOutput, KillShell
 ✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
-✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
+✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/, tests/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
 ✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)

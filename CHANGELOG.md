@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.63] - 2025-11-06
+
+### Fixed
+- Added tests/ directory to hook allowlists (BUG-001)
+- Agents can now create test files for comprehensive coverage
+- Fixes blocking issue preventing STORY-010 integration/regression test implementation
+- Updated allowlists in both main-scope-enforcement.js and pm-constraints-enforcement.js
+
+---
+
 ## [8.20.61] - 2025-11-06
 
 ### Added
