@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.61] - 2025-11-06
+
+### Added
+- Comprehensive test framework documentation in docs/testing/test-framework-docs.md
+- Documents current test infrastructure, coverage, gaps, and roadmap
+- Honest assessment of incomplete coverage (~10% complete)
+- Practical examples and patterns for writing new tests
+- Clear roadmap for STORY-010 integration/regression tests
+
+---
+
 ## [8.20.60] - 2025-11-06
 
 ### Fixed
