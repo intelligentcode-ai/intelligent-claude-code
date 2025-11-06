@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.57] - 2025-11-06
+
+### Added
+- Unit tests for hook-helpers.js validating getProjectRoot() behavior
+- Path normalization bug tests documenting STORY-006 issue
+- Response helper function validation tests
+- Edge case handling tests for hook utilities
+
+---
+
 ## [8.20.42] - 2025-11-04
 
 ### Fixed
