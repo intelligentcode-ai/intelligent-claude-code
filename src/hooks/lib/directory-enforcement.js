@@ -43,6 +43,12 @@ function getCorrectDirectory(filename, projectRoot) {
     return path.join(projectRoot, 'docs');
   }
 
+  // Memory files → memory/
+  // Check if filename contains 'memory/' to detect memory directory files
+  if (filename.includes('memory/')) {
+    return path.join(projectRoot, 'memory');
+  }
+
   // Default → summaries/
   return path.join(projectRoot, 'summaries');
 }

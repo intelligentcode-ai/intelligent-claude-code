@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.60] - 2025-11-06
+
+### Fixed
+- Directory routing now allows memory/ directory for learned pattern storage
+- Fixes STORY-007: Memory files no longer incorrectly routed to summaries/
+- Memory system can now properly store patterns in memory/debugging/, memory/implementation/, etc.
+
+---
+
 ## [8.20.59] - 2025-11-06
 
 ### Added
