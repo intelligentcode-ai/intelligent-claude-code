@@ -246,11 +246,36 @@ function main() {
     }
 
     // ========================================================================
-    // CRITICAL: Check tool blacklist FIRST (universal + main_scope_only)
-    // This check MUST happen before any allowlist checks to ensure blacklist
-    // takes precedence over all other rules. Universal blacklist blocks
-    // dangerous operations system-wide, while main_scope_only blacklist
-    // enforces AgentTask-driven execution pattern.
+    // CRITICAL: For Bash tool, check coordination commands BEFORE blacklist
+    // Read-only commands (git, ls, make, etc.) must be allowed even though
+    // Bash is in the main_scope_only blacklist. This allows safe coordination
+    // commands while still blocking dangerous operations.
+    // ========================================================================
+    if (tool === 'Bash' && command) {
+      // Check if it's an allowed coordination command (git, ls, make, etc.)
+      if (isAllowedCoordinationCommand(command)) {
+        log(`Bash coordination command allowed: ${command}`);
+        return allowOperation(log);
+      }
+
+      // Check if it's a read-only infrastructure command
+      if (isReadOnlyInfrastructureCommand(command)) {
+        log(`Read-only infrastructure command allowed: ${command}`);
+        return allowOperation(log);
+      }
+
+      // Check if mkdir for allowlist directory
+      if (isAllowedMkdirCommand(command, projectRoot)) {
+        log(`Mkdir for allowlist directory allowed: ${command}`);
+        return allowOperation(log);
+      }
+    }
+
+    // ========================================================================
+    // CRITICAL: Check tool blacklist AFTER Bash coordination check
+    // Universal blacklist blocks dangerous operations system-wide, while
+    // main_scope_only blacklist enforces AgentTask-driven execution pattern.
+    // Bash coordination commands bypass blacklist for safe operations.
     // ========================================================================
     const blacklistResult = checkToolBlacklist(tool, toolInput, 'main_scope');
     if (blacklistResult.blocked) {
@@ -448,11 +473,12 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
       }
     }
 
-    // Check Bash operations
+    // Check Bash operations for modifying infrastructure commands
     if (tool === 'Bash') {
       const bashCommand = command || '';
 
       // CRITICAL: Block modifying infrastructure commands
+      // Note: Read-only and coordination commands already checked before blacklist
       if (isModifyingInfrastructureCommand(bashCommand)) {
         return blockOperation(
           'Modifying infrastructure commands not allowed in main scope',
@@ -503,77 +529,9 @@ To execute blocked operation:
         );
       }
 
-      // Allow read-only infrastructure commands
-      if (isReadOnlyInfrastructureCommand(bashCommand)) {
-        log(`Read-only infrastructure command allowed: ${bashCommand}`);
-        return allowOperation(log);
-      }
-
-      // Then check if allowed coordination command
-      if (isAllowedCoordinationCommand(bashCommand)) {
-        log(`Allowed coordination command: ${bashCommand}`);
-        return allowOperation(log);
-      }
-
-      // Check if mkdir for allowlist directory
-      if (isAllowedMkdirCommand(bashCommand, projectRoot)) {
-        log(`Mkdir for allowlist directory allowed: ${bashCommand}`);
-        return allowOperation(log);
-      }
-
-      // Block all other technical bash commands
-      const customMessage = getSetting('enforcement.strict_main_scope_message',
-        'Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.');
-
-      return blockOperation(`🚫 STRICT MODE: Technical bash commands not allowed in main scope
-
-Tool: ${tool}
-Detail: ${bashCommand}
-
-${customMessage}
-
-Main scope is limited to coordination work:
-✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite, WebFetch, BashOutput, KillShell
-✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
-✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/, tests/)
-✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
-✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
-✅ ALLOWED: mkdir for allowlist directories
-
-❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
-❌ BLOCKED: All other technical operations
-
-🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
-
-1. Main Scope Creates AgentTasks ONLY via Task tool
-2. Agent response = Agent completed (process results immediately)
-3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
-4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
-
-Example - Sequential Work:
-  Task tool → @Developer (fix bug) → Agent returns → Process results
-
-Example - Parallel Work (PREFERRED):
-  Single message with multiple Task tool calls:
-  - Task tool → @Developer (fix bug A)
-  - Task tool → @Developer (fix bug B)
-  - Task tool → @QA-Engineer (test feature C)
-  All execute in parallel → Agents return → Process results
-
-Template Usage:
-  - 0-2 points: nano-agenttask-template.yaml
-  - 3-5 points: tiny-agenttask-template.yaml
-  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
-  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
-
-To execute blocked operation:
-1. Create AgentTask using appropriate template
-2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
-3. Wait for agent completion
-4. Agent provides comprehensive summary with results
-
-To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.json`, log);
+      // If we reach here, Bash command passed all checks - allow it
+      log(`Bash command allowed: ${bashCommand}`);
+      return allowOperation(log);
     }
 
     // Block all other operations

@@ -933,7 +933,25 @@ To execute blocked operation:
 
     log(`Tool: ${tool}, FilePath: ${filePath}, Command: ${command}`);
 
-    // CRITICAL: Check tool blacklist FIRST (universal + main_scope_only for PM)
+    // ========================================================================
+    // CRITICAL: For Bash tool, check coordination commands BEFORE blacklist
+    // Read-only commands (git, ls, make, etc.) must be allowed even though
+    // Bash is in the main_scope_only blacklist. This allows safe coordination
+    // commands while still blocking dangerous operations.
+    // ========================================================================
+    if (tool === 'Bash' && command) {
+      log(`Checking Bash coordination commands before blacklist: ${command}`);
+      const bashValidation = validateBashCommand(command, projectRoot);
+
+      if (bashValidation.allowed) {
+        log(`Bash coordination command allowed: ${command}`);
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
+      }
+      // If not allowed by coordination check, continue to blacklist and other checks
+    }
+
+    // CRITICAL: Check tool blacklist AFTER Bash coordination check
     const blacklistResult = checkToolBlacklist(tool, toolInput, 'pm', projectRoot);
     if (blacklistResult.blocked) {
       log(`Tool blocked by blacklist: ${tool} (${blacklistResult.list})`);
@@ -1181,40 +1199,8 @@ Please use the correct directory for this file type.`
         }
       }
 
-      // Validate Bash commands
-      if (tool === 'Bash' && command) {
-        log(`Validating Bash command: ${command}`);
-        const bashValidation = validateBashCommand(command, projectRoot);
-
-        if (!bashValidation.allowed) {
-          log(`Bash command BLOCKED: ${command}`);
-
-          const blockingEnabled = getBlockingEnabled();
-
-          if (blockingEnabled) {
-            // BLOCKING MODE (default)
-            const response = {
-              hookSpecificOutput: {
-                hookEventName: 'PreToolUse',
-                permissionDecision: 'deny',
-                permissionDecisionReason: bashValidation.message
-              }
-            };
-            const responseJson = JSON.stringify(response);
-            log(`RESPONSE: ${responseJson}`);
-            log(`EXIT CODE: 0 (DENY)`);
-            console.log(responseJson);
-            process.exit(0);
-          } else {
-            // WARNING MODE (non-blocking)
-            log(`⚠️ WARNING (non-blocking): ${bashValidation.message}`);
-            console.log(JSON.stringify({ continue: true }));
-            process.exit(0);
-          }
-        }
-
-        log(`Bash command ALLOWED: ${command}`);
-      }
+      // Note: Bash command validation now happens BEFORE blacklist check (line 942)
+      // This allows coordination commands like git, ls, make to bypass blacklist
 
       // Note: Edit/Write/Update/MultiEdit are now blocked entirely above (lines 469-501)
       // No file path validation needed - all file modifications require AgentTasks

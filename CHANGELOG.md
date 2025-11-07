@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.66] - 2025-11-06
+
+### Fixed
+- CRITICAL: Fixed Bash blacklist check order bug in main-scope-enforcement.js
+- Read-only Bash commands (git, ls, make, etc.) now checked BEFORE blacklist
+- Fixes blocking issue where ALL Bash commands were blocked including safe coordination commands
+- Allows `make install`, `git status`, `ls`, and other safe Bash operations in main scope
+- Dangerous Bash commands still properly blocked (ssh, docker, npm install, etc.)
+- All tests pass after fix
+
+---
+
 ## [8.20.65] - 2025-11-06
 
 ### Fixed
