@@ -6,13 +6,22 @@ const os = require('os');
 const crypto = require('crypto');
 
 // Shared libraries
-const { blockOperation } = require('./lib/hook-helpers');
+const { blockOperation, getProjectRoot, generateProjectHash } = require('./lib/hook-helpers');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { initializeHook } = require('./lib/logging');
+const { getSetting } = require('./lib/config-loader');
 
 function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('agent-marker');
+
+  // Get log level from config (default: 'INFO')
+  const logLevel = getSetting('logging.agent_marker_log_level', 'INFO');
+  const levels = { ERROR: 0, WARN: 1, INFO: 2, DEBUG: 3 };
+  const currentLevel = levels[logLevel] || 2;
+
+  // Helper to check if we should log at given level
+  const shouldLog = (level) => levels[level] <= currentLevel;
 
   function generateUUID() {
     return crypto.randomUUID();
@@ -43,23 +52,45 @@ function main() {
           log(`Failed to write marker after ${retries} retries: ${error.message}`);
           return false;
         }
+
         const delay = Math.pow(2, i) * 10;
         const end = Date.now() + delay;
         while (Date.now() < end) {}
       }
     }
+
     return false;
   }
 
   function incrementAgentCount(markerFile, session_id, tool_name, projectRoot) {
-    const marker = atomicReadMarker(markerFile) || {
+    if (shouldLog('DEBUG')) {
+      log(`DEFENSIVE: incrementAgentCount called`);
+      log(`DEFENSIVE: markerFile="${markerFile}"`);
+      log(`DEFENSIVE: session_id="${session_id}"`);
+      log(`DEFENSIVE: tool_name="${tool_name}"`);
+      log(`DEFENSIVE: projectRoot="${projectRoot}"`);
+    }
+
+    const existingMarker = atomicReadMarker(markerFile);
+    if (shouldLog('DEBUG')) {
+      log(`DEFENSIVE: Existing marker ${existingMarker ? 'found' : 'NOT found'}`);
+    }
+
+    const marker = existingMarker || {
       session_id: session_id,
       project_root: projectRoot,
       agent_count: 0,
       agents: []
     };
 
+    if (!existingMarker && shouldLog('DEBUG')) {
+      log(`DEFENSIVE: Creating new marker structure`);
+    }
+
     const toolInvocationId = generateUUID();
+    if (shouldLog('DEBUG')) {
+      log(`DEFENSIVE: Generated tool_invocation_id: ${toolInvocationId}`);
+    }
 
     marker.agents.push({
       tool_invocation_id: toolInvocationId,
@@ -71,8 +102,20 @@ function main() {
 
     log(`Incrementing agent count: ${marker.agent_count} (added ${toolInvocationId})`);
 
-    if (atomicWriteMarker(markerFile, marker)) {
+    const writeSuccess = atomicWriteMarker(markerFile, marker);
+    if (shouldLog('DEBUG')) {
+      log(`DEFENSIVE: atomicWriteMarker returned: ${writeSuccess}`);
+    }
+
+    if (writeSuccess) {
+      if (shouldLog('DEBUG')) {
+        log(`DEFENSIVE: Returning tool_invocation_id: ${toolInvocationId}`);
+      }
       return toolInvocationId;
+    }
+
+    if (shouldLog('DEBUG')) {
+      log(`DEFENSIVE: CRITICAL - Write failed, returning NULL`);
     }
     return null;
   }
@@ -85,6 +128,9 @@ function main() {
   try {
     // hookInput already parsed earlier for logging
     if (!hookInput) {
+      if (shouldLog('DEBUG')) {
+        log('DEFENSIVE: No hookInput - exiting early');
+      }
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
@@ -92,12 +138,31 @@ function main() {
     const session_id = hookInput.session_id;
     const tool_name = hookInput.tool_name;
 
+    // DEFENSIVE: Log parsed input
+    log(`Session ID: ${session_id}`);
+    log(`Tool name: ${tool_name}`);
+    log(`Has tool_input: ${!!hookInput.tool_input}`);
+
     // Generate project hash from project root for project-specific markers
-    const projectRoot = hookInput.cwd || process.cwd();
-    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+    const projectRoot = getProjectRoot(hookInput);
+    log(`[MARKER-CREATE] projectRoot from getProjectRoot: "${projectRoot}"`);
+    log(`[MARKER-CREATE] hookInput.cwd: "${hookInput.cwd || 'undefined'}"`);
+    log(`[MARKER-CREATE] process.env.CLAUDE_PROJECT_DIR: "${process.env.CLAUDE_PROJECT_DIR || 'undefined'}"`);
+    log(`[MARKER-CREATE] process.cwd(): "${process.cwd()}"`);
+    const projectHash = generateProjectHash(hookInput);
+    log(`[MARKER-CREATE] projectHash: "${projectHash}"`);
 
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
     const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
+    log(`[MARKER-CREATE] Full marker path: "${markerFile}"`);
+
+    if (shouldLog('DEBUG')) {
+      // DEFENSIVE: Log marker file path calculation
+      log(`Project root: ${projectRoot}`);
+      log(`Project hash: ${projectHash}`);
+      log(`Marker directory: ${markerDir}`);
+      log(`Marker file path: ${markerFile}`);
+    }
 
     // Cleanup old-style markers without project hash (backward compatibility)
     const oldMarkerFile = path.join(markerDir, `agent-executing-${session_id}`);
@@ -110,8 +175,24 @@ function main() {
       }
     }
 
+    // DEFENSIVE: Ensure marker directory exists with error handling
     if (!fs.existsSync(markerDir)) {
-      fs.mkdirSync(markerDir, { recursive: true });
+      try {
+        if (shouldLog('DEBUG')) {
+          log(`DEFENSIVE: Creating marker directory: ${markerDir}`);
+        }
+        fs.mkdirSync(markerDir, { recursive: true });
+        if (shouldLog('DEBUG')) {
+          log(`DEFENSIVE: Marker directory created successfully`);
+        }
+      } catch (mkdirError) {
+        if (shouldLog('DEBUG')) {
+          log(`DEFENSIVE: CRITICAL - Failed to create marker directory: ${mkdirError.message}`);
+          log(`DEFENSIVE: Stack trace: ${mkdirError.stack}`);
+        }
+      }
+    } else if (shouldLog('DEBUG')) {
+      log(`DEFENSIVE: Marker directory already exists: ${markerDir}`);
     }
 
     // Check if agent context exists (marker file present)
@@ -152,10 +233,33 @@ If you are an agent and need to delegate work, your AgentTask should be broken d
     }
 
     if (tool_name === 'Task') {
+      if (shouldLog('DEBUG')) {
+        log('DEFENSIVE: Tool is Task - attempting marker increment');
+      }
+
       try {
+        if (shouldLog('DEBUG')) {
+          log('DEFENSIVE: Calling incrementAgentCount...');
+        }
         const toolInvocationId = incrementAgentCount(markerFile, session_id, tool_name, projectRoot);
+
         if (toolInvocationId) {
           log(`Agent marker incremented: ${markerFile} (project: ${projectRoot}, tool_invocation_id: ${toolInvocationId})`);
+
+          if (shouldLog('DEBUG')) {
+            // DEFENSIVE: Verify marker file exists after creation
+            if (fs.existsSync(markerFile)) {
+              log(`DEFENSIVE: Marker file verified to exist: ${markerFile}`);
+              try {
+                const markerContent = fs.readFileSync(markerFile, 'utf8');
+                log(`DEFENSIVE: Marker file content length: ${markerContent.length} bytes`);
+              } catch (readError) {
+                log(`DEFENSIVE: Failed to read marker file for verification: ${readError.message}`);
+              }
+            } else {
+              log(`DEFENSIVE: WARNING - Marker file does NOT exist after creation: ${markerFile}`);
+            }
+          }
 
           // Check for generic agent usage and suggest specialists
           const toolInput = hookInput.tool_input || {};
@@ -182,19 +286,31 @@ If you are an agent and need to delegate work, your AgentTask should be broken d
             log('  - CI/CD → @Pipeline-DevOps-Engineer');
             log('  See role-system.md SPECIALIST-SELECTION for guidance');
           }
-        } else {
-          log(`Failed to increment agent marker`);
+        } else if (shouldLog('DEBUG')) {
+          log(`DEFENSIVE: CRITICAL - incrementAgentCount returned NULL (marker creation failed)`);
         }
       } catch (error) {
-        log(`Failed to increment agent marker: ${error.message}`);
+        if (shouldLog('DEBUG')) {
+          log(`DEFENSIVE: CRITICAL - Exception in Task tool handling: ${error.message}`);
+          log(`DEFENSIVE: Stack trace: ${error.stack}`);
+        }
       }
+    } else if (shouldLog('DEBUG')) {
+      // DEFENSIVE: Explicitly log when tool_name is NOT 'Task'
+      log(`DEFENSIVE: Tool is NOT Task (tool_name="${tool_name}") - skipping marker increment`);
     }
 
+    if (shouldLog('DEBUG')) {
+      log('DEFENSIVE: Exiting hook successfully');
+    }
     console.log(JSON.stringify(standardOutput));
     process.exit(0);
 
   } catch (error) {
-    log(`Error: ${error.message}`);
+    if (shouldLog('DEBUG')) {
+      log(`DEFENSIVE: CRITICAL - Unhandled exception in main try block: ${error.message}`);
+      log(`DEFENSIVE: Stack trace: ${error.stack}`);
+    }
     console.log(JSON.stringify(standardOutput));
     process.exit(0);
   }

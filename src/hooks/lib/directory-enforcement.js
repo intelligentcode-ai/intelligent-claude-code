@@ -10,8 +10,13 @@ const path = require('path');
 function getCorrectDirectory(filename, projectRoot) {
   const basename = path.basename(filename);
 
-  // STORY/EPIC/BUG patterns → stories/
-  if (basename.match(/^(STORY|EPIC|BUG)-\d+-.*\.md$/)) {
+  // BUG patterns → bugs/
+  if (basename.match(/^BUG-\d+-.*\.md$/)) {
+    return path.join(projectRoot, 'bugs');
+  }
+
+  // STORY/EPIC patterns → stories/
+  if (basename.match(/^(STORY|EPIC)-\d+-.*\.md$/)) {
     return path.join(projectRoot, 'stories');
   }
 
@@ -24,7 +29,7 @@ function getCorrectDirectory(filename, projectRoot) {
   const rootWhitelist = [
     'CLAUDE.md', 'VERSION', 'icc.config.json', 'icc.workflow.json',
     'README.md', 'CHANGELOG.md', 'LICENSE', '.gitignore',
-    'Makefile', 'package.json', 'package-lock.json'
+    'Makefile', 'package.json', 'package-lock.json', 'config.md'
   ];
   if (rootWhitelist.includes(basename)) {
     return projectRoot;
@@ -41,6 +46,12 @@ function getCorrectDirectory(filename, projectRoot) {
   ];
   if (docsPatterns.some(pattern => pattern.test(basename))) {
     return path.join(projectRoot, 'docs');
+  }
+
+  // Memory files → memory/
+  // Check if filename contains 'memory/' to detect memory directory files
+  if (filename.includes('memory/')) {
+    return path.join(projectRoot, 'memory');
   }
 
   // Default → summaries/
@@ -68,7 +79,16 @@ function isCorrectDirectory(filePath, projectRoot) {
   const normalizedActual = path.normalize(actualDir);
   const normalizedExpected = path.normalize(expectedDir);
 
-  return normalizedActual === normalizedExpected;
+  // Allow exact match OR file in subdirectory of expected directory
+  if (normalizedActual === normalizedExpected) {
+    return true;
+  }
+
+  // Check if actualDir is a subdirectory of expectedDir
+  const relativePath = path.relative(normalizedExpected, normalizedActual);
+  const isSubdir = relativePath && !relativePath.startsWith('..') && !path.isAbsolute(relativePath);
+
+  return isSubdir;
 }
 
 /**

@@ -5,6 +5,7 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const { initializeHook } = require('./lib/logging');
+const { generateProjectHash } = require('./lib/hook-helpers');
 
 function main() {
   // Initialize hook with shared library function
@@ -33,7 +34,7 @@ function main() {
     // Session end = NO agents can be running anymore
     if (session_id) {
       // Calculate project hash to match agent-marker.js format
-      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const projectHash = generateProjectHash(hookInput);
       const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
 
       log(`[STOP-CLEANUP] Checking marker: ${markerFile}`);

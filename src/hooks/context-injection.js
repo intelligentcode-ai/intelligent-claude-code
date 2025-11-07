@@ -6,6 +6,7 @@ const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
 const { selectRelevantConstraints } = require('./lib/constraint-selector');
 const { initializeHook } = require('./lib/logging');
+const { generateProjectHash } = require('./lib/hook-helpers');
 
 /**
  * Load best practices from README.md
@@ -138,9 +139,7 @@ function main() {
     if (session_id) {
       // CRITICAL FIX: Calculate project hash to match agent-marker.js filename format
       // Without hash, cleanup fails to find marker file and stale counts persist
-      const crypto = require('crypto');
-      const projectRoot = claudeInput.cwd || process.cwd();
-      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const projectHash = generateProjectHash(hookInput);
 
       const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
       log(`[MARKER-CLEANUP] Checking marker: ${markerFile} (project: ${projectRoot})`);

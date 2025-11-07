@@ -9,6 +9,8 @@ const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 const { initializeHook } = require('./lib/logging');
+const { isAllowedCoordinationCommand } = require('./lib/command-validation');
+const { getProjectRoot, generateProjectHash } = require('./lib/hook-helpers');
 
 function main() {
   // Initialize hook with shared library function
@@ -53,7 +55,8 @@ function main() {
       'agenttasks',           // Always allow agenttasks directory
       'icc.config.json',      // Project configuration file
       'icc.workflow.json',    // Workflow configuration file
-      'summaries'             // Summaries and reports directory
+      'summaries',            // Summaries and reports directory
+      'tests'                 // Allow test file creation for comprehensive coverage
     ];
 
     // In development context, allow src/ directory edits
@@ -76,10 +79,10 @@ function main() {
   function isPMRole(hookInput) {
     const session_id = hookInput.session_id;
 
-    // Generate project hash from project root for project-specific markers
-    const crypto = require('crypto');
-    const projectRoot = hookInput.cwd || process.cwd();
-    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+    // CRITICAL: Use generateProjectHash() for consistent hash generation
+    // This ensures the same hash is generated for marker creation and lookup
+    const projectHash = generateProjectHash(hookInput);
+    const projectRoot = getProjectRoot(hookInput);
 
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
 
@@ -191,6 +194,25 @@ function main() {
     const firstWord = command.trim().split(/\s+/)[0];
     if (readOnlyInspectionCommands.includes(firstWord)) {
       return { allowed: true };
+    }
+
+    // Check if command is allowed coordination command (unified with main-scope)
+    if (isAllowedCoordinationCommand(command)) {
+      log(`PM-allowed coordination command: ${command}`);
+      return { allowed: true };
+    }
+
+    // Additionally check PM-specific commands from configuration (gh CLI, etc.)
+    const pmExtraCommands = getSetting('enforcement.pm_allowed_bash_commands', [
+      'gh pr list', 'gh pr view', 'gh pr status',
+      'gh issue list', 'gh issue view'
+    ]);
+
+    for (const allowedCmd of pmExtraCommands) {
+      if (command.trim().startsWith(allowedCmd + ' ') || command.trim() === allowedCmd) {
+        log(`PM-allowed extra command: ${allowedCmd} (full command: ${command})`);
+        return { allowed: true };
+      }
     }
 
     // Check for SSH remote execution BEFORE other validation
@@ -551,7 +573,8 @@ To execute blocked operation:
       config.memory_path,
       config.docs_path,
       'agenttasks',
-      'summaries'
+      'summaries',
+      'tests'  // Allow test file creation for comprehensive coverage
     ];
 
     const fileName = path.basename(relativePath);
@@ -910,7 +933,25 @@ To execute blocked operation:
 
     log(`Tool: ${tool}, FilePath: ${filePath}, Command: ${command}`);
 
-    // CRITICAL: Check tool blacklist FIRST (universal + main_scope_only for PM)
+    // ========================================================================
+    // CRITICAL: For Bash tool, check coordination commands BEFORE blacklist
+    // Read-only commands (git, ls, make, etc.) must be allowed even though
+    // Bash is in the main_scope_only blacklist. This allows safe coordination
+    // commands while still blocking dangerous operations.
+    // ========================================================================
+    if (tool === 'Bash' && command) {
+      log(`Checking Bash coordination commands before blacklist: ${command}`);
+      const bashValidation = validateBashCommand(command, projectRoot);
+
+      if (bashValidation.allowed) {
+        log(`Bash coordination command allowed: ${command}`);
+        console.log(JSON.stringify({ continue: true }));
+        process.exit(0);
+      }
+      // If not allowed by coordination check, continue to blacklist and other checks
+    }
+
+    // CRITICAL: Check tool blacklist AFTER Bash coordination check
     const blacklistResult = checkToolBlacklist(tool, toolInput, 'pm', projectRoot);
     if (blacklistResult.blocked) {
       log(`Tool blocked by blacklist: ${tool} (${blacklistResult.list})`);
@@ -1008,33 +1049,75 @@ To execute blocked operation:
 
     // Check for markdown files outside allowlist (applies to Write/Edit/Update only, not Read)
     if (tool !== 'Read' && filePath.endsWith('.md')) {
-      const isAgentContext = !isPMRole(hookInput);
-      const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, isAgentContext);
-      if (!markdownValidation.allowed) {
-        log(`Markdown file outside allowlist blocked: ${filePath}`);
+      // Import getCorrectDirectory from directory-enforcement.js
+      const { getCorrectDirectory } = require('./lib/directory-enforcement');
 
-      const blockingEnabled = getBlockingEnabled();
+      const fileName = path.basename(filePath);
+      const correctDir = getCorrectDirectory(fileName, projectRoot);
 
-      if (blockingEnabled) {
-        // BLOCKING MODE (default)
-        const response = {
-          hookSpecificOutput: {
-            hookEventName: 'PreToolUse',
-            permissionDecision: 'deny',
-            permissionDecisionReason: markdownValidation.message
+      // Check if this file SHOULD be routed (has a pattern match)
+      // If correctDir is summaries/ AND filename doesn't match routing patterns, skip enforcement for agents
+      const shouldRoute = correctDir !== path.join(projectRoot, 'summaries') ||
+                          fileName.match(/^(STORY|EPIC|BUG|AGENTTASK)-/);
+
+      // If it's NOT a routing pattern file, allow agents to skip enforcement
+      let shouldApplyMarkdownValidation = true;
+
+      if (!shouldRoute) {
+        // File doesn't match routing patterns - skip enforcement for agents
+        const sessionId = hookInput.session_id || '';
+
+        if (sessionId && projectRoot) {
+          // Use generateProjectHash() for consistent hash generation
+          const projectHash = generateProjectHash(hookInput);
+          const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+          const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+          if (fs.existsSync(markerFile)) {
+            try {
+              const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+              if (marker.agent_count > 0) {
+                log('Agent context + no routing pattern - skipping enforcement');
+                shouldApplyMarkdownValidation = false;
+              }
+            } catch (err) {
+              log(`Warning: Could not read agent marker file: ${err.message}`);
+            }
           }
-        };
-        const responseJson = JSON.stringify(response);
-        log(`RESPONSE: ${responseJson}`);
-        log(`EXIT CODE: 0 (DENY)`);
-        console.log(responseJson);
-        process.exit(0);
+        }
       } else {
-        // WARNING MODE (non-blocking)
-        log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
-        console.log(JSON.stringify({ continue: true }));
-        process.exit(0);
+        log('File matches routing pattern - enforcing directory routing even for agents');
       }
+
+      // Apply markdown validation if needed
+      if (shouldApplyMarkdownValidation) {
+        const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
+        if (!markdownValidation.allowed) {
+          log(`Markdown file outside allowlist blocked: ${filePath}`);
+
+          const blockingEnabled = getBlockingEnabled();
+
+          if (blockingEnabled) {
+            // BLOCKING MODE (default)
+            const response = {
+              hookSpecificOutput: {
+                hookEventName: 'PreToolUse',
+                permissionDecision: 'deny',
+                permissionDecisionReason: markdownValidation.message
+              }
+            };
+            const responseJson = JSON.stringify(response);
+            log(`RESPONSE: ${responseJson}`);
+            log(`EXIT CODE: 0 (DENY)`);
+            console.log(responseJson);
+            process.exit(0);
+          } else {
+            // WARNING MODE (non-blocking)
+            log(`⚠️ WARNING (non-blocking): ${markdownValidation.message}`);
+            console.log(JSON.stringify({ continue: true }));
+            process.exit(0);
+          }
+        }
       }
     }
 
@@ -1116,40 +1199,8 @@ Please use the correct directory for this file type.`
         }
       }
 
-      // Validate Bash commands
-      if (tool === 'Bash' && command) {
-        log(`Validating Bash command: ${command}`);
-        const bashValidation = validateBashCommand(command, projectRoot);
-
-        if (!bashValidation.allowed) {
-          log(`Bash command BLOCKED: ${command}`);
-
-          const blockingEnabled = getBlockingEnabled();
-
-          if (blockingEnabled) {
-            // BLOCKING MODE (default)
-            const response = {
-              hookSpecificOutput: {
-                hookEventName: 'PreToolUse',
-                permissionDecision: 'deny',
-                permissionDecisionReason: bashValidation.message
-              }
-            };
-            const responseJson = JSON.stringify(response);
-            log(`RESPONSE: ${responseJson}`);
-            log(`EXIT CODE: 0 (DENY)`);
-            console.log(responseJson);
-            process.exit(0);
-          } else {
-            // WARNING MODE (non-blocking)
-            log(`⚠️ WARNING (non-blocking): ${bashValidation.message}`);
-            console.log(JSON.stringify({ continue: true }));
-            process.exit(0);
-          }
-        }
-
-        log(`Bash command ALLOWED: ${command}`);
-      }
+      // Note: Bash command validation now happens BEFORE blacklist check (line 942)
+      // This allows coordination commands like git, ls, make to bypass blacklist
 
       // Note: Edit/Write/Update/MultiEdit are now blocked entirely above (lines 469-501)
       // No file path validation needed - all file modifications require AgentTasks
