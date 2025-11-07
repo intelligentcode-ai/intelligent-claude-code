@@ -13,7 +13,7 @@ const fs = require('fs');
 
 // Shared libraries
 const { initializeHook } = require('./lib/logging');
-const { extractToolInfo, getProjectRoot, allowOperation, blockOperation } = require('./lib/hook-helpers');
+const { extractToolInfo, getProjectRoot, generateProjectHash, allowOperation, blockOperation } = require('./lib/hook-helpers');
 const { loadConfig, getSetting } = require('./lib/config-loader');
 const { isDevelopmentContext } = require('./lib/context-detection');
 const { isAgentContext } = require('./lib/marker-detection');
@@ -200,12 +200,11 @@ function main() {
     log(`[MARKER-CHECK] process.cwd(): "${process.cwd()}"`);
 
     // Check for agent marker (if agent, skip enforcement)
-    const crypto = require('crypto');
     const os = require('os');
     const sessionId = hookInput.session_id || '';
 
     if (sessionId && projectRoot) {
-      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const projectHash = generateProjectHash(hookInput);
       log(`[MARKER-CHECK] projectHash: "${projectHash}"`);
       const markerDir = path.join(os.homedir(), '.claude', 'tmp');
       const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
@@ -347,12 +346,11 @@ To execute blocked operation:
 
       if (!shouldRoute) {
         // File doesn't match routing patterns - skip enforcement for agents
-        const crypto = require('crypto');
         const os = require('os');
         const sessionId = hookInput.session_id || '';
 
         if (sessionId && projectRoot) {
-          const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+          const projectHash = generateProjectHash(hookInput);
           const markerDir = path.join(os.homedir(), '.claude', 'tmp');
           const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
 

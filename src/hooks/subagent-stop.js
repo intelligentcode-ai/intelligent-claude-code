@@ -3,8 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const crypto = require('crypto');
 const { initializeHook } = require('./lib/logging');
+const { generateProjectHash } = require('./lib/hook-helpers');
 
 function main() {
   // Initialize hook with shared library function
@@ -87,8 +87,7 @@ function main() {
     // CRITICAL FIX: Include project hash to match agent-marker.js filename format
     // Without hash, decrement fails to find marker file and count stays stale
     // This caused PM constraints bypass when marker showed 23 agents as "active"
-    const projectRoot = hookInput.cwd || process.cwd();
-    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+    const projectHash = generateProjectHash(hookInput);
 
     // Use project-specific marker filename matching agent-marker.js
     const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);

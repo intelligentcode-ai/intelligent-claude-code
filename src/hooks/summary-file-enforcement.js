@@ -12,7 +12,7 @@ const path = require('path');
 
 // Shared libraries
 const { initializeHook } = require('./lib/logging');
-const { extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
+const { extractToolInfo, generateProjectHash, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
@@ -145,13 +145,12 @@ To execute blocked operation:
 
     // STEP 2: Agent context check - skip remaining validation for agents
     // Check for agent marker files to detect agent context
-    const crypto = require('crypto');
     const os = require('os');
 
     // Check for agent marker file (same logic as pm-constraints-enforcement.js)
     const sessionId = hookInput.session_id || '';
     if (sessionId && projectRoot) {
-      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const projectHash = generateProjectHash(hookInput);
       const markerDir = path.join(os.homedir(), '.claude', 'tmp');
       const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
 

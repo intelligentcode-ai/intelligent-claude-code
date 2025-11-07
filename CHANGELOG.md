@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.68] - 2025-11-06
+
+### Fixed
+- CRITICAL: Fixed remaining 7 hooks still using manual MD5 hash generation
+- Updated context-injection.js to use generateProjectHash()
+- Updated main-scope-enforcement.js (2 locations) to use generateProjectHash()
+- Updated session-start-dummy.js to use generateProjectHash()
+- Updated stop.js to use generateProjectHash()
+- Updated subagent-stop.js to use generateProjectHash()
+- Updated summary-file-enforcement.js to use generateProjectHash()
+- Updated user-prompt-submit.js to use generateProjectHash()
+- Ensures consistent hash generation across ALL hooks
+- Fixes potential marker file lookup failures and agent blocking
+
+### Added
+- Hash consistency regression test (test-hash-consistency.js)
+- Validates all hooks use generateProjectHash() from hook-helpers
+- Detects manual crypto.createHash() usage patterns
+- Prevents future hash generation inconsistencies
+- All tests pass including new regression test
+
+---
+
 ## [8.20.66] - 2025-11-06
 
 ### Fixed

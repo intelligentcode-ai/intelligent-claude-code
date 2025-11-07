@@ -6,6 +6,7 @@ const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
 const ContextLoader = require('./lib/context-loader');
 const { initializeHook } = require('./lib/logging');
+const { generateProjectHash } = require('./lib/hook-helpers');
 
 function main() {
   // Initialize hook with shared library function
@@ -27,9 +28,7 @@ function main() {
     // MARKER CLEANUP - Delete stale agent markers for current project
     // This ensures PM constraints correctly detect main scope context
     try {
-      const crypto = require('crypto');
-      const projectRoot = claudeInput.cwd || process.cwd();
-      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const projectHash = generateProjectHash(hookInput);
       const sessionId = claudeInput.session_id;
 
       const markerDir = path.join(os.homedir(), '.claude', 'tmp');
