@@ -6,7 +6,7 @@ const os = require('os');
 const crypto = require('crypto');
 
 // Shared libraries
-const { blockOperation, getProjectRoot } = require('./lib/hook-helpers');
+const { blockOperation, getProjectRoot, generateProjectHash } = require('./lib/hook-helpers');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { initializeHook } = require('./lib/logging');
 const { getSetting } = require('./lib/config-loader');
@@ -149,7 +149,7 @@ function main() {
     log(`[MARKER-CREATE] hookInput.cwd: "${hookInput.cwd || 'undefined'}"`);
     log(`[MARKER-CREATE] process.env.CLAUDE_PROJECT_DIR: "${process.env.CLAUDE_PROJECT_DIR || 'undefined'}"`);
     log(`[MARKER-CREATE] process.cwd(): "${process.cwd()}"`);
-    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+    const projectHash = generateProjectHash(hookInput);
     log(`[MARKER-CREATE] projectHash: "${projectHash}"`);
 
     const markerDir = path.join(os.homedir(), '.claude', 'tmp');
