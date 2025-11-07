@@ -37,6 +37,11 @@ function main() {
       return allowOperation(log, true);
     }
 
+    // CRITICAL: Skip ALL validation for agents - only apply to main scope
+    // Check for agent marker files to detect agent context
+    const crypto = require('crypto');
+    const os = require('os');
+
     // Get project root from hookInput.cwd or fallback
     const projectRoot = hookInput.cwd || process.cwd();
 
