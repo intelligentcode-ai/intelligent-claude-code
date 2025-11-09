@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.69] - 2025-11-09
+
+### Fixed
+- CRITICAL: Fixed summary validation incorrectly blocking story files (BUG-002)
+- Rewritten isSummaryFile() with correct precedence hierarchy:
+  - TIER 1: Explicit work item patterns (STORY-*.md, BUG-*.md, EPIC-*.md) ALWAYS allowed
+  - TIER 2: Location-based validation using absolute paths (eliminates cwd bugs)
+  - TIER 3: Root directory special files (VERSION, README.md, CHANGELOG.md, etc.)
+  - TIER 4: Keyword heuristics ONLY for root directory files
+- Fixed path resolution bugs when cwd is in target directory (stories/, bugs/)
+- Removed overly-broad keywords (configuration, update, status, troubleshoot, etc.)
+- Files in allowed directories (stories/, bugs/, docs/, src/, tests/, config/) now always allowed
+- Keyword patterns only apply to files being written to project root
+
+### Added
+- Comprehensive regression tests for story file classification (BUG-002)
+- Tests for STORY-*.md files with problematic keywords (configuration, update, status)
+- Tests for absolute vs relative path handling
+- Tests for different cwd contexts (user in stories/ vs root)
+- Tests for keyword heuristics only applying to root files
+- All 24 regression tests pass validating the fix
+
+---
+
 ## [8.20.68] - 2025-11-06
 
 ### Fixed
