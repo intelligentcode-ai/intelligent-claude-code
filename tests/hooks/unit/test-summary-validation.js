@@ -115,6 +115,108 @@ const tests = {
 
     const result = validateSummaryFilePlacement(filePath, projectRoot);
     assert.ok(result.message.includes('summaries/'), 'Should suggest summaries/ directory');
+  },
+
+  // BUG-002 Regression Tests: STORY files with problematic keywords
+  'isSummaryFile: excludes STORY files with "configuration" keyword': () => {
+    const filePath = 'stories/STORY-003-configuration-externalization-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'STORY files should never be summaries');
+  },
+
+  'isSummaryFile: excludes STORY files with "status" keyword': () => {
+    const filePath = 'stories/STORY-001-status-update-feature-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'STORY files should never be summaries');
+  },
+
+  'isSummaryFile: excludes STORY files with "progress" keyword': () => {
+    const filePath = 'stories/STORY-002-progress-tracking-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'STORY files should never be summaries');
+  },
+
+  // BUG-002 Regression Tests: BUG files with problematic keywords
+  'isSummaryFile: excludes BUG files with "update" keyword': () => {
+    const filePath = 'bugs/BUG-001-update-hook-permissions-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'BUG files should never be summaries');
+  },
+
+  'isSummaryFile: excludes BUG files with "fix" keyword': () => {
+    const filePath = 'bugs/BUG-002-fix-configuration-bug-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'BUG files should never be summaries');
+  },
+
+  // BUG-002 Regression Tests: EPIC files
+  'isSummaryFile: excludes EPIC files': () => {
+    const filePath = 'stories/EPIC-001-platform-modernization-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'EPIC files should never be summaries');
+  },
+
+  // BUG-002 Regression Tests: Files in allowed directories
+  'isSummaryFile: excludes docs/ files with "configuration" keyword': () => {
+    const filePath = 'docs/configuration-guide.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'docs/ files should be excluded even with summary keywords');
+  },
+
+  'isSummaryFile: excludes src/ files with "update" keyword': () => {
+    const filePath = 'src/update-handler.js';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'src/ files should be excluded');
+  },
+
+  // BUG-002 Regression Tests: Absolute path scenarios
+  'isSummaryFile: excludes STORY files with absolute paths': () => {
+    const filePath = '/project/stories/STORY-003-configuration-externalization-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'STORY files with absolute paths should be excluded');
+  },
+
+  'isSummaryFile: excludes BUG files with absolute paths': () => {
+    const filePath = '/project/bugs/BUG-002-fix-configuration-bug-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'BUG files with absolute paths should be excluded');
+  },
+
+  // BUG-002 Regression Tests: Edge cases
+  'isSummaryFile: excludes nested stories/ files': () => {
+    const filePath = 'stories/drafts/STORY-004-summary-page-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'Nested stories/ files should be excluded');
+  },
+
+  'isSummaryFile: excludes nested bugs/ files': () => {
+    const filePath = 'bugs/open/BUG-003-status-report-fix-2025-11-09.md';
+    const projectRoot = '/project';
+
+    const result = isSummaryFile(filePath, projectRoot);
+    assert.strictEqual(result, false, 'Nested bugs/ files should be excluded');
   }
 };
 
