@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.72] - 2025-11-09
+
+### Added
+- Memory-First Reminder Hook (memory-first-reminder.js)
+- Non-blocking educational reminders about memory-first patterns
+- Contextual guidance for location queries, credential questions, configuration questions
+- AgentTask creation reminders to search memory for implementation patterns
+- Statistics tracking for memory usage compliance (memory-usage.json)
+- Comprehensive integration tests for memory-first-reminder hook (9 test cases)
+
+### Changed
+- Enhanced memory-first behavioral enforcement through educational reminders
+- Prioritizes AgentTask creation guidance over general query reminders
+- Tracks memory search opportunities and compliance over time
+
+---
+
 ## [8.20.69] - 2025-11-09
 
 ### Fixed
