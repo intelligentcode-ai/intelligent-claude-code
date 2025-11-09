@@ -149,9 +149,6 @@ To execute blocked operation:
     }
 
     // STEP 2: Agent context check - skip remaining validation for agents
-    // Check for agent marker files to detect agent context
-    const os = require('os');
-
     // Check for agent marker file (same logic as pm-constraints-enforcement.js)
     const sessionId = hookInput.session_id || '';
     if (sessionId && projectRoot) {
