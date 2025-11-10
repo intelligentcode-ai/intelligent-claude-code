@@ -53,12 +53,20 @@
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/task-tool-execution-reminder.js",
         "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/memory-first-reminder.js",
+        "timeout": 5000
       }]
     }],
     "SubagentStop": [{
       "hooks": [{
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/subagent-stop.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/subagent-memory-storage.js",
         "timeout": 5000
       }]
     }],
