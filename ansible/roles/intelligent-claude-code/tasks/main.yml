@@ -182,11 +182,13 @@
     - context-injection.js
     - git-enforcement.js
     - main-scope-enforcement.js
+    - memory-first-reminder.js
     - pm-constraints-enforcement.js
     - pre-agenttask-validation.js
     - project-scope-enforcement.js
     - session-start-dummy.js
     - stop.js
+    - subagent-memory-storage.js
     - subagent-stop.js
     - summary-file-enforcement.js
     - task-tool-execution-reminder.js
@@ -274,9 +276,11 @@
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/user-prompt-submit.js', timeout: 15000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/context-injection.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/task-tool-execution-reminder.js', timeout: 5000 }
+                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/memory-first-reminder.js', timeout: 5000 }
           SubagentStop:
             - hooks:
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/subagent-stop.js', timeout: 5000 }
+                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/subagent-memory-storage.js', timeout: 5000 }
           Stop:
             - hooks:
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/stop.js', timeout: 5000 }

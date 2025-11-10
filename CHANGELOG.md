@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.73] - 2025-11-10
+
+### Changed
+- Simplified memory-first-reminder.js from 244 lines to 40 lines with constant injection
+- Removed complex keyword detection and conditional logic in favor of simple reminder
+- Memory reminder now shows on EVERY user prompt for maximum pattern reinforcement
+
+### Added
+- New subagent-memory-storage.js hook for SubagentStop event
+- Constant reminder after agent work to store learnings to memory/
+- Both hooks now use simple, constant message injection (no conditional logic)
+
+---
+
 ## [8.20.72] - 2025-11-09
 
 ### Added

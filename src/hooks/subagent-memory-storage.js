@@ -1,23 +1,23 @@
 #!/usr/bin/env node
 
 /**
- * Memory-First Reminder Hook - CONSTANT REMINDER
- * Always injects memory-first reminder into every user prompt
+ * Subagent Memory Storage Reminder - CONSTANT REMINDER
+ * Always reminds to store learnings after agent work
  */
 
 function main() {
   try {
-    const reminder = `🧠 MEMORY FIRST - Before asking questions or creating work, search memory/ for:
-- Similar patterns or solutions
-- Configuration information (git/, configuration/, workflows/)
-- Deployment patterns (deployment/, operations/)
+    const reminder = `💾 STORE LEARNINGS - After completing work, store successful patterns to memory/:
+- Implementation patterns → memory/implementation/
+- Bug solutions → memory/debugging/
+- Configuration discoveries → memory/configuration/
 `;
 
     const output = {
       continue: true,
       suppressOutput: true,
       hookSpecificOutput: {
-        hookEventName: "UserPromptSubmit",
+        hookEventName: "SubagentStop",
         additionalContext: reminder
       }
     };
@@ -26,7 +26,6 @@ function main() {
     process.exit(0);
 
   } catch (error) {
-    // On error, always allow (non-blocking)
     const standardOutput = {
       continue: true,
       suppressOutput: true
