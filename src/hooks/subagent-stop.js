@@ -3,22 +3,12 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const crypto = require('crypto');
+const { initializeHook } = require('./lib/logging');
+const { generateProjectHash } = require('./lib/hook-helpers');
 
 function main() {
-  const logDir = path.join(os.homedir(), '.claude', 'logs');
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-subagent-stop.log`);
-
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-
-  function log(message) {
-    const timestamp = new Date().toISOString();
-    const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync(logFile, logMessage);
-  }
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('subagent-stop');
 
   function atomicReadMarker(markerFile) {
     try {
@@ -86,34 +76,8 @@ function main() {
   };
 
   try {
-    let inputData = '';
-
-    if (process.argv[2]) {
-      inputData = process.argv[2];
-    } else if (process.env.HOOK_INPUT) {
-      inputData = process.env.HOOK_INPUT;
-    } else if (!process.stdin.isTTY) {
-      try {
-        const stdinBuffer = fs.readFileSync(0, 'utf8');
-        if (stdinBuffer && stdinBuffer.trim()) {
-          inputData = stdinBuffer;
-        }
-      } catch (error) {
-        console.log(JSON.stringify(standardOutput));
-        process.exit(0);
-      }
-    }
-
-    if (!inputData.trim()) {
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
-    }
-
-    let hookInput;
-    try {
-      hookInput = JSON.parse(inputData);
-    } catch (error) {
-      log(`JSON parse error: ${error.message}`);
+    // hookInput already parsed earlier for logging
+    if (!hookInput) {
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
@@ -123,8 +87,7 @@ function main() {
     // CRITICAL FIX: Include project hash to match agent-marker.js filename format
     // Without hash, decrement fails to find marker file and count stays stale
     // This caused PM constraints bypass when marker showed 23 agents as "active"
-    const projectRoot = hookInput.cwd || process.cwd();
-    const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+    const projectHash = generateProjectHash(hookInput);
 
     // Use project-specific marker filename matching agent-marker.js
     const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);

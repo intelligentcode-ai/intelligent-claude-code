@@ -5,6 +5,8 @@ const path = require('path');
 const os = require('os');
 const ReminderLoader = require('./lib/reminder-loader');
 const { selectRelevantConstraints } = require('./lib/constraint-selector');
+const { initializeHook } = require('./lib/logging');
+const { generateProjectHash } = require('./lib/hook-helpers');
 
 /**
  * Load best practices from README.md
@@ -112,44 +114,9 @@ function selectRandomBestPractices(practices, count = 3) {
 }
 
 function main() {
-  const logDir = path.join(os.homedir(), '.claude', 'logs');
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-context-injection.log`);
-
-  // Ensure log directory exists
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-
-  function cleanOldLogs(logDir) {
-    try {
-      const files = fs.readdirSync(logDir);
-      const now = Date.now();
-      const maxAge = 24 * 60 * 60 * 1000; // 24 hours
-
-      for (const file of files) {
-        if (!file.endsWith('.log')) continue;
-
-        const filePath = path.join(logDir, file);
-        const stats = fs.statSync(filePath);
-
-        if (now - stats.mtimeMs > maxAge) {
-          fs.unlinkSync(filePath);
-        }
-      }
-    } catch (error) {
-      // Silent fail - don't block hook execution
-    }
-  }
-
-  // Clean old logs at hook start
-  cleanOldLogs(logDir);
-
-  function log(message) {
-    const timestamp = new Date().toISOString();
-    const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync(logFile, logMessage);
-  }
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('context-injection');
+  const claudeInput = hookInput; // context-injection uses claudeInput alias
 
   const standardOutput = {
     continue: true,
@@ -157,37 +124,8 @@ function main() {
   };
 
   try {
-    let inputData = '';
-
-    if (process.argv[2]) {
-      inputData = process.argv[2];
-    } else if (process.env.HOOK_INPUT) {
-      inputData = process.env.HOOK_INPUT;
-    } else if (!process.stdin.isTTY) {
-      try {
-        const stdinBuffer = fs.readFileSync(0, 'utf8');
-        if (stdinBuffer && stdinBuffer.trim()) {
-          inputData = stdinBuffer;
-        }
-      } catch (error) {
-        log(JSON.stringify(standardOutput));
-        process.exit(0);
-      }
-    } else {
-      log(JSON.stringify(standardOutput));
-      process.exit(0);
-    }
-
-    if (!inputData.trim()) {
-      log(JSON.stringify(standardOutput));
-      process.exit(0);
-    }
-
-    let claudeInput;
-    try {
-      claudeInput = JSON.parse(inputData);
-    } catch (error) {
-      log(`JSON parse error: ${error.message}`);
+    // claudeInput already parsed earlier for logging
+    if (!claudeInput) {
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
@@ -201,9 +139,7 @@ function main() {
     if (session_id) {
       // CRITICAL FIX: Calculate project hash to match agent-marker.js filename format
       // Without hash, cleanup fails to find marker file and stale counts persist
-      const crypto = require('crypto');
-      const projectRoot = claudeInput.cwd || process.cwd();
-      const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').substring(0, 8);
+      const projectHash = generateProjectHash(hookInput);
 
       const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
       log(`[MARKER-CLEANUP] Checking marker: ${markerFile} (project: ${projectRoot})`);
@@ -538,27 +474,6 @@ function main() {
       log(`Constraint selection error: ${error.message}`);
       // Silently fail - don't block hook execution
     }
-
-    // Add explicit constraint display enforcement reminder
-    contextualGuidance.push('');
-    contextualGuidance.push('🎯 CONSTRAINT DISPLAY MANDATORY:');
-    contextualGuidance.push('');
-    contextualGuidance.push('End EVERY response with:');
-    contextualGuidance.push('');
-    contextualGuidance.push('🎯 Active Constraints:');
-    contextualGuidance.push('[CONSTRAINT-ID]: Description *(situation)*');
-    contextualGuidance.push('[CONSTRAINT-ID]: Description *(situation)*');
-    contextualGuidance.push('[CONSTRAINT-ID]: Description *(situation)*');
-    contextualGuidance.push('[CONSTRAINT-ID]: Description *(cycling)*');
-    contextualGuidance.push('[CONSTRAINT-ID]: Description *(cycling)*');
-    contextualGuidance.push('[CONSTRAINT-ID]: Description *(cycling)*');
-    contextualGuidance.push('');
-    contextualGuidance.push('📚 Best Practices:');
-    contextualGuidance.push('• Practice: Summary');
-    contextualGuidance.push('• Practice: Summary');
-    contextualGuidance.push('• Practice: Summary');
-    contextualGuidance.push('');
-    contextualGuidance.push('Display 6 constraints (3 situation + 3 cycling) and up to 3 best practices.');
 
     // Build comprehensive context
     const fullContext = contextualGuidance.join('\n');

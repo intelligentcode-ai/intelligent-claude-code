@@ -51,14 +51,47 @@ function cleanOldLogs(logDir) {
 }
 
 /**
+ * Normalize path for log filename
+ * @param {string} pathStr - Path to normalize
+ * @returns {string} Normalized path (home → ~, / → -, strip leading dash)
+ */
+function normalizePath(pathStr) {
+  if (!pathStr) return 'unknown';
+
+  // Replace home directory with ~
+  const homeDir = os.homedir();
+  let normalized = pathStr.replace(homeDir, '~');
+
+  // Replace slashes with dashes
+  normalized = normalized.replace(/\//g, '-');
+
+  // Strip leading dash
+  if (normalized.startsWith('-')) {
+    normalized = normalized.substring(1);
+  }
+
+  return normalized;
+}
+
+/**
  * Create logger function for specific hook
  * @param {string} hookName - Name of the hook (e.g., 'pm-constraints-enforcement')
+ * @param {Object} hookInput - Optional hook input containing cwd for path normalization
  * @returns {Function} Logger function
  */
-function createLogger(hookName) {
+function createLogger(hookName, hookInput = null) {
   const logDir = getLogDir();
   const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-${hookName}.log`);
+
+  // Include normalized project path in log filename if available
+  let logFileName = `${today}`;
+  if (hookInput && hookInput.cwd) {
+    const normalizedPath = normalizePath(hookInput.cwd);
+    logFileName += `-${normalizedPath}`;
+  }
+  logFileName += `-${hookName}.log`;
+
+  const logFile = path.join(logDir, logFileName);
 
   ensureLogDir();
   cleanOldLogs(logDir);
@@ -70,9 +103,54 @@ function createLogger(hookName) {
   };
 }
 
+/**
+ * Initialize hook with input parsing and logging
+ * Consolidates duplicated initialization code across all hooks
+ *
+ * @param {string} hookName - Name of the hook (e.g., 'pm-constraints-enforcement')
+ * @returns {Object} Object containing { log, hookInput }
+ */
+function initializeHook(hookName) {
+  // Parse hook input from multiple sources
+  let hookInput;
+  try {
+    let inputData = '';
+
+    // Check argv[2] first
+    if (process.argv[2]) {
+      inputData = process.argv[2];
+    }
+    // Check HOOK_INPUT environment variable
+    else if (process.env.HOOK_INPUT) {
+      inputData = process.env.HOOK_INPUT;
+    }
+    // Read from stdin if available
+    else if (!process.stdin.isTTY) {
+      try {
+        inputData = fs.readFileSync(0, 'utf8');
+      } catch (stdinError) {
+        // Silent fail for stdin read
+      }
+    }
+
+    // Parse JSON if data available
+    if (inputData.trim()) {
+      hookInput = JSON.parse(inputData);
+    }
+  } catch (error) {
+    // If parsing fails, hookInput will be undefined
+  }
+
+  // Create logger with normalized project path
+  const log = createLogger(hookName, hookInput);
+
+  return { log, hookInput };
+}
+
 module.exports = {
   getLogDir,
   ensureLogDir,
   cleanOldLogs,
-  createLogger
+  createLogger,
+  initializeHook
 };

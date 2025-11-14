@@ -164,7 +164,7 @@ function Register-ProductionHooks {
     )
 
     try {
-        Write-Host "  Registering all 14 production hooks in settings.json..." -ForegroundColor Gray
+        Write-Host "  Registering all 15 production hooks in settings.json..." -ForegroundColor Gray
 
         # Load or create settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
@@ -177,32 +177,55 @@ function Register-ProductionHooks {
         # Define all production hooks
         $ProductionHooks = [PSCustomObject]@{
             PreToolUse = @(
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\git-enforcement.js`""; timeout = 5000; failureMode = "allow" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\main-scope-enforcement.js`""; timeout = 5000; failureMode = "deny" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pm-constraints-enforcement.js`""; timeout = 5000; failureMode = "deny" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-infrastructure-protection.js`""; timeout = 5000; failureMode = "deny" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-marker.js`""; timeout = 5000; failureMode = "allow" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\config-protection.js`""; timeout = 5000; failureMode = "deny" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pre-agenttask-validation.js`""; timeout = 5000; failureMode = "allow" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\project-scope-enforcement.js`""; timeout = 5000; failureMode = "deny" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\summary-file-enforcement.js`""; timeout = 5000; failureMode = "deny" }) }
+                [PSCustomObject]@{
+                    matcher = "*"
+                    hooks = @(
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\git-enforcement.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\main-scope-enforcement.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pm-constraints-enforcement.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-infrastructure-protection.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-marker.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\config-protection.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pre-agenttask-validation.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\project-scope-enforcement.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\summary-file-enforcement.js`""; timeout = 5000 }
+                    )
+                }
+            )
+            SessionStart = @(
+                [PSCustomObject]@{
+                    hooks = @(
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\session-start-dummy.js`""; timeout = 5000 }
+                    )
+                }
             )
             UserPromptSubmit = @(
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\user-prompt-submit.js`""; timeout = 15000; failureMode = "allow" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\context-injection.js`""; timeout = 5000; failureMode = "allow" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\task-tool-execution-reminder.js`""; timeout = 5000; failureMode = "allow" }) }
+                [PSCustomObject]@{
+                    hooks = @(
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\user-prompt-submit.js`""; timeout = 15000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\context-injection.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\task-tool-execution-reminder.js`""; timeout = 5000 }
+                    )
+                }
             )
             SubagentStop = @(
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\subagent-stop.js`""; timeout = 5000; failureMode = "allow" }) }
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\post-agent-file-validation.js`""; timeout = 5000; failureMode = "allow" }) }
+                [PSCustomObject]@{
+                    hooks = @(
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\subagent-stop.js`""; timeout = 5000 }
+                    )
+                }
             )
             Stop = @(
-                [PSCustomObject]@{ hooks = @([PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\stop.js`""; timeout = 5000; failureMode = "allow" }) }
+                [PSCustomObject]@{
+                    hooks = @(
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\stop.js`""; timeout = 5000 }
+                    )
+                }
             )
         }
 
         # Replace all production hooks
-        foreach ($HookType in @("PreToolUse", "UserPromptSubmit", "SubagentStop", "Stop")) {
+        foreach ($HookType in @("PreToolUse", "SessionStart", "UserPromptSubmit", "SubagentStop", "Stop")) {
             if ($Settings.hooks.PSObject.Properties.Name -contains $HookType) {
                 $Settings.hooks.PSObject.Properties.Remove($HookType)
             }

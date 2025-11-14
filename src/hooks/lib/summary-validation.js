@@ -7,45 +7,59 @@ const { getSetting } = require('./config-loader');
  * Excludes: stories/, bugs/, docs/, src/, tests/, config/, agenttasks/
  */
 function isSummaryFile(filePath, projectRoot) {
-  // Normalize to relative path
-  let relativePath = filePath;
-  if (path.isAbsolute(filePath)) {
-    relativePath = path.relative(projectRoot, filePath);
-  }
+  const fileName = path.basename(filePath);
 
-  const fileName = path.basename(relativePath);
-
-  // STEP 1: Directory-based exclusions (highest priority)
-  const allowedDirectories = [
-    'stories/', 'bugs/', 'docs/', 'agenttasks/',
-    'src/', 'tests/', 'config/'
+  // TIER 1: Explicit work item patterns (HIGHEST PRIORITY)
+  // STORY-*.md, BUG-*.md, EPIC-*.md are NEVER summary files
+  const workItemPatterns = [
+    /^STORY-\d+-.*\.md$/i,
+    /^BUG-\d+-.*\.md$/i,
+    /^EPIC-\d+-.*\.md$/i
   ];
 
-  for (const dir of allowedDirectories) {
-    if (relativePath.startsWith(dir) || relativePath.includes(`/${dir}`)) {
-      return false;  // Not a summary file - belongs in allowed directory
+  if (workItemPatterns.some(pattern => pattern.test(fileName))) {
+    return false;  // Definitely not a summary file
+  }
+
+  // TIER 2: Location-based validation (use ABSOLUTE paths)
+  // Convert to absolute path to avoid cwd issues
+  const absolutePath = path.isAbsolute(filePath)
+    ? filePath
+    : path.resolve(projectRoot, filePath);
+
+  const allowedDirs = ['stories', 'bugs', 'docs', 'src', 'tests', 'config', 'agenttasks'];
+
+  for (const dir of allowedDirs) {
+    const dirPath = path.join(projectRoot, dir);
+    if (absolutePath.startsWith(dirPath + path.sep) || absolutePath.startsWith(dirPath)) {
+      return false;  // In allowed directory, not a summary
     }
   }
 
-  // STEP 2: Root directory special files
+  // TIER 3: Root directory special files
   const rootAllowedFiles = [
     'VERSION', 'README.md', 'CLAUDE.md', 'CHANGELOG.md',
     'LICENSE', 'LICENSE.md', '.gitignore', 'package.json',
     'icc.config.json', 'icc.workflow.json'
   ];
 
-  if (!relativePath.includes('/') && rootAllowedFiles.includes(fileName)) {
+  const relativePath = path.relative(projectRoot, absolutePath);
+  const isInRoot = !relativePath.includes(path.sep);
+
+  if (isInRoot && rootAllowedFiles.includes(fileName)) {
     return false;
   }
 
-  // STEP 3: Check summary patterns
+  // TIER 4: Keyword heuristics (ONLY for root directory files)
+  // Only check if file is being written to project root
+  if (!isInRoot) {
+    return false;  // Not in root, so not subject to summary classification
+  }
+
+  // Apply keyword patterns only to root files
   const summaryPatterns = [
-    /summary/i, /report/i, /fix/i, /analysis/i, /review/i,
-    /assessment/i, /status/i, /progress/i, /update/i,
-    /deployment/i, /verification/i, /configuration/i,
-    /post-mortem/i, /postmortem/i, /monitoring/i,
-    /agenttask/i, /troubleshoot/i, /diagnostic/i,
-    /investigation/i, /incident/i, /resolution/i
+    /summary/i, /report/i, /analysis/i, /review/i,
+    /assessment/i, /deployment/i, /post-mortem/i, /postmortem/i
   ];
 
   return summaryPatterns.some(pattern => pattern.test(fileName));

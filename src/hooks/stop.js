@@ -3,21 +3,13 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
+const { initializeHook } = require('./lib/logging');
+const { generateProjectHash } = require('./lib/hook-helpers');
 
 function main() {
-  const logDir = path.join(os.homedir(), '.claude', 'logs');
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(logDir, `${today}-stop.log`);
-
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-
-  function log(message) {
-    const timestamp = new Date().toISOString();
-    const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync(logFile, logMessage);
-  }
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('stop');
 
   const standardOutput = {
     continue: true,
@@ -25,58 +17,48 @@ function main() {
   };
 
   try {
-    let inputData = '';
-
-    if (process.argv[2]) {
-      inputData = process.argv[2];
-    } else if (process.env.HOOK_INPUT) {
-      inputData = process.env.HOOK_INPUT;
-    } else if (!process.stdin.isTTY) {
-      try {
-        const stdinBuffer = fs.readFileSync(0, 'utf8');
-        if (stdinBuffer && stdinBuffer.trim()) {
-          inputData = stdinBuffer;
-        }
-      } catch (error) {
-        console.log(JSON.stringify(standardOutput));
-        process.exit(0);
-      }
-    }
-
-    if (!inputData.trim()) {
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
-    }
-
-    let hookInput;
-    try {
-      hookInput = JSON.parse(inputData);
-    } catch (error) {
-      log(`JSON parse error: ${error.message}`);
+    // hookInput already parsed earlier for logging
+    if (!hookInput) {
+      log('[STOP-CLEANUP] No hook input - exiting cleanly');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
 
     const session_id = hookInput.session_id;
-    const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}`);
+    const projectRoot = hookInput.cwd || process.cwd();
 
-    // Delete agent marker file on session stop
-    if (fs.existsSync(markerFile)) {
-      try {
-        fs.unlinkSync(markerFile);
-        log(`Agent marker deleted on session stop: ${markerFile}`);
-      } catch (error) {
-        log(`Failed to delete agent marker: ${error.message}`);
+    log(`[STOP-CLEANUP] Session ending: ${session_id || 'undefined'}`);
+    log(`[STOP-CLEANUP] Project root: ${projectRoot}`);
+
+    // DEFENSIVE CLEANUP: Delete ALL agent markers for this session/project
+    // Session end = NO agents can be running anymore
+    if (session_id) {
+      // Calculate project hash to match agent-marker.js format
+      const projectHash = generateProjectHash(hookInput);
+      const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
+
+      log(`[STOP-CLEANUP] Checking marker: ${markerFile}`);
+
+      // Delete agent marker file on session stop
+      if (fs.existsSync(markerFile)) {
+        try {
+          fs.unlinkSync(markerFile);
+          log(`[STOP-CLEANUP] ✅ Deleted marker on session end - clean shutdown`);
+        } catch (error) {
+          log(`[STOP-CLEANUP] ❌ Failed to delete marker: ${error.message}`);
+        }
+      } else {
+        log(`[STOP-CLEANUP] ✅ No marker found - already clean`);
       }
     } else {
-      log(`Agent marker not found on session stop: ${markerFile}`);
+      log(`[STOP-CLEANUP] ⚠️ No session_id - skipping marker cleanup`);
     }
 
     console.log(JSON.stringify(standardOutput));
     process.exit(0);
 
   } catch (error) {
-    log(`Error: ${error.message}`);
+    log(`[STOP-CLEANUP] Error: ${error.message}`);
     console.log(JSON.stringify(standardOutput));
     process.exit(0);
   }

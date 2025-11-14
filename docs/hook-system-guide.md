@@ -172,6 +172,28 @@ Create `~/.claude/hooks/reminders.json` for personal preferences:
 }
 ```
 
+## Permission Bypass Flag
+
+When you need to run Claude Code without permission prompts, use the bypass flag:
+
+```bash
+claude --allow-dangerously-skip-permissions
+```
+
+**Important**: The correct flag is `--allow-dangerously-skip-permissions`, NOT `--dangerously-skip-permissions`.
+
+### How It Works
+
+- Hooks still execute and log their activity
+- Operations are auto-allowed instead of requiring user confirmation
+- Hooks receive `hookInput.permission_mode = 'bypassPermissions'`
+
+### Separate from Workspace Trust
+
+The bypass flag is independent of workspace trust. For hooks to execute properly, you need:
+1. Workspace trust accepted (in `.claude.json`)
+2. Permission bypass flag (if you want to skip prompts)
+
 ## Installation and Deployment
 
 ### Automatic Deployment

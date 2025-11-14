@@ -1,112 +1,80 @@
 {
   "hooks": {
     "PreToolUse": [{
-      "hooks": [{
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/git-enforcement.js",
-        "timeout": 5000,
-        "failureMode": "allow"
-      }]
-    }, {
-      "hooks": [{
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/main-scope-enforcement.js",
-        "timeout": 5000,
-        "failureMode": "deny"
-      }]
-    }, {
-      "hooks": [{
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js",
-        "timeout": 5000,
-        "failureMode": "deny"
-      }]
-    }, {
-      "hooks": [{
-        "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js",
-        "timeout": 5000,
-        "failureMode": "deny"
-      }]
-    }, {
+      "matcher": "*",
       "hooks": [{
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/agent-marker.js",
-        "timeout": 5000,
-        "failureMode": "allow"
-      }]
-    }, {
-      "hooks": [{
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/git-enforcement.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/main-scope-enforcement.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js",
+        "timeout": 5000
+      }, {
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/config-protection.js",
-        "timeout": 5000,
-        "failureMode": "deny"
-      }]
-    }, {
-      "hooks": [{
+        "timeout": 5000
+      }, {
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/pre-agenttask-validation.js",
-        "timeout": 5000,
-        "failureMode": "allow"
-      }]
-    }, {
-      "hooks": [{
+        "timeout": 5000
+      }, {
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/project-scope-enforcement.js",
-        "timeout": 5000,
-        "failureMode": "deny"
-      }]
-    }, {
-      "hooks": [{
+        "timeout": 5000
+      }, {
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/summary-file-enforcement.js",
-        "timeout": 5000,
-        "failureMode": "deny"
+        "timeout": 5000
       }]
     }],
     "UserPromptSubmit": [{
       "hooks": [{
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/user-prompt-submit.js",
-        "timeout": 15000,
-        "failureMode": "allow"
-      }]
-    }, {
-      "hooks": [{
+        "timeout": 15000
+      }, {
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/context-injection.js",
-        "timeout": 5000,
-        "failureMode": "allow"
-      }]
-    }, {
-      "hooks": [{
+        "timeout": 5000
+      }, {
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/task-tool-execution-reminder.js",
-        "timeout": 5000,
-        "failureMode": "allow"
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/memory-first-reminder.js",
+        "timeout": 5000
       }]
     }],
     "SubagentStop": [{
       "hooks": [{
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/subagent-stop.js",
-        "timeout": 5000,
-        "failureMode": "allow"
-      }]
-    }, {
-      "hooks": [{
+        "timeout": 5000
+      }, {
         "type": "command",
-        "command": "node {{ claude_install_path }}/hooks/post-agent-file-validation.js",
-        "timeout": 5000,
-        "failureMode": "allow"
+        "command": "node {{ claude_install_path }}/hooks/subagent-memory-storage.js",
+        "timeout": 5000
       }]
     }],
     "Stop": [{
       "hooks": [{
         "type": "command",
         "command": "node {{ claude_install_path }}/hooks/stop.js",
-        "timeout": 5000,
-        "failureMode": "allow"
+        "timeout": 5000
       }]
     }]
   }

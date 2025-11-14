@@ -1,38 +1,78 @@
 #!/usr/bin/env node
 
 /**
- * DUMMY SESSION-START HOOK
+ * SESSION-START HOOK - DEFENSIVE MARKER CLEANUP
  *
- * This is a placeholder script because Claude Code is still trying to call
- * session-start.js even though it's not registered in settings.json
+ * CRITICAL: Claude Code sometimes fails to invoke SubagentStop hook consistently.
+ * This creates a defensive cleanup layer that resets agent markers at session start.
  *
- * This script just logs the request and exits cleanly to prevent errors.
+ * DEFENSIVE RESET POINTS:
+ * 1. Session Start (this file) - Clean slate for new session
+ * 2. UserPromptSubmit (context-injection.js) - Clean on user prompt
+ * 3. Stop hook (stop.js) - Clean on session end
+ *
+ * Session start = main scope = NO agents can be running
+ * Therefore: safe to delete ALL markers for this session
  */
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const { initializeHook } = require('./lib/logging');
+const { generateProjectHash } = require('./lib/hook-helpers');
 
-// Create logs directory if it doesn't exist
-const logsDir = path.join(process.env.HOME, '.claude', 'hooks', 'logs');
-if (!fs.existsSync(logsDir)) {
-    fs.mkdirSync(logsDir, { recursive: true });
+function main() {
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('session-start');
+
+  try {
+    // Parse hook input
+    if (!hookInput) {
+      log('[SESSION-START-CLEANUP] No hook input - exiting cleanly');
+      process.exit(0);
+    }
+
+    // Extract session and project information
+    const session_id = hookInput.session_id;
+    const projectRoot = hookInput.cwd || process.cwd();
+
+    log(`[SESSION-START-CLEANUP] Session starting: ${session_id || 'undefined'}`);
+    log(`[SESSION-START-CLEANUP] Project root: ${projectRoot}`);
+
+    // DEFENSIVE CLEANUP: Delete stale agent markers
+    // Session start = main scope = NO agents can be running
+    if (session_id) {
+      // Calculate project hash to match agent-marker.js filename format
+      const projectHash = generateProjectHash(hookInput);
+      const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
+
+      log(`[SESSION-START-CLEANUP] Checking marker: ${markerFile}`);
+
+      // Delete marker if exists (session start = fresh slate)
+      if (fs.existsSync(markerFile)) {
+        try {
+          fs.unlinkSync(markerFile);
+          log(`[SESSION-START-CLEANUP] ✅ Deleted stale marker - clean session start`);
+        } catch (error) {
+          log(`[SESSION-START-CLEANUP] ❌ Failed to delete marker: ${error.message}`);
+        }
+      } else {
+        log(`[SESSION-START-CLEANUP] ✅ No marker found - clean session start`);
+      }
+    } else {
+      log(`[SESSION-START-CLEANUP] ⚠️ No session_id - skipping marker cleanup`);
+    }
+
+    // Session start doesn't expect JSON output - just exit with success
+    process.exit(0);
+
+  } catch (error) {
+    log(`[SESSION-START-CLEANUP] Error: ${error.message}`);
+    // Exit cleanly even on error - don't block session start
+    process.exit(0);
+  }
 }
 
-// Log the phantom call
-const logFile = path.join(logsDir, 'phantom-session-start.log');
-const timestamp = new Date().toISOString();
-const logEntry = `${timestamp} - SessionStart:compact called (not in settings.json)\n` +
-                `  Process args: ${JSON.stringify(process.argv)}\n` +
-                `  Environment: ${JSON.stringify({
-                    NODE_VERSION: process.version,
-                    PWD: process.cwd(),
-                    HOOK_TYPE: process.env.HOOK_TYPE || 'unknown'
-                }, null, 2)}\n` +
-                `${'='.repeat(80)}\n`;
-
-// Append to log file
-fs.appendFileSync(logFile, logEntry);
-
-// For SessionStart, just exit silently with success
-// SessionStart doesn't expect any JSON output
-process.exit(0);
+if (require.main === module) {
+  main();
+}
