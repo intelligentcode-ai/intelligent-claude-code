@@ -16,6 +16,27 @@ const { extractToolInfo, generateProjectHash, allowOperation, blockResponse, sen
 const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
+// Load config ONCE at module level (not on every hook invocation)
+const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
+  'README.md',
+  'LICENSE',
+  'LICENSE.md',
+  'CLAUDE.md',
+  'SKILL.md',
+  'CHANGELOG.md',
+  'CONTRIBUTING.md',
+  'AUTHORS',
+  'NOTICE',
+  'PATENTS',
+  'VERSION',
+  'MAKEFILE',
+  'DOCKERFILE',
+  'COPYING',
+  'COPYRIGHT'
+]);
+const STRICT_MODE = getSetting('development.file_management_strict', true);
+const SUMMARIES_PATH = getSetting('paths.summaries_path', 'summaries');
+
 function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('summary-enforcement');
@@ -73,23 +94,7 @@ function main() {
 
     // STEP 1: ALL-CAPITALS check (highest priority - blocks EVERYONE including agents)
     // Load allowed ALL-CAPITALS files from unified configuration
-    const allowedAllCapsFiles = getSetting('enforcement.allowed_allcaps_files', [
-      'README.md',
-      'LICENSE',
-      'LICENSE.md',
-      'CLAUDE.md',
-      'SKILL.md',
-      'CHANGELOG.md',
-      'CONTRIBUTING.md',
-      'AUTHORS',
-      'NOTICE',
-      'PATENTS',
-      'VERSION',
-      'MAKEFILE',
-      'DOCKERFILE',
-      'COPYING',
-      'COPYRIGHT'
-    ]);
+    const allowedAllCapsFiles = ALLOWED_ALLCAPS_FILES;
     log(`Allowed ALL-CAPITALS files: ${allowedAllCapsFiles.length} entries`);
 
     // Check for ALL-CAPITALS filename (excluding extension)
@@ -179,8 +184,8 @@ To execute blocked operation:
     }
 
     // Get settings
-    const strictMode = getSetting('development.file_management_strict', true);
-    const summariesPath = getSetting('paths.summaries_path', 'summaries');
+    const strictMode = STRICT_MODE;
+    const summariesPath = SUMMARIES_PATH;
 
     log(`Strict mode: ${strictMode}`);
     log(`Summaries path: ${summariesPath}`);

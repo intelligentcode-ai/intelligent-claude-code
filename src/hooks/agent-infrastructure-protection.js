@@ -8,6 +8,17 @@ const os = require('os');
 const { getSetting } = require('./lib/config-loader');
 const { initializeHook } = require('./lib/logging');
 
+// Load config ONCE at module level (not on every hook invocation)
+const PROTECTION_ENABLED = getSetting('enforcement.infrastructure_protection.enabled', true);
+const EMERGENCY_OVERRIDE_ENABLED = getSetting('enforcement.infrastructure_protection.emergency_override_enabled', false);
+const EMERGENCY_TOKEN = getSetting('enforcement.infrastructure_protection.emergency_override_token', '');
+const IMPERATIVE_DESTRUCTIVE = getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
+const WRITE_OPERATIONS = getSetting('enforcement.infrastructure_protection.write_operations', []);
+const READ_OPERATIONS = getSetting('enforcement.infrastructure_protection.read_operations', []);
+const WHITELIST = getSetting('enforcement.infrastructure_protection.whitelist', []);
+const READ_ALLOWED = getSetting('enforcement.infrastructure_protection.read_operations_allowed', true);
+const BLOCKING_ENABLED = getSetting('enforcement.blocking_enabled', true);
+
 function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
@@ -68,7 +79,7 @@ function main() {
     const command = hookInput.tool_input?.command || '';
 
     // Check if infrastructure protection is enabled
-    const protectionEnabled = getSetting('enforcement.infrastructure_protection.enabled', true);
+    const protectionEnabled = PROTECTION_ENABLED;
 
     if (!protectionEnabled) {
       log('Infrastructure protection disabled - allowing command');
@@ -84,8 +95,8 @@ function main() {
     log(`Actual command after SSH extraction: ${actualCommand.substring(0, 100)}...`);
 
     // Check for emergency override token
-    const emergencyOverrideEnabled = getSetting('enforcement.infrastructure_protection.emergency_override_enabled', false);
-    const emergencyToken = getSetting('enforcement.infrastructure_protection.emergency_override_token', '');
+    const emergencyOverrideEnabled = EMERGENCY_OVERRIDE_ENABLED;
+    const emergencyToken = EMERGENCY_TOKEN;
 
     if (emergencyOverrideEnabled && emergencyToken && command.includes(`EMERGENCY_OVERRIDE:${emergencyToken}`)) {
       log(`EMERGENCY OVERRIDE ACTIVATED - allowing command with token`);
@@ -102,12 +113,12 @@ function main() {
     }
 
     // Load configuration-based command lists
-    const imperativeDestructive = getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
-    const writeOperations = getSetting('enforcement.infrastructure_protection.write_operations', []);
-    const readOperations = getSetting('enforcement.infrastructure_protection.read_operations', []);
-    const whitelist = getSetting('enforcement.infrastructure_protection.whitelist', []);
-    const readAllowed = getSetting('enforcement.infrastructure_protection.read_operations_allowed', true);
-    const blockingEnabled = getSetting('enforcement.blocking_enabled', true);
+    const imperativeDestructive = IMPERATIVE_DESTRUCTIVE;
+    const writeOperations = WRITE_OPERATIONS;
+    const readOperations = READ_OPERATIONS;
+    const whitelist = WHITELIST;
+    const readAllowed = READ_ALLOWED;
+    const blockingEnabled = BLOCKING_ENABLED;
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
