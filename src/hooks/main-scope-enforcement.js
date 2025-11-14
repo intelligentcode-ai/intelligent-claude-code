@@ -355,7 +355,10 @@ To execute blocked operation:
                         nameWithoutExt !== nameWithoutExt.toLowerCase() &&
                         nameWithoutExt.length > 0;
 
-      if (isAllCaps && !allowedAllCaps.includes(filename)) {
+      // Exempt work item patterns: STORY-*, BUG-*, EPIC-*, AGENTTASK-*
+      const isWorkItem = /^(STORY|BUG|EPIC|AGENTTASK)-\d+-.+/.test(filename);
+
+      if (isAllCaps && !allowedAllCaps.includes(filename) && !isWorkItem) {
         return blockOperation(
           'ALL-CAPS filename not allowed',
           tool,
