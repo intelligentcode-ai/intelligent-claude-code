@@ -12,6 +12,18 @@ const { initializeHook } = require('./lib/logging');
 const { isAllowedCoordinationCommand } = require('./lib/command-validation');
 const { getProjectRoot, generateProjectHash } = require('./lib/hook-helpers');
 
+// Load config ONCE at module level (not on every hook invocation)
+const PM_EXTRA_COMMANDS = getSetting('enforcement.pm_allowed_bash_commands', [
+  'gh pr list', 'gh pr view', 'gh pr status',
+  'gh issue list', 'gh issue view'
+]);
+const PM_INFRASTRUCTURE_BLACKLIST = getSetting('enforcement.tool_blacklist.infrastructure', []);
+const HEREDOC_ALLOWED_COMMANDS = getSetting('enforcement.heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
+const ALLOW_PARENT_ALLOWLIST_PATHS = getSetting('enforcement.allow_parent_allowlist_paths', false);
+const ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST_AGENTS = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
+const ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST = getSetting('enforcement.allow_markdown_outside_allowlist', false);
+const BLOCKING_ENABLED = getSetting('enforcement.blocking_enabled', true);
+
 function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('pm-constraints-enforcement');
@@ -203,10 +215,7 @@ function main() {
     }
 
     // Additionally check PM-specific commands from configuration (gh CLI, etc.)
-    const pmExtraCommands = getSetting('enforcement.pm_allowed_bash_commands', [
-      'gh pr list', 'gh pr view', 'gh pr status',
-      'gh issue list', 'gh issue view'
-    ]);
+    const pmExtraCommands = PM_EXTRA_COMMANDS;
 
     for (const allowedCmd of pmExtraCommands) {
       if (command.trim().startsWith(allowedCmd + ' ') || command.trim() === allowedCmd) {
@@ -324,14 +333,14 @@ To execute blocked operation:
     ];
 
     // Add infrastructure tools from unified configuration (infrastructure_protection.pm_blacklist)
-    const pmInfrastructureBlacklist = getSetting('enforcement.tool_blacklist.infrastructure', []);
+    const pmInfrastructureBlacklist = PM_INFRASTRUCTURE_BLACKLIST;
     const allBlockedCommands = [...blockedCommands, ...pmInfrastructureBlacklist];
 
     // Check for ANY heredoc pattern (<< 'EOF', << EOF, <<EOF, <<-EOF)
     // Whitelist approach: Allow specific commands (git, gh, glab, hub) to use heredocs
     if (command.includes('<<')) {
       // Load heredoc allowed commands from unified config
-      const allowedHeredocCommands = getSetting('enforcement.heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
+      const allowedHeredocCommands = HEREDOC_ALLOWED_COMMANDS;
 
       // Extract the actual command being executed
       const cmdStart = command.trim().split(/\s+/)[0];
@@ -503,7 +512,7 @@ To execute blocked operation:
     } else {
       // Path goes outside project root (contains '../')
       // Check if allow_parent_allowlist_paths is enabled
-      const allowParentPaths = getSetting('enforcement.allow_parent_allowlist_paths', false);
+      const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
 
       if (allowParentPaths) {
         // Split normalized path into components
@@ -602,7 +611,7 @@ To execute blocked operation:
     // Path goes outside project root (contains '../')
     const isOutsideProject = relativePath.startsWith('..');
     if (isOutsideProject) {
-      const allowParentPaths = getSetting('enforcement.allow_parent_allowlist_paths', false);
+      const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
 
       if (allowParentPaths) {
         // Normalize to absolute path for component checking
@@ -632,11 +641,11 @@ To execute blocked operation:
 
     if (isAgentContext) {
       // For agents: check agent-specific setting first, fallback to main setting
-      const agentSetting = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
-      allowMarkdown = agentSetting !== null ? agentSetting : getSetting('enforcement.allow_markdown_outside_allowlist', false);
+      const agentSetting = ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST_AGENTS;
+      allowMarkdown = agentSetting !== null ? agentSetting : ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST;
     } else {
       // For main scope: use main setting
-      allowMarkdown = getSetting('enforcement.allow_markdown_outside_allowlist', false);
+      allowMarkdown = ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST;
     }
 
     if (allowMarkdown) {
@@ -690,7 +699,7 @@ To execute blocked operation:
   }
 
   function getBlockingEnabled() {
-    const enabled = getSetting('enforcement.blocking_enabled', true);
+    const enabled = BLOCKING_ENABLED;
     log(`blocking_enabled=${enabled} (from unified config)`);
     return enabled;
   }
