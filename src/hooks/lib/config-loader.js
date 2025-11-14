@@ -208,7 +208,7 @@ function findConfigFile(projectRoot, filename) {
  */
 function loadWorkflowConfig() {
   // 1. Load default workflow configuration
-  const defaultWorkflowPath = path.join(__dirname, '../../..', 'icc.workflow.default.json');
+  const defaultWorkflowPath = path.join(__dirname, '../..', 'icc.workflow.default.json');
   let workflowConfig = loadJsonConfig(defaultWorkflowPath);
 
   if (!workflowConfig) {
@@ -249,7 +249,7 @@ function loadConfig() {
   }
 
   // 1. Load default configuration
-  const defaultConfigPath = path.join(__dirname, '../../..', 'icc.config.default.json');
+  const defaultConfigPath = path.join(__dirname, '../..', 'icc.config.default.json');
   let config = loadJsonConfig(defaultConfigPath);
 
   if (!config) {
