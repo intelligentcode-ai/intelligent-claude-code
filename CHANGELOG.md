@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.77] - 2025-11-14
+
+### Fixed
+- CRITICAL: Agent marker hook execution order - ensured agent-marker.js runs first in PreToolUse hook array to prevent race conditions
+- Agent context detection reliability - verified atomic marker file creation completes before pm-constraints-enforcement checks
+- Hook ordering in both settings.json template and merge logic confirmed correct
+
+### Technical Details
+- Note: PreSubagentInvoke event does not exist in Claude Code - agent marker creation must happen on PreToolUse with Task tool detection
+- agent-marker.js positioned first in PreToolUse hooks array for synchronous completion before other hooks
+- Atomic file write operations ensure marker exists when subsequent hooks check for agent context
+
 ## [8.20.76] - 2025-11-14
 
 ### Fixed
