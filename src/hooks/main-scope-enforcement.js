@@ -22,6 +22,13 @@ const { isAllowedCoordinationCommand } = require('./lib/command-validation');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 
+// Load config ONCE at module level (not on every hook invocation)
+const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
+  'README.md', 'LICENSE', 'LICENSE.md', 'CLAUDE.md', 'CHANGELOG.md',
+  'CONTRIBUTING.md', 'AUTHORS', 'NOTICE', 'PATENTS', 'VERSION',
+  'MAKEFILE', 'DOCKERFILE', 'COPYING', 'COPYRIGHT'
+]);
+
 function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('main-scope-enforcement');
@@ -343,11 +350,6 @@ To execute blocked operation:
     if (tool === 'Write' || tool === 'Edit') {
       // Check for ALL-CAPS filenames
       const filename = path.basename(filePath);
-      const allowedAllCaps = getSetting('enforcement.allowed_allcaps_files', [
-        'README.md', 'LICENSE', 'LICENSE.md', 'CLAUDE.md', 'CHANGELOG.md',
-        'CONTRIBUTING.md', 'AUTHORS', 'NOTICE', 'PATENTS', 'VERSION',
-        'MAKEFILE', 'DOCKERFILE', 'COPYING', 'COPYRIGHT'
-      ]);
 
       // Check if filename is ALL-CAPS (excluding extension)
       const nameWithoutExt = path.parse(filename).name;
@@ -358,13 +360,13 @@ To execute blocked operation:
       // Exempt work item patterns: STORY-*, BUG-*, EPIC-*, AGENTTASK-*
       const isWorkItem = /^(STORY|BUG|EPIC|AGENTTASK)-\d+-.+/.test(filename);
 
-      if (isAllCaps && !allowedAllCaps.includes(filename) && !isWorkItem) {
+      if (isAllCaps && !ALLOWED_ALLCAPS_FILES.includes(filename) && !isWorkItem) {
         return blockOperation(
           'ALL-CAPS filename not allowed',
           tool,
           `Filename "${filename}" uses ALL-CAPS format which is not allowed.
 
-Allowed ALL-CAPS files: ${allowedAllCaps.join(', ')}
+Allowed ALL-CAPS files: ${ALLOWED_ALLCAPS_FILES.join(', ')}
 
 Please use lowercase-with-hyphens format: ${nameWithoutExt.toLowerCase()}.md`,
           log
