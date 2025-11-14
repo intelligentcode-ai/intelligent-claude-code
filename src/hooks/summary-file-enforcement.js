@@ -11,17 +11,16 @@ const fs = require('fs');
 const path = require('path');
 
 // Shared libraries
-const { createLogger } = require('./lib/logging');
-const { parseHookInput, extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
+const { initializeHook } = require('./lib/logging');
+const { extractToolInfo, generateProjectHash, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 
 function main() {
-  const log = createLogger('summary-enforcement');
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('summary-enforcement');
 
   try {
-    // Parse hook input
-    const hookInput = parseHookInput(log);
     if (!hookInput) {
       return allowOperation(log, true); // Suppress output
     }
@@ -38,42 +37,48 @@ function main() {
       return allowOperation(log, true);
     }
 
-    // Get project root from hookInput.cwd or fallback
-    const projectRoot = hookInput.cwd || process.cwd();
+    // CRITICAL: Skip ALL validation for agents - only apply to main scope
+    // Check for agent marker files to detect agent context
+    const crypto = require('crypto');
+    const os = require('os');
 
-    // Get settings
-    const strictMode = getSetting('development.file_management_strict', true);
-    const summariesPath = getSetting('paths.summaries_path', 'summaries');
+    // Get project root with enhanced path resolution for Linux
+    const projectRoot = hookInput.cwd || process.env.CLAUDE_PROJECT_DIR || process.cwd();
+    const normalizedProjectRoot = path.resolve(projectRoot);
 
     log(`Checking file: ${filePath}`);
-    log(`Strict mode: ${strictMode}`);
-    log(`Summaries path: ${summariesPath}`);
-    log(`Project root: ${projectRoot}`);
+    log(`Project root (raw): ${projectRoot}`);
+    log(`Project root (normalized): ${normalizedProjectRoot}`);
 
     // Normalize to relative path if absolute
     let relativePath = filePath;
     if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
+      relativePath = path.relative(normalizedProjectRoot, filePath);
     }
 
-    // DEBUG: Log all path information
+    // Enhanced Linux path debugging
     log(`=== PATH DEBUG ===`);
+    log(`Platform: ${os.platform()}`);
     log(`Original filePath: ${filePath}`);
+    log(`Normalized filePath: ${path.resolve(filePath)}`);
     log(`Project root (cwd): ${projectRoot}`);
+    log(`Project root (normalized): ${normalizedProjectRoot}`);
     log(`Relative path: ${relativePath}`);
     log(`Path is absolute: ${path.isAbsolute(filePath)}`);
+    log(`Path separator: "${path.sep}"`);
     log(`=== END DEBUG ===`);
 
     // Get filename early for ALL-CAPITALS check
     const fileName = path.basename(relativePath);
 
-    // STEP 1: ALL-CAPITALS check (highest priority - blocks everywhere)
+    // STEP 1: ALL-CAPITALS check (highest priority - blocks EVERYONE including agents)
     // Load allowed ALL-CAPITALS files from unified configuration
     const allowedAllCapsFiles = getSetting('enforcement.allowed_allcaps_files', [
       'README.md',
       'LICENSE',
       'LICENSE.md',
       'CLAUDE.md',
+      'SKILL.md',
       'CHANGELOG.md',
       'CONTRIBUTING.md',
       'AUTHORS',
@@ -140,13 +145,47 @@ To execute blocked operation:
 4. Agent provides comprehensive summary with results`;
 
       const response = {
-        continue: false,
-        displayToUser: message
+        hookSpecificOutput: {
+          hookEventName: 'PreToolUse',
+          permissionDecision: 'deny',
+          permissionDecisionReason: message
+        }
       };
       return sendResponse(response, 2, log);
     }
 
-    // STEP 2: Summary placement validation (after ALL-CAPITALS passes)
+    // STEP 2: Agent context check - skip remaining validation for agents
+    // Check for agent marker file (same logic as pm-constraints-enforcement.js)
+    const sessionId = hookInput.session_id || '';
+    if (sessionId && projectRoot) {
+      const projectHash = generateProjectHash(hookInput);
+      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+      const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+      if (fs.existsSync(markerFile)) {
+        try {
+          const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+          const agentCount = marker.agent_count || 0;
+
+          if (agentCount > 0) {
+            log('Agent context detected - skipping remaining validation (ALL-CAPITALS already checked)');
+            return allowOperation(log, true);
+          }
+        } catch (err) {
+          // Marker file error - continue with validation
+          log(`Warning: Could not read agent marker file: ${err.message}`);
+        }
+      }
+    }
+
+    // Get settings
+    const strictMode = getSetting('development.file_management_strict', true);
+    const summariesPath = getSetting('paths.summaries_path', 'summaries');
+
+    log(`Strict mode: ${strictMode}`);
+    log(`Summaries path: ${summariesPath}`);
+
+    // STEP 3: Summary placement validation (after ALL-CAPITALS passes and agent check)
     // Use shared validation logic
     const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
 
@@ -164,7 +203,7 @@ To execute blocked operation:
     const isInSummariesDir = summariesPattern.test(normalizedPath) ||
                             normalizedPath.includes(`/${summariesPath}/`);
 
-    // STEP 3: If file is in summaries directory and passes ALL-CAPITALS check, allow
+    // STEP 4: If file is in summaries directory and passes ALL-CAPITALS check, allow
     if (isInSummariesDir) {
       // File is in summaries directory and has proper casing, allow
       log(`File in summaries directory with proper casing - allowed`);
@@ -181,8 +220,11 @@ To execute blocked operation:
 To disable this enforcement, set development.file_management_strict: false in icc.config.json`;
 
       const response = {
-        continue: false,
-        displayToUser: message
+        hookSpecificOutput: {
+          hookEventName: 'PreToolUse',
+          permissionDecision: 'deny',
+          permissionDecisionReason: message
+        }
       };
       return sendResponse(response, 2, log);
     } else {

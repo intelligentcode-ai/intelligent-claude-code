@@ -9,10 +9,11 @@
  */
 
 const path = require('path');
+const fs = require('fs');
 
 // Shared libraries
-const { createLogger } = require('./lib/logging');
-const { parseHookInput, extractToolInfo, getProjectRoot, allowOperation, blockOperation } = require('./lib/hook-helpers');
+const { initializeHook } = require('./lib/logging');
+const { extractToolInfo, getProjectRoot, generateProjectHash, allowOperation, blockOperation } = require('./lib/hook-helpers');
 const { loadConfig, getSetting } = require('./lib/config-loader');
 const { isDevelopmentContext } = require('./lib/context-detection');
 const { isAgentContext } = require('./lib/marker-detection');
@@ -22,7 +23,8 @@ const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 
 function main() {
-  const log = createLogger('main-scope-enforcement');
+  // Initialize hook with shared library function
+  const { log, hookInput } = initializeHook('main-scope-enforcement');
 
   /**
    * Check if mkdir command is for allowlist directory
@@ -39,7 +41,8 @@ function main() {
       config.paths.memory_path || 'memory',
       config.paths.docs_path || 'docs',
       'agenttasks',
-      'summaries'
+      'summaries',
+      'tests'  // Allow test file creation for comprehensive coverage
     ];
 
     // Extract directory path from mkdir command
@@ -183,18 +186,52 @@ function main() {
   }
 
   try {
-    // Parse hook input
-    const hookInput = parseHookInput(log);
     if (!hookInput) {
       return allowOperation(log);
     }
 
     log(`PreToolUse triggered: ${JSON.stringify(hookInput)}`);
 
-    // Get project root
+    // Get project root with enhanced Linux debugging
     const projectRoot = getProjectRoot(hookInput);
+    const os = require('os');
+
+    log(`[MARKER-CHECK] Platform: ${os.platform()}`);
+    log(`[MARKER-CHECK] projectRoot from getProjectRoot: "${projectRoot}"`);
+    log(`[MARKER-CHECK] hookInput.cwd: "${hookInput.cwd || 'undefined'}"`);
+    log(`[MARKER-CHECK] process.env.CLAUDE_PROJECT_DIR: "${process.env.CLAUDE_PROJECT_DIR || 'undefined'}"`);
+    log(`[MARKER-CHECK] process.cwd(): "${process.cwd()}"`);
 
     // Check for agent marker (if agent, skip enforcement)
+    const sessionId = hookInput.session_id || '';
+
+    if (sessionId && projectRoot) {
+      const projectHash = generateProjectHash(hookInput);
+      log(`[MARKER-CHECK] projectHash: "${projectHash}"`);
+
+      const homedir = os.homedir();
+      const markerDir = path.join(homedir, '.claude', 'tmp');
+      const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+      log(`[MARKER-CHECK] Home directory: "${homedir}"`);
+      log(`[MARKER-CHECK] Marker directory: "${markerDir}"`);
+      log(`[MARKER-CHECK] Full marker path: "${markerFile}"`);
+      log(`[MARKER-CHECK] Marker file exists: ${fs.existsSync(markerFile)}`);
+      log(`[MARKER-CHECK] Path separator: "${path.sep}"`);
+
+      if (fs.existsSync(markerFile)) {
+        try {
+          const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+          if (marker.agent_count > 0) {
+            log('Agent context detected - strict main scope enforcement skipped');
+            return allowOperation(log);
+          }
+        } catch (err) {
+          log(`Error reading marker file: ${err.message}`);
+        }
+      }
+    }
+
     if (isAgentContext(projectRoot, hookInput.session_id, log)) {
       log('Agent context detected - strict main scope enforcement skipped');
       return allowOperation(log);
@@ -216,11 +253,36 @@ function main() {
     }
 
     // ========================================================================
-    // CRITICAL: Check tool blacklist FIRST (universal + main_scope_only)
-    // This check MUST happen before any allowlist checks to ensure blacklist
-    // takes precedence over all other rules. Universal blacklist blocks
-    // dangerous operations system-wide, while main_scope_only blacklist
-    // enforces AgentTask-driven execution pattern.
+    // CRITICAL: For Bash tool, check coordination commands BEFORE blacklist
+    // Read-only commands (git, ls, make, etc.) must be allowed even though
+    // Bash is in the main_scope_only blacklist. This allows safe coordination
+    // commands while still blocking dangerous operations.
+    // ========================================================================
+    if (tool === 'Bash' && command) {
+      // Check if it's an allowed coordination command (git, ls, make, etc.)
+      if (isAllowedCoordinationCommand(command)) {
+        log(`Bash coordination command allowed: ${command}`);
+        return allowOperation(log);
+      }
+
+      // Check if it's a read-only infrastructure command
+      if (isReadOnlyInfrastructureCommand(command)) {
+        log(`Read-only infrastructure command allowed: ${command}`);
+        return allowOperation(log);
+      }
+
+      // Check if mkdir for allowlist directory
+      if (isAllowedMkdirCommand(command, projectRoot)) {
+        log(`Mkdir for allowlist directory allowed: ${command}`);
+        return allowOperation(log);
+      }
+    }
+
+    // ========================================================================
+    // CRITICAL: Check tool blacklist AFTER Bash coordination check
+    // Universal blacklist blocks dangerous operations system-wide, while
+    // main_scope_only blacklist enforces AgentTask-driven execution pattern.
+    // Bash coordination commands bypass blacklist for safe operations.
     // ========================================================================
     const blacklistResult = checkToolBlacklist(tool, toolInput, 'main_scope');
     if (blacklistResult.blocked) {
@@ -271,7 +333,7 @@ To execute blocked operation:
     }
 
     // Allow coordination tools
-    const coordinationTools = ['Read', 'Grep', 'Glob', 'Task', 'TodoWrite', 'WebFetch', 'BashOutput', 'KillShell'];
+    const coordinationTools = ['Read', 'Grep', 'Glob', 'Task', 'TodoWrite', 'WebFetch', 'WebSearch', 'BashOutput', 'KillShell'];
     if (coordinationTools.includes(tool)) {
       log(`Coordination tool allowed: ${tool}`);
       return allowOperation(log);
@@ -279,6 +341,43 @@ To execute blocked operation:
 
     // Check Write/Edit operations
     if (tool === 'Write' || tool === 'Edit') {
+      // Import getCorrectDirectory from directory-enforcement.js
+      const { getCorrectDirectory } = require('./lib/directory-enforcement');
+
+      const fileName = path.basename(filePath);
+      const correctDir = getCorrectDirectory(fileName, projectRoot);
+
+      // Check if this file SHOULD be routed (has a pattern match)
+      // If correctDir is summaries/ AND filename doesn't match routing patterns, skip enforcement for agents
+      const shouldRoute = correctDir !== path.join(projectRoot, 'summaries') ||
+                          fileName.match(/^(STORY|EPIC|BUG|AGENTTASK)-/);
+
+      if (!shouldRoute) {
+        // File doesn't match routing patterns - skip enforcement for agents
+        const os = require('os');
+        const sessionId = hookInput.session_id || '';
+
+        if (sessionId && projectRoot) {
+          const projectHash = generateProjectHash(hookInput);
+          const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+          const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+          if (fs.existsSync(markerFile)) {
+            try {
+              const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+              if (marker.agent_count > 0) {
+                log('Agent context + no routing pattern - skipping enforcement');
+                return allowOperation(log, true);
+              }
+            } catch (err) {
+              log(`Warning: Could not read agent marker: ${err.message}`);
+            }
+          }
+        }
+      } else {
+        log('File matches routing pattern - enforcing directory even for agents');
+      }
+
       // FILENAME-BASED DIRECTORY ENFORCEMENT
       if (!isCorrectDirectory(filePath, projectRoot)) {
         const suggestedPath = getSuggestedPath(filePath, projectRoot);
@@ -311,7 +410,8 @@ Please use the correct directory for this file type.`,
         config.paths.memory_path,
         config.paths.docs_path,
         'agenttasks',
-        'summaries'
+        'summaries',
+        'tests'  // Allow test file creation for comprehensive coverage
       ];
 
       // In development context, allow src/ directory edits
@@ -337,7 +437,7 @@ ${customMessage}
 Main scope is limited to coordination work:
 ✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite, WebFetch, BashOutput, KillShell
 ✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
-✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
+✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/, tests/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
 ✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
@@ -379,11 +479,12 @@ To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.
       }
     }
 
-    // Check Bash operations
+    // Check Bash operations for modifying infrastructure commands
     if (tool === 'Bash') {
       const bashCommand = command || '';
 
       // CRITICAL: Block modifying infrastructure commands
+      // Note: Read-only and coordination commands already checked before blacklist
       if (isModifyingInfrastructureCommand(bashCommand)) {
         return blockOperation(
           'Modifying infrastructure commands not allowed in main scope',
@@ -434,77 +535,9 @@ To execute blocked operation:
         );
       }
 
-      // Allow read-only infrastructure commands
-      if (isReadOnlyInfrastructureCommand(bashCommand)) {
-        log(`Read-only infrastructure command allowed: ${bashCommand}`);
-        return allowOperation(log);
-      }
-
-      // Then check if allowed coordination command
-      if (isAllowedCoordinationCommand(bashCommand)) {
-        log(`Allowed coordination command: ${bashCommand}`);
-        return allowOperation(log);
-      }
-
-      // Check if mkdir for allowlist directory
-      if (isAllowedMkdirCommand(bashCommand, projectRoot)) {
-        log(`Mkdir for allowlist directory allowed: ${bashCommand}`);
-        return allowOperation(log);
-      }
-
-      // Block all other technical bash commands
-      const customMessage = getSetting('enforcement.strict_main_scope_message',
-        'Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.');
-
-      return blockOperation(`🚫 STRICT MODE: Technical bash commands not allowed in main scope
-
-Tool: ${tool}
-Detail: ${bashCommand}
-
-${customMessage}
-
-Main scope is limited to coordination work:
-✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite, WebFetch, BashOutput, KillShell
-✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
-✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
-✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
-✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
-✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
-✅ ALLOWED: mkdir for allowlist directories
-
-❌ BLOCKED: Infrastructure commands (ssh, kubectl, docker, terraform, ansible, npm, etc.)
-❌ BLOCKED: All other technical operations
-
-🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
-
-1. Main Scope Creates AgentTasks ONLY via Task tool
-2. Agent response = Agent completed (process results immediately)
-3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
-4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
-
-Example - Sequential Work:
-  Task tool → @Developer (fix bug) → Agent returns → Process results
-
-Example - Parallel Work (PREFERRED):
-  Single message with multiple Task tool calls:
-  - Task tool → @Developer (fix bug A)
-  - Task tool → @Developer (fix bug B)
-  - Task tool → @QA-Engineer (test feature C)
-  All execute in parallel → Agents return → Process results
-
-Template Usage:
-  - 0-2 points: nano-agenttask-template.yaml
-  - 3-5 points: tiny-agenttask-template.yaml
-  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
-  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
-
-To execute blocked operation:
-1. Create AgentTask using appropriate template
-2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
-3. Wait for agent completion
-4. Agent provides comprehensive summary with results
-
-To disable strict mode: Set enforcement.strict_main_scope = false in icc.config.json`, log);
+      // If we reach here, Bash command passed all checks - allow it
+      log(`Bash command allowed: ${bashCommand}`);
+      return allowOperation(log);
     }
 
     // Block all other operations
@@ -520,7 +553,7 @@ ${customMessage}
 Main scope is limited to coordination work:
 ✅ ALLOWED: Read, Grep, Glob, Task, TodoWrite, WebFetch, BashOutput, KillShell
 ✅ ALLOWED: All MCP tools (mcp__memory, mcp__context7, etc.)
-✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/)
+✅ ALLOWED: Write/Edit to allowlist directories (stories/, bugs/, memory/, docs/, summaries/, agenttasks/, tests/)
 ✅ ALLOWED: Write/Edit to src/ when in development context (working on intelligent-claude-code)
 ✅ ALLOWED: Root files (*.md, VERSION, icc.config.json, icc.workflow.json)
 ✅ ALLOWED: Git workflow and read-only bash (git add/commit/push, git status, ls, cat, grep, ps, top, sleep, etc.)
