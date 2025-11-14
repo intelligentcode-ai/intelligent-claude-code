@@ -48,10 +48,30 @@ We welcome contributions in many forms:
 
 ### Contributing Code
 1. Fork the repository
-2. Create a feature branch (`feature/your-feature-name`)
+2. Create a feature branch from `dev` (`feature/your-feature-name` or `fix/your-fix-name`)
 3. Make your changes following our standards
 4. Test your changes thoroughly
-5. Submit a pull request
+5. Submit a pull request to the `dev` branch
+
+## Branching Strategy
+
+### Branch Structure
+- **`main`** - Stable release branch (protected, releases only)
+- **`dev`** - Main development branch (protected, requires PRs)
+- **`feature/*`** - New features (branched from `dev`, merged to `dev`)
+- **`fix/*`** - Bug fixes (branched from `dev`, merged to `dev`)
+
+### Workflow
+1. **Start work**: Branch from `dev` → `feature/your-feature` or `fix/your-bug`
+2. **Develop**: Make changes, commit frequently
+3. **Pull Request**: Create PR targeting `dev` branch
+4. **Review**: PR review (approval optional, but encouraged)
+5. **Merge**: Squash and merge to `dev`
+6. **Release**: Periodic releases from `dev` → `main`
+
+### Branch Protection
+- **`dev`**: Requires pull requests (no direct commits), no approval required
+- **`main`**: Protected, releases only via tagged PRs from `dev`
 
 ## Issue Guidelines
 
@@ -139,14 +159,13 @@ Fixes #(issue number)
 
 ### Review Process
 1. Automated checks must pass
-2. At least one maintainer review required
-3. All feedback addressed
-4. Final approval from maintainer
-5. Squash and merge to main
+2. Maintainer review encouraged (but not required)
+3. Address all feedback
+4. Squash and merge to `dev`
 
 ### After Merge
 - Delete your feature branch
-- Update your local main branch
+- Update your local `dev` branch: `git checkout dev && git pull origin dev`
 - Thank you for contributing!
 
 ## Questions?
