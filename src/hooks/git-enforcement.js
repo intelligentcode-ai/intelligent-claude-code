@@ -7,6 +7,21 @@ const { execSync } = require('child_process');
 const { getSetting } = require('./lib/config-loader');
 const { initializeHook } = require('./lib/logging');
 
+// Load config ONCE at module level (not on every hook invocation)
+const GIT_PRIVACY_PATTERNS = getSetting('git.privacy_patterns', [
+  "Generated with \\[Claude Code\\]",
+  "Generated with Claude Code",
+  "Co-Authored-By: Claude",
+  "Co-authored-by: Claude",
+  "🤖 Generated with",
+  "Claude assisted",
+  "AI assisted",
+  "claude.com/claude-code"
+]);
+const BRANCH_PROTECTION = getSetting('git.branch_protection', true);
+const REQUIRE_PR_FOR_MAIN = getSetting('git.require_pr_for_main', true);
+const DEFAULT_BRANCH = getSetting('git.default_branch', 'main');
+
 function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('git-enforcement');
@@ -32,21 +47,12 @@ function main() {
 
     // Git Privacy Settings - Use global as default, allow project override
     const gitPrivacy = getSetting('git.privacy', globalGitPrivacy);
-    const privacyPatterns = getSetting('git.privacy_patterns', [
-      "Generated with \\[Claude Code\\]",
-      "Generated with Claude Code",
-      "Co-Authored-By: Claude",
-      "Co-authored-by: Claude",
-      "🤖 Generated with",
-      "Claude assisted",
-      "AI assisted",
-      "claude.com/claude-code"
-    ]);
+    const privacyPatterns = GIT_PRIVACY_PATTERNS;
 
     // Branch Protection Settings (DEFAULT: true)
-    const branchProtection = getSetting('git.branch_protection', true);
-    const requirePRforMain = getSetting('git.require_pr_for_main', true);
-    const defaultBranch = getSetting('git.default_branch', 'main');
+    const branchProtection = BRANCH_PROTECTION;
+    const requirePRforMain = REQUIRE_PR_FOR_MAIN;
+    const defaultBranch = DEFAULT_BRANCH;
 
     const config = {
       git: {
