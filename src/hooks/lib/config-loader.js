@@ -208,11 +208,21 @@ function findConfigFile(projectRoot, filename) {
  */
 function loadWorkflowConfig() {
   // 1. Load default workflow configuration
-  const defaultWorkflowPath = path.join(__dirname, '../..', 'icc.workflow.default.json');
+  // Try installed location first (~/.claude/), then repo root (for testing)
+  let defaultWorkflowPath = path.join(__dirname, '../..', 'icc.workflow.default.json');
   let workflowConfig = loadJsonConfig(defaultWorkflowPath);
 
   if (!workflowConfig) {
+    // Fallback to repo root for local development/testing
+    defaultWorkflowPath = path.join(__dirname, '../../..', 'icc.workflow.default.json');
+    workflowConfig = loadJsonConfig(defaultWorkflowPath);
+  }
+
+  if (!workflowConfig) {
     console.error('[config-loader] CRITICAL: Default workflow configuration not found');
+    console.error('[config-loader] Searched paths:');
+    console.error('[config-loader]   - ' + path.join(__dirname, '../..', 'icc.workflow.default.json'));
+    console.error('[config-loader]   - ' + path.join(__dirname, '../../..', 'icc.workflow.default.json'));
     workflowConfig = {};
   }
 
@@ -249,11 +259,21 @@ function loadConfig() {
   }
 
   // 1. Load default configuration
-  const defaultConfigPath = path.join(__dirname, '../..', 'icc.config.default.json');
+  // Try installed location first (~/.claude/), then repo root (for testing)
+  let defaultConfigPath = path.join(__dirname, '../..', 'icc.config.default.json');
   let config = loadJsonConfig(defaultConfigPath);
 
   if (!config) {
+    // Fallback to repo root for local development/testing
+    defaultConfigPath = path.join(__dirname, '../../..', 'icc.config.default.json');
+    config = loadJsonConfig(defaultConfigPath);
+  }
+
+  if (!config) {
     console.error('[config-loader] CRITICAL: Default configuration not found');
+    console.error('[config-loader] Searched paths:');
+    console.error('[config-loader]   - ' + path.join(__dirname, '../..', 'icc.config.default.json'));
+    console.error('[config-loader]   - ' + path.join(__dirname, '../../..', 'icc.config.default.json'));
     config = getHardcodedDefaults();
   }
 
