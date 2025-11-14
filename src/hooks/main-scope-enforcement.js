@@ -301,8 +301,6 @@ function main() {
     if (blacklistResult.blocked) {
       log(`Tool blocked by blacklist: ${tool} (${blacklistResult.list})`);
       return blockOperation(
-        `Tool blocked by ${blacklistResult.list} blacklist`,
-        tool,
         `Tool "${tool}" is blocked by the ${blacklistResult.reason}.
 
 Blacklist type: ${blacklistResult.list}
