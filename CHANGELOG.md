@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.76] - 2025-11-14
+
+### Fixed
+- Project scope enforcement now logs cross-project operations instead of blocking them
+- Added ALL-CAPS filename validation to prevent non-standard naming conventions
+- Allowlisted standard uppercase files: README.md, LICENSE, LICENSE.md, CLAUDE.md, CHANGELOG.md, CONTRIBUTING.md, AUTHORS, NOTICE, PATENTS, VERSION, MAKEFILE, DOCKERFILE, COPYING, COPYRIGHT
+
+---
+
 ## [8.20.75] - 2025-11-14
 
 ### Fixed

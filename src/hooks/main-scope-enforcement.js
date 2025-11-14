@@ -341,6 +341,33 @@ To execute blocked operation:
 
     // Check Write/Edit operations
     if (tool === 'Write' || tool === 'Edit') {
+      // Check for ALL-CAPS filenames
+      const filename = path.basename(filePath);
+      const allowedAllCaps = getSetting('enforcement.allowed_allcaps_files', [
+        'README.md', 'LICENSE', 'LICENSE.md', 'CLAUDE.md', 'CHANGELOG.md',
+        'CONTRIBUTING.md', 'AUTHORS', 'NOTICE', 'PATENTS', 'VERSION',
+        'MAKEFILE', 'DOCKERFILE', 'COPYING', 'COPYRIGHT'
+      ]);
+
+      // Check if filename is ALL-CAPS (excluding extension)
+      const nameWithoutExt = path.parse(filename).name;
+      const isAllCaps = nameWithoutExt === nameWithoutExt.toUpperCase() &&
+                        nameWithoutExt !== nameWithoutExt.toLowerCase() &&
+                        nameWithoutExt.length > 0;
+
+      if (isAllCaps && !allowedAllCaps.includes(filename)) {
+        return blockOperation(
+          'ALL-CAPS filename not allowed',
+          tool,
+          `Filename "${filename}" uses ALL-CAPS format which is not allowed.
+
+Allowed ALL-CAPS files: ${allowedAllCaps.join(', ')}
+
+Please use lowercase-with-hyphens format: ${nameWithoutExt.toLowerCase()}.md`,
+          log
+        );
+      }
+
       // Import getCorrectDirectory from directory-enforcement.js
       const { getCorrectDirectory } = require('./lib/directory-enforcement');
 

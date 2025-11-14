@@ -130,27 +130,11 @@ All work must be done within project directories:
 Installation updates happen via 'make install' from project source.`, log);
       }
 
-      // CRITICAL: Block operations OUTSIDE project boundaries
+      // Log operations OUTSIDE project boundaries (but allow if intentional)
       if (!isInProject) {
-        log(`Project scope violation BLOCKED: ${filePath}`);
-        return blockOperation(`🚫 CRITICAL: Operation outside project boundaries
-
-Blocked path: ${filePath}
-Project root: ${projectRoot}
-
-This path is OUTSIDE the current project directory.
-
-SCOPE ENFORCEMENT:
-✅ ALLOWED: Operations within project root (${projectRoot})
-✅ ALLOWED: ~/.claude/CLAUDE.md (user configuration)
-❌ BLOCKED: All operations outside project boundaries
-❌ BLOCKED: Modifications to ~/.claude/ (installation directory)
-
-All work must be done within the current project:
-- Current project: ${projectRoot}
-- Blocked path: ${filePath}
-
-If you need to work in a different project, switch to that project directory first.`, log);
+        log(`⚠️  CROSS-PROJECT OPERATION: ${filePath} (outside ${projectRoot})`);
+        log(`Allowing intentional cross-project work - enforcement rules still apply`);
+        // Continue to allow operation - user explicitly requested cross-project work
       }
     }
 
