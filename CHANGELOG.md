@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.75] - 2025-11-14
+
+### Fixed
+- CRITICAL: Linux-specific scope violation - operations outside project root no longer blocked
+- CRITICAL: Project boundary validation added to project-scope-enforcement.js
+- Enhanced path normalization and comparison for cross-platform consistency (Linux vs macOS)
+- Added comprehensive logging for Linux path debugging (platform, homedir, path separator)
+- Fixed agent marker detection with enhanced Linux path resolution
+- Improved ALL-CAPS file enforcement with better path handling
+
+### Changed
+- project-scope-enforcement.js now validates project boundaries in addition to installation protection
+- All hooks now use enhanced project root detection with explicit Linux support
+- Added platform-specific debugging to agent-marker.js, main-scope-enforcement.js, summary-file-enforcement.js
+- Normalized all path operations for consistent cross-platform behavior
+
+---
+
 ## [8.20.73] - 2025-11-10
 
 ### Changed

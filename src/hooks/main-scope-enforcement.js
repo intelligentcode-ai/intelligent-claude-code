@@ -192,24 +192,32 @@ function main() {
 
     log(`PreToolUse triggered: ${JSON.stringify(hookInput)}`);
 
-    // Get project root
+    // Get project root with enhanced Linux debugging
     const projectRoot = getProjectRoot(hookInput);
+    const os = require('os');
+
+    log(`[MARKER-CHECK] Platform: ${os.platform()}`);
     log(`[MARKER-CHECK] projectRoot from getProjectRoot: "${projectRoot}"`);
     log(`[MARKER-CHECK] hookInput.cwd: "${hookInput.cwd || 'undefined'}"`);
     log(`[MARKER-CHECK] process.env.CLAUDE_PROJECT_DIR: "${process.env.CLAUDE_PROJECT_DIR || 'undefined'}"`);
     log(`[MARKER-CHECK] process.cwd(): "${process.cwd()}"`);
 
     // Check for agent marker (if agent, skip enforcement)
-    const os = require('os');
     const sessionId = hookInput.session_id || '';
 
     if (sessionId && projectRoot) {
       const projectHash = generateProjectHash(hookInput);
       log(`[MARKER-CHECK] projectHash: "${projectHash}"`);
-      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+
+      const homedir = os.homedir();
+      const markerDir = path.join(homedir, '.claude', 'tmp');
       const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
+
+      log(`[MARKER-CHECK] Home directory: "${homedir}"`);
+      log(`[MARKER-CHECK] Marker directory: "${markerDir}"`);
       log(`[MARKER-CHECK] Full marker path: "${markerFile}"`);
       log(`[MARKER-CHECK] Marker file exists: ${fs.existsSync(markerFile)}`);
+      log(`[MARKER-CHECK] Path separator: "${path.sep}"`);
 
       if (fs.existsSync(markerFile)) {
         try {

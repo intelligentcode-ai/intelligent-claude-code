@@ -152,16 +152,23 @@ function main() {
     const projectHash = generateProjectHash(hookInput);
     log(`[MARKER-CREATE] projectHash: "${projectHash}"`);
 
-    const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+    const homedir = os.homedir();
+    const markerDir = path.join(homedir, '.claude', 'tmp');
     const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
+
+    // Enhanced Linux debugging
+    log(`[MARKER-CREATE] Platform: ${os.platform()}`);
+    log(`[MARKER-CREATE] Home directory: "${homedir}"`);
+    log(`[MARKER-CREATE] Marker directory: "${markerDir}"`);
     log(`[MARKER-CREATE] Full marker path: "${markerFile}"`);
+    log(`[MARKER-CREATE] Path separator: "${path.sep}"`);
 
     if (shouldLog('DEBUG')) {
-      // DEFENSIVE: Log marker file path calculation
-      log(`Project root: ${projectRoot}`);
+      // DEFENSIVE: Log marker file path calculation with normalized paths
+      log(`Project root (normalized): ${path.normalize(projectRoot)}`);
       log(`Project hash: ${projectHash}`);
-      log(`Marker directory: ${markerDir}`);
-      log(`Marker file path: ${markerFile}`);
+      log(`Marker directory (normalized): ${path.normalize(markerDir)}`);
+      log(`Marker file path (normalized): ${path.normalize(markerFile)}`);
     }
 
     // Cleanup old-style markers without project hash (backward compatibility)

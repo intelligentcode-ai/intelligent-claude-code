@@ -42,24 +42,30 @@ function main() {
     const crypto = require('crypto');
     const os = require('os');
 
-    // Get project root from hookInput.cwd or fallback
-    const projectRoot = hookInput.cwd || process.cwd();
+    // Get project root with enhanced path resolution for Linux
+    const projectRoot = hookInput.cwd || process.env.CLAUDE_PROJECT_DIR || process.cwd();
+    const normalizedProjectRoot = path.resolve(projectRoot);
 
     log(`Checking file: ${filePath}`);
-    log(`Project root: ${projectRoot}`);
+    log(`Project root (raw): ${projectRoot}`);
+    log(`Project root (normalized): ${normalizedProjectRoot}`);
 
     // Normalize to relative path if absolute
     let relativePath = filePath;
     if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(projectRoot, filePath);
+      relativePath = path.relative(normalizedProjectRoot, filePath);
     }
 
-    // DEBUG: Log all path information
+    // Enhanced Linux path debugging
     log(`=== PATH DEBUG ===`);
+    log(`Platform: ${os.platform()}`);
     log(`Original filePath: ${filePath}`);
+    log(`Normalized filePath: ${path.resolve(filePath)}`);
     log(`Project root (cwd): ${projectRoot}`);
+    log(`Project root (normalized): ${normalizedProjectRoot}`);
     log(`Relative path: ${relativePath}`);
     log(`Path is absolute: ${path.isAbsolute(filePath)}`);
+    log(`Path separator: "${path.sep}"`);
     log(`=== END DEBUG ===`);
 
     // Get filename early for ALL-CAPITALS check

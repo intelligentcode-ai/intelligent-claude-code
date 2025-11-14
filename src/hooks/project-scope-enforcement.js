@@ -28,6 +28,53 @@ function main() {
     return absolutePath === allowedPath;
   }
 
+  // Helper function to get project root with enhanced Linux support
+  function getProjectRootFromHookInput(hookInput) {
+    const path = require('path');
+    let projectRoot;
+
+    // Priority 1: Environment variable (authoritative)
+    if (process.env.CLAUDE_PROJECT_DIR) {
+      projectRoot = process.env.CLAUDE_PROJECT_DIR;
+    }
+    // Priority 2: Hook input cwd
+    else if (hookInput && hookInput.cwd) {
+      projectRoot = hookInput.cwd;
+    }
+    // Priority 3: Process cwd
+    else {
+      projectRoot = process.cwd();
+    }
+
+    // Normalize path (critical for cross-platform consistency)
+    let normalizedPath = path.resolve(projectRoot);
+
+    // Remove trailing slash (except root)
+    if (normalizedPath.length > 1 && normalizedPath.endsWith(path.sep)) {
+      normalizedPath = normalizedPath.slice(0, -1);
+    }
+
+    return normalizedPath;
+  }
+
+  // Helper function to check if path is within project boundaries
+  function isWithinProjectBoundaries(filePath, projectRoot) {
+    if (!filePath || !projectRoot) {
+      return false;
+    }
+
+    // Normalize both paths for comparison
+    const normalizedFile = path.resolve(filePath);
+    const normalizedRoot = path.resolve(projectRoot);
+
+    // Check if file path starts with project root
+    // Add path separator to avoid false positives (e.g., /home/project1 vs /home/project)
+    const rootWithSep = normalizedRoot.endsWith(path.sep) ? normalizedRoot : normalizedRoot + path.sep;
+    const isInRoot = normalizedFile.startsWith(rootWithSep) || normalizedFile === normalizedRoot;
+
+    return isInRoot;
+  }
+
   try {
     if (!hookInput) {
       return allowOperation(log);
@@ -45,17 +92,29 @@ function main() {
 
     log(`Tool: ${tool}, FilePath: ${filePath}, Command: ${command}`);
 
-    // READS are ALLOWED from installation directory - only WRITES are blocked
-    // Check file MODIFICATION operations (Edit/Write/MultiEdit)
-    if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit')) {
-      if (isInstallationPath(filePath)) {
-        // Check if this is an allowed exception
-        if (isAllowedException(filePath)) {
-          log(`Installation path access ALLOWED (exception): ${filePath}`);
-          return allowOperation(log);
-        }
+    // Get project root for boundary validation
+    const projectRoot = getProjectRootFromHookInput(hookInput);
+    log(`Project root detected: ${projectRoot}`);
 
-        // Block the operation
+    // CRITICAL: Check project boundary FIRST (before installation check)
+    // Block ALL file operations outside project root (except ~/.claude/CLAUDE.md)
+    if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit')) {
+      const isInProject = isWithinProjectBoundaries(filePath, projectRoot);
+      const isException = isAllowedException(filePath);
+      const isInstall = isInstallationPath(filePath);
+
+      log(`Path boundary check - InProject: ${isInProject}, IsException: ${isException}, IsInstall: ${isInstall}`);
+      log(`Normalized file path: ${path.resolve(filePath)}`);
+      log(`Normalized project root: ${path.resolve(projectRoot)}`);
+
+      // Allow exception (e.g., ~/.claude/CLAUDE.md)
+      if (isException) {
+        log(`Path allowed (exception): ${filePath}`);
+        return allowOperation(log);
+      }
+
+      // Block installation path modifications (except exceptions already handled)
+      if (isInstall) {
         log(`Installation path modification BLOCKED: ${filePath}`);
         return blockOperation(`🚫 Installation directory is protected - work within project scope only
 
@@ -69,6 +128,29 @@ All work must be done within project directories:
 - Project-specific configurations
 
 Installation updates happen via 'make install' from project source.`, log);
+      }
+
+      // CRITICAL: Block operations OUTSIDE project boundaries
+      if (!isInProject) {
+        log(`Project scope violation BLOCKED: ${filePath}`);
+        return blockOperation(`🚫 CRITICAL: Operation outside project boundaries
+
+Blocked path: ${filePath}
+Project root: ${projectRoot}
+
+This path is OUTSIDE the current project directory.
+
+SCOPE ENFORCEMENT:
+✅ ALLOWED: Operations within project root (${projectRoot})
+✅ ALLOWED: ~/.claude/CLAUDE.md (user configuration)
+❌ BLOCKED: All operations outside project boundaries
+❌ BLOCKED: Modifications to ~/.claude/ (installation directory)
+
+All work must be done within the current project:
+- Current project: ${projectRoot}
+- Blocked path: ${filePath}
+
+If you need to work in a different project, switch to that project directory first.`, log);
       }
     }
 
