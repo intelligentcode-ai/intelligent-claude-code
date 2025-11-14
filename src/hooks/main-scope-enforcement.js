@@ -28,6 +28,12 @@ const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
   'CONTRIBUTING.md', 'AUTHORS', 'NOTICE', 'PATENTS', 'VERSION',
   'MAKEFILE', 'DOCKERFILE', 'COPYING', 'COPYRIGHT'
 ]);
+const READ_OPERATIONS = getSetting('enforcement.infrastructure_protection.read_operations', []);
+const WRITE_OPERATIONS = getSetting('enforcement.infrastructure_protection.write_operations', []);
+const IMPERATIVE_DESTRUCTIVE = getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
+const STRICT_MAIN_SCOPE = getSetting('enforcement.strict_main_scope', true);
+const STRICT_MAIN_SCOPE_MESSAGE = getSetting('enforcement.strict_main_scope_message',
+  'Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.');
 
 function main() {
   // Initialize hook with shared library function
@@ -85,8 +91,8 @@ function main() {
   function isReadOnlyInfrastructureCommand(command) {
     const cmd = command.trim();
 
-    // Load read operations from config
-    const readOperations = getSetting('enforcement.infrastructure_protection.read_operations', []);
+    // Use read operations from module-level config
+    const readOperations = READ_OPERATIONS;
 
     // Additional read-only patterns not in infrastructure_protection
     const additionalReadPatterns = [
@@ -153,9 +159,9 @@ function main() {
       return true;
     }
 
-    // Load write and imperative destructive operations from config
-    const writeOperations = getSetting('enforcement.infrastructure_protection.write_operations', []);
-    const imperativeDestructive = getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
+    // Use write and imperative destructive operations from module-level config
+    const writeOperations = WRITE_OPERATIONS;
+    const imperativeDestructive = IMPERATIVE_DESTRUCTIVE;
 
     // Additional modifying patterns not in infrastructure_protection
     const additionalModifyingPatterns = [
@@ -244,8 +250,8 @@ function main() {
       return allowOperation(log);
     }
 
-    // Check if strict mode enabled
-    const strictMode = getSetting('enforcement.strict_main_scope', true);
+    // Check if strict mode enabled (from module-level config)
+    const strictMode = STRICT_MAIN_SCOPE;
     if (!strictMode) {
       log('Strict main scope mode disabled - allowing operation');
       return allowOperation(log);
@@ -456,8 +462,7 @@ Please use the correct directory for this file type.`,
         return allowOperation(log);
       } else {
         // Block write outside allowlist
-        const customMessage = getSetting('enforcement.strict_main_scope_message',
-          'Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.');
+        const customMessage = STRICT_MAIN_SCOPE_MESSAGE;
 
         return blockOperation(`🚫 STRICT MODE: Write/Edit operations outside allowlist directories not allowed in main scope
 
@@ -573,8 +578,7 @@ To execute blocked operation:
     }
 
     // Block all other operations
-    const customMessage = getSetting('enforcement.strict_main_scope_message',
-      'Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.');
+    const customMessage = STRICT_MAIN_SCOPE_MESSAGE;
 
     return blockOperation(`🚫 STRICT MODE: Operation not allowed in main scope strict mode
 
