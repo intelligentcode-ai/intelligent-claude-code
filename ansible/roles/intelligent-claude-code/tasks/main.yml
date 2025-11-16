@@ -226,6 +226,32 @@
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
   when: config_md_exists.stat.exists and ansible_verbosity >= 1
 
+- name: Copy default configuration file (JSON format)
+  copy:
+    src: "{{ playbook_dir }}/../icc.config.default.json"
+    dest: "{{ claude_install_path }}/icc.config.default.json"
+    mode: '0644'
+    force: yes
+  register: default_config_copy_result
+
+- name: Display default config installation notice
+  debug:
+    msg: "Default configuration installed: {{ claude_install_path }}/icc.config.default.json - hooks will use complete configuration"
+  when: ansible_verbosity >= 1
+
+- name: Copy default workflow configuration file (JSON format)
+  copy:
+    src: "{{ playbook_dir }}/../icc.workflow.default.json"
+    dest: "{{ claude_install_path }}/icc.workflow.default.json"
+    mode: '0644'
+    force: yes
+  register: default_workflow_copy_result
+
+- name: Display default workflow installation notice
+  debug:
+    msg: "Default workflow configuration installed: {{ claude_install_path }}/icc.workflow.default.json - complete workflow settings available"
+  when: ansible_verbosity >= 1
+
 - name: Check if settings.json exists
   stat:
     path: "{{ claude_install_path }}/settings.json"

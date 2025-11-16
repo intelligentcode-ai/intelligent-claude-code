@@ -13,7 +13,7 @@ function main() {
 
   const standardOutput = {
     continue: true,
-    suppressOutput: true
+    suppressOutput: false
   };
 
   try {

@@ -21,7 +21,11 @@ function parseHookInput(log) {
   else if (process.env.HOOK_INPUT) {
     inputData = process.env.HOOK_INPUT;
   }
-  // Source 3: stdin
+  // Source 3: CLAUDE tool input env (used for PreToolUse events)
+  else if (process.env.CLAUDE_TOOL_INPUT) {
+    inputData = process.env.CLAUDE_TOOL_INPUT;
+  }
+  // Source 4: stdin
   else if (!process.stdin.isTTY) {
     try {
       inputData = fs.readFileSync(0, 'utf8');
@@ -73,6 +77,7 @@ function allowResponseSuppressed() {
  */
 function blockResponse(message) {
   return {
+    continue: false,
     hookSpecificOutput: {
       hookEventName: 'PreToolUse',
       permissionDecision: 'deny',
