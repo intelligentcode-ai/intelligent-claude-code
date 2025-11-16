@@ -112,6 +112,63 @@ const tests = {
     assert.strictEqual(result.hookInput.counter, 7);
 
     delete process.env.CLAUDE_TOOL_INPUT;
+  },
+
+  'initializeHook: deletes oldest transcripts when project exceeds quota': () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'logging-test-'));
+    const oldPath = path.join(tmpDir, 'old.jsonl');
+    const olderPath = path.join(tmpDir, 'older.jsonl');
+    const activePath = path.join(tmpDir, 'active.jsonl');
+
+    fs.writeFileSync(olderPath, Buffer.alloc(4096, 'x'));
+    fs.utimesSync(olderPath, new Date(0), new Date(0));
+    fs.writeFileSync(oldPath, Buffer.alloc(4096, 'y'));
+    fs.utimesSync(oldPath, new Date(1000), new Date(1000));
+    fs.writeFileSync(activePath, Buffer.alloc(1024, 'z'));
+
+    const previousHookInput = process.env.HOOK_INPUT;
+    process.env.HOOK_INPUT = JSON.stringify({ transcript_path: activePath });
+    process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES = '6000';
+
+    initializeHook('test-hook');
+
+    const archivedFiles = fs.readdirSync(tmpDir).filter(file => file.startsWith('older.jsonl.archived-'));
+    assert.ok(archivedFiles.length === 1, 'Oldest transcript should be archived');
+    assert.ok(fs.existsSync(activePath), 'Active transcript should remain');
+
+    if (previousHookInput === undefined) {
+      delete process.env.HOOK_INPUT;
+    } else {
+      process.env.HOOK_INPUT = previousHookInput;
+    }
+    delete process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  },
+
+  'initializeHook: trims active transcript when quota still exceeded': () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'logging-test-'));
+    const activePath = path.join(tmpDir, 'active.jsonl');
+    const otherPath = path.join(tmpDir, 'other.jsonl');
+
+    fs.writeFileSync(otherPath, Buffer.alloc(2048, 'x'));
+    fs.writeFileSync(activePath, Buffer.alloc(6144, 'y'));
+
+    const previousHookInput = process.env.HOOK_INPUT;
+    process.env.HOOK_INPUT = JSON.stringify({ transcript_path: activePath });
+    process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES = '4000';
+
+    initializeHook('test-hook');
+
+    const stats = fs.statSync(activePath);
+    assert.ok(stats.size < 5000, 'Active transcript should be trimmed when still over budget');
+
+    if (previousHookInput === undefined) {
+      delete process.env.HOOK_INPUT;
+    } else {
+      process.env.HOOK_INPUT = previousHookInput;
+    }
+    delete process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 };
 

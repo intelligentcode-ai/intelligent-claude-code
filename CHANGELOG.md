@@ -21,6 +21,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.85] - 2025-11-16
+
+### Changed
+- Transcript retention now archives older session JSONL files and trims the active session only when necessary, preventing multi-gigabyte loads that crashed Claude on Linux.
+- Per-project transcript quota lowered to 10 MB (configurable via `CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES`).
+
+### Fixed
+- Memory stats logging writes compact JSON and adds rotation so hooks no longer blow the V8 heap when telemetry grows too large.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+---
+
 ## [8.20.78] - 2025-11-14
 
 ### Fixed

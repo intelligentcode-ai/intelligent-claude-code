@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
+const MAX_PROJECT_TRANSCRIPTS_BYTES = Number(process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES || '') || (10 * 1024 * 1024); // 10MB per project
+const TRANSCRIPT_ARCHIVE_SUFFIX = () => new Date().toISOString().replace(/[:.]/g, '-');
+
 /**
  * Logging Utilities
  * Shared logging functions for all hooks
@@ -167,6 +170,10 @@ function initializeHook(hookName) {
   // Create logger with normalized project path
   const log = createLogger(hookName, hookInput);
 
+  if (hookInput && hookInput.transcript_path) {
+    enforceTranscriptCapacity(hookInput.transcript_path, log);
+  }
+
   return { log, hookInput };
 }
 
@@ -177,3 +184,90 @@ module.exports = {
   createLogger,
   initializeHook
 };
+
+function enforceTranscriptCapacity(transcriptPath, log) {
+  try {
+    if (!transcriptPath) return;
+    const projectDir = path.dirname(transcriptPath);
+    if (!fs.existsSync(projectDir)) return;
+
+    const files = fs.readdirSync(projectDir)
+      .filter(file => file.endsWith('.jsonl'))
+      .map(file => {
+        const fullPath = path.join(projectDir, file);
+        const stats = fs.statSync(fullPath);
+        return { fullPath, size: stats.size, mtimeMs: stats.mtimeMs };
+      })
+      .sort((a, b) => a.mtimeMs - b.mtimeMs); // oldest first
+
+    let totalSize = files.reduce((acc, file) => acc + file.size, 0);
+    if (totalSize <= MAX_PROJECT_TRANSCRIPTS_BYTES) {
+      return;
+    }
+
+    const activePath = path.resolve(transcriptPath);
+    for (const file of files) {
+      const fullPath = path.resolve(file.fullPath);
+
+      if (fullPath === activePath) {
+        continue; // skip active transcript first
+      }
+
+      try {
+        const archivePath = `${fullPath}.archived-${TRANSCRIPT_ARCHIVE_SUFFIX()}`;
+        fs.renameSync(fullPath, archivePath);
+        totalSize -= file.size;
+        if (log) {
+          log(`Archived transcript ${fullPath} -> ${archivePath} (${file.size} bytes)`);
+        }
+      } catch (error) {
+        if (log) {
+          log(`Failed to archive transcript ${fullPath}: ${error.message}`);
+        }
+      }
+
+      if (totalSize <= MAX_PROJECT_TRANSCRIPTS_BYTES) {
+        return;
+      }
+    }
+
+    if (totalSize > MAX_PROJECT_TRANSCRIPTS_BYTES) {
+      trimActiveTranscript(activePath, totalSize, log);
+    }
+  } catch (error) {
+    if (log) {
+      log(`Transcript capacity enforcement error: ${error.message}`);
+    }
+  }
+}
+
+function trimActiveTranscript(activePath, currentTotalSize, log) {
+  try {
+    if (!fs.existsSync(activePath)) {
+      return;
+    }
+
+    const stats = fs.statSync(activePath);
+    if (stats.size <= MAX_PROJECT_TRANSCRIPTS_BYTES) {
+      return;
+    }
+
+    const retainBytes = Math.max(Math.floor(MAX_PROJECT_TRANSCRIPTS_BYTES / 2), 256 * 1024);
+    const halfBuffer = Math.min(retainBytes, stats.size);
+    const fd = fs.openSync(activePath, 'r+');
+    const buffer = Buffer.alloc(halfBuffer);
+    const start = stats.size - halfBuffer;
+    fs.readSync(fd, buffer, 0, halfBuffer, start);
+    fs.ftruncateSync(fd, 0);
+    fs.writeSync(fd, buffer, 0, halfBuffer, 0);
+    fs.closeSync(fd);
+
+    if (log) {
+      log(`Trimmed active transcript ${activePath}: kept last ${halfBuffer} bytes (was ${stats.size})`);
+    }
+  } catch (error) {
+    if (log) {
+      log(`Failed to trim active transcript ${activePath}: ${error.message}`);
+    }
+  }
+}
