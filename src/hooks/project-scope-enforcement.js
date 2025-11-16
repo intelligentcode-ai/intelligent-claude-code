@@ -157,13 +157,13 @@ Installation updates happen via 'make install' from project source.`, log);
     }
 
     // Allow operation
-    allowOperation(log);
+    return allowOperation(log);
 
   } catch (error) {
     log(`Error: ${error.message}`);
     log(`Stack: ${error.stack}`);
     // On error, allow operation to prevent blocking valid work
-    allowOperation(log);
+    return allowOperation(log);
   }
 }
 
