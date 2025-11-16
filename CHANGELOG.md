@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [8.20.84] - 2025-11-16
+
+### Added
+- Reintroduced contextual logic to `memory-first-reminder.js`, targeting prompts about credentials, configuration, AgentTasks, and deployments while logging stats to `~/.claude/stats/memory-usage.json`.
+- New PreToolUse integration test (`test-project-scope-enforcement.js`) ensures stdin parsing and permission decisions stay aligned with enforcement expectations.
+
+### Fixed
+- All PreToolUse hooks now read `CLAUDE_TOOL_INPUT` so they receive the same payloads as UserPromptSubmit hooks; helper/unit tests enforce the new precedence.
+- Project scope enforcement blocks edits outside the active project (except `~/.claude/CLAUDE.md`) and surfaces proper deny responses, addressing the prior silent allow behavior.
+
+### Testing
+- `bash tests/run-tests.sh`
+
 ---
 
 ## [8.20.78] - 2025-11-14
