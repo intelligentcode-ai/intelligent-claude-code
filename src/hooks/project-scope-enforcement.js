@@ -132,9 +132,16 @@ Installation updates happen via 'make install' from project source.`, log);
 
       // Log operations OUTSIDE project boundaries (but allow if intentional)
       if (!isInProject) {
-        log(`⚠️  CROSS-PROJECT OPERATION: ${filePath} (outside ${projectRoot})`);
-        log(`Allowing intentional cross-project work - enforcement rules still apply`);
-        // Continue to allow operation - user explicitly requested cross-project work
+        log(`BLOCK: ${filePath} outside project root ${projectRoot}`);
+        return blockOperation(`🚫 Project boundary enforcement - stay inside ${projectRoot}
+
+Blocked path: ${path.resolve(filePath)}
+Reason: Operation outside active project scope is prohibited.
+
+Allowed exceptions:
+- ~/.claude/CLAUDE.md for configuration edits
+
+For cross-project work, switch project scope or run within the correct workspace.`, log);
       }
     }
 

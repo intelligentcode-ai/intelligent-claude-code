@@ -120,19 +120,42 @@ function initializeHook(hookName) {
     if (process.argv[2]) {
       inputData = process.argv[2];
     }
-    // Check HOOK_INPUT environment variable
+    // Check HOOK_INPUT environment variable (UserPromptSubmit, etc.)
     else if (process.env.HOOK_INPUT) {
       inputData = process.env.HOOK_INPUT;
     }
+    // Check CLAUDE_TOOL_INPUT (PreToolUse payloads)
+    else if (process.env.CLAUDE_TOOL_INPUT) {
+      inputData = process.env.CLAUDE_TOOL_INPUT;
+    }
     // Read from stdin if available
     else if (!process.stdin.isTTY) {
-      try {
-        inputData = fs.readFileSync(0, 'utf8');
-      } catch (stdinError) {
-        // Silent fail for stdin read
-      }
-    }
+        try {
+          const buffer = Buffer.alloc(65536);
+          const sab = new SharedArrayBuffer(4);
+          const int32 = new Int32Array(sab);
+          let bytesRead = 0;
 
+          for (let attempt = 0; attempt < 10; attempt++) {
+            try {
+              bytesRead = fs.readSync(0, buffer, 0, buffer.length, null);
+              if (bytesRead > 0) {
+                inputData = buffer.toString('utf8', 0, bytesRead);
+                break;
+              }
+            } catch (readError) {
+              if (readError.code === 'EAGAIN' && attempt < 10) {
+                Atomics.wait(int32, 0, 0, 10);
+                continue;
+              } else if (readError.code !== 'EAGAIN') {
+                throw readError;
+              }
+            }
+          }
+        } catch (stdinError) {
+          // Silent fail for stdin read
+        }
+      }
     // Parse JSON if data available
     if (inputData.trim()) {
       hookInput = JSON.parse(inputData);
