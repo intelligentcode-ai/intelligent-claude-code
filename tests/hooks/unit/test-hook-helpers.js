@@ -10,6 +10,7 @@ const { runTestSuite } = require('../fixtures/test-helpers');
 const { createMockHookInput } = require('../fixtures/mock-hook-inputs');
 const {
   getProjectRoot,
+  parseHookInput,
   allowResponse,
   allowResponseSuppressed,
   blockResponse
@@ -126,6 +127,19 @@ const tests = {
   'blockResponse() handles empty message': () => {
     const response = blockResponse('');
     assert.strictEqual(response.hookSpecificOutput.permissionDecisionReason, '');
+  },
+
+  'parseHookInput() reads CLAUDE_TOOL_INPUT env when HOOK_INPUT missing': () => {
+    delete process.env.HOOK_INPUT;
+    process.env.CLAUDE_TOOL_INPUT = JSON.stringify({ tool: 'Write', value: 'payload' });
+
+    const hookInput = parseHookInput(() => {});
+
+    assert.ok(hookInput, 'hookInput should be parsed from CLAUDE_TOOL_INPUT');
+    assert.strictEqual(hookInput.tool, 'Write');
+    assert.strictEqual(hookInput.value, 'payload');
+
+    delete process.env.CLAUDE_TOOL_INPUT;
   }
 };
 

@@ -54,6 +54,8 @@ try {
     inputData = process.argv[2];
   } else if (process.env.HOOK_INPUT) {
     inputData = process.env.HOOK_INPUT;
+  } else if (process.env.CLAUDE_TOOL_INPUT) {
+    inputData = process.env.CLAUDE_TOOL_INPUT;
   } else if (!process.stdin.isTTY) {
     inputData = fs.readFileSync(0, 'utf8');
   }

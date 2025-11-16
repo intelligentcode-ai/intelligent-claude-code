@@ -16,6 +16,9 @@ const {
   initializeHook
 } = require('../../../src/hooks/lib/logging.js');
 
+const originalHookInputEnv = process.env.HOOK_INPUT;
+const originalClaudeToolInputEnv = process.env.CLAUDE_TOOL_INPUT;
+
 const tests = {
   'getLogDir: returns log directory path': () => {
     const result = getLogDir();
@@ -96,9 +99,35 @@ const tests = {
 
     // hookInput should be undefined when no input provided
     assert.ok(result.hookInput === undefined || result.hookInput === null, 'hookInput can be undefined');
+  },
+
+  'initializeHook: reads CLAUDE_TOOL_INPUT env when HOOK_INPUT missing': () => {
+    delete process.env.HOOK_INPUT;
+    process.env.CLAUDE_TOOL_INPUT = JSON.stringify({ source: 'claude_tool', counter: 7 });
+
+    const result = initializeHook('test-hook');
+
+    assert.ok(result.hookInput, 'hookInput should be parsed');
+    assert.strictEqual(result.hookInput.source, 'claude_tool');
+    assert.strictEqual(result.hookInput.counter, 7);
+
+    delete process.env.CLAUDE_TOOL_INPUT;
   }
 };
 
 console.log('\n=== Logging Utils Unit Tests ===');
 const allPassed = runTestSuite('logging.js', tests);
+
+if (originalHookInputEnv === undefined) {
+  delete process.env.HOOK_INPUT;
+} else {
+  process.env.HOOK_INPUT = originalHookInputEnv;
+}
+
+if (originalClaudeToolInputEnv === undefined) {
+  delete process.env.CLAUDE_TOOL_INPUT;
+} else {
+  process.env.CLAUDE_TOOL_INPUT = originalClaudeToolInputEnv;
+}
+
 process.exit(allPassed ? 0 : 1);
