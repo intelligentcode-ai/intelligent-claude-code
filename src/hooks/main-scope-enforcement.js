@@ -28,16 +28,37 @@ const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
   'CONTRIBUTING.md', 'AUTHORS', 'NOTICE', 'PATENTS', 'VERSION',
   'MAKEFILE', 'DOCKERFILE', 'COPYING', 'COPYRIGHT'
 ]);
-const READ_OPERATIONS = getSetting('enforcement.infrastructure_protection.read_operations', []);
-const WRITE_OPERATIONS = getSetting('enforcement.infrastructure_protection.write_operations', []);
-const IMPERATIVE_DESTRUCTIVE = getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
-const STRICT_MAIN_SCOPE = getSetting('enforcement.strict_main_scope', true);
-const STRICT_MAIN_SCOPE_MESSAGE = getSetting('enforcement.strict_main_scope_message',
-  'Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.');
+function getReadOps() {
+  return getSetting('enforcement.infrastructure_protection.read_operations', []);
+}
+
+function getWriteOps() {
+  return getSetting('enforcement.infrastructure_protection.write_operations', []);
+}
+
+function getImperativeDestructive() {
+  return getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
+}
+
+function getStrictMainScope() {
+  return getSetting('enforcement.strict_main_scope', true);
+}
+
+function getStrictMainScopeMessage() {
+  return getSetting('enforcement.strict_main_scope_message',
+    'Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.');
+}
 
 function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('main-scope-enforcement');
+
+  // Load dynamic settings each invocation so config changes take effect without restart
+  const READ_OPERATIONS = getReadOps();
+  const WRITE_OPERATIONS = getWriteOps();
+  const IMPERATIVE_DESTRUCTIVE = getImperativeDestructive();
+  const STRICT_MAIN_SCOPE = getStrictMainScope();
+  const STRICT_MAIN_SCOPE_MESSAGE = getStrictMainScopeMessage();
 
   /**
    * Check if mkdir command is for allowlist directory
