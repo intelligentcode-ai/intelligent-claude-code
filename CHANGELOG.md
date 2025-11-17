@@ -35,6 +35,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [8.20.86] - 2025-11-17
+
+### Fixed
+- Transcript trimming now clamps to configured quotas (even very small budgets) and preserves JSONL validity; single-file caps are enforced both before and after archival.
+- ALL-CAPS filename enforcement now applies to agents as well as main scope.
+- Context injection now visibly injects constraints/best practices (default constraints.json is installed via Ansible/PowerShell).
+- Main-scope enforcement reloads config each call (no stale strict modes).
+- Stop hook output suppressed; marker cleanup logging crash fixed.
+- Prevent duplicate env caching: transcript quota env vars are read at runtime, not module load.
+- Tool blacklist test isolated from user config to avoid false failures.
+
+### Added
+- Installers (Ansible/PowerShell) now copy default constraints.json to hooks/lib.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+---
+
 ## [8.20.78] - 2025-11-14
 
 ### Fixed
