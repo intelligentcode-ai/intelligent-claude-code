@@ -244,12 +244,15 @@ function enforceTranscriptCapacity(transcriptPath, log) {
       }
 
       if (totalSize <= maxProjectBytes) {
+        trimActiveTranscriptIfTooBig(activePath, log);
         return;
       }
     }
 
     if (totalSize > maxProjectBytes) {
       trimActiveTranscript(activePath, totalSize, log);
+      // After trimming, ensure single-file cap also respected
+      trimActiveTranscriptIfTooBig(activePath, log);
     }
   } catch (error) {
     if (log) {
