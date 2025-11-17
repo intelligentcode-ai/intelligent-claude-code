@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.20.84] - 2025-11-16
 
+## [8.20.87] - 2025-11-17
+
+### Added
+- Context injection now surfaces MCP availability hints for PM/Main Scope when `mcp_integrations` entries are enabled, encouraging use of GitHub/GitLab/Jira MCP tools when installed.
+
+### Changed
+- Main Scope enforcement honors `tools.mcp_tools_enabled`; MCP tools are allowed only when explicitly enabled, making the toggle effective.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+
 ### Added
 - Reintroduced contextual logic to `memory-first-reminder.js`, targeting prompts about credentials, configuration, AgentTasks, and deployments while logging stats to `~/.claude/stats/memory-usage.json`.
 - New PreToolUse integration test (`test-project-scope-enforcement.js`) ensures stdin parsing and permission decisions stay aligned with enforcement expectations.
