@@ -169,6 +169,54 @@ const tests = {
     }
     delete process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES;
     fs.rmSync(tmpDir, { recursive: true, force: true });
+  },
+
+  'initializeHook: trims active transcript when single file exceeds cap even if total ok': () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'logging-test-'));
+    const activePath = path.join(tmpDir, 'active.jsonl');
+    fs.writeFileSync(activePath, Buffer.alloc(6 * 1024 * 1024, 'z')); // 6MB
+
+    const previousHookInput = process.env.HOOK_INPUT;
+    process.env.HOOK_INPUT = JSON.stringify({ transcript_path: activePath });
+    process.env.CLAUDE_SINGLE_TRANSCRIPT_MAX_BYTES = '4194304'; // 4MB
+    process.env.CLAUDE_SINGLE_TRANSCRIPT_RETAIN_BYTES = '2097152'; // 2MB
+
+    initializeHook('test-hook');
+
+    const stats = fs.statSync(activePath);
+    assert.ok(stats.size <= 4 * 1024 * 1024, 'Active transcript should be trimmed below single-file cap');
+
+    if (previousHookInput === undefined) {
+      delete process.env.HOOK_INPUT;
+    } else {
+      process.env.HOOK_INPUT = previousHookInput;
+    }
+    delete process.env.CLAUDE_SINGLE_TRANSCRIPT_MAX_BYTES;
+    delete process.env.CLAUDE_SINGLE_TRANSCRIPT_RETAIN_BYTES;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  },
+
+  'initializeHook: respects very small project quota when trimming': () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'logging-test-'));
+    const activePath = path.join(tmpDir, 'active.jsonl');
+    fs.writeFileSync(activePath, Buffer.alloc(32 * 1024, 'z')); // 32KB
+
+    const previousHookInput = process.env.HOOK_INPUT;
+    process.env.HOOK_INPUT = JSON.stringify({ transcript_path: activePath });
+    process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES = '8192'; // 8KB budget
+
+    initializeHook('test-hook');
+
+    const stats = fs.statSync(activePath);
+    assert.ok(stats.size <= 8192, 'Transcript should not exceed configured small project quota');
+
+    if (previousHookInput === undefined) {
+      delete process.env.HOOK_INPUT;
+    } else {
+      process.env.HOOK_INPUT = previousHookInput;
+    }
+    delete process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 };
 

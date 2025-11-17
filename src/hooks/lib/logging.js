@@ -265,7 +265,8 @@ function trimActiveTranscriptIfTooBig(activePath, log) {
     const maxSingle = getMaxSingleTranscriptBytes();
     if (stats.size <= maxSingle) return;
 
-    const retainBytes = Math.min(Math.max(getRetainSingleTranscriptBytes(), 256 * 1024), stats.size);
+    const maxSingle = getMaxSingleTranscriptBytes();
+    const retainBytes = Math.min(Math.max(getRetainSingleTranscriptBytes(), 64 * 1024), Math.min(maxSingle, stats.size));
     const fd = fs.openSync(activePath, 'r+');
     const buffer = Buffer.alloc(retainBytes);
     const start = stats.size - retainBytes;
@@ -303,7 +304,7 @@ function trimActiveTranscript(activePath, currentTotalSize, log) {
       return;
     }
 
-    const retainBytes = Math.max(Math.floor(maxProjectBytes / 2), 256 * 1024);
+    const retainBytes = Math.min(Math.max(Math.floor(maxProjectBytes / 2), 64 * 1024), maxProjectBytes);
     const halfBuffer = Math.min(retainBytes, stats.size);
     const fd = fs.openSync(activePath, 'r+');
     const buffer = Buffer.alloc(halfBuffer);
