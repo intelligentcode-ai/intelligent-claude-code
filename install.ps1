@@ -277,6 +277,19 @@ function Install-HookSystem {
             # Copy all files and subdirectories from source hooks to destination
             Copy-DirectoryRecursive -Source $SourceHooksPath -Destination $HooksPath
 
+            # Ensure hooks/lib exists and install constraints.json for context injection
+            $HooksLibPath = Join-Path $HooksPath "lib"
+            if (-not (Test-Path $HooksLibPath)) {
+                New-Item -ItemType Directory -Path $HooksLibPath | Out-Null
+                Write-Host "  Created directory: $HooksLibPath" -ForegroundColor Green
+            }
+            $SourceConstraintsPath = Join-Path $SourceHooksPath "lib" "constraints.json"
+            $UserConstraintsPath = Join-Path $HooksLibPath "constraints.json"
+            if (Test-Path $SourceConstraintsPath) {
+                Write-Host "  Installing default constraints.json..." -ForegroundColor Gray
+                Copy-Item -Path $SourceConstraintsPath -Destination $UserConstraintsPath -Force
+            }
+
             # Install reminders.json if it doesn't exist (preserve user customizations)
             $UserRemindersPath = Join-Path $HooksPath "lib" "reminders.json"
             $SourceRemindersPath = Join-Path $SourceHooksPath "lib" "reminders.json"

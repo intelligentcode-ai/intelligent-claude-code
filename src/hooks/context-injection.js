@@ -478,10 +478,18 @@ function main() {
     // Build comprehensive context
     const fullContext = contextualGuidance.join('\n');
 
-    // For UserPromptSubmit: stdout with exit 0 = silent injection (only visible in CTRL-R transcript mode)
-    // Don't use JSON hookSpecificOutput - that makes it visible in chat!
-    log(`Injecting contextual guidance: ${contextualGuidance.length} messages`);
-    console.log(fullContext);
+    // Visible injection so the model sees constraints/best practices
+    const response = {
+      continue: true,
+      suppressOutput: true,
+      hookSpecificOutput: {
+        hookEventName: 'UserPromptSubmit',
+        additionalContext: fullContext
+      }
+    };
+
+    log(`Injecting contextual guidance (visible): ${contextualGuidance.length} messages`);
+    console.log(JSON.stringify(response));
     process.exit(0);
 
   } catch (error) {

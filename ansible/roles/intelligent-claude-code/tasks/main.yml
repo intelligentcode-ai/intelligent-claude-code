@@ -214,6 +214,18 @@
     path: "{{ claude_install_path }}/config.md"
   register: config_md_exists
 
+- name: Ensure hooks lib directory exists
+  file:
+    path: "{{ claude_install_path }}/hooks/lib"
+    state: directory
+    mode: '0755'
+
+- name: Install constraints.json (context injection)
+  copy:
+    src: "{{ playbook_dir }}/../src/hooks/lib/constraints.json"
+    dest: "{{ claude_install_path }}/hooks/lib/constraints.json"
+    mode: '0644'
+
 - name: Create config.md from template (ONLY if not exists)
   copy:
     src: "{{ playbook_dir }}/../src/config.md"
