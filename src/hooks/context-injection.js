@@ -7,6 +7,7 @@ const ReminderLoader = require('./lib/reminder-loader');
 const { selectRelevantConstraints } = require('./lib/constraint-selector');
 const { initializeHook } = require('./lib/logging');
 const { generateProjectHash } = require('./lib/hook-helpers');
+const { getSetting } = require('./lib/config-loader');
 
 /**
  * Load best practices from README.md
@@ -111,6 +112,46 @@ function selectRandomBestPractices(practices, count = 3) {
 
   const shuffled = [...practices].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, Math.min(count, practices.length));
+}
+
+/**
+ * Build MCP availability hints for PM/Main Scope based on config
+ * @returns {string[]} list of hint lines
+ */
+function buildMcpHints() {
+  const hints = [];
+
+  try {
+    const enabled = getSetting('tools.mcp_tools_enabled', true);
+    if (!enabled) {
+      return hints; // Explicitly disabled
+    }
+
+    const cfg = getSetting('mcp_integrations', {});
+    const blocks = [];
+
+    const add = (key, label) => {
+      const section = cfg?.[key];
+      if (section?.enabled) {
+        const provider = section.provider || 'provider not set';
+        blocks.push(`${label}: provider ${provider} (MCP)`);
+      }
+    };
+
+    add('issue_tracking', 'Issue tracking');
+    add('documentation', 'Knowledge/Docs');
+    add('memory', 'Memory store');
+
+    if (blocks.length) {
+      hints.push('📡 MCP integrations detected - prefer these tools in Main Scope when applicable:');
+      blocks.forEach(b => hints.push(`• ${b}`));
+      hints.push('Use the corresponding mcp__* tool if the provider is registered; fallback to legacy flow if unavailable.');
+    }
+  } catch (error) {
+    // Do not block context; log happens in initializeHook
+  }
+
+  return hints;
 }
 
 function main() {
@@ -433,6 +474,12 @@ function main() {
       } else {
         contextualGuidance.push(randomReminder);
       }
+    }
+
+    // MCP availability hints for PM/Main Scope
+    const mcpHints = buildMcpHints();
+    if (mcpHints.length > 0) {
+      contextualGuidance.push(...mcpHints);
     }
 
     // Generate constraint display with 3+3 pattern + best practices
