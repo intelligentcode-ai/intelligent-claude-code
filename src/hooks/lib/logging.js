@@ -265,7 +265,6 @@ function trimActiveTranscriptIfTooBig(activePath, log) {
     const maxSingle = getMaxSingleTranscriptBytes();
     if (stats.size <= maxSingle) return;
 
-    const maxSingle = getMaxSingleTranscriptBytes();
     const retainBytes = Math.min(Math.max(getRetainSingleTranscriptBytes(), 64 * 1024), Math.min(maxSingle, stats.size));
     const fd = fs.openSync(activePath, 'r+');
     const buffer = Buffer.alloc(retainBytes);
