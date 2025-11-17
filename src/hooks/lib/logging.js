@@ -2,7 +2,20 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const MAX_PROJECT_TRANSCRIPTS_BYTES = Number(process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES || '') || (10 * 1024 * 1024); // 10MB per project
+function getMaxProjectTranscriptsBytes() {
+  const val = Number(process.env.CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES || '');
+  return Number.isFinite(val) && val > 0 ? val : (10 * 1024 * 1024); // default 10MB
+}
+
+function getMaxSingleTranscriptBytes() {
+  const val = Number(process.env.CLAUDE_SINGLE_TRANSCRIPT_MAX_BYTES || '');
+  return Number.isFinite(val) && val > 0 ? val : (4 * 1024 * 1024); // default 4MB
+}
+
+function getRetainSingleTranscriptBytes() {
+  const val = Number(process.env.CLAUDE_SINGLE_TRANSCRIPT_RETAIN_BYTES || '');
+  return Number.isFinite(val) && val > 0 ? val : (2 * 1024 * 1024); // default keep last 2MB
+}
 const TRANSCRIPT_ARCHIVE_SUFFIX = () => new Date().toISOString().replace(/[:.]/g, '-');
 
 /**
@@ -200,8 +213,11 @@ function enforceTranscriptCapacity(transcriptPath, log) {
       })
       .sort((a, b) => a.mtimeMs - b.mtimeMs); // oldest first
 
+    const maxProjectBytes = getMaxProjectTranscriptsBytes();
     let totalSize = files.reduce((acc, file) => acc + file.size, 0);
-    if (totalSize <= MAX_PROJECT_TRANSCRIPTS_BYTES) {
+    if (totalSize <= maxProjectBytes) {
+      // Even if overall size is fine, cap a single active transcript to avoid OOM
+      trimActiveTranscriptIfTooBig(activePath, log);
       return;
     }
 
@@ -226,17 +242,50 @@ function enforceTranscriptCapacity(transcriptPath, log) {
         }
       }
 
-      if (totalSize <= MAX_PROJECT_TRANSCRIPTS_BYTES) {
+      if (totalSize <= maxProjectBytes) {
         return;
       }
     }
 
-    if (totalSize > MAX_PROJECT_TRANSCRIPTS_BYTES) {
+    if (totalSize > maxProjectBytes) {
       trimActiveTranscript(activePath, totalSize, log);
     }
   } catch (error) {
     if (log) {
       log(`Transcript capacity enforcement error: ${error.message}`);
+    }
+  }
+}
+
+function trimActiveTranscriptIfTooBig(activePath, log) {
+  try {
+    if (!fs.existsSync(activePath)) return;
+    const stats = fs.statSync(activePath);
+    const maxSingle = getMaxSingleTranscriptBytes();
+    if (stats.size <= maxSingle) return;
+
+    const retainBytes = Math.min(Math.max(getRetainSingleTranscriptBytes(), 256 * 1024), stats.size);
+    const fd = fs.openSync(activePath, 'r+');
+    const buffer = Buffer.alloc(retainBytes);
+    const start = stats.size - retainBytes;
+    fs.readSync(fd, buffer, 0, retainBytes, start);
+
+    const firstNewline = buffer.indexOf('\n'.charCodeAt(0));
+    let sliced = buffer;
+    if (firstNewline >= 0 && firstNewline + 1 < buffer.length) {
+      sliced = buffer.subarray(firstNewline + 1);
+    }
+
+    fs.ftruncateSync(fd, 0);
+    fs.writeSync(fd, sliced, 0, sliced.length, 0);
+    fs.closeSync(fd);
+
+    if (log) {
+      log(`Trimmed oversized active transcript ${activePath}: kept last ${sliced.length} bytes (was ${stats.size})`);
+    }
+  } catch (error) {
+    if (log) {
+      log(`Failed to trim oversized active transcript ${activePath}: ${error.message}`);
     }
   }
 }
@@ -248,22 +297,31 @@ function trimActiveTranscript(activePath, currentTotalSize, log) {
     }
 
     const stats = fs.statSync(activePath);
-    if (stats.size <= MAX_PROJECT_TRANSCRIPTS_BYTES) {
+    const maxProjectBytes = getMaxProjectTranscriptsBytes();
+    if (stats.size <= maxProjectBytes) {
       return;
     }
 
-    const retainBytes = Math.max(Math.floor(MAX_PROJECT_TRANSCRIPTS_BYTES / 2), 256 * 1024);
+    const retainBytes = Math.max(Math.floor(maxProjectBytes / 2), 256 * 1024);
     const halfBuffer = Math.min(retainBytes, stats.size);
     const fd = fs.openSync(activePath, 'r+');
     const buffer = Buffer.alloc(halfBuffer);
     const start = stats.size - halfBuffer;
     fs.readSync(fd, buffer, 0, halfBuffer, start);
+
+    // Align to JSONL line boundary: drop leading partial line up to first \n
+    const firstNewline = buffer.indexOf('\n'.charCodeAt(0));
+    let sliced = buffer;
+    if (firstNewline >= 0 && firstNewline + 1 < buffer.length) {
+      sliced = buffer.subarray(firstNewline + 1);
+    }
+
     fs.ftruncateSync(fd, 0);
-    fs.writeSync(fd, buffer, 0, halfBuffer, 0);
+    fs.writeSync(fd, sliced, 0, sliced.length, 0);
     fs.closeSync(fd);
 
     if (log) {
-      log(`Trimmed active transcript ${activePath}: kept last ${halfBuffer} bytes (was ${stats.size})`);
+      log(`Trimmed active transcript ${activePath}: kept last ${sliced.length} bytes (was ${stats.size})`);
     }
   } catch (error) {
     if (log) {
