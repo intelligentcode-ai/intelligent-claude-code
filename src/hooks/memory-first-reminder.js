@@ -5,6 +5,9 @@ const path = require('path');
 const os = require('os');
 const { initializeHook } = require('./lib/logging');
 
+const MAX_STATS_EVENTS = 200;
+const MAX_STATS_BYTES = 5 * 1024 * 1024; // 5MB guardrail
+
 /**
  * Detect contextual reminders based on user prompt
  * @param {string} promptLower
@@ -49,35 +52,74 @@ function analyzePrompt(promptLower) {
   return { messages, categories };
 }
 
-function ensureStatsFile() {
+function getDefaultStatsData() {
+  return {
+    events: [],
+    summary: {
+      total_events: 0,
+      opportunities_detected: 0,
+      acknowledgements: 0
+    }
+  };
+}
+
+function ensureStatsFile(log) {
   const statsDir = path.join(os.homedir(), '.claude', 'stats');
   fs.mkdirSync(statsDir, { recursive: true });
   const statsFile = path.join(statsDir, 'memory-usage.json');
 
-  if (!fs.existsSync(statsFile)) {
-    return { statsFile, data: { events: [], summary: { total_events: 0, opportunities_detected: 0, acknowledgements: 0 } } };
+  let rotateFile = false;
+  if (fs.existsSync(statsFile)) {
+    try {
+      const { size } = fs.statSync(statsFile);
+      if (size > MAX_STATS_BYTES) {
+        const archiveName = `memory-usage-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+        fs.renameSync(statsFile, path.join(statsDir, archiveName));
+        rotateFile = true;
+        if (log) {
+          log(`Memory stats file exceeded ${MAX_STATS_BYTES} bytes; rotated to ${archiveName}`);
+        }
+      }
+    } catch (error) {
+      // If stat/rename fails, fall back to truncating file
+      try {
+        fs.unlinkSync(statsFile);
+      } catch (unlinkError) {
+        if (log) {
+          log(`Failed to rotate stats file: ${unlinkError.message}`);
+        }
+      }
+      rotateFile = true;
+    }
+  }
+
+  if (rotateFile || !fs.existsSync(statsFile)) {
+    return { statsFile, data: getDefaultStatsData() };
   }
 
   try {
     const existing = JSON.parse(fs.readFileSync(statsFile, 'utf8'));
     if (!existing.summary) {
-      existing.summary = { total_events: 0, opportunities_detected: 0, acknowledgements: 0 };
+      existing.summary = { ...getDefaultStatsData().summary };
     }
     if (!Array.isArray(existing.events)) {
       existing.events = [];
     }
     return { statsFile, data: existing };
   } catch (error) {
-    return { statsFile, data: { events: [], summary: { total_events: 0, opportunities_detected: 0, acknowledgements: 0 } } };
+    if (log) {
+      log(`Stats file parse error: ${error.message} - resetting file`);
+    }
+    return { statsFile, data: getDefaultStatsData() };
   }
 }
 
-function recordMemoryStats(hookInput, categories) {
+function recordMemoryStats(hookInput, categories, log) {
   if (!categories.length) {
     return;
   }
 
-  const { statsFile, data } = ensureStatsFile();
+  const { statsFile, data } = ensureStatsFile(log);
 
   data.events.push({
     timestamp: new Date().toISOString(),
@@ -93,7 +135,14 @@ function recordMemoryStats(hookInput, categories) {
     data.summary.acknowledgements = (data.summary.acknowledgements || 0) + 1;
   }
 
-  fs.writeFileSync(statsFile, JSON.stringify(data, null, 2));
+  if (data.events.length > MAX_STATS_EVENTS) {
+    data.events = data.events.slice(-MAX_STATS_EVENTS);
+    if (log) {
+      log(`Memory stats trimmed to last ${MAX_STATS_EVENTS} events`);
+    }
+  }
+
+  fs.writeFileSync(statsFile, JSON.stringify(data));
 }
 
 function buildReminder(messages) {
@@ -132,7 +181,7 @@ function main() {
     const reminder = buildReminder(messages);
 
     if (reminder) {
-      recordMemoryStats(hookInput, categories);
+      recordMemoryStats(hookInput, categories, log);
       log(`Memory-first reminder injected for categories: ${categories.join(', ')}`);
       const response = {
         continue: true,

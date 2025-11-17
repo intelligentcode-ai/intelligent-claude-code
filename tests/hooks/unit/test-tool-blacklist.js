@@ -15,12 +15,29 @@ const {
   isToolBlocked
 } = require('../../../src/hooks/lib/tool-blacklist.js');
 
+const originalHome = process.env.HOME;
+
+// Helper to run with an empty home so user icc.config.json does not override defaults
+function withTempHome(fn) {
+  const os = require('os');
+  const fs = require('fs');
+  const path = require('path');
+  const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'tool-blacklist-home-'));
+  process.env.HOME = tmpHome;
+  try {
+    fn();
+  } finally {
+    process.env.HOME = originalHome;
+  }
+}
+
 const tests = {
   'checkToolBlacklist: Write blocked in main_scope by default config': () => {
-    // NOTE: Test uses real config which has Write in main_scope_only blacklist
-    const result = checkToolBlacklist('Write', {}, 'main_scope');
-    assert.strictEqual(result.blocked, true);
-    assert.strictEqual(result.list, 'main_scope_only');
+    withTempHome(() => {
+      const result = checkToolBlacklist('Write', {}, 'main_scope');
+      assert.strictEqual(result.blocked, true);
+      assert.strictEqual(result.list, 'main_scope_only');
+    });
   },
 
   'isToolBlocked: exact tool name match': () => {
