@@ -58,7 +58,7 @@ function main() {
       return allowOperation(log, true);
     }
 
-    // CRITICAL: Skip ALL validation for agents - only apply to main scope
+    // CRITICAL: Apply ALL-CAPS check to everyone; only skip placement validation for agents
     // Check for agent marker files to detect agent context
     const crypto = require('crypto');
     const os = require('os');
@@ -190,8 +190,8 @@ To execute blocked operation:
     log(`Strict mode: ${strictMode}`);
     log(`Summaries path: ${summariesPath}`);
 
-    // STEP 3: Summary placement validation (after ALL-CAPITALS passes and agent check)
-    // Use shared validation logic
+    // STEP 3: Summary placement validation (after ALL-CAPITALS passes)
+    // Agents: skip placement enforcement but keep ALL-CAPS enforcement above
     const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
 
     // If not a summary file or already in correct location, allow
