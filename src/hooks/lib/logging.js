@@ -204,6 +204,8 @@ function enforceTranscriptCapacity(transcriptPath, log) {
     const projectDir = path.dirname(transcriptPath);
     if (!fs.existsSync(projectDir)) return;
 
+    const activePath = path.resolve(transcriptPath);
+
     const files = fs.readdirSync(projectDir)
       .filter(file => file.endsWith('.jsonl'))
       .map(file => {
@@ -221,7 +223,6 @@ function enforceTranscriptCapacity(transcriptPath, log) {
       return;
     }
 
-    const activePath = path.resolve(transcriptPath);
     for (const file of files) {
       const fullPath = path.resolve(file.fullPath);
 

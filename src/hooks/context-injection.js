@@ -130,6 +130,8 @@ function main() {
       process.exit(0);
     }
 
+    const projectRoot = hookInput?.cwd || process.cwd();
+
     // CRITICAL: Clean stale agent markers on user prompt submit
     // User prompt = main scope restart = no active agents
     // This prevents PM constraints bypass from stale markers
