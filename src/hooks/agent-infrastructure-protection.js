@@ -31,13 +31,19 @@ function main() {
   }
 
   function isDocumentationWrite(cmd, cwd) {
-    // Allow only pure doc writes (single redirection to docs/ paths) with nothing else on the first line.
-    const firstLineRaw = cmd.trim().split('\n', 1)[0];
-    const firstLine = stripQuoted(firstLineRaw);
+    // Allow only single-line doc writes (cat/printf/tee > docs/*) with no chaining and no heredoc anywhere.
+    const trimmed = cmd.trim();
 
+    // Must be single-line
+    if (trimmed.includes('\n')) return false;
+
+    // Reject heredoc tokens anywhere
+    if (/<<\s*['"A-Za-z0-9_-]+/.test(trimmed)) return false;
+
+    const firstLine = stripQuoted(trimmed);
     if (/[;&|]{1,2}/.test(firstLine)) return false; // no chaining outside quotes
 
-    const redirMatch = firstLineRaw.match(/^(?:\s*)(cat|printf|tee)[^>]*>+\s+([^\s]+)\s*$/i);
+    const redirMatch = trimmed.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s+([^\s]+)\s*$/i);
     if (!redirMatch) return false;
 
     const target = redirMatch[2];
@@ -45,9 +51,7 @@ function main() {
     const normalized = path.normalize(absTarget);
     const segments = normalized.split(path.sep);
     const docDirs = ['docs', 'documentation', 'doc', 'docs-site', 'docs-content'];
-    const isDoc = docDirs.some(d => segments.includes(d));
-
-    return isDoc && /\nEOF\s*$/.test(cmd) === false; // no heredoc in doc-write fast path
+    return docDirs.some(d => segments.includes(d));
   }
 
   function extractSSHCommand(command) {
