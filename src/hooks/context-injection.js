@@ -465,6 +465,10 @@ function main() {
       contextualGuidance.push('🚨 Run /icc-init-system to load complete virtual team system');
     }
 
+    // Add explicit memory-before/after guidance for main scope (no tool invocation needed)
+    contextualGuidance.push('🧠 BEFORE you work: open memory/<topic>.md for prior learnings');
+    contextualGuidance.push('🧠 AFTER you finish: add a short note to memory/<topic>.md (what changed, how to verify)');
+
     // Add weighted random reminder with memory-first bias
     const randomReminder = reminderLoader.getReminder();
     if (randomReminder) {
