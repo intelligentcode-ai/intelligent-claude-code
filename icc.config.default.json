@@ -182,13 +182,17 @@
       "COPYING",
       "COPYRIGHT"
     ],
-    "heredoc_allowed_commands": [
-      "git",
-      "gh",
-      "glab",
-      "hub"
-    ],
-    "infrastructure_protection": {
+  "heredoc_allowed_commands": [
+    "git",
+    "gh",
+    "glab",
+    "hub"
+  ],
+  "auto_commit_review": {
+    "enabled": false,
+    "command": "@codex review"
+  },
+  "infrastructure_protection": {
       "enabled": true,
       "enforce_iac_only": true,
       "emergency_override_enabled": false,
