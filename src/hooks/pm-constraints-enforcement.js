@@ -719,6 +719,18 @@ To execute blocked operation:
   function validatePMOperation(filePath, tool, paths, projectRoot) {
     const { allowlist, blocklist } = paths;
 
+    // Normalize path information up-front so downstream checks do not hit
+    // undeclared variables and so parent/sibling detection is consistent.
+    const normalizedFilePath = path.normalize(path.isAbsolute(filePath)
+      ? filePath
+      : path.join(projectRoot, filePath));
+    const normalizedProjectRoot = path.normalize(projectRoot);
+    const relativePath = path.relative(normalizedProjectRoot, normalizedFilePath);
+    const pathParts = relativePath.split(path.sep);
+    const fileName = path.basename(relativePath);
+    const isMarkdown = fileName.toLowerCase().endsWith('.md');
+    const isParentPath = relativePath.startsWith('..');
+
     // Check blocklist first (explicit denial)
     if (isPathInBlocklist(filePath, blocklist, projectRoot)) {
       // Convert to relative path for proper directory matching
@@ -775,9 +787,13 @@ To execute blocked operation:
 
     // Check allowlist (explicit permission)
     if (isMarkdown) {
-      const pathParts = normalizedFilePath.split(path.sep);
-      if (allowlist.some(allowed => pathParts.includes(allowed))) {
-        return { allowed: true };
+      const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
+
+      // Only allow parent/sibling markdown if explicitly configured
+      if (!isParentPath || allowParentPaths) {
+        if (allowlist.some(allowed => pathParts.includes(allowed))) {
+          return { allowed: true };
+        }
       }
     }
 
@@ -787,11 +803,6 @@ To execute blocked operation:
 
     // Not in allowlist = blocked
     // Determine if this is a parent path issue
-    const normalizedFilePath = path.normalize(path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath));
-    const normalizedProjectRoot = path.normalize(projectRoot);
-    const relativePath = path.relative(normalizedProjectRoot, normalizedFilePath);
-    const isParentPath = relativePath.startsWith('..');
-
     let reason = 'File path not in PM allowlist';
     let suggestion = 'Or create the file in an appropriate allowlist directory.';
 

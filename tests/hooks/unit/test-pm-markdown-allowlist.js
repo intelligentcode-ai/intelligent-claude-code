@@ -14,7 +14,12 @@ function runHook(hookInput, extraEnv = {}) {
   if (res.error) throw res.error;
   const out = res.stdout.trim();
   try {
-    return JSON.parse(out);
+    const parsed = JSON.parse(out);
+    // Normalize to {continue: boolean} for assertions
+    if (parsed.continue === undefined && parsed.hookSpecificOutput) {
+      parsed.continue = parsed.hookSpecificOutput.permissionDecision !== 'deny';
+    }
+    return parsed;
   } catch (e) {
     throw new Error(`Failed to parse hook output: ${out}`);
   }
@@ -25,12 +30,27 @@ const tests = {
     const hookInput = {
       hook_event_name: 'PreToolUse',
       tool_name: 'Write',
-      file_path: '/project/xroad-charts-repo/docs/deployment-guide.md',
+      tool_input: { file_path: '/project/xroad-charts-repo/docs/deployment-guide.md' },
       cwd: '/project',
       transcript_path: path.join(os.tmpdir(), 'test-session.jsonl')
     };
-    const out = runHook(hookInput);
+    const out = runHook(hookInput, { CLAUDE_PROJECT_DIR: '/project/xroad-charts-repo' });
     assert.strictEqual(out.continue, true);
+  },
+
+  'blocks markdown in parent path when allow_parent_allowlist_paths is false': () => {
+    const hookInput = {
+      hook_event_name: 'PreToolUse',
+      tool_name: 'Write',
+      tool_input: { file_path: '/project/../docs/leak.md' },
+      cwd: '/project',
+      transcript_path: path.join(os.tmpdir(), 'test-session.jsonl')
+    };
+    const out = runHook(hookInput, {
+      CLAUDE_PROJECT_DIR: '/project/xroad-charts-repo',
+      enforcement: JSON.stringify({ allow_parent_allowlist_paths: false })
+    });
+    assert.strictEqual(out.continue, false);
   }
 };
 
