@@ -30,28 +30,48 @@ function main() {
       .replace(/"(?:[^"\\]|\\.)*"/g, '');
   }
 
-  function isDocumentationWrite(cmd, cwd) {
-    // Allow only single-line doc writes (cat/printf/tee > docs/*) with no chaining and no heredoc anywhere.
-    const trimmed = cmd.trim();
+  function hasChainingOutsideQuotes(line) {
+    const stripped = stripQuoted(line);
+    return /[;&|]{1,2}/.test(stripped);
+  }
 
-    // Must be single-line
-    if (trimmed.includes('\n')) return false;
-
-    // Reject heredoc tokens anywhere
-    if (/<<\s*['"A-Za-z0-9_-]+/.test(trimmed)) return false;
-
-    const firstLine = stripQuoted(trimmed);
-    if (/[;&|]{1,2}/.test(firstLine)) return false; // no chaining outside quotes
-
-    const redirMatch = trimmed.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s+([^\s]+)\s*$/i);
-    if (!redirMatch) return false;
-
-    const target = redirMatch[2];
+  function isDocPath(target, cwd) {
     const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
-    const normalized = path.normalize(absTarget);
-    const segments = normalized.split(path.sep);
+    const segments = path.normalize(absTarget).split(path.sep);
     const docDirs = ['docs', 'documentation', 'doc', 'docs-site', 'docs-content'];
     return docDirs.some(d => segments.includes(d));
+  }
+
+  function isDocumentationWrite(cmd, cwd) {
+    // Allow doc writes via:
+    // 1) single-line cat/printf/tee > docs*/file (no chaining), or
+    // 2) single heredoc where the redirection target is docs*/file AND no commands follow the heredoc terminator.
+
+    const trimmed = cmd.trim();
+    const lines = trimmed.split('\n');
+
+    // Fast path: single-line redirection
+    const singleLineMatch = trimmed.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s+([^\s]+)\s*$/i);
+    if (singleLineMatch && !hasChainingOutsideQuotes(trimmed) && isDocPath(singleLineMatch[2], cwd) && !/<<\s*['"A-Za-z0-9_-]+/.test(trimmed)) {
+      return true;
+    }
+
+    // Heredoc path: allow only if the heredoc command is the final chunk and target is docs*/...
+    const headerLine = lines[0];
+    const heredocHeader = headerLine.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s+([^\s]+)\s*<<\s*(['"]?)([A-Za-z0-9_-]+)\3\s*$/i);
+    if (!heredocHeader) return false;
+    if (hasChainingOutsideQuotes(headerLine)) return false; // chaining on first line
+    if (!isDocPath(heredocHeader[2], cwd)) return false;
+
+    const terminator = heredocHeader[4];
+    const termIndex = lines.findIndex((l, idx) => idx > 0 && l.trim() === terminator);
+    if (termIndex === -1) return false; // no terminator
+
+    // Ensure no text after terminator
+    const after = lines.slice(termIndex + 1).join('\n').trim();
+    if (after !== '') return false;
+
+    return true;
   }
 
   function extractSSHCommand(command) {

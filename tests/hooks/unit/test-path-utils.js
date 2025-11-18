@@ -81,6 +81,15 @@ const tests = {
     assert.strictEqual(result, true);
   },
 
+  'isPathInAllowlist: allows nested docs segment': () => {
+    const filePath = '/project/xroad-charts-repo/docs/deployment-guide.md';
+    const allowlist = ['docs'];
+    const projectRoot = '/project';
+
+    const result = isPathInAllowlist(filePath, allowlist, projectRoot);
+    assert.strictEqual(result, true);
+  },
+
   'isPathInAllowlist: files in docs/ allowed when docs in allowlist': () => {
     const filePath = '/project/docs/deployment-guide-central-server.md';
     const allowlist = ['stories', 'bugs', 'docs'];
