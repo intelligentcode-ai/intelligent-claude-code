@@ -19,6 +19,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Testing
 - `bash tests/run-tests.sh`
 
+## [8.20.88] - 2025-11-17
+
+### Added
+- Two opt-in ICC presets under `.icc/`: `config.relaxed.json` (current deployed behavior) and `config.strict-main-scope.json` (coordination-only main scope with agents active). Included `.icc/README.md` with quick swap instructions.
+
+### Fixed
+- Main-scope enforcement allowlist now includes default `docs/` and `documentation/` directories even when config paths are unset, preventing false blocks in projects like GovStack.
+- Added unit coverage for docs/documentation allowlist handling.
+
+### Testing
+- `bash tests/run-tests.sh`
+
 
 ### Added
 - Reintroduced contextual logic to `memory-first-reminder.js`, targeting prompts about credentials, configuration, AgentTasks, and deployments while logging stats to `~/.claude/stats/memory-usage.json`.

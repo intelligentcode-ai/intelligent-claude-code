@@ -1,0 +1,54 @@
+{
+  "tools": {
+    "sequential_thinking": true,
+    "mcp_tools_enabled": true
+  },
+  "enforcement": {
+    "strict_main_scope": true,
+    "strict_main_scope_message": "Main scope is coordination-only. Use Task tool to delegate work to agents.",
+    "infrastructure_protection": {
+      "enabled": true,
+      "enforce_iac_only": true
+    },
+    "tool_blacklist": {
+      "universal": [
+        "rm -rf /",
+        "dd if=/dev/zero of=/dev/sda",
+        "mkfs",
+        "fdisk /dev/sda",
+        "> /dev/sda",
+        "format c:"
+      ],
+      "main_scope_only": [
+        "Write",
+        "Edit",
+        "MultiEdit",
+        "NotebookEdit",
+        "Bash",
+        "ApplyPatch",
+        "GitCommit",
+        "GitPush",
+        "NpmInstall",
+        "PipInstall",
+        "Terraform",
+        "Ansible",
+        "AnsiblePlaybook",
+        "Kubectl",
+        "Docker"
+      ],
+      "agents_only": [],
+      "infrastructure": [
+        "kubectl",
+        "helm",
+        "terraform",
+        "ansible-playbook",
+        "docker",
+        "docker-compose"
+      ]
+    }
+  },
+  "subagents": {
+    "auto_delegation": true,
+    "max_concurrent": 2
+  }
+}
