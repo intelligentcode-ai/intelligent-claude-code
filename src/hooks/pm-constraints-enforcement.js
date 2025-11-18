@@ -610,16 +610,7 @@ To execute blocked operation:
       return { allowed: false, message: 'Markdown outside project root and parent allowlist disabled' };
     }
 
-    // PRIORITY 4: For markdown, allow if ANY path segment matches allowlist
-    if (isMarkdown) {
-      for (const d of markdownSegments) {
-        if (pathParts.includes(d)) {
-          return { allowed: true };
-        }
-      }
-    }
-
-    // PRIORITY 5: Parent paths with allow_parent_allowlist_paths enabled
+    // PRIORITY 4: Parent paths with allow_parent_allowlist_paths enabled
     if (isOutsideProject && ALLOW_PARENT_ALLOWLIST_PATHS) {
       const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath);
       const normalizedFilePath = path.normalize(absolutePath);
@@ -632,6 +623,15 @@ To execute blocked operation:
           if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
             return { allowed: true };
           }
+        }
+      }
+    }
+
+    // PRIORITY 5: For markdown, allow if ANY path segment matches allowlist (only after parent checks)
+    if (isMarkdown) {
+      for (const d of markdownSegments) {
+        if (pathParts.includes(d)) {
+          return { allowed: true };
         }
       }
     }
