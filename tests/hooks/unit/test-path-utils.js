@@ -72,6 +72,24 @@ const tests = {
     assert.strictEqual(result, true);
   },
 
+  'isPathInAllowlist: files in documentation/ allowed when alias present': () => {
+    const filePath = '/project/documentation/deployment-guide.md';
+    const allowlist = ['stories', 'bugs', 'documentation'];
+    const projectRoot = '/project';
+
+    const result = isPathInAllowlist(filePath, allowlist, projectRoot);
+    assert.strictEqual(result, true);
+  },
+
+  'isPathInAllowlist: files in docs/ allowed when docs in allowlist': () => {
+    const filePath = '/project/docs/deployment-guide-central-server.md';
+    const allowlist = ['stories', 'bugs', 'docs'];
+    const projectRoot = '/project';
+
+    const result = isPathInAllowlist(filePath, allowlist, projectRoot);
+    assert.strictEqual(result, true);
+  },
+
   'isPathInAllowlist: files outside allowlist blocked': () => {
     const filePath = '/project/src/code.js';
     const allowlist = ['stories', 'bugs', 'docs'];
