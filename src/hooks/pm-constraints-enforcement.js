@@ -19,7 +19,9 @@ const PM_EXTRA_COMMANDS = getSetting('enforcement.pm_allowed_bash_commands', [
 ]);
 const PM_INFRASTRUCTURE_BLACKLIST = getSetting('enforcement.tool_blacklist.infrastructure', []);
 const HEREDOC_ALLOWED_COMMANDS = getSetting('enforcement.heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
-const ALLOW_PARENT_ALLOWLIST_PATHS = getSetting('enforcement.allow_parent_allowlist_paths', false);
+const ALLOW_PARENT_ALLOWLIST_PATHS = process.env.ALLOW_PARENT_ALLOWLIST_PATHS
+  ? process.env.ALLOW_PARENT_ALLOWLIST_PATHS === 'true'
+  : getSetting('enforcement.allow_parent_allowlist_paths', false);
 const ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST_AGENTS = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
 const ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST = getSetting('enforcement.allow_markdown_outside_allowlist', false);
 const BLOCKING_ENABLED = getSetting('enforcement.blocking_enabled', true);
