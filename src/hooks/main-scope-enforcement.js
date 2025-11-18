@@ -40,6 +40,10 @@ function getImperativeDestructive() {
   return getSetting('enforcement.infrastructure_protection.imperative_destructive', []);
 }
 
+function getMcpToolsEnabled() {
+  return getSetting('tools.mcp_tools_enabled', true);
+}
+
 function getStrictMainScope() {
   return getSetting('enforcement.strict_main_scope', true);
 }
@@ -59,6 +63,7 @@ function main() {
   const IMPERATIVE_DESTRUCTIVE = getImperativeDestructive();
   const STRICT_MAIN_SCOPE = getStrictMainScope();
   const STRICT_MAIN_SCOPE_MESSAGE = getStrictMainScopeMessage();
+  const MCP_TOOLS_ENABLED = getMcpToolsEnabled();
 
   /**
    * Check if mkdir command is for allowlist directory
@@ -69,11 +74,16 @@ function main() {
     }
 
     const config = loadConfig();
+
+    // Use configured paths plus common defaults to avoid false blocks when
+    // project config omits or renames a path (e.g., docs vs documentation)
     const allowlist = [
       config.paths.story_path || 'stories',
       config.paths.bug_path || 'bugs',
       config.paths.memory_path || 'memory',
       config.paths.docs_path || 'docs',
+      'docs',
+      'documentation',
       'agenttasks',
       'summaries',
       'tests'  // Allow test file creation for comprehensive coverage
@@ -358,10 +368,15 @@ To execute blocked operation:
       );
     }
 
-    // Allow ALL MCP tools (read-only operations)
+    // Allow ALL MCP tools (read-only operations) when enabled
     if (tool && tool.startsWith('mcp__')) {
-      log(`MCP tool allowed in main scope: ${tool}`);
-      return allowOperation(log);
+      if (MCP_TOOLS_ENABLED) {
+        log(`MCP tool allowed in main scope: ${tool}`);
+        return allowOperation(log);
+      }
+
+      log(`MCP tool blocked because tools.mcp_tools_enabled=false: ${tool}`);
+      return blockOperation('MCP tools are disabled. Set tools.mcp_tools_enabled=true in icc.config.json to allow MCP usage in main scope.');
     }
 
     // Allow coordination tools
@@ -462,10 +477,12 @@ Please use the correct directory for this file type.`,
       // Build allowlist for file path checking
       const config = loadConfig();
       const allowlist = [
-        config.paths.story_path,
-        config.paths.bug_path,
-        config.paths.memory_path,
-        config.paths.docs_path,
+        config.paths.story_path || 'stories',
+        config.paths.bug_path || 'bugs',
+        config.paths.memory_path || 'memory',
+        config.paths.docs_path || 'docs',
+        'docs',
+        'documentation',
         'agenttasks',
         'summaries',
         'tests'  // Allow test file creation for comprehensive coverage

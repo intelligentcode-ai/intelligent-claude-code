@@ -8,6 +8,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.20.84] - 2025-11-16
 
+## [8.20.89] - 2025-11-17
+
+### Added
+- Context injection now always surfaces project best practices and explicit memory-before/after guidance (without requiring /icc-search-memory), keeping constraints visible.
+- ALL-CAPS filename block retains execution-pattern guidance while auto-suggesting lowercase/kebab alternatives.
+
+### Fixed
+- Documentation writes via Bash heredoc to docs/ or documentation/ are no longer blocked by infra protection (content may include kubectl text without being treated as infra execution).
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [8.20.88] - 2025-11-17
+
+### Added
+- Two opt-in ICC presets under `.icc/`: `config.relaxed.json` (current deployed behavior) and `config.strict-main-scope.json` (coordination-only main scope with agents active). Included `.icc/README.md` with quick swap instructions.
+
+### Fixed
+- Main-scope enforcement allowlist now includes default `docs/` and `documentation/` directories even when config paths are unset, preventing false blocks in projects like GovStack.
+- Added unit coverage for docs/documentation allowlist handling.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [8.20.87] - 2025-11-17
+
+### Added
+- Context injection now surfaces MCP availability hints for PM/Main Scope when `mcp_integrations` entries are enabled, encouraging use of GitHub/GitLab/Jira MCP tools when installed.
+
+### Changed
+- Main Scope enforcement honors `tools.mcp_tools_enabled`; MCP tools are allowed only when explicitly enabled, making the toggle effective.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+<<<<<<< HEAD
+=======
+## [8.20.88] - 2025-11-17
+
+### Added
+- Two opt-in ICC presets under `.icc/`: `config.relaxed.json` (current deployed behavior) and `config.strict-main-scope.json` (coordination-only main scope with agents active). Included `.icc/README.md` with quick swap instructions.
+
+### Fixed
+- Main-scope enforcement allowlist now includes default `docs/` and `documentation/` directories even when config paths are unset, preventing false blocks in projects like GovStack.
+- Added unit coverage for docs/documentation allowlist handling.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+>>>>>>> dev
+
 ### Added
 - Reintroduced contextual logic to `memory-first-reminder.js`, targeting prompts about credentials, configuration, AgentTasks, and deployments while logging stats to `~/.claude/stats/memory-usage.json`.
 - New PreToolUse integration test (`test-project-scope-enforcement.js`) ensures stdin parsing and permission decisions stay aligned with enforcement expectations.

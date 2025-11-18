@@ -1,53 +1,31 @@
 # Documentation Index
 
-## Getting Started
-1. [Virtual Team Guide](virtual-team-guide.md) - **Start here!** Understand the 14 specialist roles
-2. [AgentTask System Guide](prb-system-guide.md) - How AgentTask-driven execution works
-3. [Commands Reference](commands-reference.md) - All 10 essential commands
+## Start here
+1. [Virtual Team Guide](virtual-team-guide.md)
+2. [AgentTask System Guide](agenttask-system-guide.md)
+3. [User Guide](user-guide.md)
 
-## Configuration
-- [Project Configuration](project-configuration.md) - Setting up CLAUDE.md
-- [Directory Structure](directory-structure.md) - Organizing your project
+## Install & configure
+- [Installation Guide](installation-guide.md)
+- [Project Configuration](project-configuration.md)
+- [Directory Structure](directory-structure.md)
+- [Configuration Guide](configuration-guide.md)
 
-## Key Concepts
+## Operate
+- [Commands Reference](commands-reference.md)
+- [Best Practices](best-practices-guide.md)
+- [Virtual Team Guide](virtual-team-guide.md)
+- [AgentTask Templates Guide](agenttask-templates-guide.md)
 
-### Virtual Team
-14 specialist roles with deep expertise:
-- Leadership: @PM, @Architect
-- Development: @Developer, @AI-Engineer, @Database-Engineer
-- Quality: @QA-Engineer, @Security-Engineer, @Backend-Tester
-- Operations: @System-Engineer, @DevOps-Engineer
-- Design: @Web-Designer, @Requirements-Engineer
+## Safety & governance
+- [Infrastructure Protection](infrastructure-protection.md)
+- [Memory Protection](memory-protection.md)
+- [Hook System Guide](hook-system-guide.md) and [Hook Registration Reference](hook-registration-reference.md)
 
-### AgentTasks (Product Requirement Blueprints)
-Self-contained execution blueprints that include:
-- Complete requirements
-- Your coding standards
-- Relevant code examples
-- Previous learnings
-- Validation criteria
+## Troubleshooting
+- [Troubleshooting](troubleshooting.md)
+- [MCP Integration](mcp-integration.md) and [MCP Integration Troubleshooting](mcp-integration-troubleshooting.md)
 
-### Memory System
-Version-controlled learning storage:
-- Topic-based organization (authentication/, performance/, etc.)
-- Shared with team via git
-- Auto-embedded in AgentTasks
-- Token-efficient (max 5KB per file)
-
-### Autonomy Levels
-- **L1**: Manual approval for everything
-- **L2**: Architect approval for technical decisions (default)
-- **L3**: Fully autonomous operation
-
-## Quick Command Reference
-
-```bash
-/icc-init-system              # Start here
-/icc-create-prb "task"        # Generate blueprint
-/icc-think-sequential "problem" # Solve complex problems
-/icc-store-memory topic "learning" # Save knowledge
-```
-
----
-
-**New to the system?** Start with the [Virtual Team Guide](virtual-team-guide.md) to understand how the specialists work together.
+## Architecture
+- [Architecture](architecture.md)
+- [Execution Flow Diagram](execution-flow-diagram.md)
