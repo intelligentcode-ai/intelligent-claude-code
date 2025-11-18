@@ -574,20 +574,30 @@ To execute blocked operation:
       }
     }
 
-    // Get configured allowlist
+    // Get configured allowlist (include defaults, filter falsy)
     const config = loadConfiguration();
     const allowlist = [
-      config.story_path,
-      config.bug_path,
-      config.memory_path,
-      config.docs_path,
+      config.story_path || 'stories',
+      config.bug_path || 'bugs',
+      config.memory_path || 'memory',
+      config.docs_path || 'docs',
+      'documentation', 'doc', 'docs-site', 'docs-content',
       'agenttasks',
       'summaries',
       'tests'  // Allow test file creation for comprehensive coverage
-    ];
+    ].filter(Boolean);
 
     const fileName = path.basename(relativePath);
     const dirName = path.dirname(relativePath);
+    const isMarkdown = fileName.toLowerCase().endsWith('.md');
+
+    // Markdown segment allowlist (uses configured allowlist + doc aliases)
+    const markdownSegments = new Set([
+      ...allowlist,
+      'docs', 'documentation', 'doc', 'docs-site', 'docs-content'
+    ]);
+
+    const pathParts = relativePath.split(path.sep);
 
     // PRIORITY 1: Check if markdown is in root (root .md files are ALWAYS allowed)
     if (dirName === '.' || dirName === '') {
@@ -600,16 +610,12 @@ To execute blocked operation:
       return { allowed: true };
     }
 
-    // PRIORITY 3: Check if markdown is in allowlist directory (ALWAYS allowed)
-    const markdownAllowlist = [
-      'stories', 'bugs', 'memory', 'docs', 'documentation', 'doc', 'docs-site', 'docs-content',
-      'agenttasks', 'summaries', 'tests'
-    ];
-
-    const pathParts = relativePath.split(path.sep);
-    for (const d of markdownAllowlist) {
-      if (pathParts.includes(d)) {
-        return { allowed: true };
+    // PRIORITY 3: For markdown, allow if ANY path segment matches allowlist
+    if (isMarkdown) {
+      for (const d of markdownSegments) {
+        if (pathParts.includes(d)) {
+          return { allowed: true };
+        }
       }
     }
 
@@ -768,6 +774,13 @@ To execute blocked operation:
     }
 
     // Check allowlist (explicit permission)
+    if (isMarkdown) {
+      const pathParts = normalizedFilePath.split(path.sep);
+      if (allowlist.some(allowed => pathParts.includes(allowed))) {
+        return { allowed: true };
+      }
+    }
+
     if (isPathInAllowlist(filePath, allowlist, projectRoot)) {
       return { allowed: true };
     }
