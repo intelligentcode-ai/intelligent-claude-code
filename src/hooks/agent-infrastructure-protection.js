@@ -24,35 +24,48 @@ function main() {
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
 function isSafeDocumentationWrite(cmd, cwd) {
-  // Permit only pure doc writes (single redirection to docs/) with nothing else.
+  // Permit only pure doc writes (single redirection to docs/) with nothing else on the command line.
   const trimmed = cmd.trim();
 
-  // Fast reject if chaining operators exist
-  const hasChain = /[;&|]{1,2}/.test(trimmed.split('\n')[0]);
-  if (hasChain) return false;
+  // Reject if chaining operators exist on the first line (multiple commands)
+  const firstLine = trimmed.split('\n', 1)[0];
+  if (/[;&|]{1,2}/.test(firstLine)) return false;
+
+  // Helper to resolve target and check docs path
+  const targetsDocs = (target) => {
+    const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
+    const segments = path.normalize(absTarget).split(path.sep);
+    return segments.includes('docs') || segments.includes('documentation');
+  };
 
   // Heredoc form
   if (/<<\s*'??EOF'??/i.test(trimmed)) {
     // Must end with EOF and nothing after
     if (!/\nEOF\s*$/.test(trimmed)) return false;
 
-    const firstLine = trimmed.split('\n', 1)[0];
     const m = firstLine.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s*([^\s]+)\s*$/i);
     if (!m) return false;
+    if (!targetsDocs(m[2])) return false;
 
-    const target = m[2];
-    const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
-    const segments = path.normalize(absTarget).split(path.sep);
-    return segments.includes('docs') || segments.includes('documentation');
+    // Ensure no additional commands after EOF
+    const afterEof = trimmed.split('\nEOF').slice(1).join('\nEOF').trim();
+    return afterEof === '';
   }
 
-  // Single-line redirection
+  // Single-line redirection only
   const m = trimmed.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s*([^\s]+)\s*$/i);
   if (!m) return false;
-  const target = m[2];
-  const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
-  const segments = path.normalize(absTarget).split(path.sep);
-  return segments.includes('docs') || segments.includes('documentation');
+  if (!targetsDocs(m[2])) return false;
+  return true;
+}
+
+// Strip heredoc bodies for analysis to avoid keyword false-positives
+function stripDocHeredocBody(cmd) {
+  const heredocMatch = cmd.match(/^(.*<<\s*'??EOF'??)([\s\S]*?)(\nEOF\s*$)/m);
+  if (!heredocMatch) return cmd;
+  const header = heredocMatch[1];
+  const footer = heredocMatch[3];
+  return `${header}\n[DOC_CONTENT_REDACTED]\n${footer}`;
 }
 
   function extractSSHCommand(command) {
@@ -127,11 +140,15 @@ function isSafeDocumentationWrite(cmd, cwd) {
     log(`Actual command after SSH extraction: ${actualCommand.substring(0, 100)}...`);
 
     // Special-case: allow pure documentation writes to docs/ when the command
-    // is *only* the write (no trailing commands/chains after the heredoc).
+    // is only the write (no chaining). Also redact doc heredoc content from
+    // later keyword scans.
+    let analysisCommand = command;
     if (isSafeDocumentationWrite(command, hookInput.cwd)) {
       log('ALLOWED: Documentation write detected (docs/ or documentation/)');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
+    } else {
+      analysisCommand = stripDocHeredocBody(command);
     }
 
     // Check for emergency override token
@@ -162,7 +179,7 @@ function isSafeDocumentationWrite(cmd, cwd) {
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
-      if (actualCommand.includes(imperativeCmd)) {
+      if (analysisCommand.includes(imperativeCmd)) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
@@ -226,7 +243,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 2: Check whitelist (overrides write/read blacklists, but not imperative destructive)
     for (const allowedCmd of whitelist) {
-      if (actualCommand.includes(allowedCmd)) {
+      if (analysisCommand.includes(allowedCmd)) {
         log(`ALLOWED: Command in whitelist: ${allowedCmd}`);
         console.log(JSON.stringify(standardOutput));
         process.exit(0);
@@ -235,7 +252,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 3: Check write operations (blocked for agents)
     for (const writeCmd of writeOperations) {
-      if (actualCommand.includes(writeCmd)) {
+      if (analysisCommand.includes(writeCmd)) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
@@ -283,7 +300,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 4: Check read operations (allowed if read_operations_allowed=true)
     for (const readCmd of readOperations) {
-      if (actualCommand.includes(readCmd)) {
+      if (analysisCommand.includes(readCmd)) {
         if (readAllowed) {
           log(`ALLOWED: Read operation: ${readCmd}`);
           console.log(JSON.stringify(standardOutput));
