@@ -32,7 +32,8 @@ const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
   'MAKEFILE',
   'DOCKERFILE',
   'COPYING',
-  'COPYRIGHT'
+  'COPYRIGHT',
+  'AGENTS.md'
 ]);
 const STRICT_MODE = getSetting('development.file_management_strict', true);
 const SUMMARIES_PATH = getSetting('paths.summaries_path', 'summaries');
@@ -105,49 +106,29 @@ function main() {
 
     // CRITICAL: Block ALL-CAPITALS files REGARDLESS of location (unless in allowed list)
     if (isAllCaps && !allowedAllCapsFiles.includes(fileName)) {
-      log(`BLOCKED: ALL-CAPITALS filename not allowed: ${fileName} (blocks everywhere)`);
+      log(`AUTO-CORRECT: ALL-CAPITALS filename detected: ${fileName}`);
 
-      // Suggest lowercase alternative
-      const suggestedName = fileName.toLowerCase();
+      // Auto-suggest lowercase-kebab alternative
+      const suggestedName = fileName
+        .replace(/\.[^/.]+$/, '')
+        .toLowerCase()
+        .replace(/_/g, '-') + path.extname(fileName);
 
       const message = `🚫 ALL-CAPITALS filenames are not allowed
 
 Blocked filename: ${fileName}
-Suggested alternative: ${suggestedName}
+Auto-suggested: ${suggestedName}
 
 Well-known exceptions allowed:
 ${allowedAllCapsFiles.join(', ')}
 
-Please use lowercase or mixed-case filenames for better readability.
+Please retry with the suggested name. To keep progress: rename your target file to the suggestion and rerun.
 
 🎯 INTELLIGENT CLAUDE CODE EXECUTION PATTERN:
-
-1. Main Scope Creates AgentTasks ONLY via Task tool
-2. Agent response = Agent completed (process results immediately)
-3. Main Scope SHOULD parallelize work when possible (multiple Task tool calls in single message)
-4. ALL work MUST use AgentTask templates (nano/tiny/medium/large/mega)
-
-Example - Sequential Work:
-  Task tool → @Developer (fix bug) → Agent returns → Process results
-
-Example - Parallel Work (PREFERRED):
-  Single message with multiple Task tool calls:
-  - Task tool → @Developer (fix bug A)
-  - Task tool → @Developer (fix bug B)
-  - Task tool → @QA-Engineer (test feature C)
-  All execute in parallel → Agents return → Process results
-
-Template Usage:
-  - 0-2 points: nano-agenttask-template.yaml
-  - 3-5 points: tiny-agenttask-template.yaml
-  - 6-15 points: Create STORY first, then break down to nano/tiny AgentTasks
-  - 16+ points: Create STORY first, then break down to nano/tiny AgentTasks
-
-To execute blocked operation:
-1. Create AgentTask using appropriate template
-2. Invoke via Task tool with specialist agent (@Developer, @DevOps-Engineer, etc.)
-3. Wait for agent completion
-4. Agent provides comprehensive summary with results`;
+1) Main Scope delegates via Task tool; agents execute and return results
+2) Parallelize AgentTasks when possible
+3) Use agenttask templates (nano/tiny/medium/large/mega) according to scope
+4) Agents summarize results; Main Scope reviews and commits.`;
 
       const response = {
         hookSpecificOutput: {
