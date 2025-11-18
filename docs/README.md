@@ -1,10 +1,3 @@
 # Documentation
 
-This directory contains comprehensive documentation for the intelligent-claude-code system.
-
-## Contents
-
-- Configuration guides
-- Best practices
-- Behavioral patterns
-- System architecture
+See [index.md](index.md) for the small, curated navigation of the docs. The index links the core guides (install, configure, operate, troubleshoot) without the noise.

@@ -74,11 +74,16 @@ function main() {
     }
 
     const config = loadConfig();
+
+    // Use configured paths plus common defaults to avoid false blocks when
+    // project config omits or renames a path (e.g., docs vs documentation)
     const allowlist = [
       config.paths.story_path || 'stories',
       config.paths.bug_path || 'bugs',
       config.paths.memory_path || 'memory',
       config.paths.docs_path || 'docs',
+      'docs',
+      'documentation',
       'agenttasks',
       'summaries',
       'tests'  // Allow test file creation for comprehensive coverage
@@ -472,10 +477,12 @@ Please use the correct directory for this file type.`,
       // Build allowlist for file path checking
       const config = loadConfig();
       const allowlist = [
-        config.paths.story_path,
-        config.paths.bug_path,
-        config.paths.memory_path,
-        config.paths.docs_path,
+        config.paths.story_path || 'stories',
+        config.paths.bug_path || 'bugs',
+        config.paths.memory_path || 'memory',
+        config.paths.docs_path || 'docs',
+        'docs',
+        'documentation',
         'agenttasks',
         'summaries',
         'tests'  // Allow test file creation for comprehensive coverage
