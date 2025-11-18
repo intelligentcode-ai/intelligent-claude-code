@@ -509,25 +509,17 @@ To execute blocked operation:
           return true;
         }
       }
-    } else {
-      // Path goes outside project root (contains '../')
-      // Check if allow_parent_allowlist_paths is enabled
-      const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
+    } else if (ALLOW_PARENT_ALLOWLIST_PATHS) {
+      // Parent/sibling paths are only allowed when explicitly enabled
+      const pathParts = normalizedFilePath.split(path.sep);
 
-      if (allowParentPaths) {
-        // Split normalized path into components
-        const pathParts = normalizedFilePath.split(path.sep);
-
-        // Check if ANY directory component matches an allowlist directory
-        for (const allowedPath of allowlist) {
-          const allowedIndex = pathParts.indexOf(allowedPath);
-          if (allowedIndex >= 0) {
-            // Found allowlist directory in path
-            // Verify file is actually under this directory (not just same name in path)
-            const reconstructedPath = pathParts.slice(0, allowedIndex + 1).join(path.sep);
-            if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
-              return true;
-            }
+      // Check if ANY directory component matches an allowlist directory
+      for (const allowedPath of allowlist) {
+        const allowedIndex = pathParts.indexOf(allowedPath);
+        if (allowedIndex >= 0) {
+          const reconstructedPath = pathParts.slice(0, allowedIndex + 1).join(path.sep);
+          if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
+            return true;
           }
         }
       }
