@@ -23,22 +23,37 @@ function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
-  function isDocumentationWrite(cmd, cwd) {
-    // Allow harmless documentation writes even if the heredoc text contains
-    // infrastructure keywords (kubectl, etc.). We only allow simple redirections
-    // to docs/ or documentation/ paths with cat/printf/tee.
+function isSafeDocumentationWrite(cmd, cwd) {
+  // Permit only pure doc writes (single redirection to docs/) with nothing else.
+  const trimmed = cmd.trim();
 
-    // Match: cat << 'EOF' > docs/file.md  OR  printf '...' > documentation/file.md
-    const redirMatch = cmd.match(/^(?:\s*)(cat|printf|tee)[^>]*>+\s+([^\s]+)\s*$/m);
-    if (!redirMatch) return false;
+  // Fast reject if chaining operators exist
+  const hasChain = /[;&|]{1,2}/.test(trimmed.split('\n')[0]);
+  if (hasChain) return false;
 
-    const target = redirMatch[2];
-    // Resolve relative targets
+  // Heredoc form
+  if (/<<\s*'??EOF'??/i.test(trimmed)) {
+    // Must end with EOF and nothing after
+    if (!/\nEOF\s*$/.test(trimmed)) return false;
+
+    const firstLine = trimmed.split('\n', 1)[0];
+    const m = firstLine.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s*([^\s]+)\s*$/i);
+    if (!m) return false;
+
+    const target = m[2];
     const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
-    const normalized = path.normalize(absTarget);
-    const segments = normalized.split(path.sep);
+    const segments = path.normalize(absTarget).split(path.sep);
     return segments.includes('docs') || segments.includes('documentation');
   }
+
+  // Single-line redirection
+  const m = trimmed.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s*([^\s]+)\s*$/i);
+  if (!m) return false;
+  const target = m[2];
+  const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
+  const segments = path.normalize(absTarget).split(path.sep);
+  return segments.includes('docs') || segments.includes('documentation');
+}
 
   function extractSSHCommand(command) {
     // Match SSH command patterns:
@@ -111,9 +126,9 @@ function main() {
     const actualCommand = extractSSHCommand(command);
     log(`Actual command after SSH extraction: ${actualCommand.substring(0, 100)}...`);
 
-    // Special-case: allow pure documentation writes to docs/ even if content
-    // contains infra keywords (e.g., kubectl) because only a file write occurs.
-    if (isDocumentationWrite(command, hookInput.cwd)) {
+    // Special-case: allow pure documentation writes to docs/ when the command
+    // is *only* the write (no trailing commands/chains after the heredoc).
+    if (isSafeDocumentationWrite(command, hookInput.cwd)) {
       log('ALLOWED: Documentation write detected (docs/ or documentation/)');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
