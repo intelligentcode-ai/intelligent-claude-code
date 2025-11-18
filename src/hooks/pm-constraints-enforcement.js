@@ -560,18 +560,18 @@ To execute blocked operation:
       return { allowed: true };
     }
 
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
-    if (path.isAbsolute(filePath)) {
-      try {
-        // Resolve both paths to handle symlinks properly
-        const realFilePath = fs.existsSync(filePath) ? fs.realpathSync(filePath) : filePath;
-        const realProjectRoot = fs.realpathSync(projectRoot);
-        relativePath = path.relative(realProjectRoot, realFilePath);
-      } catch (error) {
-        // Fallback to original calculation if resolution fails
-        relativePath = path.relative(projectRoot, filePath);
-      }
+    // Normalize to project-relative path (resolve symlinks when possible)
+    let relativePath;
+    const normalizedFilePath = path.normalize(path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath));
+    const normalizedProjectRoot = path.normalize(projectRoot);
+
+    try {
+      const realFilePath = fs.existsSync(normalizedFilePath) ? fs.realpathSync(normalizedFilePath) : normalizedFilePath;
+      const realProjectRoot = fs.realpathSync(normalizedProjectRoot);
+      relativePath = path.relative(realProjectRoot, realFilePath);
+    } catch (error) {
+      // Fall back to non-resolved paths if realpath fails
+      relativePath = path.relative(normalizedProjectRoot, normalizedFilePath);
     }
 
     // Get configured allowlist (include defaults, filter falsy)
@@ -581,10 +581,10 @@ To execute blocked operation:
       config.bug_path || 'bugs',
       config.memory_path || 'memory',
       config.docs_path || 'docs',
+      config.summaries_path || 'summaries',
+      config.test_path || 'tests',
       'documentation', 'doc', 'docs-site', 'docs-content',
-      'agenttasks',
-      'summaries',
-      'tests'  // Allow test file creation for comprehensive coverage
+      'agenttasks'
     ].filter(Boolean);
 
     const fileName = path.basename(relativePath);

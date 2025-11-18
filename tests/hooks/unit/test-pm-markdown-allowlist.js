@@ -2,19 +2,13 @@
 const assert = require('assert');
 const { spawnSync } = require('child_process');
 const path = require('path');
+const os = require('os');
 const { runTestSuite } = require('../fixtures/test-helpers');
 
-function runHook(filePath) {
+function runHook(hookInput, extraEnv = {}) {
   const hookPath = path.resolve(__dirname, '../../../src/hooks/pm-constraints-enforcement.js');
-  const hookInput = {
-    hook_event_name: 'PreToolUse',
-    tool_name: 'Write',
-    file_path: filePath,
-    cwd: '/project',
-    transcript_path: '/tmp/test-session.jsonl'
-  };
   const res = spawnSync('node', [hookPath], {
-    env: { ...process.env, CLAUDE_TOOL_INPUT: JSON.stringify(hookInput) },
+    env: { ...process.env, ...extraEnv, CLAUDE_TOOL_INPUT: JSON.stringify(hookInput) },
     encoding: 'utf8'
   });
   if (res.error) throw res.error;
@@ -28,11 +22,18 @@ function runHook(filePath) {
 
 const tests = {
   'allows markdown when any path segment is docs': () => {
-    const out = runHook('/project/xroad-charts-repo/docs/deployment-guide.md');
+    const hookInput = {
+      hook_event_name: 'PreToolUse',
+      tool_name: 'Write',
+      file_path: '/project/xroad-charts-repo/docs/deployment-guide.md',
+      cwd: '/project',
+      transcript_path: path.join(os.tmpdir(), 'test-session.jsonl')
+    };
+    const out = runHook(hookInput);
     assert.strictEqual(out.continue, true);
   }
 };
 
-console.log('\n=== PM Constraints markdown allowlist (nested docs) ===');
+console.log('\n=== PM Constraints markdown allowlist (segment + config) ===');
 const ok = runTestSuite('pm-constraints-enforcement.js', tests);
 process.exit(ok ? 0 : 1);
