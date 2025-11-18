@@ -23,19 +23,31 @@ function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
-  function isDocumentationWrite(cmd, cwd) {
-    // Allow only pure doc writes (single redirection to docs/) with nothing else on the first line.
-    const firstLine = cmd.trim().split('\n', 1)[0];
-    if (/[;&|]{1,2}/.test(firstLine)) return false; // no chaining
+  function stripQuoted(line) {
+    // remove single/double quoted substrings to avoid false chaining detection
+    return line
+      .replace(/'(?:[^'\\]|\\.)*'/g, '')
+      .replace(/"(?:[^"\\]|\\.)*"/g, '');
+  }
 
-    const redirMatch = firstLine.match(/^(?:\s*)(cat|printf|tee)[^>]*>+\s+([^\s]+)\s*$/i);
+  function isDocumentationWrite(cmd, cwd) {
+    // Allow only pure doc writes (single redirection to docs/ paths) with nothing else on the first line.
+    const firstLineRaw = cmd.trim().split('\n', 1)[0];
+    const firstLine = stripQuoted(firstLineRaw);
+
+    if (/[;&|]{1,2}/.test(firstLine)) return false; // no chaining outside quotes
+
+    const redirMatch = firstLineRaw.match(/^(?:\s*)(cat|printf|tee)[^>]*>+\s+([^\s]+)\s*$/i);
     if (!redirMatch) return false;
 
     const target = redirMatch[2];
     const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
     const normalized = path.normalize(absTarget);
     const segments = normalized.split(path.sep);
-    return (segments.includes('docs') || segments.includes('documentation')) && /\nEOF\s*$/.test(cmd) === false;
+    const docDirs = ['docs', 'documentation', 'doc', 'docs-site', 'docs-content'];
+    const isDoc = docDirs.some(d => segments.includes(d));
+
+    return isDoc && /\nEOF\s*$/.test(cmd) === false; // no heredoc in doc-write fast path
   }
 
   function extractSSHCommand(command) {
