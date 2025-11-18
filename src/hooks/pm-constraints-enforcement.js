@@ -601,8 +601,14 @@ To execute blocked operation:
     }
 
     // PRIORITY 3: Check if markdown is in allowlist directory (ALWAYS allowed)
-    for (const allowedPath of allowlist) {
-      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
+    const markdownAllowlist = [
+      'stories', 'bugs', 'memory', 'docs', 'documentation', 'doc', 'docs-site', 'docs-content',
+      'agenttasks', 'summaries', 'tests'
+    ];
+
+    const pathParts = relativePath.split(path.sep);
+    for (const d of markdownAllowlist) {
+      if (pathParts.includes(d)) {
         return { allowed: true };
       }
     }
