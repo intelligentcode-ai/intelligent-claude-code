@@ -147,7 +147,7 @@ function main() {
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
-      if (actualCommand.includes(imperativeCmd)) {
+      if (command.includes(imperativeCmd) || actualCommand.includes(imperativeCmd)) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
@@ -211,7 +211,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 2: Check whitelist (overrides write/read blacklists, but not imperative destructive)
     for (const allowedCmd of whitelist) {
-      if (actualCommand.includes(allowedCmd)) {
+      if (command.includes(allowedCmd) || actualCommand.includes(allowedCmd)) {
         log(`ALLOWED: Command in whitelist: ${allowedCmd}`);
         console.log(JSON.stringify(standardOutput));
         process.exit(0);
@@ -220,7 +220,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 3: Check write operations (blocked for agents)
     for (const writeCmd of writeOperations) {
-      if (actualCommand.includes(writeCmd)) {
+      if (command.includes(writeCmd) || actualCommand.includes(writeCmd)) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
@@ -268,7 +268,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 4: Check read operations (allowed if read_operations_allowed=true)
     for (const readCmd of readOperations) {
-      if (actualCommand.includes(readCmd)) {
+      if (command.includes(readCmd) || actualCommand.includes(readCmd)) {
         if (readAllowed) {
           log(`ALLOWED: Read operation: ${readCmd}`);
           console.log(JSON.stringify(standardOutput));
