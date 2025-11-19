@@ -1,6 +1,7 @@
 {
   "enforcement": {
     "strict_main_scope": false,
+    "main_scope_has_agent_privileges": false,
     "infrastructure_protection": {
       "enabled": true,
       "enforce_iac_only": true

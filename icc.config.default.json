@@ -107,6 +107,7 @@
     "allow_parent_allowlist_paths": false,
     "violation_logging": true,
     "auto_correction": true,
+    "main_scope_has_agent_privileges": false,
     "strict_main_scope": true,
     "strict_main_scope_message": "Main scope is limited to coordination work only. Create AgentTasks via Task tool for all technical operations.",
     "pm_allowed_bash_commands": [
