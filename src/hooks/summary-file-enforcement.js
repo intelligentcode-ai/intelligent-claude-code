@@ -9,13 +9,15 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 // Shared libraries
 const { initializeHook } = require('./lib/logging');
-const { extractToolInfo, generateProjectHash, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
+const { extractToolInfo, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 const { isAggressiveAllCaps } = require('./lib/allcaps-detection');
+const { isAgentContext } = require('./lib/marker-detection');
 
 // Load config ONCE at module level (not on every hook invocation)
 const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
@@ -59,11 +61,6 @@ function main() {
     if (tool !== 'Write' && tool !== 'Edit') {
       return allowOperation(log, true);
     }
-
-    // CRITICAL: Apply ALL-CAPS check to everyone; only skip placement validation for agents
-    // Check for agent marker files to detect agent context
-    const crypto = require('crypto');
-    const os = require('os');
 
     // Get project root with enhanced path resolution for Linux
     const projectRoot = hookInput.cwd || process.env.CLAUDE_PROJECT_DIR || process.cwd();
@@ -140,27 +137,10 @@ Please retry with the suggested name. To keep progress: rename your target file 
     }
 
     // STEP 2: Agent context check - skip remaining validation for agents
-    // Check for agent marker file (same logic as pm-constraints-enforcement.js)
     const sessionId = hookInput.session_id || '';
-    if (sessionId && projectRoot) {
-      const projectHash = generateProjectHash(hookInput);
-      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-      const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
-
-      if (fs.existsSync(markerFile)) {
-        try {
-          const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
-          const agentCount = marker.agent_count || 0;
-
-          if (agentCount > 0) {
-            log('Agent context detected - skipping remaining validation (ALL-CAPITALS already checked)');
-            return allowOperation(log, true);
-          }
-        } catch (err) {
-          // Marker file error - continue with validation
-          log(`Warning: Could not read agent marker file: ${err.message}`);
-        }
-      }
+    if (isAgentContext(projectRoot, sessionId, log)) {
+      log('Agent context detected - skipping remaining validation (ALL-CAPITALS already checked)');
+      return allowOperation(log, true);
     }
 
     // Get settings

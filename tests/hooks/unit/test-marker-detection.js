@@ -10,18 +10,39 @@ const path = require('path');
 const os = require('os');
 const { runTestSuite } = require('../fixtures/test-helpers');
 const { createMockMarker, getMarkerFileName } = require('../fixtures/mock-marker-files');
-const {
+const { clearCache } = require('../../../src/hooks/lib/config-loader');
+
+const markerModulePath = require.resolve('../../../src/hooks/lib/marker-detection');
+
+function loadMarkerModule() {
+  delete require.cache[markerModulePath];
+  return require(markerModulePath);
+}
+
+let {
   generateProjectHash,
   isAgentContext,
   isPMRole,
   getMarkerDir
-} = require('../../../src/hooks/lib/marker-detection');
+} = loadMarkerModule();
+
+let markerDir = getMarkerDir();
+
+function reloadMarkerDetection() {
+  clearCache();
+  ({
+    generateProjectHash,
+    isAgentContext,
+    isPMRole,
+    getMarkerDir
+  } = loadMarkerModule());
+  markerDir = getMarkerDir();
+}
 
 // Test data
 const testProjectRoot1 = '/test/project/path1';
 const testProjectRoot2 = '/test/project/path2';
 const testSessionId = 'test-session-123';
-const markerDir = getMarkerDir();
 
 // Cleanup function to remove test marker files
 function cleanupTestMarkers() {
@@ -135,6 +156,19 @@ const tests = {
 
     cleanupTestMarkers();
     assert.strictEqual(result, false, 'Should return false and handle corrupted marker file gracefully');
+  },
+
+  'isAgentContext returns true when main scope agent privileges enabled': () => {
+    cleanupTestMarkers();
+    process.env.ICC_MAIN_SCOPE_AGENT = 'true';
+    reloadMarkerDetection();
+
+    const result = isAgentContext(testProjectRoot1, testSessionId);
+    assert.strictEqual(result, true, 'Config override should treat main scope as agent context');
+
+    delete process.env.ICC_MAIN_SCOPE_AGENT;
+    reloadMarkerDetection();
+    cleanupTestMarkers();
   }
 };
 

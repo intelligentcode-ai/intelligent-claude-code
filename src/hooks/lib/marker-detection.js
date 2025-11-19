@@ -2,11 +2,16 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
+const { getSetting } = require('./config-loader');
 
 /**
  * Marker Detection Utilities
  * Shared functions for detecting agent execution markers
  */
+
+const MAIN_SCOPE_AGENT_PRIVILEGES =
+  process.env.ICC_MAIN_SCOPE_AGENT === 'true' ||
+  getSetting('enforcement.main_scope_has_agent_privileges', false);
 
 /**
  * Get marker directory path
@@ -57,6 +62,13 @@ function generateProjectHash(projectRoot) {
  * @returns {boolean} true if agent context, false if main scope
  */
 function isAgentContext(projectRoot, sessionId, log) {
+  if (MAIN_SCOPE_AGENT_PRIVILEGES) {
+    if (log) {
+      log('Config: main_scope_has_agent_privileges=true (treating main scope as agent context)');
+    }
+    return true;
+  }
+
   const projectHash = generateProjectHash(projectRoot);
   const markerDir = getMarkerDir();
 
