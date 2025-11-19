@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [8.20.92] - 2025-11-19
+
+### Changed
+- Documentation fast-path now requires quoted heredoc delimiters or a substitution-free body; unquoted heredocs with command substitution fall back to full infra checks.
+- Marker detection accepts hookInput or path and hashes the active working directory, keeping agent/PM context consistent when agents run from subdirectories.
+- Workflow enforcement hook is now registered by default in installer templates (Ansible/PowerShell) raising production hooks to 16.
+- Summary ALL-CAPS guard skips paths containing shell variables to avoid false positives on `$SUMMARY_FILE` style redirects.
+
+### Testing
+- `bash tests/run-tests.sh`
+
 ## [8.20.91] - 2025-11-19
 
 ### Added

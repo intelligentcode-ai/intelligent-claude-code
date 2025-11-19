@@ -107,11 +107,28 @@ function main() {
       return false;
     }
 
-    const heredocMatch = firstLine.match(/<<-?\s*'?([A-Za-z0-9_:-]+)'?/);
+    const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
     if (heredocMatch) {
-      const terminator = heredocMatch[1];
+      const terminator = heredocMatch[1] || heredocMatch[2] || heredocMatch[3];
+
+      // Require a quoted terminator OR a body with no command substitution
       const terminatorRegex = new RegExp(`\\n${escapeRegex(terminator)}\\s*$`);
-      return terminatorRegex.test(trimmed);
+      const hasTerminator = terminatorRegex.test(trimmed);
+      const isQuoted = Boolean(heredocMatch[1] || heredocMatch[2]);
+
+      if (!hasTerminator) {
+        return false;
+      }
+
+      if (!isQuoted) {
+        // Unquoted heredoc bodies perform substitution; ensure body is clean
+        const body = trimmed.replace(/^.*?\n/s, '');
+        if (hasCommandSubstitution(body)) {
+          return false;
+        }
+      }
+
+      return true;
     }
 
     return trimmed.indexOf('\n') === -1;

@@ -45,6 +45,16 @@ const tests = {
     const cmd = 'printf "\\$(kubectl apply) literal" > docs/guide.md';
     const out = runHook(cmd);
     assert.strictEqual(out.hookSpecificOutput.permissionDecision, 'allow');
+  },
+  'blocks unquoted heredoc with substitution in body': () => {
+    const cmd = "cat <<EOF > docs/guide.md\n$(kubectl delete pod foo)\nEOF";
+    const out = runHook(cmd);
+    assert.strictEqual(out.hookSpecificOutput.permissionDecision, 'deny');
+  },
+  'allows single-quoted heredoc even with substitution text': () => {
+    const cmd = "cat <<'EOF' > docs/guide.md\n$(kubectl delete pod foo)\nEOF";
+    const out = runHook(cmd);
+    assert.strictEqual(out.hookSpecificOutput.permissionDecision, 'allow');
   }
 };
 

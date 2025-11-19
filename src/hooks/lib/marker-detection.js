@@ -3,6 +3,7 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const { getSetting } = require('./config-loader');
+const { getProjectRoot } = require('./hook-helpers');
 
 /**
  * Marker Detection Utilities
@@ -41,16 +42,21 @@ function ensureMarkerDir(log) {
  * @param {string} projectRoot - Project root path
  * @returns {string} 8-character MD5 hash
  */
-function generateProjectHash(projectRoot) {
-  // CRITICAL: Normalize before hashing
-  // Ensures same path with/without trailing slash = same hash
-  let normalizedRoot = path.resolve(projectRoot);
+function resolveProjectRoot(projectRootOrHookInput) {
+  // Accept either a hookInput object or a raw path string
+  if (projectRootOrHookInput && typeof projectRootOrHookInput === 'object' && !Array.isArray(projectRootOrHookInput)) {
+    return getProjectRoot(projectRootOrHookInput);
+  }
 
-  // Ensure no trailing slash (except root)
+  let normalizedRoot = path.resolve(projectRootOrHookInput || process.cwd());
   if (normalizedRoot.length > 1 && normalizedRoot.endsWith(path.sep)) {
     normalizedRoot = normalizedRoot.slice(0, -1);
   }
+  return normalizedRoot;
+}
 
+function generateProjectHash(projectRootOrHookInput) {
+  const normalizedRoot = resolveProjectRoot(projectRootOrHookInput);
   return crypto.createHash('md5').update(normalizedRoot).digest('hex').substring(0, 8);
 }
 
@@ -61,7 +67,7 @@ function generateProjectHash(projectRoot) {
  * @param {Function} log - Logger function
  * @returns {boolean} true if agent context, false if main scope
  */
-function isAgentContext(projectRoot, sessionId, log) {
+function isAgentContext(projectRootOrHookInput, sessionId, log) {
   if (MAIN_SCOPE_AGENT_PRIVILEGES) {
     if (log) {
       log('Config: main_scope_has_agent_privileges=true (treating main scope as agent context)');
@@ -69,6 +75,7 @@ function isAgentContext(projectRoot, sessionId, log) {
     return true;
   }
 
+  const projectRoot = resolveProjectRoot(projectRootOrHookInput);
   const projectHash = generateProjectHash(projectRoot);
   const markerDir = getMarkerDir();
 
