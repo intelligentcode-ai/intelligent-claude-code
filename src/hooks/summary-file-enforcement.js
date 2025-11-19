@@ -39,6 +39,26 @@ const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
 const STRICT_MODE = getSetting('development.file_management_strict', true);
 const SUMMARIES_PATH = getSetting('paths.summaries_path', 'summaries');
 
+function extractBashRedirectTarget(command) {
+  if (!command || typeof command !== 'string') {
+    return '';
+  }
+
+  const headerLine = command.trimStart().split(/\r?\n/, 1)[0];
+  const redirectMatch = headerLine.match(/>+\s*(?:\d+)?\s*(['"]?)([^'"()\s]+)\1/);
+
+  if (!redirectMatch) {
+    return '';
+  }
+
+  const target = redirectMatch[2];
+  if (!target || target.startsWith('&')) {
+    return '';
+  }
+
+  return target;
+}
+
 function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('summary-enforcement');
@@ -49,14 +69,23 @@ function main() {
     }
 
     // Extract tool information
-    const { tool, filePath } = extractToolInfo(hookInput);
+    const { tool, filePath, command } = extractToolInfo(hookInput);
+    const monitoredTools = new Set(['Write', 'Edit', 'Bash']);
 
-    if (!filePath) {
+    if (!monitoredTools.has(tool)) {
       return allowOperation(log, true);
     }
 
-    // CRITICAL: Only enforce on Write/Edit operations, NOT Read operations
-    if (tool !== 'Write' && tool !== 'Edit') {
+    let targetPath = filePath;
+
+    if (!targetPath && tool === 'Bash' && command) {
+      targetPath = extractBashRedirectTarget(command);
+      if (targetPath) {
+        log(`Detected Bash redirect target: ${targetPath}`);
+      }
+    }
+
+    if (!targetPath) {
       return allowOperation(log, true);
     }
 
@@ -69,25 +98,29 @@ function main() {
     const projectRoot = hookInput.cwd || process.env.CLAUDE_PROJECT_DIR || process.cwd();
     const normalizedProjectRoot = path.resolve(projectRoot);
 
-    log(`Checking file: ${filePath}`);
+    log(`Checking file: ${targetPath}`);
     log(`Project root (raw): ${projectRoot}`);
     log(`Project root (normalized): ${normalizedProjectRoot}`);
 
+    const normalizedFilePath = path.isAbsolute(targetPath)
+      ? path.resolve(targetPath)
+      : path.resolve(normalizedProjectRoot, targetPath);
+
     // Normalize to relative path if absolute
-    let relativePath = filePath;
-    if (path.isAbsolute(filePath)) {
-      relativePath = path.relative(normalizedProjectRoot, filePath);
+    let relativePath = targetPath;
+    if (path.isAbsolute(targetPath)) {
+      relativePath = path.relative(normalizedProjectRoot, targetPath);
     }
 
     // Enhanced Linux path debugging
     log(`=== PATH DEBUG ===`);
     log(`Platform: ${os.platform()}`);
-    log(`Original filePath: ${filePath}`);
-    log(`Normalized filePath: ${path.resolve(filePath)}`);
+    log(`Original filePath: ${targetPath}`);
+    log(`Normalized filePath: ${normalizedFilePath}`);
     log(`Project root (cwd): ${projectRoot}`);
     log(`Project root (normalized): ${normalizedProjectRoot}`);
     log(`Relative path: ${relativePath}`);
-    log(`Path is absolute: ${path.isAbsolute(filePath)}`);
+    log(`Path is absolute: ${path.isAbsolute(targetPath)}`);
     log(`Path separator: "${path.sep}"`);
     log(`=== END DEBUG ===`);
 
@@ -172,7 +205,7 @@ Please retry with the suggested name. To keep progress: rename your target file 
 
     // STEP 3: Summary placement validation (after ALL-CAPITALS passes)
     // Agents: skip placement enforcement but keep ALL-CAPS enforcement above
-    const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
+    const summaryValidation = validateSummaryFilePlacement(targetPath, projectRoot);
 
     // If not a summary file or already in correct location, allow
     if (summaryValidation.allowed) {
