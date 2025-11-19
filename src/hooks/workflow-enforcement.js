@@ -83,6 +83,10 @@ function resetState(state) {
   saveState(state);
 }
 
+function toolMatches(step, toolName) {
+  return step.tools.includes(toolName);
+}
+
 function main() {
   const settings = loadWorkflowSettings();
   const { log, hookInput } = initializeHook('workflow-enforcement');
@@ -100,41 +104,37 @@ function main() {
     allowOperation(log, true);
   }
 
-  const trackedStep = settings.steps.find(step => step.tools.includes(toolName));
-  if (!trackedStep) {
-    allowOperation(log, true);
-  }
-
   const state = loadState(hookInput.session_id, hookInput);
-  const expectedIndex = state.active ? state.nextIndex : 0;
-  const expectedStep = settings.steps[expectedIndex];
+  const firstStep = settings.steps[0];
 
-  if (!state.active && trackedStep.index !== 0) {
-    blockOperation(`Workflow enforcement active. Start with the ${settings.steps[0].name} step before running ${trackedStep.name}.`, log);
-  }
+  if (!state.active) {
+    if (!firstStep || !toolMatches(firstStep, toolName)) {
+      blockOperation(`Workflow enforcement active. Start with the ${firstStep?.name || 'first'} step before running ${toolName}.`, log);
+    }
 
-  if (state.active && trackedStep.index !== expectedIndex) {
-    blockOperation(`Workflow enforcement active. Expected ${expectedStep.name} before running ${trackedStep.name}.`, log);
-  }
-
-  // Accepted step handling
-  if (!state.active && trackedStep.index === 0) {
-    state.active = settings.steps.length > 1;
-    state.nextIndex = settings.steps.length > 1 ? 1 : 0;
-    saveState(state);
-    allowOperation(log, true);
-  }
-
-  if (state.active && trackedStep.index === expectedIndex) {
-    const lastIndex = settings.steps.length - 1;
-    if (expectedIndex === lastIndex) {
-      resetState(state);
-    } else {
-      state.nextIndex = expectedIndex + 1;
+    if (settings.steps.length > 1) {
+      state.active = true;
+      state.nextIndex = 1;
       saveState(state);
     }
     allowOperation(log, true);
   }
+
+  const expectedStep = settings.steps[state.nextIndex] || null;
+
+  if (!expectedStep || !toolMatches(expectedStep, toolName)) {
+    blockOperation(`Workflow enforcement active. Expected ${expectedStep?.name || 'next'} before running ${toolName}.`, log);
+  }
+
+  const lastIndex = settings.steps.length - 1;
+  if (state.nextIndex === lastIndex) {
+    resetState(state);
+  } else {
+    state.nextIndex += 1;
+    saveState(state);
+  }
+
+  allowOperation(log, true);
 }
 
 try {
