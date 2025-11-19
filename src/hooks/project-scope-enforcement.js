@@ -15,6 +15,7 @@ const { initializeHook } = require('./lib/logging');
 const { extractToolInfo, allowOperation, blockOperation } = require('./lib/hook-helpers');
 const { isInstallationPath } = require('./lib/path-utils');
 const { isModifyingBashCommand } = require('./lib/command-validation');
+const { getSetting } = require('./lib/config-loader');
 
 function main() {
   // Initialize hook with shared library function
@@ -96,9 +97,12 @@ function main() {
     const projectRoot = getProjectRootFromHookInput(hookInput);
     log(`Project root detected: ${projectRoot}`);
 
+    const mainScopeAgent = getSetting('enforcement.main_scope_has_agent_privileges', false) === true;
+
     // CRITICAL: Check project boundary FIRST (before installation check)
     // Block ALL file operations outside project root (except ~/.claude/CLAUDE.md)
-    if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit')) {
+    // If main scope is granted agent privileges, allow same behavior as agents (skip boundary block) while keeping install protection.
+    if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit') && !mainScopeAgent) {
       const isInProject = isWithinProjectBoundaries(filePath, projectRoot);
       const isException = isAllowedException(filePath);
       const isInstall = isInstallationPath(filePath);
