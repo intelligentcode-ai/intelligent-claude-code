@@ -28,9 +28,11 @@ function main() {
     // no chaining, no extra lines.
     const trimmed = cmd.trim();
 
-    // Disallow heredocs or command chaining in the fast-path
+    // Disallow heredocs, command chaining, command substitution, or process substitution
     if (trimmed.includes('<<')) return false;
     if (/[;&|]/.test(trimmed)) return false;
+    if (trimmed.includes('$(') || trimmed.includes('`')) return false;
+    if (trimmed.includes('>(') || trimmed.includes('<(')) return false;
 
     // Must be single-line
     if (trimmed.split('\n').length !== 1) return false;
