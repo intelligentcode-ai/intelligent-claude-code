@@ -585,11 +585,39 @@ To execute blocked operation:
     const dirName = path.dirname(relativePath);
     const isMarkdown = fileName.toLowerCase().endsWith('.md');
 
-    // Markdown segment allowlist (uses configured allowlist + doc aliases)
-    const markdownSegments = new Set([
-      ...allowlist,
-      'docs', 'documentation', 'doc', 'docs-site', 'docs-content'
-    ]);
+    const normalizeSegments = (entry) => path.normalize(entry || '')
+      .split(path.sep)
+      .filter(Boolean);
+
+    const containsSegmentSequence = (parts, sequence) => {
+      if (!sequence.length) return false;
+      for (let i = 0; i <= parts.length - sequence.length; i++) {
+        let matches = true;
+        for (let j = 0; j < sequence.length; j++) {
+          if (parts[i + j] !== sequence[j]) {
+            matches = false;
+            break;
+          }
+        }
+        if (matches) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const allowlistSequences = allowlist
+      .map(normalizeSegments)
+      .filter(seq => seq.length > 0);
+
+    const markdownAliasSequences = ['docs', 'documentation', 'doc', 'docs-site', 'docs-content']
+      .map(normalizeSegments)
+      .filter(seq => seq.length > 0);
+
+    const markdownSegments = Array.from(new Set([
+      ...allowlistSequences,
+      ...markdownAliasSequences
+    ].map(seq => JSON.stringify(seq)))).map(str => JSON.parse(str));
 
     const pathParts = relativePath.split(path.sep);
 
@@ -616,21 +644,17 @@ To execute blocked operation:
       const normalizedFilePath = path.normalize(absolutePath);
       const pathPartsAbs = normalizedFilePath.split(path.sep);
 
-      for (const allowedPath of allowlist) {
-        const allowedIndex = pathPartsAbs.indexOf(allowedPath);
-        if (allowedIndex >= 0) {
-          const reconstructedPath = pathPartsAbs.slice(0, allowedIndex + 1).join(path.sep);
-          if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
-            return { allowed: true };
-          }
+      for (const seq of allowlistSequences) {
+        if (containsSegmentSequence(pathPartsAbs, seq)) {
+          return { allowed: true };
         }
       }
     }
 
     // PRIORITY 5: For markdown, allow if ANY path segment matches allowlist (honours parent-path gate)
     if (isMarkdown && (!isOutsideProject || ALLOW_PARENT_ALLOWLIST_PATHS)) {
-      for (const d of markdownSegments) {
-        if (pathParts.includes(d)) {
+      for (const seq of markdownSegments) {
+        if (containsSegmentSequence(pathParts, seq)) {
           return { allowed: true };
         }
       }
