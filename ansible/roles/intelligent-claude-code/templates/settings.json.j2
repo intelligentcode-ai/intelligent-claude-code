@@ -20,6 +20,10 @@
         "timeout": 5000
       }, {
         "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/workflow-enforcement.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
         "command": "node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js",
         "timeout": 5000
       }, {

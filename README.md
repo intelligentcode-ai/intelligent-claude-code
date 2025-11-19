@@ -29,6 +29,7 @@ Then work conversationally:
 - Main scope: coordinate, delegate, read; agents do the heavy work (configurable)
 - Memory-first: `memory/` is searched/stored automatically
 - Infra protection: IAC-only posture by default; see `icc.config.json`
+- Reviewed workflows: optional Task → Plan → Review → Execute → Review → Document enforcement via `reviewed_workflow` config
 
 ## Configure (minimal)
 - Primary knobs live in `icc.config.json` (or project `.icc/config.json`)
