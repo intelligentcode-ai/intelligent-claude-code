@@ -15,6 +15,7 @@ const { initializeHook } = require('./lib/logging');
 const { extractToolInfo, generateProjectHash, allowOperation, blockResponse, sendResponse } = require('./lib/hook-helpers');
 const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
+const { isAggressiveAllCaps } = require('./lib/allcaps-detection');
 
 // Load config ONCE at module level (not on every hook invocation)
 const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
@@ -100,9 +101,7 @@ function main() {
 
     // Check for ALL-CAPITALS filename (excluding extension)
     const fileBaseName = fileName.replace(/\.[^/.]+$/, ''); // Remove extension
-    const isAllCaps = fileBaseName === fileBaseName.toUpperCase() &&
-                      fileBaseName.length > 1 &&
-                      /^[A-Z0-9_-]+$/.test(fileBaseName);
+    const isAllCaps = isAggressiveAllCaps(fileBaseName);
 
     // CRITICAL: Block ALL-CAPITALS files REGARDLESS of location (unless in allowed list)
     if (isAllCaps && !allowedAllCapsFiles.includes(fileName)) {

@@ -21,6 +21,7 @@ const { isPathInAllowlist } = require('./lib/path-utils');
 const { isAllowedCoordinationCommand } = require('./lib/command-validation');
 const { checkToolBlacklist } = require('./lib/tool-blacklist');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
+const { isAggressiveAllCaps } = require('./lib/allcaps-detection');
 
 // Load config ONCE at module level (not on every hook invocation)
 const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
@@ -393,9 +394,7 @@ To execute blocked operation:
 
       // Check if filename is ALL-CAPS (excluding extension)
       const nameWithoutExt = path.parse(filename).name;
-      const isAllCaps = nameWithoutExt === nameWithoutExt.toUpperCase() &&
-                        nameWithoutExt !== nameWithoutExt.toLowerCase() &&
-                        nameWithoutExt.length > 0;
+      const isAllCaps = isAggressiveAllCaps(nameWithoutExt);
 
       // Exempt work item patterns: STORY-*, BUG-*, EPIC-*, AGENTTASK-*
       const isWorkItem = /^(STORY|BUG|EPIC|AGENTTASK)-\d+-.+/.test(filename);
