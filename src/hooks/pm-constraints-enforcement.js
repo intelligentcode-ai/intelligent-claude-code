@@ -10,7 +10,8 @@ const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 const { isCorrectDirectory, getSuggestedPath } = require('./lib/directory-enforcement');
 const { initializeHook } = require('./lib/logging');
 const { isAllowedCoordinationCommand } = require('./lib/command-validation');
-const { getProjectRoot, generateProjectHash } = require('./lib/hook-helpers');
+const { getProjectRoot } = require('./lib/hook-helpers');
+const { isAgentContext, isPMRole } = require('./lib/marker-detection');
 
 // Load config ONCE at module level (not on every hook invocation)
 const PM_EXTRA_COMMANDS = getSetting('enforcement.pm_allowed_bash_commands', [
@@ -88,46 +89,6 @@ function main() {
         'lib'  // Always block lib directory
       ]
     };
-  }
-
-  function isPMRole(hookInput) {
-    const session_id = hookInput.session_id;
-
-    // CRITICAL: Use generateProjectHash() for consistent hash generation
-    // This ensures the same hash is generated for marker creation and lookup
-    const projectHash = generateProjectHash(hookInput);
-    const projectRoot = getProjectRoot(hookInput);
-
-    const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-
-    // CRITICAL: Ensure marker directory exists before reading markers
-    if (!fs.existsSync(markerDir)) {
-      fs.mkdirSync(markerDir, { recursive: true });
-      log(`Created marker directory: ${markerDir}`);
-    }
-
-    const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
-
-    try {
-      if (!fs.existsSync(markerFile)) {
-        log(`PM context detected - no marker file for project ${projectRoot}`);
-        return true;
-      }
-
-      const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
-      const agentCount = marker.agent_count || 0;
-
-      if (agentCount > 0) {
-        log(`Agent context detected - ${agentCount} active agent(s) in project ${projectRoot}`);
-        return false;
-      } else {
-        log(`PM context detected - marker exists but agent_count is 0 for project ${projectRoot}`);
-        return true;
-      }
-    } catch (error) {
-      log(`Error reading marker file: ${error.message} - assuming PM context`);
-      return true;
-    }
   }
 
   // Note: isDevelopmentContext() is now provided by shared library
@@ -1118,23 +1079,9 @@ To execute blocked operation:
         // File doesn't match routing patterns - skip enforcement for agents
         const sessionId = hookInput.session_id || '';
 
-        if (sessionId && projectRoot) {
-          // Use generateProjectHash() for consistent hash generation
-          const projectHash = generateProjectHash(hookInput);
-          const markerDir = path.join(os.homedir(), '.claude', 'tmp');
-          const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
-
-          if (fs.existsSync(markerFile)) {
-            try {
-              const marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
-              if (marker.agent_count > 0) {
-                log('Agent context + no routing pattern - skipping enforcement');
-                shouldApplyMarkdownValidation = false;
-              }
-            } catch (err) {
-              log(`Warning: Could not read agent marker file: ${err.message}`);
-            }
-          }
+        if (isAgentContext(projectRoot, sessionId, log)) {
+          log('Agent context + no routing pattern - skipping enforcement');
+          shouldApplyMarkdownValidation = false;
         }
       } else {
         log('File matches routing pattern - enforcing directory routing even for agents');
@@ -1216,7 +1163,7 @@ Please use the correct directory for this file type.`
     }
 
     // PM-SPECIFIC RESTRICTIONS (only for PM role)
-    if (isPMRole(hookInput)) {
+    if (isPMRole(projectRoot, hookInput.session_id || '', log)) {
       log('PM role active - validating operation');
 
       // Block Edit/Write/Update tools ONLY for files not in PM allowlist

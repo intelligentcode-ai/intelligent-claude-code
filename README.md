@@ -41,6 +41,8 @@ Then work conversationally:
 
   See `sample-configs/README.md` for usage instructions and run `make install CONFIG_FILE=sample-configs/<name>.json` to apply one system-wide.
 
+- Toggle `enforcement.main_scope_has_agent_privileges: true` if you want the Main Scope treated exactly like an agent (strict main-scope enforcement, PM-only limits, doc routing, etc. all short-circuit). Default is `false`; `icc.config.main-scope-dev.json` turns it on for systems impacted by the V8 issue.
+
 ## Documentation
 - Start: [docs/index.md](docs/index.md)
 - Essentials: [installation-guide](docs/installation-guide.md), [user-guide](docs/user-guide.md), [agenttask-system-guide](docs/agenttask-system-guide.md), [virtual-team-guide](docs/virtual-team-guide.md)
