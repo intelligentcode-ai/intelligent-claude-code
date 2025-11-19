@@ -40,14 +40,14 @@ function main() {
     if (!redirMatch) return false;
 
     const target = redirMatch[1];
-    const absBase = cwd || process.cwd();
-    const absTarget = path.isAbsolute(target) ? target : path.join(absBase, target);
-    const normalized = path.normalize(absTarget);
-    const baseNormalized = path.normalize(absBase);
+    const absBase = path.resolve(cwd || process.cwd());
+    const absTarget = path.resolve(path.isAbsolute(target) ? target : path.join(absBase, target));
 
-    // Require target under current project/root (if provided) and containing docs/ or documentation/
-    if (!normalized.startsWith(baseNormalized)) return false;
-    const segments = normalized.split(path.sep);
+    // Require target under the base directory (segment boundary aware)
+    const underBase = absTarget === absBase || absTarget.startsWith(absBase + path.sep);
+    if (!underBase) return false;
+
+    const segments = absTarget.split(path.sep);
 
     return segments.includes('docs') || segments.includes('documentation');
   }
