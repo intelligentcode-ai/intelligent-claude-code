@@ -211,7 +211,7 @@ function main() {
     }
 
     // Check if command is allowed coordination command (unified with main-scope)
-    if (isAllowedCoordinationCommand(command)) {
+    if (isAllowedCoordinationCommand(command, { role: 'pm' })) {
       log(`PM-allowed coordination command: ${command}`);
       return { allowed: true };
     }

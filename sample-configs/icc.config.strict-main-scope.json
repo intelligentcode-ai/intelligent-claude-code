@@ -29,7 +29,18 @@
   },
   "git": {
     "privacy": true,
+    "branch_protection": true,
     "require_pr_for_main": true,
     "default_branch": "dev"
+  },
+  "memory": {
+    "integration": true,
+    "auto_storage": true,
+    "search_before_questions": true,
+    "max_search_results": 3
+  },
+  "best_practices": {
+    "search_enabled": true,
+    "auto_generation": true
   }
 }

@@ -305,7 +305,7 @@ function main() {
     // ========================================================================
     if (tool === 'Bash' && command) {
       // Check if it's an allowed coordination command (git, ls, make, etc.)
-      if (isAllowedCoordinationCommand(command)) {
+      if (isAllowedCoordinationCommand(command, { role: 'main_scope' })) {
         log(`Bash coordination command allowed: ${command}`);
         return allowOperation(log);
       }

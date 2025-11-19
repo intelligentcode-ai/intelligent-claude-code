@@ -56,7 +56,10 @@ function extractCommandsFromBash(commandString) {
  * @param {string} command - Bash command to check
  * @returns {boolean} true if allowed
  */
-function isAllowedCoordinationCommand(command) {
+function isAllowedCoordinationCommand(command, { role = 'main_scope' } = {}) {
+  const configAllowed = role === 'main_scope'
+    ? (getSetting('enforcement.main_scope_allowed_bash_commands', []) || [])
+    : [];
   const allowedCommands = [
     // Git operations (complete workflow)
     'git status', 'git log', 'git diff', 'git show',
@@ -70,7 +73,7 @@ function isAllowedCoordinationCommand(command) {
     'date', 'pwd', 'whoami', 'echo', 'which', 'env', 'sleep',
     // Process monitoring
     'ps', 'top', 'jobs', 'bg', 'fg'
-  ];
+  , ...configAllowed];
 
   // Check if command starts with any allowed command
   for (const allowed of allowedCommands) {
