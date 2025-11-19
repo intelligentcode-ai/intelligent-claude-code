@@ -24,19 +24,31 @@ function main() {
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
   function isDocumentationWrite(cmd, cwd) {
-    // Allow harmless documentation writes even if the heredoc text contains
-    // infrastructure keywords (kubectl, etc.). We only allow simple redirections
-    // to docs/ or documentation/ paths with cat/printf/tee.
+    // Allow *only* a single-line redirect to docs/ or documentation/. No heredocs,
+    // no chaining, no extra lines.
+    const trimmed = cmd.trim();
 
-    // Match: cat << 'EOF' > docs/file.md  OR  printf '...' > documentation/file.md
-    const redirMatch = cmd.match(/^(?:\s*)(cat|printf|tee)[^>]*>+\s+([^\s]+)\s*$/m);
+    // Disallow heredocs or command chaining in the fast-path
+    if (trimmed.includes('<<')) return false;
+    if (/[;&|]/.test(trimmed)) return false;
+
+    // Must be single-line
+    if (trimmed.split('\n').length !== 1) return false;
+
+    // Match: cat|printf|tee ... > docs/... (no other tokens after the redirection)
+    const redirMatch = trimmed.match(/^(?:cat|printf|tee)\s+[^>]*>+\s+([^\s]+)\s*$/);
     if (!redirMatch) return false;
 
-    const target = redirMatch[2];
-    // Resolve relative targets
-    const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
+    const target = redirMatch[1];
+    const absBase = cwd || process.cwd();
+    const absTarget = path.isAbsolute(target) ? target : path.join(absBase, target);
     const normalized = path.normalize(absTarget);
+    const baseNormalized = path.normalize(absBase);
+
+    // Require target under current project/root (if provided) and containing docs/ or documentation/
+    if (!normalized.startsWith(baseNormalized)) return false;
     const segments = normalized.split(path.sep);
+
     return segments.includes('docs') || segments.includes('documentation');
   }
 
