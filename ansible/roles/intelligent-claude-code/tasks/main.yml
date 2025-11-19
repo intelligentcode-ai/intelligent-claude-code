@@ -254,6 +254,11 @@
       register: icc_config_exists
       when: claude_config_source | length == 0
 
+    - name: Preserve existing icc.config.json (no config_file supplied)
+      debug:
+        msg: "Existing icc.config.json detected – leaving it untouched (pass CONFIG_FILE to override)."
+      when: claude_config_source | length == 0 and icc_config_exists.stat.exists and ansible_verbosity >= 1
+
     - name: Install default icc.config.json only if missing
       copy:
         src: "{{ playbook_dir }}/../icc.config.default.json"
