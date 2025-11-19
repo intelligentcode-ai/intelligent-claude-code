@@ -24,19 +24,31 @@ function main() {
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
   function isDocumentationWrite(cmd, cwd) {
-    // Allow harmless documentation writes even if the heredoc text contains
-    // infrastructure keywords (kubectl, etc.). We only allow simple redirections
-    // to docs/ or documentation/ paths with cat/printf/tee.
+    // Allow *only* a single-line redirect to docs/ or documentation/. No heredocs,
+    // no chaining, no extra lines.
+    const trimmed = cmd.trim();
 
-    // Match: cat << 'EOF' > docs/file.md  OR  printf '...' > documentation/file.md
-    const redirMatch = cmd.match(/^(?:\s*)(cat|printf|tee)[^>]*>+\s+([^\s]+)\s*$/m);
+    // Disallow heredocs or command chaining in the fast-path
+    if (trimmed.includes('<<')) return false;
+    if (/[;&|]/.test(trimmed)) return false;
+
+    // Must be single-line
+    if (trimmed.split('\n').length !== 1) return false;
+
+    // Match: cat|printf|tee ... > docs/... (no other tokens after the redirection)
+    const redirMatch = trimmed.match(/^(?:cat|printf|tee)\s+[^>]*>+\s+([^\s]+)\s*$/);
     if (!redirMatch) return false;
 
-    const target = redirMatch[2];
-    // Resolve relative targets
-    const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
-    const normalized = path.normalize(absTarget);
-    const segments = normalized.split(path.sep);
+    const target = redirMatch[1];
+    const absBase = path.resolve(cwd || process.cwd());
+    const absTarget = path.resolve(path.isAbsolute(target) ? target : path.join(absBase, target));
+
+    // Require target under the base directory (segment boundary aware)
+    const underBase = absTarget === absBase || absTarget.startsWith(absBase + path.sep);
+    if (!underBase) return false;
+
+    const segments = absTarget.split(path.sep);
+
     return segments.includes('docs') || segments.includes('documentation');
   }
 
@@ -147,7 +159,7 @@ function main() {
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
-      if (actualCommand.includes(imperativeCmd)) {
+      if (command.includes(imperativeCmd) || actualCommand.includes(imperativeCmd)) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
@@ -211,7 +223,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 2: Check whitelist (overrides write/read blacklists, but not imperative destructive)
     for (const allowedCmd of whitelist) {
-      if (actualCommand.includes(allowedCmd)) {
+      if (command.includes(allowedCmd) || actualCommand.includes(allowedCmd)) {
         log(`ALLOWED: Command in whitelist: ${allowedCmd}`);
         console.log(JSON.stringify(standardOutput));
         process.exit(0);
@@ -220,7 +232,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 3: Check write operations (blocked for agents)
     for (const writeCmd of writeOperations) {
-      if (actualCommand.includes(writeCmd)) {
+      if (command.includes(writeCmd) || actualCommand.includes(writeCmd)) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
@@ -268,7 +280,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 4: Check read operations (allowed if read_operations_allowed=true)
     for (const readCmd of readOperations) {
-      if (actualCommand.includes(readCmd)) {
+      if (command.includes(readCmd) || actualCommand.includes(readCmd)) {
         if (readAllowed) {
           log(`ALLOWED: Read operation: ${readCmd}`);
           console.log(JSON.stringify(standardOutput));
