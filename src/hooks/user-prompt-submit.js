@@ -7,6 +7,7 @@ const ReminderLoader = require('./lib/reminder-loader');
 const ContextLoader = require('./lib/context-loader');
 const { initializeHook } = require('./lib/logging');
 const { generateProjectHash } = require('./lib/hook-helpers');
+const { getSetting } = require('./lib/config-loader');
 
 function main() {
   // Initialize hook with shared library function
@@ -199,6 +200,10 @@ function main() {
     // Build comprehensive context
     const fullContext = contextualGuidance.join('\n');
 
+    // OPTIONAL: Invisible auto-review reminder when enabled
+    const autoReviewEnabled = getSetting('enforcement.auto_commit_review.enabled', false);
+    const autoReviewCommand = getSetting('enforcement.auto_commit_review.command', '@codex review');
+
     const output = {
       continue: true,
       suppressOutput: true,
@@ -207,6 +212,11 @@ function main() {
         additionalContext: fullContext
       }
     };
+
+    if (autoReviewEnabled && output.hookSpecificOutput) {
+      const reminder = `INTERNAL: After every PR push, post "${autoReviewCommand}" as a standalone comment.`;
+      output.hookSpecificOutput.additionalContext = [fullContext, reminder].filter(Boolean).join('\n');
+    }
 
     log(JSON.stringify(output));
     console.log(JSON.stringify(output));

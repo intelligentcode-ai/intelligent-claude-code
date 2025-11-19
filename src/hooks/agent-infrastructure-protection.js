@@ -23,51 +23,99 @@ function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
-function isSafeDocumentationWrite(cmd, cwd) {
-  // Permit only pure doc writes (single redirection to docs/) with nothing else on the command line.
-  const trimmed = cmd.trim();
+  const DOC_DIRECTORY_NAMES = new Set([
+    'docs',
+    'documentation',
+    'doc',
+    'docs-site',
+    'docs-content',
+  ]);
 
-  // Reject if chaining operators exist on the first line (multiple commands)
-  const firstLine = trimmed.split('\n', 1)[0];
-  if (/[;&|]{1,2}/.test(firstLine)) return false;
+  function hasCommandSubstitution(str) {
+    let inSingle = false;
+    let inDouble = false;
 
-  // Helper to resolve target and check docs path
-  const targetsDocs = (target) => {
-    const absTarget = path.isAbsolute(target) ? target : path.join(cwd || process.cwd(), target);
-    const segments = path.normalize(absTarget).split(path.sep);
-    return segments.includes('docs') || segments.includes('documentation');
-  };
+    for (let i = 0; i < str.length; i++) {
+      const ch = str[i];
+      const prev = str[i - 1];
 
-  // Heredoc form
-  if (/<<\s*'??EOF'??/i.test(trimmed)) {
-    // Must end with EOF and nothing after
-    if (!/\nEOF\s*$/.test(trimmed)) return false;
+      if (!inDouble && ch === "'" && prev !== '\\') {
+        inSingle = !inSingle;
+        continue;
+      }
+      if (!inSingle && ch === '"' && prev !== '\\') {
+        inDouble = !inDouble;
+        continue;
+      }
+      if (inSingle) {
+        continue;
+      }
 
-    const m = firstLine.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s*([^\s]+)\s*$/i);
-    if (!m) return false;
-    if (!targetsDocs(m[2])) return false;
-
-    // Ensure no additional commands after EOF
-    const afterEof = trimmed.split('\nEOF').slice(1).join('\nEOF').trim();
-    return afterEof === '';
+      if (ch === '$' && prev !== '\\' && str[i + 1] === '(') {
+        return true;
+      }
+      if (ch === '`' && prev !== '\\') {
+        return true;
+      }
+      if ((ch === '>' || ch === '<') && prev !== '\\' && str[i + 1] === '(') {
+        return true;
+      }
+    }
+    return false;
   }
 
-  // Single-line redirection only
-  const m = trimmed.match(/^(?:\s*)(cat|printf|tee)[^>]*>\s*([^\s]+)\s*$/i);
-  if (!m) return false;
-  if (!targetsDocs(m[2])) return false;
-  return true;
-}
+  function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
 
-// Strip heredoc bodies for analysis to avoid keyword false-positives
-function stripDocHeredocBody(cmd) {
-  const heredocMatch = cmd.match(/^(.*<<\s*'??EOF'??)([\s\S]*?)(\nEOF\s*$)/m);
-  if (!heredocMatch) return cmd;
-  const header = heredocMatch[1];
-  const footer = heredocMatch[3];
-  return `${header}\n[DOC_CONTENT_REDACTED]\n${footer}`;
-}
+  function targetsDocumentation(target, cwd) {
+    const absBase = path.resolve(cwd || process.cwd());
+    const absTarget = path.resolve(absBase, target);
 
+    const underBase = absTarget === absBase || absTarget.startsWith(absBase + path.sep);
+    if (!underBase) {
+      return false;
+    }
+
+    const segments = absTarget.split(path.sep);
+    return segments.some((segment) => DOC_DIRECTORY_NAMES.has(segment));
+  }
+
+  function isDocumentationWrite(cmd, cwd) {
+    const trimmed = cmd.trim();
+    if (!trimmed) {
+      return false;
+    }
+
+    const firstLine = trimmed.split('\n', 1)[0];
+
+    if (/[;&|]{1,2}/.test(firstLine)) {
+      return false;
+    }
+
+    if (hasCommandSubstitution(firstLine)) {
+      return false;
+    }
+
+    const redirectMatch = firstLine.match(/^(?:\s*)(cat|printf|tee)\b[^>]*>+\s*([^\s]+)\s*$/i);
+    if (!redirectMatch) {
+      return false;
+    }
+
+    const target = redirectMatch[2];
+    if (!targetsDocumentation(target, cwd)) {
+      return false;
+    }
+
+    const heredocMatch = firstLine.match(/<<-?\s*'?([A-Za-z0-9_:-]+)'?/);
+    if (heredocMatch) {
+      const terminator = heredocMatch[1];
+      const terminatorRegex = new RegExp(`\\n${escapeRegex(terminator)}\\s*$`);
+      return terminatorRegex.test(trimmed);
+    }
+
+    return trimmed.indexOf('\n') === -1;
+  }
   function extractSSHCommand(command) {
     // Match SSH command patterns:
     // ssh user@host "command"
@@ -139,16 +187,12 @@ function stripDocHeredocBody(cmd) {
     const actualCommand = extractSSHCommand(command);
     log(`Actual command after SSH extraction: ${actualCommand.substring(0, 100)}...`);
 
-    // Special-case: allow pure documentation writes to docs/ when the command
-    // is only the write (no chaining). Also redact doc heredoc content from
-    // later keyword scans.
-    let analysisCommand = command;
-    if (isSafeDocumentationWrite(command, hookInput.cwd)) {
-      log('ALLOWED: Documentation write detected (docs/ or documentation/)');
+    // Special-case: allow pure documentation writes to docs*/ directories even if
+    // the heredoc body contains infra keywords, because only a file write occurs.
+    if (isDocumentationWrite(command, hookInput.cwd)) {
+      log('ALLOWED: Documentation write detected (docs*/ directories fast-path)');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
-    } else {
-      analysisCommand = stripDocHeredocBody(command);
     }
 
     // Check for emergency override token
@@ -179,7 +223,7 @@ function stripDocHeredocBody(cmd) {
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
-      if (analysisCommand.includes(imperativeCmd)) {
+      if (command.includes(imperativeCmd) || actualCommand.includes(imperativeCmd)) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
@@ -243,7 +287,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 2: Check whitelist (overrides write/read blacklists, but not imperative destructive)
     for (const allowedCmd of whitelist) {
-      if (analysisCommand.includes(allowedCmd)) {
+      if (command.includes(allowedCmd) || actualCommand.includes(allowedCmd)) {
         log(`ALLOWED: Command in whitelist: ${allowedCmd}`);
         console.log(JSON.stringify(standardOutput));
         process.exit(0);
@@ -252,7 +296,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 3: Check write operations (blocked for agents)
     for (const writeCmd of writeOperations) {
-      if (analysisCommand.includes(writeCmd)) {
+      if (command.includes(writeCmd) || actualCommand.includes(writeCmd)) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
@@ -300,7 +344,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 4: Check read operations (allowed if read_operations_allowed=true)
     for (const readCmd of readOperations) {
-      if (analysisCommand.includes(readCmd)) {
+      if (command.includes(readCmd) || actualCommand.includes(readCmd)) {
         if (readAllowed) {
           log(`ALLOWED: Read operation: ${readCmd}`);
           console.log(JSON.stringify(standardOutput));

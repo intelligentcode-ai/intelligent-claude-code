@@ -6,16 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [8.20.84] - 2025-11-16
- 
-## [8.20.89] - 2025-11-17
+## [8.20.89] - 2025-11-19
 
 ### Added
-- Context injection now always surfaces project best practices and explicit memory-before/after guidance (without requiring /icc-search-memory), keeping constraints visible.
-- ALL-CAPS filename block retains execution-pattern guidance while auto-suggesting lowercase/kebab alternatives.
+- New `sample-configs/icc.config.main-scope-dev.json` preset for Linux/macOS systems: guardrails remain enabled while Main Scope can run curated `git`/`gh` commands without spawning agents.
+- Sample config docs now list every preset and explain how to install via `make install CONFIG_FILE=...`.
+- Context injection now always surfaces project best practices and explicit memory-before/after guidance (without requiring `/icc-search-memory`).
+- ALL-CAPS filename enforcement retains execution-pattern guidance while auto-suggesting lowercase/kebab alternatives.
+
+### Changed
+- All sample configs now force best-practices/constraints output and keep memory integration plus git branch protection enabled.
+- Main-scope coordination whitelist can be extended via `enforcement.main_scope_allowed_bash_commands` so presets can safely allow additional `gh`/`git` commands.
+- README highlights the available presets for quick reference.
+- Context-injection now instructs the Main Scope to start every response with the rendered constraints + best-practice block so users see the guardrails continuously.
 
 ### Fixed
-- Documentation writes via Bash heredoc to docs/ or documentation/ are no longer blocked by infra protection, even if the text contains infrastructure keywords.
+- Documentation writes via Bash heredoc to docs*/documentation directories are no longer blocked by infra protection, even if the text contains infrastructure keywords.
 
 ### Testing
 - `bash tests/run-tests.sh`
@@ -23,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.20.88] - 2025-11-17
 
 ### Added
-- Two opt-in ICC presets under `.icc/`: `config.relaxed.json` (current deployed behavior) and `config.strict-main-scope.json` (coordination-only main scope with agents active). Included `.icc/README.md` with quick swap instructions.
+- Two opt-in ICC presets under `.icc/`: `config.relaxed.json` (legacy behavior) and `config.strict-main-scope.json` (coordination-only main scope). Included `.icc/README.md` with quick swap instructions.
 
 ### Fixed
 - Main-scope enforcement allowlist now includes default `docs/` and `documentation/` directories even when config paths are unset, preventing false blocks in projects like GovStack.
@@ -36,46 +42,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Context injection now surfaces MCP availability hints for PM/Main Scope when `mcp_integrations` entries are enabled, encouraging use of GitHub/GitLab/Jira MCP tools when installed.
+- Reintroduced contextual logic to `memory-first-reminder.js`, targeting prompts about credentials, configuration, AgentTasks, and deployments while logging stats to `~/.claude/stats/memory-usage.json`.
+- New PreToolUse integration test (`test-project-scope-enforcement.js`) ensures stdin parsing and permission decisions stay aligned with enforcement expectations.
 
 ### Changed
 - Main Scope enforcement honors `tools.mcp_tools_enabled`; MCP tools are allowed only when explicitly enabled, making the toggle effective.
 
-### Testing
-- `bash tests/run-tests.sh`
-
-## [8.20.88] - 2025-11-17
-
-### Added
-- Two opt-in ICC presets under `.icc/`: `config.relaxed.json` (current deployed behavior) and `config.strict-main-scope.json` (coordination-only main scope with agents active). Included `.icc/README.md` with quick swap instructions.
-
-### Fixed
-- Main-scope enforcement allowlist now includes default `docs/` and `documentation/` directories even when config paths are unset, preventing false blocks in projects like GovStack.
-- Added unit coverage for docs/documentation allowlist handling.
-
-### Testing
-- `bash tests/run-tests.sh`
-
-### Added
-- Reintroduced contextual logic to `memory-first-reminder.js`, targeting prompts about credentials, configuration, AgentTasks, and deployments while logging stats to `~/.claude/stats/memory-usage.json`.
-- New PreToolUse integration test (`test-project-scope-enforcement.js`) ensures stdin parsing and permission decisions stay aligned with enforcement expectations.
-
 ### Fixed
 - All PreToolUse hooks now read `CLAUDE_TOOL_INPUT` so they receive the same payloads as UserPromptSubmit hooks; helper/unit tests enforce the new precedence.
 - Project scope enforcement blocks edits outside the active project (except `~/.claude/CLAUDE.md`) and surfaces proper deny responses, addressing the prior silent allow behavior.
-
-### Testing
-- `bash tests/run-tests.sh`
-
----
-
-## [8.20.85] - 2025-11-16
-
-### Changed
-- Transcript retention now archives older session JSONL files and trims the active session only when necessary, preventing multi-gigabyte loads that crashed Claude on Linux.
-- Per-project transcript quota lowered to 10 MB (configurable via `CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES`).
-
-### Fixed
-- Memory stats logging writes compact JSON and adds rotation so hooks no longer blow the V8 heap when telemetry grows too large.
 
 ### Testing
 - `bash tests/run-tests.sh`
@@ -95,6 +70,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Installers (Ansible/PowerShell) now copy default constraints.json to hooks/lib.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+---
+
+## [8.20.85] - 2025-11-16
+
+### Changed
+- Transcript retention now archives older session JSONL files and trims the active session only when necessary, preventing multi-gigabyte loads that crashed Claude on Linux.
+- Per-project transcript quota lowered to 10 MB (configurable via `CLAUDE_PROJECT_TRANSCRIPTS_MAX_BYTES`).
+
+### Fixed
+- Memory stats logging writes compact JSON and adds rotation so hooks no longer blow the V8 heap when telemetry grows too large.
 
 ### Testing
 - `bash tests/run-tests.sh`

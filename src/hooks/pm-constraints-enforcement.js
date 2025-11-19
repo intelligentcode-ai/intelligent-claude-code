@@ -19,7 +19,9 @@ const PM_EXTRA_COMMANDS = getSetting('enforcement.pm_allowed_bash_commands', [
 ]);
 const PM_INFRASTRUCTURE_BLACKLIST = getSetting('enforcement.tool_blacklist.infrastructure', []);
 const HEREDOC_ALLOWED_COMMANDS = getSetting('enforcement.heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
-const ALLOW_PARENT_ALLOWLIST_PATHS = getSetting('enforcement.allow_parent_allowlist_paths', false);
+const ALLOW_PARENT_ALLOWLIST_PATHS = process.env.ALLOW_PARENT_ALLOWLIST_PATHS
+  ? process.env.ALLOW_PARENT_ALLOWLIST_PATHS === 'true'
+  : getSetting('enforcement.allow_parent_allowlist_paths', false);
 const ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST_AGENTS = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
 const ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST = getSetting('enforcement.allow_markdown_outside_allowlist', false);
 const BLOCKING_ENABLED = getSetting('enforcement.blocking_enabled', true);
@@ -209,7 +211,7 @@ function main() {
     }
 
     // Check if command is allowed coordination command (unified with main-scope)
-    if (isAllowedCoordinationCommand(command)) {
+    if (isAllowedCoordinationCommand(command, { role: 'pm' })) {
       log(`PM-allowed coordination command: ${command}`);
       return { allowed: true };
     }
@@ -509,25 +511,17 @@ To execute blocked operation:
           return true;
         }
       }
-    } else {
-      // Path goes outside project root (contains '../')
-      // Check if allow_parent_allowlist_paths is enabled
-      const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
+    } else if (ALLOW_PARENT_ALLOWLIST_PATHS) {
+      // Parent/sibling paths are only allowed when explicitly enabled
+      const pathParts = normalizedFilePath.split(path.sep);
 
-      if (allowParentPaths) {
-        // Split normalized path into components
-        const pathParts = normalizedFilePath.split(path.sep);
-
-        // Check if ANY directory component matches an allowlist directory
-        for (const allowedPath of allowlist) {
-          const allowedIndex = pathParts.indexOf(allowedPath);
-          if (allowedIndex >= 0) {
-            // Found allowlist directory in path
-            // Verify file is actually under this directory (not just same name in path)
-            const reconstructedPath = pathParts.slice(0, allowedIndex + 1).join(path.sep);
-            if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
-              return true;
-            }
+      // Check if ANY directory component matches an allowlist directory
+      for (const allowedPath of allowlist) {
+        const allowedIndex = pathParts.indexOf(allowedPath);
+        if (allowedIndex >= 0) {
+          const reconstructedPath = pathParts.slice(0, allowedIndex + 1).join(path.sep);
+          if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
+            return true;
           }
         }
       }
@@ -560,34 +554,72 @@ To execute blocked operation:
       return { allowed: true };
     }
 
-    // Normalize to relative path if absolute
-    let relativePath = filePath;
-    if (path.isAbsolute(filePath)) {
-      try {
-        // Resolve both paths to handle symlinks properly
-        const realFilePath = fs.existsSync(filePath) ? fs.realpathSync(filePath) : filePath;
-        const realProjectRoot = fs.realpathSync(projectRoot);
-        relativePath = path.relative(realProjectRoot, realFilePath);
-      } catch (error) {
-        // Fallback to original calculation if resolution fails
-        relativePath = path.relative(projectRoot, filePath);
-      }
+    // Normalize to project-relative path (resolve symlinks when possible)
+    let relativePath;
+    const normalizedFilePath = path.normalize(path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath));
+    const normalizedProjectRoot = path.normalize(projectRoot);
+
+    try {
+      const realFilePath = fs.existsSync(normalizedFilePath) ? fs.realpathSync(normalizedFilePath) : normalizedFilePath;
+      const realProjectRoot = fs.realpathSync(normalizedProjectRoot);
+      relativePath = path.relative(realProjectRoot, realFilePath);
+    } catch (error) {
+      // Fall back to non-resolved paths if realpath fails
+      relativePath = path.relative(normalizedProjectRoot, normalizedFilePath);
     }
 
-    // Get configured allowlist
+    // Get configured allowlist (include defaults, filter falsy)
     const config = loadConfiguration();
     const allowlist = [
-      config.story_path,
-      config.bug_path,
-      config.memory_path,
-      config.docs_path,
-      'agenttasks',
-      'summaries',
-      'tests'  // Allow test file creation for comprehensive coverage
-    ];
+      config.story_path || 'stories',
+      config.bug_path || 'bugs',
+      config.memory_path || 'memory',
+      config.docs_path || 'docs',
+      config.summaries_path || 'summaries',
+      config.test_path || 'tests',
+      'documentation', 'doc', 'docs-site', 'docs-content',
+      'agenttasks'
+    ].filter(Boolean);
 
     const fileName = path.basename(relativePath);
     const dirName = path.dirname(relativePath);
+    const isMarkdown = fileName.toLowerCase().endsWith('.md');
+
+    const normalizeSegments = (entry) => path.normalize(entry || '')
+      .split(path.sep)
+      .filter(Boolean);
+
+    const containsSegmentSequence = (parts, sequence) => {
+      if (!sequence.length) return false;
+      for (let i = 0; i <= parts.length - sequence.length; i++) {
+        let matches = true;
+        for (let j = 0; j < sequence.length; j++) {
+          if (parts[i + j] !== sequence[j]) {
+            matches = false;
+            break;
+          }
+        }
+        if (matches) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const allowlistSequences = allowlist
+      .map(normalizeSegments)
+      .filter(seq => seq.length > 0);
+
+    const markdownAliasSequences = ['docs', 'documentation', 'doc', 'docs-site', 'docs-content']
+      .map(normalizeSegments)
+      .filter(seq => seq.length > 0);
+
+    const markdownSegments = Array.from(new Set([
+      ...allowlistSequences,
+      ...markdownAliasSequences
+    ].map(seq => JSON.stringify(seq)))).map(str => JSON.parse(str));
+
+    const pathParts = relativePath.split(path.sep);
 
     // PRIORITY 1: Check if markdown is in root (root .md files are ALWAYS allowed)
     if (dirName === '.' || dirName === '') {
@@ -600,38 +632,30 @@ To execute blocked operation:
       return { allowed: true };
     }
 
-    // PRIORITY 3: Check if markdown is in allowlist directory (ALWAYS allowed)
-    for (const allowedPath of allowlist) {
-      if (relativePath.startsWith(allowedPath + '/') || relativePath === allowedPath) {
-        return { allowed: true };
+    // PRIORITY 3: Parent/sibling paths are denied unless explicitly allowed
+    const isOutsideProject = relativePath.startsWith('..');
+    if (isOutsideProject && !ALLOW_PARENT_ALLOWLIST_PATHS) {
+      return { allowed: false, message: 'Markdown outside project root and parent allowlist disabled' };
+    }
+
+    // PRIORITY 4: Parent paths with allow_parent_allowlist_paths enabled
+    if (isOutsideProject && ALLOW_PARENT_ALLOWLIST_PATHS) {
+      const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath);
+      const normalizedFilePath = path.normalize(absolutePath);
+      const pathPartsAbs = normalizedFilePath.split(path.sep);
+
+      for (const seq of allowlistSequences) {
+        if (containsSegmentSequence(pathPartsAbs, seq)) {
+          return { allowed: true };
+        }
       }
     }
 
-    // PRIORITY 3.5: Check parent paths if allow_parent_allowlist_paths enabled
-    // Path goes outside project root (contains '../')
-    const isOutsideProject = relativePath.startsWith('..');
-    if (isOutsideProject) {
-      const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
-
-      if (allowParentPaths) {
-        // Normalize to absolute path for component checking
-        const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath);
-        const normalizedFilePath = path.normalize(absolutePath);
-
-        // Split normalized path into components
-        const pathParts = normalizedFilePath.split(path.sep);
-
-        // Check if ANY directory component matches an allowlist directory
-        for (const allowedPath of allowlist) {
-          const allowedIndex = pathParts.indexOf(allowedPath);
-          if (allowedIndex >= 0) {
-            // Found allowlist directory in path
-            // Verify file is actually under this directory (not just same name in path)
-            const reconstructedPath = pathParts.slice(0, allowedIndex + 1).join(path.sep);
-            if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
-              return { allowed: true };
-            }
-          }
+    // PRIORITY 5: For markdown, allow if ANY path segment matches allowlist (honours parent-path gate)
+    if (isMarkdown && (!isOutsideProject || ALLOW_PARENT_ALLOWLIST_PATHS)) {
+      for (const seq of markdownSegments) {
+        if (containsSegmentSequence(pathParts, seq)) {
+          return { allowed: true };
         }
       }
     }
@@ -707,6 +731,18 @@ To execute blocked operation:
   function validatePMOperation(filePath, tool, paths, projectRoot) {
     const { allowlist, blocklist } = paths;
 
+    // Normalize path information up-front so downstream checks do not hit
+    // undeclared variables and so parent/sibling detection is consistent.
+    const normalizedFilePath = path.normalize(path.isAbsolute(filePath)
+      ? filePath
+      : path.join(projectRoot, filePath));
+    const normalizedProjectRoot = path.normalize(projectRoot);
+    const relativePath = path.relative(normalizedProjectRoot, normalizedFilePath);
+    const pathParts = relativePath.split(path.sep);
+    const fileName = path.basename(relativePath);
+    const isMarkdown = fileName.toLowerCase().endsWith('.md');
+    const isParentPath = relativePath.startsWith('..');
+
     // Check blocklist first (explicit denial)
     if (isPathInBlocklist(filePath, blocklist, projectRoot)) {
       // Convert to relative path for proper directory matching
@@ -762,17 +798,23 @@ To execute blocked operation:
     }
 
     // Check allowlist (explicit permission)
+    if (isMarkdown) {
+      const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
+
+      // Only allow parent/sibling markdown if explicitly configured
+      if (!isParentPath || allowParentPaths) {
+        if (allowlist.some(allowed => pathParts.includes(allowed))) {
+          return { allowed: true };
+        }
+      }
+    }
+
     if (isPathInAllowlist(filePath, allowlist, projectRoot)) {
       return { allowed: true };
     }
 
     // Not in allowlist = blocked
     // Determine if this is a parent path issue
-    const normalizedFilePath = path.normalize(path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath));
-    const normalizedProjectRoot = path.normalize(projectRoot);
-    const relativePath = path.relative(normalizedProjectRoot, normalizedFilePath);
-    const isParentPath = relativePath.startsWith('..');
-
     let reason = 'File path not in PM allowlist';
     let suggestion = 'Or create the file in an appropriate allowlist directory.';
 
