@@ -36,7 +36,7 @@ Then work conversationally:
   - `config.relaxed.json` – legacy behavior with lighter guardrails
   - `config.sub-agent.json` – agents do all writes/exec; main scope delegates only
   - `config.main-scope.json` – coordination-only main scope (agents execute work)
-  - `config.strict-main-scope.json` – read-only/Task-only main scope (for ultra-safe modes)
+  - `config.strict-main-scope.json` – read-only/Task-only main scope (ultra-safe mode)
   - `config.main-scope-dev.json` – Linux/macOS friendly preset where Main Scope may run curated `git`/`gh` commands locally while all guardrails (file naming, folders, git privacy, @codex review, best practices, memory output) remain enabled
 
   See `sample-configs/README.md` for usage instructions and run `make install CONFIG_FILE=sample-configs/<name>.json` to apply one system-wide.

@@ -521,7 +521,17 @@ function main() {
           }
         }
 
-        contextualGuidance.push(constraintLines.join('\n'));
+        const constraintBlock = constraintLines.join('\n');
+        const formatInstructions = [
+          '⚠️ RESPONSE FORMAT REQUIREMENT (DO NOT IGNORE):',
+          '1. Begin your next reply by printing the exact block below (no paraphrasing, nothing before it).',
+          '2. Keep the constraint/best-practice text exactly as provided.',
+          '3. After the block, continue with your normal response while explicitly referencing the listed constraints/best practices.',
+          '',
+          constraintBlock
+        ].join('\n');
+
+        contextualGuidance.push(formatInstructions);
       }
     } catch (error) {
       log(`Constraint selection error: ${error.message}`);
