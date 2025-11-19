@@ -56,6 +56,10 @@ function extractBashRedirectTarget(command) {
     return '';
   }
 
+  if (target.startsWith('$') || target.includes('${')) {
+    return '';
+  }
+
   return target;
 }
 
