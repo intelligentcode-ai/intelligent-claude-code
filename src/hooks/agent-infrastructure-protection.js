@@ -23,6 +23,38 @@ function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
+  function hasUnquotedSubstitution(str) {
+    let inSingle = false;
+    let inDouble = false;
+    for (let i = 0; i < str.length; i++) {
+      const ch = str[i];
+      const prev = str[i - 1];
+
+      if (!inDouble && ch === "'" && prev !== '\\') {
+        inSingle = !inSingle;
+        continue;
+      }
+      if (!inSingle && ch === '"' && prev !== '\\') {
+        inDouble = !inDouble;
+        continue;
+      }
+      if (inSingle || inDouble) {
+        continue;
+      }
+
+      if (ch === '$' && str[i + 1] === '(') {
+        return true;
+      }
+      if (ch === '`') {
+        return true;
+      }
+      if ((ch === '>' || ch === '<') && str[i + 1] === '(') {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function isDocumentationWrite(cmd, cwd) {
     // Allow *only* a single-line redirect to docs/ or documentation/. No heredocs,
     // no chaining, no extra lines.
@@ -31,6 +63,7 @@ function main() {
     // Disallow heredocs or command chaining in the fast-path
     if (trimmed.includes('<<')) return false;
     if (/[;&|]/.test(trimmed)) return false;
+    if (hasUnquotedSubstitution(trimmed)) return false;
 
     // Must be single-line
     if (trimmed.split('\n').length !== 1) return false;
