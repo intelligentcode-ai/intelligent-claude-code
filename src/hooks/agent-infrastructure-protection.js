@@ -38,7 +38,7 @@ function main() {
         inDouble = !inDouble;
         continue;
       }
-      if (inSingle || inDouble) {
+      if (inSingle) {
         continue;
       }
 

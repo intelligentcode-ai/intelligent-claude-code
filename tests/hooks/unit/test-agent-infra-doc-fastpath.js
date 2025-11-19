@@ -35,6 +35,11 @@ const tests = {
     const cmd = 'printf $(kubectl delete pod foo) > docs/guide.md';
     const out = runHook(cmd);
     assert.strictEqual(out.hookSpecificOutput.permissionDecision, 'deny');
+  },
+  'blocks doc write with double-quoted substitution': () => {
+    const cmd = 'printf "$(kubectl delete pod foo)" > docs/guide.md';
+    const out = runHook(cmd);
+    assert.strictEqual(out.hookSpecificOutput.permissionDecision, 'deny');
   }
 };
 
