@@ -9,9 +9,10 @@ Configs included (all prefixed `icc.config.*`)
 - `icc.config.strict-main-scope.json` — Hard lock for Main Scope: no Write/Edit/Bash; delegation only; agents perform work under standard path restrictions.
 - `icc.config.local-backup.json` — Snapshot of the previously active local config (before switching to the main-scope variant). Safety copy only.
 - `icc.config.main-scope-dev.json` — Linux-friendly profile where Main Scope can run curated git/gh commands (e.g., merging PRs) without spawning agents; guardrails, privacy, and @codex review reminder remain enabled.
+- `icc.config.workflow-reviewed.json` — Enables workflow enforcement (Task → Plan → Review → Execute → Review → Document) for both Main Scope and agents.
 
 Main-scope agent privileges
-- The new `enforcement.main_scope_has_agent_privileges` flag controls whether the Main Scope is treated like an agent (skips PM-only write limits, uses the agent allowlists). All presets keep it `false` except `icc.config.main-scope-dev.json`, which sets it to `true` so Ops/Dev work can run directly from the Main Scope.
+- The `enforcement.main_scope_has_agent_privileges` flag controls whether the Main Scope is treated like an agent (skips PM-only write limits, uses the agent allowlists). All presets keep it `false` except `icc.config.main-scope-dev.json`, which sets it to `true` so Ops/Dev work can run directly from the Main Scope.
 
 How the PR review reminder is activated
 - Each config sets `enforcement.require_codex_review_comment: true`.

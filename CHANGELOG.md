@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [8.20.91] - 2025-11-19
+
+### Added
+- Optional workflow enforcement hook (`workflow-enforcement.js`) that ensures the configured Task → Plan → Review → Execute → Review → Document sequence runs in order for both Main Scope and agents.
+- Config support: `workflow.enforcement` block in `icc.config.default.json` plus a ready-to-use `icc.config.workflow-reviewed.json` preset.
+- Integration tests for the workflow state machine (uses per-test config/state directories).
+
+### Testing
+- `bash tests/run-tests.sh`
+
 ## [8.20.90] - 2025-11-19
 
 ### Added
