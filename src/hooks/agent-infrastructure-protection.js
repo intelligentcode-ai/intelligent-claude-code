@@ -23,9 +23,18 @@ function main() {
   // Initialize hook with shared library function
   const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
-  function hasUnquotedSubstitution(str) {
+  const DOC_DIRECTORY_NAMES = new Set([
+    'docs',
+    'documentation',
+    'doc',
+    'docs-site',
+    'docs-content',
+  ]);
+
+  function hasCommandSubstitution(str) {
     let inSingle = false;
     let inDouble = false;
+
     for (let i = 0; i < str.length; i++) {
       const ch = str[i];
       const prev = str[i - 1];
@@ -55,36 +64,58 @@ function main() {
     return false;
   }
 
-  function isDocumentationWrite(cmd, cwd) {
-    // Allow *only* a single-line redirect to docs/ or documentation/. No heredocs,
-    // no chaining, no extra lines.
-    const trimmed = cmd.trim();
-
-    // Disallow heredocs or command chaining in the fast-path
-    if (trimmed.includes('<<')) return false;
-    if (/[;&|]/.test(trimmed)) return false;
-    if (hasUnquotedSubstitution(trimmed)) return false;
-
-    // Must be single-line
-    if (trimmed.split('\n').length !== 1) return false;
-
-    // Match: cat|printf|tee ... > docs/... (no other tokens after the redirection)
-    const redirMatch = trimmed.match(/^(?:cat|printf|tee)\s+[^>]*>+\s+([^\s]+)\s*$/);
-    if (!redirMatch) return false;
-
-    const target = redirMatch[1];
-    const absBase = path.resolve(cwd || process.cwd());
-    const absTarget = path.resolve(path.isAbsolute(target) ? target : path.join(absBase, target));
-
-    // Require target under the base directory (segment boundary aware)
-    const underBase = absTarget === absBase || absTarget.startsWith(absBase + path.sep);
-    if (!underBase) return false;
-
-    const segments = absTarget.split(path.sep);
-
-    return segments.includes('docs') || segments.includes('documentation');
+  function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
+  function targetsDocumentation(target, cwd) {
+    const absBase = path.resolve(cwd || process.cwd());
+    const absTarget = path.resolve(absBase, target);
+
+    const underBase = absTarget === absBase || absTarget.startsWith(absBase + path.sep);
+    if (!underBase) {
+      return false;
+    }
+
+    const segments = absTarget.split(path.sep);
+    return segments.some((segment) => DOC_DIRECTORY_NAMES.has(segment));
+  }
+
+  function isDocumentationWrite(cmd, cwd) {
+    const trimmed = cmd.trim();
+    if (!trimmed) {
+      return false;
+    }
+
+    const firstLine = trimmed.split('\n', 1)[0];
+
+    if (/[;&|]{1,2}/.test(firstLine)) {
+      return false;
+    }
+
+    if (hasCommandSubstitution(firstLine)) {
+      return false;
+    }
+
+    const redirectMatch = firstLine.match(/^(?:\s*)(cat|printf|tee)\b[^>]*>+\s*([^\s]+)\s*$/i);
+    if (!redirectMatch) {
+      return false;
+    }
+
+    const target = redirectMatch[2];
+    if (!targetsDocumentation(target, cwd)) {
+      return false;
+    }
+
+    const heredocMatch = firstLine.match(/<<-?\s*'?([A-Za-z0-9_:-]+)'?/);
+    if (heredocMatch) {
+      const terminator = heredocMatch[1];
+      const terminatorRegex = new RegExp(`\\n${escapeRegex(terminator)}\\s*$`);
+      return terminatorRegex.test(trimmed);
+    }
+
+    return trimmed.indexOf('\n') === -1;
+  }
   function extractSSHCommand(command) {
     // Match SSH command patterns:
     // ssh user@host "command"
@@ -156,10 +187,10 @@ function main() {
     const actualCommand = extractSSHCommand(command);
     log(`Actual command after SSH extraction: ${actualCommand.substring(0, 100)}...`);
 
-    // Special-case: allow pure documentation writes to docs/ even if content
-    // contains infra keywords (e.g., kubectl) because only a file write occurs.
+    // Special-case: allow pure documentation writes to docs*/ directories even if
+    // the heredoc body contains infra keywords, because only a file write occurs.
     if (isDocumentationWrite(command, hookInput.cwd)) {
-      log('ALLOWED: Documentation write detected (docs/ or documentation/)');
+      log('ALLOWED: Documentation write detected (docs*/ directories fast-path)');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
