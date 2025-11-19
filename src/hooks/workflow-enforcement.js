@@ -106,16 +106,18 @@ function matchesStep(step, action, tool, filePath) {
   }
 }
 
-function advanceState(state) {
-  if (!state.currentStep) return;
-  const idx = WORKFLOW_STEPS.findIndex(step => step.name === state.currentStep);
-  if (idx === -1 || idx === WORKFLOW_STEPS.length - 1) {
-    state.currentStep = WORKFLOW_STEPS[0].name;
-  } else {
-    state.currentStep = WORKFLOW_STEPS[idx + 1].name;
+function advanceState(state, completedIdx) {
+  if (typeof state.nextIndex !== 'number') {
+    state.nextIndex = 0;
   }
-  state.history = state.history || [];
-  state.history.push({ step: state.currentStep, timestamp: Date.now() });
+  if (completedIdx === state.nextIndex) {
+    state.history = state.history || [];
+    state.history.push({ step: WORKFLOW_STEPS[state.nextIndex].name, timestamp: Date.now() });
+    state.nextIndex += 1;
+    if (state.nextIndex >= WORKFLOW_STEPS.length) {
+      state.nextIndex = 0;
+    }
+  }
 }
 
 function blockWorkflow(step, tool, log) {
@@ -142,8 +144,8 @@ function main() {
 
   const projectHash = generateProjectHash(hookInput);
   const state = loadWorkflowState(projectHash);
-  if (!state.currentStep) {
-    state.currentStep = WORKFLOW_STEPS[0].name;
+  if (typeof state.nextIndex !== 'number') {
+    state.nextIndex = 0;
     saveWorkflowState(projectHash, state);
   }
 
@@ -156,16 +158,20 @@ function main() {
     return allowOperation(log);
   }
 
-  const currentStep = WORKFLOW_STEPS.find(step => step.name === state.currentStep) || WORKFLOW_STEPS[0];
+  const matchedIndex = WORKFLOW_STEPS.findIndex(step => matchesStep(step, action, tool, filePath));
 
-  if (matchesStep(currentStep, action, tool, filePath)) {
-    advanceState(state);
-    saveWorkflowState(projectHash, state);
+  if (matchedIndex === -1) {
+    // Action not part of workflow definition, allow
     return allowOperation(log);
   }
 
-  // Allow writes that clearly belong to future steps to be blocked with instructions
-  return blockWorkflow(currentStep, tool, log);
+  if (matchedIndex > state.nextIndex) {
+    return blockWorkflow(WORKFLOW_STEPS[state.nextIndex], tool, log);
+  }
+
+  advanceState(state, matchedIndex);
+  saveWorkflowState(projectHash, state);
+  return allowOperation(log);
 }
 
 if (require.main === module) {
