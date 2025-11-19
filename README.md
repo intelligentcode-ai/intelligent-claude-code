@@ -33,8 +33,15 @@ Then work conversationally:
 ## Configure (minimal)
 - Primary knobs live in `icc.config.json` (or project `.icc/config.json`)
 - Quick presets available in `.icc/`:
-  - `config.relaxed.json` (current deployed behavior)
-  - `config.strict-main-scope.json` (coordination-only main scope)
+  - `config.relaxed.json` – legacy behavior with lighter guardrails
+  - `config.sub-agent.json` – agents do all writes/exec; main scope delegates only
+  - `config.main-scope.json` – coordination-only main scope (agents execute work)
+  - `config.strict-main-scope.json` – read-only/Task-only main scope (ultra-safe mode)
+  - `config.main-scope-dev.json` – Linux/macOS friendly preset where Main Scope may run curated `git`/`gh` commands locally while all guardrails (file naming, folders, git privacy, @codex review, best practices, memory output) remain enabled
+
+  See `sample-configs/README.md` for usage instructions and run `make install CONFIG_FILE=sample-configs/<name>.json` to apply one system-wide.
+
+- Toggle `enforcement.main_scope_has_agent_privileges: true` if you want the Main Scope treated exactly like an agent (strict main-scope enforcement, PM-only limits, doc routing, etc. all short-circuit). Default is `false`; `icc.config.main-scope-dev.json` turns it on for systems impacted by the V8 issue.
 
 ## Documentation
 - Start: [docs/index.md](docs/index.md)

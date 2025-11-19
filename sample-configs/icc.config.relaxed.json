@@ -17,6 +17,7 @@
     "allow_parent_allowlist_paths": true,
     "allow_markdown_outside_allowlist": true,
     "allow_markdown_outside_allowlist_agents": true,
+    "main_scope_has_agent_privileges": false,
     "heredoc_allowed_commands": ["git", "gh", "glab", "hub", "bash"],
     "pm_allowed_bash_commands": ["gh pr list", "gh pr view", "gh pr status"],
     "tool_blacklist": {
@@ -28,7 +29,18 @@
   },
   "git": {
     "privacy": true,
+    "branch_protection": true,
     "require_pr_for_main": true,
     "default_branch": "dev"
+  },
+  "memory": {
+    "integration": true,
+    "auto_storage": true,
+    "search_before_questions": true,
+    "max_search_results": 3
+  },
+  "best_practices": {
+    "search_enabled": true,
+    "auto_generation": true
   }
 }

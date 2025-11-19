@@ -14,16 +14,39 @@
   },
   "enforcement": {
     "blocking_enabled": true,
+    "strict_main_scope": false,
     "allow_parent_allowlist_paths": false,
     "allow_markdown_outside_allowlist": false,
     "allow_markdown_outside_allowlist_agents": false,
-    "main_scope_has_agent_privileges": false,
+    "main_scope_has_agent_privileges": true,
     "heredoc_allowed_commands": ["git", "gh", "glab", "hub"],
     "pm_allowed_bash_commands": ["gh pr list", "gh pr view", "gh pr status"],
+    "main_scope_allowed_bash_commands": [
+      "gh pr view",
+      "gh pr status",
+      "gh pr checks",
+      "gh pr merge",
+      "gh pr comment",
+      "gh workflow run",
+      "git status",
+      "git log",
+      "git diff",
+      "git show",
+      "git commit",
+      "git push",
+      "git pull",
+      "git rebase",
+      "git merge"
+    ],
     "tool_blacklist": {
-      "universal": [],
-      "main_scope_only": ["Bash"],
-      "agents_only": ["Write", "Edit", "Update", "Bash", "Task", "SlashCommand", "Skill"]
+      "universal": [
+        "rm -rf /",
+        "dd if=/dev/zero of=/dev/sda",
+        "mkfs",
+        "fdisk /dev/sda"
+      ],
+      "main_scope_only": [],
+      "agents_only": ["Task", "SlashCommand", "Skill"]
     },
     "require_codex_review_comment": true
   },
@@ -38,6 +61,10 @@
     "auto_storage": true,
     "search_before_questions": true,
     "max_search_results": 3
+  },
+  "subagents": {
+    "auto_delegation": false,
+    "max_concurrent": 0
   },
   "best_practices": {
     "search_enabled": true,

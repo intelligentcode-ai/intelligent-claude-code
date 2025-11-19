@@ -102,6 +102,33 @@ const tests = {
       console.error('allow_parent_allowlist_paths=true output', out);
     }
     assert.strictEqual(out.continue, true);
+  },
+
+  'allows markdown within nested docs path from config': () => {
+    clearCache();
+    const homeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'home-nested-'));
+    const claudeDir = path.join(homeDir, '.claude');
+    fs.mkdirSync(claudeDir);
+
+    fs.writeFileSync(
+      path.join(claudeDir, 'icc.config.json'),
+      JSON.stringify({
+        enforcement: { allow_parent_allowlist_paths: false, tool_blacklist: { main_scope_only: [] } },
+        paths: { docs_path: 'docs/content/guides' }
+      })
+    );
+
+    const hookInput = {
+      hook_event_name: 'PreToolUse',
+      tool_name: 'Write',
+      tool: 'Write',
+      tool_input: { file_path: '/project/app/docs/content/guides/guide.md' },
+      cwd: '/project/app',
+      transcript_path: path.join(os.tmpdir(), 'test-session.jsonl')
+    };
+
+    const out = runHook(hookInput, { CLAUDE_PROJECT_DIR: '/project/app', HOME: homeDir });
+    assert.strictEqual(out.continue, true);
   }
 };
 
