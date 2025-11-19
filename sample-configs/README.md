@@ -2,11 +2,11 @@
 
 These configs are **examples only**. They are not loaded automatically; copy the file you want to use to `./icc.config.json` (or `~/.claude/icc.config.json`) before running `make install`.
 
-Configs included
-- `config.sub-agent.json` — Main Scope coordination only; agents do all writes. Strict paths (no parent paths), markdown enforced, auto `@codex review` after each push.
-- `config.main-scope.json` — Main Scope can write; agents are read-only. Same strict path rules and `@codex review` requirement.
-- `config.relaxed.json` — Looser for local hacking: markdown outside allowlist permitted, parent paths allowed, blocking disabled.
-- `config.strict-main-scope.json` — Hard lock for Main Scope: no Write/Edit/Bash; delegation only; agents perform work under standard path restrictions.
+Configs included (all prefixed `icc.config.*`)
+- `icc.config.sub-agent.json` — Main Scope coordination only; agents do all writes. Strict paths (no parent paths), markdown enforced, auto `@codex review` after each push.
+- `icc.config.main-scope.json` — Main Scope can write; agents are read-only. Same strict path rules and `@codex review` requirement.
+- `icc.config.relaxed.json` — Looser for local hacking: markdown outside allowlist permitted, parent paths allowed, blocking disabled.
+- `icc.config.strict-main-scope.json` — Hard lock for Main Scope: no Write/Edit/Bash; delegation only; agents perform work under standard path restrictions.
 
 How the PR review reminder is activated
 - Each config sets `enforcement.require_codex_review_comment: true`.

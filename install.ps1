@@ -5,6 +5,7 @@ param(
     [string]$Action = "help",
     [string]$TargetPath = "",
     [string]$McpConfig = "",
+    [string]$ConfigFile = "",
     [switch]$Force = $false
 )
 
@@ -16,15 +17,16 @@ function Show-Help {
     Write-Host "Intelligent Claude Code - Windows Installation" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "Usage:" -ForegroundColor Yellow
-    Write-Host "  .\install.ps1 install [-TargetPath <path>] [-McpConfig <path>]"
+    Write-Host "  .\install.ps1 install [-TargetPath <path>] [-McpConfig <path>] [-ConfigFile <path>]" 
     Write-Host "  .\install.ps1 uninstall [-TargetPath <path>] [-Force]"
     Write-Host "  .\install.ps1 test"
     Write-Host "  .\install.ps1 clean"
     Write-Host "  .\install.ps1 help"
     Write-Host ""
     Write-Host "Parameters:" -ForegroundColor Yellow
-    Write-Host "  -TargetPath  - Target path (omit for user scope ~\.claude\)"
-    Write-Host "  -McpConfig   - Path to MCP servers configuration JSON file"
+    Write-Host "  -TargetPath  - Target path (omit for user scope ~\.claude\)" 
+    Write-Host "  -McpConfig   - Path to MCP servers configuration JSON file" 
+    Write-Host "  -ConfigFile  - Path to icc.config JSON to install (fallback: icc.config.default.json)" 
     Write-Host "  -Force       - Force complete removal including user data (uninstall only)"
     Write-Host ""
     Write-Host "Examples:" -ForegroundColor Green
@@ -398,6 +400,14 @@ function Install-IntelligentClaudeCode {
             New-Item -Path $DirPath -ItemType Directory -Force | Out-Null
         }
     }
+
+    # Install configuration file (custom or default)
+    $DefaultConfigPath = Join-Path $PSScriptRoot "icc.config.default.json"
+    $SourceConfig = if ($ConfigFile -and (Test-Path $ConfigFile)) { $ConfigFile } else { $DefaultConfigPath }
+
+    Copy-Item -Path $SourceConfig -Destination (Join-Path $Paths.InstallPath "icc.config.json") -Force
+    Copy-Item -Path $DefaultConfigPath -Destination (Join-Path $Paths.InstallPath "icc.config.default.json") -Force
+    Write-Host "Config installed from: $SourceConfig" -ForegroundColor Yellow
     
     # Install MCP configuration if provided
     if ($McpConfig -and (Test-Path $McpConfig)) {

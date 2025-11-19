@@ -21,12 +21,18 @@ else
     ENV_FILE_ABS :=
 endif
 
+ifdef CONFIG_FILE
+    CONFIG_FILE_ABS := $(shell realpath $(CONFIG_FILE) 2>/dev/null || echo $(CONFIG_FILE))
+else
+    CONFIG_FILE_ABS :=
+endif
+
 # Default shows help
 help:
 	@echo "Intelligent Claude Code - Installation"
 	@echo ""
 	@echo "Usage:"
-	@echo "  make install   [HOST=ip] [USER=user] [TARGET_PATH=/path] [MCP_CONFIG=/path/to/mcps.json] [ENV_FILE=/path/to/.env] [KEY=~/.ssh/id_rsa | PASS=password]"
+	@echo "  make install   [HOST=ip] [USER=user] [TARGET_PATH=/path] [CONFIG_FILE=sample-configs/icc.config.sub-agent.json] [MCP_CONFIG=/path/to/mcps.json] [ENV_FILE=/path/to/.env] [KEY=~/.ssh/id_rsa | PASS=password]"
 	@echo "  make uninstall [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password] [FORCE=true]"
 	@echo "  make test                        # Run installation tests"
 	@echo ""
@@ -34,6 +40,7 @@ help:
 	@echo "  HOST - Remote host IP (omit for local installation)"
 	@echo "  USER - Remote username (required for remote installation)"
 	@echo "  TARGET_PATH - Target path (omit for user scope ~/.claude/)"  
+	@echo "  CONFIG_FILE - Path to icc.config JSON to deploy (default icc.config.default.json)"
 	@echo "  MCP_CONFIG - Path to MCP servers configuration JSON file"
 	@echo "  ENV_FILE - Path to .env file with environment variables"
 	@echo "  KEY  - SSH key for remote (default: ~/.ssh/id_rsa)"
@@ -102,9 +109,10 @@ install:
 			-i localhost, \
 			-c local \
 			-e "ansible_shell_type=sh" \
-			-e "target_path=$(TARGET_PATH)" \
-			-e "mcp_config_file=$(MCP_CONFIG_ABS)" \
-			-e "env_file=$(ENV_FILE_ABS)"; \
+            -e "target_path=$(TARGET_PATH)" \
+            -e "mcp_config_file=$(MCP_CONFIG_ABS)" \
+            -e "env_file=$(ENV_FILE_ABS)" \
+            -e "config_file=$(CONFIG_FILE_ABS)"; \
 	else \
 		if [ -z "$(USER)" ]; then \
 			echo "ERROR: USER parameter required for remote installation!"; \
@@ -118,18 +126,20 @@ install:
 			$(ANSIBLE_PLAYBOOK) ansible/install.yml \
 				-i "$(USER)@$(HOST)," \
 				-k -e "ansible_ssh_pass=$(PASS)" \
-				-e "target_path=$(TARGET_PATH)" \
-				-e "mcp_config_file=$(MCP_CONFIG_ABS)" \
-				-e "env_file=$(ENV_FILE_ABS)"; \
+                -e "target_path=$(TARGET_PATH)" \
+                -e "mcp_config_file=$(MCP_CONFIG_ABS)" \
+                -e "env_file=$(ENV_FILE_ABS)" \
+                -e "config_file=$(CONFIG_FILE_ABS)"; \
 		else \
 			echo "Using SSH key authentication..."; \
 			ANSIBLE_STDOUT_CALLBACK=actionable \
 			$(ANSIBLE_PLAYBOOK) ansible/install.yml \
 				-i "$(USER)@$(HOST)," \
 				-e "ansible_ssh_private_key_file=$(KEY)" \
-				-e "target_path=$(TARGET_PATH)" \
-				-e "mcp_config_file=$(MCP_CONFIG_ABS)" \
-				-e "env_file=$(ENV_FILE_ABS)"; \
+                -e "target_path=$(TARGET_PATH)" \
+                -e "mcp_config_file=$(MCP_CONFIG_ABS)" \
+                -e "env_file=$(ENV_FILE_ABS)" \
+                -e "config_file=$(CONFIG_FILE_ABS)"; \
 		fi \
 	fi
 
