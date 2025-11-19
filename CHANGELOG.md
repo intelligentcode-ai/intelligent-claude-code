@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [8.20.90] - 2025-11-19
+
+### Added
+- `enforcement.main_scope_has_agent_privileges` flag lets the Main Scope inherit agent permissions (doc writes, directory routing, PM-only enforcement) without disabling the hooks. `icc.config.main-scope-dev.json` now enables it by default, while other presets keep it off.
+
+### Changed
+- Marker detection is centralized: hooks now call `lib/marker-detection` for context so config changes (or env override `ICC_MAIN_SCOPE_AGENT`) propagate consistently.
+- Summary/documentation enforcement and PM constraints both rely on the shared helper, so treating the Main Scope as an agent automatically relaxes their PM-only restrictions.
+
+### Testing
+- `bash tests/run-tests.sh`
+
 ## [8.20.89] - 2025-11-19
 
 ### Added

@@ -98,11 +98,9 @@ function getHashRequiredHooks() {
     'agent-marker.js',
     'context-injection.js',
     'main-scope-enforcement.js',
-    'pm-constraints-enforcement.js',
     'session-start-dummy.js',
     'stop.js',
     'subagent-stop.js',
-    'summary-file-enforcement.js',
     'user-prompt-submit.js'
   ];
 }

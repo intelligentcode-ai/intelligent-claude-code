@@ -41,6 +41,8 @@ Then work conversationally:
 
   See `sample-configs/README.md` for usage instructions and run `make install CONFIG_FILE=sample-configs/<name>.json` to apply one system-wide.
 
+- Toggle `enforcement.main_scope_has_agent_privileges: true` if you want the Main Scope to behave like agents (skip PM-only write limits, rely on agent allowlists). The default is `false` for safety; `icc.config.main-scope-dev.json` enables it.
+
 ## Documentation
 - Start: [docs/index.md](docs/index.md)
 - Essentials: [installation-guide](docs/installation-guide.md), [user-guide](docs/user-guide.md), [agenttask-system-guide](docs/agenttask-system-guide.md), [virtual-team-guide](docs/virtual-team-guide.md)
