@@ -101,8 +101,8 @@ function main() {
 
     // CRITICAL: Check project boundary FIRST (before installation check)
     // Block ALL file operations outside project root (except ~/.claude/CLAUDE.md)
-    // If main scope is granted agent privileges, allow same behavior as agents (skip boundary block) while keeping install protection.
-    if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit') && !mainScopeAgent) {
+    // Installation protection ALWAYS applies, even when main scope acts as agent.
+    if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit')) {
       const isInProject = isWithinProjectBoundaries(filePath, projectRoot);
       const isException = isAllowedException(filePath);
       const isInstall = isInstallationPath(filePath);
@@ -134,8 +134,8 @@ All work must be done within project directories:
 Installation updates happen via 'make install' from project source.`, log);
       }
 
-      // Log operations OUTSIDE project boundaries (but allow if intentional)
-      if (!isInProject) {
+      // If main scope has agent privileges, allow outside-project writes (agents already allowed)
+      if (!isInProject && !mainScopeAgent) {
         log(`BLOCK: ${filePath} outside project root ${projectRoot}`);
         return blockOperation(`🚫 Project boundary enforcement - stay inside ${projectRoot}
 
