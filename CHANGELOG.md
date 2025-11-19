@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.20.90] - 2025-11-19
 
 ### Added
-- `enforcement.main_scope_has_agent_privileges` flag lets the Main Scope inherit agent permissions (doc writes, directory routing, PM-only enforcement) without disabling the hooks. `icc.config.main-scope-dev.json` now enables it by default, while other presets keep it off.
+- `enforcement.main_scope_has_agent_privileges` flag treats the Main Scope as if it were an agent (all agent-only allowances, including bypassing strict main-scope enforcement). `icc.config.main-scope-dev.json` enables this so Main Scope can run Dev/Ops work directly, while other presets keep it off.
 
 ### Changed
 - Marker detection is centralized: hooks now call `lib/marker-detection` for context so config changes (or env override `ICC_MAIN_SCOPE_AGENT`) propagate consistently.
