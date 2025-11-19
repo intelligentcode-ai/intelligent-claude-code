@@ -1,0 +1,17 @@
+{
+  "enforcement": {
+    "strict_main_scope": false,
+    "infrastructure_protection": {
+      "enabled": true,
+      "enforce_iac_only": true
+    },
+    "tool_blacklist": {
+      "main_scope_only": [],
+      "agents_only": ["Task", "SlashCommand", "Skill"]
+    }
+  },
+  "subagents": {
+    "auto_delegation": false,
+    "max_concurrent": 0
+  }
+}

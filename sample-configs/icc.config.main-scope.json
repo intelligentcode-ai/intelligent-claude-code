@@ -22,7 +22,7 @@
     "tool_blacklist": {
       "universal": [],
       "main_scope_only": ["Bash"],
-      "agents_only": ["Write", "Edit", "Update", "Bash"]
+      "agents_only": ["Write", "Edit", "Update", "Bash", "Task", "SlashCommand", "Skill"]
     },
     "require_codex_review_comment": true
   },
