@@ -28,6 +28,7 @@
         claude_install_path: "{{ install_path }}"
         claude_project_path: "{{ project_path }}"
         claude_scope: "{{ target_scope }}"
+        claude_config_source: "{{ config_file | default('') }}"
 
     - name: Install MCP servers if configuration provided
       include_role:

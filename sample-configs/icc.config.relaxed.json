@@ -1,0 +1,34 @@
+{
+  "autonomy": {
+    "level": "L2",
+    "pm_always_active": true
+  },
+  "paths": {
+    "docs_path": "docs",
+    "story_path": "stories",
+    "bug_path": "bugs",
+    "memory_path": "memory",
+    "summaries_path": "summaries",
+    "test_path": "tests",
+    "src_path": "src"
+  },
+  "enforcement": {
+    "blocking_enabled": false,
+    "allow_parent_allowlist_paths": true,
+    "allow_markdown_outside_allowlist": true,
+    "allow_markdown_outside_allowlist_agents": true,
+    "heredoc_allowed_commands": ["git", "gh", "glab", "hub", "bash"],
+    "pm_allowed_bash_commands": ["gh pr list", "gh pr view", "gh pr status"],
+    "tool_blacklist": {
+      "universal": [],
+      "main_scope_only": [],
+      "agents_only": []
+    },
+    "require_codex_review_comment": true
+  },
+  "git": {
+    "privacy": true,
+    "require_pr_for_main": true,
+    "default_branch": "dev"
+  }
+}

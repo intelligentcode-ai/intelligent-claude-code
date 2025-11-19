@@ -627,8 +627,8 @@ To execute blocked operation:
       }
     }
 
-    // PRIORITY 5: For markdown, allow if ANY path segment matches allowlist (only after parent checks)
-    if (isMarkdown) {
+    // PRIORITY 5: For markdown, allow if ANY path segment matches allowlist (honours parent-path gate)
+    if (isMarkdown && (!isOutsideProject || ALLOW_PARENT_ALLOWLIST_PATHS)) {
       for (const d of markdownSegments) {
         if (pathParts.includes(d)) {
           return { allowed: true };
