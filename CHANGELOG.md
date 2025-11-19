@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [8.20.89] - 2025-11-19
+
+### Added
+- New `sample-configs/icc.config.main-scope-dev.json` preset for Linux/macOS systems: guardrails remain enabled while Main Scope can run curated `git`/`gh` commands without spawning agents.
+- Sample config docs now list every preset and explain how to install via `make install CONFIG_FILE=...`.
+
+### Changed
+- All sample configs now force best-practices/constraints output and keep memory integration + git branch protection enabled.
+- Main-scope coordination whitelist can be extended via `enforcement.main_scope_allowed_bash_commands` so presets can safely allow additional `gh`/`git` commands.
+- README highlights the available presets for quick reference.
+
+### Testing
+- `bash tests/run-tests.sh`
+
 ## [8.20.84] - 2025-11-16
 
 ## [8.20.87] - 2025-11-17
