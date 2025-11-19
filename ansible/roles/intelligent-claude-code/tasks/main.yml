@@ -238,9 +238,9 @@
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
   when: config_md_exists.stat.exists and ansible_verbosity >= 1
 
-- name: Copy configuration file (selected or default)
+- name: Copy configuration file (selected or default without overwriting user edits)
   block:
-    - name: Use provided config_file when specified
+    - name: Use provided config_file when specified (overwrite)
       copy:
         src: "{{ claude_config_source }}"
         dest: "{{ claude_install_path }}/icc.config.json"
@@ -248,13 +248,19 @@
         force: yes
       when: claude_config_source | length > 0
 
-    - name: Fall back to default configuration when none provided
+    - name: Check existing icc.config.json
+      stat:
+        path: "{{ claude_install_path }}/icc.config.json"
+      register: icc_config_exists
+      when: claude_config_source | length == 0
+
+    - name: Install default icc.config.json only if missing
       copy:
         src: "{{ playbook_dir }}/../icc.config.default.json"
         dest: "{{ claude_install_path }}/icc.config.json"
         mode: '0644'
-        force: yes
-      when: claude_config_source | length == 0
+        force: no
+      when: claude_config_source | length == 0 and not icc_config_exists.stat.exists
 
     - name: Always install default for reference
       copy:
@@ -266,8 +272,8 @@
     - name: Display config installation choice
       debug:
         msg: >-
-          Configuration installed: {{ claude_install_path }}/icc.config.json
-          (source={{ claude_config_source | default('icc.config.default.json') }})
+          Configuration installed or preserved at {{ claude_install_path }}/icc.config.json
+          (source={{ claude_config_source | default('existing or icc.config.default.json') }})
       when: ansible_verbosity >= 1
 
 - name: Copy default workflow configuration file (JSON format)

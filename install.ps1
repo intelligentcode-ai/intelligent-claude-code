@@ -403,11 +403,21 @@ function Install-IntelligentClaudeCode {
 
     # Install configuration file (custom or default)
     $DefaultConfigPath = Join-Path $PSScriptRoot "icc.config.default.json"
-    $SourceConfig = if ($ConfigFile -and (Test-Path $ConfigFile)) { $ConfigFile } else { $DefaultConfigPath }
+    $TargetConfigPath = Join-Path $Paths.InstallPath "icc.config.json"
 
-    Copy-Item -Path $SourceConfig -Destination (Join-Path $Paths.InstallPath "icc.config.json") -Force
+    if ($ConfigFile -and (Test-Path $ConfigFile)) {
+        Copy-Item -Path $ConfigFile -Destination $TargetConfigPath -Force
+        Write-Host "Config installed from: $ConfigFile" -ForegroundColor Yellow
+    } else {
+        if (-not (Test-Path $TargetConfigPath)) {
+            Copy-Item -Path $DefaultConfigPath -Destination $TargetConfigPath -Force
+            Write-Host "Config installed from: $DefaultConfigPath" -ForegroundColor Yellow
+        } else {
+            Write-Host "Preserving existing icc.config.json (pass -ConfigFile to override)" -ForegroundColor Yellow
+        }
+    }
+
     Copy-Item -Path $DefaultConfigPath -Destination (Join-Path $Paths.InstallPath "icc.config.default.json") -Force
-    Write-Host "Config installed from: $SourceConfig" -ForegroundColor Yellow
     
     # Install MCP configuration if provided
     if ($McpConfig -and (Test-Path $McpConfig)) {
