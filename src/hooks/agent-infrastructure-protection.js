@@ -42,13 +42,13 @@ function main() {
         continue;
       }
 
-      if (ch === '$' && str[i + 1] === '(') {
+      if (ch === '$' && prev !== '\\' && str[i + 1] === '(') {
         return true;
       }
-      if (ch === '`') {
+      if (ch === '`' && prev !== '\\') {
         return true;
       }
-      if ((ch === '>' || ch === '<') && str[i + 1] === '(') {
+      if ((ch === '>' || ch === '<') && prev !== '\\' && str[i + 1] === '(') {
         return true;
       }
     }
