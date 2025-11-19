@@ -614,7 +614,10 @@ To execute blocked operation:
       .map(normalizeSegments)
       .filter(seq => seq.length > 0);
 
-    const markdownSegments = [...allowlistSequences, ...markdownAliasSequences];
+    const markdownSegments = Array.from(new Set([
+      ...allowlistSequences,
+      ...markdownAliasSequences
+    ].map(seq => JSON.stringify(seq)))).map(str => JSON.parse(str));
 
     const pathParts = relativePath.split(path.sep);
 
