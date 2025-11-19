@@ -6,6 +6,7 @@ const os = require('os');
 const crypto = require('crypto');
 const { initializeHook } = require('./lib/logging');
 const { generateProjectHash } = require('./lib/hook-helpers');
+const { getSetting } = require('./lib/config-loader');
 
 function main() {
   // Initialize hook with shared library function
@@ -54,7 +55,23 @@ function main() {
       log(`[STOP-CLEANUP] ⚠️ No session_id - skipping marker cleanup`);
     }
 
-    console.log(JSON.stringify(standardOutput));
+    // Optional invisible reminder to add auto review comment after PR pushes
+    const autoReviewEnabled = getSetting('enforcement.auto_commit_review.enabled', false);
+    const autoReviewCommand = getSetting('enforcement.auto_commit_review.command', '@codex review');
+
+    if (autoReviewEnabled) {
+      const output = {
+        continue: true,
+        suppressOutput: true,
+        hookSpecificOutput: {
+          hookEventName: 'Stop',
+          additionalContext: `INTERNAL: After every PR push, post "${autoReviewCommand}" as a standalone comment.`
+        }
+      };
+      console.log(JSON.stringify(output));
+    } else {
+      console.log(JSON.stringify(standardOutput));
+    }
     process.exit(0);
 
   } catch (error) {

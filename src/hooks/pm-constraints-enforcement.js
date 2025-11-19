@@ -19,7 +19,9 @@ const PM_EXTRA_COMMANDS = getSetting('enforcement.pm_allowed_bash_commands', [
 ]);
 const PM_INFRASTRUCTURE_BLACKLIST = getSetting('enforcement.tool_blacklist.infrastructure', []);
 const HEREDOC_ALLOWED_COMMANDS = getSetting('enforcement.heredoc_allowed_commands', ['git', 'gh', 'glab', 'hub']);
-const ALLOW_PARENT_ALLOWLIST_PATHS = getSetting('enforcement.allow_parent_allowlist_paths', false);
+const ALLOW_PARENT_ALLOWLIST_PATHS = process.env.ALLOW_PARENT_ALLOWLIST_PATHS
+  ? process.env.ALLOW_PARENT_ALLOWLIST_PATHS === 'true'
+  : getSetting('enforcement.allow_parent_allowlist_paths', false);
 const ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST_AGENTS = getSetting('enforcement.allow_markdown_outside_allowlist_agents', null);
 const ALLOW_MARKDOWN_OUTSIDE_ALLOWLIST = getSetting('enforcement.allow_markdown_outside_allowlist', false);
 const BLOCKING_ENABLED = getSetting('enforcement.blocking_enabled', true);
@@ -602,40 +604,34 @@ To execute blocked operation:
       return { allowed: true };
     }
 
-    // PRIORITY 3: For markdown, allow if ANY path segment matches allowlist
-    if (isMarkdown) {
-      for (const d of markdownSegments) {
-        if (pathParts.includes(d)) {
-          return { allowed: true };
+    // PRIORITY 3: Parent/sibling paths are denied unless explicitly allowed
+    const isOutsideProject = relativePath.startsWith('..');
+    if (isOutsideProject && !ALLOW_PARENT_ALLOWLIST_PATHS) {
+      return { allowed: false, message: 'Markdown outside project root and parent allowlist disabled' };
+    }
+
+    // PRIORITY 4: Parent paths with allow_parent_allowlist_paths enabled
+    if (isOutsideProject && ALLOW_PARENT_ALLOWLIST_PATHS) {
+      const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath);
+      const normalizedFilePath = path.normalize(absolutePath);
+      const pathPartsAbs = normalizedFilePath.split(path.sep);
+
+      for (const allowedPath of allowlist) {
+        const allowedIndex = pathPartsAbs.indexOf(allowedPath);
+        if (allowedIndex >= 0) {
+          const reconstructedPath = pathPartsAbs.slice(0, allowedIndex + 1).join(path.sep);
+          if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
+            return { allowed: true };
+          }
         }
       }
     }
 
-    // PRIORITY 3.5: Check parent paths if allow_parent_allowlist_paths enabled
-    // Path goes outside project root (contains '../')
-    const isOutsideProject = relativePath.startsWith('..');
-    if (isOutsideProject) {
-      const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
-
-      if (allowParentPaths) {
-        // Normalize to absolute path for component checking
-        const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath);
-        const normalizedFilePath = path.normalize(absolutePath);
-
-        // Split normalized path into components
-        const pathParts = normalizedFilePath.split(path.sep);
-
-        // Check if ANY directory component matches an allowlist directory
-        for (const allowedPath of allowlist) {
-          const allowedIndex = pathParts.indexOf(allowedPath);
-          if (allowedIndex >= 0) {
-            // Found allowlist directory in path
-            // Verify file is actually under this directory (not just same name in path)
-            const reconstructedPath = pathParts.slice(0, allowedIndex + 1).join(path.sep);
-            if (normalizedFilePath.startsWith(reconstructedPath + path.sep)) {
-              return { allowed: true };
-            }
-          }
+    // PRIORITY 5: For markdown, allow if ANY path segment matches allowlist (only after parent checks)
+    if (isMarkdown) {
+      for (const d of markdownSegments) {
+        if (pathParts.includes(d)) {
+          return { allowed: true };
         }
       }
     }
