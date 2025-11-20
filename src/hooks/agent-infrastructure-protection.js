@@ -68,6 +68,38 @@ function main() {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
+  // Return true if `needle` appears in `haystack` outside of quotes
+  function containsUnquoted(haystack, needle) {
+    if (!haystack || !needle) return false;
+    let inSingle = false;
+    let inDouble = false;
+
+    for (let i = 0; i <= haystack.length - needle.length; i++) {
+      const ch = haystack[i];
+
+      if (ch === '\\') { // skip escaped character
+        i += 1;
+        continue;
+      }
+
+      if (ch === "'" && !inDouble) {
+        inSingle = !inSingle;
+        continue;
+      }
+
+      if (ch === '"' && !inSingle) {
+        inDouble = !inDouble;
+        continue;
+      }
+
+      if (!inSingle && !inDouble && haystack.startsWith(needle, i)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   const ALLOW_PARENT_ALLOWLIST_PATHS = getSetting('enforcement.allow_parent_allowlist_paths', false);
 
   function targetsDocumentation(target, cwd) {
@@ -244,7 +276,7 @@ function main() {
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
-      if (command.includes(imperativeCmd) || actualCommand.includes(imperativeCmd)) {
+      if (containsUnquoted(command, imperativeCmd) || containsUnquoted(actualCommand, imperativeCmd)) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
@@ -317,7 +349,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 3: Check write operations (blocked for agents)
     for (const writeCmd of writeOperations) {
-      if (command.includes(writeCmd) || actualCommand.includes(writeCmd)) {
+      if (containsUnquoted(command, writeCmd) || containsUnquoted(actualCommand, writeCmd)) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
