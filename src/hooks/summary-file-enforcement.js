@@ -91,6 +91,8 @@ function main() {
     // Get filename early for ALL-CAPITALS check
     const fileName = path.basename(relativePath);
 
+    const hasShellVariable = filePath.includes('$');
+
     // STEP 1: ALL-CAPITALS check (highest priority - blocks EVERYONE including agents)
     // Load allowed ALL-CAPITALS files from unified configuration
     const allowedAllCapsFiles = ALLOWED_ALLCAPS_FILES;
@@ -98,7 +100,7 @@ function main() {
 
     // Check for ALL-CAPITALS filename (excluding extension)
     const fileBaseName = fileName.replace(/\.[^/.]+$/, ''); // Remove extension
-    const isAllCaps = isAggressiveAllCaps(fileBaseName);
+    const isAllCaps = !hasShellVariable && isAggressiveAllCaps(fileBaseName);
 
     // CRITICAL: Block ALL-CAPITALS files REGARDLESS of location (unless in allowed list)
     if (isAllCaps && !allowedAllCapsFiles.includes(fileName)) {

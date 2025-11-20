@@ -3,21 +3,27 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const { getSetting } = require('./config-loader');
+const { getProjectRoot } = require('./hook-helpers');
 
 /**
  * Marker Detection Utilities
  * Shared functions for detecting agent execution markers
  */
 
-const MAIN_SCOPE_AGENT_PRIVILEGES =
-  process.env.ICC_MAIN_SCOPE_AGENT === 'true' ||
-  getSetting('enforcement.main_scope_has_agent_privileges', false);
+function isMainScopeAgentPrivileged() {
+  if (process.env.ICC_MAIN_SCOPE_AGENT === 'true') return true;
+  if (process.env.ICC_MAIN_SCOPE_AGENT === 'false') return false;
+  return getSetting('enforcement.main_scope_has_agent_privileges', false);
+}
 
 /**
  * Get marker directory path
  * @returns {string} Marker directory path
  */
 function getMarkerDir() {
+  if (process.env.ICC_TEST_MARKER_DIR) {
+    return process.env.ICC_TEST_MARKER_DIR;
+  }
   return path.join(os.homedir(), '.claude', 'tmp');
 }
 
@@ -41,16 +47,21 @@ function ensureMarkerDir(log) {
  * @param {string} projectRoot - Project root path
  * @returns {string} 8-character MD5 hash
  */
-function generateProjectHash(projectRoot) {
-  // CRITICAL: Normalize before hashing
-  // Ensures same path with/without trailing slash = same hash
-  let normalizedRoot = path.resolve(projectRoot);
+function resolveProjectRoot(projectRootOrHookInput) {
+  // Accept either a hookInput object or a raw path string
+  if (projectRootOrHookInput && typeof projectRootOrHookInput === 'object' && !Array.isArray(projectRootOrHookInput)) {
+    return getProjectRoot(projectRootOrHookInput);
+  }
 
-  // Ensure no trailing slash (except root)
+  let normalizedRoot = path.resolve(projectRootOrHookInput || process.cwd());
   if (normalizedRoot.length > 1 && normalizedRoot.endsWith(path.sep)) {
     normalizedRoot = normalizedRoot.slice(0, -1);
   }
+  return normalizedRoot;
+}
 
+function generateProjectHash(projectRootOrHookInput) {
+  const normalizedRoot = resolveProjectRoot(projectRootOrHookInput);
   return crypto.createHash('md5').update(normalizedRoot).digest('hex').substring(0, 8);
 }
 
@@ -61,14 +72,15 @@ function generateProjectHash(projectRoot) {
  * @param {Function} log - Logger function
  * @returns {boolean} true if agent context, false if main scope
  */
-function isAgentContext(projectRoot, sessionId, log) {
-  if (MAIN_SCOPE_AGENT_PRIVILEGES) {
+function isAgentContext(projectRootOrHookInput, sessionId, log) {
+  if (isMainScopeAgentPrivileged()) {
     if (log) {
       log('Config: main_scope_has_agent_privileges=true (treating main scope as agent context)');
     }
     return true;
   }
 
+  const projectRoot = resolveProjectRoot(projectRootOrHookInput);
   const projectHash = generateProjectHash(projectRoot);
   const markerDir = getMarkerDir();
 

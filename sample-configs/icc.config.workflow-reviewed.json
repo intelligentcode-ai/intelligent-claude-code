@@ -1,0 +1,17 @@
+{
+  "enforcement": {
+    "blocking_enabled": true,
+    "main_scope_has_agent_privileges": false,
+    "workflow": {
+      "enabled": true,
+      "steps": [
+        { "name": "Task", "tools": ["Task"] },
+        { "name": "Plan", "tools": ["Plan"] },
+        { "name": "Review Plan", "tools": ["Review"] },
+        { "name": "Execute", "tools": ["Execute"] },
+        { "name": "Review Execute", "tools": ["Review"] },
+        { "name": "Document", "tools": ["Document", "Write", "Edit"] }
+      ]
+    }
+  }
+}

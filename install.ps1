@@ -166,7 +166,7 @@ function Register-ProductionHooks {
     )
 
     try {
-        Write-Host "  Registering all 15 production hooks in settings.json..." -ForegroundColor Gray
+        Write-Host "  Registering all 16 production hooks in settings.json..." -ForegroundColor Gray
 
         # Load or create settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
@@ -189,6 +189,7 @@ function Register-ProductionHooks {
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-marker.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\config-protection.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pre-agenttask-validation.js`""; timeout = 5000 }
+                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\workflow-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\project-scope-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\summary-file-enforcement.js`""; timeout = 5000 }
                     )
@@ -238,7 +239,7 @@ function Register-ProductionHooks {
         $JsonOutput = $Settings | ConvertTo-Json -Depth 10
         Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
 
-        Write-Host "  ✅ All 15 production hooks registered successfully in settings.json" -ForegroundColor Green
+        Write-Host "  ✅ All 16 production hooks registered successfully in settings.json" -ForegroundColor Green
 
     } catch {
         Write-Warning "  Failed to register production hooks in settings.json: $($_.Exception.Message)"
@@ -254,7 +255,7 @@ function Install-HookSystem {
         [string]$SourceDir
     )
 
-    Write-Host "Installing hook system (15 production hooks)..." -ForegroundColor Yellow
+    Write-Host "Installing hook system (16 production hooks)..." -ForegroundColor Yellow
 
     try {
         # Create hooks directory structure

@@ -964,8 +964,30 @@ To execute blocked operation:
     }
 
     // CRITICAL: Check tool blacklist AFTER Bash coordination check
+    // Allow markdown writes that are already permitted by docs allowlist/parent-path logic.
     const blacklistResult = checkToolBlacklist(tool, toolInput, 'pm', projectRoot);
-    if (blacklistResult.blocked) {
+    let markdownAllowedFastPath = false;
+
+    if (filePath && filePath.endsWith('.md')) {
+      const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
+
+      const outsideProject = path.relative(projectRoot, filePath).startsWith('..');
+      const allowlistDirs = [
+        getSetting('paths.story_path', 'stories'),
+        getSetting('paths.bug_path', 'bugs'),
+        getSetting('paths.memory_path', 'memory'),
+        getSetting('paths.docs_path', 'docs'),
+        'agenttasks',
+        getSetting('paths.summaries_path', 'summaries')
+      ];
+      const pathParts = path.normalize(filePath).split(path.sep);
+      const containsAllowlistedSegment = allowlistDirs.some((dir) => pathParts.includes(dir));
+      const forceAllow = ALLOW_PARENT_ALLOWLIST_PATHS && outsideProject && containsAllowlistedSegment;
+
+      markdownAllowedFastPath = markdownValidation.allowed || forceAllow;
+    }
+
+    if (blacklistResult.blocked && !markdownAllowedFastPath) {
       log(`Tool blocked by blacklist: ${tool} (${blacklistResult.list})`);
 
       const blockingEnabled = getBlockingEnabled();
@@ -977,7 +999,7 @@ To execute blocked operation:
             permissionDecision: 'deny',
             permissionDecisionReason: `Tool blocked by ${blacklistResult.list} blacklist
 
-Tool "${tool}" is blocked by the ${blacklistResult.reason}.
+Tool \"${tool}\" is blocked by the ${blacklistResult.reason}.
 
 Blacklist type: ${blacklistResult.list}
 
@@ -1090,7 +1112,23 @@ To execute blocked operation:
       // Apply markdown validation if needed
       if (shouldApplyMarkdownValidation) {
         const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
-        if (!markdownValidation.allowed) {
+
+        // If the file is outside the project, parent paths are allowed, and the path already contains an allowlisted segment, allow it
+        const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
+        const outsideProject = path.relative(projectRoot, filePath).startsWith('..');
+        const pathParts = path.normalize(filePath).split(path.sep);
+        const allowlistDirs = [
+          getSetting('paths.story_path', 'stories'),
+          getSetting('paths.bug_path', 'bugs'),
+          getSetting('paths.memory_path', 'memory'),
+          getSetting('paths.docs_path', 'docs'),
+          'agenttasks',
+          getSetting('paths.summaries_path', 'summaries')
+        ];
+        const containsAllowlistedSegment = allowlistDirs.some((dir) => pathParts.includes(dir));
+        const forceAllow = allowParentPaths && outsideProject && containsAllowlistedSegment;
+
+        if (!markdownValidation.allowed && !forceAllow) {
           log(`Markdown file outside allowlist blocked: ${filePath}`);
 
           const blockingEnabled = getBlockingEnabled();
