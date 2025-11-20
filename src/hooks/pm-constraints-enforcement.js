@@ -1092,7 +1092,7 @@ To execute blocked operation:
         const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
 
         // If the file is outside the project, parent paths are allowed, and the path already contains an allowlisted segment, allow it
-        const allowParentPaths = getSetting('enforcement.allow_parent_allowlist_paths', false);
+        const allowParentPaths = ALLOW_PARENT_ALLOWLIST_PATHS;
         const outsideProject = path.relative(projectRoot, filePath).startsWith('..');
         const pathParts = path.normalize(filePath).split(path.sep);
         const allowlistDirs = [
