@@ -19,6 +19,8 @@
     "allow_markdown_outside_allowlist": false,
     "allow_markdown_outside_allowlist_agents": false,
     "main_scope_has_agent_privileges": true,
+    "output_constraints_and_best_practices": true,
+    "output_best_practices": true,
     "heredoc_allowed_commands": ["git", "gh", "glab", "hub"],
     "pm_allowed_bash_commands": ["gh pr list", "gh pr view", "gh pr status"],
     "main_scope_allowed_bash_commands": [

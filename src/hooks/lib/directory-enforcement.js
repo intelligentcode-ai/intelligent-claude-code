@@ -79,6 +79,14 @@ function isCorrectDirectory(filePath, projectRoot) {
   const normalizedActual = path.normalize(actualDir);
   const normalizedExpected = path.normalize(expectedDir);
 
+  // If the expected directory is docs/, allow any path that contains a docs segment
+  if (normalizedExpected.endsWith(path.sep + 'docs')) {
+    const segments = normalizedActual.split(path.sep);
+    if (segments.includes('docs')) {
+      return true;
+    }
+  }
+
   // Allow exact match OR file in subdirectory of expected directory
   if (normalizedActual === normalizedExpected) {
     return true;

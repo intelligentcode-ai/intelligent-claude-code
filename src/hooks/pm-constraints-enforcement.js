@@ -964,13 +964,12 @@ To execute blocked operation:
     }
 
     // CRITICAL: Check tool blacklist AFTER Bash coordination check
-    // Allow markdown writes that are already permitted by docs allowlist/parent-path logic.
     const blacklistResult = checkToolBlacklist(tool, toolInput, 'pm', projectRoot);
-    let markdownAllowedFastPath = false;
 
+    // Docs fast-path: if markdown is already allowed via docs/ allowlist (including parent-path fast path), skip blacklist
+    let markdownAllowedFastPath = false;
     if (filePath && filePath.endsWith('.md')) {
       const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
-
       const outsideProject = path.relative(projectRoot, filePath).startsWith('..');
       const allowlistDirs = [
         getSetting('paths.story_path', 'stories'),
