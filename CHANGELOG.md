@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Marker detection accepts hookInput or path and hashes the active working directory, keeping agent/PM context consistent when agents run from subdirectories.
 - Workflow enforcement hook is now registered by default in installer templates (Ansible/PowerShell) raising production hooks to 16.
 - Summary ALL-CAPS guard skips paths containing shell variables to avoid false positives on `$SUMMARY_FILE` style redirects.
+- `icc.config.main-scope-dev.json` relaxes project boundary (`allow_parent_allowlist_paths: true`) so Main Scope/agents can work in sibling dirs while install protection still blocks `~/.claude`.
 
 ### Testing
 - `bash tests/run-tests.sh`
