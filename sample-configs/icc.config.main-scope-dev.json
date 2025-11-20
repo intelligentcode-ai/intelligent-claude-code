@@ -15,7 +15,7 @@
   "enforcement": {
     "blocking_enabled": true,
     "strict_main_scope": false,
-    "allow_parent_allowlist_paths": false,
+    "allow_parent_allowlist_paths": true,
     "allow_markdown_outside_allowlist": false,
     "allow_markdown_outside_allowlist_agents": false,
     "main_scope_has_agent_privileges": true,
