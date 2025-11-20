@@ -107,12 +107,14 @@ function main() {
       return false;
     }
 
+    const dashTrim = firstLine.includes('<<-');
     const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
     if (heredocMatch) {
       const terminator = heredocMatch[1] || heredocMatch[2] || heredocMatch[3];
 
       // Require a quoted terminator OR a body with no command substitution
-      const terminatorRegex = new RegExp(`\\n${escapeRegex(terminator)}\\s*$`);
+      const leadingTabs = dashTrim ? '\\t*' : '';
+      const terminatorRegex = new RegExp(`\\n${leadingTabs}${escapeRegex(terminator)}\\s*$`);
       const hasTerminator = terminatorRegex.test(trimmed);
       const isQuoted = Boolean(heredocMatch[1] || heredocMatch[2]);
 

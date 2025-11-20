@@ -965,7 +965,28 @@ To execute blocked operation:
 
     // CRITICAL: Check tool blacklist AFTER Bash coordination check
     const blacklistResult = checkToolBlacklist(tool, toolInput, 'pm', projectRoot);
-    if (blacklistResult.blocked) {
+
+    // Docs fast-path: if markdown is already allowed via docs/ allowlist (including parent-path fast path), skip blacklist
+    let markdownAllowedFastPath = false;
+    if (filePath && filePath.endsWith('.md')) {
+      const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
+      const outsideProject = path.relative(projectRoot, filePath).startsWith('..');
+      const allowlistDirs = [
+        getSetting('paths.story_path', 'stories'),
+        getSetting('paths.bug_path', 'bugs'),
+        getSetting('paths.memory_path', 'memory'),
+        getSetting('paths.docs_path', 'docs'),
+        'agenttasks',
+        getSetting('paths.summaries_path', 'summaries')
+      ];
+      const pathParts = path.normalize(filePath).split(path.sep);
+      const containsAllowlistedSegment = allowlistDirs.some((dir) => pathParts.includes(dir));
+      const forceAllow = ALLOW_PARENT_ALLOWLIST_PATHS && outsideProject && containsAllowlistedSegment;
+
+      markdownAllowedFastPath = markdownValidation.allowed || forceAllow;
+    }
+
+    if (blacklistResult.blocked && !markdownAllowedFastPath) {
       log(`Tool blocked by blacklist: ${tool} (${blacklistResult.list})`);
 
       const blockingEnabled = getBlockingEnabled();
