@@ -30,6 +30,14 @@ function main() {
     'docs-site',
     'docs-content',
   ]);
+  const MARKDOWN_ALLOWLIST_DIRS = [
+    getSetting('paths.docs_path', 'docs'),
+    getSetting('paths.story_path', 'stories'),
+    getSetting('paths.bug_path', 'bugs'),
+    getSetting('paths.memory_path', 'memory'),
+    getSetting('paths.summaries_path', 'summaries'),
+    'agenttasks'
+  ];
 
   function hasCommandSubstitution(str) {
     let inSingle = false;
@@ -113,6 +121,86 @@ function main() {
 
     const segments = absTarget.split(path.sep);
     return segments.some((segment) => DOC_DIRECTORY_NAMES.has(segment));
+  }
+
+  function targetsAllowlistedMarkdown(target, cwd) {
+    const absBase = path.resolve(cwd || process.cwd());
+    const absTarget = path.resolve(absBase, target);
+
+    const underBase = absTarget === absBase || absTarget.startsWith(absBase + path.sep);
+    if (!underBase && !ALLOW_PARENT_ALLOWLIST_PATHS) {
+      return false;
+    }
+
+    if (!absTarget.endsWith('.md')) {
+      return false;
+    }
+
+    const segments = absTarget.split(path.sep);
+    return segments.some((segment) => MARKDOWN_ALLOWLIST_DIRS.includes(segment));
+  }
+
+  function isAllowlistedMarkdownWrite(cmd, cwd) {
+    const trimmed = cmd.trim();
+    if (!trimmed) {
+      return false;
+    }
+
+    const firstLine = trimmed.split('\n', 1)[0];
+
+    if (/[;&|]{1,2}/.test(firstLine)) {
+      return false;
+    }
+
+    if (hasCommandSubstitution(firstLine)) {
+      return false;
+    }
+
+    const redirectMatch = firstLine.match(/^(?:\s*)(cat|printf|tee)\b[^>]*>+\s*([^\s]+)\s*$/i);
+    if (!redirectMatch) {
+      return false;
+    }
+
+    const target = redirectMatch[2];
+    if (!targetsAllowlistedMarkdown(target, cwd)) {
+      return false;
+    }
+
+    const dashTrim = firstLine.includes('<<-');
+    const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
+    if (heredocMatch) {
+      const terminator = heredocMatch[1] || heredocMatch[2] || heredocMatch[3];
+
+      const leadingTabs = dashTrim ? '\\t*' : '';
+      const terminatorRegex = new RegExp(`\\n${leadingTabs}${escapeRegex(terminator)}\\s*$`);
+      const hasTerminator = terminatorRegex.test(trimmed);
+      const isQuoted = Boolean(heredocMatch[1] || heredocMatch[2]);
+
+      if (!hasTerminator) {
+        return false;
+      }
+
+      if (!isQuoted) {
+        const body = trimmed.replace(/^.*?\n/s, '');
+        if (hasCommandSubstitution(body)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    return trimmed.indexOf('\n') === -1;
+  }
+
+  function looksLikeMarkdownWrite(cmd, cwd) {
+    const trimmed = cmd.trim();
+    if (!trimmed) return false;
+    const firstLine = trimmed.split('\n', 1)[0];
+    const redirectMatch = firstLine.match(/^(?:\s*)(cat|printf|tee)\b[^>]*>+\s*([^\s]+)\s*$/i);
+    if (!redirectMatch) return false;
+    const target = redirectMatch[2];
+    return targetsAllowlistedMarkdown(target, cwd);
   }
 
   function isDocumentationWrite(cmd, cwd) {
@@ -244,6 +332,26 @@ function main() {
     // the heredoc body contains infra keywords, because only a file write occurs.
     if (isDocumentationWrite(command, hookInput.cwd)) {
       log('ALLOWED: Documentation write detected (docs*/ directories fast-path)');
+      console.log(JSON.stringify(standardOutput));
+      process.exit(0);
+    }
+
+    // If this is a markdown write attempt but contains command substitution anywhere, block it explicitly
+    if (looksLikeMarkdownWrite(command, hookInput.cwd) && hasCommandSubstitution(command)) {
+      log('BLOCKED: Markdown write contains command substitution');
+      console.log(JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "deny",
+          permissionDecisionReason: "Command substitution detected inside markdown write"
+        }
+      }));
+      process.exit(0);
+    }
+
+    // Allow markdown writes in allowlisted directories (docs/stories/bugs/memory/summaries/agenttasks)
+    if (isAllowlistedMarkdownWrite(command, hookInput.cwd)) {
+      log('ALLOWED: Markdown write detected in allowlisted directory');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
     }
