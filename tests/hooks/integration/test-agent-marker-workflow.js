@@ -26,7 +26,7 @@ const {
   isPMRole,
   getMarkerDir,
   ensureMarkerDir
-} = require(path.join(os.homedir(), '.claude', 'hooks', 'lib', 'marker-detection'));
+} = require('../../../src/hooks/lib/marker-detection');
 
 // Test data - use unique session IDs to avoid conflicts
 const testProjectRoot1 = '/test/integration/project/path1';
@@ -112,7 +112,7 @@ const tests = {
 
   'Marker file created in correct location': () => {
     cleanupTestMarkers();
-    const expectedDir = path.join(os.homedir(), '.claude', 'tmp');
+    const expectedDir = process.env.ICC_TEST_MARKER_DIR || path.join(os.homedir(), '.claude', 'tmp');
     const markerPath = createMarkerFile(testSessionId1, testProjectRoot1, []);
 
     assert.ok(markerPath.startsWith(expectedDir), 'Marker should be in ~/.claude/tmp');

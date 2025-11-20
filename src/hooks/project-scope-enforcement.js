@@ -15,6 +15,7 @@ const { initializeHook } = require('./lib/logging');
 const { extractToolInfo, allowOperation, blockOperation } = require('./lib/hook-helpers');
 const { isInstallationPath } = require('./lib/path-utils');
 const { isModifyingBashCommand } = require('./lib/command-validation');
+const { getSetting } = require('./lib/config-loader');
 
 function main() {
   // Initialize hook with shared library function
@@ -96,8 +97,17 @@ function main() {
     const projectRoot = getProjectRootFromHookInput(hookInput);
     log(`Project root detected: ${projectRoot}`);
 
+    const envMainScopeAgent = process.env.ICC_MAIN_SCOPE_AGENT;
+    const mainScopeAgent =
+      envMainScopeAgent === 'true'
+        ? true
+        : envMainScopeAgent === 'false'
+          ? false
+          : getSetting('enforcement.main_scope_has_agent_privileges', false) === true;
+
     // CRITICAL: Check project boundary FIRST (before installation check)
     // Block ALL file operations outside project root (except ~/.claude/CLAUDE.md)
+    // Installation protection ALWAYS applies, even when main scope acts as agent.
     if (filePath && (tool === 'Edit' || tool === 'Write' || tool === 'MultiEdit')) {
       const isInProject = isWithinProjectBoundaries(filePath, projectRoot);
       const isException = isAllowedException(filePath);
@@ -130,8 +140,8 @@ All work must be done within project directories:
 Installation updates happen via 'make install' from project source.`, log);
       }
 
-      // Log operations OUTSIDE project boundaries (but allow if intentional)
-      if (!isInProject) {
+      // If main scope has agent privileges, allow outside-project writes (agents already allowed)
+      if (!isInProject && !mainScopeAgent) {
         log(`BLOCK: ${filePath} outside project root ${projectRoot}`);
         return blockOperation(`🚫 Project boundary enforcement - stay inside ${projectRoot}
 

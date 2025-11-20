@@ -73,8 +73,8 @@ const tests = {
 
   'getMarkerDir returns correct path': () => {
     const markerPath = getMarkerDir();
-    const expectedPath = path.join(os.homedir(), '.claude', 'tmp');
-    assert.strictEqual(markerPath, expectedPath, 'Marker directory should be ~/.claude/tmp');
+    const expectedPath = process.env.ICC_TEST_MARKER_DIR || path.join(os.homedir(), '.claude', 'tmp');
+    assert.strictEqual(markerPath, expectedPath, 'Marker directory should be ~/.claude/tmp (or ICC_TEST_MARKER_DIR when set)');
   },
 
   'isAgentContext returns false when no marker file exists': () => {

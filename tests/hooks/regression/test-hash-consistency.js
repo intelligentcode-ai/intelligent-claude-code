@@ -101,7 +101,8 @@ function getHashRequiredHooks() {
     'session-start-dummy.js',
     'stop.js',
     'subagent-stop.js',
-    'user-prompt-submit.js'
+    'user-prompt-submit.js',
+    'workflow-enforcement.js'
   ];
 }
 
