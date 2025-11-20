@@ -38,10 +38,12 @@ Then work conversationally:
   - `config.main-scope.json` – coordination-only main scope (agents execute work)
   - `config.strict-main-scope.json` – read-only/Task-only main scope (ultra-safe mode)
   - `config.main-scope-dev.json` – Linux/macOS friendly preset where Main Scope may run curated `git`/`gh` commands locally while all guardrails (file naming, folders, git privacy, @codex review, best practices, memory output) remain enabled
+  - `config.workflow-reviewed.json` – Enables workflow enforcement (Task → Plan → Review → Execute → Review → Document) for Main Scope + agents
 
   See `sample-configs/README.md` for usage instructions and run `make install CONFIG_FILE=sample-configs/<name>.json` to apply one system-wide.
 
 - Toggle `enforcement.main_scope_has_agent_privileges: true` if you want the Main Scope treated exactly like an agent (strict main-scope enforcement, PM-only limits, doc routing, etc. all short-circuit). Default is `false`; `icc.config.main-scope-dev.json` turns it on for systems impacted by the V8 issue.
+- Enable `enforcement.workflow` to require the Task → Plan → Review → Execute → Review → Document sequence (see `icc.config.workflow-reviewed.json` for the default step mapping).
 
 ## Documentation
 - Start: [docs/index.md](docs/index.md)

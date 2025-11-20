@@ -68,12 +68,46 @@ function main() {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
+  // Return true if `needle` appears in `haystack` outside of quotes
+  function containsUnquoted(haystack, needle) {
+    if (!haystack || !needle) return false;
+    let inSingle = false;
+    let inDouble = false;
+
+    for (let i = 0; i <= haystack.length - needle.length; i++) {
+      const ch = haystack[i];
+
+      if (ch === '\\') { // skip escaped character
+        i += 1;
+        continue;
+      }
+
+      if (ch === "'" && !inDouble) {
+        inSingle = !inSingle;
+        continue;
+      }
+
+      if (ch === '"' && !inSingle) {
+        inDouble = !inDouble;
+        continue;
+      }
+
+      if (!inSingle && !inDouble && haystack.startsWith(needle, i)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  const ALLOW_PARENT_ALLOWLIST_PATHS = getSetting('enforcement.allow_parent_allowlist_paths', false);
+
   function targetsDocumentation(target, cwd) {
     const absBase = path.resolve(cwd || process.cwd());
     const absTarget = path.resolve(absBase, target);
 
     const underBase = absTarget === absBase || absTarget.startsWith(absBase + path.sep);
-    if (!underBase) {
+    if (!underBase && !ALLOW_PARENT_ALLOWLIST_PATHS) {
       return false;
     }
 
@@ -107,11 +141,30 @@ function main() {
       return false;
     }
 
-    const heredocMatch = firstLine.match(/<<-?\s*'?([A-Za-z0-9_:-]+)'?/);
+    const dashTrim = firstLine.includes('<<-');
+    const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
     if (heredocMatch) {
-      const terminator = heredocMatch[1];
-      const terminatorRegex = new RegExp(`\\n${escapeRegex(terminator)}\\s*$`);
-      return terminatorRegex.test(trimmed);
+      const terminator = heredocMatch[1] || heredocMatch[2] || heredocMatch[3];
+
+      // Require a quoted terminator OR a body with no command substitution
+      const leadingTabs = dashTrim ? '\\t*' : '';
+      const terminatorRegex = new RegExp(`\\n${leadingTabs}${escapeRegex(terminator)}\\s*$`);
+      const hasTerminator = terminatorRegex.test(trimmed);
+      const isQuoted = Boolean(heredocMatch[1] || heredocMatch[2]);
+
+      if (!hasTerminator) {
+        return false;
+      }
+
+      if (!isQuoted) {
+        // Unquoted heredoc bodies perform substitution; ensure body is clean
+        const body = trimmed.replace(/^.*?\n/s, '');
+        if (hasCommandSubstitution(body)) {
+          return false;
+        }
+      }
+
+      return true;
     }
 
     return trimmed.indexOf('\n') === -1;
@@ -223,7 +276,7 @@ function main() {
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
-      if (command.includes(imperativeCmd) || actualCommand.includes(imperativeCmd)) {
+      if (containsUnquoted(command, imperativeCmd) || containsUnquoted(actualCommand, imperativeCmd)) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
@@ -296,7 +349,7 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 3: Check write operations (blocked for agents)
     for (const writeCmd of writeOperations) {
-      if (command.includes(writeCmd) || actualCommand.includes(writeCmd)) {
+      if (containsUnquoted(command, writeCmd) || containsUnquoted(actualCommand, writeCmd)) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({
