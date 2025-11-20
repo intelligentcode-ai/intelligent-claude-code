@@ -68,12 +68,14 @@ function main() {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
+  const ALLOW_PARENT_ALLOWLIST_PATHS = getSetting('enforcement.allow_parent_allowlist_paths', false);
+
   function targetsDocumentation(target, cwd) {
     const absBase = path.resolve(cwd || process.cwd());
     const absTarget = path.resolve(absBase, target);
 
     const underBase = absTarget === absBase || absTarget.startsWith(absBase + path.sep);
-    if (!underBase) {
+    if (!underBase && !ALLOW_PARENT_ALLOWLIST_PATHS) {
       return false;
     }
 
