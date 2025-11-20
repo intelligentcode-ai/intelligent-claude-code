@@ -10,15 +10,20 @@ const { getProjectRoot } = require('./hook-helpers');
  * Shared functions for detecting agent execution markers
  */
 
-const MAIN_SCOPE_AGENT_PRIVILEGES =
-  process.env.ICC_MAIN_SCOPE_AGENT === 'true' ||
-  getSetting('enforcement.main_scope_has_agent_privileges', false);
+function isMainScopeAgentPrivileged() {
+  if (process.env.ICC_MAIN_SCOPE_AGENT === 'true') return true;
+  if (process.env.ICC_MAIN_SCOPE_AGENT === 'false') return false;
+  return getSetting('enforcement.main_scope_has_agent_privileges', false);
+}
 
 /**
  * Get marker directory path
  * @returns {string} Marker directory path
  */
 function getMarkerDir() {
+  if (process.env.ICC_TEST_MARKER_DIR) {
+    return process.env.ICC_TEST_MARKER_DIR;
+  }
   return path.join(os.homedir(), '.claude', 'tmp');
 }
 
@@ -68,7 +73,7 @@ function generateProjectHash(projectRootOrHookInput) {
  * @returns {boolean} true if agent context, false if main scope
  */
 function isAgentContext(projectRootOrHookInput, sessionId, log) {
-  if (MAIN_SCOPE_AGENT_PRIVILEGES) {
+  if (isMainScopeAgentPrivileged()) {
     if (log) {
       log('Config: main_scope_has_agent_privileges=true (treating main scope as agent context)');
     }

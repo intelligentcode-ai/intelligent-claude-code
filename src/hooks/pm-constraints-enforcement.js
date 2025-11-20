@@ -1090,7 +1090,23 @@ To execute blocked operation:
       // Apply markdown validation if needed
       if (shouldApplyMarkdownValidation) {
         const markdownValidation = validateMarkdownOutsideAllowlist(filePath, projectRoot, false);
-        if (!markdownValidation.allowed) {
+
+        // If the file is outside the project, parent paths are allowed, and the path already contains an allowlisted segment, allow it
+        const allowParentPaths = getSetting('enforcement.allow_parent_allowlist_paths', false);
+        const outsideProject = path.relative(projectRoot, filePath).startsWith('..');
+        const pathParts = path.normalize(filePath).split(path.sep);
+        const allowlistDirs = [
+          getSetting('paths.story_path', 'stories'),
+          getSetting('paths.bug_path', 'bugs'),
+          getSetting('paths.memory_path', 'memory'),
+          getSetting('paths.docs_path', 'docs'),
+          'agenttasks',
+          getSetting('paths.summaries_path', 'summaries')
+        ];
+        const containsAllowlistedSegment = allowlistDirs.some((dir) => pathParts.includes(dir));
+        const forceAllow = allowParentPaths && outsideProject && containsAllowlistedSegment;
+
+        if (!markdownValidation.allowed && !forceAllow) {
           log(`Markdown file outside allowlist blocked: ${filePath}`);
 
           const blockingEnabled = getBlockingEnabled();

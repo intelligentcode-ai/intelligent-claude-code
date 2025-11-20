@@ -97,7 +97,13 @@ function main() {
     const projectRoot = getProjectRootFromHookInput(hookInput);
     log(`Project root detected: ${projectRoot}`);
 
-    const mainScopeAgent = getSetting('enforcement.main_scope_has_agent_privileges', false) === true;
+    const envMainScopeAgent = process.env.ICC_MAIN_SCOPE_AGENT;
+    const mainScopeAgent =
+      envMainScopeAgent === 'true'
+        ? true
+        : envMainScopeAgent === 'false'
+          ? false
+          : getSetting('enforcement.main_scope_has_agent_privileges', false) === true;
 
     // CRITICAL: Check project boundary FIRST (before installation check)
     // Block ALL file operations outside project root (except ~/.claude/CLAUDE.md)
