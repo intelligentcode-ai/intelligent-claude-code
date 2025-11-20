@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [8.20.93] - 2025-11-20
+
+### Fixed
+- Infra protection: no longer flags destructive keywords that appear only inside quoted strings (e.g., `grep "kubectl apply"`).
+
+### Testing
+- `bash tests/run-tests.sh`
+
 ## [8.20.92] - 2025-11-19
 
 ### Changed
