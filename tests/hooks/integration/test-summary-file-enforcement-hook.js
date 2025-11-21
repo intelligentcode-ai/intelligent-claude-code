@@ -256,6 +256,54 @@ async function testAllCapsBlocking() {
   );
 }
 
+async function testBashAllCapsBlocking() {
+  const mockInput = {
+    tool: 'Bash',
+    tool_input: {
+      command: "cat > OAUTH_SETUP.md <<'EOF'\n# Test doc\nEOF\n"
+    },
+    cwd: PROJECT_ROOT,
+    session_id: 'test-session-bash-allcaps'
+  };
+
+  const result = await executeHook(mockInput);
+  const response = parseHookResponse(result.stdout);
+
+  assert.strictEqual(result.code, 2, 'Bash ALL-CAPS write should be blocked');
+  assert(response, 'Hook should return valid JSON response');
+  assert.strictEqual(
+    response.hookSpecificOutput?.permissionDecision,
+    'deny',
+    'ALL-CAPITALS Bash write should be denied'
+  );
+  assert(
+    response.hookSpecificOutput?.permissionDecisionReason.includes('ALL-CAPITALS'),
+    'Block reason should mention ALL-CAPITALS enforcement'
+  );
+}
+
+async function testBashEnvVarAllowed() {
+  const mockInput = {
+    tool: 'Bash',
+    tool_input: {
+      command: "cat > \"$SUMMARY_FILE\" <<'EOF'\n# Test doc\nEOF\n"
+    },
+    cwd: PROJECT_ROOT,
+    session_id: 'test-session-bash-env'
+  };
+
+  const result = await executeHook(mockInput);
+  const response = parseHookResponse(result.stdout);
+
+  assert.strictEqual(result.code, 0, 'Bash env-var redirect should be allowed');
+  assert(response, 'Hook should return valid JSON response');
+  assert.strictEqual(
+    response.continue,
+    true,
+    'Env-var redirect should not trigger ALL-CAPS enforcement'
+  );
+}
+
 async function testSummaryInSummariesDir() {
   const mockInput = {
     tool: 'Write',
@@ -290,6 +338,8 @@ async function runAllTests() {
   await runTest('Read operation → NEVER BLOCK', testReadOperationNotBlocked);
   await runTest('Hook does not crash → NO SYNTAX ERRORS', testHookDoesNotCrash);
   await runTest('ALL-CAPITALS filename → BLOCK', testAllCapsBlocking);
+  await runTest('Bash ALL-CAPITALS write → BLOCK', testBashAllCapsBlocking);
+  await runTest('Bash env-var redirect → ALLOW', testBashEnvVarAllowed);
   await runTest('Summary in summaries/ → ALLOW', testSummaryInSummariesDir);
 
   console.log(`\n📊 Test Results:`);
