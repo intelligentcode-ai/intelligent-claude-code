@@ -39,14 +39,4 @@ else
   echo "No regression tests found yet"
 fi
 
-# Workflow tests
-if [ -d "tests/workflows" ] && [ "$(ls -A tests/workflows/*.js 2>/dev/null)" ]; then
-  echo "🧭 Workflow enforcement tests..."
-  for test in tests/workflows/*.js; do
-    node "$test"
-  done
-else
-  echo "No workflow tests found yet"
-fi
-
 echo "✅ All tests passed!"

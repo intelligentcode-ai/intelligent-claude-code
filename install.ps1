@@ -185,7 +185,6 @@ function Register-ProductionHooks {
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\git-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\main-scope-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pm-constraints-enforcement.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\workflow-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-infrastructure-protection.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-marker.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\config-protection.js`""; timeout = 5000 }
