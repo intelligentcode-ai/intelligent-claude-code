@@ -18,11 +18,7 @@ const READ_OPERATIONS = getSetting('enforcement.infrastructure_protection.read_o
 const WHITELIST = getSetting('enforcement.infrastructure_protection.whitelist', []);
 const READ_ALLOWED = getSetting('enforcement.infrastructure_protection.read_operations_allowed', true);
 const BLOCKING_ENABLED = getSetting('enforcement.blocking_enabled', true);
-const MAIN_SCOPE_AGENT_ENV = (() => {
-  const v = process.env.ICC_MAIN_SCOPE_AGENT;
-  if (!v) return false;
-  return ['1', 'true', 'yes', 'on'].includes(v.toLowerCase());
-})();
+const MAIN_SCOPE_AGENT_ENV = process.env.ICC_MAIN_SCOPE_AGENT === 'true';
 const MAIN_SCOPE_AGENT_PRIV = getSetting('enforcement.main_scope_has_agent_privileges', false);
 const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS === '1';
 
