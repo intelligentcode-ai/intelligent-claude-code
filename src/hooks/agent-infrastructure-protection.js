@@ -18,10 +18,12 @@ const READ_OPERATIONS = getSetting('enforcement.infrastructure_protection.read_o
 const WHITELIST = getSetting('enforcement.infrastructure_protection.whitelist', []);
 const READ_ALLOWED = getSetting('enforcement.infrastructure_protection.read_operations_allowed', true);
 const BLOCKING_ENABLED = getSetting('enforcement.blocking_enabled', true);
+const MAIN_SCOPE_AGENT_PRIV = getSetting('enforcement.main_scope_has_agent_privileges', false);
+const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS === '1';
 
-function main() {
-  // Initialize hook with shared library function
-  const { log, hookInput } = initializeHook('agent-infrastructure-protection');
+  function main() {
+    // Initialize hook with shared library function
+    const { log, hookInput } = initializeHook('agent-infrastructure-protection');
 
   const DOC_DIRECTORY_NAMES = new Set([
     'docs',
@@ -314,6 +316,18 @@ function main() {
 
     // Check if infrastructure protection is enabled
     const protectionEnabled = PROTECTION_ENABLED;
+
+    // If main scope is configured to have agent privileges, bypass infra protection entirely.
+    const isMainScope =
+      !hookInput.permission_mode ||
+      hookInput.permission_mode === 'default' ||
+      hookInput.permission_mode === 'main';
+
+    if (MAIN_SCOPE_AGENT_PRIV && isMainScope && !DISABLE_MAIN_INFRA_BYPASS) {
+      log('Main scope agent privileges enabled - bypassing infrastructure protection');
+      console.log(JSON.stringify(standardOutput));
+      process.exit(0);
+    }
 
     if (!protectionEnabled) {
       log('Infrastructure protection disabled - allowing command');
