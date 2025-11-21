@@ -18,6 +18,11 @@ const READ_OPERATIONS = getSetting('enforcement.infrastructure_protection.read_o
 const WHITELIST = getSetting('enforcement.infrastructure_protection.whitelist', []);
 const READ_ALLOWED = getSetting('enforcement.infrastructure_protection.read_operations_allowed', true);
 const BLOCKING_ENABLED = getSetting('enforcement.blocking_enabled', true);
+const MAIN_SCOPE_AGENT_ENV = (() => {
+  const v = process.env.ICC_MAIN_SCOPE_AGENT;
+  if (!v) return false;
+  return ['1', 'true', 'yes', 'on'].includes(v.toLowerCase());
+})();
 const MAIN_SCOPE_AGENT_PRIV = getSetting('enforcement.main_scope_has_agent_privileges', false);
 const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS === '1';
 
@@ -323,7 +328,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       hookInput.permission_mode === 'default' ||
       hookInput.permission_mode === 'main';
 
-    if (MAIN_SCOPE_AGENT_PRIV && isMainScope && !DISABLE_MAIN_INFRA_BYPASS) {
+    if ((MAIN_SCOPE_AGENT_PRIV || MAIN_SCOPE_AGENT_ENV) && isMainScope && !DISABLE_MAIN_INFRA_BYPASS) {
       log('Main scope agent privileges enabled - bypassing infrastructure protection');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
@@ -398,7 +403,13 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
     // Step 1: Check imperative destructive operations (enforce IaC - suggest alternatives)
     for (const imperativeCmd of imperativeDestructive) {
-      if (containsUnquoted(command, imperativeCmd) || containsUnquoted(actualCommand, imperativeCmd)) {
+      // Match both quoted and unquoted occurrences to avoid bypass via wrappers
+      if (
+        containsUnquoted(command, imperativeCmd) ||
+        containsUnquoted(actualCommand, imperativeCmd) ||
+        command.includes(imperativeCmd) ||
+        actualCommand.includes(imperativeCmd)
+      ) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
 
@@ -471,7 +482,12 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
 
     // Step 3: Check write operations (blocked for agents)
     for (const writeCmd of writeOperations) {
-      if (containsUnquoted(command, writeCmd) || containsUnquoted(actualCommand, writeCmd)) {
+      if (
+        containsUnquoted(command, writeCmd) ||
+        containsUnquoted(actualCommand, writeCmd) ||
+        command.includes(writeCmd) ||
+        actualCommand.includes(writeCmd)
+      ) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 
         console.log(JSON.stringify({

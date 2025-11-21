@@ -36,7 +36,8 @@ function main() {
     if (session_id) {
       // Calculate project hash to match agent-marker.js format
       const projectHash = generateProjectHash(hookInput);
-      const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
+      const markerDir = process.env.ICC_TEST_MARKER_DIR || path.join(os.homedir(), '.claude', 'tmp');
+      const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
 
       log(`[STOP-CLEANUP] Checking marker: ${markerFile}`);
 
