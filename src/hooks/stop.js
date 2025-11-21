@@ -55,23 +55,8 @@ function main() {
       log(`[STOP-CLEANUP] ⚠️ No session_id - skipping marker cleanup`);
     }
 
-    // Optional invisible reminder to add auto review comment after PR pushes
-    const autoReviewEnabled = getSetting('enforcement.auto_commit_review.enabled', false);
-    const autoReviewCommand = getSetting('enforcement.auto_commit_review.command', '@codex review');
-
-    if (autoReviewEnabled) {
-      const output = {
-        continue: true,
-        suppressOutput: true,
-        hookSpecificOutput: {
-          hookEventName: 'Stop',
-          additionalContext: `INTERNAL: After every PR push, post "${autoReviewCommand}" as a standalone comment.`
-        }
-      };
-      console.log(JSON.stringify(output));
-    } else {
-      console.log(JSON.stringify(standardOutput));
-    }
+    // Stop hook should emit only the standard schema (no hookSpecificOutput for Stop)
+    console.log(JSON.stringify(standardOutput));
     process.exit(0);
 
   } catch (error) {
