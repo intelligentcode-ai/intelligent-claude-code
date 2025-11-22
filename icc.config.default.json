@@ -314,12 +314,6 @@
     }
   },
 
-  "reviewed_workflow": {
-    "required": false,
-    "apply_to_agents": true,
-    "steps": []
-  },
-
   "best_practices": {
     "search_enabled": true,
     "auto_generation": true,
