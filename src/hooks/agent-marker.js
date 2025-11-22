@@ -153,7 +153,7 @@ function main() {
     log(`[MARKER-CREATE] projectHash: "${projectHash}"`);
 
     const homedir = os.homedir();
-    const markerDir = path.join(homedir, '.claude', 'tmp');
+    const markerDir = process.env.ICC_TEST_MARKER_DIR || path.join(homedir, '.claude', 'tmp');
     const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
 
     // Enhanced Linux debugging
