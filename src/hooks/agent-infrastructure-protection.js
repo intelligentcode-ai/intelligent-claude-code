@@ -324,7 +324,12 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       hookInput.permission_mode === 'default' ||
       hookInput.permission_mode === 'main';
 
-    if ((MAIN_SCOPE_AGENT_PRIV || MAIN_SCOPE_AGENT_ENV) && isMainScope && !DISABLE_MAIN_INFRA_BYPASS) {
+    const mainScopeAgentEnabled =
+      MAIN_SCOPE_AGENT_ENV === false
+        ? false
+        : (MAIN_SCOPE_AGENT_ENV === true || MAIN_SCOPE_AGENT_PRIV);
+
+    if (mainScopeAgentEnabled && isMainScope && !DISABLE_MAIN_INFRA_BYPASS) {
       log('Main scope agent privileges enabled - bypassing infrastructure protection');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
