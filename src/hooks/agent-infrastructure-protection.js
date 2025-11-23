@@ -79,12 +79,19 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
   // Looser command substitution detection: allows matches inside double-quotes (but still not single quotes)
   function hasCommandSubstitutionLoose(str) {
     let inSingle = false;
+    let inDouble = false;
 
     for (let i = 0; i < str.length; i++) {
       const ch = str[i];
       const prev = str[i - 1];
 
-      if (ch === "'" && prev !== '\\') {
+      if (ch === '"' && prev !== '\\' && !inSingle) {
+        inDouble = !inDouble;
+        continue;
+      }
+
+      // Ignore single quotes that appear inside double-quoted strings
+      if (ch === "'" && prev !== '\\' && !inDouble) {
         inSingle = !inSingle;
         continue;
       }
@@ -232,6 +239,27 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     }
 
     return trimmed.indexOf('\n') === -1;
+  }
+
+  function isQuotedHeredoc(cmd) {
+    const trimmed = cmd.trim();
+    if (!trimmed) {
+      return false;
+    }
+    const firstLine = trimmed.split('\n', 1)[0];
+    const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
+    if (!heredocMatch) {
+      return false;
+    }
+    return Boolean(heredocMatch[1] || heredocMatch[2]);
+  }
+
+  function isSingleQuotedHeredoc(cmd) {
+    const trimmed = cmd.trim();
+    if (!trimmed) return false;
+    const firstLine = trimmed.split('\n', 1)[0];
+    const heredocMatch = firstLine.match(/<<-?\s*'([A-Za-z0-9_:-]+)'/);
+    return Boolean(heredocMatch);
   }
 
   function looksLikeMarkdownWrite(cmd, cwd) {
@@ -394,11 +422,16 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       process.exit(0);
     }
 
-    // If this is a markdown write attempt but contains command substitution anywhere, block it explicitly
-    // EXCEPT when the write is already validated as allowlisted markdown (which handles quoted heredocs safely).
+    // If this is a markdown write attempt and contains command substitution, block it
+    // unless it's an allowlisted markdown heredoc with a quoted terminator (no expansion).
     const looksMarkdown = looksLikeMarkdownWrite(command, hookInput.cwd);
     const allowlistedMarkdown = looksMarkdown && isAllowlistedMarkdownWrite(command, hookInput.cwd);
-    if (looksMarkdown && !allowlistedMarkdown && hasCommandSubstitutionLoose(command)) {
+    const quotedMarkdownHeredoc = looksMarkdown && isQuotedHeredoc(command);
+    const singleQuotedMarkdownHeredoc = looksMarkdown && isSingleQuotedHeredoc(command);
+
+    const rawSubstitution = command.includes('$(') || command.includes('`');
+
+    if (looksMarkdown && (hasCommandSubstitutionLoose(command) || rawSubstitution) && !(allowlistedMarkdown && singleQuotedMarkdownHeredoc)) {
       log('BLOCKED: Markdown write contains command substitution');
       console.log(JSON.stringify({
         hookSpecificOutput: {

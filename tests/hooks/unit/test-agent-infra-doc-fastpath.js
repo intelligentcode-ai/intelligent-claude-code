@@ -61,6 +61,11 @@ const tests = {
     const cmd = "cat <<'EOF' > docs/guide.md\n$(kubectl delete pod foo)\nEOF";
     const out = runHook(cmd);
     assert.strictEqual(out.hookSpecificOutput.permissionDecision, 'allow');
+  },
+  'blocks double-quoted string containing single-quoted substitution': () => {
+    const cmd = 'printf "\'$(kubectl delete pod foo)\'" > docs/guide.md';
+    const out = runHook(cmd);
+    assert.strictEqual(out.hookSpecificOutput.permissionDecision, 'deny');
   }
 };
 
