@@ -395,7 +395,10 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     }
 
     // If this is a markdown write attempt but contains command substitution anywhere, block it explicitly
-    if (looksLikeMarkdownWrite(command, hookInput.cwd) && hasCommandSubstitutionLoose(command)) {
+    // EXCEPT when the write is already validated as allowlisted markdown (which handles quoted heredocs safely).
+    const looksMarkdown = looksLikeMarkdownWrite(command, hookInput.cwd);
+    const allowlistedMarkdown = looksMarkdown && isAllowlistedMarkdownWrite(command, hookInput.cwd);
+    if (looksMarkdown && !allowlistedMarkdown && hasCommandSubstitutionLoose(command)) {
       log('BLOCKED: Markdown write contains command substitution');
       console.log(JSON.stringify({
         hookSpecificOutput: {
@@ -408,7 +411,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     }
 
     // Allow markdown writes in allowlisted directories (docs/stories/bugs/memory/summaries/agenttasks)
-    if (isAllowlistedMarkdownWrite(command, hookInput.cwd)) {
+    if (allowlistedMarkdown) {
       log('ALLOWED: Markdown write detected in allowlisted directory');
       console.log(JSON.stringify(standardOutput));
       process.exit(0);
