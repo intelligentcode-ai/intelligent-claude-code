@@ -35,8 +35,9 @@ function main() {
     // Session end = NO agents can be running anymore
     if (session_id) {
       // Calculate project hash to match agent-marker.js format
+      const { getMarkerDir } = require('./lib/marker-detection');
       const projectHash = generateProjectHash(hookInput);
-      const markerDir = process.env.ICC_TEST_MARKER_DIR || path.join(os.homedir(), '.claude', 'tmp');
+      const markerDir = getMarkerDir();
       const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
 
       log(`[STOP-CLEANUP] Checking marker: ${markerFile}`);

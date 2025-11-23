@@ -42,6 +42,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     'agenttasks'
   ];
 
+  // Strict command substitution detection: ignores anything inside quotes
   function hasCommandSubstitution(str) {
     let inSingle = false;
     let inDouble = false;
@@ -58,6 +59,36 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
         inDouble = !inDouble;
         continue;
       }
+      if (inSingle) {
+        continue;
+      }
+
+      if (ch === '$' && prev !== '\\' && str[i + 1] === '(') {
+        return true;
+      }
+      if (ch === '`' && prev !== '\\') {
+        return true;
+      }
+      if ((ch === '>' || ch === '<') && prev !== '\\' && str[i + 1] === '(') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Looser command substitution detection: allows matches inside double-quotes (but still not single quotes)
+  function hasCommandSubstitutionLoose(str) {
+    let inSingle = false;
+
+    for (let i = 0; i < str.length; i++) {
+      const ch = str[i];
+      const prev = str[i - 1];
+
+      if (ch === "'" && prev !== '\\') {
+        inSingle = !inSingle;
+        continue;
+      }
+
       if (inSingle) {
         continue;
       }
@@ -111,6 +142,13 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     return false;
   }
 
+  // Match keyword anywhere (quoted or unquoted) using word boundaries
+  function matchesKeywordAnywhere(str, needle) {
+    if (!str || !needle) return false;
+    const re = new RegExp(`\\b${escapeRegex(needle)}\\b`);
+    return re.test(str);
+  }
+
   const ALLOW_PARENT_ALLOWLIST_PATHS = getSetting('enforcement.allow_parent_allowlist_paths', false);
 
   function targetsDocumentation(target, cwd) {
@@ -155,7 +193,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       return false;
     }
 
-    if (hasCommandSubstitution(firstLine)) {
+    if (hasCommandSubstitutionLoose(firstLine)) {
       return false;
     }
 
@@ -185,7 +223,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
       if (!isQuoted) {
         const body = trimmed.replace(/^.*?\n/s, '');
-        if (hasCommandSubstitution(body)) {
+        if (hasCommandSubstitutionLoose(body)) {
           return false;
         }
       }
@@ -218,7 +256,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       return false;
     }
 
-    if (hasCommandSubstitution(firstLine)) {
+    if (hasCommandSubstitutionLoose(firstLine)) {
       return false;
     }
 
@@ -250,7 +288,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       if (!isQuoted) {
         // Unquoted heredoc bodies perform substitution; ensure body is clean
         const body = trimmed.replace(/^.*?\n/s, '');
-        if (hasCommandSubstitution(body)) {
+        if (hasCommandSubstitutionLoose(body)) {
           return false;
         }
       }
@@ -357,7 +395,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     }
 
     // If this is a markdown write attempt but contains command substitution anywhere, block it explicitly
-    if (looksLikeMarkdownWrite(command, hookInput.cwd) && hasCommandSubstitution(command)) {
+    if (looksLikeMarkdownWrite(command, hookInput.cwd) && hasCommandSubstitutionLoose(command)) {
       log('BLOCKED: Markdown write contains command substitution');
       console.log(JSON.stringify({
         hookSpecificOutput: {
@@ -407,7 +445,9 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       // Match both quoted and unquoted occurrences to avoid bypass via wrappers
       if (
         containsUnquoted(command, imperativeCmd) ||
-        containsUnquoted(actualCommand, imperativeCmd)
+        containsUnquoted(actualCommand, imperativeCmd) ||
+        matchesKeywordAnywhere(command, imperativeCmd) ||
+        matchesKeywordAnywhere(actualCommand, imperativeCmd)
       ) {
         if (blockingEnabled) {
           log(`IaC-ENFORCEMENT: Imperative destructive command detected: ${imperativeCmd}`);
@@ -483,7 +523,9 @@ Configuration: ./icc.config.json or ./.claude/icc.config.json`
     for (const writeCmd of writeOperations) {
       if (
         containsUnquoted(command, writeCmd) ||
-        containsUnquoted(actualCommand, writeCmd)
+        containsUnquoted(actualCommand, writeCmd) ||
+        matchesKeywordAnywhere(command, writeCmd) ||
+        matchesKeywordAnywhere(actualCommand, writeCmd)
       ) {
         log(`BLOCKED: Write operation command: ${writeCmd}`);
 

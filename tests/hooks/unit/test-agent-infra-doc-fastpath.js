@@ -13,7 +13,13 @@ function runHook(command) {
     cwd: '/project'
   };
   const res = spawnSync('node', [hookPath], {
-    env: { ...process.env, CLAUDE_TOOL_INPUT: JSON.stringify(hookInput) },
+    env: {
+      ...process.env,
+      CLAUDE_TOOL_INPUT: JSON.stringify(hookInput),
+      // Ensure infra protection is active and main-scope bypass is disabled for the test
+      ICC_MAIN_SCOPE_AGENT: 'false',
+      CLAUDE_DISABLE_MAIN_INFRA_BYPASS: '1',
+    },
     encoding: 'utf8'
   });
   if (res.error) throw res.error;
