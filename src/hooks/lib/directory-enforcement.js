@@ -49,10 +49,10 @@ function getCorrectDirectory(filename, projectRoot) {
   }
 
   // Memory files → memory/
-  // Check if filename contains 'memory/' to detect memory directory files
-  if (filename.includes('memory/')) {
-    return path.join(projectRoot, 'memory');
-  }
+  // Allow memory directories even when filenames have no prefix
+  // (accept both memory/ and memories/)
+  // NOTE: filename alone cannot reveal the directory; enforcement handles
+  // directory-based allowance in isCorrectDirectory.
 
   // Default → summaries/
   return path.join(projectRoot, 'summaries');
@@ -78,6 +78,12 @@ function isCorrectDirectory(filePath, projectRoot) {
 
   const normalizedActual = path.normalize(actualDir);
   const normalizedExpected = path.normalize(expectedDir);
+
+  // Allow any file placed under memory or memories directories
+  const segments = normalizedActual.split(path.sep);
+  if (segments.includes('memory') || segments.includes('memories')) {
+    return true;
+  }
 
   // If the expected directory is docs/, allow any path that contains a docs segment
   if (normalizedExpected.endsWith(path.sep + 'docs')) {
