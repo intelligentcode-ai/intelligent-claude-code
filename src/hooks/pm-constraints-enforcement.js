@@ -1120,6 +1120,7 @@ To execute blocked operation:
           getSetting('paths.story_path', 'stories'),
           getSetting('paths.bug_path', 'bugs'),
           getSetting('paths.memory_path', 'memory'),
+          'memories',
           getSetting('paths.docs_path', 'docs'),
           'agenttasks',
           getSetting('paths.summaries_path', 'summaries')
