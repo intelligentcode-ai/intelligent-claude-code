@@ -129,27 +129,37 @@ assertEqual(
   'Memory files currently route based on default logic'
 );
 
-// Test that files in memory/ subdirectories - THESE SHOULD FAIL (documenting STORY-007 bug)
-// The current implementation does NOT recognize memory/ as a valid directory
-// because getCorrectDirectory returns summaries/, and memory/ is not a subdirectory of summaries/
+// Test that files in memory/ subdirectories are allowed (STORY-007 fix)
 const memoryImplPath = path.join(PROJECT_ROOT, 'memory/implementation/auth.md');
 const memoryDebugPath = path.join(PROJECT_ROOT, 'memory/debugging/error-patterns.md');
 const memoryRootPath = path.join(PROJECT_ROOT, 'memory/auth-patterns.md');
 
-// Document current INCORRECT behavior (STORY-007 should fix these)
+// STORY-007 fix: memory paths should be valid
 assertTrue(
-  !isCorrectDirectory(memoryImplPath, PROJECT_ROOT),
-  'STORY-007 BUG: memory/implementation/ files incorrectly flagged as invalid'
+  isCorrectDirectory(memoryImplPath, PROJECT_ROOT),
+  'memory/implementation/ files should be allowed (STORY-007 fix)'
 );
 
 assertTrue(
-  !isCorrectDirectory(memoryDebugPath, PROJECT_ROOT),
-  'STORY-007 BUG: memory/debugging/ files incorrectly flagged as invalid'
+  isCorrectDirectory(memoryDebugPath, PROJECT_ROOT),
+  'memory/debugging/ files should be allowed (STORY-007 fix)'
 );
 
 assertTrue(
-  !isCorrectDirectory(memoryRootPath, PROJECT_ROOT),
-  'STORY-007 BUG: memory/ root files incorrectly flagged as invalid'
+  isCorrectDirectory(memoryRootPath, PROJECT_ROOT),
+  'memory/ root files should be allowed (STORY-007 fix)'
+);
+
+// Ensure structured docs aren’t routed into memory/
+const misroutedStoryInMemory = path.join(PROJECT_ROOT, 'memory/STORY-999-wrong-place.md');
+const misroutedBugInMemory = path.join(PROJECT_ROOT, 'memory/BUG-999-wrong-place.md');
+assertTrue(
+  !isCorrectDirectory(misroutedStoryInMemory, PROJECT_ROOT),
+  'STORY files should not be allowed under memory/'
+);
+assertTrue(
+  !isCorrectDirectory(misroutedBugInMemory, PROJECT_ROOT),
+  'BUG files should not be allowed under memory/'
 );
 
 // Test suggestion system for misplaced memory files

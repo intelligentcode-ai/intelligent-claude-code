@@ -184,7 +184,8 @@ function main() {
       // Without hash, cleanup fails to find marker file and stale counts persist
       const projectHash = generateProjectHash(hookInput);
 
-      const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
+      const { getMarkerDir } = require('./lib/marker-detection');
+      const markerFile = path.join(getMarkerDir(), `agent-executing-${session_id}-${projectHash}`);
       log(`[MARKER-CLEANUP] Checking marker: ${markerFile} (project: ${projectRoot})`);
 
       if (fs.existsSync(markerFile)) {

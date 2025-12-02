@@ -48,10 +48,13 @@ function getCorrectDirectory(filename, projectRoot) {
     return path.join(projectRoot, 'docs');
   }
 
-  // Memory files → memory/
-  // Check if filename contains 'memory/' to detect memory directory files
-  if (filename.includes('memory/')) {
+  // Memory files → memory/ (or memories/) when path segment present
+  const normalizedName = filename.replace(/\\/g, '/');
+  if (normalizedName.includes('memory/')) {
     return path.join(projectRoot, 'memory');
+  }
+  if (normalizedName.includes('memories/')) {
+    return path.join(projectRoot, 'memories');
   }
 
   // Default → summaries/
@@ -78,6 +81,15 @@ function isCorrectDirectory(filePath, projectRoot) {
 
   const normalizedActual = path.normalize(actualDir);
   const normalizedExpected = path.normalize(expectedDir);
+
+  // Allow free-form notes under memory directories, but still route STORY/BUG/EPIC docs elsewhere
+  const segments = normalizedActual.split(path.sep);
+  const isStory = /^STORY-\d+/i.test(basename);
+  const isBug = /^BUG-/i.test(basename);
+  const isEpic = /^EPIC-/i.test(basename);
+  if ((segments.includes('memory') || segments.includes('memories')) && !(isStory || isBug || isEpic)) {
+    return true;
+  }
 
   // If the expected directory is docs/, allow any path that contains a docs segment
   if (normalizedExpected.endsWith(path.sep + 'docs')) {

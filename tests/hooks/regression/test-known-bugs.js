@@ -183,7 +183,7 @@ const story007Tests = {
   'STORY-007: Memory subdirectory writes allowed (FIXED)': () => {
     console.log('\n    [REGRESSION TEST: STORY-007]');
     console.log('    Bug: Writes to memory/subdirectories/ blocked');
-    console.log('    Status: FIXED in repo - awaiting deployment');
+    console.log('    Status: FIXED');
 
     const projectRoot = '/Users/test/project';
     const memorySubdirPath = path.join(projectRoot, 'memory/debugging/pattern.md');
@@ -193,15 +193,14 @@ const story007Tests = {
     console.log(`      Path:    "${memorySubdirPath}"`);
     console.log(`      Allowed: ${isCorrect}`);
 
-    // INVERTED: Fix is in repo but not deployed
-    assert.strictEqual(isCorrect, false,
-      'Bug confirmed: memory subdirectory files blocked (WILL BE FIXED after deployment)');
+    assert.strictEqual(isCorrect, true,
+      'Memory subdirectory files should be allowed');
   },
 
   'STORY-007: Memory root level files allowed (FIXED)': () => {
     console.log('\n    [REGRESSION TEST: STORY-007]');
     console.log('    Bug: Files in memory/ root blocked');
-    console.log('    Status: FIXED in repo - awaiting deployment');
+    console.log('    Status: FIXED');
 
     const projectRoot = '/Users/test/project';
     const memoryRootPath = path.join(projectRoot, 'memory/auth-patterns.md');
@@ -211,9 +210,8 @@ const story007Tests = {
     console.log(`      Path:    "${memoryRootPath}"`);
     console.log(`      Allowed: ${isCorrect}`);
 
-    // INVERTED: Fix is in repo but not deployed
-    assert.strictEqual(isCorrect, false,
-      'Bug confirmed: memory root files blocked (WILL BE FIXED after deployment)');
+    assert.strictEqual(isCorrect, true,
+      'Memory root files should be allowed');
   },
 
   'STORY-007: Story files still route to stories/ (NOT REGRESSED)': () => {
@@ -344,40 +342,31 @@ const crossBugTests = {
 
   'Bug fix validation: memory fix does not break story routing': () => {
     console.log('\n    [CROSS-BUG VALIDATION]');
-    console.log('    Validation: When STORY-007 memory fix deploys, verify no regressions');
+    console.log('    Validation: STORY-007 memory fix deployed without regressions');
 
     const projectRoot = '/Users/test/project';
 
-    // Test multiple routing patterns
-    // Note: memory/ routing currently broken (awaiting deployment)
     const tests = [
       { file: 'STORY-001-test.md', expected: 'stories', shouldPass: true },
-      { file: 'memory/pattern.md', expected: 'memory', shouldPass: false }, // Bug not deployed yet
+      { file: 'memory/pattern.md', expected: 'memory', shouldPass: true },
       { file: 'summary-doc.md', expected: 'summaries', shouldPass: true },
       { file: 'VERSION', expected: projectRoot, shouldPass: true }
     ];
 
-    let expectedFailures = 0;
     let actualFailures = 0;
 
     for (const test of tests) {
       const result = getCorrectDirectory(test.file, projectRoot);
       const expected = test.expected === projectRoot ? projectRoot : path.join(projectRoot, test.expected);
 
-      if (result !== expected) {
+      if (result !== expected && test.shouldPass) {
         actualFailures++;
-        if (!test.shouldPass) {
-          expectedFailures++;
-          console.log(`      EXPECTED FAIL: ${test.file} → ${result} (awaiting deployment)`);
-        } else {
-          console.log(`      UNEXPECTED FAIL: ${test.file} → ${result} (expected: ${expected})`);
-        }
+        console.log(`      UNEXPECTED FAIL: ${test.file} → ${result} (expected: ${expected})`);
       }
     }
 
-    // Currently expect memory routing to fail (not deployed)
-    assert.strictEqual(actualFailures, expectedFailures,
-      'Only expected failures (awaiting deployment) should occur');
+    assert.strictEqual(actualFailures, 0,
+      'Memory routing should now pass for all cases');
   }
 };
 
@@ -404,16 +393,14 @@ console.log('Total tests: 17');
 console.log('');
 console.log('Status:');
 console.log('  ✓ STORY-006: FIXED in v8.20.65 - path normalization working correctly');
-console.log('  ⚠ STORY-007: FIXED in repo (v8.20.60) - awaiting deployment to ~/.claude/hooks/');
+console.log('  ✓ STORY-007: FIXED in repo (v8.20.60) and deployed');
 console.log('  ⚠ cd command: NOT FIXED - tests document bug with inverted assertions');
-console.log('');
-console.log('Note: Tests currently expect STORY-007 to fail (not deployed yet)');
-console.log('      After "make install", STORY-007 tests should pass');
 console.log('');
 
 if (allPassed) {
   console.log('✓ All regression tests completed successfully');
   console.log('✓ STORY-006 path normalization fix validated');
+  console.log('✓ STORY-007 memory routing fix validated');
   console.log('✓ Bug documentation complete for STORY-007, cd command blocking');
   process.exit(0);
 } else {
