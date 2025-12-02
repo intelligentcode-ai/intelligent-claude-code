@@ -32,7 +32,8 @@ function main() {
       const projectHash = generateProjectHash(hookInput);
       const sessionId = claudeInput.session_id;
 
-      const markerDir = path.join(os.homedir(), '.claude', 'tmp');
+      const { getMarkerDir } = require('./lib/marker-detection');
+      const markerDir = getMarkerDir();
 
       if (fs.existsSync(markerDir)) {
         const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);

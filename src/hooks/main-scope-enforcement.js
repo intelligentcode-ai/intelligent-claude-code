@@ -254,11 +254,10 @@ function main() {
       const projectHash = generateProjectHash(hookInput);
       log(`[MARKER-CHECK] projectHash: "${projectHash}"`);
 
-      const homedir = os.homedir();
-      const markerDir = path.join(homedir, '.claude', 'tmp');
+      const { getMarkerDir } = require('./lib/marker-detection');
+      const markerDir = getMarkerDir();
       const markerFile = path.join(markerDir, `agent-executing-${sessionId}-${projectHash}`);
 
-      log(`[MARKER-CHECK] Home directory: "${homedir}"`);
       log(`[MARKER-CHECK] Marker directory: "${markerDir}"`);
       log(`[MARKER-CHECK] Full marker path: "${markerFile}"`);
       log(`[MARKER-CHECK] Marker file exists: ${fs.existsSync(markerFile)}`);

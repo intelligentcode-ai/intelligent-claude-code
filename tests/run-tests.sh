@@ -4,6 +4,7 @@ set -e
 
 # Ensure deterministic context during tests (main scope raised to agent only when explicitly set)
 export ICC_MAIN_SCOPE_AGENT=false
+export CLAUDE_DISABLE_MAIN_INFRA_BYPASS=1
 export CLAUDE_CONFIG_PATH="$(cd "$(dirname "$0")/.." && pwd)/icc.config.default.json"
 export ICC_TEST_MARKER_DIR="$(mktemp -d)"
 

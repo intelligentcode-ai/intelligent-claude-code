@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.20.97] - 2025-12-02
+
+### Added
+- Workflow enforcement hook to gate tool usage through configurable Task → Plan → Review → Execute → Document sequence.
+
+### Changed
+- Infrastructure protection hardening: stricter command-substitution detection, explicit main-scope agent bypass control, and marker cleanup respects custom temp directories.
+- Directory enforcement now recognizes `memory/` and `memories/` segments for valid note placement while still keeping STORY/BUG/EPIC docs in their scoped folders.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [8.20.96] - 2025-11-21
+
+### Fixed
+- Align root VERSION with src/VERSION to keep init/version reporting accurate.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [8.20.95] - 2025-11-20
+
+### Fixed
+- Stop hook now outputs schema-compliant JSON only (no auto-review context), preventing validation errors in Stop events.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [8.20.94] - 2025-11-20
+
+### Fixed
+- Infra protection: allow markdown writes in allowlisted dirs (docs/stories/bugs/memory/summaries/agenttasks) even when they live in sibling trees.
+- Infra protection: still block markdown writes that contain command substitution, even if keywords are quoted.
+- Destructive/write keyword scans now ignore matches that appear only inside quotes, preventing blocks on grep/printf examples.
+
+### Testing
+- `bash tests/run-tests.sh`
 
 ## [8.20.93] - 2025-11-20
 

@@ -90,7 +90,8 @@ function main() {
     const projectHash = generateProjectHash(hookInput);
 
     // Use project-specific marker filename matching agent-marker.js
-    const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
+    const { getMarkerDir } = require('./lib/marker-detection');
+    const markerFile = path.join(getMarkerDir(), `agent-executing-${session_id}-${projectHash}`);
 
     if (fs.existsSync(markerFile)) {
       decrementAgentCount(markerFile, session_id);

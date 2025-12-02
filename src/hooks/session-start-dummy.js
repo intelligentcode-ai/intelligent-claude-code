@@ -43,8 +43,9 @@ function main() {
     // Session start = main scope = NO agents can be running
     if (session_id) {
       // Calculate project hash to match agent-marker.js filename format
+      const { getMarkerDir } = require('./lib/marker-detection');
       const projectHash = generateProjectHash(hookInput);
-      const markerFile = path.join(os.homedir(), '.claude', 'tmp', `agent-executing-${session_id}-${projectHash}`);
+      const markerFile = path.join(getMarkerDir(), `agent-executing-${session_id}-${projectHash}`);
 
       log(`[SESSION-START-CLEANUP] Checking marker: ${markerFile}`);
 

@@ -152,13 +152,12 @@ function main() {
     const projectHash = generateProjectHash(hookInput);
     log(`[MARKER-CREATE] projectHash: "${projectHash}"`);
 
-    const homedir = os.homedir();
-    const markerDir = path.join(homedir, '.claude', 'tmp');
+    const { getMarkerDir } = require('./lib/marker-detection');
+    const markerDir = getMarkerDir();
     const markerFile = path.join(markerDir, `agent-executing-${session_id}-${projectHash}`);
 
     // Enhanced Linux debugging
     log(`[MARKER-CREATE] Platform: ${os.platform()}`);
-    log(`[MARKER-CREATE] Home directory: "${homedir}"`);
     log(`[MARKER-CREATE] Marker directory: "${markerDir}"`);
     log(`[MARKER-CREATE] Full marker path: "${markerFile}"`);
     log(`[MARKER-CREATE] Path separator: "${path.sep}"`);
