@@ -11,10 +11,9 @@ The v9 hook system is intentionally minimal and only enforces behaviors Claude C
 ## Registration
 
 Hooks are registered by:
-- `ansible/roles/intelligent-claude-code/templates/settings.json.j2`
+- `ansible/roles/intelligent_claude_code/templates/settings.json.j2`
 - `install.ps1` (Register‑ProductionHooks)
 
 ## Why only PreToolUse?
 
 Claude Code already handles role orchestration and subagent execution. The remaining hooks focus purely on safety, privacy, and file hygiene.
-

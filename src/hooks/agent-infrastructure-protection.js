@@ -286,7 +286,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
         continue;
       }
 
-      const match = line.match(/^\s*(?:cat|printf|tee|ssh)\b.*<<(-)?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
+      const match = line.match(/(?:^|[^<])<<(-)?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
       if (!match) {
         continue;
       }

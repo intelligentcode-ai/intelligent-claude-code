@@ -11,7 +11,7 @@ Claude Code hooks are kept **minimal** and only enforce behaviors CC does not pr
 
 ## Registration
 Hooks are registered by:
-- `ansible/roles/intelligent-claude-code/templates/settings.json.j2`
+- `ansible/roles/intelligent_claude_code/templates/settings.json.j2`
 - `install.ps1` (Register‑ProductionHooks)
 
 ## Version
