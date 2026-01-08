@@ -396,14 +396,7 @@ ${filteredMessage}
     const fileFlags = ['-F', '--body-file'];
 
     if (/\bgh\s+pr\s+(create|edit)\b/.test(command) && /\s--fill(?:-first|-verbose)?\b/.test(command)) {
-      return {
-        modified: false,
-        blocked: true,
-        reason: 'Git Privacy - PR Fill Uses Unchecked Text',
-        message: `🚫 GIT PRIVACY: --fill uses existing commit text which may include AI mentions.
-
-Remove --fill (or clean commit messages first) when git.privacy=true.`
-      };
+      log('git.privacy=true with --fill: allowing (content sourced from existing commits)');
     }
 
     const bodyFile = extractFileFlag(command, fileFlags);
