@@ -21,9 +21,9 @@
         msg: "Installing to: {{ install_path }}"
       when: ansible_verbosity >= 1
     
-    - name: Include intelligent-claude-code role
+    - name: Include intelligent_claude_code role
       include_role:
-        name: intelligent-claude-code
+        name: intelligent_claude_code
       vars:
         claude_install_path: "{{ install_path }}"
         claude_project_path: "{{ project_path }}"

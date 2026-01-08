@@ -4,17 +4,17 @@
 - name: Check existing CLAUDE.md content
   ansible.builtin.command:
     cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ claude_install_path }}/CLAUDE.md"
-  register: grep_result
+  register: intelligent_claude_code_grep_result
   failed_when: false
   changed_when: false
 
 - name: Integrate with existing CLAUDE.md
-  when: grep_result.rc != 0
+  when: intelligent_claude_code_grep_result.rc != 0
   block:
     - name: Read existing CLAUDE.md content
       ansible.builtin.slurp:
         src: "{{ claude_install_path }}/CLAUDE.md"
-      register: existing_content
+      register: intelligent_claude_code_existing_content
 
     - name: Create integrated CLAUDE.md
       ansible.builtin.copy:
@@ -24,7 +24,7 @@
 
           <!-- Existing project configuration preserved below -->
 
-          {{ existing_content.content | b64decode }}
+          {{ intelligent_claude_code_existing_content.content | b64decode }}
         dest: "{{ claude_install_path }}/CLAUDE.md"
         mode: '0644'
 
@@ -35,4 +35,4 @@
 - name: Skip integration if already present
   ansible.builtin.debug:
     msg: "Already integrated - import line found in CLAUDE.md"
-  when: grep_result.rc == 0
+  when: intelligent_claude_code_grep_result.rc == 0

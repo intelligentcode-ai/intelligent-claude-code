@@ -1,0 +1,65 @@
+---
+# Backup installation before removal
+- name: Check if backup directory already exists
+  ansible.builtin.stat:
+    path: "{{ intelligent_claude_code_uninstall_backup_path }}"
+  register: intelligent_claude_code_uninstall_backup_exists
+- name: Create unique backup path if directory exists
+  ansible.builtin.set_fact:
+    intelligent_claude_code_uninstall_backup_path: >-
+      {{ intelligent_claude_code_uninstall_backup_path }}-{{ 999999 | random }}
+  when: intelligent_claude_code_uninstall_backup_exists.stat.exists
+- name: Create backup directory
+  ansible.builtin.file:
+    path: "{{ intelligent_claude_code_uninstall_backup_path }}"
+    state: directory
+    mode: '0755'
+- name: Copy entire .claude directory to backup
+  ansible.builtin.copy:
+    src: "{{ claude_install_path }}/"
+    dest: "{{ intelligent_claude_code_uninstall_backup_path }}/"
+    remote_src: true
+    mode: preserve
+  register: intelligent_claude_code_uninstall_backup_result
+- name: Display backup status
+  ansible.builtin.debug:
+    msg: >-
+      Backup {{ 'successful'
+      if intelligent_claude_code_uninstall_backup_result is succeeded
+      else 'failed' }}: {{ intelligent_claude_code_uninstall_backup_path }}
+- name: Create backup manifest
+  ansible.builtin.copy:
+    dest: "{{ intelligent_claude_code_uninstall_backup_path }}/BACKUP_MANIFEST.txt"
+    content: |
+      Intelligent Claude Code - Installation Backup
+      Created: {{ ansible_date_time.iso8601 }}
+      Original Path: {{ claude_install_path }}
+      Backup Path: {{ intelligent_claude_code_uninstall_backup_path }}
+      Host: {{ ansible_hostname }}
+      User: {{ ansible_user_id }}
+      This backup contains the complete virtual team installation including:
+      - CLAUDE.md (main configuration)
+      - modes/ (virtual team mode files)
+      - behaviors/ (behavioral intelligence modules)
+      - config.md (user configuration)
+      - scores.md (team scoring data)
+      - learning-callouts.md (team learning data)
+      - VERSION (system version)
+      To restore this installation:
+      1. Copy contents back to {{ claude_install_path }}
+      2. Ensure proper file permissions (644 for files, 755 for directories)
+      3. Verify import paths in CLAUDE.md match your current setup
+      Backup created by: ansible/uninstall.yml
+    mode: '0644'
+- name: Verify backup integrity
+  ansible.builtin.find:
+    paths: "{{ intelligent_claude_code_uninstall_backup_path }}"
+    recurse: true
+  register: intelligent_claude_code_uninstall_backup_files
+- name: Display backup contents summary
+  ansible.builtin.debug:
+    msg:
+      - "Backup created successfully:"
+      - "Location: {{ intelligent_claude_code_uninstall_backup_path }}"
+      - "Files backed up: {{ intelligent_claude_code_uninstall_backup_files.matched }}"
+      - "Manifest: {{ intelligent_claude_code_uninstall_backup_path }}/BACKUP_MANIFEST.txt"

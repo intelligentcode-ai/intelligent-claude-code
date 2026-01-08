@@ -1,33 +1,34 @@
 ---
 # Project-specific integration tasks
-
 - name: Check if project CLAUDE.md exists
   ansible.builtin.stat:
     path: "{{ claude_project_path }}/CLAUDE.md"
-  register: project_claude_md
-
+  register: intelligent_claude_code_project_claude_md
 - name: Backup project CLAUDE.md if exists
   ansible.builtin.copy:
     src: "{{ claude_project_path }}/CLAUDE.md"
     dest: "{{ claude_project_path }}/CLAUDE.md.backup"
     remote_src: true
     mode: '0644'
-  when: project_claude_md.stat.exists
-
+  when: intelligent_claude_code_project_claude_md.stat.exists
 - name: Create project CLAUDE.md with import
   ansible.builtin.copy:
     content: |
       # Virtual Development Team
       @~/.claude/modes/virtual-team.md
-
       <!-- Add your project-specific configuration below -->
     dest: "{{ claude_project_path }}/CLAUDE.md"
     mode: '0644'
-  when: not project_claude_md.stat.exists
-
+  when: not intelligent_claude_code_project_claude_md.stat.exists
 - name: Integrate with existing project CLAUDE.md
-  when: project_claude_md.stat.exists
+  when: intelligent_claude_code_project_claude_md.stat.exists
   block:
+    - name: Check if import already present in project CLAUDE.md
+      ansible.builtin.command:
+        cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ claude_project_path }}/CLAUDE.md"
+      register: intelligent_claude_code_project_import_grep
+      failed_when: false
+      changed_when: false
     - name: Ensure project CLAUDE.md includes import block
       ansible.builtin.blockinfile:
         path: "{{ claude_project_path }}/CLAUDE.md"
@@ -36,8 +37,12 @@
           # Virtual Development Team
           @~/.claude/modes/virtual-team.md
         insertbefore: BOF
-      register: project_import_update
-
+      register: intelligent_claude_code_project_import_update
+      when: intelligent_claude_code_project_import_grep.rc != 0
     - name: Report project integration status
       ansible.builtin.debug:
-        msg: "{{ 'Added import to project CLAUDE.md' if project_import_update.changed else 'Project already integrated' }}"
+        msg: >-
+          {{ 'Added import to project CLAUDE.md'
+          if intelligent_claude_code_project_import_update is defined
+          and intelligent_claude_code_project_import_update.changed
+          else 'Project already integrated' }}

@@ -20,9 +20,9 @@
       debug:
         msg: "Uninstalling from: {{ install_path }}"
     
-    - name: Include intelligent-claude-code uninstall role
+    - name: Include intelligent_claude_code uninstall role
       include_role:
-        name: intelligent-claude-code-uninstall
+        name: intelligent_claude_code_uninstall
       vars:
         claude_install_path: "{{ install_path }}"
         claude_project_path: "{{ project_path }}"

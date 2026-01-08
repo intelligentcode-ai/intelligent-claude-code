@@ -270,17 +270,35 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     if (!trimmed) return false;
     const lines = trimmed.split('\n');
     let found = false;
+    let inHeredoc = false;
+    let terminator = null;
+    let dashTrim = false;
+
     for (const line of lines) {
-      // Only consider command lines that introduce a heredoc operator.
-      const match = line.match(/^\s*(?:cat|printf|tee|ssh)\b.*<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
+      if (inHeredoc) {
+        const leadingTabs = dashTrim ? '\\t*' : '';
+        const terminatorRegex = new RegExp(`^${leadingTabs}${escapeRegex(terminator)}\\s*$`);
+        if (terminatorRegex.test(line)) {
+          inHeredoc = false;
+          terminator = null;
+          dashTrim = false;
+        }
+        continue;
+      }
+
+      const match = line.match(/^\s*(?:cat|printf|tee|ssh)\b.*<<(-)?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
       if (!match) {
         continue;
       }
       found = true;
-      if (!match[1]) {
+      if (!match[2]) {
         return false;
       }
+      dashTrim = Boolean(match[1]);
+      terminator = match[2] || match[3] || match[4];
+      inHeredoc = true;
     }
+
     return found;
   }
 
