@@ -2,14 +2,14 @@
 # Main tasks for intelligent-claude-code installation
 
 - name: Validate installation parameters
-  assert:
+  ansible.builtin.assert:
     that:
       - claude_install_path is defined
       - claude_scope in ['user', 'project']
     fail_msg: "Invalid installation parameters"
 
 - name: Create .claude directory structure
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: '0755'
@@ -25,15 +25,16 @@
     - "{{ claude_install_path }}/logs"
 
 - name: Check if CLAUDE.md exists
-  stat:
+  ansible.builtin.stat:
     path: "{{ claude_install_path }}/CLAUDE.md"
   register: claude_md_exists
 
 - name: Backup existing CLAUDE.md if present
-  copy:
+  ansible.builtin.copy:
     src: "{{ claude_install_path }}/CLAUDE.md"
     dest: "{{ claude_install_path }}/CLAUDE.md.backup"
-    remote_src: yes
+    remote_src: true
+    mode: '0644'
   when: claude_md_exists.stat.exists
 
 - name: Handle graceful integration for existing CLAUDE.md
@@ -41,96 +42,96 @@
   when: claude_md_exists.stat.exists
 
 - name: Create new CLAUDE.md for fresh installation
-  template:
+  ansible.builtin.template:
     src: CLAUDE.md.j2
     dest: "{{ claude_install_path }}/CLAUDE.md"
     mode: '0644'
   when: not claude_md_exists.stat.exists
 
 - name: Copy virtual team mode files
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/modes/"
     dest: "{{ claude_install_path }}/modes/"
     mode: '0644'
-    force: yes
+    force: true
   register: modes_copy_result
 
 - name: Display modes preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Mode files preserved: {{ claude_install_path }}/modes/ already exists - keeping user modifications"
   when: modes_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy behavior files
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/behaviors/"
     dest: "{{ claude_install_path }}/behaviors/"
     mode: '0644'
-    force: yes
+    force: true
   register: behaviors_copy_result
 
 - name: Display behaviors preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
   when: behaviors_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy commands directory
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/commands/"
     dest: "{{ claude_install_path }}/commands/"
     mode: '0644'
-    force: yes
+    force: true
   register: commands_copy_result
 
 - name: Display commands preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Commands directory preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
   when: commands_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy roles directory
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/roles/"
     dest: "{{ claude_install_path }}/roles/"
     mode: '0644'
-    force: yes
+    force: true
   register: roles_copy_result
 
 - name: Display roles preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Roles directory preserved: {{ claude_install_path }}/roles/ already exists - keeping user modifications"
   when: roles_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy agents directory
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/agents/"
     dest: "{{ claude_install_path }}/agents/"
     mode: '0644'
-    force: yes
+    force: true
   register: agents_copy_result
 
 - name: Display agents preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Agents directory preserved: {{ claude_install_path }}/agents/ already exists - keeping user modifications"
   when: agents_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy AgentTask templates directory
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/agenttask-templates/"
     dest: "{{ claude_install_path }}/agenttask-templates/"
     mode: '0644'
-    force: yes
+    force: true
   register: agenttask_templates_copy_result
 
 - name: Display AgentTask templates preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "AgentTask templates directory preserved: {{ claude_install_path }}/agenttask-templates/ already exists - keeping user modifications"
   when: agenttask_templates_copy_result.failed and ansible_verbosity >= 1
 
 - name: Copy hooks directory
-  synchronize:
+  ansible.posix.synchronize:
     src: "{{ playbook_dir }}/../src/hooks/"
     dest: "{{ claude_install_path }}/hooks/"
-    recursive: yes
-    delete: yes
+    recursive: true
+    delete: true
     rsync_opts:
       - "--exclude=node_modules/"
       - "--exclude=package-lock.json"
@@ -138,22 +139,22 @@
   register: hooks_copy_result
 
 - name: Ensure hooks subdirectories are copied
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/hooks/{{ item }}/"
     dest: "{{ claude_install_path }}/hooks/{{ item }}/"
     mode: preserve
-    force: yes
+    force: true
   loop:
     - lib
-  ignore_errors: yes
+  failed_when: false
 
 - name: Display hooks preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Hooks directory preserved: {{ claude_install_path }}/hooks/ already exists - keeping user modifications"
   when: hooks_copy_result.failed and ansible_verbosity >= 1
 
 - name: Make all hook scripts executable
-  file:
+  ansible.builtin.file:
     path: "{{ claude_install_path }}/hooks/{{ item }}"
     mode: '0755'
     state: file
@@ -161,130 +162,131 @@
     - agent-infrastructure-protection.js
     - git-enforcement.js
     - summary-file-enforcement.js
-  ignore_errors: yes
+  failed_when: false
 
 
 - name: Copy VERSION file
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/VERSION"
     dest: "{{ claude_install_path }}/VERSION"
     mode: '0644'
-    force: yes
+    force: true
   register: version_copy_result
 
 - name: Display VERSION preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "VERSION file preserved: {{ claude_install_path }}/VERSION already exists - keeping user modifications"
   when: version_copy_result.failed and ansible_verbosity >= 1
 
 - name: Check if config.md exists
-  stat:
+  ansible.builtin.stat:
     path: "{{ claude_install_path }}/config.md"
   register: config_md_exists
 
 - name: Ensure hooks lib directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ claude_install_path }}/hooks/lib"
     state: directory
     mode: '0755'
 
 - name: Create config.md from template (ONLY if not exists)
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/config.md"
     dest: "{{ claude_install_path }}/config.md"
     mode: '0644'
   when: not config_md_exists.stat.exists
 
 - name: Display config preservation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Config file preserved: {{ claude_install_path }}/config.md already exists - keeping user settings"
   when: config_md_exists.stat.exists and ansible_verbosity >= 1
 
 - name: Copy configuration file (selected or default without overwriting user edits)
   block:
     - name: Use provided config_file when specified (overwrite)
-      copy:
+      ansible.builtin.copy:
         src: "{{ claude_config_source }}"
         dest: "{{ claude_install_path }}/icc.config.json"
         mode: '0644'
-        force: yes
+        force: true
       when: claude_config_source | length > 0
 
     - name: Check existing icc.config.json
-      stat:
+      ansible.builtin.stat:
         path: "{{ claude_install_path }}/icc.config.json"
       register: icc_config_exists
       when: claude_config_source | length == 0
 
     - name: Preserve existing icc.config.json (no config_file supplied)
-      debug:
+      ansible.builtin.debug:
         msg: "Existing icc.config.json detected – leaving it untouched (pass CONFIG_FILE to override)."
       when: claude_config_source | length == 0 and icc_config_exists.stat.exists and ansible_verbosity >= 1
 
     - name: Install default icc.config.json only if missing
-      copy:
+      ansible.builtin.copy:
         src: "{{ playbook_dir }}/../icc.config.default.json"
         dest: "{{ claude_install_path }}/icc.config.json"
         mode: '0644'
-        force: no
+        force: false
       when: claude_config_source | length == 0 and not icc_config_exists.stat.exists
 
     - name: Always install default for reference
-      copy:
+      ansible.builtin.copy:
         src: "{{ playbook_dir }}/../icc.config.default.json"
         dest: "{{ claude_install_path }}/icc.config.default.json"
         mode: '0644'
-        force: yes
+        force: true
 
     - name: Display config installation choice
-      debug:
+      ansible.builtin.debug:
         msg: >-
           Configuration installed or preserved at {{ claude_install_path }}/icc.config.json
           (source={{ claude_config_source | default('existing or icc.config.default.json') }})
       when: ansible_verbosity >= 1
 
 - name: Copy default workflow configuration file (JSON format)
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../icc.workflow.default.json"
     dest: "{{ claude_install_path }}/icc.workflow.default.json"
     mode: '0644'
-    force: yes
+    force: true
   register: default_workflow_copy_result
 
 - name: Display default workflow installation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Default workflow configuration installed: {{ claude_install_path }}/icc.workflow.default.json - complete workflow settings available"
   when: ansible_verbosity >= 1
 
 - name: Check if settings.json exists
-  stat:
+  ansible.builtin.stat:
     path: "{{ claude_install_path }}/settings.json"
   register: settings_json_exists
 
 - name: Create settings.json with hook registration (ONLY if not exists)
-  template:
+  ansible.builtin.template:
     src: settings.json.j2
     dest: "{{ claude_install_path }}/settings.json"
     mode: '0644'
   when: not settings_json_exists.stat.exists
 
 - name: Merge hooks into existing settings.json
+  when: settings_json_exists.stat.exists
   block:
     - name: Read existing settings.json
-      slurp:
+      ansible.builtin.slurp:
         src: "{{ claude_install_path }}/settings.json"
       register: existing_settings
 
     - name: Parse existing settings as JSON
-      set_fact:
+      ansible.builtin.set_fact:
         settings_data: "{{ existing_settings.content | b64decode | from_json }}"
 
     - name: Clean up obsolete PreToolUse hooks while preserving user hooks
-      set_fact:
+      ansible.builtin.set_fact:
         cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['PreToolUse']) | items2dict }}"
 
     - name: Load production hooks configuration from template
-      set_fact:
+      ansible.builtin.set_fact:
         production_hooks:
           PreToolUse:
             - matcher: "*"
@@ -294,23 +296,21 @@
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/summary-file-enforcement.js', timeout: 5000 }
 
     - name: Merge production hooks with cleaned hooks
-      set_fact:
+      ansible.builtin.set_fact:
         merged_settings: "{{ settings_data | combine({'hooks': cleaned_hooks | combine(production_hooks)}, recursive=False) }}"
 
     - name: Write merged settings.json
-      copy:
+      ansible.builtin.copy:
         content: "{{ merged_settings | to_nice_json(indent=2) }}"
         dest: "{{ claude_install_path }}/settings.json"
         mode: '0644'
 
     - name: Report hook registration
-      debug:
+      ansible.builtin.debug:
         msg: "Production hooks configured in settings.json (git, infra protection, summary routing)"
 
-  when: settings_json_exists.stat.exists
-
 - name: Display settings creation notice
-  debug:
+  ansible.builtin.debug:
     msg: "Settings file created with minimal PreToolUse hooks (git, infra protection, summaries)"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
@@ -324,7 +324,7 @@
 
 
 - name: Display installation summary
-  debug:
+  ansible.builtin.debug:
     msg:
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"

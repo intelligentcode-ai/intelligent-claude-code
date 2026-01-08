@@ -9,14 +9,15 @@
   changed_when: false
 
 - name: Integrate with existing CLAUDE.md
+  when: grep_result.rc != 0
   block:
     - name: Read existing CLAUDE.md content
-      slurp:
+      ansible.builtin.slurp:
         src: "{{ claude_install_path }}/CLAUDE.md"
       register: existing_content
 
     - name: Create integrated CLAUDE.md
-      copy:
+      ansible.builtin.copy:
         content: |
           # Virtual Development Team
           @~/.claude/modes/virtual-team.md
@@ -28,12 +29,10 @@
         mode: '0644'
 
     - name: Report graceful integration
-      debug:
+      ansible.builtin.debug:
         msg: "Gracefully integrated with existing CLAUDE.md - all content preserved"
 
-  when: grep_result.rc != 0
-
 - name: Skip integration if already present
-  debug:
+  ansible.builtin.debug:
     msg: "Already integrated - import line found in CLAUDE.md"
   when: grep_result.rc == 0
