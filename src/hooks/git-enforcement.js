@@ -129,12 +129,21 @@ function main() {
     return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
   }
 
+  function escapeRegex(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
   function replaceFlagValue(command, flags, cleanedValue) {
     const escaped = escapeForDoubleQuotes(cleanedValue);
     for (const flag of flags) {
-      const regex = new RegExp(`(^|\\s)(${flag})\\s+(['"])([\\s\\S]*?)\\3`);
-      if (regex.test(command)) {
-        return command.replace(regex, `$1$2 "${escaped}"`);
+      const escapedFlag = escapeRegex(flag);
+      const eqRegex = new RegExp(`(^|\\s)(${escapedFlag})=(\"[^\"]*\"|'[^']*'|\\S+)`);
+      if (eqRegex.test(command)) {
+        return command.replace(eqRegex, `$1$2="${escaped}"`);
+      }
+      const spaceRegex = new RegExp(`(^|\\s)(${escapedFlag})\\s+(\"[^\"]*\"|'[^']*'|\\S+)`);
+      if (spaceRegex.test(command)) {
+        return command.replace(spaceRegex, `$1$2 "${escaped}"`);
       }
     }
     return command;
@@ -142,24 +151,23 @@ function main() {
 
   function extractFlagValue(command, flags) {
     for (const flag of flags) {
-      const regex = new RegExp(`(^|\\s)${flag}\\s+(['"])([\\s\\S]*?)\\2`);
-      const match = command.match(regex);
+      const escapedFlag = escapeRegex(flag);
+      const eqRegex = new RegExp(`(^|\\s)${escapedFlag}=(\"[^\"]*\"|'[^']*'|\\S+)`);
+      let match = command.match(eqRegex);
       if (match) {
-        return match[3];
+        return match[2].replace(/^['"]|['"]$/g, '');
+      }
+      const spaceRegex = new RegExp(`(^|\\s)${escapedFlag}\\s+(\"[^\"]*\"|'[^']*'|\\S+)`);
+      match = command.match(spaceRegex);
+      if (match) {
+        return match[2].replace(/^['"]|['"]$/g, '');
       }
     }
     return null;
   }
 
   function extractFileFlag(command, flags) {
-    for (const flag of flags) {
-      const regex = new RegExp(`(^|\\s)${flag}\\s+([^\\s]+)`);
-      const match = command.match(regex);
-      if (match) {
-        return match[2];
-      }
-    }
-    return null;
+    return extractFlagValue(command, flags);
   }
 
   function getCurrentBranch() {
@@ -387,8 +395,29 @@ ${filteredMessage}
     const bodyFlags = ['-b', '--body'];
     const fileFlags = ['-F', '--body-file'];
 
+    if (/\bgh\s+pr\s+(create|edit)\b/.test(command) && /\s--fill(?:-first|-verbose)?\b/.test(command)) {
+      return {
+        modified: false,
+        blocked: true,
+        reason: 'Git Privacy - PR Fill Uses Unchecked Text',
+        message: `🚫 GIT PRIVACY: --fill uses existing commit text which may include AI mentions.
+
+Remove --fill (or clean commit messages first) when git.privacy=true.`
+      };
+    }
+
     const bodyFile = extractFileFlag(command, fileFlags);
     if (bodyFile) {
+      if (bodyFile === '-') {
+        return {
+          modified: false,
+          blocked: true,
+          reason: 'Git Privacy - PR Body From Stdin',
+          message: `🚫 GIT PRIVACY: PR body from stdin cannot be scanned.
+
+Provide a file path for --body-file or pass --body directly.`
+        };
+      }
       try {
         if (fs.existsSync(bodyFile)) {
           const bodyContent = fs.readFileSync(bodyFile, 'utf8');

@@ -98,7 +98,7 @@ mcp_integrations:
 
 **Environment Variables Required**:
 ```bash
-export GITHUB_TOKEN="ghp_your_personal_access_token"
+export GITHUB_TOKEN="ghp_xxx"
 export GITHUB_API_URL="https://api.github.com"  # Optional, defaults to public GitHub
 ```
 
@@ -253,7 +253,7 @@ export NEO4J_USER="neo4j"
 export NEO4J_PASSWORD="your-password"
 
 # GitHub integration
-export GITHUB_TOKEN="ghp_your_personal_access_token"
+export GITHUB_TOKEN="ghp_xxx"
 
 # GitLab integration  
 export GITLAB_TOKEN="glpat_your_project_token"
@@ -390,10 +390,10 @@ mcp_integrations:
 # Neo4j Memory Database
 export NEO4J_URI="bolt://localhost:7687"
 export NEO4J_USER="neo4j"
-export NEO4J_PASSWORD="dev-password-123"
+export NEO4J_PASSWORD="password_here"
 
 # GitHub Integration
-export GITHUB_TOKEN="ghp_1234567890abcdef1234567890abcdef"
+export GITHUB_TOKEN="ghp_xxx"
 
 # Confluence Documentation
 export CONFLUENCE_URL="https://mycompany.atlassian.net/wiki"

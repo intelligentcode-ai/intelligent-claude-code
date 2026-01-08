@@ -268,9 +268,16 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
   function isSingleQuotedHeredoc(cmd) {
     const trimmed = cmd.trim();
     if (!trimmed) return false;
-    const firstLine = trimmed.split('\n', 1)[0];
-    const heredocMatch = firstLine.match(/<<-?\s*'([A-Za-z0-9_:-]+)'/);
-    return Boolean(heredocMatch);
+    const heredocRegex = /<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/g;
+    let match;
+    let found = false;
+    while ((match = heredocRegex.exec(trimmed)) !== null) {
+      found = true;
+      if (!match[1]) {
+        return false;
+      }
+    }
+    return found;
   }
 
   function looksLikeMarkdownWrite(cmd, cwd) {
