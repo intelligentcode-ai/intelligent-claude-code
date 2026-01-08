@@ -268,10 +268,14 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
   function isSingleQuotedHeredoc(cmd) {
     const trimmed = cmd.trim();
     if (!trimmed) return false;
-    const heredocRegex = /<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/g;
-    let match;
+    const lines = trimmed.split('\n');
     let found = false;
-    while ((match = heredocRegex.exec(trimmed)) !== null) {
+    for (const line of lines) {
+      // Only consider command lines that introduce a heredoc operator.
+      const match = line.match(/^\s*(?:cat|printf|tee|ssh)\b.*<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
+      if (!match) {
+        continue;
+      }
       found = true;
       if (!match[1]) {
         return false;
