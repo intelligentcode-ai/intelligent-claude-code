@@ -113,6 +113,16 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     return false;
   }
 
+  // Detect unescaped $( which definitely triggers substitution
+  function hasUnescapedDollarParen(str) {
+    for (let i = 0; i < str.length - 1; i++) {
+      if (str[i] === '$' && str[i + 1] === '(' && str[i - 1] !== '\\') {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
@@ -217,12 +227,13 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     const dashTrim = firstLine.includes('<<-');
     const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
     if (heredocMatch) {
+      const singleQuoted = Boolean(heredocMatch[1]);
+      const doubleQuoted = Boolean(heredocMatch[2]);
       const terminator = heredocMatch[1] || heredocMatch[2] || heredocMatch[3];
 
       const leadingTabs = dashTrim ? '\\t*' : '';
       const terminatorRegex = new RegExp(`\\n${leadingTabs}${escapeRegex(terminator)}\\s*$`);
       const hasTerminator = terminatorRegex.test(trimmed);
-      const isQuoted = Boolean(heredocMatch[1] || heredocMatch[2]);
 
       if (!hasTerminator) {
         return false;
@@ -301,24 +312,22 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     const dashTrim = firstLine.includes('<<-');
     const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
     if (heredocMatch) {
+      const singleQuoted = Boolean(heredocMatch[1]);
       const terminator = heredocMatch[1] || heredocMatch[2] || heredocMatch[3];
 
       // Require a quoted terminator OR a body with no command substitution
       const leadingTabs = dashTrim ? '\\t*' : '';
       const terminatorRegex = new RegExp(`\\n${leadingTabs}${escapeRegex(terminator)}\\s*$`);
       const hasTerminator = terminatorRegex.test(trimmed);
-      const isQuoted = Boolean(heredocMatch[1] || heredocMatch[2]);
 
       if (!hasTerminator) {
         return false;
       }
 
-      if (!isQuoted) {
-        // Unquoted heredoc bodies perform substitution; ensure body is clean
-        const body = trimmed.replace(/^.*?\n/s, '');
-        if (hasCommandSubstitutionLoose(body)) {
-          return false;
-        }
+      // Safety: docs fast-path only allows single-quoted heredocs (no expansion).
+      // Unquoted or double-quoted heredocs must be handled by the general pipeline.
+      if (!singleQuoted) {
+        return false;
       }
 
       return true;
@@ -414,24 +423,67 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     const actualCommand = extractSSHCommand(command);
     log(`Actual command after SSH extraction: ${actualCommand.substring(0, 100)}...`);
 
-    // Special-case: allow pure documentation writes to docs*/ directories even if
-    // the heredoc body contains infra keywords, because only a file write occurs.
-    if (isDocumentationWrite(command, hookInput.cwd)) {
-      log('ALLOWED: Documentation write detected (docs*/ directories fast-path)');
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
+    // Guardrail: block any heredoc that contains command substitution unless the terminator is single-quoted
+    // (which disables expansion). This sits ahead of the markdown fast-path to avoid bypasses.
+    if (command.includes('<<') && !isSingleQuotedHeredoc(command)) {
+      const heredocBody = command.replace(/^.*?\n/s, '');
+      if (hasCommandSubstitutionLoose(command) || hasCommandSubstitutionLoose(heredocBody) || hasUnescapedDollarParen(command) || hasUnescapedDollarParen(heredocBody)) {
+        log('BLOCKED: Heredoc with command substitution detected');
+        console.log(JSON.stringify({
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: "Heredoc with command substitution requires single-quoted terminator"
+          }
+        }));
+        process.exit(0);
+      }
     }
 
     // If this is a markdown write attempt and contains command substitution, block it
     // unless it's an allowlisted markdown heredoc with a quoted terminator (no expansion).
     const looksMarkdown = looksLikeMarkdownWrite(command, hookInput.cwd);
     const allowlistedMarkdown = looksMarkdown && isAllowlistedMarkdownWrite(command, hookInput.cwd);
-    const quotedMarkdownHeredoc = looksMarkdown && isQuotedHeredoc(command);
     const singleQuotedMarkdownHeredoc = looksMarkdown && isSingleQuotedHeredoc(command);
+    let hasSubstitution = hasCommandSubstitutionLoose(command) || hasUnescapedDollarParen(command);
 
-    const rawSubstitution = command.includes('$(') || command.includes('`');
+    // If the command uses a heredoc and the terminator is not single-quoted,
+    // scan the heredoc body for substitutions as well.
+    if (!hasSubstitution && command.includes('<<') && !singleQuotedMarkdownHeredoc) {
+      const body = command.replace(/^.*?\n/s, '');
+      hasSubstitution = hasCommandSubstitutionLoose(body) || hasUnescapedDollarParen(body);
+    }
 
-    if (looksMarkdown && (hasCommandSubstitutionLoose(command) || rawSubstitution) && !(allowlistedMarkdown && singleQuotedMarkdownHeredoc)) {
+    // Heredoc safety: if body still contains substitution and terminator isn't single-quoted, block.
+    if (command.includes('<<') && !singleQuotedMarkdownHeredoc) {
+      const body = command.replace(/^.*?\n/s, '');
+      if (hasCommandSubstitutionLoose(body) || hasUnescapedDollarParen(body)) {
+        hasSubstitution = true;
+      }
+    }
+
+    // Block any markdown heredoc that is not single-quoted to prevent expansion.
+    if (looksMarkdown && command.includes('<<') && !singleQuotedMarkdownHeredoc) {
+      log('BLOCKED: Non-single-quoted heredoc in markdown write');
+      console.log(JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "deny",
+          permissionDecisionReason: "Heredoc must be single-quoted for markdown writes"
+        }
+      }));
+      process.exit(0);
+    }
+
+    // Special-case: allow pure documentation writes to docs*/ directories when no substitution exists.
+    const docWrite = isDocumentationWrite(command, hookInput.cwd);
+    if (docWrite && !hasSubstitution) {
+      log('ALLOWED: Documentation write detected (docs*/ directories fast-path)');
+      console.log(JSON.stringify(standardOutput));
+      process.exit(0);
+    }
+
+    if (looksMarkdown && hasSubstitution && !(allowlistedMarkdown && singleQuotedMarkdownHeredoc)) {
       log('BLOCKED: Markdown write contains command substitution');
       console.log(JSON.stringify({
         hookSpecificOutput: {

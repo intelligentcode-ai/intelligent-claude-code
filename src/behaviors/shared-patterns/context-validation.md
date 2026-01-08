@@ -17,4 +17,4 @@
 **Role Alignment**: Assignments match system nature (AI-AGENTIC → @AI-Engineer)
 
 ---
-*Context validation patterns for intelligent-claude-code system*
+*Context validation patterns for AgentTask creation*

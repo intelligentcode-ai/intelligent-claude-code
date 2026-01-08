@@ -5,39 +5,32 @@
 
 ## AgentTask System Behaviors
 @../behaviors/agenttask-creation-system.md
-@../behaviors/agenttask-enforcement.md
-@../behaviors/agenttask-auto-trigger.md
 @../behaviors/agenttask-execution.md
-@../behaviors/agenttask-system-integration.md
+@../behaviors/template-resolution.md
 
 ## Shared Pattern Dependencies
 @../behaviors/shared-patterns/summary-validation-patterns.md
-@../behaviors/shared-patterns/pm-role-blocking-patterns.md
-@../behaviors/shared-patterns/work-detection-patterns.md
 
 ## Core System Behaviors
-@../behaviors/config-loader.md
+@../behaviors/config-system.md
 @../behaviors/directory-structure.md
+@../behaviors/file-location-standards.md
 @../behaviors/naming-numbering-system.md
 @../behaviors/story-breakdown.md
 @../behaviors/role-system.md
 
 ## Learning & Memory
 @../behaviors/learning-team-automation.md
-@../behaviors/proactive-memory-behavior.md
+@../behaviors/memory-system.md
 
 ## Validation & Quality
 @../behaviors/validation-system.md
-@../behaviors/adaptation-system.md
 
 ## Analytical Frameworks
 @../behaviors/sequential-thinking.md
 @../behaviors/ultrathinking.md
 
-## Advanced Features
-@../behaviors/template-resolution.md
-
-**CORE:** 14 roles+unlimited • 21 behaviors • @-notation • AgentTask-Template-driven execution
+**CORE:** 14 roles+unlimited • minimal behaviors • @-notation • AgentTask-driven execution
 
 ## STARTUP
 

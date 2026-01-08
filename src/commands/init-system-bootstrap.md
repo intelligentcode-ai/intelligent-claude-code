@@ -6,7 +6,7 @@
 
 ### Phase 1: Project Root Detection
 1. **Project Root Detection**: Explicitly determine and validate absolute project root path
-2. **Installation Path Resolution**: Detect and validate intelligent-claude-code installation using installation-path-detection patterns
+2. **Configuration Path Resolution**: Detect and validate config locations (project/user/system)
 3. **File System Validation**: Verify critical directories and files exist and are accessible
 4. **Context State Assessment**: Determine if system is in fresh start or recovery-from-context-loss state
 
@@ -16,7 +16,7 @@
 - ✓ Working directory: /project/path/
 - ✓ CLAUDE.md found and validated
 - ✓ Project structure confirmed
-- ✓ Installation path resolved
+- ✓ Configuration path resolved
 - ✓ Critical directories accessible: src/, memory/, agenttasks/
 
 **Recovery State Assessment:**
@@ -28,7 +28,7 @@
 
 **Context Recovery Errors:**
 - **PROJECT_ROOT_NOT_FOUND**: "❌ Critical: Cannot determine project root directory. Expected CLAUDE.md or .git in current directory."
-- **INSTALLATION_PATH_FAILED**: "❌ Critical: Intelligent-claude-code installation not detected. Expected locations: ~/.claude/, $CLAUDE_INSTALL_PATH, project/.claude/"
+- **CONFIG_PATH_FAILED**: "❌ Critical: Config locations not detected. Expected: ./icc.config.json, ./.claude/icc.config.json, ~/.claude/icc.config.json"
 - **CONTEXT_RECOVERY_FAILED**: "❌ Critical: Unable to recover system context. Please verify project structure and permissions."
 - **FILE_SYSTEM_ACCESS_DENIED**: "❌ Critical: Cannot access critical directories. Check permissions for: {failed_paths}"
 

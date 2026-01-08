@@ -15,6 +15,7 @@
 **@Backend-Tester:** Backend testing • API validation • Integration testing
 **@Requirements-Engineer:** Requirements analysis • Documentation • Specification
 **@User-Role:** End-to-end testing • Browser automation • Puppeteer
+**@Reviewer:** Critical review • Risk assessment • Regression prevention
 
 ## UNLIMITED DYNAMIC SPECIALIST CREATION
 

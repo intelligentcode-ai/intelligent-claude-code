@@ -147,24 +147,6 @@
     - lib
   ignore_errors: yes
 
-- name: Check if user reminders.json exists
-  stat:
-    path: "{{ claude_install_path }}/hooks/lib/reminders.json"
-  register: user_reminders_exists
-
-- name: Install default reminders.json (system default, user overrides preserved)
-  copy:
-    src: "{{ playbook_dir }}/../src/hooks/lib/reminders.json"
-    dest: "{{ claude_install_path }}/hooks/lib/reminders.json"
-    mode: '0644'
-    force: yes
-
-- name: Display reminders hierarchy notice
-  debug:
-    msg: "System reminders installed. Create ~/.claude/hooks/reminders.json or project/.claude/hooks/reminders.json to customize"
-  when: ansible_verbosity >= 1
-
-
 - name: Display hooks preservation notice
   debug:
     msg: "Hooks directory preserved: {{ claude_install_path }}/hooks/ already exists - keeping user modifications"
@@ -177,22 +159,8 @@
     state: file
   loop:
     - agent-infrastructure-protection.js
-    - agent-marker.js
-    - config-protection.js
-    - context-injection.js
     - git-enforcement.js
-    - main-scope-enforcement.js
-    - memory-first-reminder.js
-    - pm-constraints-enforcement.js
-    - pre-agenttask-validation.js
-    - project-scope-enforcement.js
-    - session-start-dummy.js
-    - stop.js
-    - subagent-memory-storage.js
-    - subagent-stop.js
     - summary-file-enforcement.js
-    - task-tool-execution-reminder.js
-    - user-prompt-submit.js
   ignore_errors: yes
 
 
@@ -219,12 +187,6 @@
     path: "{{ claude_install_path }}/hooks/lib"
     state: directory
     mode: '0755'
-
-- name: Install constraints.json (context injection)
-  copy:
-    src: "{{ playbook_dir }}/../src/hooks/lib/constraints.json"
-    dest: "{{ claude_install_path }}/hooks/lib/constraints.json"
-    mode: '0644'
 
 - name: Create config.md from template (ONLY if not exists)
   copy:
@@ -317,9 +279,9 @@
       set_fact:
         settings_data: "{{ existing_settings.content | b64decode | from_json }}"
 
-    - name: Clean up obsolete hooks while preserving user hooks
+    - name: Clean up obsolete PreToolUse hooks while preserving user hooks
       set_fact:
-        cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['SessionStart', 'PreToolUse', 'PostToolUse', 'UserPromptSubmit', 'SubagentStop', 'Stop']) | items2dict }}"
+        cleaned_hooks: "{{ (settings_data.hooks | default({})) | dict2items | rejectattr('key', 'in', ['PreToolUse']) | items2dict }}"
 
     - name: Load production hooks configuration from template
       set_fact:
@@ -327,32 +289,9 @@
           PreToolUse:
             - matcher: "*"
               hooks:
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/agent-marker.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/git-enforcement.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/main-scope-enforcement.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/pm-constraints-enforcement.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/config-protection.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/pre-agenttask-validation.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/workflow-enforcement.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/project-scope-enforcement.js', timeout: 5000 }
                 - { type: 'command', command: 'node {{ claude_install_path }}/hooks/summary-file-enforcement.js', timeout: 5000 }
-          SessionStart:
-            - hooks:
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/session-start-dummy.js', timeout: 5000 }
-          UserPromptSubmit:
-            - hooks:
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/user-prompt-submit.js', timeout: 15000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/context-injection.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/task-tool-execution-reminder.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/memory-first-reminder.js', timeout: 5000 }
-          SubagentStop:
-            - hooks:
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/subagent-stop.js', timeout: 5000 }
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/subagent-memory-storage.js', timeout: 5000 }
-          Stop:
-            - hooks:
-                - { type: 'command', command: 'node {{ claude_install_path }}/hooks/stop.js', timeout: 5000 }
 
     - name: Merge production hooks with cleaned hooks
       set_fact:
@@ -366,13 +305,13 @@
 
     - name: Report hook registration
       debug:
-        msg: "All 16 production hooks configured in settings.json - comprehensive enforcement active"
+        msg: "Production hooks configured in settings.json (git, infra protection, summary routing)"
 
   when: settings_json_exists.stat.exists
 
 - name: Display settings creation notice
   debug:
-    msg: "Settings file created with all 16 production hooks - comprehensive enforcement active"
+    msg: "Settings file created with minimal PreToolUse hooks (git, infra protection, summaries)"
   when: not settings_json_exists.stat.exists and ansible_verbosity >= 1
 
 # badges.md file removed - scoring system simplified to clean progress reporting
@@ -390,5 +329,5 @@
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: All 16 production hooks active (PreToolUse, UserPromptSubmit, SubagentStop, Stop)"
+      - "🔒 Behavioral Hooks: PreToolUse (git, infra protection, summaries)"
       - "🚀 Use @Role communication to activate team members"

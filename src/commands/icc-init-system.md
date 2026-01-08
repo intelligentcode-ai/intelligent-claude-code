@@ -4,7 +4,6 @@ Initialize the intelligent-claude-code virtual team system with configuration lo
 
 ## Imports
 
-@../behaviors/shared-patterns/installation-path-detection.md
 @../behaviors/shared-patterns/context-validation.md
 @./init-system-bootstrap.md
 @./init-system-validation.md
@@ -32,17 +31,20 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 ### 🧠 RELOADING SYSTEM BEHAVIORS
 Loading all behavioral patterns from installation/behaviors/:
-  ✓ config-loader.md - Configuration hierarchy management
-  ✓ directory-structure.md - Project structure enforcement
-  ✓ learning-team-automation.md - AgentTask learning and pattern capture
-  ✓ naming-numbering-system.md - Work item naming and numbering standards  
-  ✓ agenttask-auto-trigger.md - Automatic AgentTask generation
-  ✓ agenttask-creation-system.md - AgentTask creation rules and validation
-  ✓ agenttask-enforcement.md - Mandatory AgentTask execution patterns
-  ✓ agenttask-execution.md - AgentTask lifecycle management
+  ✓ config-system.md - Configuration hierarchy management
+  ✓ directory-structure.md - Project layout guidance
+  ✓ file-location-standards.md - Output routing rules
+  ✓ naming-numbering-system.md - Work item naming and numbering standards
+  ✓ agenttask-creation-system.md - AgentTask creation rules
+  ✓ agenttask-execution.md - AgentTask lifecycle guidance
   ✓ story-breakdown.md - PM story breakdown process
+  ✓ role-system.md - Role loading + dynamic specialists
+  ✓ learning-team-automation.md - Learning and pattern capture
+  ✓ memory-system.md - Memory usage patterns
+  ✓ validation-system.md - Validation expectations
   ✓ sequential-thinking.md - Structured analysis patterns
-  ✓ shared-patterns/ - Common behavioral patterns (25 loaded)
+  ✓ ultrathinking.md - Deep reasoning trigger
+  ✓ shared-patterns/ - Common shared patterns
 Behavioral pattern validation: ✅ All patterns successfully loaded and validated
 
 ### 📋 RELOADING AGENTTASK TEMPLATES
@@ -67,7 +69,7 @@ AgentTask template system: ✅ All templates validated with placeholder resoluti
 
 ### Phase 1: Context Recovery & Bootstrap Validation
 1. **Project Root Detection**: Explicitly determine and validate absolute project root path
-2. **Installation Path Resolution**: Detect and validate intelligent-claude-code installation
+2. **Configuration Path Resolution**: Detect and validate config locations (project/user/system)
 3. **File System Validation**: Verify critical directories and files exist and are accessible
 4. **Context State Assessment**: Determine if system is in fresh start or recovery-from-context-loss state
 

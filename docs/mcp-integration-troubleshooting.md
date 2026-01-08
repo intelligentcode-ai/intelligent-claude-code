@@ -274,8 +274,10 @@ cp ~/.config/claude/settings.json ~/.config/claude/settings.json.manual.backup
 rm ~/.config/claude/settings.json
 
 # 3. Fix MCP configuration file
-# 4. Re-run installation
+# 4. Re-run installation (or use clean-install for a full reset)
 make install MCP_CONFIG=./config/mcps.json
+# Alternative clean reinstall (macOS/Linux):
+make clean-install MCP_CONFIG=./config/mcps.json
 ```
 
 ## Prevention Tips

@@ -23,6 +23,7 @@
 - @Backend-Tester: Backend testing, API validation
 - @Requirements-Engineer: Requirements analysis, documentation
 - @User-Role: End-to-end testing, browser automation
+- @Reviewer: Critical review, risk assessment, regression prevention
 
 ### Dynamic Specialist Creation
 **UNLIMITED CREATION:** Create specialists for ANY technology domain when expertise needed

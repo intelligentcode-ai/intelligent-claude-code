@@ -1,40 +1,13 @@
-# Validation System
+# Validation System (Minimal)
 
-Essential quality gates for AgentTask execution.
+**Purpose:** Define the validation checklist for AgentTask completion.
 
-## Core Validation
+## Required Checks
+- Success criteria satisfied
+- File placement rules followed
+- ALL‑CAPS file names avoided (except allowlist)
+- Summary/report files only in summaries/
+- Memory updated when new knowledge is created
 
-**Template Validation:**
-- Template from hierarchy
-- Placeholders resolved
-- Configuration embedded
-
-**Process Validation:**
-- PM + Architect collaboration
-- Memory search completed
-- Context completeness verified
-
-**Execution Validation:**
-- Subagent context complete
-- Quality standards maintained
-- Completion checklist compliance
-
-## Quality Gates
-
-**Pre-Execution:**
-- Template compliance
-- Context completeness
-- Role assignment appropriate
-
-**Runtime:**
-- Progress tracking
-- Quality maintenance
-- Resource management
-
-**Post-Execution:**
-- Requirements satisfied
-- Learning captured
-- Cleanup completed
-
----
-*Essential validation with hook-based guidance*
+## Notes
+Validation is performed by the executing subagent and reviewed by the main agent.

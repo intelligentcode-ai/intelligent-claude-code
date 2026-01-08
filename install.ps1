@@ -166,7 +166,7 @@ function Register-ProductionHooks {
     )
 
     try {
-        Write-Host "  Registering all 16 production hooks in settings.json..." -ForegroundColor Gray
+        Write-Host "  Registering minimal PreToolUse hooks in settings.json..." -ForegroundColor Gray
 
         # Load or create settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
@@ -183,52 +183,15 @@ function Register-ProductionHooks {
                     matcher = "*"
                     hooks = @(
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\git-enforcement.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\main-scope-enforcement.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pm-constraints-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-infrastructure-protection.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-marker.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\config-protection.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pre-agenttask-validation.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\workflow-enforcement.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\project-scope-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\summary-file-enforcement.js`""; timeout = 5000 }
-                    )
-                }
-            )
-            SessionStart = @(
-                [PSCustomObject]@{
-                    hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\session-start-dummy.js`""; timeout = 5000 }
-                    )
-                }
-            )
-            UserPromptSubmit = @(
-                [PSCustomObject]@{
-                    hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\user-prompt-submit.js`""; timeout = 15000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\context-injection.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\task-tool-execution-reminder.js`""; timeout = 5000 }
-                    )
-                }
-            )
-            SubagentStop = @(
-                [PSCustomObject]@{
-                    hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\subagent-stop.js`""; timeout = 5000 }
-                    )
-                }
-            )
-            Stop = @(
-                [PSCustomObject]@{
-                    hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\stop.js`""; timeout = 5000 }
                     )
                 }
             )
         }
 
         # Replace all production hooks
-        foreach ($HookType in @("PreToolUse", "SessionStart", "UserPromptSubmit", "SubagentStop", "Stop")) {
+        foreach ($HookType in @("PreToolUse")) {
             if ($Settings.hooks.PSObject.Properties.Name -contains $HookType) {
                 $Settings.hooks.PSObject.Properties.Remove($HookType)
             }
@@ -239,7 +202,7 @@ function Register-ProductionHooks {
         $JsonOutput = $Settings | ConvertTo-Json -Depth 10
         Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
 
-        Write-Host "  ✅ All 16 production hooks registered successfully in settings.json" -ForegroundColor Green
+        Write-Host "  ✅ Minimal hooks registered successfully in settings.json" -ForegroundColor Green
 
     } catch {
         Write-Warning "  Failed to register production hooks in settings.json: $($_.Exception.Message)"
@@ -255,7 +218,7 @@ function Install-HookSystem {
         [string]$SourceDir
     )
 
-    Write-Host "Installing hook system (16 production hooks)..." -ForegroundColor Yellow
+    Write-Host "Installing hook system (minimal PreToolUse hooks)..." -ForegroundColor Yellow
 
     try {
         # Create hooks directory structure
@@ -280,28 +243,11 @@ function Install-HookSystem {
             # Copy all files and subdirectories from source hooks to destination
             Copy-DirectoryRecursive -Source $SourceHooksPath -Destination $HooksPath
 
-            # Ensure hooks/lib exists and install constraints.json for context injection
+            # Ensure hooks/lib exists
             $HooksLibPath = Join-Path $HooksPath "lib"
             if (-not (Test-Path $HooksLibPath)) {
                 New-Item -ItemType Directory -Path $HooksLibPath | Out-Null
                 Write-Host "  Created directory: $HooksLibPath" -ForegroundColor Green
-            }
-            $SourceConstraintsPath = Join-Path $SourceHooksPath "lib" "constraints.json"
-            $UserConstraintsPath = Join-Path $HooksLibPath "constraints.json"
-            if (Test-Path $SourceConstraintsPath) {
-                Write-Host "  Installing default constraints.json..." -ForegroundColor Gray
-                Copy-Item -Path $SourceConstraintsPath -Destination $UserConstraintsPath -Force
-            }
-
-            # Install reminders.json if it doesn't exist (preserve user customizations)
-            $UserRemindersPath = Join-Path $HooksPath "lib" "reminders.json"
-            $SourceRemindersPath = Join-Path $SourceHooksPath "lib" "reminders.json"
-
-            if (-not (Test-Path $UserRemindersPath) -and (Test-Path $SourceRemindersPath)) {
-                Write-Host "  Installing default reminders.json..." -ForegroundColor Gray
-                Copy-Item -Path $SourceRemindersPath -Destination $UserRemindersPath -Force
-            } elseif (Test-Path $UserRemindersPath) {
-                Write-Host "  User reminders.json preserved - keeping customizations" -ForegroundColor Yellow
             }
 
             # Always update README.md documentation

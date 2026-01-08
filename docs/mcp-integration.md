@@ -198,6 +198,7 @@ export NOTION_DATABASE_ID="your_database_id"
 ### MCP Server Installation
 
 When installing the framework, provide MCP server configurations to automatically integrate with Claude:
+You can use `make clean-install` with the same MCP arguments for a full reset on macOS/Linux.
 
 #### Create MCP Configuration File
 

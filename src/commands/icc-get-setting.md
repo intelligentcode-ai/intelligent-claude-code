@@ -4,8 +4,6 @@ Retrieve configuration setting using $ARGUMENTS with hierarchy support.
 
 ## Imports
 
-@../behaviors/shared-patterns/installation-path-detection.md
-
 ## Behavior
 
 Gets setting value from configuration hierarchy with dot notation support.
@@ -27,9 +25,9 @@ Gets setting value from configuration hierarchy with dot notation support.
 1. Parse setting key and optional default from $ARGUMENTS
 2. Search configuration hierarchy:
    - Embedded configs (highest priority)
-   - Project config (.claude/config.md)
-   - Installation config ({get_install_path()}/config.md)
-   - System defaults
+   - Project config (./icc.config.json or ./.claude/icc.config.json)
+   - User config (~/.claude/icc.config.json)
+   - System defaults (icc.config.default.json)
 3. Support dot notation for nested values
 4. Validate critical settings (git_privacy MUST be boolean)
 5. Return first found value or default

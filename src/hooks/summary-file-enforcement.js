@@ -17,7 +17,6 @@ const { extractToolInfo, allowOperation, blockResponse, sendResponse } = require
 const { getSetting } = require('./lib/config-loader');
 const { validateSummaryFilePlacement } = require('./lib/summary-validation');
 const { isAggressiveAllCaps } = require('./lib/allcaps-detection');
-const { isAgentContext } = require('./lib/marker-detection');
 
 // Load config ONCE at module level (not on every hook invocation)
 const ALLOWED_ALLCAPS_FILES = getSetting('enforcement.allowed_allcaps_files', [
@@ -138,13 +137,6 @@ Please retry with the suggested name. To keep progress: rename your target file 
       return sendResponse(response, 2, log);
     }
 
-    // STEP 2: Agent context check - skip remaining validation for agents
-    const sessionId = hookInput.session_id || '';
-    if (isAgentContext(projectRoot, sessionId, log)) {
-      log('Agent context detected - skipping remaining validation (ALL-CAPITALS already checked)');
-      return allowOperation(log, true);
-    }
-
     // Get settings
     const strictMode = STRICT_MODE;
     const summariesPath = SUMMARIES_PATH;
@@ -153,7 +145,6 @@ Please retry with the suggested name. To keep progress: rename your target file 
     log(`Summaries path: ${summariesPath}`);
 
     // STEP 3: Summary placement validation (after ALL-CAPITALS passes)
-    // Agents: skip placement enforcement but keep ALL-CAPS enforcement above
     const summaryValidation = validateSummaryFilePlacement(filePath, projectRoot);
 
     // If not a summary file or already in correct location, allow
