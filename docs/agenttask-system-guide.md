@@ -144,7 +144,6 @@ Note: The system now uses only 3 essential commands. Most interaction is through
 
 - `/icc-init-system` - Initialize virtual team system
 - `/icc-get-setting [key]` - Get configuration values
-- `/icc-search-memory [query]` - Search learning patterns
 
 Primary interaction: @Role communication (@PM, @Developer, @AI-Engineer, etc.)
 

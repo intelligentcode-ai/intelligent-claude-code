@@ -356,7 +356,7 @@ grep -A 20 "complete_context:" your-prb-file.prb.yaml
 
 ### Memory Search Not Working
 
-**Symptoms:** `/icc-search-memory` returns no results
+**Symptoms:** memory search returns no results
 
 **Cause:** Memory system not initialized or corrupted.
 
@@ -749,7 +749,7 @@ ls -la ./
 find ./memory -type f -name "*.md" | head -10
 
 # Test memory search
-/icc-search-memory "test query"
+Search memory via your editor or grep as needed
 
 # Show memory statistics
 /icc-memory-status

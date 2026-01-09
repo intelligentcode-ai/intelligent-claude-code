@@ -5,9 +5,6 @@ Initialize the intelligent-claude-code virtual team system with configuration lo
 ## Imports
 
 @../behaviors/shared-patterns/context-validation.md
-@./init-system-bootstrap.md
-@./init-system-validation.md
-@./workflow-settings-initialization.md
 
 ## Behavior
 System bootstrap operation that loads configuration, initializes memory, activates roles,
@@ -28,6 +25,88 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 - Set autonomy level L2 with PM active: /icc-init-system L2 true
 
 ## Initialization Process
+
+### 🧩 INIT BOOTSTRAP (INLINE)
+
+**MANDATORY:** Bootstrap validation and context recovery patterns for system initialization.
+
+#### Context Recovery & Bootstrap Validation
+
+**Phase 1: Project Root Detection**
+1. **Project Root Detection**: Explicitly determine and validate absolute project root path
+2. **Configuration Path Resolution**: Detect and validate config locations (project/user/system)
+3. **File System Validation**: Verify critical directories and files exist and are accessible
+4. **Context State Assessment**: Determine if system is in fresh start or recovery-from-context-loss state
+
+**Initialization Output**
+
+**🔧 CONTEXT RECOVERY & BOOTSTRAP VALIDATION**
+- ✓ Working directory: /project/path/
+- ✓ CLAUDE.md found and validated
+- ✓ Project structure confirmed
+- ✓ Configuration path resolved
+- ✓ Critical directories accessible: src/, memory/, agenttasks/
+
+**Recovery State Assessment:**
+- ℹ️ Context State: [FRESH_START | CONTEXT_RECOVERY]
+- ℹ️ Previous session data: [FOUND | NOT_FOUND]
+- ℹ️ Configuration cache status: [VALID | EXPIRED | MISSING]
+
+**Context Recovery Errors:**
+- **PROJECT_ROOT_NOT_FOUND**: "❌ Critical: Cannot determine project root directory. Expected CLAUDE.md or .git in current directory."
+- **CONFIG_PATH_FAILED**: "❌ Critical: Config locations not detected. Expected: ./icc.config.json, ./.claude/icc.config.json, ~/.claude/icc.config.json"
+- **CONTEXT_RECOVERY_FAILED**: "❌ Critical: Unable to recover system context. Please verify project structure and permissions."
+- **FILE_SYSTEM_ACCESS_DENIED**: "❌ Critical: Cannot access critical directories. Check permissions for: {failed_paths}"
+
+### ✅ INIT VALIDATION (INLINE)
+
+**MANDATORY:** Comprehensive system validation checklist for initialization completion.
+
+#### Comprehensive System Validation Checklist
+
+**Core System Components**
+- ✅ Project root detection and validation
+- ✅ Configuration hierarchy loaded and applied
+- ✅ CLAUDE.md parsing and context integration
+- ✅ Memory system operational with file access
+- ✅ Role definitions loaded (14 core + dynamic specialists)
+
+**AgentTask & Planning Systems**
+- ✅ AgentTask system active with template validation
+- ✅ Template hierarchy operational
+- ✅ Placeholder resolution capability confirmed
+- ✅ AgentTask creation and execution patterns loaded
+- ✅ Sequential thinking integration active
+
+**Behavioral Systems**
+- ✅ Behavioral patterns loaded and validated
+- ✅ Shared pattern dependencies resolved  
+- ✅ Context recovery mechanisms validated
+- ✅ Learning system active with pattern capture
+
+**Integration & Tool Systems**
+- ✅ Tool integrations configured (GitHub CLI, etc.)
+- ✅ Progress reporting operational
+- ✅ Autonomy level applied and persisted
+- ✅ PM role activation (if configured)
+- ✅ Context loss recovery capability confirmed
+
+**🎯 SYSTEM STATUS: FULLY OPERATIONAL - Context recovery successful**
+
+#### Validation Errors
+
+**System Component Errors:**
+- **CONFIG_LOAD_FAILED**: "❌ Error: Failed to load configuration hierarchy. Check project CLAUDE.md and icc.config.json"
+- **BEHAVIORAL_PATTERN_LOAD_FAILED**: "❌ Critical: Behavioral patterns failed to load. Check installation/behaviors/ directory"
+- **TEMPLATE_VALIDATION_FAILED**: "❌ Error: AgentTask templates failed validation. Check template syntax and structure"
+- **MEMORY_BOOTSTRAP_FAILED**: "⚠️ Warning: Memory system bootstrap failed. Creating minimal fallback structure"
+- **ROLE_DEFINITION_FAILED**: "❌ Error: Role definitions failed to load. Check installation/roles/specialists.md"
+
+**Recovery & Validation Errors:**
+- **AGENTTASK_SYSTEM_VALIDATION_FAILED**: "❌ Critical: AgentTask system failed comprehensive validation. System not operational"
+- **AUTONOMY_PERSISTENCE_FAILED**: "⚠️ Warning: Cannot persist autonomy changes to CLAUDE.md. Using session-only settings"
+- **COMPREHENSIVE_VALIDATION_FAILED**: "❌ Critical: System failed comprehensive health check. Manual intervention required"
+- **CONTEXT_STATE_INCONSISTENT**: "⚠️ Warning: Context state inconsistent. Some components may require reinitialization"
 
 ### 🧠 RELOADING SYSTEM BEHAVIORS
 Loading all behavioral patterns from installation/behaviors/:

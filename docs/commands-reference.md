@@ -41,29 +41,6 @@ Retrieves configuration values from the hierarchy.
 3. User config (~/.claude/config.md - system-wide only)
 4. System defaults
 
-### `/icc-search-memory [query]`
-Searches memory for relevant learnings and patterns.
-
-**Usage:** `/icc-search-memory "[search terms]"`
-
-**Examples:**
-```bash
-/icc-search-memory "oauth authentication"
-/icc-search-memory "database optimization"
-/icc-search-memory "error handling patterns"
-```
-
-**Used for:**
-- Manual memory exploration
-- Pattern investigation
-- Learning discovery
-
-**Results include:**
-- Topic location
-- Entry date
-- Relevance score
-- Preview snippet
-
 ## Primary Interaction: @Role Communication
 
 The system is designed for **natural @Role communication** rather than command-based interaction. This is the primary and preferred way to work with the system.
@@ -129,7 +106,6 @@ The system automatically creates specialists for ANY technology domain when expe
 **Use Commands for** (System Functions Only):
 - System initialization: `/icc-init-system`
 - Configuration queries: `/icc-get-setting`
-- Memory exploration: `/icc-search-memory`
 
 ## Usage Patterns
 
@@ -137,12 +113,6 @@ The system automatically creates specialists for ANY technology domain when expe
 ```bash
 /icc-init-system                              # Initialize system once
 @PM Build a REST API for user management      # Natural language work request
-```
-
-### Memory Exploration
-```bash
-/icc-search-memory "authentication patterns"  # Find relevant patterns
-@Developer Implement OAuth based on memory    # Apply found patterns
 ```
 
 ### Configuration Management
@@ -161,7 +131,6 @@ The system automatically creates specialists for ANY technology domain when expe
 
 ### Memory Integration
 - Memory searches happen automatically during @Role work
-- Use `/icc-search-memory` for manual exploration only
 - Learnings are stored automatically - no manual commands needed
 - Memory captures patterns from successful AgentTask executions
 
@@ -172,4 +141,4 @@ The system automatically creates specialists for ANY technology domain when expe
 
 ---
 
-The intelligent-claude-code system prioritizes **@Role communication patterns** over command-based interaction. The 3 essential commands provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.
+The intelligent-claude-code system prioritizes **@Role communication patterns** over command-based interaction. The essential commands provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.
