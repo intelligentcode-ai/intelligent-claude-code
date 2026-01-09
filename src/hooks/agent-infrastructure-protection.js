@@ -223,6 +223,44 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     return { token: match[1], quote: null, dashTrim };
   }
 
+  function findUnquotedHeredocOperator(line) {
+    if (!line) return null;
+    let offset = 0;
+
+    while (offset < line.length) {
+      const idx = findUnquotedTokenIndex(line.slice(offset), '<<');
+      if (idx == null) {
+        return null;
+      }
+      const operatorIndex = offset + idx;
+      const nextChar = line[operatorIndex + 2];
+      if (nextChar === '<' || nextChar === '=') {
+        offset = operatorIndex + 2;
+        continue;
+      }
+
+      const parsed = parseHeredocDelimiter(line, operatorIndex);
+      if (parsed) {
+        return { index: operatorIndex, parsed };
+      }
+
+      offset = operatorIndex + 2;
+    }
+
+    return null;
+  }
+
+  function containsUnquotedHeredoc(cmd) {
+    if (!cmd) return false;
+    const lines = cmd.split('\n');
+    for (const line of lines) {
+      if (findUnquotedHeredocOperator(line)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // Match keyword anywhere (quoted or unquoted) using word boundaries
   function matchesKeywordAnywhere(str, needle) {
     if (!str || !needle) return false;
@@ -350,14 +388,11 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
         continue;
       }
 
-      const operatorIndex = findUnquotedTokenIndex(line, '<<');
-      if (operatorIndex == null) {
+      const operator = findUnquotedHeredocOperator(line);
+      if (!operator) {
         continue;
       }
-      const parsed = parseHeredocDelimiter(line, operatorIndex);
-      if (!parsed) {
-        return false;
-      }
+      const parsed = operator.parsed;
       found = true;
       if (parsed.quote !== "'") {
         return false;
@@ -522,7 +557,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
     // Guardrail: block any heredoc that contains command substitution unless the terminator is single-quoted
     // (which disables expansion). This sits ahead of the markdown fast-path to avoid bypasses.
-    if (containsUnquoted(command, '<<') && !isSingleQuotedHeredoc(command)) {
+    if (containsUnquotedHeredoc(command) && !isSingleQuotedHeredoc(command)) {
       const heredocBody = command.replace(/^.*?\n/s, '');
       if (hasCommandSubstitutionLoose(command) || hasCommandSubstitutionLoose(heredocBody) || hasUnescapedDollarParen(command) || hasUnescapedDollarParen(heredocBody)) {
         log('BLOCKED: Heredoc with command substitution detected');
@@ -546,13 +581,13 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
     // If the command uses a heredoc and the terminator is not single-quoted,
     // scan the heredoc body for substitutions as well.
-    if (!hasSubstitution && containsUnquoted(command, '<<') && !singleQuotedMarkdownHeredoc) {
+    if (!hasSubstitution && containsUnquotedHeredoc(command) && !singleQuotedMarkdownHeredoc) {
       const body = command.replace(/^.*?\n/s, '');
       hasSubstitution = hasCommandSubstitutionLoose(body) || hasUnescapedDollarParen(body);
     }
 
     // Heredoc safety: if body still contains substitution and terminator isn't single-quoted, block.
-    if (containsUnquoted(command, '<<') && !singleQuotedMarkdownHeredoc) {
+    if (containsUnquotedHeredoc(command) && !singleQuotedMarkdownHeredoc) {
       const body = command.replace(/^.*?\n/s, '');
       if (hasCommandSubstitutionLoose(body) || hasUnescapedDollarParen(body)) {
         hasSubstitution = true;
@@ -560,7 +595,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     }
 
     // Block any markdown heredoc that is not single-quoted to prevent expansion.
-    if (looksMarkdown && containsUnquoted(command, '<<') && !singleQuotedMarkdownHeredoc) {
+    if (looksMarkdown && containsUnquotedHeredoc(command) && !singleQuotedMarkdownHeredoc) {
       log('BLOCKED: Non-single-quoted heredoc in markdown write');
       console.log(JSON.stringify({
         hookSpecificOutput: {
