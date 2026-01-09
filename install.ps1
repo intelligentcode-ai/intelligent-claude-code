@@ -26,7 +26,7 @@ function Show-Help {
     Write-Host "Parameters:" -ForegroundColor Yellow
     Write-Host "  -TargetPath  - Target path (omit for user scope ~\.claude\)" 
     Write-Host "  -McpConfig   - Path to MCP servers configuration JSON file" 
-    Write-Host "  -ConfigFile  - Path to icc.config JSON to install (fallback: icc.config.default.json)" 
+    Write-Host "  -ConfigFile  - Path to icc.config JSON to install (optional)" 
     Write-Host "  -Force       - Force complete removal including user data (uninstall only)"
     Write-Host ""
     Write-Host "Examples:" -ForegroundColor Green
@@ -349,7 +349,6 @@ function Install-IntelligentClaudeCode {
     }
 
     # Install configuration file (custom or default)
-    $DefaultConfigPath = Join-Path $PSScriptRoot "icc.config.default.json"
     $TargetConfigPath = Join-Path $Paths.InstallPath "icc.config.json"
 
     if ($ConfigFile -and (Test-Path $ConfigFile)) {
@@ -357,15 +356,12 @@ function Install-IntelligentClaudeCode {
         Write-Host "Config installed from: $ConfigFile" -ForegroundColor Yellow
     } else {
         if (-not (Test-Path $TargetConfigPath)) {
-            Copy-Item -Path $DefaultConfigPath -Destination $TargetConfigPath -Force
-            Write-Host "Config installed from: $DefaultConfigPath" -ForegroundColor Yellow
+            Write-Host "No config installed (pass -ConfigFile to add icc.config.json)" -ForegroundColor Yellow
         } else {
             Write-Host "Preserving existing icc.config.json (pass -ConfigFile to override)" -ForegroundColor Yellow
         }
     }
 
-    Copy-Item -Path $DefaultConfigPath -Destination (Join-Path $Paths.InstallPath "icc.config.default.json") -Force
-    
     # Install MCP configuration if provided
     if ($McpConfig -and (Test-Path $McpConfig)) {
         Write-Host "Installing MCP configuration..." -ForegroundColor Yellow

@@ -6,7 +6,7 @@
 1. AgentTask overrides  
 2. Project config (`./icc.config.json` or `./.claude/icc.config.json`)  
 3. User config (`~/.claude/icc.config.json`)  
-4. Defaults (`icc.config.default.json`)
+4. Defaults (built-in; no default file shipped)
 
 ## Key Areas
 - `git.*`, `paths.*`, `team.*`, `agenttask.*`, `models.*`

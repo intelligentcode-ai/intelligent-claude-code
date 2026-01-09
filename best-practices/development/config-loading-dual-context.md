@@ -66,13 +66,13 @@ if (!config) {
 
 ```javascript
 // Works ONLY in production, breaks in development
-const configPath = path.join(__dirname, '../..', 'icc.config.default.json');
+const configPath = path.join(__dirname, '../..', 'icc.config.json');
 const config = loadJsonConfig(configPath);
 ```
 
 **Result**:
-- ✅ Production: Loads from `~/.claude/icc.config.default.json`
-- ❌ Development: Fails - `src/icc.config.default.json` doesn't exist
+- ✅ Production: Loads from `~/.claude/icc.config.json`
+- ✅ Development: Loads from `repo-root/icc.config.json` (if provided)
 - ❌ Documentation: Examples fail
 - ❌ Tests: Regression tests broken
 
@@ -80,26 +80,26 @@ const config = loadJsonConfig(configPath);
 
 ```javascript
 // Try production location first
-let configPath = path.join(__dirname, '../..', 'icc.config.default.json');
+let configPath = path.join(__dirname, '../..', 'icc.config.json');
 let config = loadJsonConfig(configPath);
 
 if (!config) {
   // Fallback to development location
-  configPath = path.join(__dirname, '../../..', 'icc.config.default.json');
+  configPath = path.join(__dirname, '../../..', 'icc.config.json');
   config = loadJsonConfig(configPath);
 }
 
 if (!config) {
   console.error('[config-loader] Config not found. Searched:');
-  console.error('[config-loader]   - ' + path.join(__dirname, '../..', 'icc.config.default.json'));
-  console.error('[config-loader]   - ' + path.join(__dirname, '../../..', 'icc.config.default.json'));
+  console.error('[config-loader]   - ' + path.join(__dirname, '../..', 'icc.config.json'));
+  console.error('[config-loader]   - ' + path.join(__dirname, '../../..', 'icc.config.json'));
   config = getHardcodedDefaults();
 }
 ```
 
 **Result**:
-- ✅ Production: Loads from `~/.claude/icc.config.default.json`
-- ✅ Development: Loads from `repo-root/icc.config.default.json`
+- ✅ Production: Loads from `~/.claude/icc.config.json`
+- ✅ Development: Loads from `repo-root/icc.config.json`
 - ✅ Documentation: Examples work as-written
 - ✅ Tests: All regression tests pass
 

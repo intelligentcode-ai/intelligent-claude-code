@@ -186,7 +186,7 @@
   when:
     - intelligent_claude_code_config_md_exists.stat.exists
     - ansible_verbosity >= 1
-- name: Copy configuration file (selected or default without overwriting user edits)
+- name: Copy configuration file (selected without overwriting user edits)
   block:
     - name: Use provided config_file when specified (overwrite)
       ansible.builtin.copy:
@@ -207,41 +207,19 @@
         - claude_config_source | length == 0
         - intelligent_claude_code_icc_config_exists.stat.exists
         - ansible_verbosity >= 1
-    - name: Install default icc.config.json only if missing
-      ansible.builtin.copy:
-        src: "{{ playbook_dir }}/../icc.config.default.json"
-        dest: "{{ claude_install_path }}/icc.config.json"
-        mode: '0644'
-        force: false
+    - name: Note missing icc.config.json when none supplied
+      ansible.builtin.debug:
+        msg: "No icc.config.json provided; defaults remain internal (pass CONFIG_FILE to install)."
       when:
         - claude_config_source | length == 0
         - not intelligent_claude_code_icc_config_exists.stat.exists
-    - name: Always install default for reference
-      ansible.builtin.copy:
-        src: "{{ playbook_dir }}/../icc.config.default.json"
-        dest: "{{ claude_install_path }}/icc.config.default.json"
-        mode: '0644'
-        force: true
+        - ansible_verbosity >= 1
     - name: Display config installation choice
       ansible.builtin.debug:
         msg: >-
           Configuration installed or preserved at {{ claude_install_path }}/icc.config.json
-          (source={{ claude_config_source | default('existing or icc.config.default.json') }})
+          (source={{ claude_config_source | default('existing') }})
       when: ansible_verbosity >= 1
-- name: Copy default workflow configuration file (JSON format)
-  ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../icc.workflow.default.json"
-    dest: "{{ claude_install_path }}/icc.workflow.default.json"
-    mode: '0644'
-    force: true
-  register: intelligent_claude_code_default_workflow_copy_result
-- name: Display default workflow installation notice
-  ansible.builtin.debug:
-    msg: >-
-      Default workflow configuration installed:
-      {{ claude_install_path }}/icc.workflow.default.json
-      - complete workflow settings available
-  when: ansible_verbosity >= 1
 - name: Check if settings.json exists
   ansible.builtin.stat:
     path: "{{ claude_install_path }}/settings.json"

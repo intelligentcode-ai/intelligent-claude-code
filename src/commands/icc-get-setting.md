@@ -27,7 +27,7 @@ Gets setting value from configuration hierarchy with dot notation support.
    - Embedded configs (highest priority)
    - Project config (./icc.config.json or ./.claude/icc.config.json)
    - User config (~/.claude/icc.config.json)
-   - System defaults (icc.config.default.json)
+   - System defaults (built-in; no default file shipped)
 3. Support dot notation for nested values
 4. Validate critical settings (git_privacy MUST be boolean)
 5. Return first found value or default

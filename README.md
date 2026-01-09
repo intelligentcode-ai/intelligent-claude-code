@@ -1,13 +1,14 @@
 # Intelligent Claude Code
 
-CC‑native framework for planning‑first AgentTasks, native subagents, and minimal hooks.
+CC‑native framework slimmed to what Claude Code 2 + Opus still needs.
 
 ## Current scope (v9)
 
-- **CC‑native subagents** — no marker files, no custom role enforcement hooks.
+- **Claude Code 2 + Opus focused** — keep only what CC doesn’t do natively.
+- **CC‑native subagents** — no marker files or custom role‑enforcement hooks.
 - **Planning‑first AgentTasks** — main scope plans, subagents implement.
-- **Minimal hooks only** — keep only what CC doesn’t do natively.
-- **Behavior guidance** — behaviors live in the repo and are read by humans + Claude.
+- **Minimal hooks** — privacy, infra safety, summary/report routing.
+- **Behavior guidance** — behaviors live in the repo and guide humans + Claude.
 
 ## Included
 
@@ -19,14 +20,6 @@ CC‑native framework for planning‑first AgentTasks, native subagents, and min
   - `agent-infrastructure-protection.js` — block imperative infra changes
   - `summary-file-enforcement.js` — route summaries/reports + block ALL‑CAPS filenames
 
-## Removed
-
-- Marker‑based orchestration
-- Role enforcement hooks
-- Reminder hooks
-- Auto‑trigger and workflow hooks
-- Redundant behavior trees
-
 ## Principles
 
 1. **Plan first** → create AgentTask before implementation.
@@ -37,9 +30,9 @@ CC‑native framework for planning‑first AgentTasks, native subagents, and min
 
 ## Core roles
 
-@PM, @Architect, @Developer, @System‑Engineer, @DevOps‑Engineer, @Database‑Engineer,
-@Security‑Engineer, @AI‑Engineer, @Web‑Designer, @QA‑Engineer, @Backend‑Tester,
-@Requirements‑Engineer, @User‑Role, @Reviewer — plus dynamic specialists (e.g., @React‑Developer).
+pm, architect, developer, system‑engineer, devops‑engineer, database‑engineer,
+security‑engineer, ai‑engineer, web‑designer, qa‑engineer, backend‑tester,
+requirements‑engineer, user‑role, reviewer — plus dynamic specialists (e.g., react‑developer).
 
 ## Install
 
@@ -50,14 +43,17 @@ make install              # or .\install.ps1 install on Windows
 make clean-install        # force uninstall + reinstall (Linux/macOS)
 ```
 
-Usage:
+Usage (if your Claude Code build supports @‑mentions, use the file names below):
 
 ```bash
-@PM break down the story
-@Architect review the design
-@Developer implement auth
-@Reviewer audit for regressions
+@pm break down the story
+@architect review the design
+@developer implement auth
+@reviewer audit for regressions
 ```
+
+If @‑mentions aren’t supported, just ask in plain language:
+“Use the architect subagent to review the design.”
 
 ## Model control (user‑configurable)
 

@@ -3,7 +3,7 @@
 /**
  * Unified Configuration Loader for Intelligent Claude Code
  *
- * Hierarchy: ./icc.config.json → ~/.claude/icc.config.json → icc.config.default.json
+ * Hierarchy: ./icc.config.json → ~/.claude/icc.config.json → built-in defaults
  * Backward compatibility: Falls back to CLAUDE.md/config.md if icc.config.json missing
  * 5-minute TTL cache for performance
  */
@@ -207,26 +207,9 @@ function findConfigFile(projectRoot, filename) {
  * Load workflow configuration from hierarchy
  */
 function loadWorkflowConfig() {
-  // 1. Load default workflow configuration
-  // Try installed location first (~/.claude/), then repo root (for testing)
-  let defaultWorkflowPath = path.join(__dirname, '../..', 'icc.workflow.default.json');
-  let workflowConfig = loadJsonConfig(defaultWorkflowPath);
+  let workflowConfig = {};
 
-  if (!workflowConfig) {
-    // Fallback to repo root for local development/testing
-    defaultWorkflowPath = path.join(__dirname, '../../..', 'icc.workflow.default.json');
-    workflowConfig = loadJsonConfig(defaultWorkflowPath);
-  }
-
-  if (!workflowConfig) {
-    console.error('[config-loader] CRITICAL: Default workflow configuration not found');
-    console.error('[config-loader] Searched paths:');
-    console.error('[config-loader]   - ' + path.join(__dirname, '../..', 'icc.workflow.default.json'));
-    console.error('[config-loader]   - ' + path.join(__dirname, '../../..', 'icc.workflow.default.json'));
-    workflowConfig = {};
-  }
-
-  // 2. Try to load user global workflow configuration
+  // 1. Try to load user global workflow configuration
   const userWorkflowPath = findConfigFile(path.join(os.homedir(), '.claude'), 'icc.workflow.json');
   if (userWorkflowPath) {
     const userWorkflow = loadJsonConfig(userWorkflowPath);
@@ -235,7 +218,7 @@ function loadWorkflowConfig() {
     }
   }
 
-  // 3. Try to load project workflow configuration
+  // 2. Try to load project workflow configuration
   const projectWorkflowPath = findConfigFile(process.cwd(), 'icc.workflow.json');
   if (projectWorkflowPath) {
     const projectWorkflow = loadJsonConfig(projectWorkflowPath);
@@ -258,24 +241,8 @@ function loadConfig() {
     return configCache;
   }
 
-  // 1. Load default configuration
-  // Try installed location first (~/.claude/), then repo root (for testing)
-  let defaultConfigPath = path.join(__dirname, '../..', 'icc.config.default.json');
-  let config = loadJsonConfig(defaultConfigPath);
-
-  if (!config) {
-    // Fallback to repo root for local development/testing
-    defaultConfigPath = path.join(__dirname, '../../..', 'icc.config.default.json');
-    config = loadJsonConfig(defaultConfigPath);
-  }
-
-  if (!config) {
-    console.error('[config-loader] CRITICAL: Default configuration not found');
-    console.error('[config-loader] Searched paths:');
-    console.error('[config-loader]   - ' + path.join(__dirname, '../..', 'icc.config.default.json'));
-    console.error('[config-loader]   - ' + path.join(__dirname, '../../..', 'icc.config.default.json'));
-    config = getHardcodedDefaults();
-  }
+  // 1. Load hardcoded defaults
+  let config = getHardcodedDefaults();
 
   // 2. Try to load user global configuration
   const userConfigPath = findConfigFile(path.join(os.homedir(), '.claude'), 'icc.config.json');
