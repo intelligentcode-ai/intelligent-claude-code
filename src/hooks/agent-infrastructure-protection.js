@@ -225,6 +225,54 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
   function endsWithUnescapedBackslash(line) {
     if (!line) return false;
+    let inSingle = false;
+    let inDouble = false;
+    let inBacktick = false;
+    let inAnsiC = false;
+    let escaped = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+
+      if (escaped) {
+        escaped = false;
+        continue;
+      }
+
+      if (ch === '\\' && (inDouble || inBacktick || inAnsiC)) {
+        escaped = true;
+        continue;
+      }
+
+      if (ch === "'" && !inDouble && !inBacktick) {
+        if (inAnsiC) {
+          inAnsiC = false;
+          continue;
+        }
+        inSingle = !inSingle;
+        continue;
+      }
+
+      if (ch === '"' && !inSingle && !inBacktick && !inAnsiC) {
+        inDouble = !inDouble;
+        continue;
+      }
+
+      if (!inSingle && !inDouble && !inBacktick && ch === '$' && line[i + 1] === "'") {
+        inAnsiC = true;
+        i += 1;
+        continue;
+      }
+
+      if (ch === '`' && !inSingle && !inDouble && !inAnsiC) {
+        inBacktick = !inBacktick;
+      }
+    }
+
+    if (inSingle || inAnsiC) {
+      return false;
+    }
+
     let count = 0;
     for (let i = line.length - 1; i >= 0 && line[i] === '\\'; i -= 1) {
       count += 1;
@@ -272,6 +320,10 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
       if (ch === '\\') {
         if (inAnsiC) {
+          i += 1;
+          continue;
+        }
+        if (inBacktick) {
           i += 1;
           continue;
         }
