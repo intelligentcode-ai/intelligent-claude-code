@@ -223,31 +223,88 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     return { token: match[1], quote: null, dashTrim };
   }
 
+  function endsWithUnescapedBackslash(line) {
+    if (!line) return false;
+    let count = 0;
+    for (let i = line.length - 1; i >= 0 && line[i] === '\\'; i -= 1) {
+      count += 1;
+    }
+    return count % 2 === 1;
+  }
+
+  function normalizeContinuationLines(lines) {
+    const result = [];
+    let buffer = '';
+
+    for (const line of lines) {
+      if (!buffer) {
+        buffer = line;
+      } else {
+        buffer += line;
+      }
+
+      if (endsWithUnescapedBackslash(buffer)) {
+        buffer = buffer.slice(0, -1);
+        continue;
+      }
+
+      result.push(buffer);
+      buffer = '';
+    }
+
+    if (buffer) {
+      result.push(buffer);
+    }
+
+    return result;
+  }
+
   function findUnquotedHeredocOperator(line) {
     if (!line) return null;
     let inSingle = false;
     let inDouble = false;
+    let inBacktick = false;
+    let inAnsiC = false;
     let inArithmetic = 0;
 
     for (let i = 0; i < line.length - 1; i++) {
       const ch = line[i];
 
       if (ch === '\\') {
+        if (inAnsiC) {
+          i += 1;
+          continue;
+        }
         i += 1;
         continue;
       }
 
-      if (ch === "'" && !inDouble) {
+      if (ch === "'" && !inDouble && !inBacktick) {
+        if (inAnsiC) {
+          inAnsiC = false;
+          continue;
+        }
         inSingle = !inSingle;
         continue;
       }
 
-      if (ch === '"' && !inSingle) {
+      if (ch === '"' && !inSingle && !inBacktick && !inAnsiC) {
         inDouble = !inDouble;
         continue;
       }
 
-      if (inSingle || inDouble) {
+      if (!inSingle && !inDouble && !inBacktick && !inAnsiC && ch === '$' && line[i + 1] === "'") {
+        inAnsiC = true;
+        i += 1;
+        continue;
+      }
+
+      if (ch === '`' && !inSingle && !inDouble && !inAnsiC) {
+        inBacktick = !inBacktick;
+        continue;
+      }
+
+      if (inSingle || inDouble || inBacktick || inAnsiC) {
         continue;
       }
 
@@ -285,7 +342,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
   function containsUnquotedHeredoc(cmd) {
     if (!cmd) return false;
-    const lines = cmd.split('\n');
+    const lines = normalizeContinuationLines(cmd.split('\n'));
     for (const line of lines) {
       if (findUnquotedHeredocOperator(line)) {
         return true;
@@ -403,7 +460,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
   function isSingleQuotedHeredoc(cmd) {
     const trimmed = cmd.trim();
     if (!trimmed) return false;
-    const lines = trimmed.split('\n');
+    const lines = normalizeContinuationLines(trimmed.split('\n'));
     let found = false;
     let inHeredoc = false;
     let terminator = null;
