@@ -37,7 +37,7 @@ complete_context:
     original_request: "[USER_REQUEST]"
     success_criteria: "[SUCCESS_CRITERIA]"
     feature_scope: "[FEATURE_BOUNDARY]"
-  
+
   specialization_context:
     technology_domains: "[TECHNOLOGY_DOMAINS]"
     specialist_creation: "ALWAYS create specialists when technology expertise is needed"
@@ -79,7 +79,7 @@ decomposition:
     - component: "[COMPONENT_1]"
       agenttask_type: "medium"
       dependencies: []
-    - component: "[COMPONENT_2]" 
+    - component: "[COMPONENT_2]"
       agenttask_type: "medium"
       dependencies: ["[COMPONENT_1]"]
     - component: "[INTEGRATION]"
@@ -185,7 +185,7 @@ mcp_operations:
         topic: "[LEARNING_TOPIC]"
         content: "[LEARNING_CONTENT]"
     fallback: "file-based"
-  
+
   issue_tracking:
     condition: "[MCP_ISSUE_ENABLED]"
     provider: "[MCP_ISSUE_PROVIDER]"
@@ -195,7 +195,7 @@ mcp_operations:
         title: "[ISSUE_TITLE]"
         description: "[ISSUE_DESCRIPTION]"
     fallback: "file-based"
-  
+
   documentation:
     condition: "[MCP_DOCS_ENABLED]"
     provider: "[MCP_DOCS_PROVIDER]"
@@ -222,7 +222,7 @@ execution_strategy: |
   3. Integrate components on feature branch
   4. Comprehensive testing and validation
   5. Update documentation and create pull request
-  
+
 # EXECUTION CHECKLIST
 execution_checklist: |
   ☐ Feature branch created for coordination (MANDATORY - validation enforced)
