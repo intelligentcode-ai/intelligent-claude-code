@@ -29,11 +29,11 @@ AgentTask templates are the backbone of the intelligent-claude-code system. They
 **Template Resolution Process**:
 ```yaml
 # Template BEFORE resolution (BLOCKED):
-git_privacy: "[FROM_CONFIG]"
+git.privacy: "[FROM_CONFIG]"
 branch_protection: "[FROM_CONFIG]"
 
 # Template AFTER resolution (REQUIRED):
-git_privacy: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+git.privacy: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
 branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
 default_branch: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
 ```
@@ -60,7 +60,7 @@ complete_context:
   # Complete configuration embedded at generation time
   project_root: <ACTUAL_PROJECT_ROOT_PATH>
   configuration:
-    git_privacy: <ACTUAL_VALUE>
+    git.privacy: <ACTUAL_VALUE>
     branch_protection: <ACTUAL_VALUE>
 change:
   file: "[PATH]"

@@ -311,7 +311,7 @@ make clean-install
 
 2. Check configuration hierarchy:
 ```bash
-/icc-get-setting git_privacy
+/icc-get-setting git.privacy
 /icc-load-config
 ```
 
@@ -485,14 +485,14 @@ ls -la ~/.claude/.cache/config-* 2>/dev/null || echo "No cache files"
 
 ### Git Privacy Filter Not Working
 
-**Symptoms:** AI mentions appearing in commits despite git_privacy=true
+**Symptoms:** AI mentions appearing in commits despite git.privacy=true
 
 **Cause:** Privacy filter not properly applied.
 
 **Solution:**
 1. Verify setting:
 ```bash
-/icc-get-setting git_privacy
+/icc-get-setting git.privacy
 # Should return: true
 ```
 
@@ -505,7 +505,7 @@ git log -1 --oneline
 3. Fix privacy setting:
 ```yaml
 # In CLAUDE.md or icc.config.json
-git_privacy: true
+git.privacy: true
 ```
 
 ### Branch Protection Conflicts

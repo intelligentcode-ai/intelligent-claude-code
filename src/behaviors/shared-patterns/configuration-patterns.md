@@ -10,5 +10,5 @@
 4. Defaults (built-in; no default file shipped)
 
 ## Key Areas
-- `git.*`, `paths.*`, `team.*`, `agenttask.*`, `models.*`
+- `git.*`, `paths.*`, `agenttask.*`, `models.*`
 </behavior>

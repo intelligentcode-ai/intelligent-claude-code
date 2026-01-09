@@ -12,7 +12,6 @@
 ## Key Settings
 - `git.*` (privacy, branch protection, PR requirement)
 - `paths.*` (stories, bugs, memory, docs, summaries)
-- `team.*` (default reviewer, role validation)
 - `agenttask.*` (templates, sizing)
 - `models.*` (optional user‑controlled model selection)
 </behavior>

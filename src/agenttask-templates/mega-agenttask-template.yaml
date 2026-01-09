@@ -3,7 +3,7 @@
 # Maximum executable AgentTask: 15 points (medium)
 # This template preserved for reference only
 
-git_privacy: [GIT_PRIVACY_SETTING]
+git.privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: mega-agenttask
 complexity: system-wide
@@ -20,7 +20,7 @@ complete_context:
   key_context: "[KEY_CONTEXT]"
   system_features: "[SYSTEM_FEATURES]"
   configuration:
-    git_privacy: "[FROM_CONFIG]"
+    git.privacy: "[FROM_CONFIG]"
     branch_protection: "[FROM_CONFIG]"
     default_branch: "[FROM_CONFIG]"
     branch_strategy: "[FROM_CONFIG]"
@@ -58,7 +58,7 @@ requirements:
     - "[SYSTEM_WIDE_REQUIREMENT_2]"
     - "[SYSTEM_WIDE_REQUIREMENT_3]"
   processual:
-    - "Apply git_privacy across all system changes"
+    - "Apply git.privacy across all system changes"
     - "Coordinate system-wide development phases"
     - "Manage complex dependency chains"
     - "Ensure rollback capability at all phases"
@@ -69,9 +69,9 @@ requirements:
 
 # Git Privacy Execution Notes
 execution_notes: |
-  CRITICAL: MANDATORY git_privacy validation BEFORE ALL git operations:
-  1. Load git_privacy setting from configuration (NEVER assume)
-  2. When git_privacy=true, strip ALL AI mentions from:
+  CRITICAL: MANDATORY git.privacy validation BEFORE ALL git operations:
+  1. Load git.privacy setting from configuration (NEVER assume)
+  2. When git.privacy=true, strip ALL AI mentions from:
      - Commit messages (remove "AI", "Claude", "agent", "Generated with Claude Code", etc.)
      - PR descriptions and titles
      - Release notes and changelogs

@@ -2,7 +2,7 @@
 # For simple one-line fixes, typos, and minimal adjustments
 
 # === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
-git_privacy: [GIT_PRIVACY_SETTING]
+git.privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 title: "[ROLE] [DESCRIPTION]"
 type: nano-agenttask
@@ -18,7 +18,7 @@ complete_context:
   key_context: "[KEY_CONTEXT]"
   system_features: "[SYSTEM_FEATURES]"
   configuration:
-    git_privacy: "[FROM_CONFIG]"
+    git.privacy: "[FROM_CONFIG]"
     branch_protection: "[FROM_CONFIG]"
     default_branch: "[FROM_CONFIG]"
     branch_strategy: "[FROM_CONFIG]"
@@ -44,9 +44,9 @@ change_needed: "[WHAT_TO_CHANGE]"
 
 # === EXECUTION PATTERN (KEEP AS-IS) ===
 execution_notes: |
-  CRITICAL: MANDATORY git_privacy validation BEFORE ALL git operations:
-  1. Load git_privacy setting from configuration (NEVER assume)
-  2. When git_privacy=true, strip ALL AI mentions from:
+  CRITICAL: MANDATORY git.privacy validation BEFORE ALL git operations:
+  1. Load git.privacy setting from configuration (NEVER assume)
+  2. When git.privacy=true, strip ALL AI mentions from:
      - Commit messages (remove "AI", "Claude", "agent", "Generated with Claude Code", etc.)
      - PR descriptions and titles
      - Release notes and changelogs

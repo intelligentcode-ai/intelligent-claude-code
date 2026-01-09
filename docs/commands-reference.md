@@ -117,7 +117,7 @@ The system automatically creates specialists for ANY technology domain when expe
 ### Configuration Management
 ```bash
 /icc-get-setting git.privacy                 # Check privacy settings
-/icc-get-setting git.privacy                 # Check privacy settings
+/icc-get-setting git.default_branch          # Check default branch
 ```
 
 ## Best Practices

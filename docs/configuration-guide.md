@@ -19,10 +19,6 @@
 - `paths.story_path`, `paths.bug_path`, `paths.memory_path`
 - `paths.docs_path`, `paths.summaries_path`
 
-### Team
-- `team.default_reviewer`
-- `team.role_validation`
-
 ### AgentTask
 - `agenttask.template_path`
 - `agenttask.template_validation`

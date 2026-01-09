@@ -164,7 +164,7 @@ Arrays and lists are extended automatically:
 # Base template has:
 requirements:
   processual:
-    - "Apply git_privacy setting"
+    - "Apply git.privacy setting"
     - "Follow branch protection strategy"
 
 # Your extension adds:
