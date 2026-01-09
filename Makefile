@@ -5,7 +5,7 @@
 SHELL := /bin/bash
 .SHELLFLAGS := -c
 
-.PHONY: install uninstall test help clean
+.PHONY: install uninstall clean-install test help clean
 
 # Resolve relative paths to absolute paths before passing to Ansible
 # This ensures paths work regardless of Ansible's working directory
@@ -34,6 +34,7 @@ help:
 	@echo "Usage:"
 	@echo "  make install   [HOST=ip] [USER=user] [TARGET_PATH=/path] [CONFIG_FILE=sample-configs/icc.config.sub-agent.json] [MCP_CONFIG=/path/to/mcps.json] [ENV_FILE=/path/to/.env] [KEY=~/.ssh/id_rsa | PASS=password]"
 	@echo "  make uninstall [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password] [FORCE=true]"
+	@echo "  make clean-install [HOST=ip] [USER=user] [TARGET_PATH=/path] [CONFIG_FILE=...] [MCP_CONFIG=...] [ENV_FILE=...] [KEY=... | PASS=...]"
 	@echo "  make test                        # Run installation tests"
 	@echo ""
 	@echo "Parameters:"
@@ -58,6 +59,8 @@ help:
 	@echo "  make uninstall                   # Local conservative uninstall"
 	@echo "  make uninstall FORCE=true        # Local force uninstall (remove all)"
 	@echo "  make uninstall HOST=ip USER=user # Remote uninstall"
+	@echo "  make clean-install               # Local force uninstall + reinstall"
+	@echo "  make clean-install TARGET_PATH=/project  # Local project clean install"
 	@echo "  make test                        # Test installation"
 	@echo ""
 	@echo "To enable verbose mode, remove the ANSIBLE_STDOUT_CALLBACK settings from Makefile"
@@ -242,6 +245,11 @@ uninstall:
 				-e "force_remove=$(FORCE)"; \
 		fi \
 	fi
+
+# Force uninstall + reinstall (same args as install/uninstall)
+clean-install:
+	@$(MAKE) uninstall FORCE=true HOST="$(HOST)" USER="$(USER)" PASS="$(PASS)" KEY="$(KEY)" TARGET_PATH="$(TARGET_PATH)"
+	@$(MAKE) install HOST="$(HOST)" USER="$(USER)" PASS="$(PASS)" KEY="$(KEY)" TARGET_PATH="$(TARGET_PATH)" CONFIG_FILE="$(CONFIG_FILE)" MCP_CONFIG="$(MCP_CONFIG)" ENV_FILE="$(ENV_FILE)"
 
 # Clean test installations and temporary files
 clean:

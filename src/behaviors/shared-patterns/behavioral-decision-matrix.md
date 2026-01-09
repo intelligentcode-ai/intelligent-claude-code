@@ -3,10 +3,10 @@
 Simple decision rules for consistent behavior patterns.
 
 ## Decision Tree
-1. **Work Intent** → AgentTask + Agent
-2. **@Role + Work** → AgentTask + Task Tool
-3. **Information Only** → Direct Response
-4. **PM Role** → Coordination Only
+1. **Work Intent** → AgentTask + Task tool
+2. **@Role + Work** → AgentTask + Task tool
+3. **Information Only** → Direct response
+4. **PM Role** → Coordination only
 
 ## Pattern Recognition
 
@@ -30,4 +30,4 @@ Simple decision rules for consistent behavior patterns.
 4. Apply appropriate response pattern
 
 ---
-*Simplified decision matrix with hook-based guidance*
+*Minimal decision matrix for plan‑first execution*

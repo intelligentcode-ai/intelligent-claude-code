@@ -2,7 +2,7 @@
 
 The intelligent-claude-code system implements a **hybrid agent architecture** that combines:
 
-1. **14 Core Generic Agents**: Handle any work via context specialization
+1. **14 core Generic Agents**: Handle any work via context specialization
 2. **Dynamic Specialization**: Achieved through AgentTask context, not separate files
 3. **Unlimited Domain Coverage**: Any technology via specialized AgentTask content
 4. **Claude Code Native Integration**: Full compatibility with Claude Code Subagents

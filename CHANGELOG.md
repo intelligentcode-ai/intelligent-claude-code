@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.20.97] - 2025-12-02
+
+### Added
+- Workflow enforcement hook to gate tool usage through configurable Task → Plan → Review → Execute → Document sequence.
+
+### Changed
+- Infrastructure protection hardening: stricter command-substitution detection, explicit main-scope agent bypass control, and marker cleanup respects custom temp directories.
+- Directory enforcement now recognizes `memory/` and `memories/` segments for valid note placement while still keeping STORY/BUG/EPIC docs in their scoped folders.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [9.0.0] - 2026-01-07
+
+### Added
+- Reviewer subagent definition and core role listing.
+
+### Changed
+- Slimmed hook system to PreToolUse-only: `git-enforcement.js`, `agent-infrastructure-protection.js`, `summary-file-enforcement.js`.
+- Summary-file enforcement is now scope-agnostic (applies to main + subagents).
+- Behavior stack trimmed to CC-native subagents and planning-first AgentTasks.
+- Documentation updated to reflect minimal hooks, 14 core roles, and CC-native workflow.
+- Infra protection: documentation fast-path now only allows single-quoted heredocs and scans heredoc bodies for substitution before allowing.
+
+### Removed
+- Legacy hooks (marker orchestration, role enforcement, reminders, auto-trigger and workflow hooks).
+- Obsolete behavior and shared-pattern files tied to removed hooks.
+
+### Testing
+- Not run (not requested).
 
 ## [8.20.96] - 2025-11-21
 

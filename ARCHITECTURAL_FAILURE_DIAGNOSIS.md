@@ -1,5 +1,7 @@
 # Architectural Failure Diagnosis: Behavioral Enforcement System
 
+**Note:** This document describes legacy v8-era enforcement issues. v9 removes most enforcement hooks and keeps only minimal safety/privacy hooks. See `docs/hook-system-guide.md` for current behavior.
+
 ## Executive Summary
 
 **CRITICAL FINDING**: The intelligent-claude-code system lacks actual enforcement mechanisms for its behavioral patterns. The core issue is **architectural**, not configurational - behavioral patterns are advisory text that Claude can override, leading to consistent violations of the AgentTask→Agent delegation pattern.

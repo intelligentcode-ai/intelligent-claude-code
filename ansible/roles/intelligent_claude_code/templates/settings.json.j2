@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "*",
+      "hooks": [{
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/git-enforcement.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/agent-infrastructure-protection.js",
+        "timeout": 5000
+      }, {
+        "type": "command",
+        "command": "node {{ claude_install_path }}/hooks/summary-file-enforcement.js",
+        "timeout": 5000
+      }]
+    }]
+  }
+}

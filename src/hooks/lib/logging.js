@@ -91,7 +91,7 @@ function normalizePath(pathStr) {
 
 /**
  * Create logger function for specific hook
- * @param {string} hookName - Name of the hook (e.g., 'pm-constraints-enforcement')
+ * @param {string} hookName - Name of the hook (e.g., 'git-enforcement')
  * @param {Object} hookInput - Optional hook input containing cwd for path normalization
  * @returns {Function} Logger function
  */
@@ -123,7 +123,7 @@ function createLogger(hookName, hookInput = null) {
  * Initialize hook with input parsing and logging
  * Consolidates duplicated initialization code across all hooks
  *
- * @param {string} hookName - Name of the hook (e.g., 'pm-constraints-enforcement')
+ * @param {string} hookName - Name of the hook (e.g., 'git-enforcement')
  * @returns {Object} Object containing { log, hookInput }
  */
 function initializeHook(hookName) {
@@ -136,7 +136,7 @@ function initializeHook(hookName) {
     if (process.argv[2]) {
       inputData = process.argv[2];
     }
-    // Check HOOK_INPUT environment variable (UserPromptSubmit, etc.)
+    // Check HOOK_INPUT environment variable (hook events that pass via env)
     else if (process.env.HOOK_INPUT) {
       inputData = process.env.HOOK_INPUT;
     }

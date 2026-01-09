@@ -1,30 +1,20 @@
-# AgentTask Creation System
+# AgentTask Creation System (Minimal)
 
-All AgentTask creation via main agent with template compliance.
+**MANDATORY:** Planning happens before execution. All work requests become AgentTasks.
 
-## Imports
-@./shared-patterns/template-loading.md
-@./shared-patterns/memory-operations.md
+## Purpose
+Provide a consistent “plan first” flow before any subagent executes work.
 
-## Core Function
+## Core Rules
+1. **Work request detected** → create an AgentTask (do not implement directly).
+2. **Planning first** → summarize approach, constraints, risks, and success criteria.
+3. **Template selection** → choose nano/tiny/medium/large/mega based on complexity.
+4. **Complete context** → include config values, file paths, memory references, and best‑practices.
+5. **Execution path** → pass AgentTask to Task tool for subagent execution.
 
-**Purpose**: Real-time work detection and AgentTask creation
-**Scope**: Main agent only - agents cannot create work items
-**Requirements**: Template compliance, memory-first approach, complete context
+## Scope
+- **Main agent only** creates AgentTasks.
+- **Subagents** execute only from AgentTask context.
 
-## Size Limits
-
-**Executable AgentTasks**: nano (0-2 pts), tiny (3-5 pts), medium (6-15 pts)
-**Maximum Complexity**: 15 points - work above this becomes STORY
-**Breakdown Rule**: Work ≥16 points becomes STORY in ./stories/ directory
-**Context**: Complete embedding with resolved placeholders
-
-## Creation Flow
-
-**Process**: Work detection → Deduplication check → Memory search → Template selection → Context embedding
-**Quality Gates**: Template compliance, complete context, resolved placeholders
-**Execution**: Pass context directly to Task tool (NO file writes for executable AgentTasks)
-**Story Creation**: Work >15 points written to ./stories/ for breakdown
-
----
-*AgentTask and work item creation system*
+## Notes
+This system replaces 1.x auto‑triggering and marker enforcement. It is a minimal, CC‑native planning gate.

@@ -1,21 +1,17 @@
-# AgentTask Execution
+# AgentTask Execution (CC‑Native)
 
-Execute AgentTasks with complete context through specialized agents.
+**MANDATORY:** Subagents execute only from AgentTask context.
 
-## Imports
-@./shared-patterns/execution-summary.md
+## Execution Flow
+1. AgentTask received via Task tool
+2. Read context, constraints, and success criteria
+3. Execute changes within scope
+4. Produce a concise completion summary and required artifacts
 
-## Core Process
+## Quality Expectations
+- Follow project standards and naming rules
+- Validate against success criteria
+- Record learnings to memory when appropriate
 
-**Execution**: Deploy via Task tool to specialist agents with complete context
-**Quality**: Built-in validation, testing, documentation updates
-**Completion**: Comprehensive summary with automatic memory storage
-
-## Requirements
-
-**Context**: Complete project context, embedded configuration, memory patterns
-**Workflow**: Version management, git privacy, documentation per workflow settings
-**Memory**: Automatic storage of successful patterns and solutions
-
----
-*AgentTask execution with complete context and agent coordination*
+## Notes
+No marker files or orchestration hooks are required; Claude Code manages subagent lifecycles.

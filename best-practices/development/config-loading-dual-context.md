@@ -112,7 +112,7 @@ if (!config) {
 - Works out of the box in both contexts
 
 ### Simplified Testing
-- Tests run directly: `node src/hooks/main-scope-enforcement.js`
+- Tests run directly: `node src/hooks/agent-infrastructure-protection.js`
 - No test-specific configuration
 - Documentation examples copy-pasteable
 - Regression tests don't need special setup
@@ -272,14 +272,14 @@ $ node src/hooks/lib/config-loader.js
 
 **Test hook execution in production:**
 ```bash
-$ node ~/.claude/hooks/main-scope-enforcement.js < test-input.json
-✓ Hook blocks correctly
+$ node ~/.claude/hooks/agent-infrastructure-protection.js < test-input.json
+✓ Hook runs correctly
 ```
 
 **Test hook execution in development:**
 ```bash
-$ node src/hooks/main-scope-enforcement.js < test-input.json
-✓ Hook blocks correctly
+$ node src/hooks/agent-infrastructure-protection.js < test-input.json
+✓ Hook runs correctly
 ```
 
 ## Related Patterns

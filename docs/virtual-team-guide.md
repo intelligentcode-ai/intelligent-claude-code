@@ -22,7 +22,7 @@ A AgentTask is a self-contained execution blueprint that includes:
 
 Think of AgentTasks as "everything a specialist needs to complete the work in one pass."
 
-## The 14 Core Roles
+## The 14 core roles
 
 ### Leadership & Planning
 **@PM (Project Manager)**
@@ -78,11 +78,21 @@ Think of AgentTasks as "everything a specialist needs to complete the work in on
 - Performance testing
 - Triggers: "Test the API...", "Validate backend..."
 
+**@User-Role**
+- End-to-end testing and browser automation
+- Real user journey validation
+- Triggers: "Test the signup flow...", "Validate user journey..."
+
 **@Security-Engineer**
 - Security reviews and audits
 - Vulnerability assessment
 - Security best practices
 - Triggers: "Review security...", "Assess vulnerabilities..."
+
+**@Reviewer**
+- Critical reviews and risk assessment
+- Regression checks and change impact analysis
+- Triggers: "Review for regressions...", "Audit this change..."
 
 ### Specialized Domains
 **@AI-Engineer**

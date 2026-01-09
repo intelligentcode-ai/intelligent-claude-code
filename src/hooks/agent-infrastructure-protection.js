@@ -113,6 +113,16 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     return false;
   }
 
+  // Detect unescaped $( which definitely triggers substitution
+  function hasUnescapedDollarParen(str) {
+    for (let i = 0; i < str.length - 1; i++) {
+      if (str[i] === '$' && str[i + 1] === '(' && str[i - 1] !== '\\') {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
@@ -146,6 +156,274 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       }
     }
 
+    return false;
+  }
+
+  function findUnquotedTokenIndex(line, token) {
+    if (!line || !token) return null;
+    let inSingle = false;
+    let inDouble = false;
+
+    for (let i = 0; i <= line.length - token.length; i++) {
+      const ch = line[i];
+
+      if (ch === '\\') {
+        i += 1;
+        continue;
+      }
+
+      if (ch === "'" && !inDouble) {
+        inSingle = !inSingle;
+        continue;
+      }
+
+      if (ch === '"' && !inSingle) {
+        inDouble = !inDouble;
+        continue;
+      }
+
+      if (!inSingle && !inDouble && line.startsWith(token, i)) {
+        return i;
+      }
+    }
+
+    return null;
+  }
+
+  function parseHeredocDelimiter(line, operatorIndex) {
+    if (operatorIndex == null) return null;
+    let i = operatorIndex + 2;
+    let dashTrim = false;
+
+    if (line[i] === '-') {
+      dashTrim = true;
+      i += 1;
+    }
+
+    while (i < line.length && /\s/.test(line[i])) {
+      i += 1;
+    }
+
+    if (i >= line.length) return null;
+
+    const quote = line[i];
+    if (quote === "'" || quote === '"') {
+      i += 1;
+      let token = '';
+      while (i < line.length && line[i] !== quote) {
+        token += line[i];
+        i += 1;
+      }
+      if (!token) return null;
+      return { token, quote, dashTrim };
+    }
+
+    const match = line.slice(i).match(/^([A-Za-z0-9_:-]+)/);
+    if (!match) return null;
+    return { token: match[1], quote: null, dashTrim };
+  }
+
+  function endsWithUnescapedBackslash(line) {
+    if (!line) return false;
+    let inSingle = false;
+    let inDouble = false;
+    let inBacktick = false;
+    let inAnsiC = false;
+    let escaped = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+
+      if (escaped) {
+        escaped = false;
+        continue;
+      }
+
+      if (ch === '\\' && (inDouble || inBacktick || inAnsiC)) {
+        escaped = true;
+        continue;
+      }
+
+      if (ch === "'" && !inDouble && !inBacktick) {
+        if (inAnsiC) {
+          inAnsiC = false;
+          continue;
+        }
+        inSingle = !inSingle;
+        continue;
+      }
+
+      if (ch === '"' && !inSingle && !inBacktick && !inAnsiC) {
+        inDouble = !inDouble;
+        continue;
+      }
+
+      if (!inSingle && !inDouble && !inBacktick && ch === '$' && line[i + 1] === "'") {
+        inAnsiC = true;
+        i += 1;
+        continue;
+      }
+
+      if (ch === '`' && !inSingle && !inDouble && !inAnsiC) {
+        inBacktick = !inBacktick;
+      }
+    }
+
+    if (inSingle || inAnsiC) {
+      return false;
+    }
+
+    let count = 0;
+    for (let i = line.length - 1; i >= 0 && line[i] === '\\'; i -= 1) {
+      count += 1;
+    }
+    return count % 2 === 1;
+  }
+
+  function normalizeContinuationLines(lines) {
+    const result = [];
+    let buffer = '';
+
+    for (const line of lines) {
+      if (!buffer) {
+        buffer = line;
+      } else {
+        buffer += line;
+      }
+
+      if (endsWithUnescapedBackslash(buffer)) {
+        buffer = buffer.slice(0, -1);
+        continue;
+      }
+
+      result.push(buffer);
+      buffer = '';
+    }
+
+    if (buffer) {
+      result.push(buffer);
+    }
+
+    return result;
+  }
+
+  function buildLogicalLine(lines, startIndex) {
+    let buffer = '';
+    let index = startIndex;
+
+    while (index < lines.length) {
+      const line = lines[index];
+      buffer = buffer ? `${buffer}${line}` : line;
+
+      if (endsWithUnescapedBackslash(buffer)) {
+        buffer = buffer.slice(0, -1);
+        index += 1;
+        continue;
+      }
+
+      return { line: buffer, nextIndex: index + 1 };
+    }
+
+    return { line: buffer, nextIndex: lines.length };
+  }
+
+  function findUnquotedHeredocOperator(line) {
+    if (!line) return null;
+    let inSingle = false;
+    let inDouble = false;
+    let inBacktick = false;
+    let inAnsiC = false;
+    let inArithmetic = 0;
+
+    for (let i = 0; i < line.length - 1; i++) {
+      const ch = line[i];
+
+      if (ch === '\\') {
+        if (inAnsiC) {
+          i += 1;
+          continue;
+        }
+        if (inBacktick) {
+          i += 1;
+          continue;
+        }
+        i += 1;
+        continue;
+      }
+
+      if (ch === "'" && !inDouble && !inBacktick) {
+        if (inAnsiC) {
+          inAnsiC = false;
+          continue;
+        }
+        inSingle = !inSingle;
+        continue;
+      }
+
+      if (ch === '"' && !inSingle && !inBacktick && !inAnsiC) {
+        inDouble = !inDouble;
+        continue;
+      }
+
+      if (!inSingle && !inDouble && !inBacktick && !inAnsiC && ch === '$' && line[i + 1] === "'") {
+        inAnsiC = true;
+        i += 1;
+        continue;
+      }
+
+      if (ch === '`' && !inSingle && !inDouble && !inAnsiC) {
+        inBacktick = !inBacktick;
+        continue;
+      }
+
+      if (inSingle || inDouble || inBacktick || inAnsiC) {
+        continue;
+      }
+
+      if (line.startsWith('$((', i) || line.startsWith('((', i)) {
+        inArithmetic += 1;
+        i += 1;
+        continue;
+      }
+
+      if (inArithmetic && line.startsWith('))', i)) {
+        inArithmetic = Math.max(0, inArithmetic - 1);
+        i += 1;
+        continue;
+      }
+
+      if (inArithmetic) {
+        continue;
+      }
+
+      if (line.startsWith('<<', i)) {
+        const nextChar = line[i + 2];
+        if (nextChar === '<' || nextChar === '=') {
+          continue;
+        }
+
+        const parsed = parseHeredocDelimiter(line, i);
+        if (parsed) {
+          return { index: i, parsed };
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function containsUnquotedHeredoc(cmd) {
+    if (!cmd) return false;
+    const lines = cmd.split('\n');
+    let index = 0;
+
+    while (index < lines.length) {
+      const { line, nextIndex } = buildLogicalLine(lines, index);
+      if (findUnquotedHeredocOperator(line)) {
+        return true;
+      }
+      index = nextIndex;
+    }
     return false;
   }
 
@@ -217,12 +495,13 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     const dashTrim = firstLine.includes('<<-');
     const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
     if (heredocMatch) {
+      const singleQuoted = Boolean(heredocMatch[1]);
+      const doubleQuoted = Boolean(heredocMatch[2]);
       const terminator = heredocMatch[1] || heredocMatch[2] || heredocMatch[3];
 
       const leadingTabs = dashTrim ? '\\t*' : '';
       const terminatorRegex = new RegExp(`\\n${leadingTabs}${escapeRegex(terminator)}\\s*$`);
       const hasTerminator = terminatorRegex.test(trimmed);
-      const isQuoted = Boolean(heredocMatch[1] || heredocMatch[2]);
 
       if (!hasTerminator) {
         return false;
@@ -257,9 +536,43 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
   function isSingleQuotedHeredoc(cmd) {
     const trimmed = cmd.trim();
     if (!trimmed) return false;
-    const firstLine = trimmed.split('\n', 1)[0];
-    const heredocMatch = firstLine.match(/<<-?\s*'([A-Za-z0-9_:-]+)'/);
-    return Boolean(heredocMatch);
+    const lines = trimmed.split('\n');
+    let found = false;
+    let inHeredoc = false;
+    let terminator = null;
+    let dashTrim = false;
+
+    for (let index = 0; index < lines.length; index += 1) {
+      const line = lines[index];
+      if (inHeredoc) {
+        const leadingTabs = dashTrim ? '\\t*' : '';
+        const terminatorRegex = new RegExp(`^${leadingTabs}${escapeRegex(terminator)}\\s*$`);
+        if (terminatorRegex.test(line)) {
+          inHeredoc = false;
+          terminator = null;
+          dashTrim = false;
+        }
+        continue;
+      }
+
+      const logical = buildLogicalLine(lines, index);
+      const operator = findUnquotedHeredocOperator(logical.line);
+      if (!operator) {
+        index = logical.nextIndex - 1;
+        continue;
+      }
+      const parsed = operator.parsed;
+      found = true;
+      if (parsed.quote !== "'") {
+        return false;
+      }
+      dashTrim = parsed.dashTrim;
+      terminator = parsed.token;
+      inHeredoc = true;
+      index = logical.nextIndex - 1;
+    }
+
+    return found;
   }
 
   function looksLikeMarkdownWrite(cmd, cwd) {
@@ -301,24 +614,22 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     const dashTrim = firstLine.includes('<<-');
     const heredocMatch = firstLine.match(/<<-?\s*(?:'([A-Za-z0-9_:-]+)'|"([A-Za-z0-9_:-]+)"|([A-Za-z0-9_:-]+))/);
     if (heredocMatch) {
+      const singleQuoted = Boolean(heredocMatch[1]);
       const terminator = heredocMatch[1] || heredocMatch[2] || heredocMatch[3];
 
       // Require a quoted terminator OR a body with no command substitution
       const leadingTabs = dashTrim ? '\\t*' : '';
       const terminatorRegex = new RegExp(`\\n${leadingTabs}${escapeRegex(terminator)}\\s*$`);
       const hasTerminator = terminatorRegex.test(trimmed);
-      const isQuoted = Boolean(heredocMatch[1] || heredocMatch[2]);
 
       if (!hasTerminator) {
         return false;
       }
 
-      if (!isQuoted) {
-        // Unquoted heredoc bodies perform substitution; ensure body is clean
-        const body = trimmed.replace(/^.*?\n/s, '');
-        if (hasCommandSubstitutionLoose(body)) {
-          return false;
-        }
+      // Safety: docs fast-path only allows single-quoted heredocs (no expansion).
+      // Unquoted or double-quoted heredocs must be handled by the general pipeline.
+      if (!singleQuoted) {
+        return false;
       }
 
       return true;
@@ -414,24 +725,67 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     const actualCommand = extractSSHCommand(command);
     log(`Actual command after SSH extraction: ${actualCommand.substring(0, 100)}...`);
 
-    // Special-case: allow pure documentation writes to docs*/ directories even if
-    // the heredoc body contains infra keywords, because only a file write occurs.
-    if (isDocumentationWrite(command, hookInput.cwd)) {
-      log('ALLOWED: Documentation write detected (docs*/ directories fast-path)');
-      console.log(JSON.stringify(standardOutput));
-      process.exit(0);
+    // Guardrail: block any heredoc that contains command substitution unless the terminator is single-quoted
+    // (which disables expansion). This sits ahead of the markdown fast-path to avoid bypasses.
+    if (containsUnquotedHeredoc(command) && !isSingleQuotedHeredoc(command)) {
+      const heredocBody = command.replace(/^.*?\n/s, '');
+      if (hasCommandSubstitutionLoose(command) || hasCommandSubstitutionLoose(heredocBody) || hasUnescapedDollarParen(command) || hasUnescapedDollarParen(heredocBody)) {
+        log('BLOCKED: Heredoc with command substitution detected');
+        console.log(JSON.stringify({
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: "Heredoc with command substitution requires single-quoted terminator"
+          }
+        }));
+        process.exit(0);
+      }
     }
 
     // If this is a markdown write attempt and contains command substitution, block it
     // unless it's an allowlisted markdown heredoc with a quoted terminator (no expansion).
     const looksMarkdown = looksLikeMarkdownWrite(command, hookInput.cwd);
     const allowlistedMarkdown = looksMarkdown && isAllowlistedMarkdownWrite(command, hookInput.cwd);
-    const quotedMarkdownHeredoc = looksMarkdown && isQuotedHeredoc(command);
     const singleQuotedMarkdownHeredoc = looksMarkdown && isSingleQuotedHeredoc(command);
+    let hasSubstitution = hasCommandSubstitutionLoose(command) || hasUnescapedDollarParen(command);
 
-    const rawSubstitution = command.includes('$(') || command.includes('`');
+    // If the command uses a heredoc and the terminator is not single-quoted,
+    // scan the heredoc body for substitutions as well.
+    if (!hasSubstitution && containsUnquotedHeredoc(command) && !singleQuotedMarkdownHeredoc) {
+      const body = command.replace(/^.*?\n/s, '');
+      hasSubstitution = hasCommandSubstitutionLoose(body) || hasUnescapedDollarParen(body);
+    }
 
-    if (looksMarkdown && (hasCommandSubstitutionLoose(command) || rawSubstitution) && !(allowlistedMarkdown && singleQuotedMarkdownHeredoc)) {
+    // Heredoc safety: if body still contains substitution and terminator isn't single-quoted, block.
+    if (containsUnquotedHeredoc(command) && !singleQuotedMarkdownHeredoc) {
+      const body = command.replace(/^.*?\n/s, '');
+      if (hasCommandSubstitutionLoose(body) || hasUnescapedDollarParen(body)) {
+        hasSubstitution = true;
+      }
+    }
+
+    // Block any markdown heredoc that is not single-quoted to prevent expansion.
+    if (looksMarkdown && containsUnquotedHeredoc(command) && !singleQuotedMarkdownHeredoc) {
+      log('BLOCKED: Non-single-quoted heredoc in markdown write');
+      console.log(JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "deny",
+          permissionDecisionReason: "Heredoc must be single-quoted for markdown writes"
+        }
+      }));
+      process.exit(0);
+    }
+
+    // Special-case: allow pure documentation writes to docs*/ directories when no substitution exists.
+    const docWrite = isDocumentationWrite(command, hookInput.cwd);
+    if (docWrite && !hasSubstitution) {
+      log('ALLOWED: Documentation write detected (docs*/ directories fast-path)');
+      console.log(JSON.stringify(standardOutput));
+      process.exit(0);
+    }
+
+    if (looksMarkdown && hasSubstitution && !(allowlistedMarkdown && singleQuotedMarkdownHeredoc)) {
       log('BLOCKED: Markdown write contains command substitution');
       console.log(JSON.stringify({
         hookSpecificOutput: {

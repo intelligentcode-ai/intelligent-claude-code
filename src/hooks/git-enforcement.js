@@ -125,6 +125,51 @@ function main() {
     return cleaned;
   }
 
+  function escapeForDoubleQuotes(value) {
+    return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  }
+
+  function escapeRegex(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function replaceFlagValue(command, flags, cleanedValue) {
+    const escaped = escapeForDoubleQuotes(cleanedValue);
+    for (const flag of flags) {
+      const escapedFlag = escapeRegex(flag);
+      const eqRegex = new RegExp(`(^|\\s)(${escapedFlag})=(\"[^\"]*\"|'[^']*'|\\S+)`);
+      if (eqRegex.test(command)) {
+        return command.replace(eqRegex, `$1$2="${escaped}"`);
+      }
+      const spaceRegex = new RegExp(`(^|\\s)(${escapedFlag})\\s+(\"[^\"]*\"|'[^']*'|\\S+)`);
+      if (spaceRegex.test(command)) {
+        return command.replace(spaceRegex, `$1$2 "${escaped}"`);
+      }
+    }
+    return command;
+  }
+
+  function extractFlagValue(command, flags) {
+    for (const flag of flags) {
+      const escapedFlag = escapeRegex(flag);
+      const eqRegex = new RegExp(`(^|\\s)${escapedFlag}=(\"[^\"]*\"|'[^']*'|\\S+)`);
+      let match = command.match(eqRegex);
+      if (match) {
+        return match[2].replace(/^['"]|['"]$/g, '');
+      }
+      const spaceRegex = new RegExp(`(^|\\s)${escapedFlag}\\s+(\"[^\"]*\"|'[^']*'|\\S+)`);
+      match = command.match(spaceRegex);
+      if (match) {
+        return match[2].replace(/^['"]|['"]$/g, '');
+      }
+    }
+    return null;
+  }
+
+  function extractFileFlag(command, flags) {
+    return extractFlagValue(command, flags);
+  }
+
   function getCurrentBranch() {
     try {
       const branch = execSync('git branch --show-current', {
@@ -337,6 +382,92 @@ ${filteredMessage}
     return { modified: true, blocked: false, command: modifiedCommand };
   }
 
+  function modifyPrCommand(command, config) {
+    if (!config.git || config.git.privacy !== true) {
+      return { modified: false, blocked: false, command };
+    }
+
+    if (!/\bgh\s+pr\s+(create|edit)\b/.test(command)) {
+      return { modified: false, blocked: false, command };
+    }
+
+    const titleFlags = ['-t', '--title'];
+    const bodyFlags = ['-b', '--body'];
+    const fileFlags = ['-F', '--body-file'];
+
+    if (/\bgh\s+pr\s+(create|edit)\b/.test(command) && /\s--fill(?:-first|-verbose)?\b/.test(command)) {
+      return {
+        modified: false,
+        blocked: true,
+        reason: 'Git Privacy - PR Fill Uses Unchecked Text',
+        message: `🚫 GIT PRIVACY: --fill uses existing commit text which may include AI mentions.
+
+Remove --fill (or clean commit messages first) when git.privacy=true.`
+      };
+    }
+
+    const bodyFile = extractFileFlag(command, fileFlags);
+    if (bodyFile) {
+      if (bodyFile === '-') {
+        return {
+          modified: false,
+          blocked: true,
+          reason: 'Git Privacy - PR Body From Stdin',
+          message: `🚫 GIT PRIVACY: PR body from stdin cannot be scanned.
+
+Provide a file path for --body-file or pass --body directly.`
+        };
+      }
+      try {
+        if (fs.existsSync(bodyFile)) {
+          const bodyContent = fs.readFileSync(bodyFile, 'utf8');
+          const cleaned = stripAIMentions(bodyContent, config.privacy_patterns);
+          if (cleaned !== bodyContent) {
+            return {
+              modified: false,
+              blocked: true,
+              reason: 'Git Privacy - PR Body File Contains AI Mentions',
+              message: `🚫 GIT PRIVACY: AI mentions detected in PR body file
+
+File: ${bodyFile}
+
+git.privacy=true blocks AI mentions from PR titles/bodies.
+
+✅ To proceed:
+1. Remove AI mentions from the PR body file
+2. Or disable git.privacy in icc.config.json`
+            };
+          }
+        }
+      } catch (error) {
+        log(`Failed to read PR body file: ${error.message}`);
+      }
+    }
+
+    let modifiedCommand = command;
+    let modified = false;
+
+    const title = extractFlagValue(command, titleFlags);
+    if (title) {
+      const cleanedTitle = stripAIMentions(title, config.privacy_patterns);
+      if (cleanedTitle !== title) {
+        modifiedCommand = replaceFlagValue(modifiedCommand, titleFlags, cleanedTitle);
+        modified = true;
+      }
+    }
+
+    const body = extractFlagValue(command, bodyFlags);
+    if (body) {
+      const cleanedBody = stripAIMentions(body, config.privacy_patterns);
+      if (cleanedBody !== body) {
+        modifiedCommand = replaceFlagValue(modifiedCommand, bodyFlags, cleanedBody);
+        modified = true;
+      }
+    }
+
+    return { modified, blocked: false, command: modifiedCommand };
+  }
+
   try {
     // hookInput already parsed earlier for logging
     if (!hookInput) {
@@ -386,6 +517,9 @@ ${filteredMessage}
     // Enforce git rules (privacy + branch protection)
     const result = modifyGitCommand(command, config);
 
+    // Enforce PR privacy via GitHub CLI
+    const prResult = modifyPrCommand(command, config);
+
     // BLOCKED: Branch protection violation
     if (result.blocked) {
       log(`Command BLOCKED: ${result.reason}`);
@@ -403,6 +537,23 @@ ${filteredMessage}
       process.exit(2);  // Exit code 2 for deny/block
     }
 
+    // BLOCKED: PR privacy violation
+    if (prResult.blocked) {
+      log(`Command BLOCKED: ${prResult.reason}`);
+      const response = {
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "deny",
+          permissionDecisionReason: prResult.reason
+        },
+        systemMessage: prResult.message
+      };
+      const responseJson = JSON.stringify(response);
+      log(`BLOCKING RESPONSE: ${responseJson}`);
+      console.log(responseJson);
+      process.exit(2);
+    }
+
     // MODIFIED: Privacy enforcement applied
     if (result.modified) {
       log(`Command modified - returning updated command`);
@@ -411,6 +562,22 @@ ${filteredMessage}
           hookEventName: 'PreToolUse',
           modifiedToolInput: {
             command: result.command
+          }
+        }
+      };
+      const responseJson = JSON.stringify(response);
+      log(`RESPONSE: ${responseJson}`);
+      console.log(responseJson);
+      process.exit(0);
+    }
+
+    if (prResult.modified) {
+      log(`PR command modified - returning updated command`);
+      const response = {
+        hookSpecificOutput: {
+          hookEventName: 'PreToolUse',
+          modifiedToolInput: {
+            command: prResult.command
           }
         }
       };
