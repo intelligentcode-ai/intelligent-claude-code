@@ -1,5 +1,6 @@
 # System Guidelines
 
+<behavior name="System Guidelines">
 **Purpose:** Essential boundaries and patterns for effective system operation.
 
 ## Scope Guidelines
@@ -40,3 +41,4 @@ PM role focuses on coordination and delegation. All technical work must be assig
 
 ---
 *System guidelines for effective coordination and structured work execution*
+</behavior>

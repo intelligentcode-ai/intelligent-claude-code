@@ -1,5 +1,6 @@
 # Behavioral Decision Matrix
 
+<behavior name="Behavioral Decision Matrix">
 Simple decision rules for consistent behavior patterns.
 
 ## Decision Tree
@@ -31,3 +32,4 @@ Simple decision rules for consistent behavior patterns.
 
 ---
 *Minimal decision matrix for plan‑first execution*
+</behavior>

@@ -1,5 +1,6 @@
 # Configuration Patterns (Minimal)
 
+<behavior name="Configuration Patterns (Minimal)">
 **MANDATORY:** Read config values from the hierarchy; do not assume defaults.
 
 ## Hierarchy
@@ -10,3 +11,4 @@
 
 ## Key Areas
 - `git.*`, `paths.*`, `team.*`, `agenttask.*`, `models.*`
+</behavior>

@@ -1,5 +1,6 @@
 # Validation System (Minimal)
 
+<behavior name="Validation System (Minimal)">
 **Purpose:** Define the validation checklist for AgentTask completion.
 
 ## Required Checks
@@ -8,3 +9,4 @@
 - ALL‑CAPS file names avoided (except allowlist)
 - Summary/report files only in summaries/
 - Memory updated when new knowledge is created
+</behavior>

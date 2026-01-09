@@ -1,5 +1,6 @@
 # Sequential Thinking (Minimal)
 
+<behavior name="Sequential Thinking (Minimal)">
 **Use when:** decisions are complex, multi‑step, or high‑risk.
 
 ## Imports
@@ -11,3 +12,4 @@
 - Break problems into explicit steps
 - Validate assumptions before acting
 - Prefer planning before execution
+</behavior>

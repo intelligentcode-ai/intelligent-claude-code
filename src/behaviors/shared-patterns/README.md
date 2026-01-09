@@ -1,5 +1,6 @@
 # Shared Patterns (Minimal)
 
+<behavior name="Shared Patterns (Minimal)">
 **Purpose:** Reusable guidance referenced by multiple behaviors.
 
 ## Active Patterns
@@ -10,3 +11,4 @@
 - `enforcement-rules.md`
 - `summary-validation-patterns.md`
 - `git-privacy-patterns.md`
+</behavior>

@@ -1,5 +1,6 @@
 # File Location Standards (Minimal)
 
+<behavior name="File Location Standards (Minimal)">
 **MANDATORY:** Write files only in their correct directories.
 
 ## Mapping
@@ -12,3 +13,4 @@
 ## Rules
 - Never place summaries/reports in `docs/` or project root
 - Respect `paths.*` overrides from config
+</behavior>

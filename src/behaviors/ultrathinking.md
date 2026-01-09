@@ -1,5 +1,6 @@
 # Ultrathinking (Minimal)
 
+<behavior name="Ultrathinking (Minimal)">
 **Use when:** the decision impacts architecture, security, or multi‑team scope.
 
 ## Imports
@@ -12,3 +13,4 @@
 - Evaluate tradeoffs explicitly
 - Identify risks and mitigations
 - Document rationale in the AgentTask
+</behavior>

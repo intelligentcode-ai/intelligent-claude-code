@@ -1,5 +1,6 @@
 # Git Privacy Patterns
 
+<behavior name="Git Privacy Patterns">
 **MANDATORY:** Strip AI mentions from commits when git_privacy enabled.
 
 ## Purpose
@@ -91,3 +92,4 @@ Apply privacy filtering to git operations when git_privacy configuration is enab
 
 ---
 *Git privacy patterns for professional commit messages*
+</behavior>

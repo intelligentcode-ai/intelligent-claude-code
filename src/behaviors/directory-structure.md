@@ -1,5 +1,6 @@
 # Directory Structure (Minimal)
 
+<behavior name="Directory Structure (Minimal)">
 **MANDATORY:** Respect configured project paths.
 
 ## Defaults
@@ -10,3 +11,4 @@
 - `summaries/` (summaries_path)
 - `src/` (src_path)
 - `tests/` (test_path)
+</behavior>

@@ -1,5 +1,6 @@
 # Configuration System (Minimal)
 
+<behavior name="Configuration System (Minimal)">
 **MANDATORY:** Use the configuration hierarchy; do not assume defaults.
 
 ## Configuration Hierarchy (highest to lowest)
@@ -14,3 +15,4 @@
 - `team.*` (default reviewer, role validation)
 - `agenttask.*` (templates, sizing)
 - `models.*` (optional user‑controlled model selection)
+</behavior>

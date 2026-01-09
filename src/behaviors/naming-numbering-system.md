@@ -1,5 +1,6 @@
 # Naming & Numbering (Minimal)
 
+<behavior name="Naming &amp; Numbering (Minimal)">
 **MANDATORY:** Use consistent work‑item naming.
 
 ## Format
@@ -10,3 +11,4 @@
 ## Rules
 - Use zero‑padded numbers (001, 002)
 - Use lowercase, hyphenated titles
+</behavior>

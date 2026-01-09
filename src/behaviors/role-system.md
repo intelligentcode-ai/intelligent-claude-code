@@ -1,5 +1,6 @@
 # Role System
 
+<behavior name="Role System">
 **MANDATORY:** Comprehensive role management with assignment matrix, dynamic specialists, and management patterns.
 
 ## Imports
@@ -85,3 +86,4 @@
 
 ---
 *Comprehensive role system with assignment matrix and dynamic creation*
+</behavior>

@@ -1,5 +1,6 @@
 # AgentTask Creation System (Minimal)
 
+<behavior name="AgentTask Creation System (Minimal)">
 **MANDATORY:** Planning happens before execution. All work requests become AgentTasks.
 
 ## Purpose
@@ -15,3 +16,4 @@ Provide a consistent “plan first” flow before any subagent executes work.
 ## Scope
 - **Main agent only** creates AgentTasks.
 - **Subagents** execute only from AgentTask context.
+</behavior>

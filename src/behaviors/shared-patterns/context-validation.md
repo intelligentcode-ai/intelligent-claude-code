@@ -1,5 +1,6 @@
 # Context Validation
 
+<behavior name="Context Validation">
 **MANDATORY:** Complete context before AgentTask generation.
 
 ## Required Elements
@@ -18,3 +19,4 @@
 
 ---
 *Context validation patterns for AgentTask creation*
+</behavior>
