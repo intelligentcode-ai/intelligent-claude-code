@@ -225,26 +225,59 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
   function findUnquotedHeredocOperator(line) {
     if (!line) return null;
-    let offset = 0;
+    let inSingle = false;
+    let inDouble = false;
+    let inArithmetic = 0;
 
-    while (offset < line.length) {
-      const idx = findUnquotedTokenIndex(line.slice(offset), '<<');
-      if (idx == null) {
-        return null;
-      }
-      const operatorIndex = offset + idx;
-      const nextChar = line[operatorIndex + 2];
-      if (nextChar === '<' || nextChar === '=') {
-        offset = operatorIndex + 2;
+    for (let i = 0; i < line.length - 1; i++) {
+      const ch = line[i];
+
+      if (ch === '\\') {
+        i += 1;
         continue;
       }
 
-      const parsed = parseHeredocDelimiter(line, operatorIndex);
-      if (parsed) {
-        return { index: operatorIndex, parsed };
+      if (ch === "'" && !inDouble) {
+        inSingle = !inSingle;
+        continue;
       }
 
-      offset = operatorIndex + 2;
+      if (ch === '"' && !inSingle) {
+        inDouble = !inDouble;
+        continue;
+      }
+
+      if (inSingle || inDouble) {
+        continue;
+      }
+
+      if (line.startsWith('$((', i) || line.startsWith('((', i)) {
+        inArithmetic += 1;
+        i += 1;
+        continue;
+      }
+
+      if (inArithmetic && line.startsWith('))', i)) {
+        inArithmetic = Math.max(0, inArithmetic - 1);
+        i += 1;
+        continue;
+      }
+
+      if (inArithmetic) {
+        continue;
+      }
+
+      if (line.startsWith('<<', i)) {
+        const nextChar = line[i + 2];
+        if (nextChar === '<' || nextChar === '=') {
+          continue;
+        }
+
+        const parsed = parseHeredocDelimiter(line, i);
+        if (parsed) {
+          return { index: i, parsed };
+        }
+      }
     }
 
     return null;
