@@ -59,9 +59,9 @@ function main() {
         privacy: gitPrivacy,
         branch_protection: branchProtection,
         require_pr_for_main: requirePRforMain,
-        default_branch: defaultBranch
-      },
-      privacy_patterns: privacyPatterns
+        default_branch: defaultBranch,
+        privacy_patterns: privacyPatterns
+      }
     };
 
     log(`Configuration loaded: git.privacy=${config.git.privacy} (global: ${globalGitPrivacy}), git.branch_protection=${config.git.branch_protection}, git.require_pr_for_main=${config.git.require_pr_for_main}, git.default_branch=${config.git.default_branch}`);
@@ -89,6 +89,7 @@ function main() {
 
   function stripAIMentions(message, patterns) {
     let cleaned = message;
+    const safePatterns = Array.isArray(patterns) ? patterns : [];
 
     // Build regex patterns from configuration
     const regexPatterns = [
@@ -102,7 +103,7 @@ function main() {
     ];
 
     // Add custom patterns from config with word boundaries
-    for (const pattern of patterns) {
+    for (const pattern of safePatterns) {
       // Escape special regex characters
       const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       // Add word boundaries for simple words, keep full pattern for phrases
@@ -129,21 +130,46 @@ function main() {
     return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
   }
 
+  function escapeForSingleQuotes(value) {
+    return value.replace(/'/g, `'\"'\"'`);
+  }
+
   function escapeRegex(value) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
   function replaceFlagValue(command, flags, cleanedValue) {
-    const escaped = escapeForDoubleQuotes(cleanedValue);
     for (const flag of flags) {
       const escapedFlag = escapeRegex(flag);
       const eqRegex = new RegExp(`(^|\\s)(${escapedFlag})=(\"[^\"]*\"|'[^']*'|\\S+)`);
       if (eqRegex.test(command)) {
-        return command.replace(eqRegex, `$1$2="${escaped}"`);
+        const match = command.match(eqRegex);
+        const original = match ? match[3] : '';
+        if (original.startsWith("'")) {
+          const escapedSingle = escapeForSingleQuotes(cleanedValue);
+          return command.replace(eqRegex, `$1$2='${escapedSingle}'`);
+        }
+        if (original.startsWith('"')) {
+          const escapedDouble = escapeForDoubleQuotes(cleanedValue);
+          return command.replace(eqRegex, `$1$2="${escapedDouble}"`);
+        }
+        const escapedSingle = escapeForSingleQuotes(cleanedValue);
+        return command.replace(eqRegex, `$1$2='${escapedSingle}'`);
       }
       const spaceRegex = new RegExp(`(^|\\s)(${escapedFlag})\\s+(\"[^\"]*\"|'[^']*'|\\S+)`);
       if (spaceRegex.test(command)) {
-        return command.replace(spaceRegex, `$1$2 "${escaped}"`);
+        const match = command.match(spaceRegex);
+        const original = match ? match[3] : '';
+        if (original.startsWith("'")) {
+          const escapedSingle = escapeForSingleQuotes(cleanedValue);
+          return command.replace(spaceRegex, `$1$2 '${escapedSingle}'`);
+        }
+        if (original.startsWith('"')) {
+          const escapedDouble = escapeForDoubleQuotes(cleanedValue);
+          return command.replace(spaceRegex, `$1$2 "${escapedDouble}"`);
+        }
+        const escapedSingle = escapeForSingleQuotes(cleanedValue);
+        return command.replace(spaceRegex, `$1$2 '${escapedSingle}'`);
       }
     }
     return command;
@@ -349,7 +375,7 @@ ${filteredMessage}
       return { modified: false, blocked: false, command };
     }
 
-    const cleanedMessage = stripAIMentions(message, config.privacy_patterns);
+    const cleanedMessage = stripAIMentions(message, config.git?.privacy_patterns);
 
     if (cleanedMessage === message) {
       log('No AI mentions found - no modification needed');
@@ -421,7 +447,7 @@ Provide a file path for --body-file or pass --body directly.`
       try {
         if (fs.existsSync(bodyFile)) {
           const bodyContent = fs.readFileSync(bodyFile, 'utf8');
-          const cleaned = stripAIMentions(bodyContent, config.privacy_patterns);
+          const cleaned = stripAIMentions(bodyContent, config.git?.privacy_patterns);
           if (cleaned !== bodyContent) {
             return {
               modified: false,
@@ -449,7 +475,7 @@ git.privacy=true blocks AI mentions from PR titles/bodies.
 
     const title = extractFlagValue(command, titleFlags);
     if (title) {
-      const cleanedTitle = stripAIMentions(title, config.privacy_patterns);
+      const cleanedTitle = stripAIMentions(title, config.git?.privacy_patterns);
       if (cleanedTitle !== title) {
         modifiedCommand = replaceFlagValue(modifiedCommand, titleFlags, cleanedTitle);
         modified = true;
@@ -458,7 +484,7 @@ git.privacy=true blocks AI mentions from PR titles/bodies.
 
     const body = extractFlagValue(command, bodyFlags);
     if (body) {
-      const cleanedBody = stripAIMentions(body, config.privacy_patterns);
+      const cleanedBody = stripAIMentions(body, config.git?.privacy_patterns);
       if (cleanedBody !== body) {
         modifiedCommand = replaceFlagValue(modifiedCommand, bodyFlags, cleanedBody);
         modified = true;
