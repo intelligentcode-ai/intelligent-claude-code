@@ -1,11 +1,22 @@
-# Sample ICC Configurations (Legacy)
+# Sample ICC Configurations (v9)
 
-These presets were created for v8-era enforcement hooks. v9 removes most enforcement hooks and relies on CC-native subagents, so these files should be treated as **legacy starting points** only.
+These presets are aligned to the **current v9 hooks** only:
+- Git privacy (commit/PR text)
+- Infrastructure protection (Bash safety)
+- Summary/report routing
 
-If you use one, copy it to `./icc.config.json` (or `~/.claude/icc.config.json`) and adjust for v9.
+Copy one to `./icc.config.json` or `~/.claude/icc.config.json` and adjust.
+
+## Presets
+
+- `icc.config.relaxed.json` — light constraints, infra protection off, file routing relaxed.
+- `icc.config.main-scope-dev.json` — dev‑friendly, allows main‑scope infra bypass, relaxed file routing.
+- `icc.config.main-scope.json` — main‑scope infra bypass enabled, otherwise strict.
+- `icc.config.strict-main-scope.json` — strict infra protection, no main‑scope bypass.
+- `icc.config.sub-agent.json` — strict infra protection; assumes work happens via subagents.
+- `icc.config.local-backup.json` — minimal override for infra protection only.
 
 ## Notes
 
-- Options that referenced main-scope enforcement, workflow enforcement, or reminder hooks are no longer used.
-- Keep only settings relevant to current hooks (git privacy, infra protection, paths).
-
+- Only keys used by current hooks are included.
+- If you need additional settings, add them manually to your config.

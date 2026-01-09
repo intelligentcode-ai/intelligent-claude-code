@@ -1,7 +1,9 @@
 {
-  "autonomy": {
-    "level": "L2",
-    "pm_always_active": true
+  "git": {
+    "privacy": true,
+    "branch_protection": false,
+    "require_pr_for_main": false,
+    "default_branch": "dev"
   },
   "paths": {
     "docs_path": "docs",
@@ -12,68 +14,16 @@
     "test_path": "tests",
     "src_path": "src"
   },
+  "development": {
+    "file_management_strict": false
+  },
   "enforcement": {
     "blocking_enabled": true,
-    "strict_main_scope": false,
     "allow_parent_allowlist_paths": true,
-    "allow_markdown_outside_allowlist": false,
-    "allow_markdown_outside_allowlist_agents": false,
     "main_scope_has_agent_privileges": true,
-    "output_constraints_and_best_practices": true,
-    "output_best_practices": true,
-    "auto_commit_review": {
+    "infrastructure_protection": {
       "enabled": true,
-      "command": "@codex review"
-    },
-    "heredoc_allowed_commands": ["git", "gh", "glab", "hub"],
-    "pm_allowed_bash_commands": ["gh pr list", "gh pr view", "gh pr status"],
-    "main_scope_allowed_bash_commands": [
-      "gh pr view",
-      "gh pr status",
-      "gh pr checks",
-      "gh pr merge",
-      "gh pr comment",
-      "gh workflow run",
-      "git status",
-      "git log",
-      "git diff",
-      "git show",
-      "git commit",
-      "git push",
-      "git pull",
-      "git rebase",
-      "git merge"
-    ],
-    "tool_blacklist": {
-      "universal": [
-        "rm -rf /",
-        "dd if=/dev/zero of=/dev/sda",
-        "mkfs",
-        "fdisk /dev/sda"
-      ],
-      "main_scope_only": [],
-      "agents_only": ["Task", "SlashCommand", "Skill"]
-    },
-    "require_codex_review_comment": true
-  },
-  "git": {
-    "privacy": true,
-    "branch_protection": true,
-    "require_pr_for_main": true,
-    "default_branch": "dev"
-  },
-  "memory": {
-    "integration": true,
-    "auto_storage": true,
-    "search_before_questions": true,
-    "max_search_results": 3
-  },
-  "subagents": {
-    "auto_delegation": false,
-    "max_concurrent": 0
-  },
-  "best_practices": {
-    "search_enabled": true,
-    "auto_generation": true
+      "read_operations_allowed": true
+    }
   }
 }
