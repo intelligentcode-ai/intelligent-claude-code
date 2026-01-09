@@ -212,7 +212,7 @@ function main() {
 
   function enforceBranchProtection(config) {
     // Check if branch protection is enabled
-    if (!config.git.branch_protection || !config.git.require_pr_for_main) {
+    if (!config.git || !config.git.branch_protection || !config.git.require_pr_for_main) {
       log('Branch protection disabled - skipping check');
       return { blocked: false };
     }
@@ -297,16 +297,7 @@ To disable: Set git.require_pr_for_main=false in icc.config.json
 
       // Apply privacy filtering to extracted message
       if (commitMessage) {
-        const privacyPatterns = config.privacy_patterns || [
-          "Generated with \\[Claude Code\\]",
-          "Generated with Claude Code",
-          "Co-Authored-By: Claude",
-          "Co-authored-by: Claude",
-          "🤖 Generated with",
-          "Claude assisted",
-          "AI assisted",
-          "claude.com/claude-code"
-        ];
+        const privacyPatterns = config.git?.privacy_patterns || GIT_PRIVACY_PATTERNS;
 
         let filteredMessage = commitMessage;
         let hasAIMentions = false;

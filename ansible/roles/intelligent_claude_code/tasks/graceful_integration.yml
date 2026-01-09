@@ -3,7 +3,7 @@
 
 - name: Check existing CLAUDE.md content
   ansible.builtin.command:
-    cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ claude_install_path }}/CLAUDE.md"
+    cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ intelligent_claude_code_install_path }}/CLAUDE.md"
   register: intelligent_claude_code_grep_result
   failed_when: false
   changed_when: false
@@ -13,7 +13,7 @@
   block:
     - name: Read existing CLAUDE.md content
       ansible.builtin.slurp:
-        src: "{{ claude_install_path }}/CLAUDE.md"
+        src: "{{ intelligent_claude_code_install_path }}/CLAUDE.md"
       register: intelligent_claude_code_existing_content
 
     - name: Create integrated CLAUDE.md
@@ -25,7 +25,7 @@
           <!-- Existing project configuration preserved below -->
 
           {{ intelligent_claude_code_existing_content.content | b64decode }}
-        dest: "{{ claude_install_path }}/CLAUDE.md"
+        dest: "{{ intelligent_claude_code_install_path }}/CLAUDE.md"
         mode: '0644'
 
     - name: Report graceful integration

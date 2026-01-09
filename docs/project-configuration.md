@@ -151,4 +151,4 @@ AgentTasks adapt to your project:
 2. **Knowledge Reuse**: Leverages existing patterns
 3. **Quality**: Enforces best practices automatically
 4. **Flexibility**: Fully configurable per project
-5. **Autonomy**: AgentTasks contain everything needed for execution
+5. **Self-contained execution**: AgentTasks contain everything needed for execution

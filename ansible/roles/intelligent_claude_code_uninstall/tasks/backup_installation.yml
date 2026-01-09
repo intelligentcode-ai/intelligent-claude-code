@@ -16,7 +16,7 @@
     mode: '0755'
 - name: Copy entire .claude directory to backup
   ansible.builtin.copy:
-    src: "{{ claude_install_path }}/"
+    src: "{{ intelligent_claude_code_uninstall_install_path }}/"
     dest: "{{ intelligent_claude_code_uninstall_backup_path }}/"
     remote_src: true
     mode: preserve
@@ -33,7 +33,7 @@
     content: |
       Intelligent Claude Code - Installation Backup
       Created: {{ ansible_date_time.iso8601 }}
-      Original Path: {{ claude_install_path }}
+      Original Path: {{ intelligent_claude_code_uninstall_install_path }}
       Backup Path: {{ intelligent_claude_code_uninstall_backup_path }}
       Host: {{ ansible_hostname }}
       User: {{ ansible_user_id }}
@@ -45,7 +45,7 @@
       - learning-callouts.md (team learning data)
       - VERSION (system version)
       To restore this installation:
-      1. Copy contents back to {{ claude_install_path }}
+      1. Copy contents back to {{ intelligent_claude_code_uninstall_install_path }}
       2. Ensure proper file permissions (644 for files, 755 for directories)
       3. Verify import paths in CLAUDE.md match your current setup
       Backup created by: ansible/uninstall.yml

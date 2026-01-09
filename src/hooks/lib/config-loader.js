@@ -350,11 +350,14 @@ function loadConfig() {
     console.warn(`[config-loader] Ignored keys with invalid types: ${typeErrors.join(', ')}`);
   }
 
+  // Re-apply defaults for any keys dropped due to type errors
+  const merged = deepMerge(getHardcodedDefaults(), filtered);
+
   // Cache the configuration
-  configCache = filtered;
+  configCache = merged;
   configCacheTime = now;
 
-  return filtered;
+  return merged;
 }
 
 /**

@@ -2,77 +2,81 @@
 # Create backup of existing claude.json before making changes
 
 - name: Set default settings path
-  set_fact:
-    settings_json_path: "{{ ansible_env.HOME }}/.claude.json"
-  when: settings_json_path is not defined
+  ansible.builtin.set_fact:
+    mcp_integration_settings_json_path: "{{ ansible_env.HOME }}/.claude.json"
+  when: mcp_integration_settings_json_path is not defined
 
 - name: Check if claude.json exists
-  stat:
-    path: "{{ settings_json_path }}"
-  register: settings_file_stat
+  ansible.builtin.stat:
+    path: "{{ mcp_integration_settings_json_path }}"
+  register: mcp_integration_settings_file_stat
 
 - name: Create backup filename with timestamp
-  set_fact:
-    settings_backup_file: "{{ settings_json_path }}.backup.{{ ansible_date_time.epoch }}"
+  ansible.builtin.set_fact:
+    mcp_integration_settings_backup_file: "{{ mcp_integration_settings_json_path }}.backup.{{ ansible_date_time.epoch }}"
 
 - name: Create backup of existing claude.json
-  copy:
-    src: "{{ settings_json_path }}"
-    dest: "{{ settings_backup_file }}"
+  ansible.builtin.copy:
+    src: "{{ mcp_integration_settings_json_path }}"
+    dest: "{{ mcp_integration_settings_backup_file }}"
     mode: "0600"
-    backup: no
-  when: settings_file_stat.stat.exists
-  register: backup_result
+    backup: false
+  when: mcp_integration_settings_file_stat.stat.exists
+  register: mcp_integration_backup_result
   failed_when: false
 
 - name: Handle backup creation failure
-  set_fact:
+  ansible.builtin.set_fact:
     mcp_integration_error: "Failed to create backup of claude.json"
-  when: 
-    - settings_file_stat.stat.exists
-    - backup_result is defined
-    - backup_result.failed
+  when:
+    - mcp_integration_settings_file_stat.stat.exists
+    - mcp_integration_backup_result is defined
+    - mcp_integration_backup_result.failed
 
 - name: Initialize empty settings if file doesn't exist
-  set_fact:
-    current_settings: {}
-  when: not settings_file_stat.stat.exists
+  ansible.builtin.set_fact:
+    mcp_integration_current_settings: {}
+  when: not mcp_integration_settings_file_stat.stat.exists
 
 - name: Read current claude.json if exists
-  slurp:
-    src: "{{ settings_json_path }}"
-  register: current_settings_raw
-  when: settings_file_stat.stat.exists
+  ansible.builtin.slurp:
+    src: "{{ mcp_integration_settings_json_path }}"
+  register: mcp_integration_current_settings_raw
+  when: mcp_integration_settings_file_stat.stat.exists
   failed_when: false
 
 - name: Parse existing claude.json
-  set_fact:
-    current_settings: "{{ current_settings_raw.content | b64decode | from_json }}"
-  when: 
-    - settings_file_stat.stat.exists
-    - not current_settings_raw.failed
+  ansible.builtin.set_fact:
+    mcp_integration_current_settings: "{{ mcp_integration_current_settings_raw.content | b64decode | from_json }}"
+  when:
+    - mcp_integration_settings_file_stat.stat.exists
+    - not mcp_integration_current_settings_raw.failed
   failed_when: false
-  register: settings_parse_result
+  register: mcp_integration_settings_parse_result
 
 - name: Handle corrupted claude.json
+  when:
+    - mcp_integration_settings_file_stat.stat.exists
+    - mcp_integration_settings_parse_result.failed
   block:
     - name: Log corrupted settings warning
-      debug:
+      ansible.builtin.debug:
         msg: "Warning: Existing claude.json is corrupted. Using backup and creating fresh settings."
-    
+
     - name: Initialize empty settings for corrupted file
-      set_fact:
-        current_settings: {}
-  when: 
-    - settings_file_stat.stat.exists
-    - settings_parse_result.failed
+      ansible.builtin.set_fact:
+        mcp_integration_current_settings: {}
 
 - name: Ensure settings directory exists
-  file:
-    path: "{{ settings_json_path | dirname }}"
+  ansible.builtin.file:
+    path: "{{ mcp_integration_settings_json_path | dirname }}"
     state: directory
     mode: "0755"
 
 - name: Log backup status
-  debug:
-    msg: "Settings backup created: {{ settings_backup_file if settings_file_stat.stat.exists else 'No existing settings to backup' }}"
+  ansible.builtin.debug:
+    msg: >-
+      Settings backup created: {{
+      mcp_integration_settings_backup_file
+      if mcp_integration_settings_file_stat.stat.exists
+      else 'No existing settings to backup' }}

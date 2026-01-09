@@ -3,8 +3,8 @@
 - name: Validate installation parameters
   ansible.builtin.assert:
     that:
-      - claude_install_path is defined
-      - claude_scope in ['user', 'project']
+      - intelligent_claude_code_install_path is defined
+      - intelligent_claude_code_scope in ['user', 'project']
     fail_msg: "Invalid installation parameters"
 - name: Create .claude directory structure
   ansible.builtin.file:
@@ -12,23 +12,23 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ claude_install_path }}"
-    - "{{ claude_install_path }}/modes"
-    - "{{ claude_install_path }}/behaviors"
-    - "{{ claude_install_path }}/commands"
-    - "{{ claude_install_path }}/roles"
-    - "{{ claude_install_path }}/agents"
-    - "{{ claude_install_path }}/agenttask-templates"
-    - "{{ claude_install_path }}/hooks"
-    - "{{ claude_install_path }}/logs"
+    - "{{ intelligent_claude_code_install_path }}"
+    - "{{ intelligent_claude_code_install_path }}/modes"
+    - "{{ intelligent_claude_code_install_path }}/behaviors"
+    - "{{ intelligent_claude_code_install_path }}/commands"
+    - "{{ intelligent_claude_code_install_path }}/roles"
+    - "{{ intelligent_claude_code_install_path }}/agents"
+    - "{{ intelligent_claude_code_install_path }}/agenttask-templates"
+    - "{{ intelligent_claude_code_install_path }}/hooks"
+    - "{{ intelligent_claude_code_install_path }}/logs"
 - name: Check if CLAUDE.md exists
   ansible.builtin.stat:
-    path: "{{ claude_install_path }}/CLAUDE.md"
+    path: "{{ intelligent_claude_code_install_path }}/CLAUDE.md"
   register: intelligent_claude_code_claude_md_exists
 - name: Backup existing CLAUDE.md if present
   ansible.builtin.copy:
-    src: "{{ claude_install_path }}/CLAUDE.md"
-    dest: "{{ claude_install_path }}/CLAUDE.md.backup"
+    src: "{{ intelligent_claude_code_install_path }}/CLAUDE.md"
+    dest: "{{ intelligent_claude_code_install_path }}/CLAUDE.md.backup"
     remote_src: true
     mode: '0644'
   when: intelligent_claude_code_claude_md_exists.stat.exists
@@ -38,72 +38,72 @@
 - name: Create new CLAUDE.md for fresh installation
   ansible.builtin.template:
     src: CLAUDE.md.j2
-    dest: "{{ claude_install_path }}/CLAUDE.md"
+    dest: "{{ intelligent_claude_code_install_path }}/CLAUDE.md"
     mode: '0644'
   when: not intelligent_claude_code_claude_md_exists.stat.exists
 - name: Copy virtual team mode files
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/modes/"
-    dest: "{{ claude_install_path }}/modes/"
+    dest: "{{ intelligent_claude_code_install_path }}/modes/"
     mode: '0644'
     force: true
   register: intelligent_claude_code_modes_copy_result
 - name: Display modes preservation notice
   ansible.builtin.debug:
-    msg: "Mode files preserved: {{ claude_install_path }}/modes/ already exists - keeping user modifications"
+    msg: "Mode files preserved: {{ intelligent_claude_code_install_path }}/modes/ already exists - keeping user modifications"
   when: intelligent_claude_code_modes_copy_result.failed and ansible_verbosity >= 1
 - name: Copy behavior files
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/behaviors/"
-    dest: "{{ claude_install_path }}/behaviors/"
+    dest: "{{ intelligent_claude_code_install_path }}/behaviors/"
     mode: '0644'
     force: true
   register: intelligent_claude_code_behaviors_copy_result
 - name: Display behaviors preservation notice
   ansible.builtin.debug:
-    msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
+    msg: "Behavior files preserved: {{ intelligent_claude_code_install_path }}/behaviors/ already exists - keeping user modifications"
   when: intelligent_claude_code_behaviors_copy_result.failed and ansible_verbosity >= 1
 - name: Copy commands directory
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/commands/"
-    dest: "{{ claude_install_path }}/commands/"
+    dest: "{{ intelligent_claude_code_install_path }}/commands/"
     mode: '0644'
     force: true
   register: intelligent_claude_code_commands_copy_result
 - name: Display commands preservation notice
   ansible.builtin.debug:
-    msg: "Commands directory preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
+    msg: "Commands directory preserved: {{ intelligent_claude_code_install_path }}/commands/ already exists - keeping user modifications"
   when: intelligent_claude_code_commands_copy_result.failed and ansible_verbosity >= 1
 - name: Copy roles directory
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/roles/"
-    dest: "{{ claude_install_path }}/roles/"
+    dest: "{{ intelligent_claude_code_install_path }}/roles/"
     mode: '0644'
     force: true
   register: intelligent_claude_code_roles_copy_result
 - name: Display roles preservation notice
   ansible.builtin.debug:
     msg: >-
-      Roles directory preserved: {{ claude_install_path }}/roles/
+      Roles directory preserved: {{ intelligent_claude_code_install_path }}/roles/
       already exists - keeping user modifications
   when: intelligent_claude_code_roles_copy_result.failed and ansible_verbosity >= 1
 - name: Copy agents directory
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/agents/"
-    dest: "{{ claude_install_path }}/agents/"
+    dest: "{{ intelligent_claude_code_install_path }}/agents/"
     mode: '0644'
     force: true
   register: intelligent_claude_code_agents_copy_result
 - name: Display agents preservation notice
   ansible.builtin.debug:
     msg: >-
-      Agents directory preserved: {{ claude_install_path }}/agents/
+      Agents directory preserved: {{ intelligent_claude_code_install_path }}/agents/
       already exists - keeping user modifications
   when: intelligent_claude_code_agents_copy_result.failed and ansible_verbosity >= 1
 - name: Copy AgentTask templates directory
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/agenttask-templates/"
-    dest: "{{ claude_install_path }}/agenttask-templates/"
+    dest: "{{ intelligent_claude_code_install_path }}/agenttask-templates/"
     mode: '0644'
     force: true
   register: intelligent_claude_code_agenttask_templates_copy_result
@@ -111,13 +111,13 @@
   ansible.builtin.debug:
     msg: >-
       AgentTask templates directory preserved:
-      {{ claude_install_path }}/agenttask-templates/
+      {{ intelligent_claude_code_install_path }}/agenttask-templates/
       already exists - keeping user modifications
   when: intelligent_claude_code_agenttask_templates_copy_result.failed and ansible_verbosity >= 1
 - name: Copy hooks directory
   ansible.posix.synchronize:
     src: "{{ playbook_dir }}/../src/hooks/"
-    dest: "{{ claude_install_path }}/hooks/"
+    dest: "{{ intelligent_claude_code_install_path }}/hooks/"
     recursive: true
     delete: true
     rsync_opts:
@@ -128,7 +128,7 @@
 - name: Ensure hooks subdirectories are copied
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/hooks/{{ item }}/"
-    dest: "{{ claude_install_path }}/hooks/{{ item }}/"
+    dest: "{{ intelligent_claude_code_install_path }}/hooks/{{ item }}/"
     mode: preserve
     force: true
   loop:
@@ -137,12 +137,12 @@
 - name: Display hooks preservation notice
   ansible.builtin.debug:
     msg: >-
-      Hooks directory preserved: {{ claude_install_path }}/hooks/
+      Hooks directory preserved: {{ intelligent_claude_code_install_path }}/hooks/
       already exists - keeping user modifications
   when: intelligent_claude_code_hooks_copy_result.failed and ansible_verbosity >= 1
 - name: Make all hook scripts executable
   ansible.builtin.file:
-    path: "{{ claude_install_path }}/hooks/{{ item }}"
+    path: "{{ intelligent_claude_code_install_path }}/hooks/{{ item }}"
     mode: '0755'
     state: file
   loop:
@@ -153,63 +153,63 @@
 - name: Copy VERSION file
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/VERSION"
-    dest: "{{ claude_install_path }}/VERSION"
+    dest: "{{ intelligent_claude_code_install_path }}/VERSION"
     mode: '0644'
     force: true
   register: intelligent_claude_code_version_copy_result
 - name: Display VERSION preservation notice
   ansible.builtin.debug:
     msg: >-
-      VERSION file preserved: {{ claude_install_path }}/VERSION already exists
+      VERSION file preserved: {{ intelligent_claude_code_install_path }}/VERSION already exists
       - keeping user modifications
   when: intelligent_claude_code_version_copy_result.failed and ansible_verbosity >= 1
 - name: Ensure hooks lib directory exists
   ansible.builtin.file:
-    path: "{{ claude_install_path }}/hooks/lib"
+    path: "{{ intelligent_claude_code_install_path }}/hooks/lib"
     state: directory
     mode: '0755'
 - name: Copy configuration file (selected without overwriting user edits)
   block:
     - name: Use provided config_file when specified (overwrite)
       ansible.builtin.copy:
-        src: "{{ claude_config_source }}"
-        dest: "{{ claude_install_path }}/icc.config.json"
+        src: "{{ intelligent_claude_code_config_source }}"
+        dest: "{{ intelligent_claude_code_install_path }}/icc.config.json"
         mode: '0644'
         force: true
-      when: claude_config_source | length > 0
+      when: intelligent_claude_code_config_source | length > 0
     - name: Check existing icc.config.json
       ansible.builtin.stat:
-        path: "{{ claude_install_path }}/icc.config.json"
+        path: "{{ intelligent_claude_code_install_path }}/icc.config.json"
       register: intelligent_claude_code_icc_config_exists
-      when: claude_config_source | length == 0
+      when: intelligent_claude_code_config_source | length == 0
     - name: Preserve existing icc.config.json (no config_file supplied)
       ansible.builtin.debug:
         msg: "Existing icc.config.json detected – leaving it untouched (pass CONFIG_FILE to override)."
       when:
-        - claude_config_source | length == 0
+        - intelligent_claude_code_config_source | length == 0
         - intelligent_claude_code_icc_config_exists.stat.exists
         - ansible_verbosity >= 1
     - name: Note missing icc.config.json when none supplied
       ansible.builtin.debug:
         msg: "No icc.config.json provided; defaults remain internal (pass CONFIG_FILE to install)."
       when:
-        - claude_config_source | length == 0
+        - intelligent_claude_code_config_source | length == 0
         - not intelligent_claude_code_icc_config_exists.stat.exists
         - ansible_verbosity >= 1
     - name: Display config installation choice
       ansible.builtin.debug:
         msg: >-
-          Configuration installed or preserved at {{ claude_install_path }}/icc.config.json
-          (source={{ claude_config_source | default('existing') }})
+          Configuration installed or preserved at {{ intelligent_claude_code_install_path }}/icc.config.json
+          (source={{ intelligent_claude_code_config_source | default('existing') }})
       when: ansible_verbosity >= 1
 - name: Check if settings.json exists
   ansible.builtin.stat:
-    path: "{{ claude_install_path }}/settings.json"
+    path: "{{ intelligent_claude_code_install_path }}/settings.json"
   register: intelligent_claude_code_settings_json_exists
 - name: Create settings.json with hook registration (ONLY if not exists)
   ansible.builtin.template:
     src: settings.json.j2
-    dest: "{{ claude_install_path }}/settings.json"
+    dest: "{{ intelligent_claude_code_install_path }}/settings.json"
     mode: '0644'
   when: not intelligent_claude_code_settings_json_exists.stat.exists
 - name: Merge hooks into existing settings.json
@@ -217,7 +217,7 @@
   block:
     - name: Read existing settings.json
       ansible.builtin.slurp:
-        src: "{{ claude_install_path }}/settings.json"
+        src: "{{ intelligent_claude_code_install_path }}/settings.json"
       register: intelligent_claude_code_existing_settings
     - name: Parse existing settings as JSON
       ansible.builtin.set_fact:
@@ -239,16 +239,16 @@
             - matcher: "*"
               hooks:
                 - type: command
-                  command: "node {{ claude_install_path }}/hooks/git-enforcement.js"
+                  command: "node {{ intelligent_claude_code_install_path }}/hooks/git-enforcement.js"
                   timeout: 5000
                 - type: command
                   command: >-
-                    node {{ claude_install_path
+                    node {{ intelligent_claude_code_install_path
                     }}/hooks/agent-infrastructure-protection.js
                   timeout: 5000
                 - type: command
                   command: >-
-                    node {{ claude_install_path
+                    node {{ intelligent_claude_code_install_path
                     }}/hooks/summary-file-enforcement.js
                   timeout: 5000
     - name: Merge production hooks with cleaned hooks
@@ -261,7 +261,7 @@
     - name: Write merged settings.json
       ansible.builtin.copy:
         content: "{{ intelligent_claude_code_merged_settings | to_nice_json(indent=2) }}"
-        dest: "{{ claude_install_path }}/settings.json"
+        dest: "{{ intelligent_claude_code_install_path }}/settings.json"
         mode: '0644'
     - name: Report hook registration
       ansible.builtin.debug:
@@ -280,12 +280,12 @@
 # learning-callouts.md file removed - integrated into learning-team-automation.md system
 - name: Handle project-specific integration
   ansible.builtin.import_tasks: project_integration.yml
-  when: claude_scope == "project"
+  when: intelligent_claude_code_scope == "project"
 - name: Display installation summary
   ansible.builtin.debug:
     msg:
       - "✅ Installation complete!"
-      - "📍 Location: {{ claude_install_path }}"
+      - "📍 Location: {{ intelligent_claude_code_install_path }}"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
       - "🔒 Behavioral Hooks: PreToolUse (git, infra protection, summaries)"
       - "🚀 Use @Role communication to activate team members"

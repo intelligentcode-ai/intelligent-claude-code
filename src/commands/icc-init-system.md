@@ -13,16 +13,14 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 **Context Recovery**: This command is designed to work reliably after context loss/memory compaction by explicitly rebuilding system state from project files.
 
 ## Usage
-`/icc-init-system [autonomy_level] [pm_active]`
+`/icc-init-system [pm_active]`
 
 **Arguments:**
-- `autonomy_level` - Optional: L1, L2, L3 (default: from CLAUDE.md, fallback to L2)
 - `pm_active` - Optional: true/false for PM always active (default: from config)
 
 **Examples:**
 - Initialize system with default settings: /icc-init-system
-- Set autonomy level to L3: /icc-init-system L3  
-- Set autonomy level L2 with PM active: /icc-init-system L2 true
+- Initialize with PM active: /icc-init-system true
 
 ## Initialization Process
 
@@ -87,7 +85,7 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 **Integration & Tool Systems**
 - ✅ Tool integrations configured (GitHub CLI, etc.)
 - ✅ Progress reporting operational
-- ✅ Autonomy level applied and persisted
+- ✅ Core behaviors and AgentTask templates available
 - ✅ PM role activation (if configured)
 - ✅ Context loss recovery capability confirmed
 
@@ -104,7 +102,6 @@ and prepares the virtual team for work. Can be run by any role or automatically 
 
 **Recovery & Validation Errors:**
 - **AGENTTASK_SYSTEM_VALIDATION_FAILED**: "❌ Critical: AgentTask system failed comprehensive validation. System not operational"
-- **AUTONOMY_PERSISTENCE_FAILED**: "⚠️ Warning: Cannot persist autonomy changes to CLAUDE.md. Using session-only settings"
 - **COMPREHENSIVE_VALIDATION_FAILED**: "❌ Critical: System failed comprehensive health check. Manual intervention required"
 - **CONTEXT_STATE_INCONSISTENT**: "⚠️ Warning: Context state inconsistent. Some components may require reinitialization"
 
@@ -154,18 +151,15 @@ AgentTask template system: ✅ All templates validated with placeholder resoluti
 
 ### Phase 2: System Component Loading
 5. **Load Configuration**: Apply configuration hierarchy (embedded → project → user → system defaults)
-6. **Read Autonomy Level**: Load autonomy_level from CLAUDE.md, create if missing
-7. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
-8. **Load Role Definitions**: Initialize 14 core roles and dynamic specialist capabilities
-9. **Activate AgentTask System**: Enable AgentTask-driven execution system with template validation
-10. **Confirm AgentTask Templates**: Validate template availability and readiness
+6. **Initialize Memory System**: Bootstrap file-based memory system and search capabilities
+7. **Load Role Definitions**: Initialize core roles and dynamic specialist capabilities
+8. **Activate AgentTask System**: Enable AgentTask-driven execution system with template validation
+9. **Confirm AgentTask Templates**: Validate template availability and readiness
 
 ### Phase 3: System Integration & Validation
 11. **Initialize Progress Reporting**: Activate clean completion tracking
 12. **Setup Learning System**: Enable AgentTask learning and pattern capture
-13. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
-14. **Apply Autonomy Level**: Set L1/L2/L3 mode based on loaded/provided configuration
-15. **Persist Autonomy Changes**: Write autonomy_level changes back to CLAUDE.md for session preservation
-16. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
-17. **Comprehensive System Validation**: Run complete system health check with detailed failure reporting
-18. **Context Recovery Confirmation**: Validate all behavioral patterns and system state fully restored
+12. **Configure Tools**: Initialize Context7, GitHub CLI, Brave Search with fallbacks
+13. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
+14. **Comprehensive System Validation**: Run complete system health check with detailed failure reporting
+15. **Context Recovery Confirmation**: Validate all behavioral patterns and system state fully restored

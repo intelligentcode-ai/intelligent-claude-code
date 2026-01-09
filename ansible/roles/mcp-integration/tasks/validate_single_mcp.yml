@@ -2,45 +2,45 @@
 # Validate a single MCP server configuration
 
 - name: Set MCP details for validation
-  set_fact:
-    validate_mcp_name: "{{ mcp_server_item.key }}"
-    validate_mcp_config: "{{ mcp_server_item.value }}"
+  ansible.builtin.set_fact:
+    mcp_integration_validate_name: "{{ mcp_integration_server_item.key }}"
+    mcp_integration_validate_config: "{{ mcp_integration_server_item.value }}"
 
 - name: Validate MCP server name is not empty
-  fail:
+  ansible.builtin.fail:
     msg: "MCP server name cannot be empty"
-  when: validate_mcp_name | length == 0
+  when: mcp_integration_validate_name | length == 0
 
 - name: Validate command field exists
-  fail:
-    msg: "MCP server '{{ validate_mcp_name }}' missing required 'command' field"
-  when: "'command' not in validate_mcp_config"
+  ansible.builtin.fail:
+    msg: "MCP server '{{ mcp_integration_validate_name }}' missing required 'command' field"
+  when: "'command' not in mcp_integration_validate_config"
 
 - name: Validate command is not empty
-  fail:
-    msg: "MCP server '{{ validate_mcp_name }}' has empty command"
-  when: validate_mcp_config.command | length == 0
+  ansible.builtin.fail:
+    msg: "MCP server '{{ mcp_integration_validate_name }}' has empty command"
+  when: mcp_integration_validate_config.command | length == 0
 
 - name: Validate args field if present
-  fail:
-    msg: "MCP server '{{ validate_mcp_name }}' args field must be a list"
-  when: 
-    - "'args' in validate_mcp_config"
-    - validate_mcp_config.args is not sequence
+  ansible.builtin.fail:
+    msg: "MCP server '{{ mcp_integration_validate_name }}' args field must be a list"
+  when:
+    - "'args' in mcp_integration_validate_config"
+    - mcp_integration_validate_config.args is not sequence
 
 - name: Validate env field if present
-  fail:
-    msg: "MCP server '{{ validate_mcp_name }}' env field must be an object"
+  ansible.builtin.fail:
+    msg: "MCP server '{{ mcp_integration_validate_name }}' env field must be an object"
   when:
-    - "'env' in validate_mcp_config"
-    - validate_mcp_config.env is not mapping
+    - "'env' in mcp_integration_validate_config"
+    - mcp_integration_validate_config.env is not mapping
 
 - name: Check for unresolved environment variables
-  debug:
-    msg: "Warning: MCP server '{{ validate_mcp_name }}' contains unresolved variable: {{ item }}"
+  ansible.builtin.debug:
+    msg: "Warning: MCP server '{{ mcp_integration_validate_name }}' contains unresolved variable: {{ item }}"
   when: "'${' in item"
-  loop: "{{ validate_mcp_config.args | default([]) }}"
+  loop: "{{ mcp_integration_validate_config.args | default([]) }}"
 
 - name: Log successful MCP validation
-  debug:
-    msg: "MCP server '{{ validate_mcp_name }}' validated successfully"
+  ansible.builtin.debug:
+    msg: "MCP server '{{ mcp_integration_validate_name }}' validated successfully"

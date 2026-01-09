@@ -8,20 +8,19 @@ The intelligent-claude-code system provides **only 3 essential commands** for sp
 ### `/icc-init-system`
 Initializes the virtual team system and prepares for work.
 
-**Usage:** `/icc-init-system [autonomy_level]`
+**Usage:** `/icc-init-system [pm_active]`
 
 **Examples:**
 ```bash
 /icc-init-system          # Initialize with default settings
-/icc-init-system L3       # Initialize with full autonomy
+/icc-init-system true     # Initialize with PM always active
 ```
 
 **What it does:**
-- Loads configuration from CLAUDE.md
+- Loads configuration from the hierarchy
 - Creates memory directory structure
 - Activates the 14 core roles
 - Sets up AgentTask system
-- Configures autonomy level
 
 ### `/icc-get-setting [key]`
 Retrieves configuration values from the hierarchy.
@@ -30,9 +29,9 @@ Retrieves configuration values from the hierarchy.
 
 **Examples:**
 ```bash
-/icc-get-setting autonomy_level     # Returns: L2
-/icc-get-setting git_privacy        # Returns: true
-/icc-get-setting default_branch     # Returns: main
+/icc-get-setting git.privacy          # Returns: true
+/icc-get-setting git.default_branch   # Returns: main
+/icc-get-setting git.privacy_patterns # Returns: [...]
 ```
 
 **Configuration hierarchy:**
@@ -117,7 +116,7 @@ The system automatically creates specialists for ANY technology domain when expe
 
 ### Configuration Management
 ```bash
-/icc-get-setting autonomy_level              # Check current autonomy
+/icc-get-setting git.privacy                 # Check privacy settings
 /icc-get-setting git_privacy                 # Check privacy settings
 ```
 
