@@ -117,6 +117,7 @@ function parseLegacyValue(config, key, value) {
     'allow_parent_allowlist_paths': ['enforcement', 'allow_parent_allowlist_paths'],
     'main_scope_has_agent_privileges': ['enforcement', 'main_scope_has_agent_privileges'],
     'file_management_strict': ['development', 'file_management_strict'],
+    'git_privacy': ['git', 'privacy'],
     'branch_protection': ['git', 'branch_protection'],
     'default_branch': ['git', 'default_branch'],
     'require_pr_for_main': ['git', 'require_pr_for_main'],
