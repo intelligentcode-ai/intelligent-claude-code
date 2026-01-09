@@ -40,7 +40,7 @@ function isSummaryFile(filePath, projectRoot) {
   const rootAllowedFiles = [
     'VERSION', 'README.md', 'CLAUDE.md', 'CHANGELOG.md',
     'LICENSE', 'LICENSE.md', '.gitignore', 'package.json',
-    'icc.config.json', 'icc.workflow.json'
+    'icc.config.json'
   ];
 
   const relativePath = path.relative(projectRoot, absolutePath);

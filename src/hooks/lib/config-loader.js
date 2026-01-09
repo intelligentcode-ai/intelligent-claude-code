@@ -113,43 +113,19 @@ function parseLegacyYaml(yamlContent, config) {
 function parseLegacyValue(config, key, value) {
   // Map legacy keys to new structure
   const legacyMapping = {
-    'autonomy_level': ['autonomy', 'level'],
-    'team_maturity_level': ['autonomy', 'level'],
-    'pm_always_active': ['autonomy', 'pm_always_active'],
-    'memory_integration': ['memory', 'integration'],
-    'max_parallel_tasks': ['autonomy', 'l3_settings', 'max_parallel'],
     'blocking_enabled': ['enforcement', 'blocking_enabled'],
+    'allow_parent_allowlist_paths': ['enforcement', 'allow_parent_allowlist_paths'],
+    'main_scope_has_agent_privileges': ['enforcement', 'main_scope_has_agent_privileges'],
+    'file_management_strict': ['development', 'file_management_strict'],
     'git_privacy': ['git', 'privacy'],
     'branch_protection': ['git', 'branch_protection'],
     'default_branch': ['git', 'default_branch'],
     'require_pr_for_main': ['git', 'require_pr_for_main'],
-    'validate_commits': ['git', 'validate_commits'],
     'story_path': ['paths', 'story_path'],
     'bug_path': ['paths', 'bug_path'],
     'memory_path': ['paths', 'memory_path'],
     'docs_path': ['paths', 'docs_path'],
-    'src_path': ['paths', 'src_path'],
-    'test_path': ['paths', 'test_path'],
-    'config_path': ['paths', 'config_path'],
-    'agenttask_template_path': ['paths', 'agenttask_template_path'],
-    'summaries_path': ['paths', 'summaries_path'],
-    'enforce_peer_review': ['quality', 'enforce_peer_review'],
-    'testing_required': ['quality', 'testing_required'],
-    'documentation_required': ['quality', 'documentation_required'],
-    'security_validation': ['quality', 'security_validation'],
-    'compliance_checking': ['quality', 'compliance_checking'],
-    'auto_cleanup': ['development', 'auto_cleanup'],
-    'file_management_strict': ['development', 'file_management_strict'],
-    'testing_approach': ['development', 'testing_approach'],
-    'context7_enabled': ['tools', 'context7_enabled'],
-    'sequential_thinking': ['tools', 'sequential_thinking'],
-    'mcp_tools_enabled': ['tools', 'mcp_tools_enabled'],
-    'subagent_model': ['subagents', 'model'],
-    'subagent_threshold': ['subagents', 'threshold'],
-    'max_concurrent_subagents': ['subagents', 'max_concurrent'],
-    'auto_delegation': ['subagents', 'auto_delegation'],
-    'repository_type': ['project', 'repository_type'],
-    'release_automation': ['project', 'release_automation']
+    'summaries_path': ['paths', 'summaries_path']
   };
 
   if (legacyMapping[key]) {
@@ -203,31 +179,64 @@ function findConfigFile(projectRoot, filename) {
   return null;
 }
 
-/**
- * Load workflow configuration from hierarchy
- */
-function loadWorkflowConfig() {
-  let workflowConfig = {};
-
-  // 1. Try to load user global workflow configuration
-  const userWorkflowPath = findConfigFile(path.join(os.homedir(), '.claude'), 'icc.workflow.json');
-  if (userWorkflowPath) {
-    const userWorkflow = loadJsonConfig(userWorkflowPath);
-    if (userWorkflow) {
-      workflowConfig = deepMerge(workflowConfig, userWorkflow);
+const ALLOWED_CONFIG_SHAPE = {
+  version: true,
+  description: true,
+  git: {
+    privacy: true,
+    privacy_patterns: true,
+    branch_protection: true,
+    default_branch: true,
+    require_pr_for_main: true
+  },
+  paths: {
+    story_path: true,
+    bug_path: true,
+    memory_path: true,
+    docs_path: true,
+    summaries_path: true
+  },
+  development: {
+    file_management_strict: true
+  },
+  enforcement: {
+    blocking_enabled: true,
+    allow_parent_allowlist_paths: true,
+    main_scope_has_agent_privileges: true,
+    allowed_allcaps_files: true,
+    infrastructure_protection: {
+      enabled: true,
+      emergency_override_enabled: true,
+      emergency_override_token: true,
+      imperative_destructive: true,
+      write_operations: true,
+      read_operations: true,
+      whitelist: true,
+      read_operations_allowed: true
     }
   }
+};
 
-  // 2. Try to load project workflow configuration
-  const projectWorkflowPath = findConfigFile(process.cwd(), 'icc.workflow.json');
-  if (projectWorkflowPath) {
-    const projectWorkflow = loadJsonConfig(projectWorkflowPath);
-    if (projectWorkflow) {
-      workflowConfig = deepMerge(workflowConfig, projectWorkflow);
+function filterConfig(obj, shape, basePath = '', removed = []) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    return obj;
+  }
+  const result = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (!(key in shape)) {
+      removed.push(basePath ? `${basePath}.${key}` : key);
+      continue;
+    }
+    const rule = shape[key];
+    if (rule === true) {
+      result[key] = value;
+    } else if (rule && typeof rule === 'object' && value && typeof value === 'object' && !Array.isArray(value)) {
+      result[key] = filterConfig(value, rule, basePath ? `${basePath}.${key}` : key, removed);
+    } else {
+      result[key] = value;
     }
   }
-
-  return workflowConfig;
+  return { filtered: result, removed };
 }
 
 /**
@@ -264,13 +273,7 @@ function loadConfig() {
     }
   }
 
-  // 4. Load workflow configuration (separate file)
-  const workflowConfig = loadWorkflowConfig();
-  if (workflowConfig && Object.keys(workflowConfig).length > 0) {
-    config.workflow = workflowConfig;
-  }
-
-  // 5. Backward compatibility: Try legacy CLAUDE.md configuration
+  // 4. Backward compatibility: Try legacy CLAUDE.md configuration
   if (!projectConfig && !userConfig) {
     const legacyPaths = [
       path.join(process.cwd(), 'CLAUDE.md')
@@ -286,11 +289,17 @@ function loadConfig() {
     }
   }
 
+  // Filter unknown keys to keep v9 alignment
+  const { filtered, removed } = filterConfig(config, ALLOWED_CONFIG_SHAPE);
+  if (removed.length > 0) {
+    console.warn(`[config-loader] Ignored unsupported keys: ${removed.join(', ')}`);
+  }
+
   // Cache the configuration
-  configCache = config;
+  configCache = filtered;
   configCacheTime = now;
 
-  return config;
+  return filtered;
 }
 
 /**
@@ -298,38 +307,59 @@ function loadConfig() {
  */
 function getHardcodedDefaults() {
   return {
-    autonomy: {
-      level: 'L2',
-      pm_always_active: true,
-      l3_settings: {
-        max_parallel: 5,
-        auto_discover: true,
-        continue_on_error: true
-      }
-    },
     git: {
       privacy: true,
       branch_protection: true,
       default_branch: 'main',
       require_pr_for_main: true,
-      validate_commits: true
+      privacy_patterns: [
+        'AI',
+        'Claude',
+        'agent',
+        'Generated with Claude Code',
+        'Co-Authored-By: Claude'
+      ]
     },
     paths: {
       story_path: 'stories',
       bug_path: 'bugs',
       memory_path: 'memory',
       docs_path: 'docs',
-      src_path: 'src',
-      test_path: 'tests',
-      config_path: 'config',
-      agenttask_template_path: 'agenttask-templates',
       summaries_path: 'summaries'
     },
     enforcement: {
       blocking_enabled: true,
-      violation_logging: true,
-      auto_correction: true,
-      heredoc_allowed_commands: ['git', 'gh', 'glab', 'hub']
+      allow_parent_allowlist_paths: false,
+      main_scope_has_agent_privileges: false,
+      allowed_allcaps_files: [
+        'README.md',
+        'LICENSE',
+        'LICENSE.md',
+        'CLAUDE.md',
+        'CHANGELOG.md',
+        'CONTRIBUTING.md',
+        'AUTHORS',
+        'NOTICE',
+        'PATENTS',
+        'VERSION',
+        'MAKEFILE',
+        'DOCKERFILE',
+        'COPYING',
+        'COPYRIGHT'
+      ],
+      infrastructure_protection: {
+        enabled: true,
+        emergency_override_enabled: false,
+        emergency_override_token: '',
+        imperative_destructive: [],
+        write_operations: [],
+        read_operations: [],
+        whitelist: [],
+        read_operations_allowed: true
+      }
+    },
+    development: {
+      file_management_strict: true
     }
   };
 }
