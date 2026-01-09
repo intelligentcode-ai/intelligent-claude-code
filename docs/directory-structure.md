@@ -84,7 +84,7 @@ agenttask_configuration:
 The system stores everything in YOUR project (version-controlled):
 - `memory/` - Learning storage (version-controlled)
 - `prbs/` - Generated AgentTasks (version-controlled)
-- `config.md` - Project settings (default location, not .claude/)
+`icc.config.json` (project settings)
 
 ## Key Points
 

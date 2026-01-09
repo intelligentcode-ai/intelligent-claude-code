@@ -37,8 +37,8 @@ Retrieves configuration values from the hierarchy.
 
 **Configuration hierarchy:**
 1. Embedded config (in AgentTasks)
-2. Project config (./config.md or CLAUDE.md)
-3. User config (~/.claude/config.md - system-wide only)
+2. Project config (./icc.config.json or ./.claude/icc.config.json)
+3. User config (~/.claude/icc.config.json)
 4. System defaults
 
 ## Primary Interaction: @Role Communication

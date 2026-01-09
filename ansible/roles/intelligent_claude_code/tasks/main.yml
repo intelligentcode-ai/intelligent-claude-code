@@ -163,29 +163,11 @@
       VERSION file preserved: {{ claude_install_path }}/VERSION already exists
       - keeping user modifications
   when: intelligent_claude_code_version_copy_result.failed and ansible_verbosity >= 1
-- name: Check if config.md exists
-  ansible.builtin.stat:
-    path: "{{ claude_install_path }}/config.md"
-  register: intelligent_claude_code_config_md_exists
 - name: Ensure hooks lib directory exists
   ansible.builtin.file:
     path: "{{ claude_install_path }}/hooks/lib"
     state: directory
     mode: '0755'
-- name: Create config.md from template (ONLY if not exists)
-  ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../src/config.md"
-    dest: "{{ claude_install_path }}/config.md"
-    mode: '0644'
-  when: not intelligent_claude_code_config_md_exists.stat.exists
-- name: Display config preservation notice
-  ansible.builtin.debug:
-    msg: >-
-      Config file preserved: {{ claude_install_path }}/config.md already exists
-      - keeping user settings
-  when:
-    - intelligent_claude_code_config_md_exists.stat.exists
-    - ansible_verbosity >= 1
 - name: Copy configuration file (selected without overwriting user edits)
   block:
     - name: Use provided config_file when specified (overwrite)

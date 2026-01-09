@@ -41,7 +41,6 @@
       - CLAUDE.md (main configuration)
       - modes/ (virtual team mode files)
       - behaviors/ (behavioral intelligence modules)
-      - config.md (user configuration)
       - scores.md (team scoring data)
       - learning-callouts.md (team learning data)
       - VERSION (system version)

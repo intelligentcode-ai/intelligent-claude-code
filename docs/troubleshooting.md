@@ -179,8 +179,8 @@ Failed to load configuration hierarchy
 # Check CLAUDE.md YAML frontmatter
 python -c "import yaml; yaml.safe_load(open('CLAUDE.md').read())"
 
-# Check config.md if it exists
-python -c "import yaml; yaml.safe_load(open('config.md').read())"
+# Check icc.config.json if it exists
+python -c "import json; json.load(open('icc.config.json'))"
 ```
 
 2. Fix YAML syntax errors:
@@ -429,11 +429,11 @@ find ./memory -type f -exec chmod 644 {} \;
 ```bash
 # System defaults (embedded in behaviors)
 # User global
-cat ~/.claude/config.md
+cat ~/.claude/icc.config.json
 
 # Project specific
-cat ./config.md
-cat ./.claude/config.md
+cat ./icc.config.json
+cat ./.claude/icc.config.json
 
 # AgentTask embedded (check specific AgentTask file)
 grep -A 10 "configuration:" prb-file.prb.yaml
@@ -441,7 +441,7 @@ grep -A 10 "configuration:" prb-file.prb.yaml
 
 2. Validate YAML syntax at each level:
 ```bash
-python -c "import yaml; yaml.safe_load(open('config.md').read())"
+python -c "import json; json.load(open('icc.config.json'))"
 ```
 
 ### Setting Not Found
@@ -461,7 +461,7 @@ python -c "import yaml; yaml.safe_load(open('config.md').read())"
 
 2. Add setting to appropriate config file:
 ```yaml
-# In config.md or CLAUDE.md
+# In icc.config.json or CLAUDE.md
 custom_settings:
   custom_setting: "value"
 ```
@@ -504,7 +504,7 @@ git log -1 --oneline
 
 3. Fix privacy setting:
 ```yaml
-# In CLAUDE.md or config.md
+# In CLAUDE.md or icc.config.json
 git_privacy: true
 ```
 
@@ -528,8 +528,8 @@ git push origin feature/your-work-description
 
 2. Or disable protection (not recommended):
 ```yaml
-# In config.md
-branch_protection: false
+# In icc.config.json
+"git": { "branch_protection": false }
 ```
 
 ### Remote Push Authentication
@@ -689,8 +689,8 @@ mkdir -p ./memory/{performance,security,implementation}
 **Solutions:**
 1. **Reduce Concurrent Operations:**
 ```yaml
-# In config.md
-max_concurrent_subagents: 2  # Reduce from default 5
+# In icc.config.json
+"subagents": { "max_concurrent": 2 }
 ```
 
 2. **Optimize Complex AgentTasks:**
@@ -802,7 +802,7 @@ For specific component issues:
 
 ```bash
 # Reset configuration only
-rm ~/.claude/config.md
+rm ~/.claude/icc.config.json
 /icc-load-config
 
 # Reset memory only

@@ -4,7 +4,7 @@
  * Unified Configuration Loader for Intelligent Claude Code
  *
  * Hierarchy: ./icc.config.json → ~/.claude/icc.config.json → built-in defaults
- * Backward compatibility: Falls back to CLAUDE.md/config.md if icc.config.json missing
+ * Backward compatibility: Falls back to CLAUDE.md if icc.config.json missing
  * 5-minute TTL cache for performance
  */
 
@@ -270,12 +270,10 @@ function loadConfig() {
     config.workflow = workflowConfig;
   }
 
-  // 5. Backward compatibility: Try legacy configurations
+  // 5. Backward compatibility: Try legacy CLAUDE.md configuration
   if (!projectConfig && !userConfig) {
     const legacyPaths = [
-      path.join(process.cwd(), 'CLAUDE.md'),
-      path.join(process.cwd(), 'config.md'),
-      path.join(process.cwd(), '.claude', 'config.md')
+      path.join(process.cwd(), 'CLAUDE.md')
     ];
 
     for (const legacyPath of legacyPaths) {

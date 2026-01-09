@@ -140,7 +140,6 @@
     state: absent
   failed_when: false
   loop:
-    - "{{ claude_install_path }}/config.md"
     - "{{ claude_install_path }}/scores.md"
     - "{{ claude_install_path }}/learning-callouts.md"
   register: intelligent_claude_code_uninstall_user_data_removal
@@ -156,7 +155,7 @@
 - name: Display user data preservation notice
   ansible.builtin.debug:
     msg: >-
-      User data preserved: config.md, scores.md, learning-callouts.md
+      User data preserved: scores.md, learning-callouts.md
       (use FORCE=true to remove)
   when:
     - intelligent_claude_code_uninstall_install_directory.stat.exists
@@ -219,7 +218,7 @@
         Removed: Virtual team modes, behaviors, commands, roles, agents,
         agenttask-templates, VERSION file
       - >-
-        {{ 'Preserved: config.md, scores.md, learning-callouts.md'
+        {{ 'Preserved: scores.md, learning-callouts.md'
         if not (force_remove is defined and force_remove | bool)
         else 'All files removed' }}
       - >-
