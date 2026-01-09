@@ -27,7 +27,7 @@ function isSummaryFile(filePath, projectRoot) {
     ? filePath
     : path.resolve(projectRoot, filePath);
 
-  const allowedDirs = ['stories', 'bugs', 'docs', 'src', 'tests', 'config', 'agenttasks'];
+  const allowedDirs = ['stories', 'bugs', 'docs', 'src', 'tests', 'agenttasks'];
 
   for (const dir of allowedDirs) {
     const dirPath = path.join(projectRoot, dir);

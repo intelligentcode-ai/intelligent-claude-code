@@ -217,26 +217,78 @@ const ALLOWED_CONFIG_SHAPE = {
   }
 };
 
-function filterConfig(obj, shape, basePath = '', removed = []) {
+const EXPECTED_TYPES = {
+  version: 'string',
+  description: 'string',
+  git: 'object',
+  'git.privacy': 'boolean',
+  'git.privacy_patterns': 'array',
+  'git.branch_protection': 'boolean',
+  'git.default_branch': 'string',
+  'git.require_pr_for_main': 'boolean',
+  paths: 'object',
+  'paths.story_path': 'string',
+  'paths.bug_path': 'string',
+  'paths.memory_path': 'string',
+  'paths.docs_path': 'string',
+  'paths.summaries_path': 'string',
+  development: 'object',
+  'development.file_management_strict': 'boolean',
+  enforcement: 'object',
+  'enforcement.blocking_enabled': 'boolean',
+  'enforcement.allow_parent_allowlist_paths': 'boolean',
+  'enforcement.main_scope_has_agent_privileges': 'boolean',
+  'enforcement.allowed_allcaps_files': 'array',
+  'enforcement.infrastructure_protection': 'object',
+  'enforcement.infrastructure_protection.enabled': 'boolean',
+  'enforcement.infrastructure_protection.emergency_override_enabled': 'boolean',
+  'enforcement.infrastructure_protection.emergency_override_token': 'string',
+  'enforcement.infrastructure_protection.imperative_destructive': 'array',
+  'enforcement.infrastructure_protection.write_operations': 'array',
+  'enforcement.infrastructure_protection.read_operations': 'array',
+  'enforcement.infrastructure_protection.whitelist': 'array',
+  'enforcement.infrastructure_protection.read_operations_allowed': 'boolean'
+};
+
+function isType(value, expected) {
+  if (expected === 'array') return Array.isArray(value);
+  if (expected === 'object') return value && typeof value === 'object' && !Array.isArray(value);
+  return typeof value === expected;
+}
+
+function filterConfig(obj, shape, basePath = '', removed = [], typeErrors = []) {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
-    return obj;
+    return { filtered: obj, removed, typeErrors };
   }
   const result = {};
   for (const [key, value] of Object.entries(obj)) {
+    const keyPath = basePath ? `${basePath}.${key}` : key;
     if (!(key in shape)) {
-      removed.push(basePath ? `${basePath}.${key}` : key);
+      removed.push(keyPath);
       continue;
     }
     const rule = shape[key];
     if (rule === true) {
+      const expected = EXPECTED_TYPES[keyPath];
+      if (expected && !isType(value, expected)) {
+        typeErrors.push(`${keyPath} (expected ${expected})`);
+        continue;
+      }
       result[key] = value;
-    } else if (rule && typeof rule === 'object' && value && typeof value === 'object' && !Array.isArray(value)) {
-      result[key] = filterConfig(value, rule, basePath ? `${basePath}.${key}` : key, removed);
-    } else {
-      result[key] = value;
+      continue;
     }
+    if (rule && typeof rule === 'object') {
+      if (!isType(value, 'object')) {
+        typeErrors.push(`${keyPath} (expected object)`);
+        continue;
+      }
+      const nested = filterConfig(value, rule, keyPath, removed, typeErrors);
+      result[key] = nested.filtered || {};
+      continue;
+    }
+    result[key] = value;
   }
-  return { filtered: result, removed };
+  return { filtered: result, removed, typeErrors };
 }
 
 /**
@@ -290,9 +342,12 @@ function loadConfig() {
   }
 
   // Filter unknown keys to keep v9 alignment
-  const { filtered, removed } = filterConfig(config, ALLOWED_CONFIG_SHAPE);
+  const { filtered, removed, typeErrors } = filterConfig(config, ALLOWED_CONFIG_SHAPE);
   if (removed.length > 0) {
     console.warn(`[config-loader] Ignored unsupported keys: ${removed.join(', ')}`);
+  }
+  if (typeErrors.length > 0) {
+    console.warn(`[config-loader] Ignored keys with invalid types: ${typeErrors.join(', ')}`);
   }
 
   // Cache the configuration
