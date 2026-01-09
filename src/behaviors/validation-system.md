@@ -8,6 +8,3 @@
 - ALL‑CAPS file names avoided (except allowlist)
 - Summary/report files only in summaries/
 - Memory updated when new knowledge is created
-
-## Notes
-Validation is performed by the executing subagent and reviewed by the main agent.

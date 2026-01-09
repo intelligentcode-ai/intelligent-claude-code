@@ -14,6 +14,3 @@
 - `team.*` (default reviewer, role validation)
 - `agenttask.*` (templates, sizing)
 - `models.*` (optional user‑controlled model selection)
-
-## Notes
-- CLAUDE.md is behavioral guidance, not configuration values.

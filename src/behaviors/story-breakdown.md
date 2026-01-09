@@ -11,6 +11,3 @@
 2. **Architect** advises on technical boundaries
 3. Split into AgentTasks with clear success criteria
 4. Assign roles based on domain expertise
-
-## Notes
-PM coordinates and delegates; specialists execute via AgentTasks.
