@@ -38,7 +38,7 @@
 
     - name: Install MCP servers if configuration provided
       ansible.builtin.include_role:
-        name: mcp-integration
+        name: mcp_integration
       vars:
         mcp_integration_settings_json_path: "{{ ansible_env.HOME }}/.claude.json"
         mcp_integration_config_file: "{{ mcp_config_file | default('') }}"

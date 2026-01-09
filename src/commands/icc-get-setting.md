@@ -18,7 +18,7 @@ Gets setting value from configuration hierarchy with dot notation support.
 **Examples:**
 - Get git privacy setting: /icc-get-setting git.privacy
 - Get git privacy patterns: /icc-get-setting git.privacy_patterns
-- Get default reviewer setting: /icc-get-setting team.default_reviewer @Architect
+- Get enforcement flag: /icc-get-setting enforcement.blocking_enabled
 
 ## Core Actions
 
@@ -38,7 +38,7 @@ Gets setting value from configuration hierarchy with dot notation support.
 **Examples:**
 - "git.privacy" → boolean value (CRITICAL for git operations)
 - "git.privacy_patterns" → array of AI mention patterns
-- "team.default_reviewer" → role value
+- "enforcement.blocking_enabled" → boolean value
 
 ## Error Handling
 
