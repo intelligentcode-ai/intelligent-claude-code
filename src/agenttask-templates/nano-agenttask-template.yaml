@@ -2,7 +2,8 @@
 # For simple one-line fixes, typos, and minimal adjustments
 
 # === TEMPLATE METADATA (@PM COORDINATES, SYSTEM FILLS) ===
-git.privacy: [GIT_PRIVACY_SETTING]
+git:
+  privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 title: "[ROLE] [DESCRIPTION]"
 type: nano-agenttask
@@ -18,10 +19,11 @@ complete_context:
   key_context: "[KEY_CONTEXT]"
   system_features: "[SYSTEM_FEATURES]"
   configuration:
-    git.privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
+    git:
+      privacy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+      branch_strategy: "[FROM_CONFIG]"
   critical_files:
     - path: "[TARGET_FILE]"
       purpose: "[FILE_PURPOSE]"

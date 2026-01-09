@@ -3,7 +3,8 @@
 # Maximum executable AgentTask: 15 points (medium)
 # This template preserved for reference only
 
-git.privacy: [GIT_PRIVACY_SETTING]
+git:
+  privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: large-agenttask
 complexity: complex
@@ -20,10 +21,11 @@ complete_context:
   key_context: "[KEY_CONTEXT]"
   system_features: "[SYSTEM_FEATURES]"
   configuration:
-    git.privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
+    git:
+      privacy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+      branch_strategy: "[FROM_CONFIG]"
   business_goal: "[WHY_THIS_FEATURE_MATTERS]"
   technical_scope: "[SYSTEM_COMPONENTS_AFFECTED]"
   critical_files:
