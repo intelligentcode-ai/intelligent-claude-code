@@ -113,7 +113,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ALL-CAPS filename enforcement retains execution-pattern guidance while auto-suggesting lowercase/kebab alternatives.
 
 ### Changed
-- All sample configs now force best-practices/constraints output and keep memory integration plus git branch protection enabled.
+- All sample configs now force constraints output and keep memory integration plus git branch protection enabled.
 - Main-scope coordination whitelist can be extended via `enforcement.main_scope_allowed_bash_commands` so presets can safely allow additional `gh`/`git` commands.
 - README highlights the available presets for quick reference.
 - Context-injection now instructs the Main Scope to start every response with the rendered constraints + best-practice block so users see the guardrails continuously.

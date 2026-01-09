@@ -65,7 +65,6 @@ execution_notes: |
 ## STEP 1: KNOWLEDGE
 knowledge_search:
   memory_search: "Search memory/[topic]/ for implementation patterns"
-  best_practices: "Review best-practices/[domain]/ for guidance"
   patterns: "[TOP_RELEVANT_PATTERNS]"
 
 ## STEP 2: IMPLEMENTATION

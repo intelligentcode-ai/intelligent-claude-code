@@ -27,7 +27,6 @@ project-root/
 ├── memory/                  # Team-shared learnings
 ├── docs/
 │   ├── architecture/        # Your architecture docs
-│   ├── best-practices/      # Your best practices
 │   └── standards/          # Your coding standards
 ├── src/                    # Your source code
 └── drafts/                 # Your draft specs
@@ -38,7 +37,6 @@ project-root/
 project-root/
 ├── CLAUDE.md
 ├── memory/                  # Team-shared learnings
-├── best-practices/          # Your practices at root
 │   ├── security.md
 │   └── performance.md
 ├── architecture/            # Your architecture at root
@@ -69,7 +67,6 @@ Tell the system where YOUR files are:
 # In CLAUDE.md
 agenttask_configuration:
   best_practices_paths:
-    - "docs/best-practices/"      # Your location
     - "engineering/standards/"     # Your location
     - "wherever/you/keep/them/"   # Your location
     
@@ -94,21 +91,19 @@ The system stores everything in YOUR project (version-controlled):
 1. **NO forced structure** - Work how YOU want
 2. **NO .claude/ directories for user content** - That's system-only
 3. **Configure paths in CLAUDE.md** - Tell system where YOUR files are
-4. **Natural locations** - docs/, standards/, best-practices/, examples/
+4. **Natural locations** - docs/, standards/, examples/
 5. **Your naming** - Use your project's conventions
 
 ## Examples of What NOT to Do
 
 ❌ DON'T: Force users into .claude/ directories
 ```
-.claude/best-practices/    # NO!
 .claude/standards/         # NO!
 .claude/drafts/           # NO!
 ```
 
 ✅ DO: Let users work naturally
 ```
-docs/best-practices/       # YES!
 standards/                 # YES!
 drafts/                   # YES!
 my-project-docs/          # YES!

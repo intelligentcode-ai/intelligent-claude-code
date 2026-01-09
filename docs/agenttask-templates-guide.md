@@ -119,7 +119,6 @@ validation:
 
 **Key features:**
 - Embedded learnings from memory/ (2-3 entries max)
-- Best practices inclusion from best-practices/
 - Code pattern references with existing implementations
 - Pre-assigned SME reviewer through agent system
 - Complete context embedding with no runtime config lookups
@@ -239,7 +238,6 @@ agenttask_configuration:
   # Where to find your standards
   best_practices_paths:
     - "docs/standards/"
-    - "engineering/best-practices/"
     
   # What code to search
   code_pattern_search:

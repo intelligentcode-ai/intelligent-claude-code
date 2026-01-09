@@ -57,7 +57,7 @@ Found 3 relevant memories:
 3. HTTP Error Handling (Score: 6.5)
    Location: memory/errors/http-status-codes.md
    "Common HTTP error codes and handling strategies..."
-   Tags: [error-handling, http, best-practices]
+   Tags: [error-handling, http]
 
 ## Search Tips
 - Use quotes for exact phrases: "token refresh"
