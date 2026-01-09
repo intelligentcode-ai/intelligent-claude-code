@@ -19,4 +19,5 @@ Copy one to `./icc.config.json` or `~/.claude/icc.config.json` and adjust.
 ## Notes
 
 - Only keys used by current hooks are included.
+- `main_scope_has_agent_privileges` only affects **infra protection bypass** for Bash; it does not expand main-scope permissions elsewhere.
 - If you need additional settings, add them manually to your config.
