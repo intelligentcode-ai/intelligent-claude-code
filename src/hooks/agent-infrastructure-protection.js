@@ -307,6 +307,26 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
     return result;
   }
 
+  function buildLogicalLine(lines, startIndex) {
+    let buffer = '';
+    let index = startIndex;
+
+    while (index < lines.length) {
+      const line = lines[index];
+      buffer = buffer ? `${buffer}${line}` : line;
+
+      if (endsWithUnescapedBackslash(buffer)) {
+        buffer = buffer.slice(0, -1);
+        index += 1;
+        continue;
+      }
+
+      return { line: buffer, nextIndex: index + 1 };
+    }
+
+    return { line: buffer, nextIndex: lines.length };
+  }
+
   function findUnquotedHeredocOperator(line) {
     if (!line) return null;
     let inSingle = false;
@@ -394,11 +414,15 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
 
   function containsUnquotedHeredoc(cmd) {
     if (!cmd) return false;
-    const lines = normalizeContinuationLines(cmd.split('\n'));
-    for (const line of lines) {
+    const lines = cmd.split('\n');
+    let index = 0;
+
+    while (index < lines.length) {
+      const { line, nextIndex } = buildLogicalLine(lines, index);
       if (findUnquotedHeredocOperator(line)) {
         return true;
       }
+      index = nextIndex;
     }
     return false;
   }
@@ -512,13 +536,14 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
   function isSingleQuotedHeredoc(cmd) {
     const trimmed = cmd.trim();
     if (!trimmed) return false;
-    const lines = normalizeContinuationLines(trimmed.split('\n'));
+    const lines = trimmed.split('\n');
     let found = false;
     let inHeredoc = false;
     let terminator = null;
     let dashTrim = false;
 
-    for (const line of lines) {
+    for (let index = 0; index < lines.length; index += 1) {
+      const line = lines[index];
       if (inHeredoc) {
         const leadingTabs = dashTrim ? '\\t*' : '';
         const terminatorRegex = new RegExp(`^${leadingTabs}${escapeRegex(terminator)}\\s*$`);
@@ -530,8 +555,10 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
         continue;
       }
 
-      const operator = findUnquotedHeredocOperator(line);
+      const logical = buildLogicalLine(lines, index);
+      const operator = findUnquotedHeredocOperator(logical.line);
       if (!operator) {
+        index = logical.nextIndex - 1;
         continue;
       }
       const parsed = operator.parsed;
@@ -542,6 +569,7 @@ const DISABLE_MAIN_INFRA_BYPASS = process.env.CLAUDE_DISABLE_MAIN_INFRA_BYPASS =
       dashTrim = parsed.dashTrim;
       terminator = parsed.token;
       inHeredoc = true;
+      index = logical.nextIndex - 1;
     }
 
     return found;
