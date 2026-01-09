@@ -90,8 +90,3 @@ AgentTask template system: ✅ All templates validated with placeholder resoluti
 16. **Auto-Activate PM**: If pm_always_active=true, activate @PM role
 17. **Comprehensive System Validation**: Run complete system health check with detailed failure reporting
 18. **Context Recovery Confirmation**: Validate all behavioral patterns and system state fully restored
-
-## Legacy Error Support
-- **INVALID_AUTONOMY**: "❌ Error: Autonomy level must be L1, L2, or L3"
-- **SYSTEM_BUSY**: "⏳ System busy. Current operation must complete first"
-- **TOOL_INIT_FAILED**: "⚠️ Warning: Some tools unavailable. Using fallbacks"
