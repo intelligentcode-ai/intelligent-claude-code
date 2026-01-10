@@ -29,13 +29,15 @@ AgentTask templates are the backbone of the intelligent-claude-code system. They
 **Template Resolution Process**:
 ```yaml
 # Template BEFORE resolution (BLOCKED):
-git_privacy: "[FROM_CONFIG]"
-branch_protection: "[FROM_CONFIG]"
+git:
+  privacy: "[FROM_CONFIG]"
+  branch_protection: "[FROM_CONFIG]"
 
 # Template AFTER resolution (REQUIRED):
-git_privacy: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
-branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
-default_branch: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+git:
+  privacy: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+  branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+  default_branch: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
 ```
 
 ## Template Types by Complexity
@@ -60,8 +62,9 @@ complete_context:
   # Complete configuration embedded at generation time
   project_root: <ACTUAL_PROJECT_ROOT_PATH>
   configuration:
-    git_privacy: <ACTUAL_VALUE>
-    branch_protection: <ACTUAL_VALUE>
+    git:
+      privacy: <ACTUAL_VALUE>
+      branch_protection: <ACTUAL_VALUE>
 change:
   file: "[PATH]"
   find: "[EXACT_TEXT]"
@@ -119,7 +122,6 @@ validation:
 
 **Key features:**
 - Embedded learnings from memory/ (2-3 entries max)
-- Best practices inclusion from best-practices/
 - Code pattern references with existing implementations
 - Pre-assigned SME reviewer through agent system
 - Complete context embedding with no runtime config lookups
@@ -239,7 +241,6 @@ agenttask_configuration:
   # Where to find your standards
   best_practices_paths:
     - "docs/standards/"
-    - "engineering/best-practices/"
     
   # What code to search
   code_pattern_search:

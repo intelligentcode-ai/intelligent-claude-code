@@ -1,10 +1,11 @@
 # Git Privacy Patterns
 
-**MANDATORY:** Strip AI mentions from commits when git_privacy enabled.
+<behavior name="Git Privacy Patterns">
+**MANDATORY:** Strip AI mentions from commits when git.privacy enabled.
 
 ## Purpose
 
-Apply privacy filtering to git operations when git_privacy configuration is enabled, ensuring professional commit messages and maintaining confidentiality of AI assistance.
+Apply privacy filtering to git operations when git.privacy configuration is enabled, ensuring professional commit messages and maintaining confidentiality of AI assistance.
 
 ## Privacy Filtering Rules
 
@@ -24,17 +25,17 @@ Apply privacy filtering to git operations when git_privacy configuration is enab
 ## Configuration Control
 
 ### Git Privacy Setting
-**CONFIGURATION:** git_privacy setting in CLAUDE.md or config hierarchy
+**CONFIGURATION:** git.privacy setting in CLAUDE.md or config hierarchy
 **DEFAULT:** true (privacy enabled by default)
 **OVERRIDE:** Can be disabled per project if needed
 
 ### Privacy Modes
-**ENABLED (git_privacy: true):**
+**ENABLED (git.privacy: true):**
 - All AI references stripped from commit messages
 - Professional commit message language enforced
 - Co-authored-by lines removed if present
 
-**DISABLED (git_privacy: false):**
+**DISABLED (git.privacy: false):**
 - Original commit messages preserved
 - AI attribution allowed if desired
 - Full transparency mode
@@ -91,3 +92,4 @@ Apply privacy filtering to git operations when git_privacy configuration is enab
 
 ---
 *Git privacy patterns for professional commit messages*
+</behavior>

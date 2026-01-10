@@ -8,20 +8,19 @@ The intelligent-claude-code system provides **only 3 essential commands** for sp
 ### `/icc-init-system`
 Initializes the virtual team system and prepares for work.
 
-**Usage:** `/icc-init-system [autonomy_level]`
+**Usage:** `/icc-init-system [pm_active]`
 
 **Examples:**
 ```bash
 /icc-init-system          # Initialize with default settings
-/icc-init-system L3       # Initialize with full autonomy
+/icc-init-system true     # Initialize with PM always active
 ```
 
 **What it does:**
-- Loads configuration from CLAUDE.md
+- Loads configuration from the hierarchy
 - Creates memory directory structure
 - Activates the 14 core roles
 - Sets up AgentTask system
-- Configures autonomy level
 
 ### `/icc-get-setting [key]`
 Retrieves configuration values from the hierarchy.
@@ -30,39 +29,16 @@ Retrieves configuration values from the hierarchy.
 
 **Examples:**
 ```bash
-/icc-get-setting autonomy_level     # Returns: L2
-/icc-get-setting git_privacy        # Returns: true
-/icc-get-setting default_branch     # Returns: main
+/icc-get-setting git.privacy          # Returns: true
+/icc-get-setting git.default_branch   # Returns: main
+/icc-get-setting git.privacy_patterns # Returns: [...]
 ```
 
 **Configuration hierarchy:**
 1. Embedded config (in AgentTasks)
-2. Project config (./config.md or CLAUDE.md)
-3. User config (~/.claude/config.md - system-wide only)
+2. Project config (./icc.config.json or ./.claude/icc.config.json)
+3. User config (~/.claude/icc.config.json)
 4. System defaults
-
-### `/icc-search-memory [query]`
-Searches memory for relevant learnings and patterns.
-
-**Usage:** `/icc-search-memory "[search terms]"`
-
-**Examples:**
-```bash
-/icc-search-memory "oauth authentication"
-/icc-search-memory "database optimization"
-/icc-search-memory "error handling patterns"
-```
-
-**Used for:**
-- Manual memory exploration
-- Pattern investigation
-- Learning discovery
-
-**Results include:**
-- Topic location
-- Entry date
-- Relevance score
-- Preview snippet
 
 ## Primary Interaction: @Role Communication
 
@@ -129,7 +105,6 @@ The system automatically creates specialists for ANY technology domain when expe
 **Use Commands for** (System Functions Only):
 - System initialization: `/icc-init-system`
 - Configuration queries: `/icc-get-setting`
-- Memory exploration: `/icc-search-memory`
 
 ## Usage Patterns
 
@@ -139,16 +114,10 @@ The system automatically creates specialists for ANY technology domain when expe
 @PM Build a REST API for user management      # Natural language work request
 ```
 
-### Memory Exploration
-```bash
-/icc-search-memory "authentication patterns"  # Find relevant patterns
-@Developer Implement OAuth based on memory    # Apply found patterns
-```
-
 ### Configuration Management
 ```bash
-/icc-get-setting autonomy_level              # Check current autonomy
-/icc-get-setting git_privacy                 # Check privacy settings
+/icc-get-setting git.privacy                 # Check privacy settings
+/icc-get-setting git.default_branch          # Check default branch
 ```
 
 ## Best Practices
@@ -161,7 +130,6 @@ The system automatically creates specialists for ANY technology domain when expe
 
 ### Memory Integration
 - Memory searches happen automatically during @Role work
-- Use `/icc-search-memory` for manual exploration only
 - Learnings are stored automatically - no manual commands needed
 - Memory captures patterns from successful AgentTask executions
 
@@ -172,4 +140,4 @@ The system automatically creates specialists for ANY technology domain when expe
 
 ---
 
-The intelligent-claude-code system prioritizes **@Role communication patterns** over command-based interaction. The 3 essential commands provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.
+The intelligent-claude-code system prioritizes **@Role communication patterns** over command-based interaction. The essential commands provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.

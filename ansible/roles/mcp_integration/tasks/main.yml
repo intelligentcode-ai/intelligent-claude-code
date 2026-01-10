@@ -1,0 +1,49 @@
+---
+# MCP Server Integration Role - Main Tasks
+# Handles MCP server configuration with comprehensive error handling and validation
+
+- name: Initialize skip flag
+  ansible.builtin.set_fact:
+    mcp_integration_skip: false
+
+- name: Validate MCP configuration JSON syntax
+  ansible.builtin.include_tasks: validate_config.yml
+  when: mcp_integration_config_file is defined and mcp_integration_config_file != ''
+
+- name: Create backup of existing settings
+  ansible.builtin.include_tasks: backup_settings.yml
+  when: not mcp_integration_skip
+
+- name: Load environment variables from .env file
+  ansible.builtin.include_tasks: load_env.yml
+  when: not mcp_integration_skip
+
+- name: Process MCP configuration
+  ansible.builtin.include_tasks: process_config.yml
+  when: not mcp_integration_skip and mcp_integration_config_file is defined and mcp_integration_config_file != ''
+
+- name: Merge MCP servers into settings
+  ansible.builtin.include_tasks: merge_settings.yml
+  when: not mcp_integration_skip
+
+- name: Validate final configuration
+  ansible.builtin.include_tasks: validate_final.yml
+  when: not mcp_integration_skip
+
+- name: Handle configuration errors
+  ansible.builtin.include_tasks: error_handling.yml
+  when: mcp_integration_error is defined
+
+- name: Display integration summary
+  ansible.builtin.debug:
+    msg:
+      - "MCP Integration completed successfully"
+      - "Backup created: {{ mcp_integration_settings_backup_file | default('N/A') }}"
+      - "Settings updated: {{ mcp_integration_settings_json_path | default('N/A') }}"
+      - "MCP servers configured: {{ mcp_integration_servers_count | default(0) }}"
+  when: not mcp_integration_skip
+
+- name: Display skip message
+  ansible.builtin.debug:
+    msg: "MCP Integration skipped - no configuration file provided"
+  when: mcp_integration_skip

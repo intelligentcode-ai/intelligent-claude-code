@@ -27,7 +27,7 @@ function isSummaryFile(filePath, projectRoot) {
     ? filePath
     : path.resolve(projectRoot, filePath);
 
-  const allowedDirs = ['stories', 'bugs', 'docs', 'src', 'tests', 'config', 'agenttasks'];
+  const allowedDirs = ['stories', 'bugs', 'docs', 'src', 'tests', 'agenttasks'];
 
   for (const dir of allowedDirs) {
     const dirPath = path.join(projectRoot, dir);
@@ -40,7 +40,7 @@ function isSummaryFile(filePath, projectRoot) {
   const rootAllowedFiles = [
     'VERSION', 'README.md', 'CLAUDE.md', 'CHANGELOG.md',
     'LICENSE', 'LICENSE.md', '.gitignore', 'package.json',
-    'icc.config.json', 'icc.workflow.json'
+    'icc.config.json'
   ];
 
   const relativePath = path.relative(projectRoot, absolutePath);

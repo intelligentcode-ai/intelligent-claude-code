@@ -16,9 +16,9 @@ Gets setting value from configuration hierarchy with dot notation support.
 - `default_value` - Optional: Default if not found
 
 **Examples:**
-- Get git privacy setting: /icc-get-setting git_privacy
-- Get autonomy level with default: /icc-get-setting autonomy_level L2
-- Get default reviewer setting: /icc-get-setting team.default_reviewer @Architect
+- Get git privacy setting: /icc-get-setting git.privacy
+- Get git privacy patterns: /icc-get-setting git.privacy_patterns
+- Get enforcement flag: /icc-get-setting enforcement.blocking_enabled
 
 ## Core Actions
 
@@ -27,19 +27,18 @@ Gets setting value from configuration hierarchy with dot notation support.
    - Embedded configs (highest priority)
    - Project config (./icc.config.json or ./.claude/icc.config.json)
    - User config (~/.claude/icc.config.json)
-   - System defaults (icc.config.default.json)
+   - System defaults (built-in; no default file shipped)
 3. Support dot notation for nested values
-4. Validate critical settings (git_privacy MUST be boolean)
+4. Validate critical settings (git.privacy MUST be boolean)
 5. Return first found value or default
 6. Cache result for performance
 
 ## Dot Notation Support
 
 **Examples:**
-- "git_privacy" → boolean value (CRITICAL for git operations)
-- "privacy_patterns" → array of AI mention patterns
-- "team.default_reviewer" → role value
-- "l3_settings.max_parallel" → numeric value
+- "git.privacy" → boolean value (CRITICAL for git operations)
+- "git.privacy_patterns" → array of AI mention patterns
+- "enforcement.blocking_enabled" → boolean value
 
 ## Error Handling
 

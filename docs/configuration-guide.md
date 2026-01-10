@@ -4,7 +4,7 @@
 1. AgentTask overrides  
 2. Project config: `./icc.config.json` or `./.claude/icc.config.json`  
 3. User config: `~/.claude/icc.config.json`  
-4. Defaults: `icc.config.default.json`
+4. Defaults: built-in (no default file shipped)
 
 ## Key Settings
 
@@ -18,10 +18,6 @@
 ### Paths
 - `paths.story_path`, `paths.bug_path`, `paths.memory_path`
 - `paths.docs_path`, `paths.summaries_path`
-
-### Team
-- `team.default_reviewer`
-- `team.role_validation`
 
 ### AgentTask
 - `agenttask.template_path`

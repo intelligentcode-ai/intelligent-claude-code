@@ -3,7 +3,8 @@
 # Maximum executable AgentTask: 15 points (medium)
 # This template preserved for reference only
 
-git_privacy: [GIT_PRIVACY_SETTING]
+git:
+  privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: large-agenttask
 complexity: complex
@@ -20,10 +21,11 @@ complete_context:
   key_context: "[KEY_CONTEXT]"
   system_features: "[SYSTEM_FEATURES]"
   configuration:
-    git_privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
+    git:
+      privacy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+      branch_strategy: "[FROM_CONFIG]"
   business_goal: "[WHY_THIS_FEATURE_MATTERS]"
   technical_scope: "[SYSTEM_COMPONENTS_AFFECTED]"
   critical_files:
@@ -37,7 +39,7 @@ complete_context:
     original_request: "[USER_REQUEST]"
     success_criteria: "[SUCCESS_CRITERIA]"
     feature_scope: "[FEATURE_BOUNDARY]"
-  
+
   specialization_context:
     technology_domains: "[TECHNOLOGY_DOMAINS]"
     specialist_creation: "ALWAYS create specialists when technology expertise is needed"
@@ -53,7 +55,7 @@ requirements:
     - "[SUPPORTING_REQUIREMENT_1]"
     - "[SUPPORTING_REQUIREMENT_2]"
   processual:
-    - "Apply git_privacy for all sub-component commits"
+    - "Apply git.privacy for all sub-component commits"
     - "Coordinate multi-component development"
     - "Manage feature branch strategy"
   technical:
@@ -62,9 +64,9 @@ requirements:
 
 # Git Privacy Execution Notes
 execution_notes: |
-  CRITICAL: MANDATORY git_privacy validation BEFORE ALL git operations:
-  1. Load git_privacy setting from configuration (NEVER assume)
-  2. When git_privacy=true, strip ALL AI mentions from:
+  CRITICAL: MANDATORY git.privacy validation BEFORE ALL git operations:
+  1. Load git.privacy setting from configuration (NEVER assume)
+  2. When git.privacy=true, strip ALL AI mentions from:
      - Commit messages (remove "AI", "Claude", "agent", "Generated with Claude Code", etc.)
      - PR descriptions and titles
      - Release notes and changelogs
@@ -79,7 +81,7 @@ decomposition:
     - component: "[COMPONENT_1]"
       agenttask_type: "medium"
       dependencies: []
-    - component: "[COMPONENT_2]" 
+    - component: "[COMPONENT_2]"
       agenttask_type: "medium"
       dependencies: ["[COMPONENT_1]"]
     - component: "[INTEGRATION]"
@@ -185,7 +187,7 @@ mcp_operations:
         topic: "[LEARNING_TOPIC]"
         content: "[LEARNING_CONTENT]"
     fallback: "file-based"
-  
+
   issue_tracking:
     condition: "[MCP_ISSUE_ENABLED]"
     provider: "[MCP_ISSUE_PROVIDER]"
@@ -195,7 +197,7 @@ mcp_operations:
         title: "[ISSUE_TITLE]"
         description: "[ISSUE_DESCRIPTION]"
     fallback: "file-based"
-  
+
   documentation:
     condition: "[MCP_DOCS_ENABLED]"
     provider: "[MCP_DOCS_PROVIDER]"
@@ -222,7 +224,7 @@ execution_strategy: |
   3. Integrate components on feature branch
   4. Comprehensive testing and validation
   5. Update documentation and create pull request
-  
+
 # EXECUTION CHECKLIST
 execution_checklist: |
   ☐ Feature branch created for coordination (MANDATORY - validation enforced)

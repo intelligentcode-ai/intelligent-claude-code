@@ -44,7 +44,6 @@
 **P3:** Complexity analysis selects AgentTask-Template (nano/tiny/medium/large/mega)
 **P4:** Memory-first approach before all work and questions
 **P5:** Direct execution from AgentTask-Template context
-**P6:** Knowledge capture and best-practices promotion after execution
 
 ## ROLE ACTIVATION
 
@@ -55,9 +54,7 @@
 ## OPERATION
 
 **Memory First:** Search memory/ before any work or questions
-**Best-Practices First:** Check best-practices/ before implementation
 **Work Detection:** Request → Complexity analysis → AgentTask-Template generation
 **AgentTask-Template Types:** Nano → Tiny → Medium → Large → Mega
 **Execution:** Single-pass with complete embedded context
 **Validation:** Built into AgentTask-Template structure
-**Learning:** Auto-capture successes and failures, promote to best-practices

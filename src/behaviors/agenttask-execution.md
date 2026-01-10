@@ -1,5 +1,6 @@
 # AgentTask Execution (CC‑Native)
 
+<behavior name="AgentTask Execution (CC‑Native)">
 **MANDATORY:** Subagents execute only from AgentTask context.
 
 ## Execution Flow
@@ -12,6 +13,4 @@
 - Follow project standards and naming rules
 - Validate against success criteria
 - Record learnings to memory when appropriate
-
-## Notes
-No marker files or orchestration hooks are required; Claude Code manages subagent lifecycles.
+</behavior>

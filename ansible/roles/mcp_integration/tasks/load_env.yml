@@ -1,0 +1,78 @@
+---
+# Load and parse .env file if provided
+
+- name: Initialize loaded environment variables
+  ansible.builtin.set_fact:
+    mcp_integration_loaded_env_vars: {}
+
+- name: Check if ENV_FILE is provided and exists
+  when: mcp_integration_env_file is defined and mcp_integration_env_file | length > 0
+  block:
+    - name: Display .env file path
+      ansible.builtin.debug:
+        msg: "Loading environment variables from: {{ mcp_integration_env_file | expanduser }}"
+
+    - name: Check if .env file exists
+      ansible.builtin.stat:
+        path: "{{ mcp_integration_env_file | expanduser }}"
+      register: mcp_integration_env_file_stat
+
+    - name: Fail if .env file doesn't exist
+      ansible.builtin.fail:
+        msg: "Environment file not found: {{ mcp_integration_env_file }}"
+      when: not mcp_integration_env_file_stat.stat.exists
+
+    - name: Read .env file contents
+      ansible.builtin.slurp:
+        src: "{{ mcp_integration_env_file | expanduser }}"
+      register: mcp_integration_env_file_content
+
+    - name: Parse .env file with shell script
+      ansible.builtin.shell: |
+        # Parse .env file and output as key=value pairs
+        while IFS= read -r line || [[ -n "$line" ]]; do
+          # Skip empty lines and comments
+          [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+          # Process lines with = sign
+          if [[ "$line" =~ ^[[:space:]]*([^=]+)=(.*)$ ]]; then
+            key="${BASH_REMATCH[1]// /}"
+            value="${BASH_REMATCH[2]}"
+            # Remove quotes if present
+            if [[ "$value" =~ ^\"(.*)\"$ ]] || [[ "$value" =~ ^\'(.*)\'$ ]]; then
+              value="${BASH_REMATCH[1]}"
+            fi
+            echo "${key}=${value}"
+          fi
+        done < "{{ mcp_integration_env_file | expanduser }}"
+      register: mcp_integration_parsed_env_output
+      changed_when: false
+
+    - name: Convert parsed output to dictionary
+      ansible.builtin.set_fact:
+        mcp_integration_loaded_env_vars: "{{ mcp_integration_loaded_env_vars | combine({item.split('=')[0]: item.split('=', 1)[1]}) }}"
+      loop: "{{ mcp_integration_parsed_env_output.stdout_lines }}"
+      when: mcp_integration_parsed_env_output.stdout_lines is defined and item | length > 0
+
+    - name: Display loaded environment variables
+      ansible.builtin.debug:
+        msg: "Loaded {{ mcp_integration_loaded_env_vars | length }} environment variables from {{ mcp_integration_env_file }}"
+
+    - name: Debug environment variables (keys only for security)
+      ansible.builtin.debug:
+        msg: "Environment variable keys: {{ mcp_integration_loaded_env_vars.keys() | list }}"
+      when: mcp_integration_loaded_env_vars | length > 0
+
+  rescue:
+    - name: Handle .env file loading error
+      ansible.builtin.debug:
+        msg: >-
+          Warning: Failed to load .env file {{ mcp_integration_env_file }}.
+          Continuing without environment variables.
+
+    - name: Reset environment variables on error
+      ansible.builtin.set_fact:
+        mcp_integration_loaded_env_vars: {}
+
+- name: Log .env processing completion
+  ansible.builtin.debug:
+    msg: "Environment file processing completed. {{ mcp_integration_loaded_env_vars | length }} variables available."

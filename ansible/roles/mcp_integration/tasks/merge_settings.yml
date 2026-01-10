@@ -1,0 +1,42 @@
+---
+# Merge processed MCP servers into existing claude.json
+
+- name: Initialize mcpServers in current settings if not exists
+  ansible.builtin.set_fact:
+    mcp_integration_current_settings: "{{ mcp_integration_current_settings | combine({'mcpServers': {}}) }}"
+  when: "'mcpServers' not in mcp_integration_current_settings"
+
+- name: Create merged MCP servers configuration
+  ansible.builtin.set_fact:
+    mcp_integration_merged_servers: "{{ mcp_integration_current_settings.mcpServers | combine(mcp_integration_processed_servers) }}"
+
+- name: Check for duplicate MCP servers
+  ansible.builtin.debug:
+    msg: "MCP server '{{ item }}' already exists and will be updated"
+  when: item in mcp_integration_current_settings.mcpServers
+  loop: "{{ mcp_integration_processed_servers.keys() | list }}"
+
+- name: Update settings with merged MCP servers
+  ansible.builtin.set_fact:
+    mcp_integration_final_settings: "{{ mcp_integration_current_settings | combine({'mcpServers': mcp_integration_merged_servers}) }}"
+
+- name: Validate final settings structure
+  ansible.builtin.fail:
+    msg: "Final settings structure is invalid"
+  when: "'mcpServers' not in mcp_integration_final_settings"
+
+- name: Log merge results
+  ansible.builtin.debug:
+    msg:
+      - "Merged MCP configuration successfully"
+      - "Total MCP servers: {{ mcp_integration_merged_servers | length }}"
+      - >-
+        New servers added: {{
+        (mcp_integration_processed_servers.keys() | list)
+        | difference(mcp_integration_current_settings.mcpServers.keys() | list)
+        | length }}
+      - >-
+        Existing servers updated: {{
+        (mcp_integration_processed_servers.keys() | list)
+        | intersect(mcp_integration_current_settings.mcpServers.keys() | list)
+        | length }}

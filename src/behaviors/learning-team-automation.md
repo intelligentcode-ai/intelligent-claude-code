@@ -1,5 +1,6 @@
 # Learning & Memory Behavior (Minimal)
 
+<behavior name="Learning &amp; Memory Behavior (Minimal)">
 **MANDATORY:** Use memory first and capture new knowledge after execution.
 
 ## Rules
@@ -9,3 +10,4 @@
 
 ## Scope
 Applies to both main agent planning and subagent execution.
+</behavior>

@@ -97,3 +97,6 @@ credentials/
 secrets/memory/
 stories/
 bugs/
+
+# Local summaries and reports
+summaries/

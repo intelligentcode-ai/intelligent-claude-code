@@ -1,0 +1,29 @@
+{
+  "git": {
+    "privacy": true,
+    "branch_protection": false,
+    "require_pr_for_main": false,
+    "default_branch": "dev"
+  },
+  "paths": {
+    "docs_path": "docs",
+    "story_path": "stories",
+    "bug_path": "bugs",
+    "memory_path": "memory",
+    "summaries_path": "summaries",
+    "test_path": "tests",
+    "src_path": "src"
+  },
+  "development": {
+    "file_management_strict": true
+  },
+  "enforcement": {
+    "blocking_enabled": true,
+    "allow_parent_allowlist_paths": false,
+    "main_scope_has_agent_privileges": false,
+    "infrastructure_protection": {
+      "enabled": true,
+      "read_operations_allowed": true
+    }
+  }
+}

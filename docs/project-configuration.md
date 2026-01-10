@@ -14,10 +14,6 @@ The intelligent-claude-code system supports extensive project-level configuratio
 project-root/
 ├── claude.md                  # Project context and configuration (root OR .claude/)
 ├── docs/                      # Project documentation (user's natural location)
-│   ├── best-practices/        # Domain-specific best practices
-│   │   ├── terraform.md       # IaC best practices
-│   │   ├── react.md          # React patterns and standards
-│   │   └── security.md       # Security guidelines
 │   ├── architecture/          # Architecture documentation
 │   │   ├── overview.md        # System architecture
 │   │   ├── patterns.md        # Design patterns to follow
@@ -49,12 +45,9 @@ project:
   
 # AgentTask Configuration
 agenttask_configuration:
-  # Include project best practices in all AgentTasks
-  include_best_practices: true
-  best_practices_paths:
-    - "docs/best-practices/"     # User's documentation
+  # Project documentation and standards (no best-practices auto-discovery)
+  standards_paths:
     - "docs/standards/"          # User's standards
-    - "best-practices/"          # Alternative location
     - "standards/"               # Alternative location
   
   # Search for code patterns
@@ -158,4 +151,4 @@ AgentTasks adapt to your project:
 2. **Knowledge Reuse**: Leverages existing patterns
 3. **Quality**: Enforces best practices automatically
 4. **Flexibility**: Fully configurable per project
-5. **Autonomy**: AgentTasks contain everything needed for execution
+5. **Self-contained execution**: AgentTasks contain everything needed for execution

@@ -1,5 +1,6 @@
 # Story Breakdown Behavior (Minimal)
 
+<behavior name="Story Breakdown Behavior (Minimal)">
 **MANDATORY:** Large work is broken into AgentTasks before execution.
 
 ## When to Create a Story
@@ -11,6 +12,4 @@
 2. **Architect** advises on technical boundaries
 3. Split into AgentTasks with clear success criteria
 4. Assign roles based on domain expertise
-
-## Notes
-PM coordinates and delegates; specialists execute via AgentTasks.
+</behavior>

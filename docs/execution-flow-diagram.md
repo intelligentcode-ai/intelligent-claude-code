@@ -25,7 +25,7 @@ TASK TOOL INVOCATION
 AGENT EXECUTION
     ├── Agent reads embedded AgentTask context (no external lookups)
     ├── Executes all 6 mandatory AgentTask sections
-    ├── Applies configuration settings (git_privacy, branch_protection, etc.)
+    ├── Applies configuration settings (git.privacy, branch_protection, etc.)
     └── Completes work with validation and knowledge capture
     ↓
 COMPLETION

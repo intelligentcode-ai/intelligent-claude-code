@@ -197,28 +197,6 @@ memory/
 - **Version controlled**: Share knowledge with your team
 - **Auto-pruned**: Keeps only most relevant recent entries
 
-## Autonomy Levels
-
-**L1 - Manual Mode**
-- Every action requires your approval
-- Full transparency and control
-- Good for sensitive operations
-
-**L2 - Guided Mode (Default)**
-- Architect reviews technical decisions
-- Routine tasks proceed automatically
-- Balance of control and efficiency
-
-**L3 - Autonomous Mode**
-- Team works independently
-- Discovers and executes tasks
-- Stops only for critical issues
-
-Set in CLAUDE.md:
-```yaml
-autonomy_level: L2  # L1, L2, or L3
-```
-
 ## Best Practices
 
 ### Clear Requirements
@@ -286,7 +264,6 @@ You: "Dashboard loads too slowly"
 - Memory system shares proven patterns
 
 ### "Work not progressing"
-- Check autonomy level (L3 for full auto)
 - Ensure clear requirements in AgentTask
 - Review any blocking issues
 

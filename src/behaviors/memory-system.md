@@ -1,5 +1,6 @@
 # Memory System (Minimal)
 
+<behavior name="Memory System (Minimal)">
 **MANDATORY:** Store reusable knowledge in `memory/` and reuse it.
 
 ## Storage Format
@@ -10,3 +11,4 @@
 ## Usage
 - Search memory before repeating work
 - Capture learnings from AgentTask execution
+</behavior>

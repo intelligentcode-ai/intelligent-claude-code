@@ -2,41 +2,41 @@
 # Project-specific cleanup tasks
 - name: Check if project CLAUDE.md exists
   ansible.builtin.stat:
-    path: "{{ claude_project_path }}/CLAUDE.md"
+    path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
   register: intelligent_claude_code_uninstall_project_claude_md_exists
-  when: claude_project_path != ""
+  when: intelligent_claude_code_uninstall_project_path != ""
 - name: Remove virtual team import from project CLAUDE.md
   ansible.builtin.lineinfile:
-    path: "{{ claude_project_path }}/CLAUDE.md"
+    path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
     regexp: '^@~/.claude/modes/virtual-team\.md\s*$'
     state: absent
     backup: true
   when:
-    - claude_project_path != ""
+    - intelligent_claude_code_uninstall_project_path != ""
     - intelligent_claude_code_uninstall_project_claude_md_exists.stat.exists
   register: intelligent_claude_code_uninstall_project_claude_cleanup
 - name: Remove empty lines from project CLAUDE.md after import removal
   ansible.builtin.lineinfile:
-    path: "{{ claude_project_path }}/CLAUDE.md"
+    path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
     regexp: '^\s*$'
     state: absent
   when:
-    - claude_project_path != ""
+    - intelligent_claude_code_uninstall_project_path != ""
     - intelligent_claude_code_uninstall_project_claude_md_exists.stat.exists
     - intelligent_claude_code_uninstall_project_claude_cleanup.changed
 - name: Check if project CLAUDE.md is now empty
   ansible.builtin.stat:
-    path: "{{ claude_project_path }}/CLAUDE.md"
+    path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
   register: intelligent_claude_code_uninstall_project_claude_md_after_cleanup
   when:
-    - claude_project_path != ""
+    - intelligent_claude_code_uninstall_project_path != ""
     - intelligent_claude_code_uninstall_project_claude_cleanup.changed
 - name: Read project CLAUDE.md content to check if empty
   ansible.builtin.slurp:
-    src: "{{ claude_project_path }}/CLAUDE.md"
+    src: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
   register: intelligent_claude_code_uninstall_project_claude_content
   when:
-    - claude_project_path != ""
+    - intelligent_claude_code_uninstall_project_path != ""
     - intelligent_claude_code_uninstall_project_claude_md_after_cleanup.stat.exists
 - name: Determine if project CLAUDE.md is empty
   ansible.builtin.set_fact:
@@ -44,20 +44,20 @@
       {{ intelligent_claude_code_uninstall_project_claude_content.content
       | b64decode | trim | length == 0 }}
   when:
-    - claude_project_path != ""
+    - intelligent_claude_code_uninstall_project_path != ""
     - intelligent_claude_code_uninstall_project_claude_content is defined
 - name: Remove empty project CLAUDE.md file
   ansible.builtin.file:
-    path: "{{ claude_project_path }}/CLAUDE.md"
+    path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
     state: absent
   when:
-    - claude_project_path != ""
+    - intelligent_claude_code_uninstall_project_path != ""
     - intelligent_claude_code_uninstall_project_claude_empty | bool
 - name: Display project cleanup results
   ansible.builtin.debug:
     msg:
       - "Project cleanup completed"
-      - "Project path: {{ claude_project_path }}"
+      - "Project path: {{ intelligent_claude_code_uninstall_project_path }}"
       - >-
         {{ 'CLAUDE.md import removed'
         if intelligent_claude_code_uninstall_project_claude_cleanup.changed
@@ -66,4 +66,4 @@
         {{ 'Empty CLAUDE.md file removed'
         if (intelligent_claude_code_uninstall_project_claude_empty | default(false))
         else 'Project CLAUDE.md preserved' }}
-  when: claude_project_path != ""
+  when: intelligent_claude_code_uninstall_project_path != ""

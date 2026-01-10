@@ -1,0 +1,99 @@
+---
+# Process a single MCP server configuration with environment variable resolution
+
+- name: Set current MCP server details
+  ansible.builtin.set_fact:
+    mcp_integration_name: "{{ mcp_integration_server.key }}"
+    mcp_integration_config: "{{ mcp_integration_server.value }}"
+
+- name: Validate MCP server name
+  ansible.builtin.fail:
+    msg: "MCP server name cannot be empty"
+  when: mcp_integration_name | length == 0
+
+- name: Initialize processed MCP config
+  ansible.builtin.set_fact:
+    mcp_integration_processed_config:
+      ansible.builtin.command: "{{ mcp_integration_config.command }}"
+
+- name: Process command arguments with environment variable resolution
+  when: mcp_integration_config.args is defined and mcp_integration_config.args | length > 0
+  block:
+    - name: Resolve environment variables in command arguments
+      ansible.builtin.set_fact:
+        mcp_integration_processed_args: []
+
+    - name: Process each argument for environment variable resolution
+      ansible.builtin.set_fact:
+        mcp_integration_processed_args: "{{ mcp_integration_processed_args + [resolved_arg] }}"
+      vars:
+        var_name_match: "{{ item | regex_search('\\$\\{([^}]+)\\}', '\\1') }}"
+        var_name: "{{ var_name_match[0] if var_name_match else '' }}"
+        resolved_arg: >-
+          {% if var_name_match and var_name in mcp_integration_loaded_env_vars %}
+          {{ item | regex_replace('\\$\\{' + var_name + '\\}', mcp_integration_loaded_env_vars[var_name]) }}
+          {% elif var_name_match and lookup('env', var_name) %}
+          {{ item | regex_replace('\\$\\{' + var_name + '\\}', lookup('env', var_name)) }}
+          {% else %}
+          {{ item }}
+          {% endif %}
+      loop: "{{ mcp_integration_config.args | default([]) }}"
+
+    - name: Debug variable resolution
+      ansible.builtin.debug:
+        var: mcp_integration_loaded_env_vars
+      when: mcp_integration_loaded_env_vars | length > 0
+
+    - name: Add processed arguments to config
+      ansible.builtin.set_fact:
+        mcp_integration_processed_config: "{{ mcp_integration_processed_config | combine({'args': mcp_integration_processed_args}) }}"
+
+- name: Process environment variables if defined
+  when: mcp_integration_config.env is defined
+  block:
+    - name: Initialize processed environment
+      ansible.builtin.set_fact:
+        mcp_integration_processed_env: {}
+
+    - name: Resolve environment variables in env section
+      ansible.builtin.set_fact:
+        mcp_integration_processed_env: "{{ mcp_integration_processed_env | combine({item.key: resolved_value}) }}"
+      vars:
+        var_name_match: "{{ item.value | regex_search('\\$\\{([^}]+)\\}', '\\1') }}"
+        var_name: "{{ var_name_match[0] if var_name_match else '' }}"
+        resolved_value: >-
+          {% if var_name_match and var_name in mcp_integration_loaded_env_vars %}
+          {{ item.value | regex_replace('\\$\\{' + var_name + '\\}', mcp_integration_loaded_env_vars[var_name]) }}
+          {% elif var_name_match and lookup('env', var_name) %}
+          {{ item.value | regex_replace('\\$\\{' + var_name + '\\}', lookup('env', var_name)) }}
+          {% else %}
+          {{ item.value }}
+          {% endif %}
+      loop: "{{ mcp_integration_config.env | dict2items }}"
+
+    - name: Add processed environment to config
+      ansible.builtin.set_fact:
+        mcp_integration_processed_config: "{{ mcp_integration_processed_config | combine({'env': mcp_integration_processed_env}) }}"
+
+- name: Validate processed configuration
+  ansible.builtin.fail:
+    msg: "MCP server '{{ mcp_integration_name }}' has empty command after processing"
+  when: mcp_integration_processed_config.command | length == 0
+
+- name: Add processed MCP server to collection
+  ansible.builtin.set_fact:
+    mcp_integration_processed_servers: "{{ mcp_integration_processed_servers | combine({mcp_integration_name: mcp_integration_processed_config}) }}"
+
+- name: Log successful processing
+  ansible.builtin.debug:
+    msg: "Successfully processed MCP server: {{ mcp_integration_name }}"
+
+- name: Debug processed arguments (for testing)
+  ansible.builtin.debug:
+    msg: "Processed arguments: {{ mcp_integration_processed_config.args | default([]) }}"
+  when: mcp_integration_processed_config.args is defined
+
+- name: Debug processed environment variables (for testing)
+  ansible.builtin.debug:
+    msg: "Processed env vars: {{ mcp_integration_processed_config.env | default({}) }}"
+  when: mcp_integration_processed_config.env is defined

@@ -1,7 +1,8 @@
 # Medium AgentTask Template - Standard Features (6-15 points)
 # For multi-file features and moderate complexity implementations
 
-git_privacy: [GIT_PRIVACY_SETTING]
+git:
+  privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: medium-agenttask
 complexity: standard
@@ -17,22 +18,23 @@ complete_context:
   key_context: "[KEY_CONTEXT]"
   system_features: "[SYSTEM_FEATURES]"
   configuration:
-    git_privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
+    git:
+      privacy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+      branch_strategy: "[FROM_CONFIG]"
   critical_files:
     - path: "[PRIMARY_FILE]"
       purpose: "[FILE_PURPOSE]"
       sample: "[FILE_SAMPLE]"
     - path: "[SECONDARY_FILE]"
-      purpose: "[FILE_PURPOSE_2]" 
+      purpose: "[FILE_PURPOSE_2]"
       sample: "[FILE_SAMPLE_2]"
   user_requirements:
     original_request: "[USER_REQUEST]"
     success_criteria: "[SUCCESS_CRITERIA]"
     feature_scope: "[FEATURE_BOUNDARY]"
-  
+
   specialization_context:
     technology_domains: "[TECHNOLOGY_DOMAINS]"
     specialist_creation: "ALWAYS create specialists when technology expertise is needed"
@@ -47,7 +49,7 @@ requirements:
     - "[SUPPORTING_REQUIREMENT_1]"
     - "[SUPPORTING_REQUIREMENT_2]"
   processual:
-    - "Apply git_privacy setting for all commits"
+    - "Apply git.privacy setting for all commits"
     - "Follow branch protection strategy"
     - "Create feature branch for development"
     - "Generate pull request for review"
@@ -60,9 +62,9 @@ requirements:
 # ========================================
 
 execution_notes: |
-  CRITICAL: MANDATORY git_privacy validation BEFORE ALL git operations:
-  1. Load git_privacy setting from configuration (NEVER assume)
-  2. When git_privacy=true, strip ALL AI mentions from:
+  CRITICAL: MANDATORY git.privacy validation BEFORE ALL git operations:
+  1. Load git.privacy setting from configuration (NEVER assume)
+  2. When git.privacy=true, strip ALL AI mentions from:
      - Commit messages (remove "AI", "Claude", "agent", "Generated with Claude Code", etc.)
      - PR descriptions and titles
      - Release notes and changelogs
@@ -80,7 +82,6 @@ branch_creation:
 ## STEP 2: KNOWLEDGE
 knowledge_search:
   memory_search: "Search memory/[topic]/ for feature patterns"
-  best_practices: "Review best-practices/[domain]/ for guidance"
   patterns: "[TOP_RELEVANT_PATTERNS]"
 
 ## STEP 3: IMPLEMENTATION
@@ -128,11 +129,11 @@ pull_request:
   description: |
     ## Summary
     [FEATURE_OVERVIEW]
-    
+
     ## Changes Made
     - [CHANGE_1]
     - [CHANGE_2]
-    
+
     ## Testing
     [TESTING_PERFORMED]
   reviewer: "[PRE_ASSIGNED_SME]"
@@ -155,7 +156,7 @@ validation_enforcement:
         - "Simple merge"
         - "Direct commit acceptable"
       error_message: "❌ BLOCKED: Full git workflow with branch protection is mandatory for medium AgentTasks."
-    
+
     sme_review:
       - "Complete technical review checklist with all items verified"
       - "Multi-file coordination validation"
@@ -172,7 +173,7 @@ validation_enforcement:
         - "Too straightforward for review"
         - "Developer discretion"
       error_message: "❌ BLOCKED: Comprehensive SME review is mandatory for all medium complexity AgentTasks."
-    
+
     documentation:
       - "CHANGELOG entry with detailed feature description required"
       - "README/API documentation updates for user-facing changes"
@@ -212,7 +213,7 @@ validation_enforcement:
         - "Version not applicable"
         - "Internal change, no version impact"
       error_message: "❌ BLOCKED: Version management is mandatory for all feature-level changes."
-  
+
   workflow:
     version_bump: "[WORKFLOW_VERSION_BUMP]"
     version_type: "[WORKFLOW_VERSION_TYPE]"
@@ -223,7 +224,7 @@ validation_enforcement:
     auto_merge: "[WORKFLOW_AUTO_MERGE]"
     coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
     breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
-  
+
   enforcement_rules:
     - "ALL 9 execution steps must be completed in sequential order"
     - "NO bypass language, skip patterns, or discretionary exceptions allowed"
@@ -242,7 +243,7 @@ mcp_operations:
         topic: "[LEARNING_TOPIC]"
         content: "[LEARNING_CONTENT]"
     fallback: "file-based"
-  
+
   issue_tracking:
     condition: "[MCP_ISSUE_ENABLED]"
     provider: "[MCP_ISSUE_PROVIDER]"
@@ -252,7 +253,7 @@ mcp_operations:
         title: "[ISSUE_TITLE]"
         description: "[ISSUE_DESCRIPTION]"
     fallback: "file-based"
-  
+
   documentation:
     condition: "[MCP_DOCS_ENABLED]"
     provider: "[MCP_DOCS_PROVIDER]"

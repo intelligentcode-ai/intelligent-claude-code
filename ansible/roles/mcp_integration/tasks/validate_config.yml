@@ -1,0 +1,63 @@
+---
+# Validate MCP configuration JSON syntax and structure
+
+- name: Check if MCP config file exists
+  ansible.builtin.stat:
+    path: "{{ mcp_integration_config_file }}"
+  register: mcp_integration_config_file_stat
+  failed_when: false
+
+- name: Set flag to skip MCP integration if config not found
+  ansible.builtin.set_fact:
+    mcp_integration_skip: true
+  when: not mcp_integration_config_file_stat.stat.exists
+
+- name: Log MCP integration skip
+  ansible.builtin.debug:
+    msg: "MCP configuration file not provided or not found. Skipping MCP integration."
+  when: not mcp_integration_config_file_stat.stat.exists
+
+- name: Read MCP configuration file
+  ansible.builtin.slurp:
+    src: "{{ mcp_integration_config_file }}"
+  register: mcp_integration_config_raw
+  failed_when: false
+  when: mcp_integration_config_file_stat.stat.exists
+
+- name: Handle file read errors
+  ansible.builtin.fail:
+    msg: "Failed to read MCP configuration file: {{ mcp_integration_config_file }}. Check file permissions."
+  when: mcp_integration_config_file_stat.stat.exists and mcp_integration_config_raw.failed
+
+- name: Decode and validate JSON syntax
+  ansible.builtin.set_fact:
+    mcp_integration_config_data: "{{ mcp_integration_config_raw.content | b64decode | from_json }}"
+  failed_when: false
+  register: mcp_integration_json_parse_result
+  when: mcp_integration_config_file_stat.stat.exists
+
+- name: Handle JSON syntax errors
+  ansible.builtin.fail:
+    msg: "Invalid JSON syntax in MCP configuration file: {{ mcp_integration_config_file }}. Please check JSON formatting."
+  when: mcp_integration_config_file_stat.stat.exists and mcp_integration_json_parse_result.failed
+
+- name: Validate required JSON structure
+  ansible.builtin.fail:
+    msg: "MCP configuration must contain 'mcpServers' object"
+  when: mcp_integration_config_file_stat.stat.exists and 'mcpServers' not in mcp_integration_config_data
+
+- name: Validate MCP servers structure
+  ansible.builtin.fail:
+    msg: "MCP server '{{ item.key }}' missing required 'command' field"
+  when: mcp_integration_config_file_stat.stat.exists and 'command' not in item.value
+  loop: "{{ mcp_integration_config_data.mcpServers | dict2items | default([]) }}"
+
+- name: Count MCP servers for processing
+  ansible.builtin.set_fact:
+    mcp_integration_servers_count: "{{ mcp_integration_config_data.mcpServers | length }}"
+  when: mcp_integration_config_file_stat.stat.exists
+
+- name: Log successful validation
+  ansible.builtin.debug:
+    msg: "MCP configuration validated successfully. Found {{ mcp_integration_servers_count }} MCP servers."
+  when: mcp_integration_config_file_stat.stat.exists

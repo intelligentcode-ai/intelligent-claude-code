@@ -169,7 +169,7 @@ console.log('\n--- Regression Prevention: Removed Problematic Keywords ---\n');
 
 // These keywords were removed from summaryPatterns because they're too broad
 assert(
-  !isSummaryFile('docs/configuration-best-practices.md', PROJECT_ROOT),
+  !isSummaryFile('docs/configuration-standards.md', PROJECT_ROOT),
   'configuration-*.md in docs/ NOT blocked (keyword removed from patterns)'
 );
 

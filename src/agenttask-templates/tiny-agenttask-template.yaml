@@ -1,7 +1,8 @@
 # Tiny AgentTask Template - Simple Changes (3-5 points)
 # For single-file modifications and straightforward features
 
-git_privacy: [GIT_PRIVACY_SETTING]
+git:
+  privacy: [GIT_PRIVACY_SETTING]
 id: "[PARENT_ID]-AGENTTASK-[NEXT_NUMBER]-[TITLE]-[CURRENT_DATE]"
 type: tiny-agenttask
 complexity: simple
@@ -17,10 +18,11 @@ complete_context:
   key_context: "[KEY_CONTEXT]"
   system_features: "[SYSTEM_FEATURES]"
   configuration:
-    git_privacy: "[FROM_CONFIG]"
-    branch_protection: "[FROM_CONFIG]"
-    default_branch: "[FROM_CONFIG]"
-    branch_strategy: "[FROM_CONFIG]"
+    git:
+      privacy: "[FROM_CONFIG]"
+      branch_protection: "[FROM_CONFIG]"
+      default_branch: "[FROM_CONFIG]"
+      branch_strategy: "[FROM_CONFIG]"
   critical_files:
     - path: "[PRIMARY_FILE]"
       purpose: "[FILE_PURPOSE]"
@@ -28,7 +30,7 @@ complete_context:
   user_requirements:
     original_request: "[USER_REQUEST]"
     success_criteria: "[SUCCESS_CRITERIA]"
-  
+
   specialization_context:
     technology_domains: "[TECHNOLOGY_DOMAINS]"
     specialist_creation: "ALWAYS create specialists when technology expertise is needed"
@@ -41,7 +43,7 @@ requirements:
     - "[WHAT_TO_IMPLEMENT]"
     - "[EXPECTED_BEHAVIOR]"
   processual:
-    - "Apply git_privacy setting for commit messages"
+    - "Apply git.privacy setting for commit messages"
     - "Follow branch protection strategy"
     - "Single file modification scope"
   technical:
@@ -52,9 +54,9 @@ requirements:
 # ========================================
 
 execution_notes: |
-  CRITICAL: MANDATORY git_privacy validation BEFORE ALL git operations:
-  1. Load git_privacy setting from configuration (NEVER assume)
-  2. When git_privacy=true, strip ALL AI mentions from:
+  CRITICAL: MANDATORY git.privacy validation BEFORE ALL git operations:
+  1. Load git.privacy setting from configuration (NEVER assume)
+  2. When git.privacy=true, strip ALL AI mentions from:
      - Commit messages (remove "AI", "Claude", "agent", "Generated with Claude Code", etc.)
      - PR descriptions and titles
      - Release notes and changelogs
@@ -65,7 +67,6 @@ execution_notes: |
 ## STEP 1: KNOWLEDGE
 knowledge_search:
   memory_search: "Search memory/[topic]/ for implementation patterns"
-  best_practices: "Review best-practices/[domain]/ for guidance"
   patterns: "[TOP_RELEVANT_PATTERNS]"
 
 ## STEP 2: IMPLEMENTATION
@@ -120,7 +121,7 @@ validation_enforcement:
         - "No branching required"
         - "Simple change, no git process"
       error_message: "❌ BLOCKED: Git operations are mandatory. Branch protection and commit standards must be followed."
-    
+
     sme_review:
       - "Self-review checklist completion with all items checked"
       - "Code quality validation against project standards"
@@ -133,7 +134,7 @@ validation_enforcement:
         - "Too small for review"
         - "Self-evident implementation"
       error_message: "❌ BLOCKED: SME review processes are mandatory for all AgentTasks regardless of size."
-    
+
     documentation:
       - "CHANGELOG entry required for all changes"
       - "Inline code comments for complex logic added"
@@ -155,7 +156,7 @@ validation_enforcement:
         - "Skip versioning"
         - "Version not applicable"
       error_message: "❌ BLOCKED: Version management is mandatory for all changes."
-  
+
   workflow:
     version_bump: "[WORKFLOW_VERSION_BUMP]"
     version_type: "[WORKFLOW_VERSION_TYPE]"
@@ -166,7 +167,7 @@ validation_enforcement:
     auto_merge: "[WORKFLOW_AUTO_MERGE]"
     coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
     breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
-  
+
   enforcement_rules:
     - "ALL 7 execution steps must be completed in order"
     - "NO bypass language or skip patterns allowed"
@@ -184,7 +185,7 @@ mcp_operations:
         topic: "[LEARNING_TOPIC]"
         content: "[LEARNING_CONTENT]"
     fallback: "file-based"
-  
+
   issue_tracking:
     condition: "[MCP_ISSUE_ENABLED]"
     provider: "[MCP_ISSUE_PROVIDER]"
@@ -194,7 +195,7 @@ mcp_operations:
         title: "[ISSUE_TITLE]"
         description: "[ISSUE_DESCRIPTION]"
     fallback: "file-based"
-  
+
   documentation:
     condition: "[MCP_DOCS_ENABLED]"
     provider: "[MCP_DOCS_PROVIDER]"

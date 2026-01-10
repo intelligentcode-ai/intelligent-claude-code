@@ -1,7 +1,9 @@
 {
-  "autonomy": {
-    "level": "L2",
-    "pm_always_active": true
+  "git": {
+    "privacy": true,
+    "branch_protection": true,
+    "require_pr_for_main": true,
+    "default_branch": "main"
   },
   "paths": {
     "docs_path": "docs",
@@ -12,35 +14,16 @@
     "test_path": "tests",
     "src_path": "src"
   },
+  "development": {
+    "file_management_strict": true
+  },
   "enforcement": {
     "blocking_enabled": true,
     "allow_parent_allowlist_paths": false,
-    "allow_markdown_outside_allowlist": false,
-    "allow_markdown_outside_allowlist_agents": false,
     "main_scope_has_agent_privileges": false,
-    "heredoc_allowed_commands": ["git", "gh", "glab", "hub"],
-    "pm_allowed_bash_commands": ["gh pr list", "gh pr view", "gh pr status"],
-    "tool_blacklist": {
-      "universal": [],
-      "main_scope_only": ["Write", "Edit", "Update", "Bash"],
-      "agents_only": []
-    },
-    "require_codex_review_comment": true
-  },
-  "git": {
-    "privacy": true,
-    "branch_protection": true,
-    "require_pr_for_main": true,
-    "default_branch": "dev"
-  },
-  "memory": {
-    "integration": true,
-    "auto_storage": true,
-    "search_before_questions": true,
-    "max_search_results": 3
-  },
-  "best_practices": {
-    "search_enabled": true,
-    "auto_generation": true
+    "infrastructure_protection": {
+      "enabled": true,
+      "read_operations_allowed": true
+    }
   }
 }

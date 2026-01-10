@@ -2,12 +2,12 @@
 # Project-specific integration tasks
 - name: Check if project CLAUDE.md exists
   ansible.builtin.stat:
-    path: "{{ claude_project_path }}/CLAUDE.md"
+    path: "{{ intelligent_claude_code_project_path }}/CLAUDE.md"
   register: intelligent_claude_code_project_claude_md
 - name: Backup project CLAUDE.md if exists
   ansible.builtin.copy:
-    src: "{{ claude_project_path }}/CLAUDE.md"
-    dest: "{{ claude_project_path }}/CLAUDE.md.backup"
+    src: "{{ intelligent_claude_code_project_path }}/CLAUDE.md"
+    dest: "{{ intelligent_claude_code_project_path }}/CLAUDE.md.backup"
     remote_src: true
     mode: '0644'
   when: intelligent_claude_code_project_claude_md.stat.exists
@@ -17,7 +17,7 @@
       # Virtual Development Team
       @~/.claude/modes/virtual-team.md
       <!-- Add your project-specific configuration below -->
-    dest: "{{ claude_project_path }}/CLAUDE.md"
+    dest: "{{ intelligent_claude_code_project_path }}/CLAUDE.md"
     mode: '0644'
   when: not intelligent_claude_code_project_claude_md.stat.exists
 - name: Integrate with existing project CLAUDE.md
@@ -25,13 +25,13 @@
   block:
     - name: Check if import already present in project CLAUDE.md
       ansible.builtin.command:
-        cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ claude_project_path }}/CLAUDE.md"
+        cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ intelligent_claude_code_project_path }}/CLAUDE.md"
       register: intelligent_claude_code_project_import_grep
       failed_when: false
       changed_when: false
     - name: Ensure project CLAUDE.md includes import block
       ansible.builtin.blockinfile:
-        path: "{{ claude_project_path }}/CLAUDE.md"
+        path: "{{ intelligent_claude_code_project_path }}/CLAUDE.md"
         marker: "<!-- {mark} ICC IMPORT -->"
         block: |
           # Virtual Development Team

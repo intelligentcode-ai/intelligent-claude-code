@@ -48,20 +48,11 @@ All templates use standardized execution processes with mandatory template usage
 
 ### 4. Context Integration
 AgentTask includes everything from your project:
-- **Best practices from best-practices/** - Methodological approaches (GitOps, TDD, DevSecOps, etc.)
 - Architecture patterns
 - Existing code examples
 - External documentation
 - Project standards
 - **Embedded learnings from memory/** - Past solutions and patterns
-
-### 4a. Best-Practices Auto-Discovery
-The system automatically discovers and injects relevant methodological approaches:
-- **Scans best-practices/** directory during AgentTask generation
-- **Matches practices** to work type and complexity
-- **Injects top 2-3 practices** into AgentTask context (max 800 tokens)
-- **Replaces template placeholders** with dynamic content
-- **No template modification needed** - system handles injection automatically
 
 ### 5. Agent System Execution
 AgentTasks execute through the 14-role virtual team system:
@@ -134,7 +125,6 @@ In your CLAUDE.md:
 agenttask_configuration:
   # Directory structure configuration
   directory_structure:
-    best_practices_path: "best-practices"    # Auto-discovered practices location
     
   # Code search configuration
   code_pattern_search:
@@ -146,13 +136,6 @@ agenttask_configuration:
     error_handling: "defensive"
     testing_approach: "tdd"
 
-# Best-practices system automatically discovers practices from:
-# best-practices/development/     - Coding practices (TDD, Clean Code)
-# best-practices/architecture/    - Design patterns and principles
-# best-practices/operations/      - GitOps, DevOps, Infrastructure
-# best-practices/security/        - DevSecOps, security practices
-# best-practices/quality/         - Quality assurance methodologies
-# best-practices/collaboration/   - Team practices and coordination
 ```
 
 ## Commands
@@ -161,7 +144,6 @@ Note: The system now uses only 3 essential commands. Most interaction is through
 
 - `/icc-init-system` - Initialize virtual team system
 - `/icc-get-setting [key]` - Get configuration values
-- `/icc-search-memory [query]` - Search learning patterns
 
 Primary interaction: @Role communication (@PM, @Developer, @AI-Engineer, etc.)
 

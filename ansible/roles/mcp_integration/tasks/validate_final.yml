@@ -1,0 +1,74 @@
+---
+# Validate final merged configuration before writing
+
+- name: Validate final settings JSON structure
+  ansible.builtin.fail:
+    msg: "Final settings must be a valid JSON object"
+  when: mcp_integration_final_settings is not mapping
+
+- name: Validate mcpServers structure
+  ansible.builtin.fail:
+    msg: "mcpServers must be a valid JSON object"
+  when: mcp_integration_final_settings.mcpServers is not mapping
+
+- name: Validate each MCP server configuration
+  ansible.builtin.include_tasks: validate_single_mcp.yml
+  loop: "{{ mcp_integration_final_settings.mcpServers | dict2items }}"
+  loop_control:
+    loop_var: mcp_integration_server_item
+
+- name: Test JSON serialization
+  ansible.builtin.set_fact:
+    mcp_integration_settings_json_test: "{{ mcp_integration_final_settings | to_nice_json }}"
+  failed_when: false
+  register: mcp_integration_json_test_result
+
+- name: Handle JSON serialization failure
+  ansible.builtin.fail:
+    msg: "Final settings cannot be serialized to valid JSON"
+  when: mcp_integration_json_test_result.failed
+
+- name: Write final settings to file
+  ansible.builtin.copy:
+    content: "{{ mcp_integration_final_settings | to_nice_json }}"
+    dest: "{{ mcp_integration_settings_json_path }}"
+    mode: "0600"
+    backup: false
+  register: mcp_integration_write_result
+  failed_when: false
+
+- name: Handle write failure with rollback
+  when: mcp_integration_write_result.failed
+  block:
+    - name: Log write failure
+      ansible.builtin.debug:
+        msg: "Failed to write claude.json, attempting rollback"
+
+    - name: Rollback to backup if write failed
+      ansible.builtin.copy:
+        src: "{{ mcp_integration_settings_backup_file }}"
+        dest: "{{ mcp_integration_settings_json_path }}"
+        mode: "0600"
+      when: mcp_integration_settings_backup_file is defined
+
+    - name: Set rollback error
+      ansible.builtin.set_fact:
+        mcp_integration_error: "Failed to write claude.json and rollback completed"
+
+    - name: Fail with rollback message
+      ansible.builtin.fail:
+        msg: "Settings write failed. Original settings have been restored from backup."
+
+- name: Verify written file
+  ansible.builtin.stat:
+    path: "{{ mcp_integration_settings_json_path }}"
+  register: mcp_integration_written_file_stat
+
+- name: Validate written file size
+  ansible.builtin.fail:
+    msg: "Written claude.json file is empty or corrupted"
+  when: mcp_integration_written_file_stat.stat.size == 0
+
+- name: Log successful validation
+  ansible.builtin.debug:
+    msg: "Final configuration validated and written successfully"

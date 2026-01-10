@@ -3,7 +3,7 @@
 
 - name: Check if project CLAUDE.md exists
   ansible.builtin.stat:
-    path: "{{ claude_project_path }}/CLAUDE.md"
+    path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
   register: intelligent_claude_code_uninstall_project_claude_md
 
 - name: Handle project CLAUDE.md removal
@@ -11,7 +11,7 @@
   block:
     - name: Check if import line exists in project CLAUDE.md
       ansible.builtin.command:
-        cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ claude_project_path }}/CLAUDE.md"
+        cmd: grep -q "@~/.claude/modes/virtual-team.md" "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
       register: intelligent_claude_code_uninstall_project_import_present
       failed_when: false
       changed_when: false
@@ -21,13 +21,13 @@
       block:
         - name: Check if project backup exists
           ansible.builtin.stat:
-            path: "{{ claude_project_path }}/CLAUDE.md.backup"
+            path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md.backup"
           register: intelligent_claude_code_uninstall_project_backup_exists
 
         - name: Restore project CLAUDE.md from backup
           ansible.builtin.copy:
-            src: "{{ claude_project_path }}/CLAUDE.md.backup"
-            dest: "{{ claude_project_path }}/CLAUDE.md"
+            src: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md.backup"
+            dest: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
             remote_src: true
             mode: '0644'
           when: intelligent_claude_code_uninstall_project_backup_exists.stat.exists
@@ -35,7 +35,7 @@
 
         - name: Remove project backup file after restoration
           ansible.builtin.file:
-            path: "{{ claude_project_path }}/CLAUDE.md.backup"
+            path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md.backup"
             state: absent
           when: intelligent_claude_code_uninstall_project_backup_exists.stat.exists
           failed_when: false
@@ -45,37 +45,37 @@
           block:
             - name: Read project CLAUDE.md content
               ansible.builtin.slurp:
-                src: "{{ claude_project_path }}/CLAUDE.md"
+                src: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
               register: intelligent_claude_code_uninstall_project_content
 
             - name: Remove import line from project
               ansible.builtin.lineinfile:
-                path: "{{ claude_project_path }}/CLAUDE.md"
+                path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
                 line: "@~/.claude/modes/virtual-team.md"
                 state: absent
 
             - name: Remove virtual team header from project
               ansible.builtin.lineinfile:
-                path: "{{ claude_project_path }}/CLAUDE.md"
+                path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
                 line: "# Virtual Development Team"
                 state: absent
 
             - name: Remove project configuration comment
               ansible.builtin.lineinfile:
-                path: "{{ claude_project_path }}/CLAUDE.md"
+                path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
                 line: "<!-- Add your project-specific configuration below -->"
                 state: absent
 
             - name: Check if project CLAUDE.md is effectively empty
               ansible.builtin.shell: |
                 set -o pipefail
-                grep -v '^[[:space:]]*$' "{{ claude_project_path }}/CLAUDE.md" | wc -l
+                grep -v '^[[:space:]]*$' "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md" | wc -l
               register: intelligent_claude_code_uninstall_project_content_lines
               changed_when: false
 
             - name: Remove empty project CLAUDE.md file
               ansible.builtin.file:
-                path: "{{ claude_project_path }}/CLAUDE.md"
+                path: "{{ intelligent_claude_code_uninstall_project_path }}/CLAUDE.md"
                 state: absent
               when: intelligent_claude_code_uninstall_project_content_lines.stdout | int == 0
 
@@ -99,5 +99,5 @@
 
 - name: Report no project CLAUDE.md found
   ansible.builtin.debug:
-    msg: "No project CLAUDE.md found at {{ claude_project_path }}"
+    msg: "No project CLAUDE.md found at {{ intelligent_claude_code_uninstall_project_path }}"
   when: not intelligent_claude_code_uninstall_project_claude_md.stat.exists

@@ -41,7 +41,7 @@ help:
 	@echo "  HOST - Remote host IP (omit for local installation)"
 	@echo "  USER - Remote username (required for remote installation)"
 	@echo "  TARGET_PATH - Target path (omit for user scope ~/.claude/)"  
-	@echo "  CONFIG_FILE - Path to icc.config JSON to deploy (default icc.config.default.json)"
+	@echo "  CONFIG_FILE - Path to icc.config JSON to deploy (optional)"
 	@echo "  MCP_CONFIG - Path to MCP servers configuration JSON file"
 	@echo "  ENV_FILE - Path to .env file with environment variables"
 	@echo "  KEY  - SSH key for remote (default: ~/.ssh/id_rsa)"

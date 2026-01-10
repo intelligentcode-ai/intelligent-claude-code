@@ -179,8 +179,8 @@ Failed to load configuration hierarchy
 # Check CLAUDE.md YAML frontmatter
 python -c "import yaml; yaml.safe_load(open('CLAUDE.md').read())"
 
-# Check config.md if it exists
-python -c "import yaml; yaml.safe_load(open('config.md').read())"
+# Check icc.config.json if it exists
+python -c "import json; json.load(open('icc.config.json'))"
 ```
 
 2. Fix YAML syntax errors:
@@ -311,7 +311,7 @@ make clean-install
 
 2. Check configuration hierarchy:
 ```bash
-/icc-get-setting git_privacy
+/icc-get-setting git.privacy
 /icc-load-config
 ```
 
@@ -356,7 +356,7 @@ grep -A 20 "complete_context:" your-prb-file.prb.yaml
 
 ### Memory Search Not Working
 
-**Symptoms:** `/icc-search-memory` returns no results
+**Symptoms:** memory search returns no results
 
 **Cause:** Memory system not initialized or corrupted.
 
@@ -429,11 +429,11 @@ find ./memory -type f -exec chmod 644 {} \;
 ```bash
 # System defaults (embedded in behaviors)
 # User global
-cat ~/.claude/config.md
+cat ~/.claude/icc.config.json
 
 # Project specific
-cat ./config.md
-cat ./.claude/config.md
+cat ./icc.config.json
+cat ./.claude/icc.config.json
 
 # AgentTask embedded (check specific AgentTask file)
 grep -A 10 "configuration:" prb-file.prb.yaml
@@ -441,7 +441,7 @@ grep -A 10 "configuration:" prb-file.prb.yaml
 
 2. Validate YAML syntax at each level:
 ```bash
-python -c "import yaml; yaml.safe_load(open('config.md').read())"
+python -c "import json; json.load(open('icc.config.json'))"
 ```
 
 ### Setting Not Found
@@ -461,7 +461,7 @@ python -c "import yaml; yaml.safe_load(open('config.md').read())"
 
 2. Add setting to appropriate config file:
 ```yaml
-# In config.md or CLAUDE.md
+# In icc.config.json or CLAUDE.md
 custom_settings:
   custom_setting: "value"
 ```
@@ -485,14 +485,14 @@ ls -la ~/.claude/.cache/config-* 2>/dev/null || echo "No cache files"
 
 ### Git Privacy Filter Not Working
 
-**Symptoms:** AI mentions appearing in commits despite git_privacy=true
+**Symptoms:** AI mentions appearing in commits despite git.privacy=true
 
 **Cause:** Privacy filter not properly applied.
 
 **Solution:**
 1. Verify setting:
 ```bash
-/icc-get-setting git_privacy
+/icc-get-setting git.privacy
 # Should return: true
 ```
 
@@ -504,8 +504,17 @@ git log -1 --oneline
 
 3. Fix privacy setting:
 ```yaml
-# In CLAUDE.md or config.md
+# In CLAUDE.md (legacy flat key)
 git_privacy: true
+```
+
+```json
+// In icc.config.json
+{
+  "git": {
+    "privacy": true
+  }
+}
 ```
 
 ### Branch Protection Conflicts
@@ -528,8 +537,8 @@ git push origin feature/your-work-description
 
 2. Or disable protection (not recommended):
 ```yaml
-# In config.md
-branch_protection: false
+# In icc.config.json
+"git": { "branch_protection": false }
 ```
 
 ### Remote Push Authentication
@@ -689,8 +698,8 @@ mkdir -p ./memory/{performance,security,implementation}
 **Solutions:**
 1. **Reduce Concurrent Operations:**
 ```yaml
-# In config.md
-max_concurrent_subagents: 2  # Reduce from default 5
+# In icc.config.json
+"subagents": { "max_concurrent": 2 }
 ```
 
 2. **Optimize Complex AgentTasks:**
@@ -749,7 +758,7 @@ ls -la ./
 find ./memory -type f -name "*.md" | head -10
 
 # Test memory search
-/icc-search-memory "test query"
+Search memory via your editor or grep as needed
 
 # Show memory statistics
 /icc-memory-status
@@ -802,7 +811,7 @@ For specific component issues:
 
 ```bash
 # Reset configuration only
-rm ~/.claude/config.md
+rm ~/.claude/icc.config.json
 /icc-load-config
 
 # Reset memory only
