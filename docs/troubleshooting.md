@@ -504,9 +504,17 @@ git log -1 --oneline
 
 3. Fix privacy setting:
 ```yaml
-# In CLAUDE.md or icc.config.json
-git:
-  privacy: true
+# In CLAUDE.md (legacy flat key)
+git_privacy: true
+```
+
+```json
+// In icc.config.json
+{
+  "git": {
+    "privacy": true
+  }
+}
 ```
 
 ### Branch Protection Conflicts

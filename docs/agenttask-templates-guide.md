@@ -31,13 +31,13 @@ AgentTask templates are the backbone of the intelligent-claude-code system. They
 # Template BEFORE resolution (BLOCKED):
 git:
   privacy: "[FROM_CONFIG]"
-branch_protection: "[FROM_CONFIG]"
+  branch_protection: "[FROM_CONFIG]"
 
 # Template AFTER resolution (REQUIRED):
 git:
   privacy: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
-branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
-default_branch: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+  branch_protection: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
+  default_branch: <ACTUAL_VALUE_FROM_CONFIG_HIERARCHY>
 ```
 
 ## Template Types by Complexity
@@ -64,7 +64,7 @@ complete_context:
   configuration:
     git:
       privacy: <ACTUAL_VALUE>
-    branch_protection: <ACTUAL_VALUE>
+      branch_protection: <ACTUAL_VALUE>
 change:
   file: "[PATH]"
   find: "[EXACT_TEXT]"
