@@ -1,4 +1,4 @@
-# Installation Guide (v9)
+# Installation Guide (v10)
 
 ## Install (macOS/Linux)
 ```bash
@@ -20,9 +20,10 @@ make clean-install
 - Project scope: installs to `<project>/.claude/`
 
 ## What gets installed
-- Agents → `.claude/agents/`
-- Behaviors → `.claude/behaviors/`
-- Hooks → `.claude/hooks/`
+- **Skills** → `.claude/skills/` (34 skills)
+- **Behaviors** → `.claude/behaviors/` (4 foundational behaviors)
+- **Hooks** → `.claude/hooks/` (3 enforcement hooks)
+- **Mode** → `.claude/modes/virtual-team.md`
 
 ## Hooks (minimal)
 Registered hooks:

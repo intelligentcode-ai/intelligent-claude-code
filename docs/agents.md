@@ -32,10 +32,9 @@ This directory contains the 14 core Claude Code Subagent definitions with embedd
 
 ## Quick Start
 
-1. **Development**: Edit agent definitions in `src/agents/`
-2. **Build**: `make install` copies to installation templates (or `make clean-install` for a full reset)
-3. **Deploy**: Ansible deploys to user's configured agent directory
-4. **Usage**: Claude Code loads agents as native Subagents
+1. **Development**: Edit role skills in `src/skills/*/SKILL.md`
+2. **Build**: `make install` copies skills to `.claude/skills/` (or `make clean-install` for a full reset)
+3. **Usage**: Skills are loaded on demand via @Role patterns or `/skill-name`
 
 ## Usage Examples
 

@@ -1,6 +1,6 @@
 # Hook System Guide
 
-The v9 hook system is intentionally minimal and only enforces behaviors Claude Code does not provide natively.
+The v10 hook system is intentionally minimal and only enforces behaviors Claude Code does not provide natively.
 
 ## Active Hooks (PreToolUse)
 

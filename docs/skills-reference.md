@@ -1,9 +1,9 @@
-# Commands Reference
+# Skills Reference
 
 ## Overview
-The intelligent-claude-code system provides **only 3 essential commands** for specific system functions. The primary interaction method is through **@Role communication patterns** rather than command-based interaction.
+The intelligent-claude-code system provides **34 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **/skill-name** invocations.
 
-## Essential Commands (Only 3)
+## Essential Skills (4)
 
 ### `/icc-init-system`
 Initializes the virtual team system and prepares for work.
@@ -22,6 +22,16 @@ Initializes the virtual team system and prepares for work.
 - Activates the 14 core roles
 - Sets up AgentTask system
 - Configures autonomy level
+
+### `/icc-version`
+Displays ICC system version, component status, and installation info.
+
+**Usage:** `/icc-version`
+
+**What it does:**
+- Shows current version (v10.0.0)
+- Lists installed components
+- Verifies installation status
 
 ### `/icc-get-setting [key]`
 Retrieves configuration values from the hierarchy.
@@ -66,7 +76,7 @@ Searches memory for relevant learnings and patterns.
 
 ## Primary Interaction: @Role Communication
 
-The system is designed for **natural @Role communication** rather than command-based interaction. This is the primary and preferred way to work with the system.
+The system is designed for **natural @Role communication** rather than skill-based interaction. This is the primary and preferred way to work with the system.
 
 ### Core @Role Patterns
 
@@ -117,7 +127,7 @@ The system automatically creates specialists for ANY technology domain when expe
 - `@ML-Specialist` - Machine learning and AI systems
 - `@Vue-Frontend-Developer` - Vue.js frontend development
 
-### @Role vs Commands
+### @Role vs Skills
 
 **Use @Role Patterns for** (Primary Usage):
 - All project work and coordination
@@ -126,10 +136,33 @@ The system automatically creates specialists for ANY technology domain when expe
 - Quality assurance
 - Any specialist work
 
-**Use Commands for** (System Functions Only):
+**Use Skills for** (System Functions):
 - System initialization: `/icc-init-system`
+- Version check: `/icc-version`
 - Configuration queries: `/icc-get-setting`
 - Memory exploration: `/icc-search-memory`
+- Process skills: `/thinking`, `/memory`, `/best-practices`, etc.
+
+## All Skills by Category
+
+### Role Skills (14)
+`/pm`, `/architect`, `/developer`, `/system-engineer`, `/devops-engineer`,
+`/database-engineer`, `/security-engineer`, `/ai-engineer`, `/web-designer`,
+`/qa-engineer`, `/backend-tester`, `/requirements-engineer`, `/user-tester`, `/reviewer`
+
+### Command Skills (4)
+`/icc-version`, `/icc-init-system`, `/icc-search-memory`, `/icc-get-setting`
+
+### Process Skills (12)
+`/thinking`, `/agenttask-create`, `/agenttask-execute`, `/memory`,
+`/best-practices`, `/validate`, `/autonomy`, `/parallel-execution`,
+`/workflow`, `/mcp-config`, `/story-breakdown`, `/git-privacy`
+
+### Enforcement Companion Skills (3)
+`/file-placement`, `/branch-protection`, `/infrastructure-protection`
+
+### Meta Skill (1)
+`/skill-creator` - Guide for creating new skills
 
 ## Usage Patterns
 
@@ -162,7 +195,7 @@ The system automatically creates specialists for ANY technology domain when expe
 ### Memory Integration
 - Memory searches happen automatically during @Role work
 - Use `/icc-search-memory` for manual exploration only
-- Learnings are stored automatically - no manual commands needed
+- Learnings are stored automatically - no manual skills needed
 - Memory captures patterns from successful AgentTask executions
 
 ### System Configuration
@@ -172,4 +205,4 @@ The system automatically creates specialists for ANY technology domain when expe
 
 ---
 
-The intelligent-claude-code system prioritizes **@Role communication patterns** over command-based interaction. The 3 essential commands provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.
+The intelligent-claude-code system prioritizes **@Role communication patterns** over skill-based interaction. The 4 essential skills provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.

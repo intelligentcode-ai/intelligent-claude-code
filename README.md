@@ -2,12 +2,13 @@
 
 CC‑native framework for planning‑first AgentTasks, native subagents, and minimal hooks.
 
-## Current scope (v9)
+## Current scope (v10)
 
+- **Skills-first architecture** — 34 cross-platform skills loaded on demand.
 - **CC‑native subagents** — no marker files, no custom role enforcement hooks.
 - **Planning‑first AgentTasks** — main scope plans, subagents implement.
-- **Minimal hooks only** — keep only what CC doesn’t do natively.
-- **Behavior guidance** — behaviors live in the repo and are read by humans + Claude.
+- **Minimal hooks only** — keep only what CC doesn't do natively.
+- **Behavior guidance** — 4 foundational behaviors for structural rules.
 
 ## Included
 
@@ -66,11 +67,12 @@ Claude Code model selection remains user‑controlled. Set it via:
 - project `.claude/settings.json`
 - CLI or `/model`
 
-## Migration (v8 → v9)
+## Migration (v9 → v10)
 
-- **Hooks slimmed** to 3 PreToolUse hooks only.
-- **Old enforcement hooks removed** — CC handles subagents natively now.
-- **Behavior stack trimmed** to essentials in `src/modes/virtual-team.md`.
+- **Skills-first architecture** — 34 skills replace behavior-heavy approach.
+- **Cross-platform** — Skills work with Claude Code, Codex CLI, Cursor, Gemini CLI, etc.
+- **Behaviors trimmed** — Only 4 foundational behaviors remain.
+- **Same hooks** — 3 PreToolUse hooks continue unchanged.
 
 ## Docs
 

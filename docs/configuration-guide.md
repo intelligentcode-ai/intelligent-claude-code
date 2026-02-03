@@ -1,4 +1,4 @@
-# Configuration Guide (v9)
+# Configuration Guide (v10)
 
 ## Hierarchy
 1. AgentTask overrides  
