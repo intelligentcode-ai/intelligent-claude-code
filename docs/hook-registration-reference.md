@@ -1,4 +1,4 @@
-# Hook Registration Reference (v9)
+# Hook Registration Reference (v10)
 
 Claude Code hooks are kept **minimal** and only enforce behaviors CC does not provide natively.
 
@@ -15,4 +15,4 @@ Hooks are registered by:
 - `install.ps1` (Register‑ProductionHooks)
 
 ## Version
-Hook system version: **v9.0.0**
+Hook system version: **v10.0.0**

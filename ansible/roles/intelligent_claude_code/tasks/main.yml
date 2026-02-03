@@ -6,6 +6,32 @@
       - claude_install_path is defined
       - claude_scope in ['user', 'project']
     fail_msg: "Invalid installation parameters"
+- name: Remove obsolete directories from previous versions
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ claude_install_path }}/commands"
+    - "{{ claude_install_path }}/agents"
+  failed_when: false
+- name: Remove obsolete behavior files from previous versions
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/behaviors/{{ item }}"
+    state: absent
+  loop:
+    - agenttask-creation-system.md
+    - agenttask-execution.md
+    - enforcement-rules.md
+    - learning-team-automation.md
+    - memory-system.md
+    - role-system.md
+    - sequential-thinking.md
+    - story-breakdown.md
+    - template-resolution.md
+    - ultrathinking.md
+    - validation-system.md
+    - shared-patterns
+  failed_when: false
 - name: Create .claude directory structure
   ansible.builtin.file:
     path: "{{ item }}"
@@ -15,9 +41,8 @@
     - "{{ claude_install_path }}"
     - "{{ claude_install_path }}/modes"
     - "{{ claude_install_path }}/behaviors"
-    - "{{ claude_install_path }}/commands"
+    - "{{ claude_install_path }}/skills"
     - "{{ claude_install_path }}/roles"
-    - "{{ claude_install_path }}/agents"
     - "{{ claude_install_path }}/agenttask-templates"
     - "{{ claude_install_path }}/hooks"
     - "{{ claude_install_path }}/logs"
@@ -63,17 +88,17 @@
   ansible.builtin.debug:
     msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
   when: intelligent_claude_code_behaviors_copy_result.failed and ansible_verbosity >= 1
-- name: Copy commands directory
+- name: Copy skills directory
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../src/commands/"
-    dest: "{{ claude_install_path }}/commands/"
+    src: "{{ playbook_dir }}/../src/skills/"
+    dest: "{{ claude_install_path }}/skills/"
     mode: '0644'
     force: true
-  register: intelligent_claude_code_commands_copy_result
-- name: Display commands preservation notice
+  register: intelligent_claude_code_skills_copy_result
+- name: Display skills preservation notice
   ansible.builtin.debug:
-    msg: "Commands directory preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
-  when: intelligent_claude_code_commands_copy_result.failed and ansible_verbosity >= 1
+    msg: "Skills directory preserved: {{ claude_install_path }}/skills/ already exists - keeping user modifications"
+  when: intelligent_claude_code_skills_copy_result.failed and ansible_verbosity >= 1
 - name: Copy roles directory
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/roles/"
@@ -87,19 +112,6 @@
       Roles directory preserved: {{ claude_install_path }}/roles/
       already exists - keeping user modifications
   when: intelligent_claude_code_roles_copy_result.failed and ansible_verbosity >= 1
-- name: Copy agents directory
-  ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../src/agents/"
-    dest: "{{ claude_install_path }}/agents/"
-    mode: '0644'
-    force: true
-  register: intelligent_claude_code_agents_copy_result
-- name: Display agents preservation notice
-  ansible.builtin.debug:
-    msg: >-
-      Agents directory preserved: {{ claude_install_path }}/agents/
-      already exists - keeping user modifications
-  when: intelligent_claude_code_agents_copy_result.failed and ansible_verbosity >= 1
 - name: Copy AgentTask templates directory
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/agenttask-templates/"
@@ -265,12 +277,12 @@
           {{ intelligent_claude_code_existing_settings.content
           | b64decode
           | from_json }}
-    - name: Clean up obsolete PreToolUse hooks while preserving user hooks
+    - name: Clean up obsolete hooks while preserving user hooks
       ansible.builtin.set_fact:
         intelligent_claude_code_cleaned_hooks: >-
           {{ (intelligent_claude_code_settings_data.hooks | default({}))
           | dict2items
-          | rejectattr('key', 'in', ['PreToolUse'])
+          | rejectattr('key', 'in', ['PreToolUse', 'Stop', 'SubagentStop', 'SessionStart', 'UserPromptSubmit'])
           | items2dict }}
     - name: Load production hooks configuration from template
       ansible.builtin.set_fact:
@@ -326,6 +338,7 @@
     msg:
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
+      - "🎯 Skills: 30 cross-platform skills (roles, commands, workflows)"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
       - "🔒 Behavioral Hooks: PreToolUse (git, infra protection, summaries)"
-      - "🚀 Use @Role communication to activate team members"
+      - "🚀 Use @Role or /skill-name to activate capabilities"

@@ -1,38 +1,36 @@
 # Virtual Team Specialists
 
-## 14 CORE ROLES
+## 14 Core Role Skills
 
-**@PM:** Project coordination • Task delegation • No Edit/Write (delegates)
-**@Architect:** System architecture • Technical design • Technology choices
-**@Developer:** Software implementation • Feature development • Bug fixes
-**@System-Engineer:** Infrastructure • System operations • Configuration
-**@DevOps-Engineer:** CI/CD • Deployment automation • Build pipelines
-**@Database-Engineer:** Database design • Queries • Performance optimization
-**@Security-Engineer:** Security reviews • Vulnerability assessment • Compliance
-**@AI-Engineer:** AI/ML systems • Machine learning • Intelligent automation
-**@Web-Designer:** UI/UX design • User experience • Visual design
-**@QA-Engineer:** Quality assurance • Test planning • Testing frameworks
-**@Backend-Tester:** Backend testing • API validation • Integration testing
-**@Requirements-Engineer:** Requirements analysis • Documentation • Specification
-**@User-Role:** End-to-end testing • Browser automation • Puppeteer
-**@Reviewer:** Critical review • Risk assessment • Regression prevention
+Each @Role mention activates the corresponding skill from `~/.claude/skills/`:
 
-## UNLIMITED DYNAMIC SPECIALIST CREATION
+| @Role | Skill | Focus |
+|-------|-------|-------|
+| @PM | `/pm` | Project coordination, task delegation |
+| @Architect | `/architect` | System architecture, technical design |
+| @Developer | `/developer` | Software implementation, feature development |
+| @System-Engineer | `/system-engineer` | Infrastructure, system operations |
+| @DevOps-Engineer | `/devops-engineer` | CI/CD, deployment automation |
+| @Database-Engineer | `/database-engineer` | Database design, query optimization |
+| @Security-Engineer | `/security-engineer` | Security reviews, vulnerability assessment |
+| @AI-Engineer | `/ai-engineer` | AI/ML systems, intelligent automation |
+| @Web-Designer | `/web-designer` | UI/UX design, user experience |
+| @QA-Engineer | `/qa-engineer` | Quality assurance, test planning |
+| @Backend-Tester | `/backend-tester` | Backend testing, API validation |
+| @Requirements-Engineer | `/requirements-engineer` | Requirements analysis, documentation |
+| @User-Role | `/user-tester` | End-to-end testing, browser automation |
+| @Reviewer | `/reviewer` | Critical review, risk assessment |
 
-**ALWAYS when needed:** Create specialist for ANY technology domain (@React-Developer, @AWS-Engineer, @Vue-Frontend-Developer, @Kubernetes-DevOps-Engineer)
-**Ultra-experienced:** All roles operate with 10+ years expertise  
+## Dynamic Specialist Creation
 
-**Assignment Logic:** Analyze requirements → Identify technology domains → ALWAYS create specialists when technology expertise is needed
+**Create specialists for ANY technology domain:**
+- @React-Developer, @AWS-Engineer, @Vue-Frontend-Developer
+- All specialists operate with 10+ years expertise
+- Created based on project needs, not predefined lists
 
-**Dynamic Creation Process:**
-1. **Domain Analysis:** Extract technology stack and requirements from work context
-2. **Technology Assessment:** Identify specific technology expertise needed for optimal work execution
-3. **ALWAYS Create Specialists:** Create @[Domain]-Developer, @[Technology]-Engineer, or @[Domain]-Architect when technology expertise is needed
-4. **No Capability Thresholds:** Specialists created based on technology expertise needs, not arbitrary capability matches
-5. **Unlimited Technology Support:** All specialists created based on actual project needs
+**Process:**
+1. Analyze technology stack from work context
+2. Create @[Domain]-Developer or @[Technology]-Engineer
+3. Specialist embodies full domain expertise
 
-**Examples:** @React-Developer, @AWS-Engineer, @Blockchain-Architect, @ML-Specialist
-**Principle:** Specialists are DISCOVERED from project context, not PREDEFINED
-
-**Communication:** @Role: [action/communication]  
-**Integration:** Assignment-driven • Knowledge-first • Evidence-based
+**Communication:** `@Role: [action]` activates skill and assigns work

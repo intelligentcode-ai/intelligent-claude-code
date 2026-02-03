@@ -190,8 +190,8 @@ function Register-ProductionHooks {
             )
         }
 
-        # Replace all production hooks
-        foreach ($HookType in @("PreToolUse")) {
+        # Remove obsolete hooks and replace production hooks
+        foreach ($HookType in @("PreToolUse", "Stop", "SubagentStop", "SessionStart", "UserPromptSubmit")) {
             if ($Settings.hooks.PSObject.Properties.Name -contains $HookType) {
                 $Settings.hooks.PSObject.Properties.Remove($HookType)
             }
@@ -297,11 +297,52 @@ function Install-IntelligentClaudeCode {
     if (-not (Test-Path $Paths.InstallPath)) {
         New-Item -Path $Paths.InstallPath -ItemType Directory -Force | Out-Null
     }
-    
+
+    # Remove obsolete directories from previous versions
+    Write-Host "Cleaning up obsolete directories..." -ForegroundColor Yellow
+    $ObsoleteDirs = @("commands", "agents")
+    foreach ($Dir in $ObsoleteDirs) {
+        $ObsoletePath = Join-Path $Paths.InstallPath $Dir
+        if (Test-Path $ObsoletePath) {
+            Write-Host "  Removing obsolete $Dir..." -ForegroundColor Gray
+            Remove-Item -Path $ObsoletePath -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    # Remove obsolete behavior files from previous versions
+    $ObsoleteBehaviors = @(
+        "agenttask-creation-system.md",
+        "agenttask-execution.md",
+        "enforcement-rules.md",
+        "learning-team-automation.md",
+        "memory-system.md",
+        "role-system.md",
+        "sequential-thinking.md",
+        "story-breakdown.md",
+        "template-resolution.md",
+        "ultrathinking.md",
+        "validation-system.md"
+    )
+    $BehaviorsPath = Join-Path $Paths.InstallPath "behaviors"
+    if (Test-Path $BehaviorsPath) {
+        foreach ($File in $ObsoleteBehaviors) {
+            $FilePath = Join-Path $BehaviorsPath $File
+            if (Test-Path $FilePath) {
+                Remove-Item -Path $FilePath -Force -ErrorAction SilentlyContinue
+            }
+        }
+        # Remove shared-patterns directory
+        $SharedPatternsPath = Join-Path $BehaviorsPath "shared-patterns"
+        if (Test-Path $SharedPatternsPath) {
+            Write-Host "  Removing obsolete shared-patterns..." -ForegroundColor Gray
+            Remove-Item -Path $SharedPatternsPath -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
     # Copy source files
     Write-Host "Copying source files..." -ForegroundColor Yellow
 
-    $DirectoriesToCopy = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "utils")
+    $DirectoriesToCopy = @("skills", "behaviors", "modes", "agenttask-templates", "roles")
 
     foreach ($Dir in $DirectoriesToCopy) {
         $SourcePath = Join-Path $SourceDir $Dir
@@ -533,7 +574,7 @@ function Uninstall-IntelligentClaudeCode {
         Write-Host "Conservative uninstall - preserving user data..." -ForegroundColor Yellow
 
         # Remove system directories but preserve user data
-        $SystemDirs = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "hooks", "utils")
+        $SystemDirs = @("skills", "behaviors", "modes", "agenttask-templates", "roles", "hooks")
 
         foreach ($Dir in $SystemDirs) {
             $DirPath = Join-Path $Paths.InstallPath $Dir
@@ -593,9 +634,9 @@ function Test-Installation {
         $TestPaths = @(
             "$TestDir\CLAUDE.md",
             "$TestDir\.claude\modes\virtual-team.md",
-            "$TestDir\.claude\agents\architect.md",
-            "$TestDir\.claude\agents\developer.md",
-            "$TestDir\.claude\agents\ai-engineer.md",
+            "$TestDir\.claude\skills\pm\SKILL.md",
+            "$TestDir\.claude\skills\developer\SKILL.md",
+            "$TestDir\.claude\skills\architect\SKILL.md",
             "$TestDir\.claude\agenttask-templates\medium-agenttask-template.yaml",
             "$TestDir\.claude\hooks"
         )
@@ -697,7 +738,7 @@ function Test-Installation {
         $UninstallChecks = @(
             "$TestDir\.claude\modes",
             "$TestDir\.claude\behaviors",
-            "$TestDir\.claude\agents",
+            "$TestDir\.claude\skills",
             "$TestDir\.claude\hooks"
         )
 
