@@ -27,14 +27,9 @@
         processed_args: "{{ processed_args + [resolved_arg] }}"
       vars:
         var_name_match: "{{ item | regex_search('\\$\\{([^}]+)\\}', '\\1') }}"
-        var_name: "{{ var_name_match[0] if var_name_match else '' }}"
+        var_name: "{{ var_name_match if var_name_match else '' }}"
         resolved_arg: "{{ item | regex_replace('\\$\\{' + var_name + '\\}', loaded_env_vars[var_name]) if (var_name_match and var_name in loaded_env_vars) else (item | regex_replace('\\$\\{' + var_name + '\\}', lookup('env', var_name)) if (var_name_match and lookup('env', var_name)) else item) }}"
       loop: "{{ mcp_config.args | default([]) }}"
-
-    - name: Debug variable resolution
-      debug:
-        var: loaded_env_vars
-      when: loaded_env_vars | length > 0
 
     - name: Add processed arguments to config
       set_fact:
@@ -52,7 +47,7 @@
         processed_env: "{{ processed_env | combine({item.key: resolved_value}) }}"
       vars:
         var_name_match: "{{ item.value | regex_search('\\$\\{([^}]+)\\}', '\\1') }}"
-        var_name: "{{ var_name_match[0] if var_name_match else '' }}"
+        var_name: "{{ var_name_match if var_name_match else '' }}"
         resolved_value: "{{ item.value | regex_replace('\\$\\{' + var_name + '\\}', loaded_env_vars[var_name]) if (var_name_match and var_name in loaded_env_vars) else (item.value | regex_replace('\\$\\{' + var_name + '\\}', lookup('env', var_name)) if (var_name_match and lookup('env', var_name)) else item.value) }}"
       loop: "{{ mcp_config.env | dict2items }}"
 
@@ -73,13 +68,3 @@
 - name: Log successful processing
   debug:
     msg: "Successfully processed MCP server: {{ mcp_name }}"
-
-- name: Debug processed arguments (for testing)
-  debug:
-    msg: "Processed arguments: {{ processed_mcp_config.args | default([]) }}"
-  when: processed_mcp_config.args is defined
-
-- name: Debug processed environment variables (for testing)
-  debug:
-    msg: "Processed env vars: {{ processed_mcp_config.env | default({}) }}"
-  when: processed_mcp_config.env is defined

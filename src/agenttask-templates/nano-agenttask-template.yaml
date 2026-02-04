@@ -71,31 +71,34 @@ validation_checklist:
 validation_enforcement:
   mandatory_requirements:
     git_operations:
-      - "Git branch creation (if required by branch_protection)"
-      - "Git commit with proper message format"
-      - "Git push to remote repository"
+      requirements:
+        - "Git branch creation (if required by branch_protection)"
+        - "Git commit with proper message format"
+        - "Git push to remote repository"
       blocked_patterns:
         - "No git operations needed"
         - "Skip git workflow"
         - "Direct push to main"
         - "No commit required"
       error_message: "❌ BLOCKED: Git operations are mandatory for all AgentTasks. No bypass patterns allowed."
-    
+
     sme_review:
-      - "Self-review checklist completion"
-      - "Code quality validation"
-      - "Requirements verification"
+      requirements:
+        - "Self-review checklist completion"
+        - "Code quality validation"
+        - "Requirements verification"
       blocked_patterns:
         - "No review needed"
         - "Skip validation"
         - "Self-evident changes"
         - "Too simple for review"
       error_message: "❌ BLOCKED: SME review processes are mandatory. All changes require validation."
-    
+
     documentation:
-      - "Inline comments for complex logic"
-      - "Update relevant documentation"
-      - "Maintain code clarity"
+      requirements:
+        - "Inline comments for complex logic"
+        - "Update relevant documentation"
+        - "Maintain code clarity"
       blocked_patterns:
         - "No documentation needed"
         - "Self-documenting code"

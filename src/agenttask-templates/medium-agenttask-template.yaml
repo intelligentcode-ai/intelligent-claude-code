@@ -141,11 +141,12 @@ pull_request:
 validation_enforcement:
   mandatory_requirements:
     git_operations:
-      - "Feature branch creation with proper naming convention"
-      - "Git commit with detailed message following [ID]: [DESCRIPTION] format"
-      - "Git push to feature branch (never directly to main/default)"
-      - "Pull request creation with comprehensive description"
-      - "Privacy filter applied to all git operations"
+      requirements:
+        - "Feature branch creation with proper naming convention"
+        - "Git commit with detailed message following [ID]: [DESCRIPTION] format"
+        - "Git push to feature branch (never directly to main/default)"
+        - "Pull request creation with comprehensive description"
+        - "Privacy filter applied to all git operations"
       blocked_patterns:
         - "No git operations needed"
         - "Skip git workflow"
@@ -155,14 +156,15 @@ validation_enforcement:
         - "Simple merge"
         - "Direct commit acceptable"
       error_message: "❌ BLOCKED: Full git workflow with branch protection is mandatory for medium AgentTasks."
-    
+
     sme_review:
-      - "Complete technical review checklist with all items verified"
-      - "Multi-file coordination validation"
-      - "Feature completeness assessment"
-      - "Code quality and pattern compliance verification"
-      - "Configuration compliance check"
-      - "Integration testing validation"
+      requirements:
+        - "Complete technical review checklist with all items verified"
+        - "Multi-file coordination validation"
+        - "Feature completeness assessment"
+        - "Code quality and pattern compliance verification"
+        - "Configuration compliance check"
+        - "Integration testing validation"
       blocked_patterns:
         - "No review needed"
         - "Skip validation steps"
@@ -172,13 +174,14 @@ validation_enforcement:
         - "Too straightforward for review"
         - "Developer discretion"
       error_message: "❌ BLOCKED: Comprehensive SME review is mandatory for all medium complexity AgentTasks."
-    
+
     documentation:
-      - "CHANGELOG entry with detailed feature description required"
-      - "README/API documentation updates for user-facing changes"
-      - "Architecture documentation updates if system design affected"
-      - "Inline code documentation for complex logic"
-      - "Integration guides updated if new dependencies introduced"
+      requirements:
+        - "CHANGELOG entry with detailed feature description required"
+        - "README/API documentation updates for user-facing changes"
+        - "Architecture documentation updates if system design affected"
+        - "Inline code documentation for complex logic"
+        - "Integration guides updated if new dependencies introduced"
       blocked_patterns:
         - "No documentation needed"
         - "Self-documenting code"
@@ -190,10 +193,11 @@ validation_enforcement:
       error_message: "❌ BLOCKED: Comprehensive documentation updates are mandatory for medium AgentTasks."
 
     pull_request_review:
-      - "Assigned SME reviewer must be specified (not generic)"
-      - "Pull request description must include summary, changes, and testing"
-      - "All PR template sections must be completed"
-      - "Integration testing results must be documented"
+      requirements:
+        - "Assigned SME reviewer must be specified (not generic)"
+        - "Pull request description must include summary, changes, and testing"
+        - "All PR template sections must be completed"
+        - "Integration testing results must be documented"
       blocked_patterns:
         - "No reviewer assignment needed"
         - "Any developer can review"
@@ -203,9 +207,10 @@ validation_enforcement:
       error_message: "❌ BLOCKED: Proper SME reviewer assignment and comprehensive PR documentation required."
 
     version_management:
-      - "Appropriate version bump (patch/minor) based on change scope"
-      - "Version consistency maintained across all affected components"
-      - "Breaking change assessment completed"
+      requirements:
+        - "Appropriate version bump (patch/minor) based on change scope"
+        - "Version consistency maintained across all affected components"
+        - "Breaking change assessment completed"
       blocked_patterns:
         - "No version change needed"
         - "Skip versioning"
