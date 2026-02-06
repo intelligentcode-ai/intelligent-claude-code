@@ -1,6 +1,6 @@
 ---
 name: requirements-engineer
-description: Activate Requirements Engineer role for business analysis, specification development, and stakeholder communication. Use for requirements gathering, documentation, user stories, or bridging business and technical teams.
+description: Use when requirements gathering is needed - business analysis, specification development, user stories. Use when @Requirements-Engineer is mentioned or when work requires bridging business and technical understanding.
 ---
 
 # Requirements Engineer Role

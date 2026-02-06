@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Critical code reviewer for security audits, quality checks, and regression prevention. Use for code reviews before commits, after commits, after PRs, or for security audits. Checks for hardcoded credentials, .gitignore issues, file placement violations, and agent-generated file bloat.
+description: Use before commits, after commits, and before PR merge to review code. Use when security audit needed or when checking for regressions. Checks credentials, .gitignore, file placement, and agent bloat. ALWAYS invoke during process skill quality gates.
 ---
 
 # Reviewer Role
@@ -234,6 +234,6 @@ find . -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "CLAUDE.md" ! -name 
 
 ## Integration
 
-- Works with `/git-privacy` for attribution checks
-- Works with `/file-placement` for location enforcement
+- Works with `git-privacy skill` for attribution checks
+- Works with `file-placement skill` for location enforcement
 - Enforced by `git-enforcement.js` hook

@@ -1,48 +1,48 @@
 # Skills Reference
 
 ## Overview
-The intelligent-claude-code system provides **34 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **/skill-name** invocations.
+The intelligent-claude-code system provides **33 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
 
 ## Essential Skills (4)
 
-### `/icc-init-system`
+### icc-init-system
 Initializes the virtual team system and prepares for work.
 
-**Usage:** `/icc-init-system [autonomy_level]`
+**Trigger:** Ask to initialize system or start ICC
 
 **Examples:**
-```bash
-/icc-init-system          # Initialize with default settings
-/icc-init-system L3       # Initialize with full autonomy
+```
+Initialize the ICC system
+Start the virtual team with L3 autonomy
 ```
 
 **What it does:**
 - Loads configuration from CLAUDE.md
 - Creates memory directory structure
 - Activates the 14 core roles
-- Sets up AgentTask system
+- Sets up work queue system
 - Configures autonomy level
 
-### `/icc-version`
+### icc-version
 Displays ICC system version, component status, and installation info.
 
-**Usage:** `/icc-version`
+**Trigger:** Ask about version or system status
 
 **What it does:**
 - Shows current version (v10.0.0)
 - Lists installed components
 - Verifies installation status
 
-### `/icc-get-setting [key]`
+### icc-get-setting
 Retrieves configuration values from the hierarchy.
 
-**Usage:** `/icc-get-setting [setting_name]`
+**Trigger:** Ask about a configuration setting
 
 **Examples:**
-```bash
-/icc-get-setting autonomy_level     # Returns: L2
-/icc-get-setting git_privacy        # Returns: true
-/icc-get-setting default_branch     # Returns: main
+```
+What is the autonomy level?
+Check if git privacy is enabled
+What is the default branch?
 ```
 
 **Configuration hierarchy:**
@@ -51,16 +51,16 @@ Retrieves configuration values from the hierarchy.
 3. User config (~/.claude/config.md - system-wide only)
 4. System defaults
 
-### `/icc-search-memory [query]`
+### icc-search-memory
 Searches memory for relevant learnings and patterns.
 
-**Usage:** `/icc-search-memory "[search terms]"`
+**Trigger:** Ask to search memory or look up prior knowledge
 
 **Examples:**
-```bash
-/icc-search-memory "oauth authentication"
-/icc-search-memory "database optimization"
-/icc-search-memory "error handling patterns"
+```
+Search memory for oauth authentication
+Look up database optimization patterns
+Find error handling patterns in memory
 ```
 
 **Used for:**
@@ -137,51 +137,51 @@ The system automatically creates specialists for ANY technology domain when expe
 - Any specialist work
 
 **Use Skills for** (System Functions):
-- System initialization: `/icc-init-system`
-- Version check: `/icc-version`
-- Configuration queries: `/icc-get-setting`
-- Memory exploration: `/icc-search-memory`
-- Process skills: `/thinking`, `/memory`, `/best-practices`, etc.
+- System initialization: icc-init-system
+- Version check: icc-version
+- Configuration queries: icc-get-setting
+- Memory exploration: icc-search-memory
+- Process skills: thinking, memory, best-practices, etc.
 
 ## All Skills by Category
 
 ### Role Skills (14)
-`/pm`, `/architect`, `/developer`, `/system-engineer`, `/devops-engineer`,
-`/database-engineer`, `/security-engineer`, `/ai-engineer`, `/web-designer`,
-`/qa-engineer`, `/backend-tester`, `/requirements-engineer`, `/user-tester`, `/reviewer`
+pm, architect, developer, system-engineer, devops-engineer,
+database-engineer, security-engineer, ai-engineer, web-designer,
+qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer
 
 ### Command Skills (4)
-`/icc-version`, `/icc-init-system`, `/icc-search-memory`, `/icc-get-setting`
+icc-version, icc-init-system, icc-search-memory, icc-get-setting
 
-### Process Skills (12)
-`/thinking`, `/agenttask-create`, `/agenttask-execute`, `/memory`,
-`/best-practices`, `/validate`, `/autonomy`, `/parallel-execution`,
-`/workflow`, `/mcp-config`, `/story-breakdown`, `/git-privacy`
+### Process Skills (11)
+thinking, work-queue, memory, best-practices, validate,
+autonomy, parallel-execution, workflow, mcp-config,
+story-breakdown, git-privacy
 
 ### Enforcement Companion Skills (3)
-`/file-placement`, `/branch-protection`, `/infrastructure-protection`
+file-placement, branch-protection, infrastructure-protection
 
 ### Meta Skill (1)
-`/skill-creator` - Guide for creating new skills
+skill-creator - Guide for creating new skills
 
 ## Usage Patterns
 
 ### Starting New Work
 ```bash
-/icc-init-system                              # Initialize system once
+Initialize the ICC system                     # System initialization
 @PM Build a REST API for user management      # Natural language work request
 ```
 
 ### Memory Exploration
 ```bash
-/icc-search-memory "authentication patterns"  # Find relevant patterns
+Search memory for "authentication patterns"   # Find relevant patterns
 @Developer Implement OAuth based on memory    # Apply found patterns
 ```
 
 ### Configuration Management
 ```bash
-/icc-get-setting autonomy_level              # Check current autonomy
-/icc-get-setting git_privacy                 # Check privacy settings
+What is the autonomy level?                  # Check current autonomy
+Is git privacy enabled?                       # Check privacy settings
 ```
 
 ## Best Practices
@@ -194,13 +194,13 @@ The system automatically creates specialists for ANY technology domain when expe
 
 ### Memory Integration
 - Memory searches happen automatically during @Role work
-- Use `/icc-search-memory` for manual exploration only
+- Use the icc-search-memory skill for manual exploration only
 - Learnings are stored automatically - no manual skills needed
-- Memory captures patterns from successful AgentTask executions
+- Memory captures patterns from successful work executions
 
 ### System Configuration
-- Use `/icc-get-setting` to understand current configuration
-- Configuration affects @Role behavior and AgentTask execution
+- Use the icc-get-setting skill to understand current configuration
+- Configuration affects @Role behavior and work queue execution
 - Settings hierarchy: Embedded → Project → User → System defaults
 
 ---

@@ -1,94 +1,87 @@
 ---
 name: story-breakdown
-description: Break large stories into manageable AgentTasks. Use when a story exceeds 15 complexity points, spans multiple components, or requires coordination across team members.
+description: Use when breaking large stories into work items. Use when a task spans multiple components or requires coordination. Creates work items in .agent/queue/ for execution.
 ---
 
 # Story Breakdown Skill
 
-Break large stories into manageable AgentTasks for execution.
+Break large stories into work items in `.agent/queue/`.
 
-## When to Create a Story Breakdown
+## When to Break Down
 
-- Estimated complexity > 15 points
-- Multi-component or multi-team scope
+- Multi-component scope
 - Requires sequential execution phases
 - Dependencies between work items
+- More than 2-3 distinct tasks
 
 ## Breakdown Process
 
-1. **PM reviews** scope and goals
-2. **Architect advises** on technical boundaries
-3. **Split into AgentTasks** with clear success criteria
-4. **Assign roles** based on domain expertise
-5. **Document dependencies** and execution order
+1. **Analyze scope** - Identify distinct work units
+2. **Define items** - Create work item for each unit
+3. **Set dependencies** - Note which items block others
+4. **Assign roles** - Tag with @Role for execution
+5. **Add to queue** - Create files in `.agent/queue/`
 
-## Size Management Rules
+## Work Item Creation
 
-**CRITICAL**: Maintain AgentTask size limits:
-- **Single AgentTask**: ≤15 complexity points maximum
-- **Auto-Breakdown**: Stories >15 points split into multiple AgentTasks
-- **Logical Grouping**: Split by natural boundaries
-- **Dependency Management**: Document execution order
+For each item, create in `.agent/queue/`:
 
-## Complexity Estimation
+```markdown
+# [Short Title]
 
-| Points | Scope |
-|--------|-------|
-| 1-2 | Trivial change, single line |
-| 3-5 | Simple single-file change |
-| 6-10 | Multi-file feature |
-| 11-15 | Complex feature, max single AgentTask |
-| 16-30 | Multi-AgentTask story |
-| 31+ | Epic requiring breakdown |
+**Status**: pending
+**Priority**: high | medium | low
+**Assignee**: @Developer | @Reviewer | etc.
+**Blocks**: 002, 003 (optional)
+**BlockedBy**: none | 001 (optional)
+
+## Description
+What needs to be done.
+
+## Success Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+```
 
 ## Splitting Strategies
 
 ### By Component
-- Frontend AgentTask
-- Backend AgentTask
-- Database AgentTask
+- `001-pending-frontend-auth.md`
+- `002-pending-backend-api.md`
+- `003-pending-database-schema.md`
 
 ### By Phase
-- Phase 1: Core functionality
-- Phase 2: Error handling
-- Phase 3: Testing
-- Phase 4: Documentation
+- `001-pending-core-functionality.md`
+- `002-pending-error-handling.md`
+- `003-pending-tests.md`
 
 ### By Domain
-- Authentication AgentTask
-- Data processing AgentTask
-- API integration AgentTask
+- `001-pending-authentication.md`
+- `002-pending-data-processing.md`
+- `003-pending-api-integration.md`
 
-## Naming Convention
+## Example Breakdown
+
+Story: "Add user authentication"
 
 ```
-STORY-XXX-AgentTask-001-[description]
-STORY-XXX-AgentTask-002-[description]
-STORY-XXX-AgentTask-003-[description]
+.agent/queue/
+├── 001-pending-setup-auth-database.md
+├── 002-pending-implement-login-api.md
+├── 003-pending-add-frontend-forms.md
+└── 004-pending-write-auth-tests.md
 ```
 
-## Dependency Documentation
-
-```yaml
-dependencies:
-  STORY-001-AgentTask-002:
-    blockedBy: [STORY-001-AgentTask-001]
-    reason: "Requires auth module from AgentTask-001"
-```
-
-## Role Assignment
-
-For each AgentTask, assign based on:
-1. Primary technology domain
-2. Required expertise level
-3. Dependency on other work
-4. Available specialists
+With dependencies:
+- 002 blocked by 001
+- 003 blocked by 002
+- 004 blocked by 002, 003
 
 ## Validation
 
 Before execution:
-- [ ] Total points = sum of AgentTask points
-- [ ] Each AgentTask ≤15 points
-- [ ] Dependencies are acyclic
-- [ ] Roles assigned for all AgentTasks
+- [ ] Each item has clear scope
+- [ ] Dependencies are noted
+- [ ] Roles assigned
 - [ ] Success criteria defined
+- [ ] No circular dependencies

@@ -47,7 +47,7 @@ IF tests fail:
 
 ### Step 1.3: Pre-Commit Review Loop
 ```
-Run /reviewer (pre-commit stage)
+Run reviewer skill (pre-commit stage)
 IF findings exist:
     Fix findings
     GOTO Step 1.2 (re-test after fixes)
@@ -76,7 +76,7 @@ IF tests fail:
 
 ### Step 2.3: Post-Deploy Review Loop
 ```
-Run /reviewer (post-deploy stage)
+Run reviewer skill (post-deploy stage)
 IF findings exist:
     Fix findings
     GOTO Step 2.2
@@ -84,8 +84,8 @@ IF findings exist:
 
 ### Step 2.4: Commit
 ```
-Run /commit-pr to commit changes
-Ensure /git-privacy rules followed (no AI attribution)
+Run commit-pr skill to commit changes
+Ensure git-privacy skill rules followed (no AI attribution)
 ```
 
 **Exit criteria:** Deployment tests pass AND no review findings AND committed
@@ -94,7 +94,7 @@ Ensure /git-privacy rules followed (no AI attribution)
 
 ### Step 3.1: Create PR
 ```
-Run /commit-pr to create PR
+Run commit-pr skill to create PR
 ```
 
 ### Step 3.2: Dedicated PR Review Loop
@@ -109,11 +109,11 @@ cd "$TEMP_DIR"
 # Review ALL changes in PR
 gh pr diff <PR-number>
 
-# Run /reviewer checks
+# Run reviewer skill checks
 ```
 
 ```
-Run /reviewer (post-PR stage)
+Run reviewer skill (post-PR stage)
 - Security scan entire PR diff
 - File placement verification
 - Credential/secret detection
@@ -137,21 +137,21 @@ DO NOT merge without user saying "merge", "approve", or "LGTM"
 
 | Gate | Requirement |
 |------|-------------|
-| Pre-commit | Tests pass + No `/reviewer` findings |
-| Pre-deploy | Tests pass + No `/reviewer` findings |
-| Pre-merge | No `/reviewer` findings + User approval |
+| Pre-commit | Tests pass + No `reviewer skill` findings |
+| Pre-deploy | Tests pass + No `reviewer skill` findings |
+| Pre-merge | No `reviewer skill` findings + User approval |
 
 ## Related Skills
 
-- `/reviewer` - Critical review at each gate
-- `/commit-pr` - Commit and PR formatting
-- `/git-privacy` - No AI attribution (mandatory)
+- `reviewer skill` - Critical review at each gate
+- `commit-pr skill` - Commit and PR formatting
+- `git-privacy skill` - No AI attribution (mandatory)
 
 ## Commands
 
 **Start development:**
 ```
-/process
+process skill
 ```
 
 **Check current phase:**

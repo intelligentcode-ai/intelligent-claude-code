@@ -1,6 +1,6 @@
 ---
 name: user-tester
-description: Activate User Tester role for end-to-end testing, browser automation, and user journey validation. Use for Puppeteer/Playwright testing, E2E workflows, cross-browser testing, or user experience validation.
+description: Use when E2E or user journey testing is needed - browser automation, cross-browser testing, user flow validation. Use when @User-Tester is mentioned or when work requires Puppeteer/Playwright or user experience verification.
 ---
 
 # User Tester Role

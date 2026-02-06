@@ -1,6 +1,6 @@
 ---
 name: git-privacy
-description: MANDATORY - Prevents AI attribution in git operations. Blocks Co-Authored-By lines, "Generated with" footers, and AI tool URLs from commits and PRs. Does NOT block legitimate AI-related feature descriptions.
+description: Use when performing git commits, creating pull requests, or any git operation. MANDATORY by default - prevents AI attribution (Co-Authored-By lines, "Generated with" footers, AI tool URLs). Does NOT block legitimate AI-related feature descriptions like "Add GPT integration".
 ---
 
 # Git Privacy Skill
@@ -68,15 +68,17 @@ Commit messages must:
 - Follow conventional commit format when appropriate
 - Never include authorship attribution
 
-## Hook Enforcement
+## Self-Check Before Git Operations
 
-The `git-enforcement.js` hook automatically:
-1. Detects attribution patterns in commit messages
-2. Blocks commits containing AI attribution
-3. Blocks PRs with attribution in title/body
-4. Scans HEREDOC content for attribution
+Before every commit or PR, verify:
+1. No `Co-Authored-By:` lines present
+2. No "Generated with" footers
+3. No AI tool URLs in attribution context
+4. Message focuses on what changed, not how
 
-## Error Handling
+## Integration
 
-- **Attribution detected**: Commit/PR blocked with clear message
-- **Config errors**: Defaults to privacy enabled for safety
+Works with:
+- commit-pr skill - Commit and PR formatting
+- branch-protection skill - Branch safety rules
+- process skill - Development workflow phases

@@ -1,6 +1,6 @@
 ---
 name: ai-engineer
-description: Activate AI Engineer role for AI/ML systems, behavioral frameworks, and intelligent automation. Use for machine learning, agentic systems, behavioral patterns, or AI-driven automation work.
+description: Use when AI/ML work is detected - model integration, behavioral frameworks, intelligent automation. Use when @AI-Engineer is mentioned or when work involves machine learning, agentic systems, or AI-driven features.
 ---
 
 # AI Engineer Role

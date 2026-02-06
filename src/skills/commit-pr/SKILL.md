@@ -1,6 +1,6 @@
 ---
 name: commit-pr
-description: Use this skill when the user asks to commit changes, create a git commit, make a PR, create a pull request, push changes, or any git commit/PR related task. This skill provides formatting guidance and attribution rules.
+description: Use when committing changes or creating PRs. Use after development work is complete and reviewed. Use when process skill reaches commit or PR phase. Provides commit message formatting and PR structure. Works with git-privacy skill.
 ---
 
 # Git Commit and Pull Request Skill

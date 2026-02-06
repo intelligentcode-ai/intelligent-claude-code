@@ -62,7 +62,7 @@ ln -sf ../../src/skills/git-privacy git-privacy
 **Workflow:**
 1. Create/modify skill in `src/skills/`
 2. Add symlink in `.claude/skills/` if new skill
-3. Test with `/skill-name` invocation
+3. Test by invoking the skill via description matching
 4. Commit changes to `src/skills/` (source)
 
 ## Modifying Hooks
@@ -71,7 +71,6 @@ ln -sf ../../src/skills/git-privacy git-privacy
 `src/hooks/*.js`
 
 ### Key Hooks
-- `git-enforcement.js` - Branch protection, privacy filtering
 - `summary-file-enforcement.js` - File placement rules
 - `agent-infrastructure-protection.js` - System file protection
 

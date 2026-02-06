@@ -1,6 +1,6 @@
 ---
 name: security-engineer
-description: Activate Security Engineer role for security reviews, vulnerability assessment, and compliance. Use for security architecture, penetration testing, compliance audits, or any security-related work.
+description: Use when security work is detected - vulnerability assessment, security architecture, compliance audits. Use when @Security-Engineer is mentioned or when work requires penetration testing or security review.
 ---
 
 # Security Engineer Role

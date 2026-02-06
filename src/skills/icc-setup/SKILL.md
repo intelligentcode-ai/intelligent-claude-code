@@ -38,9 +38,9 @@ Link skills you're actively developing:
 **Linux/macOS:**
 ```bash
 cd .claude/skills
-ln -sf ../../src/skills/commit-pr commit-pr
-ln -sf ../../src/skills/git-privacy git-privacy
-ln -sf ../../src/skills/icc-setup icc-setup
+ln -sf ../../src/skillscommit-pr commit-pr
+ln -sf ../../src/skillsgit-privacy git-privacy
+ln -sf ../../src/skillsicc-setup icc-setup
 ln -sf ../../src/skills/reviewer reviewer
 ln -sf ../../src/skills/process process
 ```
@@ -89,9 +89,9 @@ ls .claude/skills/icc-development/
 ```bash
 mkdir -p .claude/skills
 cd .claude/skills
-ln -sf ../../src/skills/commit-pr commit-pr
-ln -sf ../../src/skills/git-privacy git-privacy
-ln -sf ../../src/skills/icc-setup icc-setup
+ln -sf ../../src/skillscommit-pr commit-pr
+ln -sf ../../src/skillsgit-privacy git-privacy
+ln -sf ../../src/skillsicc-setup icc-setup
 ln -sf ../../src/skills/reviewer reviewer
 ln -sf ../../src/skills/process process
 cd ../..
@@ -113,9 +113,9 @@ cd ..\..
 
 After setup, test with:
 ```
-/commit-pr
-/git-privacy
-/icc-setup
+commit-pr
+git-privacy
+icc-setup
 ```
 
 Each should load the skill from `src/skills/` via the symlink.
@@ -137,12 +137,12 @@ Changes to `src/skills/` affect what users get when they install ICC.
 **Symlink not working (Linux/macOS):**
 ```bash
 # Check if symlink is valid
-ls -la .claude/skills/commit-pr
-# Should show: commit-pr -> ../../src/skills/commit-pr
+ls -la .claude/skillscommit-pr
+# Should show: commit-pr -> ../../src/skillscommit-pr
 
 # If broken, recreate
-rm .claude/skills/commit-pr
-cd .claude/skills && ln -sf ../../src/skills/commit-pr commit-pr
+rm .claude/skillscommit-pr
+cd .claude/skills && ln -sf ../../src/skillscommit-pr commit-pr
 ```
 
 **Windows symlink permission denied:**

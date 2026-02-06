@@ -34,7 +34,7 @@ This directory contains the 14 core Claude Code Subagent definitions with embedd
 
 1. **Development**: Edit role skills in `src/skills/*/SKILL.md`
 2. **Build**: `make install` copies skills to `.claude/skills/` (or `make clean-install` for a full reset)
-3. **Usage**: Skills are loaded on demand via @Role patterns or `/skill-name`
+3. **Usage**: Skills are loaded on demand via @Role patterns or skill name matching
 
 ## Usage Examples
 

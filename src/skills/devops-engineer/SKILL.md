@@ -1,6 +1,6 @@
 ---
 name: devops-engineer
-description: Activate DevOps role for CI/CD, deployment automation, and build pipelines. Use for pipeline design, deployment strategies, release management, or developer experience improvements.
+description: Use when CI/CD or deployment work is detected - pipeline design, deployment automation, release management. Use when @DevOps-Engineer is mentioned or when work involves build systems or infrastructure automation.
 ---
 
 # DevOps Engineer Role

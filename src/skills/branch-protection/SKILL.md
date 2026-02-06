@@ -75,6 +75,6 @@ gh pr create
 ## Integration
 
 Works with:
-- `/git-privacy` - No AI attribution in commits
-- `/commit-pr` - Commit message formatting
-- `/process` - Development workflow phases
+- git-privacy skill - No AI attribution in commits
+- commit-pr skill - Commit message formatting
+- process skill - Development workflow phases

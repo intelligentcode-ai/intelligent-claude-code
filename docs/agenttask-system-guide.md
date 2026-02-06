@@ -155,13 +155,13 @@ agenttask_configuration:
 # best-practices/collaboration/   - Team practices and coordination
 ```
 
-## Commands
+## Essential Skills
 
-Note: The system now uses only 3 essential commands. Most interaction is through @Role communication:
+Note: The system provides 3 essential skills for system operations. Most interaction is through @Role communication:
 
-- `/icc-init-system` - Initialize virtual team system
-- `/icc-get-setting [key]` - Get configuration values
-- `/icc-search-memory [query]` - Search learning patterns
+- **icc-init-system** - Initialize virtual team system
+- **icc-get-setting** - Get configuration values
+- **icc-search-memory** - Search learning patterns
 
 Primary interaction: @Role communication (@PM, @Developer, @AI-Engineer, etc.)
 

@@ -1,6 +1,6 @@
 ---
 name: web-designer
-description: Activate Web Designer role for UI/UX design, user experience, and visual design. Use for interface design, user research, design systems, accessibility, or any design-related work.
+description: Use when UI/UX design work is detected - interface design, user research, design systems, accessibility. Use when @Web-Designer is mentioned or when work requires visual design or user experience expertise.
 ---
 
 # Web Designer Role

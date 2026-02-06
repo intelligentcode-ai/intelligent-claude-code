@@ -5,8 +5,8 @@ This file is the **single entry point** for the behavioral system used by humans
 ## Project Overview
 
 Intelligent Claude Code is a CC-native framework that adds:
-- **Skills-first architecture** - 34 cross-platform skills
-- Planning-first AgentTasks
+- **Skills-first architecture** - 33 cross-platform skills
+- Work queue for task management (`.agent/queue/`)
 - Role-based specialists (14 core + dynamic creation)
 - File placement rules (summaries/memory/stories/bugs)
 - Git privacy filtering
@@ -24,7 +24,6 @@ Skills are invoked on-demand based on description matching. They work across:
 
 ### Hooks (Claude Code Specific)
 Hooks provide **enforcement** - they automatically run on events and can block actions:
-- `git-enforcement.js` - Branch protection, commit validation
 - `agent-infrastructure-protection.js` - Protect system files
 - `summary-file-enforcement.js` - Route files to correct directories
 
@@ -37,45 +36,46 @@ Only 4 foundational behaviors remain - always-active structural rules:
 
 ## Primary Interaction Pattern
 
-Use @Role requests or /skill-name for work:
+Use @Role requests or skill names for work:
 
 ```
 @PM break down the story
 @Architect review the design
 @Developer implement auth
 @Reviewer audit for regressions
-/thinking for complex analysis
-/memory to search prior knowledge
+thinking skill for complex analysis
+memory skill to search prior knowledge
 ```
 
-## Core Skills (34)
+## Core Skills (33)
 
 ### Role Skills (14)
-`/pm`, `/architect`, `/developer`, `/system-engineer`, `/devops-engineer`,
-`/database-engineer`, `/security-engineer`, `/ai-engineer`, `/web-designer`,
-`/qa-engineer`, `/backend-tester`, `/requirements-engineer`, `/user-tester`, `/reviewer`
+pm, architect, developer, system-engineer, devops-engineer,
+database-engineer, security-engineer, ai-engineer, web-designer,
+qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer
 
 ### Command Skills (4)
-`/icc-version`, `/icc-init-system`, `/icc-search-memory`, `/icc-get-setting`
+icc-version, icc-init-system, icc-search-memory, icc-get-setting
 
-### Process Skills (12)
-`/thinking`, `/agenttask-create`, `/agenttask-execute`, `/memory`,
-`/best-practices`, `/validate`, `/autonomy`, `/parallel-execution`,
-`/workflow`, `/mcp-config`, `/story-breakdown`, `/git-privacy`
+### Process Skills (11)
+thinking, work-queue, memory, best-practices, validate,
+autonomy, parallel-execution, workflow, mcp-config,
+story-breakdown, git-privacy
 
 ### Enforcement Companion Skills (3)
 These skills mirror what hooks enforce - defense in depth:
-`/file-placement`, `/branch-protection`, `/infrastructure-protection`
+file-placement, branch-protection, infrastructure-protection
 
 ### Meta Skill (1)
-`/skill-creator` - Guide for creating new skills (from Anthropic)
+skill-creator - Guide for creating new skills (from Anthropic)
 
 ## Execution Model
 
-1. Work request → AgentTask created by main agent
-2. AgentTask includes scope, risks, success criteria
+1. Work request → Added to `.agent/queue/` as work item
+2. Work item includes description, assignee, success criteria
 3. Task tool runs the appropriate subagent
-4. Subagent executes and returns summary
+4. Subagent executes, updates queue status, returns summary
+5. Autonomy skill checks for next queued item
 
 ## File Rules
 
@@ -106,18 +106,18 @@ The system loads skills from:
 - `src/behaviors/` - Behavioral guidance
 
 ### Local Testing Setup
-Run `/icc-setup` for guided setup (includes Linux/macOS/Windows commands).
+Use the icc-setup skill for guided setup (includes Linux/macOS/Windows commands).
 
 ### Workflow
-Use `/process` for the complete development workflow:
+Use the process skill for the complete development workflow:
 1. **Development Phase** - Implement → Test → Review → Fix (loop until clean)
 2. **Deployment Phase** - Deploy → Test → Review → Commit (if applicable)
 3. **PR Phase** - Create PR → Review → Fix → Await explicit user approval
 
 ### Key Skills for This Project
-- `/icc-setup` - Setup development environment (run after clone)
-- `/process` - Complete development workflow with quality gates
-- `/commit-pr` - Commit and PR formatting
-- `/git-privacy` - AI attribution prevention (MANDATORY)
-- `/reviewer` - Critical review (pre-commit, post-commit, post-PR)
-- `/icc-development` - Development guide (local only)
+- icc-setup - Setup development environment (run after clone)
+- process - Complete development workflow with quality gates
+- commit-pr - Commit and PR formatting
+- git-privacy - AI attribution prevention (MANDATORY)
+- reviewer - Critical review (pre-commit, post-commit, post-PR)
+- icc-development - Development guide (local only)

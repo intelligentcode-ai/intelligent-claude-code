@@ -1,6 +1,6 @@
 ---
 name: qa-engineer
-description: Activate QA Engineer role for test planning, quality frameworks, and testing strategies. Use for test strategy development, test automation, quality metrics, or comprehensive quality assurance work.
+description: Use when test planning or QA strategy is needed - test frameworks, quality metrics, test automation planning. Use when @QA-Engineer is mentioned or when work requires comprehensive quality assurance approach.
 ---
 
 # QA Engineer Role

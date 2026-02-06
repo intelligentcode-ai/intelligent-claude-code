@@ -161,9 +161,9 @@ test:
 	@echo "Verifying installation..."
 	@test -f test-install/CLAUDE.md || (echo "FAIL: CLAUDE.md not created"; exit 1)
 	@test -f test-install/.claude/modes/virtual-team.md || (echo "FAIL: virtual-team.md not installed"; exit 1)
-	@test -f test-install/.claude/agents/architect.md || (echo "FAIL: agent definitions not installed"; exit 1)
-	@test -f test-install/.claude/agents/developer.md || (echo "FAIL: developer agent not installed"; exit 1)
-	@test -f test-install/.claude/agents/ai-engineer.md || (echo "FAIL: ai-engineer agent not installed"; exit 1)
+	@test -f test-install/.claude/skills/architect/SKILL.md || (echo "FAIL: skill definitions not installed"; exit 1)
+	@test -f test-install/.claude/skills/developer/SKILL.md || (echo "FAIL: developer skill not installed"; exit 1)
+	@test -f test-install/.claude/skills/ai-engineer/SKILL.md || (echo "FAIL: ai-engineer skill not installed"; exit 1)
 	@test -f test-install/.claude/agenttask-templates/medium-agenttask-template.yaml || (echo "FAIL: agenttask-templates not installed"; exit 1)
 	@grep -q "@~/.claude/modes/virtual-team.md" test-install/CLAUDE.md || (echo "FAIL: Import not added"; exit 1)
 	@echo "✅ Installation tests passed!"
@@ -175,8 +175,8 @@ test:
 	@echo "Testing conservative uninstall..."
 	@ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) uninstall TARGET_PATH=test-install
 	@test ! -f test-install/.claude/modes/virtual-team.md || (echo "FAIL: modes not removed"; exit 1)
-	@test ! -f test-install/.claude/behaviors || (echo "FAIL: behaviors not removed"; exit 1)
-	@test ! -f test-install/.claude/agents || (echo "FAIL: agents not removed"; exit 1)
+	@test ! -d test-install/.claude/behaviors || (echo "FAIL: behaviors not removed"; exit 1)
+	@test ! -d test-install/.claude/skills || (echo "FAIL: skills not removed"; exit 1)
 	@echo "✅ Conservative uninstall test passed!"
 	@echo ""
 	@echo "Testing force uninstall..."

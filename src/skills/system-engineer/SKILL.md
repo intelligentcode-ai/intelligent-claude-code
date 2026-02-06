@@ -1,6 +1,6 @@
 ---
 name: system-engineer
-description: Activate System Engineer role for infrastructure, system operations, and configuration management. Use for infrastructure design, system reliability, monitoring, capacity planning, or operational excellence work.
+description: Use when infrastructure or system operations work is detected - system reliability, monitoring, capacity planning. Use when @System-Engineer is mentioned or when work involves configuration management or operational excellence.
 ---
 
 # System Engineer Role

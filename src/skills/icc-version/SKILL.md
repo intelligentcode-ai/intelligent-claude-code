@@ -38,5 +38,5 @@ Repository: https://github.com/intelligentcode-ai/intelligent-claude-code
 
 ## Error Handling
 
-- **VERSION_NOT_FOUND**: Display "Version file not found. Run /icc-init-system to initialize."
-- **SYSTEM_NOT_INITIALIZED**: Display "System not initialized. Run /icc-init-system first."
+- **VERSION_NOT_FOUND**: Display "Version file not found. Use icc-init-system to initialize."
+- **SYSTEM_NOT_INITIALIZED**: Display "System not initialized. Use icc-init-system first."

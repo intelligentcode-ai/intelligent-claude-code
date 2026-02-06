@@ -1,35 +1,35 @@
 ---
 name: parallel-execution
-description: Manage parallel AgentTask execution and queue management. Use when running multiple AgentTasks concurrently, monitoring agent status, or coordinating non-blocking task patterns in L3 mode.
+description: Use when running multiple work items concurrently. Use when coordinating non-blocking task patterns in L3 mode. Manages parallel execution from .agent/queue/.
 ---
 
 # Parallel Execution Skill
 
-Manage parallel AgentTask execution and coordination.
+Manage parallel work item execution and coordination.
 
 ## When to Use
 
-- Running multiple AgentTasks concurrently
-- Monitoring status of background agents
-- Coordinating non-blocking task patterns
+- Running multiple work items concurrently
+- Monitoring status of background tasks
+- Coordinating non-blocking patterns
 - Operating in L3 autonomy mode
 
 ## Parallel Execution Rules
 
 ### Independence Check
 Before parallel execution, verify:
-- No data dependencies between tasks
+- No data dependencies between items
 - No file conflicts (same file modified)
-- No sequential requirements
+- No sequential requirements (check BlockedBy)
 
 ### Maximum Concurrency
-- Default: 5 parallel AgentTasks
-- Configurable via `autonomy.l3_settings.max_parallel`
+- Default: 5 parallel items
+- Configurable via `autonomy.max_parallel`
 - Respect system resource limits
 
 ## Non-Blocking Patterns
 
-### Launch Background Task
+### Launch Background Task (Claude Code)
 ```
 Task tool with run_in_background: true
 ```
@@ -43,7 +43,6 @@ TaskOutput with task_id, block: false
 ```
 - Non-blocking status check
 - Returns current progress
-- Use to coordinate completion
 
 ### Wait for Completion
 ```
@@ -51,23 +50,43 @@ TaskOutput with task_id, block: true
 ```
 - Blocks until task completes
 - Returns final result
-- Use when result needed
 
-## Queue Management
+## Queue-Based Execution
 
-### Task Prioritization
-1. Blocking dependencies first
-2. Critical path items
-3. Independent tasks in parallel
-4. Low-priority background tasks
+### Identify Parallel Items
+From `.agent/queue/`, items can run in parallel if:
+- Neither has `BlockedBy` referencing the other
+- They modify different files/components
+- They're independent features
 
-### Error Handling
-When `continue_on_error` is true (L3):
-- Log failed tasks
-- Continue with remaining tasks
+### Launch Parallel Work
+```bash
+# Example: two independent items
+# 001-pending-frontend.md (no blockers)
+# 002-pending-backend.md (no blockers)
+# Can run in parallel
+```
+
+### Track Status in Queue
+Update status in filenames:
+- `pending` → `in_progress` when started
+- `in_progress` → `completed` when done
+- `in_progress` → `blocked` if dependency issue found
+
+## Prioritization
+
+1. Items blocking others (critical path)
+2. Independent items (parallelizable)
+3. Items with most blockers (finish last)
+
+## Error Handling
+
+**L3 (continue_on_error: true):**
+- Log failed items
+- Continue with remaining items
 - Report all failures at end
 
-When false (L1/L2):
+**L1/L2:**
 - Stop on first failure
 - Report error to user
 - Await guidance
@@ -75,21 +94,13 @@ When false (L1/L2):
 ## Coordination Patterns
 
 ### Fork-Join Pattern
-1. Create multiple independent AgentTasks
-2. Launch all in parallel
+1. Identify independent work items
+2. Launch all in parallel (Task tool with run_in_background)
 3. Wait for all to complete
 4. Aggregate results
 
 ### Pipeline Pattern
-1. Task A produces output
-2. Task B consumes A's output
-3. Sequential dependency respected
-4. Use `addBlockedBy` for ordering
-
-## Status Monitoring
-
-For long-running operations:
-1. Launch with `run_in_background: true`
-2. Periodically check with `TaskOutput`
-3. Process results when complete
-4. Handle timeouts appropriately
+1. Item A produces output
+2. Item B blocked by A
+3. Execute sequentially
+4. Respect BlockedBy in queue files

@@ -1,73 +1,70 @@
 ---
 name: autonomy
-description: Apply autonomy level settings to work execution. Use when checking autonomy level (L1/L2/L3), determining work detection patterns, or applying autonomy-specific behaviors to AgentTask execution.
+description: Use after a subagent completes work to check for continuation. Use when a task finishes to determine next steps. Use when detecting work patterns in user messages. Governs automatic work continuation and work queue management.
 ---
 
 # Autonomy Skill
 
-Apply autonomy level settings to work execution patterns.
+**Invoke automatically** after subagent completion or when deciding next actions.
+
+## When to Invoke (Automatic)
+
+| Trigger | Action |
+|---------|--------|
+| Subagent returns completed work | Check `.agent/queue/` for next item |
+| Task finishes successfully | Update status, pick next pending item |
+| Work pattern detected in user message | Add to work queue if L2/L3 |
+| Multiple tasks identified | Queue all, parallelize if L3 |
 
 ## Autonomy Levels
 
-### L1 - Guided Mode
-- Explicit confirmation required before actions
-- Step-by-step approval workflow
-- Maximum user oversight
+### L1 - Guided
+- Confirm before each action
+- Wait for explicit user instruction
+- No automatic continuation
 
-### L2 - Balanced Mode (Default)
-- Work detection triggers AgentTask creation
-- User approval for significant changes
-- Automatic handling of routine tasks
+### L2 - Balanced (Default)
+- Add detected work to `.agent/queue/`
+- Confirm significant changes
+- Continue routine tasks automatically
 
-### L3 - Autonomous Mode
+### L3 - Autonomous
+- Execute without confirmation
+- **Continue to next queued item on completion**
+- Discover and queue related work
 - Maximum parallel execution
-- Automatic continuation on success
-- Minimal intervention required
-- Auto-discovery of related work
 
-## Work Detection Patterns
+## Continuation Logic (L3)
 
-**Work Triggers** (create AgentTask):
-- Action verbs: implement, fix, create, deploy, update, refactor
-- @Role work patterns: "@Developer implement X"
-- Continuation patterns: testing after implementation
-
-**Information Patterns** (direct response):
-- Questions: what, how, why, status, explain
-- Consultation: "@PM what story next?"
-- Research: exploring codebase, reading docs
-
-## L3 Settings
-
-When operating in L3 mode:
-```json
-{
-  "max_parallel": 5,
-  "auto_discover": true,
-  "continue_on_error": true
-}
+After work completes:
+```
+1. Mark current item completed in .agent/queue/
+2. Check: Are there pending items in queue?
+3. Check: Did the work reveal new tasks?
+4. If yes → Add to queue, execute next pending item
+5. If no more work → Report completion to user
 ```
 
-- **max_parallel**: Maximum concurrent AgentTasks
-- **auto_discover**: Find related work automatically
-- **continue_on_error**: Don't stop on single failure
+## Work Detection
 
-## PM Role Enforcement
+**Triggers queue addition:**
+- Action verbs: implement, fix, create, deploy, update, refactor
+- @Role patterns: "@Developer implement X"
+- Continuation: testing after implementation
 
-**PM always active** setting determines:
-- Whether PM is automatically activated on work detection
-- Coordination layer for all technical work
-- Story breakdown and task assignment flow
+**Direct response (no queue):**
+- Questions: what, how, why, explain
+- Status checks
+- Simple lookups
 
-## Scope Blocking
+## Queue Integration
 
-Main scope is limited when `strict_main_scope` is enabled:
-- Main agent coordinates only
-- Technical work delegated via Task tool
-- Prevents implementation in main context
+Uses `.agent/queue/` for cross-platform work tracking:
+- Claude Code: TodoWrite for display + queue for persistence
+- Other agents: Queue files directly
+
+See work-queue skill for queue management details.
 
 ## Configuration
 
-Check current autonomy with `/icc-get-setting autonomy.level`
-
-Set autonomy via `/icc-init-system [L1|L2|L3]`
+Level stored in `autonomy.level` (L1/L2/L3)
