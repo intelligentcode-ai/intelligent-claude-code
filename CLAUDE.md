@@ -95,3 +95,29 @@ The system loads skills from:
 ~/.claude/skills/     (user skills)
 .claude/skills/       (project skills)
 ```
+
+## Development (This Project)
+
+**This project IS the ICC framework source.** When working here:
+
+### Source Locations
+- `src/skills/` - Distributed skills (what users install)
+- `src/hooks/` - Enforcement hooks
+- `src/behaviors/` - Behavioral guidance
+
+### Local Testing Setup
+Run `/icc-setup` for guided setup (includes Linux/macOS/Windows commands).
+
+### Workflow
+Use `/process` for the complete development workflow:
+1. **Development Phase** - Implement → Test → Review → Fix (loop until clean)
+2. **Deployment Phase** - Deploy → Test → Review → Commit (if applicable)
+3. **PR Phase** - Create PR → Review → Fix → Await explicit user approval
+
+### Key Skills for This Project
+- `/icc-setup` - Setup development environment (run after clone)
+- `/process` - Complete development workflow with quality gates
+- `/commit-pr` - Commit and PR formatting
+- `/git-privacy` - AI attribution prevention (MANDATORY)
+- `/reviewer` - Critical review (pre-commit, post-commit, post-PR)
+- `/icc-development` - Development guide (local only)

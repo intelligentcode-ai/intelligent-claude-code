@@ -78,7 +78,9 @@ NOTES.md
 999_progress/
 
 # Claude configuration (user-specific, not source code)
-.claude/
+# NOTE: .claude/skills/ is tracked in THIS project (ICC framework source)
+.claude/*
+!.claude/skills/
 
 # CRITICAL: Memory must NEVER be committed - local learning only!
 # If you see memory/ files in git status, DO NOT COMMIT THEM
