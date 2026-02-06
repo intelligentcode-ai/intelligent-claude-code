@@ -1,12 +1,13 @@
 # Hook System Guide
 
-The v10 hook system is intentionally minimal and only enforces behaviors Claude Code does not provide natively.
+The v10.1 hook system is intentionally minimal and only enforces behaviors Claude Code does not provide natively.
 
 ## Active Hooks (PreToolUse)
 
-- `git-enforcement.js` — strips AI/Claude mentions in commits and PR text when privacy is enabled.
 - `agent-infrastructure-protection.js` — blocks imperative infra changes and guides IaC.
 - `summary-file-enforcement.js` — routes summary/report files into `summaries/` and blocks ALL‑CAPS filenames.
+
+Note: Git privacy is now handled via the `git-privacy` skill rather than a hook.
 
 ## Registration
 
@@ -16,4 +17,4 @@ Hooks are registered by:
 
 ## Why only PreToolUse?
 
-Claude Code already handles role orchestration and subagent execution. The remaining hooks focus purely on safety, privacy, and file hygiene.
+Claude Code already handles role orchestration and subagent execution. The remaining hooks focus purely on safety and file hygiene.

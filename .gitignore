@@ -92,6 +92,9 @@ memory/**/*
 # AgentTasks should also remain local
 agenttasks/
 
+# Agent work queue (cross-platform task tracking)
+.agent/
+
 # Credentials
 *.pem
 *.key

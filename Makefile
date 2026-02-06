@@ -77,7 +77,7 @@ ANSIBLE_PLAYBOOK := $(shell \
 		echo "/usr/bin/ansible-playbook"; \
 	elif [ -x "$$HOME/.local/bin/ansible-playbook" ]; then \
 		echo "$$HOME/.local/bin/ansible-playbook"; \
-	elif [ -x "$$HOME/Library/Python/3.*/bin/ansible-playbook" ]; then \
+	elif ls $$HOME/Library/Python/3.*/bin/ansible-playbook >/dev/null 2>&1; then \
 		ls -1 $$HOME/Library/Python/3.*/bin/ansible-playbook 2>/dev/null | head -1; \
 	else \
 		echo ""; \

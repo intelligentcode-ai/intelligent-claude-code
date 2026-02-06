@@ -176,13 +176,12 @@ function Register-ProductionHooks {
             $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
         }
 
-        # Define all production hooks
+        # Define all production hooks (git-enforcement.js removed in v10.1)
         $ProductionHooks = [PSCustomObject]@{
             PreToolUse = @(
                 [PSCustomObject]@{
                     matcher = "*"
                     hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\git-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-infrastructure-protection.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\summary-file-enforcement.js`""; timeout = 5000 }
                     )
