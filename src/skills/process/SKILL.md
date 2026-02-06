@@ -97,13 +97,32 @@ Ensure /git-privacy rules followed (no AI attribution)
 Run /commit-pr to create PR
 ```
 
-### Step 3.2: PR Review Loop
+### Step 3.2: Dedicated PR Review Loop
+
+**MANDATORY**: Clone to temp directory and review full PR diff:
+```bash
+# Clone and checkout PR
+TEMP_DIR=$(mktemp -d)
+gh pr checkout <PR-number> --repo . --detach -C "$TEMP_DIR"
+cd "$TEMP_DIR"
+
+# Review ALL changes in PR
+gh pr diff <PR-number>
+
+# Run /reviewer checks
 ```
-Run /reviewer (post-PR stage, uses temp directory)
+
+```
+Run /reviewer (post-PR stage)
+- Security scan entire PR diff
+- File placement verification
+- Credential/secret detection
+- ALL-CAPS filename check
+
 IF findings exist:
-    Fix findings
+    Fix findings in original repo
     Push updates
-    GOTO Step 3.2
+    GOTO Step 3.2 (re-review)
 ```
 
 ### Step 3.3: Await Approval

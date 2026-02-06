@@ -1,103 +1,80 @@
 ---
 name: branch-protection
-description: Apply git branch protection and commit rules. Use when performing git operations to ensure branch protection is followed. This skill mirrors what the git-enforcement hook enforces.
+description: MANDATORY - Git branch protection rules. Use when performing git operations. Assumes branch protection enabled unless git.branch_protection=false in settings. Prevents direct commits to main/master, blocks destructive operations.
 ---
 
 # Branch Protection Skill
 
-Apply git branch protection rules and safe commit practices.
+**MANDATORY by default.** Branch protection is assumed enabled unless explicitly disabled.
 
-## Why This Matters
+## Default Behavior
 
-Git operations are **enforced by hooks** - dangerous operations will be blocked. This skill ensures you understand the rules so your commits aren't rejected.
-
-## Branch Protection Rules
-
-### Protected Branches
-- `main` and `master` are protected by default
-- Direct commits to protected branches are blocked
-- PRs required for changes to protected branches
-
-### Allowed Operations
-```bash
-# Safe operations (always allowed)
-git status
-git log
-git diff
-git show
-git branch
-git fetch
-git pull
-
-# Commit operations (require branch check)
-git commit      # Blocked on protected branches
-git push        # Blocked to protected branches
+Branch protection is ON unless `git.branch_protection=false` in `icc.config.json`:
+```json
+{
+  "git": {
+    "branch_protection": false
+  }
+}
 ```
 
-### Blocked Operations
+## Protected Branches
+
+- `main` and `master` are protected by default
+- Configurable via `git.default_branch` setting
+
+## Rules
+
+### NEVER Do (Unless User Explicitly Requests)
 ```bash
-# Dangerous operations (always blocked)
+# Direct commit to protected branch
+git checkout main && git commit
+
+# Force push
 git push --force
+
+# Destructive operations
 git reset --hard
 git checkout .
 git restore .
 git clean -f
 git branch -D
+```
 
-# Unless user explicitly requests
+### ALWAYS Do
+```bash
+# Work on feature branch
+git checkout -b feature/my-change
+
+# Commit to feature branch
+git commit -m "feat: Add feature"
+
+# Push feature branch
+git push -u origin feature/my-change
+
+# Create PR for merge
+gh pr create
 ```
 
 ## Commit Workflow
 
-### Correct Flow
-1. Create feature branch: `git checkout -b feature/my-change`
-2. Make changes
-3. Commit to feature branch: `git commit -m "..."`
-4. Push feature branch: `git push -u origin feature/my-change`
-5. Create PR via `gh pr create`
-6. Merge via PR (not direct push)
+1. **Create branch**: `git checkout -b feature/description`
+2. **Make changes**: Edit files
+3. **Test**: Run tests
+4. **Commit**: `git commit -m "type: description"`
+5. **Push**: `git push -u origin feature/description`
+6. **PR**: `gh pr create`
+7. **Merge**: Via PR after approval
 
-### Incorrect Flow (Blocked)
-```bash
-# Direct commit to main - BLOCKED
-git checkout main
-git commit -m "my change"
+## Self-Check Before Git Operations
 
-# Force push - BLOCKED
-git push --force origin main
-```
+1. Am I on a feature branch? → If on main, create branch first
+2. Is this destructive? → Only proceed if user explicitly requested
+3. Am I pushing to main? → Use PR workflow instead
 
-## Git Privacy Integration
+## Integration
 
-When `git.privacy=true`:
-- AI references stripped from commit messages
-- Co-authored-by lines removed
-- Professional language enforced
-
-See `/git-privacy` skill for details.
-
-## Hook Enforcement
-
-The `git-enforcement.js` hook will:
-1. **Block** direct commits to protected branches
-2. **Block** force push to any branch
-3. **Block** destructive operations (reset --hard, clean -f)
-4. **Apply** privacy filtering to commit messages
-
-## Before Git Operations
-
-Ask yourself:
-1. Am I on a feature branch? → If not, create one
-2. Is this a destructive operation? → Only if user explicitly requested
-3. Am I pushing to main? → Use PR instead
-4. Does my commit message contain AI references? → Will be filtered
-
-## Integration with Hooks
-
-This skill provides **guidance** - you understand the rules.
-The hook provides **enforcement** - violations are blocked.
-
-Together they prevent:
-- Accidental commits to main
-- Lost work from destructive operations
-- AI references leaking into history
+Works with:
+- `/git-privacy` - No AI attribution in commits
+- `/commit-pr` - Commit message formatting
+- `/process` - Development workflow phases
