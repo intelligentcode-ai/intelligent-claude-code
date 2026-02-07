@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.0] - 2026-02-07
+
+### Added
+- Dev-first workflow enforcement in skills (all changes go to dev first, main is stable releases only)
+- Phase 4: Release (dev → main) in process skill
+- PR target branch rules in commit-pr skill (defaults to dev)
+- Branch hierarchy documentation in branch-protection skill
+
+### Changed
+- Renamed ansible role `mcp-integration` to `mcp_integration` (ansible-lint compliance)
+- Updated version examples from v1.2.0 to v10.x.y in skill documentation
+- Fixed fragile `git log dev..HEAD` to use `origin/dev` reference
+
+### Fixed
+- ansible-lint role-name rule violation (hyphens not allowed in role names)
+- Non-existent `git.integration_branch` config reference removed
+
 ## [10.1.0] - 2026-02-07
 
 ### Added
