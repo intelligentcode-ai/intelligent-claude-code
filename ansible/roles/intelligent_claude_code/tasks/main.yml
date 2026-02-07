@@ -341,11 +341,17 @@
   register: intelligent_claude_code_npm_check
   failed_when: false
   changed_when: false
+- name: Check if memory skill dependencies exist
+  ansible.builtin.stat:
+    path: "{{ claude_install_path }}/skills/memory/node_modules"
+  register: intelligent_claude_code_memory_node_modules
 - name: Install memory skill dependencies (optional - enhances search)
   ansible.builtin.command:
     cmd: npm install --production
     chdir: "{{ claude_install_path }}/skills/memory"
-  when: intelligent_claude_code_npm_check.rc == 0
+  when:
+    - intelligent_claude_code_npm_check.rc == 0
+    - not intelligent_claude_code_memory_node_modules.stat.exists
   register: intelligent_claude_code_memory_npm_install
   failed_when: false
   changed_when: intelligent_claude_code_memory_npm_install.rc == 0
