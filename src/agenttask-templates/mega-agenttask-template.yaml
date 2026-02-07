@@ -41,7 +41,7 @@ complete_context:
     original_request: "[USER_REQUEST]"
     success_criteria: "[SUCCESS_CRITERIA]"
     system_scope: "[COMPLETE_SYSTEM_BOUNDARY]"
-  
+
   specialization_context:
     technology_domains: "[TECHNOLOGY_DOMAINS]"
     specialist_creation: "ALWAYS create specialists when technology expertise is needed"
@@ -88,7 +88,7 @@ epic_decomposition:
       scope: "[PHASE_1_SCOPE]"
       dependencies: []
     - phase: "[PHASE_2]"
-      agenttask_type: "large" 
+      agenttask_type: "large"
       scope: "[PHASE_2_SCOPE]"
       dependencies: ["[PHASE_1]"]
     - phase: "[INTEGRATION]"
@@ -132,7 +132,7 @@ knowledge_management:
   capture_insights: "Document architectural transformation approach"
   location: "memory/[topic]/system-changes.md"
 
-# MANDATORY: Git Operations  
+# MANDATORY: Git Operations
 git_operations:
   branch_strategy: "Epic branch with phase branches"
   commit_format: "[ID]: [DESCRIPTION]"
@@ -227,7 +227,7 @@ mcp_operations:
         topic: "[LEARNING_TOPIC]"
         content: "[LEARNING_CONTENT]"
     fallback: "file-based"
-  
+
   issue_tracking:
     condition: "[MCP_ISSUE_ENABLED]"
     provider: "[MCP_ISSUE_PROVIDER]"
@@ -237,7 +237,7 @@ mcp_operations:
         title: "[ISSUE_TITLE]"
         description: "[ISSUE_DESCRIPTION]"
     fallback: "file-based"
-  
+
   documentation:
     condition: "[MCP_DOCS_ENABLED]"
     provider: "[MCP_DOCS_PROVIDER]"
@@ -266,7 +266,7 @@ execution_strategy: |
   5. Comprehensive system testing and validation
   6. Documentation overhaul and migration guide creation
   7. Staged rollout with rollback capability
-  
+
 # EXECUTION CHECKLIST
 execution_checklist: |
   ☐ Epic branch created for system coordination (MANDATORY - validation enforced)

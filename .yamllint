@@ -6,7 +6,9 @@ rules:
     max: 120
     level: warning
   truthy:
-    allowed-values: ['true', 'false', 'yes', 'no']
+    # GitHub Actions uses 'on:' keyword (truthy warning)
+    check-keys: false
+  document-start: disable
   comments:
     min-spaces-from-content: 1
   braces:
@@ -15,3 +17,6 @@ rules:
   brackets:
     min-spaces-inside: 0
     max-spaces-inside: 0
+  indentation:
+    # GitHub Actions uses 2-space indentation with list items at same level
+    indent-sequences: whatever

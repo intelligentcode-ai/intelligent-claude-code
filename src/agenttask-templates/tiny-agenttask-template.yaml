@@ -28,7 +28,7 @@ complete_context:
   user_requirements:
     original_request: "[USER_REQUEST]"
     success_criteria: "[SUCCESS_CRITERIA]"
-  
+
   specialization_context:
     technology_domains: "[TECHNOLOGY_DOMAINS]"
     specialist_creation: "ALWAYS create specialists when technology expertise is needed"
@@ -159,7 +159,7 @@ validation_enforcement:
         - "Skip versioning"
         - "Version not applicable"
       error_message: "❌ BLOCKED: Version management is mandatory for all changes."
-  
+
   workflow:
     version_bump: "[WORKFLOW_VERSION_BUMP]"
     version_type: "[WORKFLOW_VERSION_TYPE]"
@@ -170,7 +170,7 @@ validation_enforcement:
     auto_merge: "[WORKFLOW_AUTO_MERGE]"
     coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
     breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
-  
+
   enforcement_rules:
     - "ALL 7 execution steps must be completed in order"
     - "NO bypass language or skip patterns allowed"
@@ -188,7 +188,7 @@ mcp_operations:
         topic: "[LEARNING_TOPIC]"
         content: "[LEARNING_CONTENT]"
     fallback: "file-based"
-  
+
   issue_tracking:
     condition: "[MCP_ISSUE_ENABLED]"
     provider: "[MCP_ISSUE_PROVIDER]"
@@ -198,7 +198,7 @@ mcp_operations:
         title: "[ISSUE_TITLE]"
         description: "[ISSUE_DESCRIPTION]"
     fallback: "file-based"
-  
+
   documentation:
     condition: "[MCP_DOCS_ENABLED]"
     provider: "[MCP_DOCS_PROVIDER]"

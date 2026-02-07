@@ -26,13 +26,13 @@ complete_context:
       purpose: "[FILE_PURPOSE]"
       sample: "[FILE_SAMPLE]"
     - path: "[SECONDARY_FILE]"
-      purpose: "[FILE_PURPOSE_2]" 
+      purpose: "[FILE_PURPOSE_2]"
       sample: "[FILE_SAMPLE_2]"
   user_requirements:
     original_request: "[USER_REQUEST]"
     success_criteria: "[SUCCESS_CRITERIA]"
     feature_scope: "[FEATURE_BOUNDARY]"
-  
+
   specialization_context:
     technology_domains: "[TECHNOLOGY_DOMAINS]"
     specialist_creation: "ALWAYS create specialists when technology expertise is needed"
@@ -128,11 +128,11 @@ pull_request:
   description: |
     ## Summary
     [FEATURE_OVERVIEW]
-    
+
     ## Changes Made
     - [CHANGE_1]
     - [CHANGE_2]
-    
+
     ## Testing
     [TESTING_PERFORMED]
   reviewer: "[PRE_ASSIGNED_SME]"
@@ -217,7 +217,7 @@ validation_enforcement:
         - "Version not applicable"
         - "Internal change, no version impact"
       error_message: "❌ BLOCKED: Version management is mandatory for all feature-level changes."
-  
+
   workflow:
     version_bump: "[WORKFLOW_VERSION_BUMP]"
     version_type: "[WORKFLOW_VERSION_TYPE]"
@@ -228,7 +228,7 @@ validation_enforcement:
     auto_merge: "[WORKFLOW_AUTO_MERGE]"
     coordination_required: "[WORKFLOW_COORDINATION_REQUIRED]"
     breaking_change_assessment: "[WORKFLOW_BREAKING_CHANGE_ASSESSMENT]"
-  
+
   enforcement_rules:
     - "ALL 9 execution steps must be completed in sequential order"
     - "NO bypass language, skip patterns, or discretionary exceptions allowed"
@@ -247,7 +247,7 @@ mcp_operations:
         topic: "[LEARNING_TOPIC]"
         content: "[LEARNING_CONTENT]"
     fallback: "file-based"
-  
+
   issue_tracking:
     condition: "[MCP_ISSUE_ENABLED]"
     provider: "[MCP_ISSUE_PROVIDER]"
@@ -257,7 +257,7 @@ mcp_operations:
         title: "[ISSUE_TITLE]"
         description: "[ISSUE_DESCRIPTION]"
     fallback: "file-based"
-  
+
   documentation:
     condition: "[MCP_DOCS_ENABLED]"
     provider: "[MCP_DOCS_PROVIDER]"

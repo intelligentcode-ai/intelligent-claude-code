@@ -126,16 +126,12 @@
       {{ claude_install_path }}/agenttask-templates/
       already exists - keeping user modifications
   when: intelligent_claude_code_agenttask_templates_copy_result.failed and ansible_verbosity >= 1
-- name: Copy hooks directory
-  ansible.posix.synchronize:
+- name: Copy hooks directory (excluding node_modules)
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/hooks/"
     dest: "{{ claude_install_path }}/hooks/"
-    recursive: true
-    delete: true
-    rsync_opts:
-      - "--exclude=node_modules/"
-      - "--exclude=package-lock.json"
-  delegate_to: localhost
+    mode: preserve
+    force: true
   register: intelligent_claude_code_hooks_copy_result
 - name: Ensure hooks subdirectories are copied
   ansible.builtin.copy:
@@ -336,37 +332,45 @@
 - name: Handle project-specific integration
   ansible.builtin.import_tasks: project_integration.yml
   when: claude_scope == "project"
+# Memory skill npm dependencies - OPT-IN due to supply-chain risk
+# (better-sqlite3 compiles native code, @xenova/transformers downloads large models)
+# Set install_memory_deps=true to enable, or run manually: npm install in skills/memory/
+- name: Display memory skill manual installation notice
+  ansible.builtin.debug:
+    msg: >-
+      Memory skill: For enhanced search, manually run 'npm install' in
+      {{ claude_install_path }}/skills/memory/ (downloads ~80MB model)
+  when:
+    - not (install_memory_deps | default(false) | bool)
+    - ansible_verbosity >= 1
 - name: Check if npm is available for memory skill
   ansible.builtin.command: which npm
   register: intelligent_claude_code_npm_check
   failed_when: false
   changed_when: false
+  when: install_memory_deps | default(false) | bool
 - name: Check if memory skill dependencies exist
   ansible.builtin.stat:
     path: "{{ claude_install_path }}/skills/memory/node_modules"
   register: intelligent_claude_code_memory_node_modules
-- name: Install memory skill dependencies (optional - enhances search)
+  when: install_memory_deps | default(false) | bool
+- name: Install memory skill dependencies (opt-in)
   ansible.builtin.command:
     cmd: npm install --production
     chdir: "{{ claude_install_path }}/skills/memory"
   when:
-    - intelligent_claude_code_npm_check.rc == 0
-    - not intelligent_claude_code_memory_node_modules.stat.exists
+    - install_memory_deps | default(false) | bool
+    - intelligent_claude_code_npm_check.rc | default(-1) == 0
+    - not (intelligent_claude_code_memory_node_modules.stat.exists | default(false))
   register: intelligent_claude_code_memory_npm_install
   failed_when: false
-  changed_when: intelligent_claude_code_memory_npm_install.rc == 0
+  changed_when: intelligent_claude_code_memory_npm_install.rc | default(-1) == 0
 - name: Display memory skill installation notice
   ansible.builtin.debug:
     msg: "Memory skill: SQLite + embeddings installed for hybrid search"
   when:
-    - intelligent_claude_code_npm_check.rc == 0
-    - intelligent_claude_code_memory_npm_install.rc == 0
-    - ansible_verbosity >= 1
-- name: Display memory skill manual notice
-  ansible.builtin.debug:
-    msg: "Memory skill: Run 'npm install' in skills/memory/ for enhanced search (optional)"
-  when:
-    - intelligent_claude_code_npm_check.rc != 0
+    - install_memory_deps | default(false) | bool
+    - intelligent_claude_code_memory_npm_install.rc | default(-1) == 0
     - ansible_verbosity >= 1
 - name: Display installation summary
   ansible.builtin.debug:

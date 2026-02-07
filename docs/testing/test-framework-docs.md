@@ -24,7 +24,7 @@ bash tests/run-tests.sh
 - `agent-infrastructure-protection.js`
 - `summary-file-enforcement.js`
 
-Note: `git-enforcement.js` was deprecated in v10.1 (moved to hooks/deprecated/) - git privacy is now handled via the `git-privacy` skill.
+Note: `git-enforcement.js` was removed in v10.1 - git privacy is now handled via the `git-privacy` skill.
 
 ## Notes
 
