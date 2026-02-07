@@ -5,7 +5,7 @@ Intelligent Claude Code is a CC-native framework that adds role-based specialist
 
 ## Core Components
 
-### Skills (33 total)
+### Skills (34 total)
 Skills are the primary interface for specialized capabilities. They are:
 - Defined in `src/skills/*/SKILL.md`
 - Installed to `.claude/skills/`
@@ -14,7 +14,7 @@ Skills are the primary interface for specialized capabilities. They are:
 **Categories:**
 - **Role Skills (14):** pm, architect, developer, system-engineer, devops-engineer, database-engineer, security-engineer, ai-engineer, web-designer, qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer
 - **Command Skills (2):** icc-version, icc-get-setting
-- **Process Skills (13):** thinking, work-queue, process, best-practices, validate, autonomy, parallel-execution, workflow, mcp-config, story-breakdown, git-privacy, commit-pr, release
+- **Process Skills (14):** thinking, work-queue, process, best-practices, validate, autonomy, parallel-execution, workflow, mcp-config, story-breakdown, git-privacy, commit-pr, release, suggest
 - **Enforcement Companion Skills (3):** file-placement, branch-protection, infrastructure-protection
 - **Meta Skill (1):** skill-creator
 

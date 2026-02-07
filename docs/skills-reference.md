@@ -1,7 +1,7 @@
 # Skills Reference
 
 ## Overview
-The intelligent-claude-code system provides **33 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
+The intelligent-claude-code system provides **34 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
 
 ## Essential Skills (2)
 
@@ -110,10 +110,10 @@ qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer
 ### Command Skills (2)
 icc-version, icc-get-setting
 
-### Process Skills (13)
+### Process Skills (14)
 thinking, work-queue, process, best-practices, validate,
 autonomy, parallel-execution, workflow, mcp-config,
-story-breakdown, git-privacy, commit-pr, release
+story-breakdown, git-privacy, commit-pr, release, suggest
 
 ### Enforcement Companion Skills (3)
 file-placement, branch-protection, infrastructure-protection

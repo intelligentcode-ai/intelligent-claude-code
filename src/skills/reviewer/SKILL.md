@@ -1,238 +1,241 @@
 ---
 name: reviewer
-description: Activate when reviewing code, before committing, after committing, or before merging a PR. Activate when user asks to review, audit, check for security issues, or verify file placement. Checks credentials, .gitignore, file locations, and prevents agent bloat. Required at process skill quality gates.
+description: Activate when reviewing code, before committing, after committing, or before merging a PR. Activate when user asks to review, audit, check for security issues, or find regressions. Analyzes code for logic errors, regressions, edge cases, security issues, and test gaps. Required at process skill quality gates.
 ---
 
-# Reviewer Role
+# Reviewer Skill
 
-Critical reviewer focused on security, correctness, file hygiene, and preventing agent-generated bloat.
+Critical code reviewer focused on finding problems. Analyzes for logic errors, regressions, edge cases, security issues, and test gaps.
 
-## CRITICAL PRINCIPLES
+## Core Analysis Questions
 
-1. **NEVER make things up** - Only report issues you can verify
-2. **ALWAYS be critical** - Assume code has problems until proven otherwise
-3. **ALWAYS prioritize findings** - Critical → High → Medium → Low
-4. **ALWAYS verify file locations** - Files must be in correct directories
-5. **ALWAYS fight agent bloat** - No REPORTS.md, SUMMARIES.md, ALL-CAPS filenames
+For EVERY review, answer these questions:
+
+1. **Logic errors** - What could fail? What assumptions are wrong?
+2. **Regressions** - What changed that shouldn't have? What behavior is different?
+3. **Edge cases** - What inputs aren't handled? What happens at boundaries?
+4. **Security** - Beyond credentials: injection, auth bypass, data exposure?
+5. **Test gaps** - What's untested? What scenarios are missing?
 
 ## Review Stages
 
-### Stage 1: Pre-Commit Review (During Development)
+### Stage 1: Pre-Commit Review
 
-Review changes BEFORE committing. Work in the current directory.
+**Context:** Uncommitted changes in working directory
+**Location:** Current directory (NOT temp folder)
 
 ```bash
+# Review unstaged changes
+git diff
+
 # Review staged changes
 git diff --cached
 
-# Review all uncommitted changes
-git diff
-
-# Check for sensitive files
+# See what files are affected
 git status
 ```
 
-**Checklist:**
-- [ ] No hardcoded credentials/secrets
-- [ ] No sensitive files staged (.env, credentials, keys)
+**Analyze the diff for:**
+- Logic errors in the changed code
+- Regressions from the previous behavior
+- Edge cases not handled
+- Security issues introduced
+- Missing test coverage for changes
+
+**Also check:**
+- [ ] No hardcoded credentials/secrets in diff
+- [ ] No sensitive files staged (.env, keys, credentials)
 - [ ] Files in correct locations (summaries/, memory/, etc.)
-- [ ] No ALL-CAPS filenames (except LICENSE, README, CLAUDE.md)
-- [ ] No agent-generated bloat files
-- [ ] Linting passes (if applicable)
+- [ ] No ALL-CAPS filenames (except LICENSE, README, CLAUDE.md, CHANGELOG.md)
 
-### Stage 2: Post-Commit Review
+### Stage 2: Post-Commit / Pre-PR Review
 
-Review a specific commit in isolation. Clone to temp directory.
+**Context:** Commits exist on branch, no PR yet
+**Location:** Current directory
 
 ```bash
-# Create temp directory and clone
-TEMP_DIR=$(mktemp -d)
-git clone --depth 1 . "$TEMP_DIR/review"
-cd "$TEMP_DIR/review"
-git checkout <commit-sha>
+# Review all commits on branch vs main
+git diff main..HEAD
 
-# Review the commit
-git show --stat
-git diff HEAD~1
+# See commit history
+git log main..HEAD --oneline
+
+# Review a specific commit
+git show <commit-sha>
+```
+
+**Analyze the full branch diff for:**
+- Logic errors across all changes
+- Regressions from main branch behavior
+- Edge cases introduced by the feature
+- Security implications of the full change set
+- Test coverage for the complete feature
+
+**Also check:**
+- [ ] Commit messages are meaningful
+- [ ] No debug code left in
+- [ ] Documentation updated if needed
+
+### Stage 3: Post-PR Review
+
+**Context:** PR exists, full review before merge
+**Location:** MUST use temp folder for isolation
+
+```bash
+# Setup credentials (if using external config)
+source ~/.config/git/common.conf 2>/dev/null && export GH_TOKEN=$GITHUB_PAT
+
+# Clone to temp folder
+TEMP_DIR=$(mktemp -d)
+cd "$TEMP_DIR"
+
+# Checkout the PR
+gh pr checkout <PR-number>
+
+# Review full PR diff
+gh pr diff <PR-number>
+
+# Check PR status and reviews
+gh pr view <PR-number>
 ```
 
 **Windows (PowerShell):**
 ```powershell
-$TEMP_DIR = New-TemporaryFile | ForEach-Object { Remove-Item $_; New-Item -ItemType Directory -Path $_ }
-git clone --depth 1 . "$TEMP_DIR\review"
-cd "$TEMP_DIR\review"
-git checkout <commit-sha>
-```
-
-### Stage 3: Post-PR Review
-
-Review a PR branch against main. Clone to temp directory.
-
-```bash
-# Create temp directory and clone
-TEMP_DIR=$(mktemp -d)
-git clone . "$TEMP_DIR/review"
-cd "$TEMP_DIR/review"
-git fetch origin pull/<PR-number>/head:pr-review
-git checkout pr-review
-
-# Compare against main
-git diff main...pr-review
-git log main..pr-review --oneline
-```
-
-**Or using gh CLI:**
-```bash
-TEMP_DIR=$(mktemp -d)
-cd "$TEMP_DIR"
+$TEMP_DIR = Join-Path $env:TEMP "review-$(Get-Random)"
+New-Item -ItemType Directory -Path $TEMP_DIR
+Set-Location $TEMP_DIR
 gh pr checkout <PR-number>
+```
+
+**Analyze the PR for:**
+- Logic errors in all changed code
+- Regressions from main branch
+- Edge cases not covered
+- Security vulnerabilities
+- Test gaps
+
+**Also check:**
+- [ ] PR description is accurate
+- [ ] Documentation reflects changes
+- [ ] No unnecessary files included
+
+### Project-Specific Linting
+
+Run linters based on project type detected:
+
+**Ansible projects** (contains `playbook.yml`, `ansible/`, or `roles/`):
+```bash
+# Use dummy password for vault if present
+ansible-lint --offline 2>/dev/null || ansible-lint
+ansible-playbook --syntax-check *.yml --vault-password-file=/dev/null 2>/dev/null || true
+```
+
+**HELM projects** (contains `Chart.yaml` or `charts/`):
+```bash
+helm lint .
+helm template . --debug 2>&1 | head -50
+```
+
+**Node.js projects** (contains `package.json`):
+```bash
+npm audit 2>/dev/null || true
+npx eslint . --ext .js,.ts 2>/dev/null || true
+```
+
+**Python projects** (contains `pyproject.toml` or `requirements.txt`):
+```bash
+ruff check . 2>/dev/null || pylint **/*.py 2>/dev/null || true
+```
+
+**Shell scripts**:
+```bash
+find . -name "*.sh" -exec shellcheck {} \; 2>/dev/null || true
 ```
 
 ## Security Review Checklist
 
-### Credentials & Secrets
-```bash
-# Search for potential secrets
-grep -rn "password\|secret\|api_key\|apikey\|token\|credential" --include="*.js" --include="*.ts" --include="*.json" --include="*.yaml" --include="*.yml"
+Beyond simple credential detection:
 
-# Search for hardcoded URLs with auth
-grep -rn "https://.*:.*@" --include="*"
+### Injection Vulnerabilities
+- SQL injection (unsanitized input in queries)
+- Command injection (user input in shell commands)
+- XSS (unescaped output in HTML)
+- Path traversal (user input in file paths)
 
-# Check for AWS keys
-grep -rn "AKIA[0-9A-Z]{16}" --include="*"
-```
+### Authentication/Authorization
+- Missing auth checks on endpoints
+- Broken access control (can user A access user B's data?)
+- Session handling issues
+- Token exposure in logs or URLs
 
-### .gitignore Verification
-```bash
-# Check .gitignore exists and contains essentials
-cat .gitignore | grep -E "\.env|node_modules|\.secret|credentials|\.key"
-
-# Find files that SHOULD be ignored but aren't
-git ls-files | grep -E "\.env|\.secret|credentials"
-```
-
-**Required .gitignore entries:**
-- `.env*` (environment files)
-- `*.key`, `*.pem` (keys)
-- `credentials*`, `secrets*`
-- `node_modules/`
-- `.DS_Store`
-- `*.log`
+### Data Exposure
+- Sensitive data in logs
+- PII in error messages
+- Secrets in environment variable dumps
+- Credentials in config files
 
 ### Dependency Security
 ```bash
-# Node.js
-npm audit
-
-# Check for outdated packages with vulnerabilities
-npm outdated
+# Check for known vulnerabilities
+npm audit 2>/dev/null
+pip-audit 2>/dev/null
 ```
 
 ## File Placement Review
 
-### BLOCKED Patterns (Agent Bloat)
-
-**NEVER allow these files:**
-- `REPORT.md`, `REPORTS.md`, `SUMMARY.md`, `SUMMARIES.md` in project root
-- `ANALYSIS.md`, `FINDINGS.md`, `REVIEW.md` in project root
-- Any ALL-CAPS `.md` files except: `README.md`, `LICENSE`, `CLAUDE.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`
-- Files like `full-analysis-report.md`, `complete-summary.md`
+**Blocked patterns (agent bloat):**
+- `REPORT.md`, `SUMMARY.md`, `ANALYSIS.md` in project root
+- ALL-CAPS `.md` files (except: README, LICENSE, CLAUDE, CHANGELOG, CONTRIBUTING, SECURITY)
 
 **Correct locations:**
-| File Type | Correct Location |
-|-----------|------------------|
+| Type | Directory |
+|------|-----------|
 | Summaries/Reports | `summaries/` |
 | Memory entries | `memory/` |
 | Stories | `stories/` |
 | Bugs | `bugs/` |
 | Documentation | `docs/` |
 
-### Detection Commands
-```bash
-# Find misplaced summary files
-find . -maxdepth 1 -name "*.md" | grep -iE "report|summary|analysis|finding"
-
-# Find ALL-CAPS markdown files (excluding allowed)
-find . -name "*.md" | grep -E "^./[A-Z]+\.md$" | grep -vE "README|LICENSE|CLAUDE|CHANGELOG|CONTRIBUTING|SECURITY"
-```
-
-## Linting Review
-
-### JavaScript/TypeScript
-```bash
-# If ESLint configured
-npx eslint . --ext .js,.ts
-
-# If Prettier configured
-npx prettier --check .
-```
-
-### Shell Scripts
-```bash
-# If shellcheck available
-find . -name "*.sh" -exec shellcheck {} \;
-```
-
-### YAML/JSON
-```bash
-# Validate JSON files
-find . -name "*.json" -exec sh -c 'node -e "JSON.parse(require(\"fs\").readFileSync(\"$1\"))" -- {} || echo "Invalid: {}"' \;
-
-# Validate YAML (if yq available)
-find . -name "*.yaml" -o -name "*.yml" | xargs -I {} yq eval {} > /dev/null
-```
-
 ## Output Format
 
-Report findings in this structure:
-
 ```markdown
-# Review Report
+# Review Findings
 
-## Critical Issues
+## Critical
 1. **[CRITICAL]** [file:line] Description
    - Evidence: `code snippet`
-   - Fix: Recommended action
+   - Risk: What could happen
+   - Fix: How to resolve
 
-## High Priority
+## High
 1. **[HIGH]** [file:line] Description
    - Evidence: `code snippet`
-   - Fix: Recommended action
+   - Fix: Recommendation
 
-## Medium Priority
+## Medium
 ...
 
-## Low Priority
+## Low
 ...
 
-## File Placement Violations
-- `SUMMARY.md` in root → Move to `summaries/`
+## Linting
+- ansible-lint: X violations
+- eslint: X errors, Y warnings
 
-## Security Findings
-- Potential hardcoded credential in `config.js:42`
-
-## Linting Issues
-- ESLint: 3 errors, 12 warnings
-```
-
-## Review Commands Summary
-
-**Quick pre-commit check:**
-```bash
-git diff --cached --name-only | xargs -I {} sh -c 'echo "=== {} ===" && head -50 {}'
-```
-
-**Full security scan:**
-```bash
-grep -rn "password\|secret\|api_key\|token" --include="*.js" --include="*.ts" --include="*.json" .
-```
-
-**File placement check:**
-```bash
-find . -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "CLAUDE.md" ! -name "LICENSE*" ! -name "CHANGELOG.md" ! -name "CONTRIBUTING.md"
+## Summary
+- Critical: X
+- High: X
+- Medium: X
+- Low: X
+- Blocking: Yes/No
 ```
 
 ## Integration
 
-- Works with `git-privacy` skill for attribution checks
-- Works with `file-placement` skill for location enforcement
+- **process skill** - Invoked at each quality gate
+- **git-privacy skill** - Check for AI attribution
+- **file-placement skill** - Verify file locations
+
+## NOT This Skill's Job
+
+Improvement suggestions belong in a separate skill. This skill finds **problems**, not **opportunities**.
