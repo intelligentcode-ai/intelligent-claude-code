@@ -55,6 +55,9 @@
   register: settings_parse_result
 
 - name: Handle corrupted claude.json
+  when:
+    - settings_file_stat.stat.exists
+    - settings_parse_result.failed
   block:
     - name: Log corrupted settings warning
       ansible.builtin.debug:
@@ -63,9 +66,6 @@
     - name: Initialize empty settings for corrupted file
       ansible.builtin.set_fact:
         current_settings: {}
-  when:
-    - settings_file_stat.stat.exists
-    - settings_parse_result.failed
 
 - name: Ensure settings directory exists
   ansible.builtin.file:

@@ -17,6 +17,7 @@
       ansible.builtin.command: "{{ mcp_config.command }}"
 
 - name: Process command arguments with environment variable resolution
+  when: mcp_config.args is defined and mcp_config.args | length > 0
   block:
     - name: Resolve environment variables in command arguments
       ansible.builtin.set_fact:
@@ -39,9 +40,9 @@
     - name: Add processed arguments to config
       ansible.builtin.set_fact:
         processed_mcp_config: "{{ processed_mcp_config | combine({'args': processed_args}) }}"
-  when: mcp_config.args is defined and mcp_config.args | length > 0
 
 - name: Process environment variables if defined
+  when: mcp_config.env is defined
   block:
     - name: Initialize processed environment
       ansible.builtin.set_fact:
@@ -64,7 +65,6 @@
     - name: Add processed environment to config
       ansible.builtin.set_fact:
         processed_mcp_config: "{{ processed_mcp_config | combine({'env': processed_env}) }}"
-  when: mcp_config.env is defined
 
 - name: Validate processed configuration
   ansible.builtin.fail:

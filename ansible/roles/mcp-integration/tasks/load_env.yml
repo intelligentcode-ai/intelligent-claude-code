@@ -6,6 +6,7 @@
     loaded_env_vars: {}
 
 - name: Check if ENV_FILE is provided and exists
+  when: env_file is defined and env_file | length > 0
   block:
     - name: Display .env file path
       ansible.builtin.debug:
@@ -60,8 +61,6 @@
       ansible.builtin.debug:
         msg: "Environment variable keys: {{ loaded_env_vars.keys() | list }}"
       when: loaded_env_vars | length > 0
-
-  when: env_file is defined and env_file | length > 0
   rescue:
     - name: Handle .env file loading error
       ansible.builtin.debug:

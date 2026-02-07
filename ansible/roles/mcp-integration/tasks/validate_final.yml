@@ -38,6 +38,7 @@
   failed_when: false
 
 - name: Handle write failure with rollback
+  when: write_result.failed
   block:
     - name: Log write failure
       ansible.builtin.debug:
@@ -57,7 +58,6 @@
     - name: Fail with rollback message
       ansible.builtin.fail:
         msg: "Settings write failed. Original settings have been restored from backup."
-  when: write_result.failed
 
 - name: Verify written file
   ansible.builtin.stat:
