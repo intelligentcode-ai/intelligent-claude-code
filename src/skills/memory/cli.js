@@ -23,7 +23,9 @@ function findProjectRoot() {
   let dir = process.cwd();
   const fs = require('fs');
 
-  while (dir !== '/') {
+  // Cross-platform root detection: stop when dir === path.dirname(dir)
+  // This works on both Unix (/) and Windows (C:\)
+  while (dir !== path.dirname(dir)) {
     if (fs.existsSync(path.join(dir, '.git')) ||
         fs.existsSync(path.join(dir, 'CLAUDE.md'))) {
       return dir;
