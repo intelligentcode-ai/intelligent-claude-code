@@ -149,16 +149,17 @@ install:
 	fi
 
 # Test installation and uninstall locally
+# ANSIBLE_COLLECTIONS_PATH=/dev/null speeds up tests by skipping collection scanning
 test:
 	@echo "Testing Ansible syntax validation..."
-	@$(ANSIBLE_PLAYBOOK) --syntax-check ansible/install.yml
-	@$(ANSIBLE_PLAYBOOK) --syntax-check ansible/uninstall.yml
+	@ANSIBLE_COLLECTIONS_PATH=/dev/null $(ANSIBLE_PLAYBOOK) --syntax-check ansible/install.yml
+	@ANSIBLE_COLLECTIONS_PATH=/dev/null $(ANSIBLE_PLAYBOOK) --syntax-check ansible/uninstall.yml
 	@echo "✅ Ansible syntax validation passed!"
 	@echo ""
 	@echo "Testing installation..."
 	@rm -rf test-install
 	@mkdir -p test-install
-	@ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
+	@ANSIBLE_COLLECTIONS_PATH=/dev/null ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
 	@echo ""
 	@echo "Verifying installation..."
 	@test -f test-install/CLAUDE.md || (echo "FAIL: CLAUDE.md not created"; exit 1)
@@ -171,24 +172,24 @@ test:
 	@echo "✅ Installation tests passed!"
 	@echo ""
 	@echo "Testing idempotency..."
-	@ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
+	@ANSIBLE_COLLECTIONS_PATH=/dev/null ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
 	@echo "✅ Idempotency test passed!"
 	@echo ""
 	@echo "Testing conservative uninstall..."
-	@ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) uninstall TARGET_PATH=test-install
+	@ANSIBLE_COLLECTIONS_PATH=/dev/null ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) uninstall TARGET_PATH=test-install
 	@test ! -f test-install/.claude/modes/virtual-team.md || (echo "FAIL: modes not removed"; exit 1)
 	@test ! -d test-install/.claude/behaviors || (echo "FAIL: behaviors not removed"; exit 1)
 	@test ! -d test-install/.claude/skills || (echo "FAIL: skills not removed"; exit 1)
 	@echo "✅ Conservative uninstall test passed!"
 	@echo ""
 	@echo "Testing force uninstall..."
-	@ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
-	@ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) uninstall TARGET_PATH=test-install FORCE=true
+	@ANSIBLE_COLLECTIONS_PATH=/dev/null ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
+	@ANSIBLE_COLLECTIONS_PATH=/dev/null ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) uninstall TARGET_PATH=test-install FORCE=true
 	@test ! -d test-install/.claude || (echo "FAIL: .claude directory not removed"; exit 1)
 	@echo "✅ Force uninstall test passed!"
 	@echo ""
 	@echo "Testing install after uninstall..."
-	@ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
+	@ANSIBLE_COLLECTIONS_PATH=/dev/null ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
 	@test -f test-install/CLAUDE.md || (echo "FAIL: Reinstall failed"; exit 1)
 	@echo "✅ Reinstall test passed!"
 	@rm -rf test-install
