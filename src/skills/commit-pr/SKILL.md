@@ -1,11 +1,34 @@
 ---
 name: commit-pr
-description: Activate when user asks to commit, push changes, create a PR, open a pull request, or submit changes for review. Activate when process skill reaches commit or PR phase. Provides commit message formatting and PR structure. Works with git-privacy skill.
+description: Activate when user asks to commit, push changes, create a PR, open a pull request, or submit changes for review. Activate when process skill reaches commit or PR phase. Provides commit message formatting and PR structure. PRs default to dev branch, not main. Works with git-privacy skill.
 ---
 
 # Git Commit and Pull Request Skill
 
 This skill handles git commits and pull requests with specific formatting requirements.
+
+## PR TARGET BRANCH (CRITICAL)
+
+**PRs go to `dev` by default, NOT `main`.**
+
+```
+feature/* → PR to dev   (default, normal workflow)
+dev       → PR to main  (release only, requires explicit request)
+```
+
+### When to PR to main
+- **ONLY** for releases (merging stable dev to main)
+- **ONLY** when user explicitly says "release", "PR to main", or "merge to main"
+- **NEVER** for regular feature work
+
+### Default Behavior
+```bash
+# CORRECT - PR to dev (default)
+gh pr create --base dev
+
+# WRONG - PR to main (unless releasing)
+gh pr create --base main  # DO NOT DO THIS!
+```
 
 ## PREREQUISITES (MANDATORY)
 
@@ -80,7 +103,8 @@ EOF
 When creating PRs with `gh pr create`:
 
 ```bash
-gh pr create --title "<type>: <title under 70 chars>" --body "$(cat <<'EOF'
+# ALWAYS specify --base dev (unless releasing to main)
+gh pr create --base dev --title "<type>: <title under 70 chars>" --body "$(cat <<'EOF'
 ## Summary
 - Brief overview (1-3 bullets)
 
@@ -93,6 +117,22 @@ gh pr create --title "<type>: <title under 70 chars>" --body "$(cat <<'EOF'
 
 ## Breaking Changes
 - (if applicable)
+EOF
+)"
+```
+
+### Release PR (dev → main)
+Only when explicitly releasing:
+```bash
+gh pr create --base main --title "release: v1.2.0" --body "$(cat <<'EOF'
+## Release Summary
+- Version: v1.2.0
+- Changes since last release
+
+## Verification
+- [ ] Dev branch stable
+- [ ] All tests passing
+- [ ] Release notes updated
 EOF
 )"
 ```
@@ -120,9 +160,15 @@ EOF
 ### For Pull Requests:
 1. Ensure all changes are committed
 2. Push branch to remote if needed
-3. Run `git log main..HEAD` to see all commits for the PR
-4. Create PR with `gh pr create`
+3. Run `git log dev..HEAD` to see all commits for the PR
+4. Create PR with `gh pr create --base dev` (NOT main!)
 5. Verify no AI attribution in title/body
+
+### For Release PRs (dev → main):
+1. Ensure dev is stable and tested
+2. User must explicitly request release
+3. Create PR with `gh pr create --base main`
+4. Tag after merge: `git tag v1.2.0`
 
 ## Examples
 

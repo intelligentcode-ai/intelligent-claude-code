@@ -7,12 +7,31 @@ description: Activate when user explicitly requests the development workflow pro
 
 **AUTONOMOUS EXECUTION.** This process runs automatically. It only pauses when human input is genuinely required.
 
+## Branch Workflow (CRITICAL)
+
+```
+main     ← STABLE ONLY (releases from dev)
+  ↑
+dev      ← INTEGRATION (all work merges here first)
+  ↑
+feature/* ← WHERE WORK HAPPENS
+```
+
+**ALL changes go to dev first. Main is ALWAYS stable.**
+
+| Action | Target Branch |
+|--------|---------------|
+| Feature work | PR to `dev` |
+| Bug fixes | PR to `dev` |
+| Releases | PR from `dev` to `main` |
+
 ## Autonomous Principles
 
 1. **Fix issues automatically** - Don't ask permission for obvious fixes
 2. **Implement safe improvements automatically** - Low effort + safe = just do it
 3. **Loop until clean** - Keep fixing until tests pass and no findings
 4. **Only pause for genuine decisions** - Ambiguity, architecture, risk
+5. **PR to dev by default** - Never PR to main unless releasing
 
 ## Phase Overview
 
@@ -30,9 +49,15 @@ description: Activate when user explicitly requests the development workflow pro
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│ PR PHASE                                                        │
-│ Create PR → Review+Fix → Suggest+Implement → WAIT for approval  │
+│ PR PHASE (to dev)                                               │
+│ Create PR to dev → Review+Fix → WAIT for approval               │
 │ Pause for: merge approval (ALWAYS requires explicit user OK)    │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│ RELEASE PHASE (dev → main, only when requested)                 │
+│ Stabilize dev → Create release PR → Tag → WAIT for approval     │
+│ Pause for: release approval (requires explicit "release" cmd)   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -143,11 +168,15 @@ Ensure git-privacy rules followed
 
 **Exit:** Deployment tests pass, no findings, committed
 
-## Phase 3: Pull Request
+## Phase 3: Pull Request (to dev)
 
-### Step 3.1: Create PR
+**PRs go to `dev` branch, NOT `main`.**
+
+### Step 3.1: Create PR to dev
 ```
-Run commit-pr skill to create PR
+Run commit-pr skill
+MUST use: gh pr create --base dev
+NEVER: gh pr create --base main (unless releasing)
 ```
 
 ### Step 3.2: Review + Auto-Fix (in temp folder)
@@ -186,7 +215,41 @@ DO NOT merge without: "merge", "approve", "LGTM", or similar
 This is the ONE step that ALWAYS requires human input.
 ```
 
-**Exit:** No findings, suggestions addressed, user approved
+**Exit:** No findings, suggestions addressed, user approved, merged to dev
+
+## Phase 4: Release (dev → main)
+
+**Only when user explicitly requests a release.**
+
+### Step 4.1: Verify dev is stable
+```
+Ensure dev branch:
+- All tests pass
+- No pending critical issues
+- User confirms ready for release
+```
+
+### Step 4.2: Create Release PR
+```
+gh pr create --base main --title "release: vX.Y.Z"
+Include release notes and changelog
+```
+
+### Step 4.3: Await Release Approval
+```
+WAIT for explicit user approval
+User must say "release", "merge to main", or similar
+```
+
+### Step 4.4: Tag and Publish
+```
+After merge to main:
+git tag vX.Y.Z
+git push origin vX.Y.Z
+gh release create vX.Y.Z
+```
+
+**Exit:** Released to main, tagged, published
 
 ## Quality Gates (BLOCKING)
 
