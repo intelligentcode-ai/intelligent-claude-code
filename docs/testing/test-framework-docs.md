@@ -1,7 +1,7 @@
 # Test Framework Documentation
 
 **Status**: Minimal coverage
-**Last Updated**: 2026-01-07
+**Last Updated**: 2026-02-07
 
 ## Overview
 
@@ -24,7 +24,7 @@ bash tests/run-tests.sh
 - `agent-infrastructure-protection.js`
 - `summary-file-enforcement.js`
 
-Note: `git-enforcement.js` was removed in v10.1 - git privacy is now handled via the `git-privacy` skill.
+Note: `git-enforcement.js` was deprecated in v10.1 (moved to hooks/deprecated/) - git privacy is now handled via the `git-privacy` skill.
 
 ## Notes
 

@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Makefile macOS glob detection
 
 ### Removed
-- `git-enforcement.js` hook (functionality moved to git-privacy skill)
+- `git-enforcement.js` hook from active hooks (moved to hooks/deprecated/, no longer registered by default; functionality replaced by git-privacy skill)
 
 ## [10.0.0] - 2026-02-03
 

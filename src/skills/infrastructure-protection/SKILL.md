@@ -1,6 +1,6 @@
 ---
 name: infrastructure-protection
-description: Apply infrastructure protection rules for VM, container, and cloud operations. Use when performing infrastructure operations to ensure safety protocols are followed. This skill mirrors what the agent-infrastructure-protection hook enforces.
+description: Activate when performing infrastructure, VM, container, or cloud operations. Ensures safety protocols are followed and blocks destructive operations by default. Mirrors agent-infrastructure-protection hook.
 ---
 
 # Infrastructure Protection Skill

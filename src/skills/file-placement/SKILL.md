@@ -1,6 +1,6 @@
 ---
 name: file-placement
-description: Apply correct file placement rules for summaries, reports, and documentation. Use when creating any summary, report, or output file to ensure it goes to the correct directory. This skill mirrors what the summary-file-enforcement hook enforces.
+description: Activate when creating any summary, report, or output file. Ensures files go to correct directories (summaries/, memory/, stories/, bugs/). Mirrors what summary-file-enforcement hook enforces.
 ---
 
 # File Placement Skill

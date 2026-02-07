@@ -1,6 +1,6 @@
 ---
 name: ai-engineer
-description: Use when AI/ML work is detected - model integration, behavioral frameworks, intelligent automation. Use when @AI-Engineer is mentioned or when work involves machine learning, agentic systems, or AI-driven features.
+description: Activate when user needs AI/ML work - model integration, behavioral frameworks, intelligent automation. Activate when @AI-Engineer is mentioned or work involves machine learning, agentic systems, or AI-driven features.
 ---
 
 # AI Engineer Role

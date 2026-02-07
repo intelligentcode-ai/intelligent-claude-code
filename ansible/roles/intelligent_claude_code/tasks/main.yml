@@ -341,7 +341,7 @@
     msg:
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
-      - "🎯 Skills: 35 cross-platform skills (roles, commands, workflows)"
+      - "🎯 Skills: 35 active skills + 2 deprecated (roles, commands, workflows)"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
       - "🔒 Behavioral Hooks: PreToolUse (infra protection, summaries)"
       - "🚀 Use @Role or /skill-name to activate capabilities"

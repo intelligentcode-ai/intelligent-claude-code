@@ -1,6 +1,6 @@
 ---
 name: backend-tester
-description: Use when API or backend testing is needed - REST/GraphQL validation, integration tests, database verification. Use when @Backend-Tester is mentioned or when work item requires backend quality assurance.
+description: Activate when user needs API or backend testing - REST/GraphQL validation, integration tests, database verification. Activate when @Backend-Tester is mentioned or work requires backend quality assurance.
 ---
 
 # Backend Tester Role

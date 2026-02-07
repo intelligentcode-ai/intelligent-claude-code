@@ -1,6 +1,6 @@
 ---
 name: database-engineer
-description: Use when database work is detected - schema design, query optimization, migrations, data architecture. Use when @Database-Engineer is mentioned or when work involves database design or performance tuning.
+description: Activate when user needs database work - schema design, query optimization, migrations, data modeling. Activate when @Database-Engineer is mentioned or work involves database design or performance tuning.
 ---
 
 # Database Engineer Role

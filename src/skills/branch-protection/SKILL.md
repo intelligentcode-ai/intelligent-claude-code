@@ -1,6 +1,6 @@
 ---
 name: branch-protection
-description: MANDATORY - Git branch protection rules. Use when performing git operations. Assumes branch protection enabled unless git.branch_protection=false in settings. Prevents direct commits to main/master, blocks destructive operations.
+description: Activate when performing git operations. MANDATORY by default - prevents direct commits to main/master, blocks destructive operations (force push, reset --hard). Assumes branch protection enabled unless disabled in settings.
 ---
 
 # Branch Protection Skill

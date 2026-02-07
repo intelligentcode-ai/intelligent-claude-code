@@ -1,6 +1,6 @@
 ---
 name: mcp-config
-description: Configure and resolve MCP tool integrations. Use when setting up MCP servers, resolving MCP tool availability, or configuring fallbacks for MCP-dependent features.
+description: Activate when setting up MCP servers, resolving MCP tool availability, or configuring fallbacks for MCP-dependent features. Configures and troubleshoots MCP (Model Context Protocol) integrations.
 ---
 
 # MCP Configuration Skill

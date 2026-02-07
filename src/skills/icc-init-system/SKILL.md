@@ -1,6 +1,6 @@
 ---
 name: icc-init-system
-description: Initialize or restore ICC virtual team system. Use after context loss, fresh session, when @Role patterns stop working, or when system needs re-initialization. Also use when user explicitly asks to initialize or reset the system.
+description: Activate after context loss, fresh session, when @Role patterns stop working, or when user asks to initialize or reset the system. Restores ICC virtual team with configuration loading and role activation.
 ---
 
 # ICC Init System

@@ -1,6 +1,6 @@
 ---
 name: icc-get-setting
-description: Retrieve configuration values using dot notation. Use when needing config values like git.privacy, autonomy.level, paths.*, team.default_reviewer, or any other ICC configuration setting.
+description: Activate when needing configuration values like git.privacy, autonomy.level, paths.*, team.default_reviewer. Retrieves ICC settings using dot notation from config hierarchy.
 ---
 
 # ICC Get Setting

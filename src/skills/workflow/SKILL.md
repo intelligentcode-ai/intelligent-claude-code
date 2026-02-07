@@ -1,6 +1,6 @@
 ---
 name: workflow
-description: Apply workflow enforcement patterns and resolution. Use when checking workflow step requirements, resolving workflow conflicts, or ensuring proper execution sequence.
+description: Activate when checking workflow step requirements, resolving workflow conflicts, or ensuring proper execution sequence. Applies workflow enforcement patterns and validates compliance.
 ---
 
 # Workflow Skill

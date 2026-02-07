@@ -1,6 +1,6 @@
 ---
 name: pm
-description: Use when coordination is needed - story breakdown, task delegation, progress tracking. Use when @PM is mentioned or when work requires planning before execution. PM coordinates specialists but does not implement.
+description: Activate when user needs coordination, story breakdown, task delegation, or progress tracking. Activate when @PM is mentioned or work requires planning before implementation. PM coordinates specialists but does not implement.
 ---
 
 # PM Role

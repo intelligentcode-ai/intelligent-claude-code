@@ -1,6 +1,6 @@
 ---
 name: git-privacy
-description: Use when performing git commits, creating pull requests, or any git operation. MANDATORY by default - prevents AI attribution (Co-Authored-By lines, "Generated with" footers, AI tool URLs). Does NOT block legitimate AI-related feature descriptions like "Add GPT integration".
+description: Activate when performing git commits, creating pull requests, or any git operation. MANDATORY by default - prevents AI attribution (Co-Authored-By, "Generated with" footers). Does NOT block legitimate AI feature descriptions.
 ---
 
 # Git Privacy Skill

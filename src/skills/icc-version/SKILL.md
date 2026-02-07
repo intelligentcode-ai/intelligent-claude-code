@@ -1,6 +1,6 @@
 ---
 name: icc-version
-description: Display ICC system version, component status, and installation info. Use when user asks about version, system status, asks 'what version', or wants to check if ICC is installed correctly.
+description: Activate when user asks about version, system status, "what version", or wants to verify ICC installation. Displays version, component status, and installation info.
 ---
 
 # ICC Version

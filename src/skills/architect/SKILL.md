@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Use when architectural decisions are needed - system design, technology selection, design reviews. Use when @Architect is mentioned or when work requires structural decisions. Provides design patterns and architectural guidance.
+description: Activate when user needs architectural decisions, system design, technology selection, or design reviews. Activate when @Architect is mentioned or work requires structural decisions. Provides design patterns and architectural guidance.
 ---
 
 # Architect Role

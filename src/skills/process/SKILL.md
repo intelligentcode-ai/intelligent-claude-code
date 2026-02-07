@@ -1,6 +1,6 @@
 ---
 name: process
-description: Activate when user asks to implement, build, create, fix, add, or develop a feature or functionality. Activate when user asks to deploy, release, or ship code. Activate when user asks to create a PR, open a pull request, or submit changes. Provides mandatory Development → Review → Deploy → PR workflow with quality gates.
+description: Activate when user explicitly requests the development workflow process, asks about workflow phases, or says "start work", "begin development", "follow the process". Activate when creating PRs or deploying to production. NOT for simple questions or minor fixes. Provides mandatory Development → Review → Deploy → PR workflow with quality gates.
 ---
 
 # Development Process
