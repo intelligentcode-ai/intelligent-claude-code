@@ -5,28 +5,32 @@
 
 - name: Install Intelligent Claude Code
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   gather_subset:
     - '!all'
     - '!min'
     - env
   vars:
     source_dir: "{{ playbook_dir }}/../src"
-  
+
   tasks:
     - name: Determine installation scope and path
-      set_fact:
+      ansible.builtin.set_fact:
         target_scope: "{{ 'project' if (target_path | default('')) else 'user' }}"
-        install_path: "{{ ((target_path | default('')) | realpath) + '/.claude' if (target_path | default('')) else ansible_env.HOME + '/.claude' }}"
-        project_path: "{{ (target_path | default('')) | realpath if (target_path | default('')) else '' }}"
-    
+        install_path: >-
+          {{ ((target_path | default('')) | realpath) + '/.claude'
+          if (target_path | default('')) else ansible_env.HOME + '/.claude' }}
+        project_path: >-
+          {{ (target_path | default('')) | realpath
+          if (target_path | default('')) else '' }}
+
     - name: Display installation target
-      debug:
+      ansible.builtin.debug:
         msg: "Installing to: {{ install_path }}"
       when: ansible_verbosity >= 1
-    
+
     - name: Include intelligent_claude_code role
-      include_role:
+      ansible.builtin.include_role:
         name: intelligent_claude_code
       vars:
         claude_install_path: "{{ install_path }}"
@@ -35,7 +39,7 @@
         claude_config_source: "{{ config_file | default('') }}"
 
     - name: Install MCP servers if configuration provided
-      include_role:
+      ansible.builtin.include_role:
         name: mcp-integration
       vars:
         settings_json_path: "{{ ansible_env.HOME }}/.claude.json"

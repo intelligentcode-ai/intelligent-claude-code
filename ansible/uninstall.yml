@@ -5,27 +5,27 @@
 
 - name: Uninstall Intelligent Claude Code
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   gather_subset:
     - '!all'
     - '!min'
     - env
   vars:
     target_path: "{{ target_path | default('') }}"
-  
+
   tasks:
     - name: Determine uninstall scope and path
-      set_fact:
+      ansible.builtin.set_fact:
         target_scope: "{{ 'project' if target_path else 'user' }}"
         install_path: "{{ (target_path | realpath) + '/.claude' if target_path else ansible_env.HOME + '/.claude' }}"
         project_path: "{{ target_path | realpath if target_path else '' }}"
-    
+
     - name: Display uninstall target
-      debug:
+      ansible.builtin.debug:
         msg: "Uninstalling from: {{ install_path }}"
-    
+
     - name: Include intelligent_claude_code uninstall role
-      include_role:
+      ansible.builtin.include_role:
         name: intelligent_claude_code_uninstall
       vars:
         claude_install_path: "{{ install_path }}"

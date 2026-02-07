@@ -297,12 +297,12 @@
             - matcher: "*"
               hooks:
                 - type: command
-                  command: >-
+                  ansible.builtin.command: >-
                     node {{ claude_install_path
                     }}/hooks/agent-infrastructure-protection.js
                   timeout: 5000
                 - type: command
-                  command: >-
+                  ansible.builtin.command: >-
                     node {{ claude_install_path
                     }}/hooks/summary-file-enforcement.js
                   timeout: 5000
