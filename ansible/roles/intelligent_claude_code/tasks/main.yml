@@ -148,13 +148,6 @@
       Hooks directory preserved: {{ claude_install_path }}/hooks/
       already exists - keeping user modifications
   when: intelligent_claude_code_hooks_copy_result.failed and ansible_verbosity >= 1
-- name: Remove obsolete hook files from previous versions
-  ansible.builtin.file:
-    path: "{{ claude_install_path }}/hooks/{{ item }}"
-    state: absent
-  loop:
-    - git-enforcement.js
-  failed_when: false
 - name: Make all hook scripts executable
   ansible.builtin.file:
     path: "{{ claude_install_path }}/hooks/{{ item }}"

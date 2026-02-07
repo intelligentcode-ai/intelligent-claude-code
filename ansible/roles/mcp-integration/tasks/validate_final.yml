@@ -33,7 +33,7 @@
     content: "{{ final_settings | to_nice_json }}"
     dest: "{{ settings_json_path }}"
     mode: "0600"
-    backup: no
+    backup: false
   register: write_result
   failed_when: false
 
