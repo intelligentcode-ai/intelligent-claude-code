@@ -1,6 +1,6 @@
 ---
 name: commit-pr
-description: Use when committing changes or creating PRs. Use after development work is complete and reviewed. Use when process skill reaches commit or PR phase. Provides commit message formatting and PR structure. Works with git-privacy skill.
+description: Activate when user asks to commit, push changes, create a PR, open a pull request, or submit changes for review. Activate when process skill reaches commit or PR phase. Provides commit message formatting and PR structure. Works with git-privacy skill.
 ---
 
 # Git Commit and Pull Request Skill

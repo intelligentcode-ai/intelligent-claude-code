@@ -1,6 +1,6 @@
 ---
 name: validate
-description: Validate AgentTask completion against success criteria and standards. Use when checking if work meets requirements, validating file placement, or ensuring quality standards before marking complete.
+description: Activate when checking if work meets requirements, verifying completion criteria, validating file placement, or ensuring quality standards. Use before marking work complete to verify success criteria are met.
 ---
 
 # Validation Skill

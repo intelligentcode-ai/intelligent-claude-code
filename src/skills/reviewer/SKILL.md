@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Use before commits, after commits, and before PR merge to review code. Use when security audit needed or when checking for regressions. Checks credentials, .gitignore, file placement, and agent bloat. ALWAYS invoke during process skill quality gates.
+description: Activate when reviewing code, before committing, after committing, or before merging a PR. Activate when user asks to review, audit, check for security issues, or verify file placement. Checks credentials, .gitignore, file locations, and prevents agent bloat. Required at process skill quality gates.
 ---
 
 # Reviewer Role
@@ -234,6 +234,5 @@ find . -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "CLAUDE.md" ! -name 
 
 ## Integration
 
-- Works with `git-privacy skill` for attribution checks
-- Works with `file-placement skill` for location enforcement
-- Enforced by `git-enforcement.js` hook
+- Works with `git-privacy` skill for attribution checks
+- Works with `file-placement` skill for location enforcement

@@ -21,9 +21,10 @@ bash tests/run-tests.sh
 
 ## Current Focus Areas
 
-- `git-enforcement.js`
 - `agent-infrastructure-protection.js`
 - `summary-file-enforcement.js`
+
+Note: `git-enforcement.js` was removed in v10.1 - git privacy is now handled via the `git-privacy` skill.
 
 ## Notes
 

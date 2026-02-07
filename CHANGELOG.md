@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.0] - 2026-02-07
+
+### Added
+- Work-queue skill for cross-platform task tracking (`.agent/queue/`)
+- icc-setup to Command Skills (now 5 total)
+- process and commit-pr to Process Skills (now 12 total)
+
+### Changed
+- Git privacy now handled via `git-privacy` skill instead of `git-enforcement.js` hook
+- Skill count increased to 35 (was 34)
+- Hooks reduced to 2 (was 3): `agent-infrastructure-protection.js`, `summary-file-enforcement.js`
+- Updated all documentation to reflect v10.1 changes
+
+### Deprecated
+- agenttask-create and agenttask-execute skills (moved to src/skills/deprecated/)
+- AgentTask XML templates replaced by work-queue pattern
+
+### Fixed
+- Windows installer (install.ps1) no longer registers non-existent git-enforcement.js
+- icc-setup symlink commands (missing slashes in paths)
+- README clone path instruction
+- Makefile macOS glob detection
+
+### Removed
+- `git-enforcement.js` hook (functionality moved to git-privacy skill)
+
 ## [10.0.0] - 2026-02-03
 
 ### Added

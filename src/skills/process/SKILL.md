@@ -1,6 +1,6 @@
 ---
 name: process
-description: Development workflow process with mandatory phases. Use when starting development work, implementing features, fixing bugs, deploying, or creating PRs. Enforces Development → Review → Deploy → PR phases with quality gates. Triggers on "start work", "implement", "deploy", "create PR", or workflow questions.
+description: Activate when user asks to implement, build, create, fix, add, or develop a feature or functionality. Activate when user asks to deploy, release, or ship code. Activate when user asks to create a PR, open a pull request, or submit changes. Provides mandatory Development → Review → Deploy → PR workflow with quality gates.
 ---
 
 # Development Process

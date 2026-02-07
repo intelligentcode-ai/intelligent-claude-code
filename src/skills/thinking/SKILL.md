@@ -1,6 +1,6 @@
 ---
 name: thinking
-description: Break complex problems into explicit steps with validation. Use for multi-step decisions, high-risk changes, complex debugging, architectural decisions, or when careful analysis is needed before action.
+description: Activate when facing complex problems, multi-step decisions, high-risk changes, complex debugging, or architectural decisions. Activate when careful analysis is needed before taking action. Provides explicit step-by-step validation.
 ---
 
 # Thinking Skill

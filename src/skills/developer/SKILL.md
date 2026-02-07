@@ -1,6 +1,6 @@
 ---
 name: developer
-description: Use when implementation work is detected - coding, building features, fixing bugs, refactoring. Use when @Developer is mentioned or when work item requires hands-on coding. Provides implementation patterns and coding standards.
+description: Activate when user asks to code, build, implement, create, fix bugs, refactor, or write software. Activate when @Developer is mentioned. Provides implementation patterns and coding standards for hands-on development work.
 ---
 
 # Developer Role

@@ -1,6 +1,6 @@
 ---
 name: best-practices
-description: Search and apply best practices before implementation. Use when starting new work to check for established patterns, when promoting successful memory patterns, or when ensuring consistency with team standards.
+description: Activate when starting new work to check for established patterns. Activate when ensuring consistency with team standards or when promoting successful memory patterns. Searches and applies best practices before implementation.
 ---
 
 # Best Practices Skill

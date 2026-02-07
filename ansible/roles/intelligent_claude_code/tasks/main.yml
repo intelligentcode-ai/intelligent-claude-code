@@ -321,12 +321,12 @@
     - name: Report hook registration
       ansible.builtin.debug:
         msg: >-
-          Production hooks configured in settings.json (git, infra protection,
+          Production hooks configured in settings.json (infra protection,
           summary routing)
 - name: Display settings creation notice
   ansible.builtin.debug:
     msg: >-
-      Settings file created with minimal PreToolUse hooks (git, infra
+      Settings file created with minimal PreToolUse hooks (infra
       protection, summaries)
   when:
     - not intelligent_claude_code_settings_json_exists.stat.exists
@@ -341,7 +341,7 @@
     msg:
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
-      - "🎯 Skills: 30 cross-platform skills (roles, commands, workflows)"
+      - "🎯 Skills: 35 cross-platform skills (roles, commands, workflows)"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: PreToolUse (git, infra protection, summaries)"
+      - "🔒 Behavioral Hooks: PreToolUse (infra protection, summaries)"
       - "🚀 Use @Role or /skill-name to activate capabilities"
