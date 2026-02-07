@@ -77,7 +77,7 @@ Always search memory before asking users or creating work items to leverage coll
 **STORE Locations and References**:
 - Configuration paths: `~/.config/git/common.conf`
 - Environment variables: `$GITHUB_PAT`, `$AWS_PROFILE`
-- Access methods: `source ~/.bashrc && echo $TOKEN`
+- Access methods: `source ~/.bashrc && export TOKEN` (never echo secrets)
 - File locations: `/path/to/credentials/file`
 
 **NEVER STORE Values**:
@@ -190,7 +190,8 @@ After successful execution:
 
 **Location**: `~/.config/git/common.conf`
 **Variable**: `GITHUB_PAT`
-**Access**: `source ~/.config/git/common.conf && echo $GITHUB_PAT`
+**Access**: `source ~/.config/git/common.conf && export GH_TOKEN=$GITHUB_PAT`
+**Verify**: `gh auth status` (never echo tokens to stdout)
 ```
 
 **WRONG MEMORY ENTRY**:

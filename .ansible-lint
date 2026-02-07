@@ -1,0 +1,20 @@
+---
+# Ansible-lint configuration
+
+# Profile: basic (minimal rules)
+profile: basic
+
+# Skip these rules entirely
+skip_list:
+  - var-naming[no-role-prefix]  # Our variable naming is intentional
+  - name[casing]  # Task names can start with various cases
+
+# Warn only (don't fail) for these
+warn_list:
+  - yaml  # Let yamllint handle YAML formatting
+  - key-order  # Key ordering is flexible
+
+# Exclude paths
+exclude_paths:
+  - .cache/
+  - test-*/

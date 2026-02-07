@@ -78,17 +78,27 @@ NOTES.md
 999_progress/
 
 # Claude configuration (user-specific, not source code)
-.claude/
+# NOTE: .claude/skills/ is tracked in THIS project (ICC framework source)
+.claude/*
+!.claude/skills/
 
-# CRITICAL: Memory must NEVER be committed - local learning only!
-# If you see memory/ files in git status, DO NOT COMMIT THEM
+# Old memory location (deprecated, kept for backwards compatibility)
 memory/
-memory/**/*
-*.memory
-*.learning
 
-# AgentTasks should also remain local
+# Memory skill source code is tracked
+!src/skills/memory/
+!src/skills/memory/**
+# But exclude runtime dependencies from memory skill
+src/skills/memory/node_modules/
+src/skills/memory/package-lock.json
+
+# AgentTasks should remain local
 agenttasks/
+
+# Agent directory - most is local, but memory and queue are tracked
+.agent/*
+!.agent/memory/
+!.agent/queue/
 
 # Credentials
 *.pem

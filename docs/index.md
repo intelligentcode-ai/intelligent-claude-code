@@ -7,7 +7,9 @@
 
 Tip: For a clean reinstall on macOS/Linux, use `make clean-install` (force uninstall + reinstall).
 
-## Operate
+## Reference
+- [Skills Reference](skills-reference.md)
+- [Virtual Team Guide](virtual-team-guide.md)
 - [Hook Registration Reference](hook-registration-reference.md)
 
 ## Troubleshooting

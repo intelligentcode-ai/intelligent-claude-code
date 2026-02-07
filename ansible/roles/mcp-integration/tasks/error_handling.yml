@@ -2,27 +2,27 @@
 # Handle MCP integration errors with detailed recovery options
 
 - name: Display error details
-  debug:
+  ansible.builtin.debug:
     msg:
       - "MCP Integration Error: {{ mcp_integration_error }}"
       - "Timestamp: {{ ansible_date_time.iso8601 }}"
       - "Settings backup: {{ settings_backup_file | default('No backup created') }}"
 
 - name: Check if backup exists for rollback
-  stat:
+  ansible.builtin.stat:
     path: "{{ settings_backup_file }}"
   register: backup_exists
   when: settings_backup_file is defined
 
 - name: Provide rollback information
-  debug:
+  ansible.builtin.debug:
     msg:
       - "Rollback available: {{ 'Yes' if backup_exists.stat.exists else 'No' }}"
       - "To manually rollback: cp {{ settings_backup_file }} {{ settings_json_path }}"
   when: settings_backup_file is defined and backup_exists.stat.exists
 
 - name: Provide troubleshooting guidance
-  debug:
+  ansible.builtin.debug:
     msg:
       - "Troubleshooting steps:"
       - "1. Check MCP configuration JSON syntax"
@@ -32,7 +32,7 @@
       - "5. Review backup file: {{ settings_backup_file | default('N/A') }}"
 
 - name: Create error log entry
-  copy:
+  ansible.builtin.copy:
     content: |
       MCP Integration Error Log
       =========================
@@ -42,12 +42,12 @@
       User: {{ ansible_user_id }}
       Settings Path: {{ settings_json_path }}
       Backup File: {{ settings_backup_file | default('None') }}
-      
+
       Configuration Details:
       - MCP Config File: {{ mcp_config_file | default('Not provided') }}
       - Processed Servers: {{ processed_mcp_servers | default({}) | length }}
       - Current Settings Valid: {{ 'Yes' if current_settings is defined else 'No' }}
-      
+
       Recovery Options:
       1. Manual rollback: cp {{ settings_backup_file }} {{ settings_json_path }}
       2. Fix configuration and re-run integration
@@ -57,7 +57,7 @@
   failed_when: false
 
 - name: Final error message
-  fail:
+  ansible.builtin.fail:
     msg: |
       MCP integration failed: {{ mcp_integration_error }}
       Error log created: ~/.config/claude/mcp-integration-error.log

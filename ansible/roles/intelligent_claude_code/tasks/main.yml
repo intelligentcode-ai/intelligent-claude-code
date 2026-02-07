@@ -6,6 +6,32 @@
       - claude_install_path is defined
       - claude_scope in ['user', 'project']
     fail_msg: "Invalid installation parameters"
+- name: Remove obsolete directories from previous versions
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ claude_install_path }}/commands"
+    - "{{ claude_install_path }}/agents"
+  failed_when: false
+- name: Remove obsolete behavior files from previous versions
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/behaviors/{{ item }}"
+    state: absent
+  loop:
+    - agenttask-creation-system.md
+    - agenttask-execution.md
+    - enforcement-rules.md
+    - learning-team-automation.md
+    - memory-system.md
+    - role-system.md
+    - sequential-thinking.md
+    - story-breakdown.md
+    - template-resolution.md
+    - ultrathinking.md
+    - validation-system.md
+    - shared-patterns
+  failed_when: false
 - name: Create .claude directory structure
   ansible.builtin.file:
     path: "{{ item }}"
@@ -15,9 +41,8 @@
     - "{{ claude_install_path }}"
     - "{{ claude_install_path }}/modes"
     - "{{ claude_install_path }}/behaviors"
-    - "{{ claude_install_path }}/commands"
+    - "{{ claude_install_path }}/skills"
     - "{{ claude_install_path }}/roles"
-    - "{{ claude_install_path }}/agents"
     - "{{ claude_install_path }}/agenttask-templates"
     - "{{ claude_install_path }}/hooks"
     - "{{ claude_install_path }}/logs"
@@ -63,17 +88,17 @@
   ansible.builtin.debug:
     msg: "Behavior files preserved: {{ claude_install_path }}/behaviors/ already exists - keeping user modifications"
   when: intelligent_claude_code_behaviors_copy_result.failed and ansible_verbosity >= 1
-- name: Copy commands directory
+- name: Copy skills directory
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../src/commands/"
-    dest: "{{ claude_install_path }}/commands/"
+    src: "{{ playbook_dir }}/../src/skills/"
+    dest: "{{ claude_install_path }}/skills/"
     mode: '0644'
     force: true
-  register: intelligent_claude_code_commands_copy_result
-- name: Display commands preservation notice
+  register: intelligent_claude_code_skills_copy_result
+- name: Display skills preservation notice
   ansible.builtin.debug:
-    msg: "Commands directory preserved: {{ claude_install_path }}/commands/ already exists - keeping user modifications"
-  when: intelligent_claude_code_commands_copy_result.failed and ansible_verbosity >= 1
+    msg: "Skills directory preserved: {{ claude_install_path }}/skills/ already exists - keeping user modifications"
+  when: intelligent_claude_code_skills_copy_result.failed and ansible_verbosity >= 1
 - name: Copy roles directory
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/roles/"
@@ -87,19 +112,6 @@
       Roles directory preserved: {{ claude_install_path }}/roles/
       already exists - keeping user modifications
   when: intelligent_claude_code_roles_copy_result.failed and ansible_verbosity >= 1
-- name: Copy agents directory
-  ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../src/agents/"
-    dest: "{{ claude_install_path }}/agents/"
-    mode: '0644'
-    force: true
-  register: intelligent_claude_code_agents_copy_result
-- name: Display agents preservation notice
-  ansible.builtin.debug:
-    msg: >-
-      Agents directory preserved: {{ claude_install_path }}/agents/
-      already exists - keeping user modifications
-  when: intelligent_claude_code_agents_copy_result.failed and ansible_verbosity >= 1
 - name: Copy AgentTask templates directory
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/agenttask-templates/"
@@ -114,16 +126,12 @@
       {{ claude_install_path }}/agenttask-templates/
       already exists - keeping user modifications
   when: intelligent_claude_code_agenttask_templates_copy_result.failed and ansible_verbosity >= 1
-- name: Copy hooks directory
-  ansible.posix.synchronize:
+- name: Copy hooks directory (excluding node_modules)
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../src/hooks/"
     dest: "{{ claude_install_path }}/hooks/"
-    recursive: true
-    delete: true
-    rsync_opts:
-      - "--exclude=node_modules/"
-      - "--exclude=package-lock.json"
-  delegate_to: localhost
+    mode: preserve
+    force: true
   register: intelligent_claude_code_hooks_copy_result
 - name: Ensure hooks subdirectories are copied
   ansible.builtin.copy:
@@ -147,7 +155,6 @@
     state: file
   loop:
     - agent-infrastructure-protection.js
-    - git-enforcement.js
     - summary-file-enforcement.js
   failed_when: false
 - name: Copy VERSION file
@@ -265,12 +272,12 @@
           {{ intelligent_claude_code_existing_settings.content
           | b64decode
           | from_json }}
-    - name: Clean up obsolete PreToolUse hooks while preserving user hooks
+    - name: Clean up obsolete hooks while preserving user hooks
       ansible.builtin.set_fact:
         intelligent_claude_code_cleaned_hooks: >-
           {{ (intelligent_claude_code_settings_data.hooks | default({}))
           | dict2items
-          | rejectattr('key', 'in', ['PreToolUse'])
+          | rejectattr('key', 'in', ['PreToolUse', 'Stop', 'SubagentStop', 'SessionStart', 'UserPromptSubmit'])
           | items2dict }}
     - name: Load production hooks configuration from template
       ansible.builtin.set_fact:
@@ -279,15 +286,12 @@
             - matcher: "*"
               hooks:
                 - type: command
-                  command: "node {{ claude_install_path }}/hooks/git-enforcement.js"
-                  timeout: 5000
-                - type: command
-                  command: >-
+                  ansible.builtin.command: >-
                     node {{ claude_install_path
                     }}/hooks/agent-infrastructure-protection.js
                   timeout: 5000
                 - type: command
-                  command: >-
+                  ansible.builtin.command: >-
                     node {{ claude_install_path
                     }}/hooks/summary-file-enforcement.js
                   timeout: 5000
@@ -306,12 +310,12 @@
     - name: Report hook registration
       ansible.builtin.debug:
         msg: >-
-          Production hooks configured in settings.json (git, infra protection,
+          Production hooks configured in settings.json (infra protection,
           summary routing)
 - name: Display settings creation notice
   ansible.builtin.debug:
     msg: >-
-      Settings file created with minimal PreToolUse hooks (git, infra
+      Settings file created with minimal PreToolUse hooks (infra
       protection, summaries)
   when:
     - not intelligent_claude_code_settings_json_exists.stat.exists
@@ -321,11 +325,52 @@
 - name: Handle project-specific integration
   ansible.builtin.import_tasks: project_integration.yml
   when: claude_scope == "project"
+# Memory skill npm dependencies - OPT-IN due to supply-chain risk
+# (better-sqlite3 compiles native code, @xenova/transformers downloads large models)
+# Set install_memory_deps=true to enable, or run manually: npm install in skills/memory/
+- name: Display memory skill manual installation notice
+  ansible.builtin.debug:
+    msg: >-
+      Memory skill: For enhanced search, manually run 'npm install' in
+      {{ claude_install_path }}/skills/memory/ (downloads ~80MB model)
+  when:
+    - not (install_memory_deps | default(false) | bool)
+    - ansible_verbosity >= 1
+- name: Check if npm is available for memory skill
+  ansible.builtin.command: which npm
+  register: intelligent_claude_code_npm_check
+  failed_when: false
+  changed_when: false
+  when: install_memory_deps | default(false) | bool
+- name: Check if memory skill dependencies exist
+  ansible.builtin.stat:
+    path: "{{ claude_install_path }}/skills/memory/node_modules"
+  register: intelligent_claude_code_memory_node_modules
+  when: install_memory_deps | default(false) | bool
+- name: Install memory skill dependencies (opt-in)
+  ansible.builtin.command:
+    cmd: npm install --production
+    chdir: "{{ claude_install_path }}/skills/memory"
+  when:
+    - install_memory_deps | default(false) | bool
+    - intelligent_claude_code_npm_check.rc | default(-1) == 0
+    - not (intelligent_claude_code_memory_node_modules.stat.exists | default(false))
+  register: intelligent_claude_code_memory_npm_install
+  failed_when: false
+  changed_when: intelligent_claude_code_memory_npm_install.rc | default(-1) == 0
+- name: Display memory skill installation notice
+  ansible.builtin.debug:
+    msg: "Memory skill: SQLite + embeddings installed for hybrid search"
+  when:
+    - install_memory_deps | default(false) | bool
+    - intelligent_claude_code_memory_npm_install.rc | default(-1) == 0
+    - ansible_verbosity >= 1
 - name: Display installation summary
   ansible.builtin.debug:
     msg:
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
+      - "🎯 Skills: 35 cross-platform skills (roles, commands, workflows, memory)"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
-      - "🔒 Behavioral Hooks: PreToolUse (git, infra protection, summaries)"
-      - "🚀 Use @Role communication to activate team members"
+      - "🔒 Behavioral Hooks: PreToolUse (infra protection, summaries)"
+      - "🚀 Use @Role or /skill-name to activate capabilities"

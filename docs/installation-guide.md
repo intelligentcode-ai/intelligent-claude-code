@@ -1,4 +1,4 @@
-# Installation Guide (v9)
+# Installation Guide (v10.1)
 
 ## Install (macOS/Linux)
 ```bash
@@ -20,14 +20,16 @@ make clean-install
 - Project scope: installs to `<project>/.claude/`
 
 ## What gets installed
-- Agents → `.claude/agents/`
-- Behaviors → `.claude/behaviors/`
-- Hooks → `.claude/hooks/`
+- **Skills** → `.claude/skills/` (35 skills)
+- **Behaviors** → `.claude/behaviors/` (4 foundational behaviors)
+- **Hooks** → `.claude/hooks/` (2 enforcement hooks)
+- **Mode** → `.claude/modes/virtual-team.md`
 
 ## Hooks (minimal)
 Registered hooks:
-- `git-enforcement.js`
 - `agent-infrastructure-protection.js`
 - `summary-file-enforcement.js`
+
+Note: Git privacy is now handled via the `git-privacy` skill rather than a hook.
 
 See `docs/hook-registration-reference.md` for details.

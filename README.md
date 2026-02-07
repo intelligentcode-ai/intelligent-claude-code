@@ -1,21 +1,21 @@
 # Intelligent Claude Code
 
-CC‑native framework for planning‑first AgentTasks, native subagents, and minimal hooks.
+CC‑native framework for role-based specialists, work queue management, and minimal hooks.
 
-## Current scope (v9)
+## Current scope (v10.1)
 
+- **Skills-first architecture** — 35 cross-platform skills loaded on demand.
 - **CC‑native subagents** — no marker files, no custom role enforcement hooks.
-- **Planning‑first AgentTasks** — main scope plans, subagents implement.
-- **Minimal hooks only** — keep only what CC doesn’t do natively.
-- **Behavior guidance** — behaviors live in the repo and are read by humans + Claude.
+- **Work queue management** — cross-platform task tracking in `.agent/queue/`.
+- **Minimal hooks only** — keep only what CC doesn't do natively.
+- **Behavior guidance** — 4 foundational behaviors for structural rules.
 
 ## Included
 
 - **14 core roles** + **dynamic specialists**
 - **Reviewer role** (critical risk/regression review)
-- **AgentTask templates** (nano → mega)
+- **Work queue templates** (`.agent/queue/` for cross-platform tracking)
 - **Hooks (PreToolUse only)**:
-  - `git-enforcement.js` — strip AI/Claude mentions from commit/PR text (privacy)
   - `agent-infrastructure-protection.js` — block imperative infra changes
   - `summary-file-enforcement.js` — route summaries/reports + block ALL‑CAPS filenames
 
@@ -45,7 +45,7 @@ CC‑native framework for planning‑first AgentTasks, native subagents, and min
 
 ```bash
 git clone https://github.com/intelligentcode-ai/intelligent-claude-code.git
-cd intelligentcode-ai/intelligent-claude-code
+cd intelligent-claude-code
 make install              # or .\install.ps1 install on Windows
 make clean-install        # force uninstall + reinstall (Linux/macOS)
 ```
@@ -66,11 +66,13 @@ Claude Code model selection remains user‑controlled. Set it via:
 - project `.claude/settings.json`
 - CLI or `/model`
 
-## Migration (v8 → v9)
+## Migration (v9 → v10.1)
 
-- **Hooks slimmed** to 3 PreToolUse hooks only.
-- **Old enforcement hooks removed** — CC handles subagents natively now.
-- **Behavior stack trimmed** to essentials in `src/modes/virtual-team.md`.
+- **Skills-first architecture** — 35 skills replace behavior-heavy approach.
+- **Cross-platform** — Skills work with Claude Code, Codex CLI, Cursor, Gemini CLI, etc.
+- **Work queue** — `.agent/queue/` replaces AgentTask XML templates.
+- **Behaviors trimmed** — Only 4 foundational behaviors remain.
+- **Minimal hooks** — 2 PreToolUse hooks (git-privacy via skill instead of hook).
 
 ## Docs
 

@@ -102,6 +102,38 @@
       + (intelligent_claude_code_uninstall_agents_removal.msg
       | default('Permission denied')) }}
   when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (skills directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/skills"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_skills_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display skills removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Skills directory removed'
+      if not intelligent_claude_code_uninstall_skills_removal.failed
+      else 'Could not remove skills directory: '
+      + (intelligent_claude_code_uninstall_skills_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (hooks directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/hooks"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_hooks_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display hooks removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Hooks directory removed'
+      if not intelligent_claude_code_uninstall_hooks_removal.failed
+      else 'Could not remove hooks directory: '
+      + (intelligent_claude_code_uninstall_hooks_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
 - name: Remove system files (agenttask-templates directory)
   ansible.builtin.file:
     path: "{{ claude_install_path }}/agenttask-templates"
@@ -216,7 +248,7 @@
         if (force_remove is defined and force_remove | bool)
         else 'Conservative - user data preserved' }}
       - >-
-        Removed: Virtual team modes, behaviors, commands, roles, agents,
+        Removed: modes, behaviors, commands, roles, agents, skills, hooks,
         agenttask-templates, VERSION file
       - >-
         {{ 'Preserved: config.md, scores.md, learning-callouts.md'

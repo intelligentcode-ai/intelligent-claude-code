@@ -5,6 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.0] - 2026-02-07
+
+### Added
+- Work-queue skill for cross-platform task tracking (`.agent/queue/`)
+- Release skill for version bumping, changelog, merging, and GitHub releases
+- Suggest skill for context-aware improvement proposals (separate from reviewer)
+- Memory skill with local RAG - SQLite + FTS5 + vector embeddings for persistent knowledge storage
+- process and commit-pr to Process Skills (now 15 total)
+
+### Changed
+- Git privacy now handled via `git-privacy` skill instead of `git-enforcement.js` hook
+- Skill count increased to 35 (added memory skill with local RAG)
+- Reviewer skill rewritten with stage-appropriate workflows (pre-commit, post-commit, post-PR)
+- Command Skills reduced to 2 (icc-version, icc-get-setting)
+- Hooks reduced to 2 (was 3): `agent-infrastructure-protection.js`, `summary-file-enforcement.js`
+- Updated all documentation to reflect v10.1 changes
+
+### Removed
+- icc-init-system, icc-search-memory, icc-setup skills (redundant - system auto-initializes)
+- agenttask-create and agenttask-execute skills (replaced by work-queue)
+- git-enforcement.js hook (replaced by git-privacy skill)
+
+### Fixed
+- Windows installer (install.ps1) no longer registers non-existent git-enforcement.js
+- icc-setup symlink commands (missing slashes in paths)
+- README clone path instruction
+- Makefile macOS glob detection
+
+## [10.0.0] - 2026-02-03
+
+### Added
+- Cross-platform Skills architecture (34 skills) replacing behaviors-heavy design
+- Role skills: 14 core roles (pm, architect, developer, etc.) as SKILL.md files
+- Command skills: 4 ICC commands (icc-version, icc-init-system, icc-search-memory, icc-get-setting)
+- Process skills: 12 workflow skills (thinking, memory, validate, autonomy, etc.)
+- Enforcement companion skills: 3 skills mirroring hook enforcement (file-placement, branch-protection, infrastructure-protection)
+- Meta skill: skill-creator from Anthropic
+- SKILL.md and AGENTS.md added to allowed ALL-CAPS filenames
+
+### Changed
+- Architecture shifted from behaviors-heavy (51 files) to skills-first (34 skills + 4 behaviors)
+- Skills loaded on-demand from `~/.claude/skills/` based on description matching
+- Deployment scripts updated to install skills and clean up obsolete files
+- virtual-team.md simplified to only import 4 structural behaviors
+
+### Removed
+- All agents (14 files) - replaced by role skills
+- All commands (7 files) - replaced by command skills
+- 47 behavior files - replaced by process skills
+- ultrathinking behavior (deprecated per Claude Code V2)
+- shared-patterns directory
+
+### Testing
+- Not run (not requested)
+
 ## [8.20.97] - 2025-12-02
 
 ### Added

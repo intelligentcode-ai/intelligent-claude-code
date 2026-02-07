@@ -154,7 +154,7 @@ specs/api-design.md
 docs/feature-proposal.md
 ```
 
-Then: `/icc-generate-agenttask-from-draft drafts/new-feature/`
+Then ask: "Generate AgentTask from drafts/new-feature/"
 
 ## Interaction Patterns
 
