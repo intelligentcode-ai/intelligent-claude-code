@@ -1,140 +1,159 @@
 ---
 name: suggest
-description: Activate when user asks for improvement suggestions, refactoring ideas, or "what could be better". Analyzes code and provides realistic, context-aware proposals for improvements. Separate from reviewer (which finds problems).
+description: Activate when user asks for improvement suggestions, refactoring ideas, or "what could be better". Analyzes code and provides realistic, context-aware proposals. Implements safe improvements AUTOMATICALLY. Separate from reviewer (which finds problems).
 ---
 
 # Suggest Skill
 
-Provides realistic, context-aware improvement proposals. This is NOT about finding bugs (use reviewer for that) - this is about making good code better.
+Proposes improvements and **IMPLEMENTS SAFE ONES AUTOMATICALLY**.
 
-## When to Use
+## Autonomous Execution
 
-- User asks "what could be improved?"
-- User asks for refactoring suggestions
-- User wants architecture recommendations
-- After a feature is complete and working
+**DEFAULT BEHAVIOR: Implement safe improvements automatically.**
 
-## Core Principles
+### Auto-Implement (no permission needed)
 
-1. **Context-aware** - Proposals must fit the codebase style and constraints
-2. **Realistic** - Suggestions must be implementable with reasonable effort
-3. **Prioritized** - Most impactful improvements first
-4. **Justified** - Explain WHY the improvement matters
+Implement automatically if ALL conditions are met:
+- **Low-to-medium effort** (< 30 min work)
+- **Safe** (doesn't change intended behavior)
+- **Clear benefit** (readability, maintainability, performance)
+- **Reversible** (easy to undo if wrong)
+
+Examples of auto-implement:
+- Extract repeated code into a function
+- Rename unclear variables
+- Add missing error handling
+- Improve comment clarity
+- Remove dead code
+- Consolidate duplicate logic
+- Add type annotations
+- Fix inconsistent formatting
+
+### Pause for Human Decision
+
+Present to user if ANY condition applies:
+- **High effort** (> 30 min work)
+- **Behavior change** (even if "better")
+- **Architectural** (affects multiple components)
+- **Risky** (could break things if wrong)
+- **Subjective** (style preference, not clear improvement)
+
+Examples requiring human:
+- Rewrite module with different pattern
+- Change API interface
+- Add new dependency
+- Restructure directory layout
+- Change error handling strategy
 
 ## Analysis Areas
 
-### Code Quality
-- Readability improvements
-- Naming clarity
-- Function decomposition
-- Duplication reduction
-- Complexity reduction
+### Auto-Implement Categories
 
-### Architecture
-- Better separation of concerns
-- More appropriate patterns
-- Improved modularity
-- Cleaner interfaces
+**Code Quality (AUTO):**
+- Extract function from duplicated code
+- Rename unclear variables/functions
+- Remove unused imports/variables
+- Add missing null checks
+- Simplify complex conditionals
 
-### Performance
-- Obvious inefficiencies
-- N+1 queries
-- Unnecessary operations
-- Caching opportunities
+**Maintainability (AUTO):**
+- Add missing docstrings to public functions
+- Extract magic numbers to constants
+- Group related code together
+- Remove commented-out code
 
-### Maintainability
-- Test coverage gaps (for stability, not correctness)
-- Documentation improvements
-- Configuration externalization
-- Error message clarity
+**Performance (AUTO if safe):**
+- Cache repeated calculations
+- Use more efficient data structures
+- Remove unnecessary operations
 
-### Developer Experience
-- Simplified APIs
-- Better defaults
-- Clearer error handling
-- Improved logging
+### Human Decision Categories
+
+**Architecture (PAUSE):**
+- Module restructuring
+- Pattern changes
+- New abstractions
+
+**Dependencies (PAUSE):**
+- Adding libraries
+- Upgrading versions
+- Removing dependencies
+
+**Behavior (PAUSE):**
+- Changing defaults
+- Modifying error handling strategy
+- Altering API contracts
+
+## Execution Flow
+
+```
+1. Analyze changes for improvement opportunities
+2. Categorize each suggestion:
+   - Safe + Low effort → AUTO-IMPLEMENT
+   - Risky or High effort → PRESENT TO USER
+3. Implement all auto-implement items
+4. Run tests
+5. If tests pass:
+   - Report what was implemented
+   - Present remaining suggestions to user
+6. If tests fail:
+   - Revert auto-implemented changes
+   - Report the issue
+```
 
 ## Output Format
 
 ```markdown
-# Improvement Suggestions
+# Improvement Analysis
 
-## High Impact
-1. **[Title]** in [file:line]
-   - Current: Description of current approach
-   - Suggested: What to change
-   - Why: Benefit of the change
-   - Effort: Low/Medium/High
+## Auto-Implemented
+1. **[file:line]** Extracted `calculateTotal()` from duplicated code
+   - Before: 15 lines repeated in 3 places
+   - After: Single function, 3 call sites
 
-## Medium Impact
-...
+2. **[file:line]** Renamed `x` to `userCount`
+   - Improves readability
 
-## Low Impact (Nice-to-have)
-...
+## Tests: PASS ✓
 
-## Not Recommended
-- [Thing that might seem like an improvement but isn't worth it]
-- Reason: Why it's not worth doing
+## Suggestions for Human Decision
+1. **[HIGH IMPACT]** Refactor auth module to use middleware pattern
+   - Effort: ~2 hours
+   - Benefit: Cleaner separation, easier testing
+   - Risk: Touches 8 files, could break auth flow
+   - Recommendation: Yes, but schedule dedicated time
+
+2. **[MEDIUM IMPACT]** Add Redis caching layer
+   - Effort: ~4 hours
+   - Benefit: 10x faster repeated queries
+   - Risk: New dependency, operational complexity
+   - Recommendation: Evaluate if performance is actually a problem
+
+## Summary
+- Analyzed: X opportunities
+- Auto-implemented: Y
+- Needs decision: Z
 ```
 
-## Anti-Patterns to Avoid
+## Integration with Process
 
-**DO NOT suggest:**
-- Premature optimization
-- Over-engineering for hypothetical future needs
-- Changing working code just to match a pattern
-- Adding complexity for marginal benefit
-- Rewriting code that works fine
+After auto-implementing:
+1. Tests are re-run automatically
+2. If pass → continue to next phase
+3. If fail → revert, report, pause for human
 
-**DO suggest:**
-- Simplifications that reduce cognitive load
-- Extractions that improve testability
-- Clarifications that help future maintainers
-- Consolidations that reduce duplication
+The process continues autonomously unless human decision is genuinely needed.
 
-## Context Gathering
+## Anti-Patterns
 
-Before suggesting improvements, understand:
+**DO NOT auto-implement:**
+- "Let's rewrite this in a better way" (subjective)
+- "This could use a different pattern" (architectural)
+- "We should add validation here" (behavior change)
+- "Let's add logging everywhere" (scope creep)
 
-```bash
-# Understand the codebase structure
-find . -type f -name "*.ts" -o -name "*.js" | head -20
-
-# Check existing patterns
-grep -r "class\|function\|const.*=" --include="*.ts" | head -20
-
-# Look at test coverage
-find . -name "*test*" -o -name "*spec*" | head -10
-
-# Check for existing style guides
-cat .eslintrc* .prettierrc* tsconfig.json 2>/dev/null | head -30
-```
-
-## Example Analysis
-
-**Good suggestion:**
-```markdown
-## High Impact
-1. **Extract validation logic** in [src/api/users.ts:45-78]
-   - Current: Validation is inline in the handler, duplicated in 3 places
-   - Suggested: Create `validateUserInput()` function in `src/utils/validation.ts`
-   - Why: Reduces duplication, makes validation testable, easier to update
-   - Effort: Low (30 min)
-```
-
-**Bad suggestion:**
-```markdown
-## High Impact
-1. **Rewrite to use functional programming**
-   - Current: Uses classes and OOP patterns
-   - Suggested: Rewrite everything with pure functions
-   - Why: FP is trendy
-   - Effort: High (weeks)
-```
-The bad example ignores context, is unrealistic, and lacks real justification.
-
-## Integration
-
-- Run AFTER reviewer skill (problems first, then improvements)
-- Pairs with architect role for larger refactoring decisions
-- Feeds into story-breakdown skill for planning improvement work
+**DO auto-implement:**
+- "This variable name is unclear" → rename it
+- "This code is duplicated" → extract it
+- "This import is unused" → remove it
+- "This null check is missing" → add it

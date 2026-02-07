@@ -1,38 +1,42 @@
 ---
 name: process
-description: Activate when user explicitly requests the development workflow process, asks about workflow phases, or says "start work", "begin development", "follow the process". Activate when creating PRs or deploying to production. NOT for simple questions or minor fixes. Provides mandatory Development → Review → Suggest → Deploy → PR workflow with quality gates.
+description: Activate when user explicitly requests the development workflow process, asks about workflow phases, or says "start work", "begin development", "follow the process". Activate when creating PRs or deploying to production. NOT for simple questions or minor fixes. Executes AUTONOMOUSLY - only pauses when human decision is genuinely required.
 ---
 
 # Development Process
 
-Mandatory workflow phases with quality gates. Each phase must complete before proceeding.
+**AUTONOMOUS EXECUTION.** This process runs automatically. It only pauses when human input is genuinely required.
+
+## Autonomous Principles
+
+1. **Fix issues automatically** - Don't ask permission for obvious fixes
+2. **Implement safe improvements automatically** - Low effort + safe = just do it
+3. **Loop until clean** - Keep fixing until tests pass and no findings
+4. **Only pause for genuine decisions** - Ambiguity, architecture, risk
 
 ## Phase Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│ DEVELOPMENT PHASE                                               │
-│ Develop → Test → Fix → Repeat until tests pass                  │
-│ Review → Fix → Repeat until no findings                         │
-│ Suggest → Present improvements to user                          │
+│ DEVELOPMENT PHASE (AUTONOMOUS)                                  │
+│ Implement → Test → Review+Fix → Suggest+Implement → Loop        │
+│ Pause only for: ambiguous requirements, architectural decisions │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │ DEPLOYMENT PHASE (if applicable)                                │
-│ Deploy → Test → Fix → Repeat until passing                      │
-│ Review → Fix → Repeat until no findings                         │
-│ Commit                                                          │
+│ Deploy → Test → Review+Fix → Commit                             │
+│ Pause only for: deployment failures needing human intervention  │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │ PR PHASE                                                        │
-│ Create PR → Review → Fix → Repeat until no findings             │
-│ Suggest → Present improvements to user                          │
-│ WAIT for explicit user approval before merge                    │
+│ Create PR → Review+Fix → Suggest+Implement → WAIT for approval  │
+│ Pause for: merge approval (ALWAYS requires explicit user OK)    │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Phase 1: Development
+## Phase 1: Development (AUTONOMOUS)
 
 ### Step 1.1: Implement
 ```
@@ -43,69 +47,77 @@ Implement feature/fix
 ```
 Run tests
 IF tests fail:
-    Fix issues
+    Analyze failure
+    Fix automatically if clear
     GOTO Step 1.2
+IF tests pass:
+    Continue to Step 1.3
 ```
 
-### Step 1.3: Pre-Commit Review Loop
+### Step 1.3: Review + Auto-Fix
 ```
-Run reviewer skill (pre-commit stage)
-- Analyze for logic errors, regressions, edge cases
-- Check security issues
-- Verify test coverage
+Run reviewer skill
+- Finds: logic errors, regressions, security issues, file placement
+- FIXES AUTOMATICALLY (don't ask permission)
 
-IF findings exist:
-    Fix findings
-    GOTO Step 1.2 (re-test after fixes)
-```
-
-### Step 1.4: Suggest Improvements (MANDATORY)
-```
-Run suggest skill on changes
-- Analyze what could be improved
-- Provide realistic, context-aware proposals
-- Prioritize by impact
-
-Present suggestions to user:
-- User may choose to implement some/all/none
-- If implementing: GOTO Step 1.2 (re-test)
-- If skipping: Document decision, proceed to Phase 2 or 3
+IF fixes made:
+    GOTO Step 1.2 (re-test)
+IF needs human decision:
+    PAUSE - present options, wait for input
+IF clean:
+    Continue to Step 1.4
 ```
 
-**Exit criteria:** Tests pass AND no review findings AND suggestions addressed
+### Step 1.4: Suggest + Auto-Implement
+```
+Run suggest skill
+- Identifies improvements
+- AUTO-IMPLEMENTS safe ones (low effort, no behavior change)
+- PRESENTS risky ones to user
 
-## Phase 2: Deployment (If Applicable)
+IF auto-implemented:
+    GOTO Step 1.2 (re-test)
+IF needs human decision:
+    PAUSE - present suggestions, wait for input
+    User chooses: implement some/all/none
+    IF implementing: GOTO Step 1.2
+IF clean or user says proceed:
+    Continue to Phase 2 or 3
+```
 
-Skip if no deployment required. Otherwise:
+**Exit:** Tests pass, no review findings, suggestions addressed
+
+## Phase 2: Deployment (AUTONOMOUS)
+
+Skip if no deployment required.
 
 ### Step 2.1: Deploy
 ```
 Deploy to target environment
 ```
 
-### Step 2.2: Deployment Test Loop
+### Step 2.2: Test Loop
 ```
-Run deployment tests/verification
-IF tests fail:
-    Fix issues
+Run deployment tests
+IF fail:
+    Analyze and fix if clear
     GOTO Step 2.1
 ```
 
-### Step 2.3: Post-Deploy Review Loop
+### Step 2.3: Review + Auto-Fix
 ```
-Run reviewer skill (post-deploy stage)
-IF findings exist:
-    Fix findings
-    GOTO Step 2.2
+Run reviewer skill
+FIXES AUTOMATICALLY
+IF fixes made: GOTO Step 2.2
 ```
 
 ### Step 2.4: Commit
 ```
-Run commit-pr skill to commit changes
-Ensure git-privacy skill rules followed (no AI attribution)
+Run commit-pr skill
+Ensure git-privacy rules followed
 ```
 
-**Exit criteria:** Deployment tests pass AND no review findings AND committed
+**Exit:** Deployment tests pass, no findings, committed
 
 ## Phase 3: Pull Request
 
@@ -114,90 +126,83 @@ Ensure git-privacy skill rules followed (no AI attribution)
 Run commit-pr skill to create PR
 ```
 
-### Step 3.2: Dedicated PR Review Loop
-
-**MANDATORY**: Clone to temp directory and review full PR diff:
-```bash
-# Setup credentials
-source ~/.config/git/common.conf 2>/dev/null && export GH_TOKEN=$GITHUB_PAT
-
-# Clone and checkout PR
+### Step 3.2: Review + Auto-Fix (in temp folder)
+```
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
 gh pr checkout <PR-number>
 
-# Review ALL changes in PR
-gh pr diff <PR-number>
-```
-
-```
 Run reviewer skill (post-PR stage)
-- Security scan entire PR diff
-- File placement verification
-- Credential/secret detection
-- ALL-CAPS filename check
-- Project-specific linting (Ansible, HELM, etc.)
+- Run project linters (Ansible, HELM, etc.)
+- FIXES AUTOMATICALLY
+- Push fixes to PR branch
 
-IF findings exist:
-    Fix findings in original repo
-    Push updates
-    GOTO Step 3.2 (re-review)
+IF fixes made: GOTO Step 3.2 (re-review)
+IF needs human: PAUSE
+IF clean: Continue
 ```
 
-### Step 3.3: Suggest Improvements (MANDATORY)
+### Step 3.3: Suggest + Auto-Implement
 ```
 Run suggest skill on full PR diff
-- Analyze what could be improved across all changes
-- Provide realistic, context-aware proposals
-- Consider documentation improvements
+- AUTO-IMPLEMENTS safe improvements
+- Push to PR branch
+- PRESENTS risky ones to user
 
-Present suggestions to user:
-- User may choose to implement some/all/none
-- If implementing: Push updates, GOTO Step 3.2
-- If skipping: Document decision, proceed to approval
+IF auto-implemented: GOTO Step 3.2 (re-review)
+IF needs human: PAUSE, wait for decision
+IF clean or user says proceed: Continue
 ```
 
-### Step 3.4: Await Approval
+### Step 3.4: Await Approval (ALWAYS PAUSE)
 ```
 WAIT for explicit user approval
-DO NOT merge without user saying "merge", "approve", or "LGTM"
+DO NOT merge without: "merge", "approve", "LGTM", or similar
+
+This is the ONE step that ALWAYS requires human input.
 ```
 
-**Exit criteria:** No review findings AND suggestions addressed AND explicit user approval
+**Exit:** No findings, suggestions addressed, user approved
 
 ## Quality Gates
 
-| Gate | Requirement |
-|------|-------------|
-| Pre-commit | Tests pass + No `reviewer` findings + `suggest` addressed |
-| Pre-deploy | Tests pass + No `reviewer` findings |
-| Pre-merge | No `reviewer` findings + `suggest` addressed + User approval |
+| Gate | Requirement | Human Input |
+|------|-------------|-------------|
+| Pre-commit | Tests pass, no findings, safe suggestions implemented | Only if ambiguous |
+| Pre-deploy | Tests pass, no findings | Only if deploy fails |
+| Pre-merge | No findings, suggestions addressed | **ALWAYS** (approval) |
 
-## Related Skills
+## When to Pause
 
-- `reviewer skill` - Find problems (logic errors, regressions, security)
-- `suggest skill` - Propose improvements (what could be better)
-- `commit-pr skill` - Commit and PR formatting
-- `git-privacy skill` - No AI attribution (mandatory)
+**PAUSE for:**
+- Architectural decisions affecting multiple components
+- Ambiguous requirements needing clarification
+- Multiple valid approaches with trade-offs
+- High-risk changes that could break things
+- **Merge approval** (always)
+
+**DO NOT pause for:**
+- Fixing typos, formatting, naming
+- Adding missing error handling
+- Fixing security vulnerabilities
+- Moving misplaced files
+- Removing unused code
+- Extracting duplicated code
+- Adding null checks
 
 ## Commands
 
-**Start development:**
+**Start (runs autonomously):**
 ```
 process skill
 ```
 
-**Check current phase:**
+**Force pause at every step (L1 mode):**
+```
+process skill with L1 autonomy
+```
+
+**Check status:**
 ```
 Where am I in the process?
-```
-
-**Skip deployment phase:**
-```
-No deployment needed, go to PR
-```
-
-**Skip suggestions (with documentation):**
-```
-Skip suggestions, proceeding to [next phase]
 ```

@@ -1,11 +1,28 @@
 ---
 name: reviewer
-description: Activate when reviewing code, before committing, after committing, or before merging a PR. Activate when user asks to review, audit, check for security issues, or find regressions. Analyzes code for logic errors, regressions, edge cases, security issues, and test gaps. Required at process skill quality gates.
+description: Activate when reviewing code, before committing, after committing, or before merging a PR. Activate when user asks to review, audit, check for security issues, or find regressions. Analyzes code for logic errors, regressions, edge cases, security issues, and test gaps. Fixes findings AUTOMATICALLY. Required at process skill quality gates.
 ---
 
 # Reviewer Skill
 
-Critical code reviewer focused on finding problems. Analyzes for logic errors, regressions, edge cases, security issues, and test gaps.
+Critical code reviewer. Finds problems and **FIXES THEM AUTOMATICALLY**.
+
+## Autonomous Execution
+
+**DEFAULT BEHAVIOR: Fix issues automatically.**
+
+Only pause for human input when:
+- Architectural decisions are needed
+- Multiple valid fix approaches exist
+- The fix would change intended behavior
+- Clarification is genuinely required
+
+**DO NOT ask permission to fix:**
+- Typos, formatting, naming issues
+- Missing error handling (add it)
+- Security vulnerabilities (fix them)
+- File placement violations (move the files)
+- Credential exposure (remove and warn)
 
 ## Core Analysis Questions
 
@@ -25,28 +42,20 @@ For EVERY review, answer these questions:
 **Location:** Current directory (NOT temp folder)
 
 ```bash
-# Review unstaged changes
-git diff
-
-# Review staged changes
-git diff --cached
-
-# See what files are affected
-git status
+git diff              # unstaged
+git diff --cached     # staged
+git status            # files affected
 ```
 
-**Analyze the diff for:**
-- Logic errors in the changed code
-- Regressions from the previous behavior
-- Edge cases not handled
-- Security issues introduced
-- Missing test coverage for changes
+**Find and FIX:**
+- Logic errors → Fix the code
+- Security issues → Fix immediately
+- File placement violations → Move files to correct location
+- Credential exposure → Remove and add to .gitignore
 
-**Also check:**
-- [ ] No hardcoded credentials/secrets in diff
-- [ ] No sensitive files staged (.env, keys, credentials)
-- [ ] Files in correct locations (summaries/, memory/, etc.)
-- [ ] No ALL-CAPS filenames (except LICENSE, README, CLAUDE.md, CHANGELOG.md)
+**Pause only for:**
+- Ambiguous requirements needing clarification
+- Architectural choices with trade-offs
 
 ### Stage 2: Post-Commit / Pre-PR Review
 
@@ -54,27 +63,13 @@ git status
 **Location:** Current directory
 
 ```bash
-# Review all commits on branch vs main
 git diff main..HEAD
-
-# See commit history
 git log main..HEAD --oneline
-
-# Review a specific commit
-git show <commit-sha>
 ```
 
-**Analyze the full branch diff for:**
-- Logic errors across all changes
-- Regressions from main branch behavior
-- Edge cases introduced by the feature
-- Security implications of the full change set
-- Test coverage for the complete feature
-
-**Also check:**
-- [ ] Commit messages are meaningful
-- [ ] No debug code left in
-- [ ] Documentation updated if needed
+**Find and FIX:**
+- Same as Stage 1, applied to full branch diff
+- Create fixup commits for issues found
 
 ### Stage 3: Post-PR Review
 
@@ -82,160 +77,97 @@ git show <commit-sha>
 **Location:** MUST use temp folder for isolation
 
 ```bash
-# Setup credentials (if using external config)
-source ~/.config/git/common.conf 2>/dev/null && export GH_TOKEN=$GITHUB_PAT
-
-# Clone to temp folder
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
-
-# Checkout the PR
 gh pr checkout <PR-number>
-
-# Review full PR diff
 gh pr diff <PR-number>
-
-# Check PR status and reviews
-gh pr view <PR-number>
 ```
 
-**Windows (PowerShell):**
-```powershell
-$TEMP_DIR = Join-Path $env:TEMP "review-$(Get-Random)"
-New-Item -ItemType Directory -Path $TEMP_DIR
-Set-Location $TEMP_DIR
-gh pr checkout <PR-number>
-```
-
-**Analyze the PR for:**
-- Logic errors in all changed code
-- Regressions from main branch
-- Edge cases not covered
-- Security vulnerabilities
-- Test gaps
-
-**Also check:**
-- [ ] PR description is accurate
-- [ ] Documentation reflects changes
-- [ ] No unnecessary files included
+**Find and FIX:**
+- Push fix commits to the PR branch
+- Update PR if needed
 
 ### Project-Specific Linting
 
-Run linters based on project type detected:
+Run linters and **FIX what can be auto-fixed**:
 
-**Ansible projects** (contains `playbook.yml`, `ansible/`, or `roles/`):
+**Ansible:**
 ```bash
-# Use dummy password for vault if present
 ansible-lint --offline 2>/dev/null || ansible-lint
-ansible-playbook --syntax-check *.yml --vault-password-file=/dev/null 2>/dev/null || true
+# Fix YAML formatting issues automatically
 ```
 
-**HELM projects** (contains `Chart.yaml` or `charts/`):
+**HELM:**
 ```bash
 helm lint .
-helm template . --debug 2>&1 | head -50
 ```
 
-**Node.js projects** (contains `package.json`):
+**Node.js:**
 ```bash
-npm audit 2>/dev/null || true
-npx eslint . --ext .js,.ts 2>/dev/null || true
+npm audit fix 2>/dev/null || true    # Auto-fix vulnerabilities
+npx eslint . --fix 2>/dev/null || true  # Auto-fix lint issues
 ```
 
-**Python projects** (contains `pyproject.toml` or `requirements.txt`):
+**Python:**
 ```bash
-ruff check . 2>/dev/null || pylint **/*.py 2>/dev/null || true
+ruff check . --fix 2>/dev/null || true
 ```
 
-**Shell scripts**:
+**Shell:**
 ```bash
-find . -name "*.sh" -exec shellcheck {} \; 2>/dev/null || true
+find . -name "*.sh" -exec shellcheck {} \;
 ```
 
-## Security Review Checklist
+## Security Review (AUTO-FIX)
 
-Beyond simple credential detection:
+| Issue | Auto-Fix Action |
+|-------|-----------------|
+| Hardcoded credential | Remove, add to .gitignore, warn user |
+| SQL injection | Parameterize the query |
+| Command injection | Use safe APIs, escape inputs |
+| Path traversal | Sanitize paths |
+| Missing auth check | Add auth check (or flag if unclear) |
 
-### Injection Vulnerabilities
-- SQL injection (unsanitized input in queries)
-- Command injection (user input in shell commands)
-- XSS (unescaped output in HTML)
-- Path traversal (user input in file paths)
+## File Placement (AUTO-FIX)
 
-### Authentication/Authorization
-- Missing auth checks on endpoints
-- Broken access control (can user A access user B's data?)
-- Session handling issues
-- Token exposure in logs or URLs
-
-### Data Exposure
-- Sensitive data in logs
-- PII in error messages
-- Secrets in environment variable dumps
-- Credentials in config files
-
-### Dependency Security
-```bash
-# Check for known vulnerabilities
-npm audit 2>/dev/null
-pip-audit 2>/dev/null
-```
-
-## File Placement Review
-
-**Blocked patterns (agent bloat):**
-- `REPORT.md`, `SUMMARY.md`, `ANALYSIS.md` in project root
-- ALL-CAPS `.md` files (except: README, LICENSE, CLAUDE, CHANGELOG, CONTRIBUTING, SECURITY)
-
-**Correct locations:**
-| Type | Directory |
-|------|-----------|
-| Summaries/Reports | `summaries/` |
-| Memory entries | `memory/` |
-| Stories | `stories/` |
-| Bugs | `bugs/` |
-| Documentation | `docs/` |
+| Wrong Location | Action |
+|----------------|--------|
+| Summary in root | `mv summary.md summaries/` |
+| Report in docs/ | `mv docs/report.md summaries/` |
+| ALL-CAPS bloat file | Delete or move to summaries/ |
 
 ## Output Format
 
+After auto-fixing, report:
+
 ```markdown
-# Review Findings
+# Review Complete
 
-## Critical
-1. **[CRITICAL]** [file:line] Description
-   - Evidence: `code snippet`
-   - Risk: What could happen
-   - Fix: How to resolve
+## Auto-Fixed
+- [file:line] Fixed: description of fix
+- [file:line] Fixed: description of fix
 
-## High
-1. **[HIGH]** [file:line] Description
-   - Evidence: `code snippet`
-   - Fix: Recommendation
-
-## Medium
-...
-
-## Low
-...
-
-## Linting
-- ansible-lint: X violations
-- eslint: X errors, Y warnings
+## Requires Human Decision
+- [file:line] Issue: description
+  - Option A: ...
+  - Option B: ...
+  - Why I can't decide: ...
 
 ## Summary
-- Critical: X
-- High: X
-- Medium: X
-- Low: X
+- Issues found: X
+- Auto-fixed: Y
+- Needs human: Z
 - Blocking: Yes/No
 ```
 
 ## Integration
 
-- **process skill** - Invoked at each quality gate
-- **git-privacy skill** - Check for AI attribution
-- **file-placement skill** - Verify file locations
+After fixing:
+1. Re-run tests (Step 1.2)
+2. If tests pass → proceed to suggest skill
+3. If tests fail → fix and repeat
 
 ## NOT This Skill's Job
 
-Improvement suggestions belong in a separate skill. This skill finds **problems**, not **opportunities**.
+- Improvement suggestions → use suggest skill
+- Asking permission for obvious fixes → just fix them
