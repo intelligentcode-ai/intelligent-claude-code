@@ -412,6 +412,26 @@ function Install-IntelligentClaudeCode {
         Install-McpConfiguration -McpConfigPath $McpConfig -InstallPath $Paths.InstallPath
     }
     
+    # Install memory skill dependencies if npm is available
+    $NpmPath = Get-Command npm -ErrorAction SilentlyContinue
+    if ($NpmPath) {
+        $MemorySkillPath = Join-Path $Paths.InstallPath "skills\memory"
+        if (Test-Path (Join-Path $MemorySkillPath "package.json")) {
+            Write-Host "Installing memory skill dependencies..." -ForegroundColor Yellow
+            try {
+                Push-Location $MemorySkillPath
+                npm install --production 2>$null
+                Pop-Location
+                Write-Host "  ✅ Memory skill: SQLite + embeddings installed for hybrid search" -ForegroundColor Green
+            } catch {
+                Pop-Location
+                Write-Host "  Memory skill: Run 'npm install' in skills\memory\ for enhanced search (optional)" -ForegroundColor Yellow
+            }
+        }
+    } else {
+        Write-Host "  Memory skill: npm not found - run 'npm install' in skills\memory\ for enhanced search (optional)" -ForegroundColor Yellow
+    }
+
     Write-Host "✅ Installation completed successfully!" -ForegroundColor Green
 }
 

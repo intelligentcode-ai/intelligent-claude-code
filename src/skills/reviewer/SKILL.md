@@ -167,6 +167,22 @@ After fixing:
 2. If tests pass → proceed to suggest skill
 3. If tests fail → fix and repeat
 
+## Memory Integration (AUTOMATIC)
+
+After fixing recurring issues, auto-save to memory:
+
+```bash
+# When a pattern emerges (same fix multiple times):
+node ~/.claude/skills/memory/cli.js write \
+  --title "Recurring: <issue type>" \
+  --summary "<what to check for and how to fix>" \
+  --tags "recurring,security|quality|patterns" \
+  --category "issues" \
+  --importance "medium"
+```
+
+This is **SILENT** - no user notification. Builds knowledge for future reviews.
+
 ## NOT This Skill's Job
 
 - Improvement suggestions → use suggest skill

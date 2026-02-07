@@ -5,7 +5,7 @@
 SHELL := /bin/bash
 .SHELLFLAGS := -c
 
-.PHONY: install uninstall clean-install test help clean
+.PHONY: install uninstall clean-install test help clean dev-setup dev-clean
 
 # Resolve relative paths to absolute paths before passing to Ansible
 # This ensures paths work regardless of Ansible's working directory
@@ -36,6 +36,8 @@ help:
 	@echo "  make uninstall [HOST=ip] [USER=user] [TARGET_PATH=/path] [KEY=~/.ssh/id_rsa | PASS=password] [FORCE=true]"
 	@echo "  make clean-install [HOST=ip] [USER=user] [TARGET_PATH=/path] [CONFIG_FILE=...] [MCP_CONFIG=...] [ENV_FILE=...] [KEY=... | PASS=...]"
 	@echo "  make test                        # Run installation tests"
+	@echo "  make dev-setup [SKILLS=\"...\"]    # Symlink skills from src/ for development"
+	@echo "  make dev-clean [SKILLS=\"...\"]    # Remove development symlinks"
 	@echo ""
 	@echo "Parameters:"
 	@echo "  HOST - Remote host IP (omit for local installation)"
@@ -277,4 +279,80 @@ test-integration: ## Run integration tests only
 		echo "No integration tests found yet"; \
 	fi
 
-.PHONY: test-hooks test-unit test-integration
+.PHONY: test-hooks test-unit test-integration dev-setup dev-clean
+
+# Default skills to symlink for development
+# Core workflow: memory process reviewer best-practices thinking commit-pr
+# Enforcement companions: branch-protection file-placement git-privacy
+# Execution model: work-queue parallel-execution release
+DEV_SKILLS ?= memory process reviewer best-practices thinking commit-pr branch-protection file-placement git-privacy work-queue parallel-execution release
+
+# Development setup - symlink specific skills from source for testing
+# Usage:
+#   make dev-setup SKILLS="memory"                    # Symlink specific skill(s)
+#   make dev-setup                                    # Symlink default dev skills
+dev-setup:
+	@echo "Setting up development environment..."
+	@mkdir -p ~/.claude/skills
+	@skills_to_link="$(if $(SKILLS),$(SKILLS),$(DEV_SKILLS))"; \
+	echo "Symlinking skills: $$skills_to_link"; \
+	for skill_name in $$skills_to_link; do \
+		if [ -d "src/skills/$$skill_name" ]; then \
+			if [ -L ~/.claude/skills/"$$skill_name" ]; then \
+				rm ~/.claude/skills/"$$skill_name"; \
+			elif [ -d ~/.claude/skills/"$$skill_name" ]; then \
+				echo "  Backing up $$skill_name"; \
+				mv ~/.claude/skills/"$$skill_name" ~/.claude/skills/"$$skill_name.backup"; \
+			fi; \
+			ln -sf "$$(pwd)/src/skills/$$skill_name" ~/.claude/skills/"$$skill_name"; \
+			echo "  ✓ Linked $$skill_name"; \
+		else \
+			echo "  ⚠ Skill not found: $$skill_name"; \
+		fi; \
+	done
+	@echo ""
+	@if [ -d "src/skills/memory" ] && [ -L ~/.claude/skills/memory ] && command -v npm >/dev/null 2>&1; then \
+		echo "Installing memory skill dependencies..."; \
+		cd src/skills/memory && npm install --production 2>/dev/null; \
+		echo "  ✓ Memory skill dependencies installed"; \
+	fi
+	@echo ""
+	@echo "✅ Development setup complete!"
+	@echo "   Symlinked skills will reflect source changes immediately"
+	@echo ""
+	@echo "Default skills: $(DEV_SKILLS)"
+	@echo "Override with: make dev-setup SKILLS=\"skill1 skill2\""
+
+# Remove development symlinks and restore backups
+# Usage:
+#   make dev-clean SKILLS="memory process"  # Clean specific skills
+#   make dev-clean                          # Clean all symlinked skills
+dev-clean:
+	@echo "Cleaning development symlinks..."
+	@if [ -n "$(SKILLS)" ]; then \
+		for skill_name in $(SKILLS); do \
+			if [ -L ~/.claude/skills/"$$skill_name" ]; then \
+				rm ~/.claude/skills/"$$skill_name"; \
+				echo "  ✓ Removed $$skill_name symlink"; \
+				if [ -d ~/.claude/skills/"$$skill_name.backup" ]; then \
+					mv ~/.claude/skills/"$$skill_name.backup" ~/.claude/skills/"$$skill_name"; \
+					echo "    Restored from backup"; \
+				fi; \
+			fi; \
+		done; \
+	else \
+		for skill in src/skills/*/; do \
+			skill_name=$$(basename "$$skill"); \
+			if [ -L ~/.claude/skills/"$$skill_name" ]; then \
+				rm ~/.claude/skills/"$$skill_name"; \
+				echo "  ✓ Removed $$skill_name symlink"; \
+				if [ -d ~/.claude/skills/"$$skill_name.backup" ]; then \
+					mv ~/.claude/skills/"$$skill_name.backup" ~/.claude/skills/"$$skill_name"; \
+					echo "    Restored from backup"; \
+				fi; \
+			fi; \
+		done; \
+	fi
+	@echo ""
+	@echo "✅ Development cleanup complete!"
+	@echo "   Run 'make install' to restore normal installation"

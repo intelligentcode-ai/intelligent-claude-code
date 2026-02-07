@@ -336,12 +336,38 @@
 - name: Handle project-specific integration
   ansible.builtin.import_tasks: project_integration.yml
   when: claude_scope == "project"
+- name: Check if npm is available for memory skill
+  ansible.builtin.command: which npm
+  register: intelligent_claude_code_npm_check
+  failed_when: false
+  changed_when: false
+- name: Install memory skill dependencies (optional - enhances search)
+  ansible.builtin.command:
+    cmd: npm install --production
+    chdir: "{{ claude_install_path }}/skills/memory"
+  when: intelligent_claude_code_npm_check.rc == 0
+  register: intelligent_claude_code_memory_npm_install
+  failed_when: false
+  changed_when: intelligent_claude_code_memory_npm_install.rc == 0
+- name: Display memory skill installation notice
+  ansible.builtin.debug:
+    msg: "Memory skill: SQLite + embeddings installed for hybrid search"
+  when:
+    - intelligent_claude_code_npm_check.rc == 0
+    - intelligent_claude_code_memory_npm_install.rc == 0
+    - ansible_verbosity >= 1
+- name: Display memory skill manual notice
+  ansible.builtin.debug:
+    msg: "Memory skill: Run 'npm install' in skills/memory/ for enhanced search (optional)"
+  when:
+    - intelligent_claude_code_npm_check.rc != 0
+    - ansible_verbosity >= 1
 - name: Display installation summary
   ansible.builtin.debug:
     msg:
       - "✅ Installation complete!"
       - "📍 Location: {{ claude_install_path }}"
-      - "🎯 Skills: 34 cross-platform skills (roles, commands, workflows)"
+      - "🎯 Skills: 35 cross-platform skills (roles, commands, workflows, memory)"
       - "🤖 Virtual Team: 14 core roles + unlimited specialists"
       - "🔒 Behavioral Hooks: PreToolUse (infra protection, summaries)"
       - "🚀 Use @Role or /skill-name to activate capabilities"

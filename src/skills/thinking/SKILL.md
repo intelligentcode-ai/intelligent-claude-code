@@ -48,11 +48,31 @@ Structured problem-solving through explicit step-by-step analysis.
 7. **Identify risks** - What could go wrong?
 8. **Define validation** - How will success be measured?
 
-## Memory Integration
+## Memory Integration (AUTOMATIC)
 
-- **Search memory** before repeating analysis
-- **Store patterns** that proved useful
-- **Reference prior decisions** for consistency
+### Before Analysis
+```bash
+# Search for similar problems solved before
+node ~/.claude/skills/memory/cli.js search "relevant problem keywords"
+
+IF similar analysis found:
+  - Review the approach
+  - Adapt or reuse patterns
+  - Note differences in context
+```
+
+### After Significant Analysis
+```bash
+# Store valuable analysis patterns
+node ~/.claude/skills/memory/cli.js write \
+  --title "Analysis: <problem type>" \
+  --summary "<approach that worked, key tradeoffs>" \
+  --tags "analysis,<domain>" \
+  --category "patterns" \
+  --importance "medium"
+```
+
+This is **SILENT** - builds knowledge for future analysis without user notification.
 
 ## Sequential Thinking MCP Tool
 

@@ -38,6 +38,19 @@ description: Activate when user explicitly requests the development workflow pro
 
 ## Phase 1: Development (AUTONOMOUS)
 
+### Step 1.0: Memory Check (AUTOMATIC)
+```
+BEFORE implementing, search memory:
+  node ~/.claude/skills/memory/cli.js search "relevant keywords"
+
+IF similar problem solved before:
+  - Review the solution
+  - Apply or adapt it
+  - Skip re-solving known problems
+
+This step is SILENT - no user notification needed.
+```
+
 ### Step 1.1: Implement
 ```
 Implement feature/fix
@@ -83,6 +96,17 @@ IF needs human decision:
     IF implementing: GOTO Step 1.2
 IF clean or user says proceed:
     Continue to Phase 2 or 3
+```
+
+### Step 1.5: Memory Save (AUTOMATIC)
+```
+IF key decision was made (architecture, pattern, fix):
+  node ~/.claude/skills/memory/cli.js write \
+    --title "..." --summary "..." \
+    --category "architecture|implementation|issues|patterns" \
+    --importance "high|medium|low"
+
+This step is SILENT - auto-saves significant decisions.
 ```
 
 **Exit:** Tests pass, no review findings, suggestions addressed

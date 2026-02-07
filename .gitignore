@@ -86,6 +86,12 @@ NOTES.md
 # If you see memory/ files in git status, DO NOT COMMIT THEM
 memory/
 memory/**/*
+# Exception: src/skills/memory/ is the skill source code (should be tracked)
+!src/skills/memory/
+!src/skills/memory/**
+# But exclude runtime dependencies from memory skill
+src/skills/memory/node_modules/
+src/skills/memory/package-lock.json
 *.memory
 *.learning
 

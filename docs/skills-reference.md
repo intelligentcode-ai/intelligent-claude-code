@@ -1,7 +1,7 @@
 # Skills Reference
 
 ## Overview
-The intelligent-claude-code system provides **34 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
+The intelligent-claude-code system provides **35 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
 
 ## Essential Skills (2)
 
@@ -110,10 +110,10 @@ qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer
 ### Command Skills (2)
 icc-version, icc-get-setting
 
-### Process Skills (14)
+### Process Skills (15)
 thinking, work-queue, process, best-practices, validate,
 autonomy, parallel-execution, workflow, mcp-config,
-story-breakdown, git-privacy, commit-pr, release, suggest
+story-breakdown, git-privacy, commit-pr, release, suggest, memory
 
 ### Enforcement Companion Skills (3)
 file-placement, branch-protection, infrastructure-protection
@@ -149,4 +149,4 @@ Is git privacy enabled?                       # Check privacy settings
 
 ---
 
-The intelligent-claude-code system prioritizes **@Role communication patterns** over skill-based interaction. The 2 essential skills provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.
+The intelligent-claude-code system prioritizes **@Role communication patterns** over skill-based interaction. The 2 essential skills provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists. The **memory skill** provides persistent knowledge storage with local RAG for semantic search.

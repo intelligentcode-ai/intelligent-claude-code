@@ -27,11 +27,19 @@ Best practices are stored in `best-practices/<category>/`:
 
 ## Search Before Implementation
 
-**MANDATORY**: Check best-practices before starting work:
-1. Identify the domain/category of work
-2. Search relevant best-practices directory
-3. Apply established patterns to implementation
-4. Note deviations with justification
+**MANDATORY**: Check best-practices AND memory before starting work:
+
+1. **Identify** the domain/category of work
+2. **Search best-practices** directory:
+   ```bash
+   find best-practices/<category>/ -name "*.md"
+   ```
+3. **Search memory** for related patterns:
+   ```bash
+   node ~/.claude/skills/memory/cli.js search "<relevant keywords>"
+   ```
+4. **Apply** established patterns to implementation
+5. **Note** deviations with justification
 
 ## Best Practice Format
 
