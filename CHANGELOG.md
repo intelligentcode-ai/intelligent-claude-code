@@ -10,16 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Work-queue skill for cross-platform task tracking (`.agent/queue/`)
 - Release skill for version bumping, changelog, merging, and GitHub releases
-- icc-setup to Command Skills (now 5 total)
 - process and commit-pr to Process Skills (now 13 total)
 
 ### Changed
 - Git privacy now handled via `git-privacy` skill instead of `git-enforcement.js` hook
-- Skill count increased to 36 (was 34)
+- Skill count changed to 33 (was 34)
+- Command Skills reduced to 2 (icc-version, icc-get-setting)
 - Hooks reduced to 2 (was 3): `agent-infrastructure-protection.js`, `summary-file-enforcement.js`
 - Updated all documentation to reflect v10.1 changes
 
 ### Removed
+- icc-init-system, icc-search-memory, icc-setup skills (redundant - system auto-initializes)
 - agenttask-create and agenttask-execute skills (replaced by work-queue)
 - git-enforcement.js hook (replaced by git-privacy skill)
 

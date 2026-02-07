@@ -5,7 +5,7 @@ This file is the **single entry point** for the behavioral system used by humans
 ## Project Overview
 
 Intelligent Claude Code is a CC-native framework that adds:
-- **Skills-first architecture** - 36 cross-platform skills
+- **Skills-first architecture** - 33 cross-platform skills
 - Work queue for task management (`.agent/queue/`)
 - Role-based specialists (14 core + dynamic creation)
 - File placement rules (summaries/memory/stories/bugs)
@@ -47,15 +47,15 @@ thinking skill for complex analysis
 memory skill to search prior knowledge
 ```
 
-## Core Skills (36)
+## Core Skills (33)
 
 ### Role Skills (14)
 pm, architect, developer, system-engineer, devops-engineer,
 database-engineer, security-engineer, ai-engineer, web-designer,
 qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer
 
-### Command Skills (5)
-icc-version, icc-init-system, icc-search-memory, icc-get-setting, icc-setup
+### Command Skills (2)
+icc-version, icc-get-setting
 
 ### Process Skills (13)
 thinking, work-queue, process, best-practices, validate,
@@ -106,7 +106,7 @@ The system loads skills from:
 - `src/behaviors/` - Behavioral guidance
 
 ### Local Testing Setup
-Use the icc-setup skill for guided setup (includes Linux/macOS/Windows commands).
+See `docs/installation-guide.md` for setup instructions.
 
 ### Workflow
 Use the process skill for the complete development workflow:
@@ -115,9 +115,7 @@ Use the process skill for the complete development workflow:
 3. **PR Phase** - Create PR → Review → Fix → Await explicit user approval
 
 ### Key Skills for This Project
-- icc-setup - Setup development environment (run after clone)
 - process - Complete development workflow with quality gates
 - commit-pr - Commit and PR formatting
 - git-privacy - AI attribution prevention (MANDATORY)
 - reviewer - Critical review (pre-commit, post-commit, post-PR)
-- icc-development - Development guide (local only)

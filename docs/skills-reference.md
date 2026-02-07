@@ -1,27 +1,9 @@
 # Skills Reference
 
 ## Overview
-The intelligent-claude-code system provides **36 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
+The intelligent-claude-code system provides **33 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
 
-## Essential Skills (4)
-
-### icc-init-system
-Initializes the virtual team system and prepares for work.
-
-**Trigger:** Ask to initialize system or start ICC
-
-**Examples:**
-```
-Initialize the ICC system
-Start the virtual team with L3 autonomy
-```
-
-**What it does:**
-- Loads configuration from CLAUDE.md
-- Creates memory directory structure
-- Activates the 14 core roles
-- Sets up work queue system
-- Configures autonomy level
+## Essential Skills (2)
 
 ### icc-version
 Displays ICC system version, component status, and installation info.
@@ -50,29 +32,6 @@ What is the default branch?
 2. Project config (./config.md or CLAUDE.md)
 3. User config (~/.claude/config.md - system-wide only)
 4. System defaults
-
-### icc-search-memory
-Searches memory for relevant learnings and patterns.
-
-**Trigger:** Ask to search memory or look up prior knowledge
-
-**Examples:**
-```
-Search memory for oauth authentication
-Look up database optimization patterns
-Find error handling patterns in memory
-```
-
-**Used for:**
-- Manual memory exploration
-- Pattern investigation
-- Learning discovery
-
-**Results include:**
-- Topic location
-- Entry date
-- Relevance score
-- Preview snippet
 
 ## Primary Interaction: @Role Communication
 
@@ -137,11 +96,9 @@ The system automatically creates specialists for ANY technology domain when expe
 - Any specialist work
 
 **Use Skills for** (System Functions):
-- System initialization: icc-init-system
 - Version check: icc-version
 - Configuration queries: icc-get-setting
-- Memory exploration: icc-search-memory
-- Process skills: thinking, memory, best-practices, etc.
+- Process skills: thinking, best-practices, etc.
 
 ## All Skills by Category
 
@@ -150,13 +107,13 @@ pm, architect, developer, system-engineer, devops-engineer,
 database-engineer, security-engineer, ai-engineer, web-designer,
 qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer
 
-### Command Skills (5)
-icc-version, icc-init-system, icc-search-memory, icc-get-setting, icc-setup
+### Command Skills (2)
+icc-version, icc-get-setting
 
-### Process Skills (12)
+### Process Skills (13)
 thinking, work-queue, process, best-practices, validate,
 autonomy, parallel-execution, workflow, mcp-config,
-story-breakdown, git-privacy, commit-pr
+story-breakdown, git-privacy, commit-pr, release
 
 ### Enforcement Companion Skills (3)
 file-placement, branch-protection, infrastructure-protection
@@ -168,14 +125,7 @@ skill-creator - Guide for creating new skills
 
 ### Starting New Work
 ```bash
-Initialize the ICC system                     # System initialization
 @PM Build a REST API for user management      # Natural language work request
-```
-
-### Memory Exploration
-```bash
-Search memory for "authentication patterns"   # Find relevant patterns
-@Developer Implement OAuth based on memory    # Apply found patterns
 ```
 
 ### Configuration Management
@@ -192,12 +142,6 @@ Is git privacy enabled?                       # Check privacy settings
 - Reference existing code/patterns when relevant
 - Mention constraints upfront
 
-### Memory Integration
-- Memory searches happen automatically during @Role work
-- Use the icc-search-memory skill for manual exploration only
-- Learnings are stored automatically - no manual skills needed
-- Memory captures patterns from successful work executions
-
 ### System Configuration
 - Use the icc-get-setting skill to understand current configuration
 - Configuration affects @Role behavior and work queue execution
@@ -205,4 +149,4 @@ Is git privacy enabled?                       # Check privacy settings
 
 ---
 
-The intelligent-claude-code system prioritizes **@Role communication patterns** over skill-based interaction. The 4 essential skills provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.
+The intelligent-claude-code system prioritizes **@Role communication patterns** over skill-based interaction. The 2 essential skills provide core system functionality, while most work happens through natural language interaction with the 14-role team and unlimited dynamic specialists.

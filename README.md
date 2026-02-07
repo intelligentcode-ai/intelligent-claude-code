@@ -4,7 +4,7 @@ CC‑native framework for role-based specialists, work queue management, and min
 
 ## Current scope (v10.1)
 
-- **Skills-first architecture** — 36 cross-platform skills loaded on demand.
+- **Skills-first architecture** — 33 cross-platform skills loaded on demand.
 - **CC‑native subagents** — no marker files, no custom role enforcement hooks.
 - **Work queue management** — cross-platform task tracking in `.agent/queue/`.
 - **Minimal hooks only** — keep only what CC doesn't do natively.
@@ -68,7 +68,7 @@ Claude Code model selection remains user‑controlled. Set it via:
 
 ## Migration (v9 → v10.1)
 
-- **Skills-first architecture** — 36 skills replace behavior-heavy approach.
+- **Skills-first architecture** — 33 skills replace behavior-heavy approach.
 - **Cross-platform** — Skills work with Claude Code, Codex CLI, Cursor, Gemini CLI, etc.
 - **Work queue** — `.agent/queue/` replaces AgentTask XML templates.
 - **Behaviors trimmed** — Only 4 foundational behaviors remain.
