@@ -188,13 +188,26 @@ This is the ONE step that ALWAYS requires human input.
 
 **Exit:** No findings, suggestions addressed, user approved
 
-## Quality Gates
+## Quality Gates (BLOCKING)
 
-| Gate | Requirement | Human Input |
-|------|-------------|-------------|
-| Pre-commit | Tests pass, no findings, safe suggestions implemented | Only if ambiguous |
-| Pre-deploy | Tests pass, no findings | Only if deploy fails |
-| Pre-merge | No findings, suggestions addressed | **ALWAYS** (approval) |
+**These gates are MANDATORY. You CANNOT proceed without passing them.**
+
+| Gate | Requirement | Blocked Actions |
+|------|-------------|-----------------|
+| Pre-commit | Tests pass + reviewer skill clean | `git commit`, `git push` |
+| Pre-deploy | Tests pass + reviewer skill clean | Deploy to production |
+| Pre-merge | reviewer skill clean + user approval | `gh pr merge` |
+
+### Gate Enforcement
+
+```
+IF attempting commit/push/PR without running reviewer skill:
+  STOP - You are violating the process
+  GO BACK to Step 1.3 (Review + Auto-Fix)
+  DO NOT proceed until reviewer skill passes
+```
+
+**Skipping review is a process violation, not a shortcut.**
 
 ## When to Pause
 

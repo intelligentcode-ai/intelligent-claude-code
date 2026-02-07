@@ -7,6 +7,23 @@ description: Activate when user asks to commit, push changes, create a PR, open 
 
 This skill handles git commits and pull requests with specific formatting requirements.
 
+## PREREQUISITES (MANDATORY)
+
+**Before ANY commit or PR, you MUST:**
+
+1. **Run tests** - All tests must pass
+2. **Run reviewer skill** - Must complete with no blocking findings
+3. **Fix all findings** - Auto-fix or get human decision
+
+```
+BLOCKED until prerequisites pass:
+- git commit
+- git push
+- gh pr create
+```
+
+**If you skip these steps, you are violating the process.**
+
 ## CRITICAL RULES
 
 **NEVER include any of the following in commits or PRs:**
