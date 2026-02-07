@@ -166,7 +166,7 @@ function Register-ProductionHooks {
     )
 
     try {
-        Write-Host "  Registering all 16 production hooks in settings.json..." -ForegroundColor Gray
+        Write-Host "  Registering minimal PreToolUse hooks in settings.json..." -ForegroundColor Gray
 
         # Load or create settings
         $Settings = Get-SettingsJson -SettingsPath $SettingsPath
@@ -176,59 +176,21 @@ function Register-ProductionHooks {
             $Settings | Add-Member -MemberType NoteProperty -Name "hooks" -Value ([PSCustomObject]@{}) -Force
         }
 
-        # Define all production hooks
+        # Define all production hooks (git-enforcement.js removed in v10.1)
         $ProductionHooks = [PSCustomObject]@{
             PreToolUse = @(
                 [PSCustomObject]@{
                     matcher = "*"
                     hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\git-enforcement.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\main-scope-enforcement.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pm-constraints-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-infrastructure-protection.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\agent-marker.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\config-protection.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\pre-agenttask-validation.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\workflow-enforcement.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\project-scope-enforcement.js`""; timeout = 5000 }
                         [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\summary-file-enforcement.js`""; timeout = 5000 }
-                    )
-                }
-            )
-            SessionStart = @(
-                [PSCustomObject]@{
-                    hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\session-start-dummy.js`""; timeout = 5000 }
-                    )
-                }
-            )
-            UserPromptSubmit = @(
-                [PSCustomObject]@{
-                    hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\user-prompt-submit.js`""; timeout = 15000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\context-injection.js`""; timeout = 5000 }
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\task-tool-execution-reminder.js`""; timeout = 5000 }
-                    )
-                }
-            )
-            SubagentStop = @(
-                [PSCustomObject]@{
-                    hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\subagent-stop.js`""; timeout = 5000 }
-                    )
-                }
-            )
-            Stop = @(
-                [PSCustomObject]@{
-                    hooks = @(
-                        [PSCustomObject]@{ type = "command"; command = "node `"$HooksPath\stop.js`""; timeout = 5000 }
                     )
                 }
             )
         }
 
-        # Replace all production hooks
-        foreach ($HookType in @("PreToolUse", "SessionStart", "UserPromptSubmit", "SubagentStop", "Stop")) {
+        # Remove obsolete hooks and replace production hooks
+        foreach ($HookType in @("PreToolUse", "Stop", "SubagentStop", "SessionStart", "UserPromptSubmit")) {
             if ($Settings.hooks.PSObject.Properties.Name -contains $HookType) {
                 $Settings.hooks.PSObject.Properties.Remove($HookType)
             }
@@ -239,7 +201,7 @@ function Register-ProductionHooks {
         $JsonOutput = $Settings | ConvertTo-Json -Depth 10
         Set-Content -Path $SettingsPath -Value $JsonOutput -Encoding UTF8
 
-        Write-Host "  ✅ All 16 production hooks registered successfully in settings.json" -ForegroundColor Green
+        Write-Host "  ✅ Minimal hooks registered successfully in settings.json" -ForegroundColor Green
 
     } catch {
         Write-Warning "  Failed to register production hooks in settings.json: $($_.Exception.Message)"
@@ -255,7 +217,7 @@ function Install-HookSystem {
         [string]$SourceDir
     )
 
-    Write-Host "Installing hook system (16 production hooks)..." -ForegroundColor Yellow
+    Write-Host "Installing hook system (minimal PreToolUse hooks)..." -ForegroundColor Yellow
 
     try {
         # Create hooks directory structure
@@ -280,28 +242,11 @@ function Install-HookSystem {
             # Copy all files and subdirectories from source hooks to destination
             Copy-DirectoryRecursive -Source $SourceHooksPath -Destination $HooksPath
 
-            # Ensure hooks/lib exists and install constraints.json for context injection
+            # Ensure hooks/lib exists
             $HooksLibPath = Join-Path $HooksPath "lib"
             if (-not (Test-Path $HooksLibPath)) {
                 New-Item -ItemType Directory -Path $HooksLibPath | Out-Null
                 Write-Host "  Created directory: $HooksLibPath" -ForegroundColor Green
-            }
-            $SourceConstraintsPath = Join-Path $SourceHooksPath "lib" "constraints.json"
-            $UserConstraintsPath = Join-Path $HooksLibPath "constraints.json"
-            if (Test-Path $SourceConstraintsPath) {
-                Write-Host "  Installing default constraints.json..." -ForegroundColor Gray
-                Copy-Item -Path $SourceConstraintsPath -Destination $UserConstraintsPath -Force
-            }
-
-            # Install reminders.json if it doesn't exist (preserve user customizations)
-            $UserRemindersPath = Join-Path $HooksPath "lib" "reminders.json"
-            $SourceRemindersPath = Join-Path $SourceHooksPath "lib" "reminders.json"
-
-            if (-not (Test-Path $UserRemindersPath) -and (Test-Path $SourceRemindersPath)) {
-                Write-Host "  Installing default reminders.json..." -ForegroundColor Gray
-                Copy-Item -Path $SourceRemindersPath -Destination $UserRemindersPath -Force
-            } elseif (Test-Path $UserRemindersPath) {
-                Write-Host "  User reminders.json preserved - keeping customizations" -ForegroundColor Yellow
             }
 
             # Always update README.md documentation
@@ -351,11 +296,52 @@ function Install-IntelligentClaudeCode {
     if (-not (Test-Path $Paths.InstallPath)) {
         New-Item -Path $Paths.InstallPath -ItemType Directory -Force | Out-Null
     }
-    
+
+    # Remove obsolete directories from previous versions
+    Write-Host "Cleaning up obsolete directories..." -ForegroundColor Yellow
+    $ObsoleteDirs = @("commands", "agents")
+    foreach ($Dir in $ObsoleteDirs) {
+        $ObsoletePath = Join-Path $Paths.InstallPath $Dir
+        if (Test-Path $ObsoletePath) {
+            Write-Host "  Removing obsolete $Dir..." -ForegroundColor Gray
+            Remove-Item -Path $ObsoletePath -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    # Remove obsolete behavior files from previous versions
+    $ObsoleteBehaviors = @(
+        "agenttask-creation-system.md",
+        "agenttask-execution.md",
+        "enforcement-rules.md",
+        "learning-team-automation.md",
+        "memory-system.md",
+        "role-system.md",
+        "sequential-thinking.md",
+        "story-breakdown.md",
+        "template-resolution.md",
+        "ultrathinking.md",
+        "validation-system.md"
+    )
+    $BehaviorsPath = Join-Path $Paths.InstallPath "behaviors"
+    if (Test-Path $BehaviorsPath) {
+        foreach ($File in $ObsoleteBehaviors) {
+            $FilePath = Join-Path $BehaviorsPath $File
+            if (Test-Path $FilePath) {
+                Remove-Item -Path $FilePath -Force -ErrorAction SilentlyContinue
+            }
+        }
+        # Remove shared-patterns directory
+        $SharedPatternsPath = Join-Path $BehaviorsPath "shared-patterns"
+        if (Test-Path $SharedPatternsPath) {
+            Write-Host "  Removing obsolete shared-patterns..." -ForegroundColor Gray
+            Remove-Item -Path $SharedPatternsPath -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
     # Copy source files
     Write-Host "Copying source files..." -ForegroundColor Yellow
 
-    $DirectoriesToCopy = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "utils")
+    $DirectoriesToCopy = @("skills", "behaviors", "modes", "agenttask-templates", "roles")
 
     foreach ($Dir in $DirectoriesToCopy) {
         $SourcePath = Join-Path $SourceDir $Dir
@@ -426,6 +412,26 @@ function Install-IntelligentClaudeCode {
         Install-McpConfiguration -McpConfigPath $McpConfig -InstallPath $Paths.InstallPath
     }
     
+    # Install memory skill dependencies if npm is available
+    $NpmPath = Get-Command npm -ErrorAction SilentlyContinue
+    if ($NpmPath) {
+        $MemorySkillPath = Join-Path $Paths.InstallPath "skills\memory"
+        if (Test-Path (Join-Path $MemorySkillPath "package.json")) {
+            Write-Host "Installing memory skill dependencies..." -ForegroundColor Yellow
+            try {
+                Push-Location $MemorySkillPath
+                npm install --production 2>$null
+                Pop-Location
+                Write-Host "  ✅ Memory skill: SQLite + embeddings installed for hybrid search" -ForegroundColor Green
+            } catch {
+                Pop-Location
+                Write-Host "  Memory skill: Run 'npm install' in skills\memory\ for enhanced search (optional)" -ForegroundColor Yellow
+            }
+        }
+    } else {
+        Write-Host "  Memory skill: npm not found - run 'npm install' in skills\memory\ for enhanced search (optional)" -ForegroundColor Yellow
+    }
+
     Write-Host "✅ Installation completed successfully!" -ForegroundColor Green
 }
 
@@ -587,7 +593,7 @@ function Uninstall-IntelligentClaudeCode {
         Write-Host "Conservative uninstall - preserving user data..." -ForegroundColor Yellow
 
         # Remove system directories but preserve user data
-        $SystemDirs = @("agents", "behaviors", "commands", "modes", "agenttask-templates", "hooks", "utils")
+        $SystemDirs = @("skills", "behaviors", "modes", "agenttask-templates", "roles", "hooks")
 
         foreach ($Dir in $SystemDirs) {
             $DirPath = Join-Path $Paths.InstallPath $Dir
@@ -647,9 +653,9 @@ function Test-Installation {
         $TestPaths = @(
             "$TestDir\CLAUDE.md",
             "$TestDir\.claude\modes\virtual-team.md",
-            "$TestDir\.claude\agents\architect.md",
-            "$TestDir\.claude\agents\developer.md",
-            "$TestDir\.claude\agents\ai-engineer.md",
+            "$TestDir\.claude\skills\pm\SKILL.md",
+            "$TestDir\.claude\skills\developer\SKILL.md",
+            "$TestDir\.claude\skills\architect\SKILL.md",
             "$TestDir\.claude\agenttask-templates\medium-agenttask-template.yaml",
             "$TestDir\.claude\hooks"
         )
@@ -751,7 +757,7 @@ function Test-Installation {
         $UninstallChecks = @(
             "$TestDir\.claude\modes",
             "$TestDir\.claude\behaviors",
-            "$TestDir\.claude\agents",
+            "$TestDir\.claude\skills",
             "$TestDir\.claude\hooks"
         )
 

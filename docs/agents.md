@@ -19,22 +19,22 @@ This directory contains the 14 core Claude Code Subagent definitions with embedd
 | **backend-tester.md** | Backend testing and API validation | Any backend technology via AgentTask context |
 | **requirements-engineer.md** | Requirements analysis and documentation | Any domain or industry via AgentTask context |
 | **user-role.md** | End-to-end testing and browser automation | Any testing framework via AgentTask context |
+| **reviewer.md** | Critical review and risk assessment | Any domain via AgentTask context |
 
 **Note**: @PM operates as both main agent (for story breakdown and coordination) and subagent (for delegation and specialized PM tasks).
 
 ## Key Features
 
-- **14 Core Generic Agents**: Handle any work via context specialization
+- **14 core Generic Agents**: Handle any work via context specialization
 - **Dynamic Specialization**: Achieved through AgentTask context, not separate files
 - **Unlimited Domain Coverage**: Any technology via specialized AgentTask content
 - **Claude Code Native Integration**: Full compatibility with Claude Code Subagents
 
 ## Quick Start
 
-1. **Development**: Edit agent definitions in `src/agents/`
-2. **Build**: `make install` copies to installation templates
-3. **Deploy**: Ansible deploys to user's configured agent directory
-4. **Usage**: Claude Code loads agents as native Subagents
+1. **Development**: Edit role skills in `src/skills/*/SKILL.md`
+2. **Build**: `make install` copies skills to `.claude/skills/` (or `make clean-install` for a full reset)
+3. **Usage**: Skills are loaded on demand via @Role patterns or skill name matching
 
 ## Usage Examples
 

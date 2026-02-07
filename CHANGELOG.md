@@ -5,6 +5,117 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.0] - 2026-02-07
+
+### Added
+- Work-queue skill for cross-platform task tracking (`.agent/queue/`)
+- Release skill for version bumping, changelog, merging, and GitHub releases
+- Suggest skill for context-aware improvement proposals (separate from reviewer)
+- Memory skill with local RAG - SQLite + FTS5 + vector embeddings for persistent knowledge storage
+- process and commit-pr to Process Skills (now 15 total)
+
+### Changed
+- Git privacy now handled via `git-privacy` skill instead of `git-enforcement.js` hook
+- Skill count increased to 35 (added memory skill with local RAG)
+- Reviewer skill rewritten with stage-appropriate workflows (pre-commit, post-commit, post-PR)
+- Command Skills reduced to 2 (icc-version, icc-get-setting)
+- Hooks reduced to 2 (was 3): `agent-infrastructure-protection.js`, `summary-file-enforcement.js`
+- Updated all documentation to reflect v10.1 changes
+
+### Removed
+- icc-init-system, icc-search-memory, icc-setup skills (redundant - system auto-initializes)
+- agenttask-create and agenttask-execute skills (replaced by work-queue)
+- git-enforcement.js hook (replaced by git-privacy skill)
+
+### Fixed
+- Windows installer (install.ps1) no longer registers non-existent git-enforcement.js
+- icc-setup symlink commands (missing slashes in paths)
+- README clone path instruction
+- Makefile macOS glob detection
+
+## [10.0.0] - 2026-02-03
+
+### Added
+- Cross-platform Skills architecture (34 skills) replacing behaviors-heavy design
+- Role skills: 14 core roles (pm, architect, developer, etc.) as SKILL.md files
+- Command skills: 4 ICC commands (icc-version, icc-init-system, icc-search-memory, icc-get-setting)
+- Process skills: 12 workflow skills (thinking, memory, validate, autonomy, etc.)
+- Enforcement companion skills: 3 skills mirroring hook enforcement (file-placement, branch-protection, infrastructure-protection)
+- Meta skill: skill-creator from Anthropic
+- SKILL.md and AGENTS.md added to allowed ALL-CAPS filenames
+
+### Changed
+- Architecture shifted from behaviors-heavy (51 files) to skills-first (34 skills + 4 behaviors)
+- Skills loaded on-demand from `~/.claude/skills/` based on description matching
+- Deployment scripts updated to install skills and clean up obsolete files
+- virtual-team.md simplified to only import 4 structural behaviors
+
+### Removed
+- All agents (14 files) - replaced by role skills
+- All commands (7 files) - replaced by command skills
+- 47 behavior files - replaced by process skills
+- ultrathinking behavior (deprecated per Claude Code V2)
+- shared-patterns directory
+
+### Testing
+- Not run (not requested)
+
+## [8.20.97] - 2025-12-02
+
+### Added
+- Workflow enforcement hook to gate tool usage through configurable Task → Plan → Review → Execute → Document sequence.
+
+### Changed
+- Infrastructure protection hardening: stricter command-substitution detection, explicit main-scope agent bypass control, and marker cleanup respects custom temp directories.
+- Directory enforcement now recognizes `memory/` and `memories/` segments for valid note placement while still keeping STORY/BUG/EPIC docs in their scoped folders.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [9.0.0] - 2026-01-07
+
+### Added
+- Reviewer subagent definition and core role listing.
+
+### Changed
+- Slimmed hook system to PreToolUse-only: `git-enforcement.js`, `agent-infrastructure-protection.js`, `summary-file-enforcement.js`.
+- Summary-file enforcement is now scope-agnostic (applies to main + subagents).
+- Behavior stack trimmed to CC-native subagents and planning-first AgentTasks.
+- Documentation updated to reflect minimal hooks, 14 core roles, and CC-native workflow.
+- Infra protection: documentation fast-path now only allows single-quoted heredocs and scans heredoc bodies for substitution before allowing.
+
+### Removed
+- Legacy hooks (marker orchestration, role enforcement, reminders, auto-trigger and workflow hooks).
+- Obsolete behavior and shared-pattern files tied to removed hooks.
+
+### Testing
+- Not run (not requested).
+
+## [8.20.96] - 2025-11-21
+
+### Fixed
+- Align root VERSION with src/VERSION to keep init/version reporting accurate.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [8.20.95] - 2025-11-20
+
+### Fixed
+- Stop hook now outputs schema-compliant JSON only (no auto-review context), preventing validation errors in Stop events.
+
+### Testing
+- `bash tests/run-tests.sh`
+
+## [8.20.94] - 2025-11-20
+
+### Fixed
+- Infra protection: allow markdown writes in allowlisted dirs (docs/stories/bugs/memory/summaries/agenttasks) even when they live in sibling trees.
+- Infra protection: still block markdown writes that contain command substitution, even if keywords are quoted.
+- Destructive/write keyword scans now ignore matches that appear only inside quotes, preventing blocks on grep/printf examples.
+
+### Testing
+- `bash tests/run-tests.sh`
 
 ## [8.20.93] - 2025-11-20
 

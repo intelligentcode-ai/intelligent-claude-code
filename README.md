@@ -1,53 +1,86 @@
 # Intelligent Claude Code
 
-Turn Claude Code into a multi-agent “virtual dev team” with AgentTasks, memory-first flows, and guardrails.
+CC‑native framework for role-based specialists, work queue management, and minimal hooks.
 
-## Quick start
+## Current scope (v10.1)
+
+- **Skills-first architecture** — 35 cross-platform skills loaded on demand.
+- **CC‑native subagents** — no marker files, no custom role enforcement hooks.
+- **Work queue management** — cross-platform task tracking in `.agent/queue/`.
+- **Minimal hooks only** — keep only what CC doesn't do natively.
+- **Behavior guidance** — 4 foundational behaviors for structural rules.
+
+## Included
+
+- **14 core roles** + **dynamic specialists**
+- **Reviewer role** (critical risk/regression review)
+- **Work queue templates** (`.agent/queue/` for cross-platform tracking)
+- **Hooks (PreToolUse only)**:
+  - `agent-infrastructure-protection.js` — block imperative infra changes
+  - `summary-file-enforcement.js` — route summaries/reports + block ALL‑CAPS filenames
+
+## Removed
+
+- Marker‑based orchestration
+- Role enforcement hooks
+- Reminder hooks
+- Auto‑trigger and workflow hooks
+- Redundant behavior trees
+
+## Principles
+
+1. **Plan first** → create AgentTask before implementation.
+2. **Subagents do the work** → main scope coordinates only.
+3. **Keep files tidy** → summaries in `summaries/`, memory in `memory/`.
+4. **Protect git** → strip AI mentions when privacy is enabled.
+5. **Use CC’s native agent system** → don’t re‑implement it.
+
+## Core roles
+
+@PM, @Architect, @Developer, @System‑Engineer, @DevOps‑Engineer, @Database‑Engineer,
+@Security‑Engineer, @AI‑Engineer, @Web‑Designer, @QA‑Engineer, @Backend‑Tester,
+@Requirements‑Engineer, @User‑Role, @Reviewer — plus dynamic specialists (e.g., @React‑Developer).
+
+## Install
 
 ```bash
 git clone https://github.com/intelligentcode-ai/intelligent-claude-code.git
 cd intelligent-claude-code
 make install              # or .\install.ps1 install on Windows
-/icc-init-system          # one-time init
+make clean-install        # force uninstall + reinstall (Linux/macOS)
 ```
 
-Then work conversationally:
+Usage:
 
 ```bash
-@PM plan feature XYZ      # breaks into AgentTasks
-@Developer implement auth # executes via AgentTask
-/icc-search-memory auth   # reuse prior learnings
+@PM break down the story
+@Architect review the design
+@Developer implement auth
+@Reviewer audit for regressions
 ```
 
-## What’s inside (at a glance)
-- Specialist roles (PM, Dev, DevOps, QA, Security, DB, AI, etc.) plus dynamic specialists
-- AgentTask automation with templates, memory injection, and constraints
-- Guardrails: main-scope enforcement, scope/summary/file checks, infra safety
-- MCP-ready: memory/docs/issue providers when enabled
+## Model control (user‑configurable)
 
-## Operate safely
-- Main scope: coordinate, delegate, read; agents do the heavy work (configurable)
-- Memory-first: `memory/` is searched/stored automatically
-- Infra protection: IAC-only posture by default; see `icc.config.json`
+Claude Code model selection remains user‑controlled. Set it via:
+- `~/.claude/settings.json`
+- project `.claude/settings.json`
+- CLI or `/model`
 
-## Configure (minimal)
-- Primary knobs live in `icc.config.json` (or project `.icc/config.json`)
-- Quick presets available in `.icc/`:
-  - `config.relaxed.json` – legacy behavior with lighter guardrails
-  - `config.sub-agent.json` – agents do all writes/exec; main scope delegates only
-  - `config.main-scope.json` – coordination-only main scope (agents execute work)
-  - `config.strict-main-scope.json` – read-only/Task-only main scope (ultra-safe mode)
-  - `config.main-scope-dev.json` – Linux/macOS friendly preset where Main Scope may run curated `git`/`gh` commands locally while all guardrails (file naming, folders, git privacy, @codex review, best practices, memory output) remain enabled
-  - `config.workflow-reviewed.json` – Enables workflow enforcement (Task → Plan → Review → Execute → Review → Document) for Main Scope + agents
+## Migration (v9 → v10.1)
 
-  See `sample-configs/README.md` for usage instructions and run `make install CONFIG_FILE=sample-configs/<name>.json` to apply one system-wide.
+- **Skills-first architecture** — 35 skills replace behavior-heavy approach.
+- **Cross-platform** — Skills work with Claude Code, Codex CLI, Cursor, Gemini CLI, etc.
+- **Work queue** — `.agent/queue/` replaces AgentTask XML templates.
+- **Behaviors trimmed** — Only 4 foundational behaviors remain.
+- **Minimal hooks** — 2 PreToolUse hooks (git-privacy via skill instead of hook).
 
-- Toggle `enforcement.main_scope_has_agent_privileges: true` if you want the Main Scope treated exactly like an agent (strict main-scope enforcement, PM-only limits, doc routing, etc. all short-circuit). Default is `false`; `icc.config.main-scope-dev.json` turns it on for systems impacted by the V8 issue.
-- Enable `enforcement.workflow` to require the Task → Plan → Review → Execute → Review → Document sequence (see `icc.config.workflow-reviewed.json` for the default step mapping).
+## Docs
 
-## Documentation
-- Start: [docs/index.md](docs/index.md)
-- Essentials: [installation-guide](docs/installation-guide.md), [user-guide](docs/user-guide.md), [agenttask-system-guide](docs/agenttask-system-guide.md), [virtual-team-guide](docs/virtual-team-guide.md)
+- Start: `docs/index.md`
+- Installation: `docs/installation-guide.md`
+- Configuration: `docs/configuration-guide.md`
+- Hooks: `docs/hook-registration-reference.md`
 
 ## License
+
 MIT (see LICENSE)

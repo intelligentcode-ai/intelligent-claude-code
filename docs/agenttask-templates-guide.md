@@ -510,7 +510,7 @@ All AgentTask templates now integrate with the 14-role virtual team system:
 - **Unlimited Technology Coverage**: ANY domain (@React-Developer, @AWS-Engineer, @Kubernetes-DevOps-Engineer)
 - **Technology-Driven Creation**: ALWAYS when technology expertise needed for optimal execution  
 - **PM + Architect Collaboration**: Dynamic specialists created through behavioral patterns
-- **Storage Location**: Created specialists stored in .claude/agents/dynamic/
+- **Storage Location**: Specialists are created dynamically via AgentTask context (no separate files)
 - **10+ Years Expertise**: All specialists created with senior-level domain expertise
 
 **Template Integration Features:**

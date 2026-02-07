@@ -2,6 +2,8 @@
 
 This guide covers common issues encountered when using the intelligent-claude-code system and their solutions.
 
+Tip: For a full reset on macOS/Linux, use `make clean-install` (force uninstall + reinstall) with the same arguments you would pass to `make install`.
+
 ## Table of Contents
 
 1. [Installation Issues](#installation-issues)
@@ -157,9 +159,8 @@ echo '@~/.claude/modes/virtual-team.md' >> CLAUDE.md
 
 2. **Corrupted Installation:**
 ```bash
-# Reinstall system
-make uninstall FORCE=true
-make install
+# Reinstall system (clean)
+make clean-install
 /icc-init-system
 ```
 
@@ -283,8 +284,7 @@ ls -la ./src/agenttask-templates/      # Source templates
 
 2. Reinstall templates:
 ```bash
-make uninstall
-make install
+make clean-install
 ```
 
 3. Verify template hierarchy:
@@ -776,8 +776,8 @@ git branch -a
 If the system is completely broken:
 
 ```bash
-# 1. Force uninstall
-make uninstall FORCE=true
+# 1. Clean reinstall
+make clean-install
 
 # 2. Clean any remaining files
 rm -rf ~/.claude

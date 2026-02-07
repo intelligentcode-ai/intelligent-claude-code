@@ -1,0 +1,266 @@
+---
+# Main tasks for intelligent-claude-code uninstallation
+- name: Validate uninstall parameters
+  ansible.builtin.assert:
+    that:
+      - claude_install_path is defined
+      - claude_scope in ['user', 'project']
+    fail_msg: "Invalid uninstall parameters"
+- name: Check if installation exists
+  ansible.builtin.stat:
+    path: "{{ claude_install_path }}"
+  register: intelligent_claude_code_uninstall_install_directory
+- name: Display uninstall mode
+  ansible.builtin.debug:
+    msg: >-
+      Uninstall mode: {{ 'Force removal (all files)'
+      if (force_remove is defined and force_remove | bool)
+      else 'Conservative (preserve user data)' }}
+- name: Handle project-specific removal
+  ansible.builtin.include_tasks: project_removal.yml
+  when: claude_scope == "project"
+- name: Handle graceful removal from user CLAUDE.md
+  ansible.builtin.include_tasks: graceful_removal.yml
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (modes directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/modes"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_modes_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display modes removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Modes directory removed'
+      if not intelligent_claude_code_uninstall_modes_removal.failed
+      else 'Could not remove modes directory: '
+      + (intelligent_claude_code_uninstall_modes_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (behaviors directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/behaviors"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_behaviors_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display behaviors removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Behaviors directory removed'
+      if not intelligent_claude_code_uninstall_behaviors_removal.failed
+      else 'Could not remove behaviors directory: '
+      + (intelligent_claude_code_uninstall_behaviors_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (commands directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/commands"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_commands_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display commands removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Commands directory removed'
+      if not intelligent_claude_code_uninstall_commands_removal.failed
+      else 'Could not remove commands directory: '
+      + (intelligent_claude_code_uninstall_commands_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (roles directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/roles"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_roles_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display roles removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Roles directory removed'
+      if not intelligent_claude_code_uninstall_roles_removal.failed
+      else 'Could not remove roles directory: '
+      + (intelligent_claude_code_uninstall_roles_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (agents directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/agents"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_agents_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display agents removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Agents directory removed'
+      if not intelligent_claude_code_uninstall_agents_removal.failed
+      else 'Could not remove agents directory: '
+      + (intelligent_claude_code_uninstall_agents_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (skills directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/skills"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_skills_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display skills removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Skills directory removed'
+      if not intelligent_claude_code_uninstall_skills_removal.failed
+      else 'Could not remove skills directory: '
+      + (intelligent_claude_code_uninstall_skills_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (hooks directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/hooks"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_hooks_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display hooks removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'Hooks directory removed'
+      if not intelligent_claude_code_uninstall_hooks_removal.failed
+      else 'Could not remove hooks directory: '
+      + (intelligent_claude_code_uninstall_hooks_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (agenttask-templates directory)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/agenttask-templates"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_agenttask_templates_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display agenttask-templates removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'AgentTask templates directory removed'
+      if not intelligent_claude_code_uninstall_agenttask_templates_removal.failed
+      else 'Could not remove agenttask-templates directory: '
+      + (intelligent_claude_code_uninstall_agenttask_templates_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove system files (VERSION file)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}/VERSION"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_version_removal
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display VERSION removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'VERSION file removed'
+      if not intelligent_claude_code_uninstall_version_removal.failed
+      else 'Could not remove VERSION file: '
+      + (intelligent_claude_code_uninstall_version_removal.msg
+      | default('Permission denied')) }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove user data files (force mode only)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  failed_when: false
+  loop:
+    - "{{ claude_install_path }}/config.md"
+    - "{{ claude_install_path }}/scores.md"
+    - "{{ claude_install_path }}/learning-callouts.md"
+  register: intelligent_claude_code_uninstall_user_data_removal
+  when:
+    - intelligent_claude_code_uninstall_install_directory.stat.exists
+    - force_remove is defined and force_remove | bool
+- name: Display user data removal result
+  ansible.builtin.debug:
+    msg: "User data files removed (force mode)"
+  when:
+    - intelligent_claude_code_uninstall_install_directory.stat.exists
+    - force_remove is defined and force_remove | bool
+- name: Display user data preservation notice
+  ansible.builtin.debug:
+    msg: >-
+      User data preserved: config.md, scores.md, learning-callouts.md
+      (use FORCE=true to remove)
+  when:
+    - intelligent_claude_code_uninstall_install_directory.stat.exists
+    - not (force_remove is defined and force_remove | bool)
+- name: Check if .claude directory is empty
+  ansible.builtin.find:
+    paths: "{{ claude_install_path }}"
+    file_type: any
+  register: intelligent_claude_code_uninstall_claude_dir_contents
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Remove empty .claude directory
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_claude_dir_removal
+  when:
+    - intelligent_claude_code_uninstall_install_directory.stat.exists
+    - intelligent_claude_code_uninstall_claude_dir_contents.matched == 0
+- name: Display directory removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ '.claude directory removed (was empty)'
+      if (intelligent_claude_code_uninstall_claude_dir_contents.matched == 0
+      and not intelligent_claude_code_uninstall_claude_dir_removal.failed)
+      else '.claude directory preserved (contains user files)' }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Force remove .claude directory (force mode only)
+  ansible.builtin.file:
+    path: "{{ claude_install_path }}"
+    state: absent
+  failed_when: false
+  register: intelligent_claude_code_uninstall_claude_dir_force_removal
+  when:
+    - intelligent_claude_code_uninstall_install_directory.stat.exists
+    - force_remove is defined and force_remove | bool
+    - intelligent_claude_code_uninstall_claude_dir_contents.matched > 0
+- name: Display force removal result
+  ansible.builtin.debug:
+    msg: >-
+      {{ '.claude directory force removed'
+      if not intelligent_claude_code_uninstall_claude_dir_force_removal.failed
+      else 'Could not force remove .claude directory: '
+      + (intelligent_claude_code_uninstall_claude_dir_force_removal.msg
+      | default('Permission denied')) }}
+  when:
+    - intelligent_claude_code_uninstall_install_directory.stat.exists
+    - force_remove is defined and force_remove | bool
+    - intelligent_claude_code_uninstall_claude_dir_contents.matched > 0
+- name: Display uninstall summary
+  ansible.builtin.debug:
+    msg:
+      - "Uninstall complete!"
+      - "Location: {{ claude_install_path }}"
+      - >-
+        Mode: {{ 'Force removal - all files removed'
+        if (force_remove is defined and force_remove | bool)
+        else 'Conservative - user data preserved' }}
+      - >-
+        Removed: modes, behaviors, commands, roles, agents, skills, hooks,
+        agenttask-templates, VERSION file
+      - >-
+        {{ 'Preserved: config.md, scores.md, learning-callouts.md'
+        if not (force_remove is defined and force_remove | bool)
+        else 'All files removed' }}
+      - >-
+        {{ 'Directory preserved (contains user files)'
+        if (intelligent_claude_code_uninstall_claude_dir_contents.matched > 0
+        and not (force_remove is defined and force_remove | bool))
+        else 'Directory removed' }}
+  when: intelligent_claude_code_uninstall_install_directory.stat.exists
+- name: Display no installation found message
+  ansible.builtin.debug:
+    msg: "No installation found at {{ claude_install_path }}"
+  when: not intelligent_claude_code_uninstall_install_directory.stat.exists

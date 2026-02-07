@@ -1,0 +1,521 @@
+/**
+ * Memory Database Module
+ * SQLite storage with FTS5 full-text search support
+ */
+
+const path = require('path');
+const fs = require('fs');
+
+// Database instance (lazy-loaded)
+let db = null;
+let Database = null;
+
+/**
+ * Get the memory database path
+ * @param {string} projectRoot - Project root directory
+ * @returns {string} Path to memory.db
+ */
+function getDbPath(projectRoot = process.cwd()) {
+  return path.join(projectRoot, '.agent', 'memory', 'memory.db');
+}
+
+/**
+ * Ensure the memory directory exists
+ * @param {string} projectRoot - Project root directory
+ */
+function ensureMemoryDir(projectRoot = process.cwd()) {
+  const memoryDir = path.join(projectRoot, '.agent', 'memory');
+  const exportsDir = path.join(memoryDir, 'exports');
+  const archiveDir = path.join(memoryDir, 'archive');
+
+  const categories = ['architecture', 'implementation', 'issues', 'patterns'];
+
+  // Create base directories
+  [memoryDir, exportsDir, archiveDir].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+
+  // Create category subdirectories in exports
+  categories.forEach(cat => {
+    const catDir = path.join(exportsDir, cat);
+    if (!fs.existsSync(catDir)) {
+      fs.mkdirSync(catDir, { recursive: true });
+    }
+  });
+}
+
+/**
+ * Initialize the database with schema
+ * @param {string} projectRoot - Project root directory
+ * @returns {object} Database instance
+ */
+function initDatabase(projectRoot = process.cwd()) {
+  if (db) return db;
+
+  // Try to load better-sqlite3
+  try {
+    Database = require('better-sqlite3');
+  } catch (e) {
+    console.error('better-sqlite3 not installed. Run: npm install better-sqlite3');
+    console.error('Memory skill will operate in degraded mode (no persistence).');
+    return null;
+  }
+
+  ensureMemoryDir(projectRoot);
+  const dbPath = getDbPath(projectRoot);
+
+  db = new Database(dbPath);
+  db.pragma('journal_mode = WAL');
+
+  // Create schema
+  db.exec(`
+    -- Core memories table
+    CREATE TABLE IF NOT EXISTS memories (
+      id TEXT PRIMARY KEY,
+      title TEXT NOT NULL,
+      summary TEXT NOT NULL,
+      content TEXT NOT NULL,
+      category TEXT NOT NULL,
+      scope TEXT DEFAULT 'project',
+      importance TEXT DEFAULT 'medium',
+      created_at TEXT NOT NULL,
+      accessed_at TEXT,
+      access_count INTEGER DEFAULT 0,
+      supersedes TEXT,
+      archived INTEGER DEFAULT 0,
+      export_path TEXT
+    );
+
+    -- Tags (many-to-many)
+    CREATE TABLE IF NOT EXISTS tags (
+      memory_id TEXT,
+      tag TEXT,
+      PRIMARY KEY (memory_id, tag),
+      FOREIGN KEY (memory_id) REFERENCES memories(id) ON DELETE CASCADE
+    );
+
+    -- Links (memory-to-memory, memory-to-work-item)
+    CREATE TABLE IF NOT EXISTS links (
+      source_id TEXT,
+      target_id TEXT,
+      link_type TEXT DEFAULT 'related',
+      PRIMARY KEY (source_id, target_id),
+      FOREIGN KEY (source_id) REFERENCES memories(id) ON DELETE CASCADE
+    );
+
+    -- Vector embeddings (384-dim from MiniLM)
+    CREATE TABLE IF NOT EXISTS memories_vec (
+      memory_id TEXT PRIMARY KEY,
+      embedding BLOB NOT NULL,
+      FOREIGN KEY (memory_id) REFERENCES memories(id) ON DELETE CASCADE
+    );
+
+    -- Indexes for fast queries
+    CREATE INDEX IF NOT EXISTS idx_memories_category ON memories(category);
+    CREATE INDEX IF NOT EXISTS idx_memories_importance ON memories(importance);
+    CREATE INDEX IF NOT EXISTS idx_memories_archived ON memories(archived);
+    CREATE INDEX IF NOT EXISTS idx_tags_tag ON tags(tag);
+  `);
+
+  // Create FTS5 virtual table (separate to handle exists check)
+  try {
+    db.exec(`
+      CREATE VIRTUAL TABLE IF NOT EXISTS memories_fts USING fts5(
+        title, summary, content,
+        content=memories,
+        content_rowid=rowid
+      );
+    `);
+  } catch (e) {
+    // FTS5 table may already exist
+    if (!e.message.includes('already exists')) {
+      console.warn('FTS5 setup warning:', e.message);
+    }
+  }
+
+  // Create triggers to keep FTS in sync
+  try {
+    db.exec(`
+      CREATE TRIGGER IF NOT EXISTS memories_ai AFTER INSERT ON memories BEGIN
+        INSERT INTO memories_fts(rowid, title, summary, content)
+        VALUES (NEW.rowid, NEW.title, NEW.summary, NEW.content);
+      END;
+
+      CREATE TRIGGER IF NOT EXISTS memories_ad AFTER DELETE ON memories BEGIN
+        INSERT INTO memories_fts(memories_fts, rowid, title, summary, content)
+        VALUES ('delete', OLD.rowid, OLD.title, OLD.summary, OLD.content);
+      END;
+
+      CREATE TRIGGER IF NOT EXISTS memories_au AFTER UPDATE ON memories BEGIN
+        INSERT INTO memories_fts(memories_fts, rowid, title, summary, content)
+        VALUES ('delete', OLD.rowid, OLD.title, OLD.summary, OLD.content);
+        INSERT INTO memories_fts(rowid, title, summary, content)
+        VALUES (NEW.rowid, NEW.title, NEW.summary, NEW.content);
+      END;
+    `);
+  } catch (e) {
+    // Triggers may already exist
+  }
+
+  return db;
+}
+
+/**
+ * Generate a new memory ID
+ * @returns {string} New memory ID (mem-XXX)
+ */
+function generateId() {
+  if (!db) return `mem-${Date.now()}`;
+
+  const result = db.prepare(`
+    SELECT id FROM memories ORDER BY id DESC LIMIT 1
+  `).get();
+
+  if (!result) return 'mem-001';
+
+  const num = parseInt(result.id.replace('mem-', ''), 10) + 1;
+  return `mem-${String(num).padStart(3, '0')}`;
+}
+
+/**
+ * Create a new memory
+ * @param {object} memory - Memory data
+ * @returns {string} Created memory ID
+ */
+function createMemory(memory) {
+  if (!db) {
+    console.error('Database not initialized');
+    return null;
+  }
+
+  const id = memory.id || generateId();
+  const now = new Date().toISOString();
+
+  const insert = db.prepare(`
+    INSERT INTO memories (id, title, summary, content, category, scope,
+                          importance, created_at, export_path)
+    VALUES (@id, @title, @summary, @content, @category, @scope,
+            @importance, @created_at, @export_path)
+  `);
+
+  insert.run({
+    id,
+    title: memory.title,
+    summary: memory.summary,
+    content: memory.content,
+    category: memory.category || 'patterns',
+    scope: memory.scope || 'project',
+    importance: memory.importance || 'medium',
+    created_at: now,
+    export_path: memory.export_path || null
+  });
+
+  // Insert tags
+  if (memory.tags && memory.tags.length > 0) {
+    const insertTag = db.prepare(`
+      INSERT OR IGNORE INTO tags (memory_id, tag) VALUES (?, ?)
+    `);
+    memory.tags.forEach(tag => insertTag.run(id, tag.toLowerCase()));
+  }
+
+  return id;
+}
+
+/**
+ * Get a memory by ID
+ * @param {string} id - Memory ID
+ * @returns {object|null} Memory object or null
+ */
+function getMemory(id) {
+  if (!db) return null;
+
+  const memory = db.prepare(`
+    SELECT * FROM memories WHERE id = ?
+  `).get(id);
+
+  if (!memory) return null;
+
+  // Get tags
+  memory.tags = db.prepare(`
+    SELECT tag FROM tags WHERE memory_id = ?
+  `).all(id).map(r => r.tag);
+
+  // Get links
+  memory.links = db.prepare(`
+    SELECT target_id, link_type FROM links WHERE source_id = ?
+  `).all(id);
+
+  // Update access stats
+  db.prepare(`
+    UPDATE memories
+    SET accessed_at = ?, access_count = access_count + 1
+    WHERE id = ?
+  `).run(new Date().toISOString(), id);
+
+  return memory;
+}
+
+/**
+ * Update a memory
+ * @param {string} id - Memory ID
+ * @param {object} updates - Fields to update
+ * @returns {boolean} Success
+ */
+function updateMemory(id, updates) {
+  if (!db) return false;
+
+  const allowed = ['title', 'summary', 'content', 'category', 'scope',
+                   'importance', 'supersedes', 'archived', 'export_path'];
+
+  const fields = [];
+  const values = {};
+
+  allowed.forEach(field => {
+    if (updates[field] !== undefined) {
+      fields.push(`${field} = @${field}`);
+      values[field] = updates[field];
+    }
+  });
+
+  if (fields.length === 0) return false;
+
+  values.id = id;
+
+  db.prepare(`
+    UPDATE memories SET ${fields.join(', ')} WHERE id = @id
+  `).run(values);
+
+  // Update tags if provided
+  if (updates.tags) {
+    db.prepare(`DELETE FROM tags WHERE memory_id = ?`).run(id);
+    const insertTag = db.prepare(`
+      INSERT INTO tags (memory_id, tag) VALUES (?, ?)
+    `);
+    updates.tags.forEach(tag => insertTag.run(id, tag.toLowerCase()));
+  }
+
+  return true;
+}
+
+/**
+ * Delete a memory
+ * @param {string} id - Memory ID
+ * @returns {boolean} Success
+ */
+function deleteMemory(id) {
+  if (!db) return false;
+
+  const result = db.prepare(`DELETE FROM memories WHERE id = ?`).run(id);
+  return result.changes > 0;
+}
+
+/**
+ * Add a link between memories or to a work item
+ * @param {string} sourceId - Source memory ID
+ * @param {string} targetId - Target ID (mem-xxx or STORY-xxx)
+ * @param {string} linkType - Link type (related, supersedes, implements)
+ */
+function addLink(sourceId, targetId, linkType = 'related') {
+  if (!db) return;
+
+  db.prepare(`
+    INSERT OR REPLACE INTO links (source_id, target_id, link_type)
+    VALUES (?, ?, ?)
+  `).run(sourceId, targetId, linkType);
+}
+
+/**
+ * Store vector embedding for a memory
+ * @param {string} id - Memory ID
+ * @param {Float32Array} embedding - 384-dim embedding
+ */
+function storeEmbedding(id, embedding) {
+  if (!db) return;
+
+  const buffer = Buffer.from(embedding.buffer);
+
+  db.prepare(`
+    INSERT OR REPLACE INTO memories_vec (memory_id, embedding)
+    VALUES (?, ?)
+  `).run(id, buffer);
+}
+
+/**
+ * Get embedding for a memory
+ * @param {string} id - Memory ID
+ * @returns {Float32Array|null} Embedding or null
+ */
+function getEmbedding(id) {
+  if (!db) return null;
+
+  const result = db.prepare(`
+    SELECT embedding FROM memories_vec WHERE memory_id = ?
+  `).get(id);
+
+  if (!result) return null;
+
+  return new Float32Array(result.embedding.buffer);
+}
+
+/**
+ * Get all embeddings for similarity search
+ * @returns {Array} Array of {id, embedding}
+ */
+function getAllEmbeddings() {
+  if (!db) return [];
+
+  const results = db.prepare(`
+    SELECT mv.memory_id, mv.embedding, m.archived
+    FROM memories_vec mv
+    JOIN memories m ON mv.memory_id = m.id
+    WHERE m.archived = 0
+  `).all();
+
+  return results.map(r => ({
+    id: r.memory_id,
+    embedding: new Float32Array(r.embedding.buffer)
+  }));
+}
+
+/**
+ * List memories with optional filters
+ * @param {object} filters - category, tag, archived, limit
+ * @returns {Array} Array of memory summaries
+ */
+function listMemories(filters = {}) {
+  if (!db) return [];
+
+  let sql = `
+    SELECT DISTINCT m.id, m.title, m.summary, m.category, m.importance,
+           m.created_at, m.accessed_at, m.access_count, m.archived
+    FROM memories m
+    LEFT JOIN tags t ON m.id = t.memory_id
+    WHERE 1=1
+  `;
+  const params = [];
+
+  if (!filters.includeArchived) {
+    sql += ' AND m.archived = 0';
+  }
+
+  if (filters.category) {
+    sql += ' AND m.category = ?';
+    params.push(filters.category);
+  }
+
+  if (filters.tag) {
+    sql += ' AND t.tag = ?';
+    params.push(filters.tag.toLowerCase());
+  }
+
+  if (filters.importance) {
+    sql += ' AND m.importance = ?';
+    params.push(filters.importance);
+  }
+
+  sql += ' ORDER BY m.access_count DESC, m.created_at DESC';
+
+  if (filters.limit) {
+    sql += ' LIMIT ?';
+    params.push(filters.limit);
+  }
+
+  const memories = db.prepare(sql).all(...params);
+
+  // Add tags to each memory
+  const getTagsStmt = db.prepare(`
+    SELECT tag FROM tags WHERE memory_id = ?
+  `);
+
+  return memories.map(m => ({
+    ...m,
+    tags: getTagsStmt.all(m.id).map(r => r.tag)
+  }));
+}
+
+/**
+ * Get archive candidates (low relevance memories)
+ * @returns {Array} Memories that could be archived
+ */
+function getArchiveCandidates() {
+  if (!db) return [];
+
+  return db.prepare(`
+    SELECT m.id, m.title, m.summary, m.category, m.importance,
+           m.created_at, m.access_count,
+           (SELECT COUNT(*) FROM links WHERE source_id = m.id) as link_count
+    FROM memories m
+    WHERE m.archived = 0
+      AND m.importance = 'low'
+      AND m.access_count <= 1
+      AND (SELECT COUNT(*) FROM links WHERE source_id = m.id) = 0
+    ORDER BY m.created_at ASC
+  `).all();
+}
+
+/**
+ * Get memory statistics
+ * @returns {object} Stats object
+ */
+function getStats() {
+  if (!db) return { error: 'Database not initialized' };
+
+  const total = db.prepare(`SELECT COUNT(*) as count FROM memories`).get();
+  const active = db.prepare(`SELECT COUNT(*) as count FROM memories WHERE archived = 0`).get();
+  const archived = db.prepare(`SELECT COUNT(*) as count FROM memories WHERE archived = 1`).get();
+
+  const byCategory = db.prepare(`
+    SELECT category, COUNT(*) as count
+    FROM memories WHERE archived = 0
+    GROUP BY category
+  `).all();
+
+  const mostAccessed = db.prepare(`
+    SELECT id, title, access_count
+    FROM memories WHERE archived = 0
+    ORDER BY access_count DESC
+    LIMIT 5
+  `).all();
+
+  const archiveCandidates = getArchiveCandidates();
+
+  return {
+    total: total.count,
+    active: active.count,
+    archived: archived.count,
+    byCategory: Object.fromEntries(byCategory.map(r => [r.category, r.count])),
+    mostAccessed,
+    archiveCandidates: archiveCandidates.length
+  };
+}
+
+/**
+ * Close the database connection
+ */
+function closeDatabase() {
+  if (db) {
+    db.close();
+    db = null;
+  }
+}
+
+module.exports = {
+  initDatabase,
+  getDbPath,
+  ensureMemoryDir,
+  generateId,
+  createMemory,
+  getMemory,
+  updateMemory,
+  deleteMemory,
+  addLink,
+  storeEmbedding,
+  getEmbedding,
+  getAllEmbeddings,
+  listMemories,
+  getArchiveCandidates,
+  getStats,
+  closeDatabase
+};

@@ -2,20 +2,20 @@
 # Process MCP configuration with environment variable resolution
 
 - name: Initialize processed MCP servers
-  set_fact:
+  ansible.builtin.set_fact:
     processed_mcp_servers: {}
 
 - name: Process each MCP server configuration
-  include_tasks: process_single_mcp.yml
+  ansible.builtin.include_tasks: process_single_mcp.yml
   loop: "{{ mcp_config_data.mcpServers | dict2items }}"
   loop_control:
     loop_var: mcp_server
 
 - name: Validate processed configuration
-  fail:
+  ansible.builtin.fail:
     msg: "No MCP servers were processed successfully"
   when: processed_mcp_servers | length == 0
 
 - name: Log processing results
-  debug:
+  ansible.builtin.debug:
     msg: "Successfully processed {{ processed_mcp_servers | length }} MCP servers"
