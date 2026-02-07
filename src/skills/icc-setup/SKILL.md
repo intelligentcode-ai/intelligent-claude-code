@@ -1,6 +1,6 @@
 ---
 name: icc-setup
-description: Setup ICC development environment. Use when starting work on the ICC framework, after cloning the repository, or when setting up local skill testing. Creates symlinks and verifies project structure.
+description: Activate when user wants to set up ICC development environment. Activate after cloning the ICC repository or when starting work on the ICC framework. Creates symlinks and verifies project structure for local skill testing.
 ---
 
 # ICC Development Setup

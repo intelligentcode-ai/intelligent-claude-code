@@ -1,6 +1,6 @@
 ---
 name: parallel-execution
-description: Use when running multiple work items concurrently. Use when coordinating non-blocking task patterns in L3 mode. Manages parallel execution from .agent/queue/.
+description: Activate when multiple independent work items can execute concurrently. Activate when coordinating non-blocking task patterns in L3 autonomy mode. Manages parallel execution from .agent/queue/.
 ---
 
 # Parallel Execution Skill

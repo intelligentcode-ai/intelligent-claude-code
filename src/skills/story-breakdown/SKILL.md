@@ -1,6 +1,6 @@
 ---
 name: story-breakdown
-description: Use when breaking large stories into work items. Use when a task spans multiple components or requires coordination. Creates work items in .agent/queue/ for execution.
+description: Activate when user presents a large story or epic that needs decomposition. Activate when a task spans multiple components or requires coordination across specialists. Creates work items in .agent/queue/ for execution.
 ---
 
 # Story Breakdown Skill

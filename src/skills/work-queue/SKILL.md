@@ -1,6 +1,6 @@
 ---
 name: work-queue
-description: Use when breaking down large tasks into work items. Use when managing sequential or parallel work execution. Use when checking what work remains. Creates and manages .agent/queue/ for cross-platform work tracking.
+description: Activate when user has a large task to break into smaller work items. Activate when user asks about work queue status or what remains to do. Activate when managing sequential or parallel execution. Creates and manages .agent/queue/ for cross-platform work tracking.
 ---
 
 # Work Queue Skill
