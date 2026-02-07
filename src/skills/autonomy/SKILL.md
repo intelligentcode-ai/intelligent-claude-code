@@ -1,6 +1,6 @@
 ---
 name: autonomy
-description: Activate after a subagent completes work to check for continuation. Activate when a task finishes to determine next steps or when detecting work patterns in user messages. Governs automatic work continuation and queue management.
+description: Activate when a subagent completes work and needs continuation check. Activate when a task finishes to determine next steps or when detecting work patterns in user messages. Governs automatic work continuation and queue management.
 ---
 
 # Autonomy Skill

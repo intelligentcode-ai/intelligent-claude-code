@@ -1,6 +1,6 @@
 ---
 name: icc-search-memory
-description: Activate before asking user questions when prior context may exist. Activate when looking for patterns, decisions, or solutions from past work. Searches version-controlled memory for prior knowledge and context.
+description: Activate when prior context may exist before asking user questions. Activate when looking for patterns, decisions, or solutions from past work. Searches version-controlled memory for prior knowledge and context.
 ---
 
 # ICC Search Memory

@@ -1,7 +1,7 @@
 # Skills Reference
 
 ## Overview
-The intelligent-claude-code system provides **35 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
+The intelligent-claude-code system provides **36 skills** organized into categories. The primary interaction method is through **@Role communication patterns** and **skill description matching**.
 
 ## Essential Skills (4)
 
