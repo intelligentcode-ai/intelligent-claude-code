@@ -82,24 +82,23 @@ NOTES.md
 .claude/*
 !.claude/skills/
 
-# CRITICAL: Memory must NEVER be committed - local learning only!
-# If you see memory/ files in git status, DO NOT COMMIT THEM
+# Old memory location (deprecated, kept for backwards compatibility)
 memory/
-memory/**/*
-# Exception: src/skills/memory/ is the skill source code (should be tracked)
+
+# Memory skill source code is tracked
 !src/skills/memory/
 !src/skills/memory/**
 # But exclude runtime dependencies from memory skill
 src/skills/memory/node_modules/
 src/skills/memory/package-lock.json
-*.memory
-*.learning
 
-# AgentTasks should also remain local
+# AgentTasks should remain local
 agenttasks/
 
-# Agent work queue (cross-platform task tracking)
-.agent/
+# Agent directory - most is local, but memory and queue are tracked
+.agent/*
+!.agent/memory/
+!.agent/queue/
 
 # Credentials
 *.pem
