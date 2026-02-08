@@ -170,6 +170,46 @@ EOF
 3. Create PR with `gh pr create --base main`
 4. Tag after merge: `git tag v10.2.0`
 
+## Merging PRs (Gated, Required)
+
+This skill may be used to merge PRs, but ONLY after the merge gates below are satisfied.
+
+### Merge Gates (ALL Required)
+
+1. **Post-PR review receipt exists and matches current head SHA**
+   - Reviewer skill Stage 3 MUST have posted an `ICC-REVIEW-RECEIPT` comment.
+   - The receipt MUST include:
+     - `Reviewer-Stage: 3 (temp checkout)` (dedicated reviewer/subagent context)
+     - `Head-SHA: <sha>` matching the PR's current `headRefOid`
+     - `Result: PASS`
+2. **All checks are green**
+   - `gh pr checks <PR-number>` must show all required checks passing.
+3. **Explicit user approval**
+   - DO NOT merge unless the user explicitly says: "merge PR <N>", "LGTM", "approve", or equivalent.
+   - If the user did not explicitly approve, STOP.
+
+### Verify The Receipt (Copy/Paste)
+
+```bash
+PR=<PR-number>
+HEAD_SHA=$(gh pr view "$PR" --json headRefOid --jq .headRefOid)
+
+# Grab the most recent receipt body (if any)
+RECEIPT=$(gh pr view "$PR" --json comments --jq '.comments | map(select(.body | contains("ICC-REVIEW-RECEIPT"))) | last | .body // ""')
+
+echo "$RECEIPT" | rg -q "Reviewer-Stage: 3 \\(temp checkout\\)" || echo "Missing Stage 3 receipt"
+echo "$RECEIPT" | rg -q "Head-SHA: $HEAD_SHA" || echo "Receipt is missing/stale for current head SHA"
+echo "$RECEIPT" | rg -q "Result: PASS" || echo "Receipt does not indicate PASS"
+```
+
+**If any verification line fails:** DO NOT MERGE. Re-run reviewer Stage 3 and post a fresh receipt.
+
+### Merge (Only After Approval)
+
+```bash
+gh pr merge <PR-number> --squash --delete-branch
+```
+
 ## Examples
 
 ### Creating a Commit

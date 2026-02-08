@@ -259,7 +259,7 @@ gh release create vX.Y.Z
 |------|-------------|-----------------|
 | Pre-commit | Tests pass + reviewer skill clean | `git commit`, `git push` |
 | Pre-deploy | Tests pass + reviewer skill clean | Deploy to production |
-| Pre-merge | reviewer skill clean + user approval | `gh pr merge` |
+| Pre-merge | reviewer Stage 3 PASS receipt + checks green + user approval | `gh pr merge` |
 
 ### Gate Enforcement
 

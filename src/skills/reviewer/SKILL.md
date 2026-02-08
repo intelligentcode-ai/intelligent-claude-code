@@ -87,6 +87,43 @@ gh pr diff <PR-number>
 - Push fix commits to the PR branch
 - Update PR if needed
 
+#### Stage 3 Is A Merge Gate (Required Output)
+
+If (and only if) Stage 3 is clean (no blocking findings) and the required checks/tests pass, you MUST post a
+**review receipt** comment to the PR. This receipt is used as the merge gate by other skills.
+
+**Rules:**
+- Receipt MUST be created from the temp checkout (this is the "dedicated reviewer/subagent" context).
+- Receipt MUST match the PR's current head SHA. If new commits are pushed after the receipt, Stage 3 must be re-run
+  and a new receipt posted.
+- If checks fail, post a FAIL receipt (do not merge).
+
+**Receipt template (copy/paste):**
+```bash
+PR=<PR-number>
+HEAD_SHA=$(gh pr view "$PR" --json headRefOid --jq .headRefOid)
+BASE_BRANCH=$(gh pr view "$PR" --json baseRefName --jq .baseRefName)
+DATE_UTC=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+gh pr comment "$PR" --body "$(cat <<EOF
+ICC-REVIEW-RECEIPT
+Reviewer-Stage: 3 (temp checkout)
+PR: #$PR
+Base: $BASE_BRANCH
+Head-SHA: $HEAD_SHA
+Date-UTC: $DATE_UTC
+
+Checks/Tests:
+- <command> (<PASS|FAIL>)
+
+Notes:
+- <optional>
+
+Result: <PASS|FAIL>
+EOF
+)"
+```
+
 ### Project-Specific Linting
 
 Run linters and **FIX what can be auto-fixed**:

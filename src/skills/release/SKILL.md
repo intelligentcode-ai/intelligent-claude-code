@@ -35,6 +35,17 @@ gh pr view <PR-number> --json reviews
 
 # Verify checks pass
 gh pr checks <PR-number>
+
+# Verify this is a release PR (base should be main)
+gh pr view <PR-number> --json baseRefName --jq .baseRefName
+
+# Verify reviewer Stage 3 receipt exists (ICC-REVIEW-RECEIPT) and matches current head SHA
+PR=<PR-number>
+HEAD_SHA=$(gh pr view "$PR" --json headRefOid --jq .headRefOid)
+RECEIPT=$(gh pr view "$PR" --json comments --jq '.comments | map(select(.body | contains("ICC-REVIEW-RECEIPT"))) | last | .body // ""')
+echo "$RECEIPT" | rg -q "Reviewer-Stage: 3 \\(temp checkout\\)"
+echo "$RECEIPT" | rg -q "Head-SHA: $HEAD_SHA"
+echo "$RECEIPT" | rg -q "Result: PASS"
 ```
 
 ### Step 2: Determine Version Bump
@@ -95,7 +106,12 @@ git push
 ### Step 6: Merge PR
 
 ```bash
-# Merge the PR (squash or merge based on project preference)
+# Merge gate (required):
+# - Reviewer Stage 3 receipt exists and matches head SHA (ICC-REVIEW-RECEIPT)
+# - All checks passing
+# - User explicitly approved the release/merge
+#
+# Only then merge the PR (squash or merge based on project preference)
 gh pr merge <PR-number> --squash --delete-branch
 ```
 
