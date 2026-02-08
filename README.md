@@ -2,7 +2,7 @@
 
 CC‑native framework for role-based specialists, work queue management, and minimal hooks.
 
-## Current scope (v10.1)
+## Current scope (v10.2)
 
 - **Skills-first architecture** — 35 cross-platform skills loaded on demand.
 - **CC‑native subagents** — no marker files, no custom role enforcement hooks.
@@ -87,12 +87,25 @@ This project supports a Skills-driven merge gate using an `ICC-REVIEW-RECEIPT` P
 - A dedicated Stage 3 review (temp checkout / subagent context) must post a receipt with `Findings: 0` and `NO FINDINGS`.
 - If enabled, the agent can then merge PRs targeting `dev` without an additional "merge PR N" prompt.
 
+By default this repo uses **self-review-and-merge**:
+- PR is required (branch protection), but GitHub required approvals may remain at 0.
+- Review is required via the ICC Stage 3 receipt (skills-level gate).
+
 Enable standing approval via workflow config (`icc.workflow.json`), for example user-global:
 ```json
 {
   "medium": { "auto_merge": true },
   "large":  { "auto_merge": true },
   "mega":   { "auto_merge": true }
+}
+```
+
+Optional: require a GitHub-native approval gate (at least 1 `APPROVED` review):
+```json
+{
+  "medium": { "require_github_approval": true },
+  "large":  { "require_github_approval": true },
+  "mega":   { "require_github_approval": true }
 }
 ```
 
