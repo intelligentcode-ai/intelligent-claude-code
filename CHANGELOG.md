@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.6] - 2026-02-08
+
+### Fixed
+- Claude Code `settings.json` hooks: installer now merges production hooks using `command` (new hook schema), preventing "Expected string, but received undefined" errors.
+- Memory skill: `memory init` now seeds the local SQLite index from committed markdown exports (`memory/exports/**`), so fresh clones can search/list project knowledge immediately.
+- Memory skill: hardened imports and concurrent writes against ID collisions; improved FTS query handling for hyphenated terms (e.g., `ICC-REVIEW`).
+
 ## [10.2.5] - 2026-02-08
 
 ### Changed
