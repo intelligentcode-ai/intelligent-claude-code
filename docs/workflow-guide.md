@@ -4,6 +4,19 @@ This project is **dev-first** and **skills-gated**:
 - GitHub can require a PR, while ICC enforces “review required” via an `ICC-REVIEW-RECEIPT`.
 - The agent performs merges itself (`gh pr merge`), never GitHub auto-merge (`--auto`).
 
+## Two-Minute Version
+
+Normal change:
+1. Branch → PR into `dev`.
+2. `@Reviewer` leaves an `ICC-REVIEW-RECEIPT` comment that says **PASS** for the PR’s current commit.
+3. Merge.
+
+Release:
+1. Release PR `dev` → `main`.
+2. Version + changelog updates.
+3. `@Reviewer` leaves `ICC-REVIEW-RECEIPT` PASS for the release PR’s current commit.
+4. Merge → tag → GitHub release → sync `main` back into `dev`.
+
 ## Branch Workflow (Dev-First)
 
 ```text
@@ -24,7 +37,9 @@ Every merge must have a **fresh** PR receipt that matches the current head SHA:
   - `Findings: 0` and `NO FINDINGS`
   - `Result: PASS`
 
-If any new commits are pushed after the receipt, Stage 3 must be re-run and a new receipt posted.
+Plain English:
+- The receipt is a “review stamp” that’s tied to an exact commit.
+- If the code changes, the stamp is stale and must be redone.
 
 ## Merge Approval
 
@@ -88,4 +103,3 @@ Common examples:
 - `commit-pr`: commit + PR conventions and merge gates
 - `pr-automerge`: closed-loop review/fix/re-review/receipt/merge (for PRs to `dev`)
 - `release`: version bump, changelog, tag, GitHub release
-

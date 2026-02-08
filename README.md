@@ -34,16 +34,30 @@ This is the primary way to involve roles:
 
 ## Workflow At A Glance
 
+Normal change (feature/fix):
+1. Create a branch.
+2. Open a PR into `dev`.
+3. `@Reviewer` runs a clean “Stage 3” review and leaves an `ICC-REVIEW-RECEIPT` comment that says the PR is **PASS**
+   for the PR’s current commit.
+4. Merge the PR.
+
+Release:
+1. Open a release PR from `dev` into `main`.
+2. Bump `VERSION` (and `src/VERSION`), update `CHANGELOG.md`.
+3. `@Reviewer` leaves an `ICC-REVIEW-RECEIPT` PASS on the release PR.
+4. Merge the release PR to `main`, tag `vX.Y.Z`, publish the GitHub release.
+5. Sync `main` back into `dev`.
+
 Branch flow:
 
 ```text
 feature/*  -> PR -> dev  -> (release PR) -> main
 ```
 
-ICC review/merge gate:
-- A dedicated post-PR Stage 3 review (temp checkout context) posts an `ICC-REVIEW-RECEIPT` comment for the PR’s current head SHA.
-- **Findings must be 0** (`NO FINDINGS`) and checks must be green.
-- Then, and only then, the PR is mergeable by Skills rules.
+What is `ICC-REVIEW-RECEIPT`?
+- It’s a PR comment that acts like a “review stamp”.
+- It includes the PR’s exact commit (`Head-SHA`) it applies to.
+- If the code changes after the stamp (new commits), the stamp is stale and must be redone.
 
 ## Configuration
 
