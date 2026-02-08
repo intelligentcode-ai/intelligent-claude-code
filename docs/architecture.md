@@ -45,5 +45,5 @@ Work tracking in `.agent/queue/`:
 
 - **Skills on demand** → Skills loaded based on context
 - **Claude Code subagents** → Delegate specialist work when appropriate
-- **File placement correctness** → Summaries in `summaries/`, memory in `.agent/memory/`
+- **File placement correctness** → Summaries in `summaries/`, memory exports in `memory/exports/`
 - **Git privacy by default** → Strip AI attribution when privacy enabled
