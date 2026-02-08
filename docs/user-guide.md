@@ -1,11 +1,11 @@
 # User Guide (v10.2)
 
-This guide describes the current ICC usage model: **roles + skills + work queue + PR receipts**.
+This guide shows the basic ICC workflow: roles, work queue, and PR review receipts.
 
 ## Quick Start
 
 1. Install: `make install` (or `.\install.ps1 install` on Windows).
-2. Start with a role request:
+2. Start with a role request (no `@`):
 
 ```text
 PM: break down this story
@@ -44,7 +44,7 @@ Many workflows also call memory silently (process/reviewer/best-practices).
 ## PR Review Gate: ICC-REVIEW-RECEIPT
 
 For merges, ICC uses a Skills-level gate:
-- Stage 3 review runs in a temp checkout.
+- Reviewer reviews the PR in a clean checkout.
 - Reviewer posts an `ICC-REVIEW-RECEIPT` comment tied to the PR head SHA.
 - Findings must be 0 (`NO FINDINGS`) and result PASS.
 

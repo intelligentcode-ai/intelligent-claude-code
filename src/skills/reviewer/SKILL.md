@@ -121,7 +121,7 @@ gh pr comment "$PR" --body "$(cat <<EOF
 ICC-REVIEW
 ICC-REVIEW-RECEIPT
 Reviewer-Stage: 3 (temp checkout)
-Reviewer-Agent: @Reviewer (subagent)
+Reviewer-Agent: Reviewer (subagent)
 PR: #$PR
 Base: $BASE_BRANCH
 Head-SHA: $HEAD_SHA

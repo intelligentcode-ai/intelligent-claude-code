@@ -1,16 +1,13 @@
 # Intelligent Claude Code
 
-Skills-first, role-based agent workflow for Claude Code and other SKILL.md-compatible tools.
+ICC (Intelligent Claude Code) is a set of skills and conventions for running a clean PR workflow with Claude Code.
 
-## What You Get (v10.2.x)
+## What You Get
 
-- **36 Skills** loaded on demand (roles + process + enforcement companions).
-- **Role-based specialists**: 14 core roles plus dynamic specialists when needed.
-- **Cross-platform work tracking** via `.agent/queue/` (works across CLIs/editors).
-- **Minimal safety hooks** (Claude Code only): infra protection + file hygiene.
-- **PR workflow that stays fast**:
-  - GitHub can require a PR, while ICC enforces “review required” via `ICC-REVIEW-RECEIPT`.
-  - Optional automation for merge (standing approval) and release steps.
+- A small set of focused skills (roles, review, release, git/file hygiene).
+- Work tracking in `.agent/queue/`.
+- A PR review stamp (`ICC-REVIEW-RECEIPT`) that is tied to an exact commit SHA.
+- A dev-first branch flow: PRs target `dev`; releases go `dev` -> `main`.
 
 ## Install
 
@@ -21,9 +18,9 @@ make install              # or .\install.ps1 install on Windows
 make clean-install        # force uninstall + reinstall (Linux/macOS)
 ```
 
-## Using Roles (Still Yes)
+## Using Roles (No "@")
 
-This is the primary way to involve roles:
+Use the role name as a prefix:
 
 ```text
 PM: break down the story
@@ -37,8 +34,8 @@ Reviewer: audit for regressions
 Normal change (feature/fix):
 1. Create a branch.
 2. Open a PR into `dev`.
-3. `Reviewer` runs a clean “Stage 3” review and leaves an `ICC-REVIEW-RECEIPT` comment that says the PR is **PASS**
-   for the PR’s current commit.
+3. `Reviewer` reviews the PR in a clean checkout and leaves an `ICC-REVIEW-RECEIPT` comment that says **PASS** for the
+   PR's current commit SHA.
 4. Merge the PR.
 
 Release:
@@ -55,14 +52,14 @@ feature/*  -> PR -> dev  -> (release PR) -> main
 ```
 
 What is `ICC-REVIEW-RECEIPT`?
-- It’s a PR comment that acts like a “review stamp”.
+- It's a PR comment that acts like a "review stamp".
 - It includes the PR’s exact commit (`Head-SHA`) it applies to.
 - If the code changes after the stamp (new commits), the stamp is stale and must be redone.
 
 ## Configuration
 
-- `icc.config.json` controls enforcement and behavior (git privacy, branch protection, paths, etc.).
-- `icc.workflow.json` controls workflow-level automation (auto-merge standing approval, optional GitHub approvals gate, release automation).
+- `icc.config.json`: enforcement and behavior (git privacy, branch protection, paths, etc.).
+- `icc.workflow.json`: workflow automation (standing approval for merge, optional GitHub approvals gate, release automation).
 
 Common workflow switches:
 ```json

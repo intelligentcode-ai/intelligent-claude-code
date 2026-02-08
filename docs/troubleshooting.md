@@ -31,8 +31,8 @@
 
 ### Receipt exists but merge should not happen
 
-The receipt must match the PR’s **current head SHA**. If any new commits were pushed, Stage 3 must be rerun and a new
-`ICC-REVIEW-RECEIPT` posted.
+The receipt must match the PR’s **current head SHA**. If any new commits were pushed, the PR must be re-reviewed and a
+new `ICC-REVIEW-RECEIPT` posted.
 
 ### `workflow.auto_merge=true` but merge still pauses
 
@@ -46,7 +46,7 @@ See `docs/configuration-guide.md`.
 
 Default is self-review-and-merge:
 - GitHub required approvals may remain at 0.
-- ICC Stage 3 receipt is the required review gate.
+- `ICC-REVIEW-RECEIPT` is the required review gate.
 
 If you want GitHub-native approvals as an additional gate, enable:
 - `workflow.require_github_approval=true`

@@ -1,7 +1,7 @@
 # Configuration Guide (v10)
 
 ## Hierarchy
-1. Per-task overrides (AgentTask `agentTask.*` / workflow `agentTask.workflow.*`)  
+1. Per-request overrides (when a tool provides request/task metadata)  
 2. Project config: `./icc.config.json` or `./.claude/icc.config.json`  
 3. User config: `~/.claude/icc.config.json`  
 4. Defaults: `icc.config.default.json`
@@ -12,7 +12,7 @@ Workflow settings (version bump rules, PR requirements, release automation, auto
 `icc.workflow.json`.
 
 **Workflow hierarchy (highest to lowest priority):**
-1. Per-task overrides (`agentTask.workflow.*`)
+1. Per-request overrides (when available)
 2. Project workflow: `./icc.workflow.json` or `./.claude/icc.workflow.json`
 3. User workflow: `~/.claude/icc.workflow.json`
 4. Defaults: `icc.workflow.default.json`
@@ -36,7 +36,7 @@ Recommended: only auto-merge PRs targeting `dev`. Releases (`dev` -> `main`) rem
 
 By default this repo uses **self-review-and-merge**:
 - PR is required (branch protection), but GitHub required approvals may remain at 0.
-- Review is required via the **ICC Stage 3 receipt** (`ICC-REVIEW-RECEIPT`) as a skills-level merge gate.
+- Review is required via `ICC-REVIEW-RECEIPT` as a skills-level merge gate.
 
 If you want an additional, GitHub-native gate (at least 1 `APPROVED` review), set:
 
@@ -68,11 +68,6 @@ Notes:
 ### Team
 - `team.default_reviewer`
 - `team.role_validation`
-
-### AgentTask
-- `agenttask.template_path`
-- `agenttask.template_validation`
-- `agenttask.complexity_override`
 
 ### Models
 Model selection is **user‑controlled via Claude Code settings** (`.claude/settings.json` or `~/.claude/settings.json`) or `/model`.

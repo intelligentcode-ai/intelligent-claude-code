@@ -1,6 +1,6 @@
 # Execution Flow (v10.2)
 
-This repo is **skills-first** and **work-queue-driven**.
+This is the simplest way to think about ICC day-to-day.
 
 ## Typical Execution Pattern
 
@@ -27,7 +27,7 @@ QUALITY GATES
   v
 PR PHASE (dev-first)
   - PR targets dev (default)
-  - Stage 3 reviewer run in temp checkout posts ICC-REVIEW-RECEIPT
+  - Reviewer posts ICC-REVIEW-RECEIPT for the PR's current commit SHA
   - merge only after receipt + approval (explicit or workflow.auto_merge)
   |
   v

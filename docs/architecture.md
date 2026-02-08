@@ -1,7 +1,7 @@
 # Architecture (v10.2)
 
 ## Overview
-Intelligent Claude Code is a CC-native framework that adds role-based specialists, work queue management, and strict file/git hygiene through a **skills-first architecture**.
+Intelligent Claude Code is a Claude Code workflow that bundles role skills, a work queue, and git/file hygiene.
 
 ## Core Components
 
@@ -35,19 +35,15 @@ Hooks provide enforcement that CC doesn't handle natively:
 Located in `src/hooks/` and registered in `.claude/settings.json`.
 
 ### Work Queue System
-Cross-platform work tracking in `.agent/queue/`:
+Work tracking in `.agent/queue/`:
 1. Work request → Added to queue as work item file
 2. Task tool → subagent execution
 3. Completion → Status updated, next item picked
 4. Autonomy skill → Checks for continuation
 
-**Claude Code:** Uses TodoWrite for display + queue files for persistence
-**Other platforms:** Queue files directly (Gemini CLI, Codex CLI, etc.)
-
 ## Design Principles
 
-- **Skills-first** → Skills loaded on demand based on context
-- **CC-native subagents** → No marker files, no custom role enforcement
-- **Cross-platform queues** → `.agent/queue/` works across all agents
+- **Skills on demand** → Skills loaded based on context
+- **Claude Code subagents** → Delegate specialist work when appropriate
 - **File placement correctness** → Summaries in `summaries/`, memory in `.agent/memory/`
 - **Git privacy by default** → Strip AI attribution when privacy enabled

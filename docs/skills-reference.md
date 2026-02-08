@@ -1,9 +1,9 @@
 # Skills and Roles Reference (v10.2)
 
-ICC is **skills-first**: the system loads `SKILL.md` instructions on demand based on:
+ICC loads `SKILL.md` instructions on demand based on:
 - explicit skill names (e.g. “use `reviewer`”)
 - description matching (you ask for a review, it pulls `reviewer`)
-- role mentions (when supported)
+- role prefixes (e.g. `PM: ...`, `Reviewer: ...`)
 
 ## Role Invocation (Recommended)
 

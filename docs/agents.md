@@ -14,10 +14,9 @@ Role names like `PM` or `Reviewer` are **role skills** with well-defined respons
 
 - In **Claude Code**, the UI/runtime can run specialized subagents. ICC’s role skills are designed to be invoked with
   role prefixes like `PM: ...` or `Reviewer: ...`.
-- In other tools, you can still use the same intent in plain language (skills are loaded by description matching).
 
 ## Related Files
 
 - Behaviors (always-on structural guidance): `src/behaviors/`
 - Hooks (Claude Code safety + file hygiene): `src/hooks/`
-- Work queue (cross-platform persistence): `.agent/queue/`
+- Work queue: `.agent/queue/`

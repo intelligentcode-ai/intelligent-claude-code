@@ -1,12 +1,12 @@
 # Virtual Team Guide (v10.2)
 
-ICC turns a single agent session into a **role-based virtual team** via Skills.
+ICC lets you use role skills as a lightweight "virtual team" in a single session.
 
 ## Core Idea
 
 - You describe work in plain language.
 - ICC routes the request to the right skill(s) and role(s).
-- Work is tracked in `.agent/queue/` for cross-platform persistence.
+- Work is tracked in `.agent/queue/`.
 
 ## How To Involve Roles
 
@@ -49,6 +49,6 @@ Postgres-Engineer: tune this query plan
 1. Start with `PM` to break work into `.agent/queue/` items (especially for medium+ tasks).
 2. Implement with the appropriate role.
 3. Run `Reviewer` (or the `reviewer` skill) before committing / opening a PR.
-4. For PRs, require an `ICC-REVIEW-RECEIPT` (Stage 3, temp checkout) as the review gate.
+4. For PRs, require an `ICC-REVIEW-RECEIPT` as the review gate.
 
 See `docs/workflow-guide.md` for details.
