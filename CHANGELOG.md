@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.2] - 2026-02-08
+
+### Added
+- Skills-driven PR closed-loop: fix -> Stage 3 review -> receipt -> merge.
+- New `pr-automerge` skill describing end-to-end auto-review-and-merge workflow.
+- Workflow documentation for enabling standing approval via `icc.workflow.json` (`auto_merge: true`).
+
+### Changed
+- Merge gate now requires `ICC-REVIEW-RECEIPT` with `Findings: 0` and `NO FINDINGS` for the current PR head SHA.
+
 ## [10.2.1] - 2026-02-08
 
 ### Fixed

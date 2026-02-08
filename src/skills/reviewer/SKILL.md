@@ -87,6 +87,69 @@ gh pr diff <PR-number>
 - Push fix commits to the PR branch
 - Update PR if needed
 
+#### Stage 3 Is A Merge Gate (Required Output)
+
+If (and only if) Stage 3 is clean (no blocking findings) and the required checks/tests pass, you MUST post an
+**ICC-REVIEW** comment to the PR. This comment is used as the merge gate by other skills.
+
+**Rules:**
+- Stage 3 MUST run in an isolated context.
+  - Preferred: run Stage 3 as a dedicated reviewer subagent (for example `@Reviewer`) using the Task tool.
+  - Fallback: use a fresh temp clone/checkout and treat it as the dedicated reviewer/subagent context.
+- The ICC-REVIEW comment MUST match the PR's current head SHA. If new commits are pushed after the comment,
+  Stage 3 must be re-run and a new ICC-REVIEW comment posted.
+- Only a **NO FINDINGS** ICC-REVIEW comment is merge-eligible.
+
+#### Stage 3 Loop (Fix -> Review -> Repeat)
+
+Stage 3 is a loop until the PR is clean:
+1. Review PR diff in temp checkout.
+2. If findings exist: FIX them (push commits to PR branch).
+3. Start Stage 3 over from a fresh temp checkout (do not "trust" the old folder).
+4. Repeat until findings are zero and checks are green.
+
+Only then post the merge-eligible ICC-REVIEW comment.
+
+**ICC-REVIEW template (NO FINDINGS, copy/paste):**
+```bash
+PR=<PR-number>
+HEAD_SHA=$(gh pr view "$PR" --json headRefOid --jq .headRefOid)
+BASE_BRANCH=$(gh pr view "$PR" --json baseRefName --jq .baseRefName)
+DATE_UTC=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+gh pr comment "$PR" --body "$(cat <<EOF
+ICC-REVIEW
+ICC-REVIEW-RECEIPT
+Reviewer-Stage: 3 (temp checkout)
+Reviewer-Agent: @Reviewer (subagent)
+PR: #$PR
+Base: $BASE_BRANCH
+Head-SHA: $HEAD_SHA
+Date-UTC: $DATE_UTC
+
+Findings: 0
+NO FINDINGS
+
+Checks/Tests:
+- <command> (<PASS|FAIL>)
+
+Notes:
+- <optional>
+
+Result: PASS
+EOF
+)"
+```
+
+**If findings exist:** you MUST fix them and restart Stage 3. You MAY optionally post a FAIL receipt for audit/debugging:
+```text
+Findings: <N>
+- <finding 1>
+- <finding 2>
+Result: FAIL
+```
+Never merge with Findings > 0.
+
 ### Project-Specific Linting
 
 Run linters and **FIX what can be auto-fixed**:

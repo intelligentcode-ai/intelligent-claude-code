@@ -6,6 +6,32 @@
 3. User config: `~/.claude/icc.config.json`  
 4. Defaults: `icc.config.default.json`
 
+## Workflow Configuration (icc.workflow.json)
+
+Workflow settings (version bump rules, PR requirements, release automation, auto-merge) live in a separate file:
+`icc.workflow.json`.
+
+**Workflow hierarchy (highest to lowest priority):**
+1. AgentTask overrides (`agentTask.workflow.*`)
+2. Project workflow: `./icc.workflow.json` or `./.claude/icc.workflow.json`
+3. User workflow: `~/.claude/icc.workflow.json`
+4. Defaults: `icc.workflow.default.json`
+
+### Enable Agent Auto-Merge (Standing Approval)
+
+To allow the agent to merge PRs (agent-performed merge, no `gh pr merge --auto`) after a NO FINDINGS
+`ICC-REVIEW-RECEIPT` is present and checks are green, set `auto_merge=true` for the desired task tiers:
+
+```json
+{
+  "medium": { "auto_merge": true },
+  "large":  { "auto_merge": true },
+  "mega":   { "auto_merge": true }
+}
+```
+
+Recommended: only auto-merge PRs targeting `dev`. Releases (`dev` -> `main`) remain explicit.
+
 ## Key Settings
 
 ### Git

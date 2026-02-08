@@ -170,6 +170,69 @@ EOF
 3. Create PR with `gh pr create --base main`
 4. Tag after merge: `git tag v10.2.0`
 
+## Merging PRs (Gated, Required)
+
+This skill may be used to merge PRs, but ONLY after the merge gates below are satisfied.
+
+### Merge Gates (ALL Required)
+
+1. **Post-PR review receipt exists and matches current head SHA**
+   - Reviewer skill Stage 3 MUST have posted an `ICC-REVIEW` / `ICC-REVIEW-RECEIPT` comment.
+   - The comment MUST include:
+     - `Reviewer-Stage: 3 (temp checkout)` (dedicated reviewer/subagent context)
+     - `Reviewer-Agent: ... (subagent)` (must indicate subagent execution)
+     - `Head-SHA: <sha>` matching the PR's current `headRefOid`
+     - `Findings: 0` and `NO FINDINGS`
+     - `Result: PASS`
+2. **All checks are green**
+   - `gh pr checks <PR-number>` must show all required checks passing.
+3. **Approval to merge (one of the following)**
+   - Default: explicit user approval in chat ("merge PR <N>", "LGTM", "approve", etc.).
+   - Optional: `workflow.auto_merge=true` for the current AgentTask/workflow context.
+     - This is a standing approval that allows the agent to merge once gates 1-2 pass.
+     - Recommended: allow auto-merge ONLY for PRs targeting `dev` (never `main`).
+   - If neither applies, STOP and wait.
+
+### Enabling Auto-Merge (Recommended)
+
+Auto-merge is controlled by the workflow configuration that drives AgentTasks:
+- AgentTask field: `workflow.auto_merge`
+- Workflow files (hierarchy): `./icc.workflow.json` or `~/.claude/icc.workflow.json` over `icc.workflow.default.json`
+
+Minimal project workflow example (`icc.workflow.json`):
+```json
+{
+  "medium": { "auto_merge": true },
+  "large": { "auto_merge": true },
+  "mega": { "auto_merge": true }
+}
+```
+
+### Verify The Receipt (Copy/Paste)
+
+```bash
+PR=<PR-number>
+HEAD_SHA=$(gh pr view "$PR" --json headRefOid --jq .headRefOid)
+
+# Grab the most recent receipt body (if any)
+RECEIPT=$(gh pr view "$PR" --json comments --jq '.comments | map(select(.body | contains("ICC-REVIEW-RECEIPT"))) | last | .body // ""')
+
+echo "$RECEIPT" | rg -q "Reviewer-Stage: 3 \\(temp checkout\\)" || echo "Missing Stage 3 receipt"
+echo "$RECEIPT" | rg -q "Reviewer-Agent:.*\\(subagent\\)" || echo "Missing Reviewer-Agent subagent marker"
+echo "$RECEIPT" | rg -q "Head-SHA: $HEAD_SHA" || echo "Receipt is missing/stale for current head SHA"
+echo "$RECEIPT" | rg -q "Findings: 0" || echo "Receipt does not indicate zero findings"
+echo "$RECEIPT" | rg -q "NO FINDINGS" || echo "Receipt does not include NO FINDINGS marker"
+echo "$RECEIPT" | rg -q "Result: PASS" || echo "Receipt does not indicate PASS"
+```
+
+**If any verification line fails:** DO NOT MERGE. Re-run reviewer Stage 3 and post a fresh receipt.
+
+### Merge (Only After Approval)
+
+```bash
+gh pr merge <PR-number> --squash --delete-branch
+```
+
 ## Examples
 
 ### Creating a Commit

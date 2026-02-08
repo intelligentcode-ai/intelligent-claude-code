@@ -195,6 +195,12 @@ IF needs human: PAUSE
 IF clean: Continue
 ```
 
+**Required behavior (closed-loop):**
+- Stage 3 MUST be executed by a dedicated reviewer subagent (preferred: `@Reviewer` via Task tool).
+- Reviewer Stage 3 MUST loop until the PR is clean:
+  - If findings exist: fix + push commits to the PR branch, then restart Stage 3 in a fresh temp checkout.
+  - When clean: post `ICC-REVIEW-RECEIPT` with `Findings: 0` and `NO FINDINGS` for the current head SHA.
+
 ### Step 3.3: Suggest + Auto-Implement
 ```
 Run suggest skill on full PR diff
@@ -207,13 +213,23 @@ IF needs human: PAUSE, wait for decision
 IF clean or user says proceed: Continue
 ```
 
-### Step 3.4: Await Approval (ALWAYS PAUSE)
+### Step 3.4: Merge Approval (Default: Pause, Optional Auto-Merge)
+Default behavior:
 ```
 WAIT for explicit user approval
 DO NOT merge without: "merge", "approve", "LGTM", or similar
-
-This is the ONE step that ALWAYS requires human input.
 ```
+
+Optional auto-merge (Skills-level standing approval):
+- If `workflow.auto_merge=true` in the current AgentTask/workflow context
+- AND the PR targets `dev`
+- AND the reviewer Stage 3 ICC-REVIEW receipt exists for the current head SHA (PASS)
+- AND the receipt includes `Findings: 0` and `NO FINDINGS`
+- AND checks are green
+
+Then the agent MAY proceed to merge without an additional chat approval.
+
+**Never auto-merge to `main`** unless performing an explicitly requested release workflow.
 
 **Exit:** No findings, suggestions addressed, user approved, merged to dev
 
@@ -259,7 +275,7 @@ gh release create vX.Y.Z
 |------|-------------|-----------------|
 | Pre-commit | Tests pass + reviewer skill clean | `git commit`, `git push` |
 | Pre-deploy | Tests pass + reviewer skill clean | Deploy to production |
-| Pre-merge | reviewer skill clean + user approval | `gh pr merge` |
+| Pre-merge | reviewer Stage 3 PASS receipt + checks green + user approval | `gh pr merge` |
 
 ### Gate Enforcement
 

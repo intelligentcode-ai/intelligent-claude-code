@@ -7,6 +7,11 @@ description: Activate when user asks to release, bump version, cut a release, me
 
 Handles the complete release workflow: version bump, CHANGELOG, merge, tag, and GitHub release.
 
+## Auto-Merge vs Agent Merge
+
+This skill does NOT require GitHub "auto-merge" (`gh pr merge --auto`).
+When automation is enabled, the **agent performs the merge itself** (runs `gh pr merge`) once the merge gates pass.
+
 ## When to Use
 
 - User asks to "release", "cut a release", "ship it"
@@ -22,6 +27,16 @@ Before releasing:
 3. Tests passing
 4. No blocking review findings
 
+## Automation Controls (Skills-Level)
+
+These controls are driven by workflow configuration (AgentTask `workflow.*` and `icc.workflow.json`):
+- `workflow.auto_merge=true`: standing approval to merge PRs once gates pass
+- `workflow.release_automation=true`: automate the mechanical release steps (tag + GitHub release creation)
+
+Safety defaults:
+- Never auto-merge to `main` unless the user explicitly requested a release workflow.
+- Never publish a non-draft GitHub release without explicit user approval (draft releases are OK).
+
 ## Release Workflow
 
 ### Step 1: Verify Ready to Release
@@ -35,6 +50,17 @@ gh pr view <PR-number> --json reviews
 
 # Verify checks pass
 gh pr checks <PR-number>
+
+# Verify this is a release PR (base should be main)
+gh pr view <PR-number> --json baseRefName --jq .baseRefName
+
+# Verify reviewer Stage 3 receipt exists (ICC-REVIEW-RECEIPT) and matches current head SHA
+PR=<PR-number>
+HEAD_SHA=$(gh pr view "$PR" --json headRefOid --jq .headRefOid)
+RECEIPT=$(gh pr view "$PR" --json comments --jq '.comments | map(select(.body | contains("ICC-REVIEW-RECEIPT"))) | last | .body // ""')
+echo "$RECEIPT" | rg -q "Reviewer-Stage: 3 \\(temp checkout\\)"
+echo "$RECEIPT" | rg -q "Head-SHA: $HEAD_SHA"
+echo "$RECEIPT" | rg -q "Result: PASS"
 ```
 
 ### Step 2: Determine Version Bump
@@ -95,7 +121,12 @@ git push
 ### Step 6: Merge PR
 
 ```bash
-# Merge the PR (squash or merge based on project preference)
+# Merge gate (required):
+# - Reviewer Stage 3 receipt exists and matches head SHA (ICC-REVIEW-RECEIPT)
+# - All checks passing
+# - User explicitly approved the release/merge
+#
+# Only then merge the PR (squash or merge based on project preference)
 gh pr merge <PR-number> --squash --delete-branch
 ```
 
@@ -119,7 +150,9 @@ git push origin "vX.Y.Z"
 ### Step 8: Create GitHub Release (if using GitHub)
 
 ```bash
+# Default: create DRAFT release (safe). Publish only if user explicitly requests.
 gh release create "vX.Y.Z" \
+  --draft \
   --title "vX.Y.Z" \
   --notes "$(cat <<'EOF'
 ## What's Changed
