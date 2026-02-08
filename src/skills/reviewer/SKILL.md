@@ -141,6 +141,20 @@ EOF
 )"
 ```
 
+#### Optional: Add GitHub Approval (Pragmatic Mode)
+
+If the workflow intends to enforce "at least 1 GitHub APPROVED review" (and pragmatic agent-generated approval is
+allowed), the reviewer subagent should also submit an approval **after** posting a NO FINDINGS receipt:
+
+```bash
+PR=<PR-number>
+gh pr review "$PR" --approve --body "Approved based on ICC Stage 3 review receipt (NO FINDINGS)."
+```
+
+Notes:
+- This approval is attributed to the currently authenticated `gh` user.
+- Prefer doing this only when `workflow.auto_merge=true` (standing approval) or when the repo requires approvals.
+
 **If findings exist:** you MUST fix them and restart Stage 3. You MAY optionally post a FAIL receipt for audit/debugging:
 ```text
 Findings: <N>
