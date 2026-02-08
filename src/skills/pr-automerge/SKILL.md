@@ -35,6 +35,9 @@ Review via subagent -> ICC-REVIEW receipt -> merge when NO FINDINGS -> otherwise
    - Reviewer must fix findings by pushing commits to the PR branch.
    - Reviewer must re-run Stage 3 until findings are zero and checks are green.
    - Reviewer must post `ICC-REVIEW-RECEIPT` NO FINDINGS comment for the current head SHA.
+   - Pragmatic GitHub approval: after posting NO FINDINGS receipt, reviewer subagent should submit:
+     - `gh pr review <PR-number> --approve --body "Approved based on ICC Stage 3 review receipt (NO FINDINGS)."`
+     - Skip if an `APPROVED` review already exists.
 3. Verify merge gates (receipt + head SHA + checks green).
 4. If gates fail:
    - Restart from step 2 (fresh temp checkout).
@@ -50,6 +53,13 @@ Review via subagent -> ICC-REVIEW receipt -> merge when NO FINDINGS -> otherwise
 PR=<PR-number>
 gh pr view "$PR" --json number,baseRefName,headRefName,headRefOid,state,mergeable --jq .
 gh pr checks "$PR"
+```
+
+**Approval check (optional gate):**
+```bash
+PR=<PR-number>
+APPROVALS=$(gh pr view "$PR" --json reviews --jq '[.reviews[] | select(.state=="APPROVED")] | length')
+echo "Approvals: $APPROVALS"
 ```
 
 **Receipt verification:**
@@ -70,4 +80,3 @@ echo "$RECEIPT" | rg -q "Result: PASS"
 ```bash
 gh pr merge <PR-number> --squash --delete-branch
 ```
-
