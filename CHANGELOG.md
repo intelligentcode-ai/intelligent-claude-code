@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - ansible-lint role-name rule violation (hyphens not allowed in role names)
 - Non-existent `git.integration_branch` config reference removed
+- Removed broken icc-setup symlink from .claude/skills/
 
 ## [10.1.0] - 2026-02-07
 
