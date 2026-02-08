@@ -1,117 +1,39 @@
-# Directory Structure for Projects Using intelligent-claude-code
+# Directory Structure (v10.2)
 
-## Core Principle
-Users work in their NATURAL project structure. The system adapts to YOUR project, not the other way around.
+ICC tries hard to **adapt to your existing repo**. The only “special” directories are for ICC’s own bookkeeping and
+output hygiene.
 
-## Minimal Required Structure
+## Recommended Minimum
 
-```
+```text
 project-root/
-├── CLAUDE.md                  # Project configuration (MUST be uppercase)
-├── memory/                    # Version-controlled learnings (shared with team)
-│   ├── Learning/             # Error patterns and solutions
-│   ├── Pattern/              # Reusable patterns
-│   └── Knowledge/            # Domain knowledge
-└── .claude/                   # System internals ONLY
-    └── prbs/                 # Generated AgentTasks (auto-managed)
+  CLAUDE.md                # (recommended) single entry-point for tool-specific instructions
+  icc.config.json          # (optional) behavior/enforcement config
+  icc.workflow.json        # (optional) workflow automation config
+
+  .claude/                 # (optional) project-local skill links and tool settings
+
+  .agent/                  # ICC working state (queue + memory)
+    queue/                 # work items (cross-platform tracking)
+    memory/                # local RAG memory (db + exports)
+
+  summaries/               # summaries/reports only (enforced)
+  docs/                    # your docs (not enforced; normal project content)
+  src/                     # your code
 ```
 
-That's it! Everything else is YOUR choice.
+## What Goes Where
 
-## Common User Structures (Examples)
+- `.agent/queue/`: lightweight work-item files used by the `work-queue` skill.
+- `.agent/memory/`: storage used by the `memory` skill (SQLite DB + markdown exports).
+- `summaries/`: the hooks/skills route “summary/report”-like files here.
+- `docs/`: normal documentation. ICC does not try to force your docs structure.
 
-### Option 1: Docs-focused project
-```
-project-root/
-├── CLAUDE.md
-├── memory/                  # Team-shared learnings
-├── docs/
-│   ├── architecture/        # Your architecture docs
-│   ├── best-practices/      # Your best practices
-│   └── standards/          # Your coding standards
-├── src/                    # Your source code
-└── drafts/                 # Your draft specs
-```
+## Notes On Git
 
-### Option 2: Standards at root
-```
-project-root/
-├── CLAUDE.md
-├── memory/                  # Team-shared learnings
-├── best-practices/          # Your practices at root
-│   ├── security.md
-│   └── performance.md
-├── architecture/            # Your architecture at root
-├── src/                     # Your source code
-└── specs/                   # Your specifications
-```
+Projects differ on whether they commit ICC artifacts:
+- Many teams keep `.agent/queue/` local-only.
+- Some teams commit `.agent/memory/exports/` to share “what we learned”.
 
-### Option 3: Monorepo style
-```
-project-root/
-├── CLAUDE.md
-├── memory/                  # Shared across all packages
-├── packages/
-│   ├── frontend/
-│   └── backend/
-├── docs/
-│   └── engineering/        # Your engineering docs
-│       ├── standards/
-│       └── patterns/
-└── rfcs/                   # Your proposals/drafts
-```
+Tune this via `.gitignore` to match your preference.
 
-## Configuration in CLAUDE.md
-
-Tell the system where YOUR files are:
-
-```yaml
-# In CLAUDE.md
-agenttask_configuration:
-  best_practices_paths:
-    - "docs/best-practices/"      # Your location
-    - "engineering/standards/"     # Your location
-    - "wherever/you/keep/them/"   # Your location
-    
-  code_pattern_search:
-    paths: ["src/", "lib/", "packages/"]  # Your code locations
-    
-  draft_locations:
-    - "drafts/"                   # Your draft location
-    - "rfcs/"                     # Your RFC location
-    - "proposals/"                # Your proposal location
-```
-
-## What the System Auto-Creates
-
-The system stores everything in YOUR project (version-controlled):
-- `memory/` - Learning storage (version-controlled)
-- `prbs/` - Generated AgentTasks (version-controlled)
-- `config.md` - Project settings (default location, not .claude/)
-
-## Key Points
-
-1. **NO forced structure** - Work how YOU want
-2. **NO .claude/ directories for user content** - That's system-only
-3. **Configure paths in CLAUDE.md** - Tell system where YOUR files are
-4. **Natural locations** - docs/, standards/, best-practices/, examples/
-5. **Your naming** - Use your project's conventions
-
-## Examples of What NOT to Do
-
-❌ DON'T: Force users into .claude/ directories
-```
-.claude/best-practices/    # NO!
-.claude/standards/         # NO!
-.claude/drafts/           # NO!
-```
-
-✅ DO: Let users work naturally
-```
-docs/best-practices/       # YES!
-standards/                 # YES!
-drafts/                   # YES!
-my-project-docs/          # YES!
-```
-
-The system adapts to YOU, not the other way around!
