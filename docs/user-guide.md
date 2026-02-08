@@ -13,8 +13,6 @@ This guide describes the current ICC usage model: **roles + skills + work queue 
 @Reviewer review for regressions
 ```
 
-If your client does not support `@Role`, use the same intent in plain language.
-
 ## Work Queue
 
 Large work is tracked in `.agent/queue/`:
@@ -59,4 +57,3 @@ Config is JSON-based:
 - `icc.workflow.json`: workflow automation toggles (auto-merge standing approval, optional GitHub approvals gate)
 
 See `docs/configuration-guide.md`.
-

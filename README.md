@@ -23,20 +23,13 @@ make clean-install        # force uninstall + reinstall (Linux/macOS)
 
 ## Using Roles (Still Yes)
 
-If your client supports role mentions (Claude Code), this is still the primary way to involve roles:
+This is the primary way to involve roles:
 
 ```text
 @PM break down the story
 @Architect review the design
 @Developer implement auth
 @Reviewer audit for regressions
-```
-
-If your client does not support `@Role` mentions, use the same intent in plain language (the system will match skills):
-
-```text
-As PM: break down the story into work items in .agent/queue/
-As Reviewer: run a regression review and post an ICC-REVIEW-RECEIPT
 ```
 
 ## Workflow At A Glance

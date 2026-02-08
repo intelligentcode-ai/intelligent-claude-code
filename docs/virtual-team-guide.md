@@ -10,20 +10,13 @@ ICC turns a single agent session into a **role-based virtual team** via Skills.
 
 ## How To Involve Roles
 
-If your client supports it (Claude Code), use role mentions:
+Use role mentions:
 
 ```text
 @PM break down this story into work items
 @Architect review the design
 @Developer implement the change
 @Reviewer check for regressions
-```
-
-If your client does not support `@Role`, use plain language:
-
-```text
-As PM: break this story into .agent/queue work items
-As Reviewer: do a post-PR Stage 3 review and post an ICC-REVIEW-RECEIPT
 ```
 
 ## The 14 Core Roles
@@ -59,4 +52,3 @@ When a specific domain is needed, you can request it directly:
 4. For PRs, require an `ICC-REVIEW-RECEIPT` (Stage 3, temp checkout) as the review gate.
 
 See `docs/workflow-guide.md` for details.
-

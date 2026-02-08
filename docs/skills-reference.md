@@ -7,20 +7,13 @@ ICC is **skills-first**: the system loads `SKILL.md` instructions on demand base
 
 ## Role Invocation (Still The Recommended Path)
 
-If your client supports role mentions (Claude Code), this is the primary interaction style:
+This is the primary interaction style:
 
 ```text
 @PM break down the story into work items
 @Architect review the approach
 @Developer implement the change
 @Reviewer run a regression review
-```
-
-If your client does not support `@Role`, use the same intent in plain language:
-
-```text
-As PM: break down the story into .agent/queue work items
-As Reviewer: run Stage 3 review and post an ICC-REVIEW-RECEIPT
 ```
 
 ## Work Tracking (Cross-Platform)
@@ -60,4 +53,3 @@ file-placement, branch-protection, infrastructure-protection
 - `icc.workflow.json`: workflow automation controls (auto-merge standing approval, optional GitHub approvals gate, release automation)
 
 See `docs/configuration-guide.md` for the full hierarchy.
-
