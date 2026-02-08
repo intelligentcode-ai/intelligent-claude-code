@@ -2,7 +2,7 @@
 
 CC‑native framework for role-based specialists, work queue management, and minimal hooks.
 
-## Current scope (v10.1)
+## Current scope (v10.2)
 
 - **Skills-first architecture** — 35 cross-platform skills loaded on demand.
 - **CC‑native subagents** — no marker files, no custom role enforcement hooks.
