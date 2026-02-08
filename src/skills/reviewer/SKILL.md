@@ -148,11 +148,20 @@ allowed), the reviewer subagent should also submit an approval **after** posting
 
 ```bash
 PR=<PR-number>
-gh pr review "$PR" --approve --body "Approved based on ICC Stage 3 review receipt (NO FINDINGS)."
+PR_AUTHOR=$(gh pr view "$PR" --json author --jq .author.login)
+GH_USER=$(gh api user --jq .login)
+
+# GitHub forbids approving your own PR (server-side rule). If author==current gh user, skip.
+if [ "$PR_AUTHOR" = "$GH_USER" ]; then
+  echo "Skip GitHub approval: cannot approve own PR ($GH_USER). Use a second account/bot if approvals are required."
+else
+  gh pr review "$PR" --approve --body "Approved based on ICC Stage 3 review receipt (NO FINDINGS)."
+fi
 ```
 
 Notes:
 - This approval is attributed to the currently authenticated `gh` user.
+- This is NOT configurable in `gh`; it is enforced by GitHub.
 - Prefer doing this only when `workflow.auto_merge=true` (standing approval) or when the repo requires approvals.
 
 **If findings exist:** you MUST fix them and restart Stage 3. You MAY optionally post a FAIL receipt for audit/debugging:

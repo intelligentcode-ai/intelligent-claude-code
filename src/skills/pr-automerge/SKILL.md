@@ -35,9 +35,11 @@ Review via subagent -> ICC-REVIEW receipt -> merge when NO FINDINGS -> otherwise
    - Reviewer must fix findings by pushing commits to the PR branch.
    - Reviewer must re-run Stage 3 until findings are zero and checks are green.
    - Reviewer must post `ICC-REVIEW-RECEIPT` NO FINDINGS comment for the current head SHA.
-   - Pragmatic GitHub approval: after posting NO FINDINGS receipt, reviewer subagent should submit:
-     - `gh pr review <PR-number> --approve --body "Approved based on ICC Stage 3 review receipt (NO FINDINGS)."`
+   - Pragmatic GitHub approval (best-effort): after posting NO FINDINGS receipt, reviewer subagent should:
      - Skip if an `APPROVED` review already exists.
+     - Otherwise, attempt: `gh pr review <PR-number> --approve --body "Approved based on ICC Stage 3 review receipt (NO FINDINGS)."`
+     - If PR author == current authenticated `gh` user: GitHub forbids approving your own PR (server-side rule). Skip.
+       - If repo rules require approvals, merge will still be blocked; use a second GitHub identity/bot for approvals.
 3. Verify merge gates (receipt + head SHA + checks green).
 4. If gates fail:
    - Restart from step 2 (fresh temp checkout).
@@ -58,8 +60,13 @@ gh pr checks "$PR"
 **Approval check (optional gate):**
 ```bash
 PR=<PR-number>
+PR_AUTHOR=$(gh pr view "$PR" --json author --jq .author.login)
+GH_USER=$(gh api user --jq .login)
 APPROVALS=$(gh pr view "$PR" --json reviews --jq '[.reviews[] | select(.state=="APPROVED")] | length')
 echo "Approvals: $APPROVALS"
+if [ "$PR_AUTHOR" = "$GH_USER" ]; then
+  echo "Self-authored PR ($GH_USER): GitHub forbids self-approval; approvals may require a bot/second identity."
+fi
 ```
 
 **Receipt verification:**
