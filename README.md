@@ -1,56 +1,62 @@
 # Intelligent Claude Code
 
-CC‑native framework for role-based specialists, work queue management, and minimal hooks.
+CC-native framework for role-based specialists, cross-agent work tracking, and minimal enforcement hooks.
 
-## Current scope (v10.1)
+## What You Get (v10.2.x)
 
-- **Skills-first architecture** — 35 cross-platform skills loaded on demand.
-- **CC‑native subagents** — no marker files, no custom role enforcement hooks.
-- **Work queue management** — cross-platform task tracking in `.agent/queue/`.
-- **Minimal hooks only** — keep only what CC doesn't do natively.
-- **Behavior guidance** — 4 foundational behaviors for structural rules.
+- **Skills-first architecture**: 35 cross-platform skills loaded on demand.
+- **Role-based specialists**: 14 core roles plus dynamic specialists when needed.
+- **Work queue**: file-based tracking in `.agent/queue/` for cross-agent compatibility.
+- **Minimal hooks**: keep only what Claude Code does not do natively (safety + file routing).
+- **Behavior guidance**: a small set of foundational behaviors for structural rules.
 
-## Included
-
-- **14 core roles** + **dynamic specialists**
-- **Reviewer role** (critical risk/regression review)
-- **Work queue templates** (`.agent/queue/` for cross-platform tracking)
-- **Hooks (PreToolUse only)**:
-  - `agent-infrastructure-protection.js` — block imperative infra changes
-  - `summary-file-enforcement.js` — route summaries/reports + block ALL‑CAPS filenames
-
-## Removed
-
-- Marker‑based orchestration
-- Role enforcement hooks
-- Reminder hooks
-- Auto‑trigger and workflow hooks
-- Redundant behavior trees
-
-## Principles
-
-1. **Plan first** → create AgentTask before implementation.
-2. **Subagents do the work** → main scope coordinates only.
-3. **Keep files tidy** → summaries in `summaries/`, memory in `memory/`.
-4. **Protect git** → strip AI mentions when privacy is enabled.
-5. **Use CC’s native agent system** → don’t re‑implement it.
-
-## Core roles
-
-@PM, @Architect, @Developer, @System‑Engineer, @DevOps‑Engineer, @Database‑Engineer,
-@Security‑Engineer, @AI‑Engineer, @Web‑Designer, @QA‑Engineer, @Backend‑Tester,
-@Requirements‑Engineer, @User‑Role, @Reviewer — plus dynamic specialists (e.g., @React‑Developer).
-
-## Install
+## 60-Second Quickstart
 
 ```bash
 git clone https://github.com/intelligentcode-ai/intelligent-claude-code.git
 cd intelligent-claude-code
+make install              # or .\\install.ps1 install on Windows
+```
+
+In Claude Code, start work via roles:
+
+```text
+@PM break down: "Fix the install regression"
+@Developer implement the fix
+@Reviewer review for regressions
+```
+
+For larger work, ICC uses a work queue under `.agent/queue/` so tasks stay portable across agents/tools.
+
+## Minimal Hooks (Enforcement)
+
+Hooks are intentionally minimal (PreToolUse only):
+- `agent-infrastructure-protection.js`: blocks dangerous imperative infra operations unless explicitly requested.
+- `summary-file-enforcement.js`: routes summaries/reports into `summaries/` and blocks unexpected ALL-CAPS filenames.
+
+## Key Principles
+
+1. Plan first: break work into small, explicit items.
+2. Specialists do the work: the coordinator delegates; roles implement/review/test.
+3. Keep outputs tidy: summaries in `summaries/`, memory in `memory/`, stories in `stories/`, bugs in `bugs/`.
+4. Guard git hygiene: privacy and branch-protection rules keep commits/PRs clean.
+5. Use native agent systems: do not reinvent what your tool already provides.
+
+## Install
+
+```bash
 make install              # or .\install.ps1 install on Windows
 make clean-install        # force uninstall + reinstall (Linux/macOS)
 ```
 
-Usage:
+## Core Roles
+
+`@PM`, `@Architect`, `@Developer`, `@Reviewer`, `@Security-Engineer`, `@QA-Engineer`, `@DevOps-Engineer`, `@Database-Engineer`,
+`@System-Engineer`, `@AI-Engineer`, `@Web-Designer`, `@Backend-Tester`, `@Requirements-Engineer`, `@User-Tester`.
+
+Dynamic specialists are encouraged (e.g. `@React-Developer`, `@Kubernetes-Engineer`).
+
+## Example Usage
 
 ```bash
 @PM break down the story
@@ -66,19 +72,21 @@ Claude Code model selection remains user‑controlled. Set it via:
 - project `.claude/settings.json`
 - CLI or `/model`
 
-## Migration (v9 → v10.1)
+## Contributing / Branches
 
-- **Skills-first architecture** — 35 skills replace behavior-heavy approach.
-- **Cross-platform** — Skills work with Claude Code, Codex CLI, Cursor, Gemini CLI, etc.
-- **Work queue** — `.agent/queue/` replaces AgentTask XML templates.
-- **Behaviors trimmed** — Only 4 foundational behaviors remain.
-- **Minimal hooks** — 2 PreToolUse hooks (git-privacy via skill instead of hook).
+- Open PRs against `dev` (development branch).
+- Release flow is `dev` -> `main` with a version bump, tag, and GitHub release.
+
+## Works With
+
+Skills are plain `SKILL.md` folders, so they work across tools that support this format (Claude Code, Codex, Cursor, etc.).
 
 ## Docs
 
 - Start: `docs/index.md`
 - Installation: `docs/installation-guide.md`
 - Configuration: `docs/configuration-guide.md`
+- Skills reference: `docs/skills-reference.md`
 - Hooks: `docs/hook-registration-reference.md`
 
 ## License
