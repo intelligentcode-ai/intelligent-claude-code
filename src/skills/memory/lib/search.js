@@ -74,9 +74,17 @@ function ftsSearch(database, parsed, limit = 20) {
     return [];
   }
 
-  let searchTerms = parsed.terms.join(' ');
+  function quoteIfNeeded(term) {
+    const t = String(term || '').trim();
+    if (!t) return '';
+    // FTS5 treats characters like '-' as operators; quoting avoids syntax errors.
+    if (/^[a-zA-Z0-9_]+$/.test(t)) return t;
+    return `"${t.replace(/"/g, '')}"`;
+  }
+
+  let searchTerms = parsed.terms.map(quoteIfNeeded).filter(Boolean).join(' ');
   if (parsed.exactPhrase) {
-    searchTerms = `"${parsed.exactPhrase}" ${searchTerms}`.trim();
+    searchTerms = `"${String(parsed.exactPhrase).replace(/"/g, '')}" ${searchTerms}`.trim();
   }
 
   if (!searchTerms) return [];

@@ -129,30 +129,7 @@ function initDatabase(projectRoot = process.cwd()) {
 
       // Initialize / repair counter for concurrency-safe id allocation.
       // If there are already mem-XXX entries, ensure next_id is at least max+1.
-      try {
-        db.prepare(`INSERT OR IGNORE INTO meta (key, value) VALUES ('next_id', 1)`).run();
-
-        const maxRow = db.prepare(`
-          SELECT MAX(CAST(SUBSTR(id, 5) AS INTEGER)) AS max_seq
-          FROM memories
-          WHERE id LIKE 'mem-%'
-            AND id NOT LIKE 'mem-%-%'
-            AND SUBSTR(id, 5) GLOB '[0-9]*'
-        `).get();
-
-        const maxSeq = Number(maxRow?.max_seq || 0);
-        const desired = maxSeq + 1;
-
-        const curRow = db.prepare(`SELECT value FROM meta WHERE key = 'next_id'`).get();
-        const cur = Number(curRow?.value || 1);
-
-        if (cur <= desired) {
-          db.prepare(`UPDATE meta SET value = ? WHERE key = 'next_id'`).run(desired);
-        }
-      } catch (e) {
-        // If anything goes wrong, keep operating; worst case the allocator falls
-        // back to timestamp ids in degraded mode.
-      }
+      repairIdCounter();
 
       break;
     } catch (e) {
@@ -224,6 +201,35 @@ function initDatabase(projectRoot = process.cwd()) {
   return db;
 }
 
+function repairIdCounter() {
+  if (!db) return;
+
+  // If there are already mem-XXX entries, ensure next_id is at least max+1.
+  try {
+    db.prepare(`INSERT OR IGNORE INTO meta (key, value) VALUES ('next_id', 1)`).run();
+
+    const maxRow = db.prepare(`
+      SELECT MAX(CAST(SUBSTR(id, 5) AS INTEGER)) AS max_seq
+      FROM memories
+      WHERE id LIKE 'mem-%'
+        AND id NOT LIKE 'mem-%-%'
+        AND SUBSTR(id, 5) GLOB '[0-9]*'
+    `).get();
+
+    const maxSeq = Number(maxRow?.max_seq || 0);
+    const desired = maxSeq + 1;
+
+    const curRow = db.prepare(`SELECT value FROM meta WHERE key = 'next_id'`).get();
+    const cur = Number(curRow?.value || 1);
+
+    if (cur <= desired) {
+      db.prepare(`UPDATE meta SET value = ? WHERE key = 'next_id'`).run(desired);
+    }
+  } catch (_) {
+    // If anything goes wrong, keep operating; callers can re-run init.
+  }
+}
+
 /**
  * Generate a new memory ID
  * @returns {string} New memory ID (mem-XXX)
@@ -282,10 +288,11 @@ function createMemory(memory) {
             @importance, @created_at, @export_path)
   `);
 
-  // Best-effort retry on id collision (can happen with concurrent writers if
-  // a custom id is provided or a caller bypasses the allocator).
+  // Retry on id collision (can happen with concurrent writers, or when a repo
+  // already has committed mem-XXX markdown exports that need to be imported).
   let id = memory.id || generateId();
-  for (let attempt = 0; attempt < 5; attempt++) {
+  let inserted = false;
+  for (let attempt = 0; attempt < 50; attempt++) {
     try {
       insert.run({
         id,
@@ -298,14 +305,23 @@ function createMemory(memory) {
         created_at: now,
         export_path: memory.export_path || null
       });
+      inserted = true;
       break;
     } catch (e) {
       if (e && typeof e.message === 'string' && e.message.includes('UNIQUE constraint failed: memories.id')) {
+        // If caller provided an explicit id (imports), treat collision as already existing.
+        if (memory.id) {
+          return memory.id;
+        }
         id = generateId();
         continue;
       }
       throw e;
     }
+  }
+
+  if (!inserted) {
+    throw new Error('Failed to allocate unique memory id after retries');
   }
 
   // Insert tags
@@ -317,6 +333,12 @@ function createMemory(memory) {
   }
 
   return id;
+}
+
+function hasMemory(id) {
+  if (!db) return false;
+  const row = db.prepare(`SELECT 1 AS ok FROM memories WHERE id = ?`).get(id);
+  return !!row;
 }
 
 /**
@@ -601,8 +623,10 @@ module.exports = {
   initDatabase,
   getDbPath,
   ensureMemoryDir,
+  repairIdCounter,
   generateId,
   createMemory,
+  hasMemory,
   getMemory,
   updateMemory,
   deleteMemory,

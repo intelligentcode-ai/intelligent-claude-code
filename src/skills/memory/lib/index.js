@@ -15,7 +15,13 @@ const exporter = require('./export');
  */
 function init(projectRoot = process.cwd()) {
   const database = db.initDatabase(projectRoot);
-  return database !== null;
+  if (!database) return { success: false, error: 'Failed to initialize database' };
+
+  // Rebuild local SQLite index from shareable markdown exports, so a fresh clone
+  // can immediately search/list existing project knowledge.
+  const importStats = exporter.rebuildFromExports(projectRoot);
+
+  return { success: true, importStats };
 }
 
 /**

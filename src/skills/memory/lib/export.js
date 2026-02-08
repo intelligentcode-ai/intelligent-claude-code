@@ -258,8 +258,7 @@ function importMemory(filePath, projectRoot = process.cwd()) {
   db.initDatabase(projectRoot);
 
   // Check if memory already exists
-  const existing = db.getMemory(memory.id);
-  if (existing) {
+  if (db.hasMemory(memory.id)) {
     // Update existing
     db.updateMemory(memory.id, {
       title: memory.title,
@@ -282,8 +281,9 @@ function importMemory(filePath, projectRoot = process.cwd()) {
  * @returns {object} Import statistics
  */
 function rebuildFromExports(projectRoot = process.cwd()) {
-  const exportsDir = path.join(projectRoot, '.agent', 'memory', 'exports');
-  const archiveDir = path.join(projectRoot, '.agent', 'memory', 'archive');
+  const memoryRoot = getMemoryRoot(projectRoot);
+  const exportsDir = path.join(memoryRoot, 'exports');
+  const archiveDir = path.join(memoryRoot, 'archive');
 
   const stats = {
     imported: 0,
@@ -337,6 +337,9 @@ function rebuildFromExports(projectRoot = process.cwd()) {
       }
     }
   }
+
+  // Ensure future writes allocate ids after the highest imported mem-XXX.
+  db.repairIdCounter();
 
   return stats;
 }
