@@ -1,4 +1,4 @@
-# Installation Guide (v10.1)
+# Installation Guide (v10.2)
 
 ## Install (macOS/Linux)
 ```bash
@@ -20,7 +20,7 @@ make clean-install
 - Project scope: installs to `<project>/.claude/`
 
 ## What gets installed
-- **Skills** → `.claude/skills/` (35 skills)
+- **Skills** → `~/.claude/skills/` (user-global) and/or `<project>/.claude/skills/` (project-local) (36 skills)
 - **Behaviors** → `.claude/behaviors/` (4 foundational behaviors)
 - **Hooks** → `.claude/hooks/` (2 enforcement hooks)
 - **Mode** → `.claude/modes/virtual-team.md`
