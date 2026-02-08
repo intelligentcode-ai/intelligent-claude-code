@@ -23,7 +23,7 @@ When automation is enabled, the **agent performs the merge itself** (runs `gh pr
 
 Before releasing:
 1. All changes committed and pushed
-2. PR created and approved
+2. PR created and reviewed (ICC Stage 3 receipt is the required review gate by default)
 3. Tests passing
 4. No blocking review findings
 

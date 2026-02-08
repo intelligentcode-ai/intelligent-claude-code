@@ -32,6 +32,26 @@ To allow the agent to merge PRs (agent-performed merge, no `gh pr merge --auto`)
 
 Recommended: only auto-merge PRs targeting `dev`. Releases (`dev` -> `main`) remain explicit.
 
+### Require GitHub-Style Approvals (Optional)
+
+By default this repo uses **self-review-and-merge**:
+- PR is required (branch protection), but GitHub required approvals may remain at 0.
+- Review is required via the **ICC Stage 3 receipt** (`ICC-REVIEW-RECEIPT`) as a skills-level merge gate.
+
+If you want an additional, GitHub-native gate (at least 1 `APPROVED` review), set:
+
+```json
+{
+  "medium": { "require_github_approval": true },
+  "large":  { "require_github_approval": true },
+  "mega":   { "require_github_approval": true }
+}
+```
+
+Notes:
+- GitHub forbids approving your own PR (server-side rule). For self-authored PRs, approvals require a second GitHub
+  identity/bot if you want this gate to pass.
+
 ## Key Settings
 
 ### Git

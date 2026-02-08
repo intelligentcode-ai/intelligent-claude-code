@@ -174,7 +174,7 @@ EOF
 
 This skill may be used to merge PRs, but ONLY after the merge gates below are satisfied.
 
-### Merge Gates (ALL Required)
+### Merge Gates (Required)
 
 1. **Post-PR review receipt exists and matches current head SHA**
    - Reviewer skill Stage 3 MUST have posted an `ICC-REVIEW` / `ICC-REVIEW-RECEIPT` comment.
@@ -186,17 +186,25 @@ This skill may be used to merge PRs, but ONLY after the merge gates below are sa
      - `Result: PASS`
 2. **All checks are green**
    - `gh pr checks <PR-number>` must show all required checks passing.
-3. **GitHub approval present (pragmatic agent-generated approval allowed)**
-   - Prefer: at least 1 GitHub `APPROVED` review exists on the PR.
-   - Pragmatic mode: after a clean Stage 3 receipt, the reviewer subagent MAY add the approval using:
-     - `gh pr review <PR-number> --approve --body "Approved based on ICC Stage 3 review receipt (NO FINDINGS)."`
-   - Recommended: only do this when `workflow.auto_merge=true` (standing approval) or when repo rules require approvals.
-4. **Approval to merge (one of the following)**
+3. **Approval to merge (one of the following)**
    - Default: explicit user approval in chat ("merge PR <N>", "LGTM", "approve", etc.).
    - Optional: `workflow.auto_merge=true` for the current AgentTask/workflow context.
      - This is a standing approval that allows the agent to merge once gates 1-2 pass.
      - Recommended: allow auto-merge ONLY for PRs targeting `dev` (never `main`).
    - If neither applies, STOP and wait.
+
+### Optional Gate: Enforce GitHub-Style Approvals
+
+By default this repo uses **self-review-and-merge**:
+- PR is required (branch protection), but GitHub required approvals may remain at 0.
+- Review is required via the **ICC Stage 3 receipt** (skills-level gate).
+
+If you want to also enforce GitHub-style approvals (at least 1 `APPROVED` review), set:
+- `workflow.require_github_approval=true`
+
+Notes:
+- GitHub forbids approving your own PR (server-side rule). For self-authored PRs, you need a second GitHub identity/bot
+  if you want a GitHub `APPROVED` review.
 
 ### Enabling Auto-Merge (Recommended)
 
@@ -236,8 +244,19 @@ echo "$RECEIPT" | rg -q "Result: PASS" || echo "Receipt does not indicate PASS"
 
 ```bash
 PR=<PR-number>
+REQUIRE_GH_APPROVAL=${REQUIRE_GH_APPROVAL:-false} # set to true if workflow.require_github_approval=true
+
+PR_AUTHOR=$(gh pr view "$PR" --json author --jq .author.login)
+GH_USER=$(gh api user --jq .login)
 APPROVALS=$(gh pr view "$PR" --json reviews --jq '[.reviews[] | select(.state=="APPROVED")] | length')
-test "$APPROVALS" -ge 1 || echo "Missing GitHub APPROVED review"
+
+if [ "$REQUIRE_GH_APPROVAL" = "true" ]; then
+  if [ "$PR_AUTHOR" = "$GH_USER" ]; then
+    echo "Self-authored PR ($GH_USER): GitHub forbids self-approval; approvals require a bot/second identity."
+  else
+    test "$APPROVALS" -ge 1 || echo "Missing GitHub APPROVED review"
+  fi
+fi
 ```
 
 ### Merge (Only After Approval)
