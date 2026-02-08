@@ -89,16 +89,28 @@ gh pr diff <PR-number>
 
 #### Stage 3 Is A Merge Gate (Required Output)
 
-If (and only if) Stage 3 is clean (no blocking findings) and the required checks/tests pass, you MUST post a
-**review receipt** comment to the PR. This receipt is used as the merge gate by other skills.
+If (and only if) Stage 3 is clean (no blocking findings) and the required checks/tests pass, you MUST post an
+**ICC-REVIEW** comment to the PR. This comment is used as the merge gate by other skills.
 
 **Rules:**
-- Receipt MUST be created from the temp checkout (this is the "dedicated reviewer/subagent" context).
-- Receipt MUST match the PR's current head SHA. If new commits are pushed after the receipt, Stage 3 must be re-run
-  and a new receipt posted.
-- If checks fail, post a FAIL receipt (do not merge).
+- Stage 3 MUST run in an isolated context.
+  - Preferred: run Stage 3 as a dedicated reviewer subagent (for example `@Reviewer`) using the Task tool.
+  - Fallback: use a fresh temp clone/checkout and treat it as the dedicated reviewer/subagent context.
+- The ICC-REVIEW comment MUST match the PR's current head SHA. If new commits are pushed after the comment,
+  Stage 3 must be re-run and a new ICC-REVIEW comment posted.
+- Only a **NO FINDINGS** ICC-REVIEW comment is merge-eligible.
 
-**Receipt template (copy/paste):**
+#### Stage 3 Loop (Fix -> Review -> Repeat)
+
+Stage 3 is a loop until the PR is clean:
+1. Review PR diff in temp checkout.
+2. If findings exist: FIX them (push commits to PR branch).
+3. Start Stage 3 over from a fresh temp checkout (do not "trust" the old folder).
+4. Repeat until findings are zero and checks are green.
+
+Only then post the merge-eligible ICC-REVIEW comment.
+
+**ICC-REVIEW template (NO FINDINGS, copy/paste):**
 ```bash
 PR=<PR-number>
 HEAD_SHA=$(gh pr view "$PR" --json headRefOid --jq .headRefOid)
@@ -106,12 +118,17 @@ BASE_BRANCH=$(gh pr view "$PR" --json baseRefName --jq .baseRefName)
 DATE_UTC=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 gh pr comment "$PR" --body "$(cat <<EOF
+ICC-REVIEW
 ICC-REVIEW-RECEIPT
 Reviewer-Stage: 3 (temp checkout)
+Reviewer-Agent: @Reviewer (subagent)
 PR: #$PR
 Base: $BASE_BRANCH
 Head-SHA: $HEAD_SHA
 Date-UTC: $DATE_UTC
+
+Findings: 0
+NO FINDINGS
 
 Checks/Tests:
 - <command> (<PASS|FAIL>)
@@ -119,10 +136,12 @@ Checks/Tests:
 Notes:
 - <optional>
 
-Result: <PASS|FAIL>
+Result: PASS
 EOF
 )"
 ```
+
+**If findings exist:** do not post a NO FINDINGS receipt. Fix, re-review, then post a fresh NO FINDINGS receipt.
 
 ### Project-Specific Linting
 

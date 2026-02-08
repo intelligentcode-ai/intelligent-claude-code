@@ -217,7 +217,8 @@ DO NOT merge without: "merge", "approve", "LGTM", or similar
 Optional auto-merge (Skills-level standing approval):
 - If `workflow.auto_merge=true` in the current AgentTask/workflow context
 - AND the PR targets `dev`
-- AND the reviewer Stage 3 receipt exists for the current head SHA (PASS)
+- AND the reviewer Stage 3 ICC-REVIEW receipt exists for the current head SHA (PASS)
+- AND the receipt includes `Findings: 0` and `NO FINDINGS`
 - AND checks are green
 
 Then the agent MAY proceed to merge without an additional chat approval.
