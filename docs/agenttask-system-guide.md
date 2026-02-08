@@ -1,5 +1,11 @@
 # AgentTask System Guide
 
+> [!IMPORTANT]
+> **Legacy documentation.** ICC v10.2 primarily uses **Skills + `.agent/queue/` work items** and does not rely on
+> AgentTask file generation as the default workflow.
+>
+> This document is kept for historical context and may not reflect current behavior.
+
 ## What is the AgentTask System?
 
 The **AgentTask** system replaces complex multi-step workflows with self-contained execution blueprints. Based on proven methodologies, AgentTasks provide everything needed for single-pass, autonomous execution by specialist roles.

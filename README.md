@@ -1,45 +1,16 @@
 # Intelligent Claude Code
 
-CC‑native framework for role-based specialists, work queue management, and minimal hooks.
+Skills-first, role-based agent workflow for Claude Code and other SKILL.md-compatible tools.
 
-## Current scope (v10.2)
+## What You Get (v10.2.x)
 
-- **Skills-first architecture** — 35 cross-platform skills loaded on demand.
-- **CC‑native subagents** — no marker files, no custom role enforcement hooks.
-- **Work queue management** — cross-platform task tracking in `.agent/queue/`.
-- **Minimal hooks only** — keep only what CC doesn't do natively.
-- **Behavior guidance** — 4 foundational behaviors for structural rules.
-
-## Included
-
-- **14 core roles** + **dynamic specialists**
-- **Reviewer role** (critical risk/regression review)
-- **Work queue templates** (`.agent/queue/` for cross-platform tracking)
-- **Hooks (PreToolUse only)**:
-  - `agent-infrastructure-protection.js` — block imperative infra changes
-  - `summary-file-enforcement.js` — route summaries/reports + block ALL‑CAPS filenames
-
-## Removed
-
-- Marker‑based orchestration
-- Role enforcement hooks
-- Reminder hooks
-- Auto‑trigger and workflow hooks
-- Redundant behavior trees
-
-## Principles
-
-1. **Plan first** → create AgentTask before implementation.
-2. **Subagents do the work** → main scope coordinates only.
-3. **Keep files tidy** → summaries in `summaries/`, memory in `memory/`.
-4. **Protect git** → strip AI mentions when privacy is enabled.
-5. **Use CC’s native agent system** → don’t re‑implement it.
-
-## Core roles
-
-@PM, @Architect, @Developer, @System‑Engineer, @DevOps‑Engineer, @Database‑Engineer,
-@Security‑Engineer, @AI‑Engineer, @Web‑Designer, @QA‑Engineer, @Backend‑Tester,
-@Requirements‑Engineer, @User‑Role, @Reviewer — plus dynamic specialists (e.g., @React‑Developer).
+- **36 Skills** loaded on demand (roles + process + enforcement companions).
+- **Role-based specialists**: 14 core roles plus dynamic specialists when needed.
+- **Cross-platform work tracking** via `.agent/queue/` (works across CLIs/editors).
+- **Minimal safety hooks** (Claude Code only): infra protection + file hygiene.
+- **PR workflow that stays fast**:
+  - GitHub can require a PR, while ICC enforces “review required” via `ICC-REVIEW-RECEIPT`.
+  - Optional automation for merge (standing approval) and release steps.
 
 ## Install
 
@@ -50,48 +21,43 @@ make install              # or .\install.ps1 install on Windows
 make clean-install        # force uninstall + reinstall (Linux/macOS)
 ```
 
-Usage:
+## Using Roles (Still Yes)
 
-```bash
+If your client supports role mentions (Claude Code), this is still the primary way to involve roles:
+
+```text
 @PM break down the story
 @Architect review the design
 @Developer implement auth
 @Reviewer audit for regressions
 ```
 
-## Model control (user‑configurable)
+If your client does not support `@Role` mentions, use the same intent in plain language (the system will match skills):
 
-Claude Code model selection remains user‑controlled. Set it via:
-- `~/.claude/settings.json`
-- project `.claude/settings.json`
-- CLI or `/model`
+```text
+As PM: break down the story into work items in .agent/queue/
+As Reviewer: run a regression review and post an ICC-REVIEW-RECEIPT
+```
 
-## Migration (v9 → v10.1)
+## Workflow At A Glance
 
-- **Skills-first architecture** — 35 skills replace behavior-heavy approach.
-- **Cross-platform** — Skills work with Claude Code, Codex CLI, Cursor, Gemini CLI, etc.
-- **Work queue** — `.agent/queue/` replaces AgentTask XML templates.
-- **Behaviors trimmed** — Only 4 foundational behaviors remain.
-- **Minimal hooks** — 2 PreToolUse hooks (git-privacy via skill instead of hook).
+Branch flow:
 
-## Docs
+```text
+feature/*  -> PR -> dev  -> (release PR) -> main
+```
 
-- Start: `docs/index.md`
-- Installation: `docs/installation-guide.md`
-- Configuration: `docs/configuration-guide.md`
-- Hooks: `docs/hook-registration-reference.md`
+ICC review/merge gate:
+- A dedicated post-PR Stage 3 review (temp checkout context) posts an `ICC-REVIEW-RECEIPT` comment for the PR’s current head SHA.
+- **Findings must be 0** (`NO FINDINGS`) and checks must be green.
+- Then, and only then, the PR is mergeable by Skills rules.
 
-## Auto-Review And Auto-Merge (Optional)
+## Configuration
 
-This project supports a Skills-driven merge gate using an `ICC-REVIEW-RECEIPT` PR comment:
-- A dedicated Stage 3 review (temp checkout / subagent context) must post a receipt with `Findings: 0` and `NO FINDINGS`.
-- If enabled, the agent can then merge PRs targeting `dev` without an additional "merge PR N" prompt.
+- `icc.config.json` controls enforcement and behavior (git privacy, branch protection, paths, etc.).
+- `icc.workflow.json` controls workflow-level automation (auto-merge standing approval, optional GitHub approvals gate, release automation).
 
-By default this repo uses **self-review-and-merge**:
-- PR is required (branch protection), but GitHub required approvals may remain at 0.
-- Review is required via the ICC Stage 3 receipt (skills-level gate).
-
-Enable standing approval via workflow config (`icc.workflow.json`), for example user-global:
+Common workflow switches:
 ```json
 {
   "medium": { "auto_merge": true },
@@ -100,7 +66,7 @@ Enable standing approval via workflow config (`icc.workflow.json`), for example 
 }
 ```
 
-Optional: require a GitHub-native approval gate (at least 1 `APPROVED` review):
+Optional: require GitHub-native approvals (in addition to ICC receipts):
 ```json
 {
   "medium": { "require_github_approval": true },
@@ -109,13 +75,10 @@ Optional: require a GitHub-native approval gate (at least 1 `APPROVED` review):
 }
 ```
 
-Locations (highest to lowest priority):
-- `./icc.workflow.json`
-- `./.claude/icc.workflow.json`
-- `~/.claude/icc.workflow.json`
+## Docs
 
-Note: releases (`dev` -> `main`) are still a separate, explicitly requested workflow.
+Start here: `docs/index.md`
 
 ## License
 
-MIT (see LICENSE)
+MIT (see `LICENSE`)

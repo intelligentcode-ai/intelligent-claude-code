@@ -5,7 +5,7 @@ This file is the **single entry point** for the behavioral system used by humans
 ## Project Overview
 
 Intelligent Claude Code is a CC-native framework that adds:
-- **Skills-first architecture** - 35 cross-platform skills
+- **Skills-first architecture** - 36 cross-platform skills
 - Work queue for task management (`.agent/queue/`)
 - Role-based specialists (14 core + dynamic creation)
 - File placement rules (summaries/memory/stories/bugs)
@@ -47,7 +47,7 @@ thinking skill for complex analysis
 memory skill to search prior knowledge
 ```
 
-## Core Skills (35)
+## Core Skills (36)
 
 ### Role Skills (14)
 pm, architect, developer, system-engineer, devops-engineer,

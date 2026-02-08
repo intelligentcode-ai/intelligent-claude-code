@@ -1,5 +1,11 @@
 # AgentTask Templates Guide
 
+> [!IMPORTANT]
+> **Legacy documentation.** ICC v10.2 primarily uses **Skills + `.agent/queue/` work items** and does not rely on
+> AgentTask template generation as the default workflow.
+>
+> This document is kept for historical context and may not reflect current behavior.
+
 ## Overview
 
 AgentTask templates are the backbone of the intelligent-claude-code system. They define how work is structured, what context is included, and how specialists execute tasks. The system automatically selects the right template based on complexity from the mandatory agenttask-templates/ hierarchy.

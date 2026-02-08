@@ -1,7 +1,7 @@
 # Configuration Guide (v10)
 
 ## Hierarchy
-1. AgentTask overrides  
+1. Per-task overrides (AgentTask `agentTask.*` / workflow `agentTask.workflow.*`)  
 2. Project config: `./icc.config.json` or `./.claude/icc.config.json`  
 3. User config: `~/.claude/icc.config.json`  
 4. Defaults: `icc.config.default.json`
@@ -12,7 +12,7 @@ Workflow settings (version bump rules, PR requirements, release automation, auto
 `icc.workflow.json`.
 
 **Workflow hierarchy (highest to lowest priority):**
-1. AgentTask overrides (`agentTask.workflow.*`)
+1. Per-task overrides (`agentTask.workflow.*`)
 2. Project workflow: `./icc.workflow.json` or `./.claude/icc.workflow.json`
 3. User workflow: `~/.claude/icc.workflow.json`
 4. Defaults: `icc.workflow.default.json`

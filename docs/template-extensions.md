@@ -1,5 +1,11 @@
 # AgentTask Template Extensions Guide
 
+> [!IMPORTANT]
+> **Legacy documentation.** The template extensions mechanism described here (e.g. `prb-extensions.yaml`, `!override`)
+> is not part of ICC v10.2’s active workflow and is not implemented in this repository’s current toolchain.
+>
+> This document is kept for historical context and may not reflect current behavior.
+
 ## Overview
 
 The AgentTask Template Extensions system allows projects to customize AgentTask templates without copying or maintaining entire template files. Using a single `prb-extensions.yaml` file, you can extend templates with project-specific requirements, customize workflows, and add validation steps while still receiving automatic updates to base templates.
@@ -635,4 +641,5 @@ The AgentTask Template Extensions system provides a powerful, maintainable way t
 
 **Start simple** with universal requirements in the `all:` section, then add size-specific customizations as needed. The extension system grows with your project needs while keeping base templates up to date automatically.
 
-For questions or advanced use cases, refer to the [AgentTask System Guide](prb-system-guide.md) or [Configuration Guide](configuration-guide.md).
+For questions or advanced use cases, refer to the [AgentTask System Guide](agenttask-system-guide.md) or the
+[Configuration Guide](configuration-guide.md).

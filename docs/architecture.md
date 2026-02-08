@@ -1,20 +1,20 @@
-# Architecture (v10.1)
+# Architecture (v10.2)
 
 ## Overview
 Intelligent Claude Code is a CC-native framework that adds role-based specialists, work queue management, and strict file/git hygiene through a **skills-first architecture**.
 
 ## Core Components
 
-### Skills (34 total)
+### Skills (36 total)
 Skills are the primary interface for specialized capabilities. They are:
 - Defined in `src/skills/*/SKILL.md`
-- Installed to `.claude/skills/`
+- Installed to `~/.claude/skills/` (user-global) and/or `<project>/.claude/skills/` (project-local)
 - Invoked via skill description matching or `@Role` patterns
 
 **Categories:**
 - **Role Skills (14):** pm, architect, developer, system-engineer, devops-engineer, database-engineer, security-engineer, ai-engineer, web-designer, qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer
 - **Command Skills (2):** icc-version, icc-get-setting
-- **Process Skills (14):** thinking, work-queue, process, best-practices, validate, autonomy, parallel-execution, workflow, mcp-config, story-breakdown, git-privacy, commit-pr, release, suggest
+- **Process Skills (16):** thinking, work-queue, process, best-practices, validate, autonomy, parallel-execution, workflow, mcp-config, story-breakdown, git-privacy, commit-pr, release, suggest, memory, pr-automerge
 - **Enforcement Companion Skills (3):** file-placement, branch-protection, infrastructure-protection
 - **Meta Skill (1):** skill-creator
 
@@ -49,5 +49,5 @@ Cross-platform work tracking in `.agent/queue/`:
 - **Skills-first** → Skills loaded on demand based on context
 - **CC-native subagents** → No marker files, no custom role enforcement
 - **Cross-platform queues** → `.agent/queue/` works across all agents
-- **File placement correctness** → Summaries in `summaries/`, memory in `memory/`
+- **File placement correctness** → Summaries in `summaries/`, memory in `.agent/memory/`
 - **Git privacy by default** → Strip AI attribution when privacy enabled
