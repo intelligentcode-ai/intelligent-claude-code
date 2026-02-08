@@ -21,6 +21,8 @@ Review via subagent -> ICC-REVIEW receipt -> merge when NO FINDINGS -> otherwise
   - `Head-SHA` matches `headRefOid`
   - `Findings: 0` and `NO FINDINGS`
   - `Result: PASS`
+- GitHub approvals are OPTIONAL by default (self-review-and-merge workflow). If you want to enforce GitHub-style approvals,
+  set `workflow.require_github_approval=true`.
 - Merge approval:
   - If `workflow.auto_merge=true` (standing approval), the agent MAY merge once gates pass.
   - Otherwise, stop and wait for explicit user approval.
@@ -35,7 +37,8 @@ Review via subagent -> ICC-REVIEW receipt -> merge when NO FINDINGS -> otherwise
    - Reviewer must fix findings by pushing commits to the PR branch.
    - Reviewer must re-run Stage 3 until findings are zero and checks are green.
    - Reviewer must post `ICC-REVIEW-RECEIPT` NO FINDINGS comment for the current head SHA.
-   - Pragmatic GitHub approval (best-effort): after posting NO FINDINGS receipt, reviewer subagent should:
+   - Pragmatic GitHub approval (best-effort; only if `workflow.require_github_approval=true`): after posting NO FINDINGS
+     receipt, reviewer subagent should:
      - Skip if an `APPROVED` review already exists.
      - Otherwise, attempt: `gh pr review <PR-number> --approve --body "Approved based on ICC Stage 3 review receipt (NO FINDINGS)."`
      - If PR author == current authenticated `gh` user: GitHub forbids approving your own PR (server-side rule). Skip.

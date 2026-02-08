@@ -151,6 +151,9 @@ PR=<PR-number>
 PR_AUTHOR=$(gh pr view "$PR" --json author --jq .author.login)
 GH_USER=$(gh api user --jq .login)
 
+# Only do this when workflow.require_github_approval=true (GitHub-style approvals mode).
+# In self-review-and-merge mode, approvals are optional and the ICC-REVIEW-RECEIPT is the review gate.
+#
 # GitHub forbids approving your own PR (server-side rule). If author==current gh user, skip.
 if [ "$PR_AUTHOR" = "$GH_USER" ]; then
   echo "Skip GitHub approval: cannot approve own PR ($GH_USER). Use a second account/bot if approvals are required."

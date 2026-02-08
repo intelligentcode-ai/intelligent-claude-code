@@ -200,10 +200,13 @@ IF clean: Continue
 - Reviewer Stage 3 MUST loop until the PR is clean:
   - If findings exist: fix + push commits to the PR branch, then restart Stage 3 in a fresh temp checkout.
   - When clean: post `ICC-REVIEW-RECEIPT` with `Findings: 0` and `NO FINDINGS` for the current head SHA.
-  - Pragmatic approval (best-effort): after posting a NO FINDINGS receipt, the reviewer subagent should also try to add
-    a GitHub approval using `gh pr review <PR-number> --approve ...` (skip if already approved).
-    - If PR author == current authenticated `gh` user: GitHub forbids approving your own PR (server-side rule). Skip.
-      If repo rules require approvals, a second GitHub identity/bot is required for approvals.
+  - Optional GitHub approvals (GitHub-style approvals mode):
+    - Default is self-review-and-merge: **GitHub required approvals may remain at 0**, while ICC Stage 3 receipt remains
+      the required review gate.
+    - If `workflow.require_github_approval=true`, the reviewer subagent should also try to add a GitHub approval using
+      `gh pr review <PR-number> --approve ...` (skip if already approved).
+      - If PR author == current authenticated `gh` user: GitHub forbids approving your own PR (server-side rule). Skip.
+        If repo rules require approvals, a second GitHub identity/bot is required for approvals.
 
 ### Step 3.3: Suggest + Auto-Implement
 ```
