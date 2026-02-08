@@ -10,6 +10,13 @@ const fs = require('fs');
 let db = null;
 let Database = null;
 
+function sleepMs(ms) {
+  // Synchronous sleep (Node) to allow retry loops during initialization.
+  // Avoids adding async plumbing to the DB module.
+  const sab = new SharedArrayBuffer(4);
+  Atomics.wait(new Int32Array(sab), 0, 0, ms);
+}
+
 /**
  * Get the memory database path
  * @param {string} projectRoot - Project root directory
@@ -53,14 +60,19 @@ function initDatabase(projectRoot = process.cwd()) {
   ensureMemoryDir(projectRoot);
   const dbPath = getDbPath(projectRoot);
 
-  db = new Database(dbPath);
-  db.pragma('journal_mode = WAL');
   // Allow concurrent writers to wait briefly instead of failing with
-  // "database is locked" when multiple processes write at once.
-  db.pragma('busy_timeout = 5000');
+  // "database is locked" when multiple processes initialize/write at once.
+  db = new Database(dbPath, { timeout: 5000 });
 
-  // Create schema
-  db.exec(`
+  // New projects can run multiple concurrent "init" calls (multiple agent
+  // processes). SQLite only allows one writer, so we retry initialization on
+  // lock instead of failing the entire command.
+  for (let attempt = 0; attempt < 20; attempt++) {
+    try {
+      db.pragma('journal_mode = WAL');
+
+      // Create schema
+      db.exec(`
     -- Core memories table
     CREATE TABLE IF NOT EXISTS memories (
       id TEXT PRIMARY KEY,
@@ -115,71 +127,98 @@ function initDatabase(projectRoot = process.cwd()) {
     );
   `);
 
-  // Initialize / repair counter for concurrency-safe id allocation.
-  // If there are already mem-XXX entries, ensure next_id is at least max+1.
-  try {
-    db.prepare(`INSERT OR IGNORE INTO meta (key, value) VALUES ('next_id', 1)`).run();
+      // Initialize / repair counter for concurrency-safe id allocation.
+      // If there are already mem-XXX entries, ensure next_id is at least max+1.
+      try {
+        db.prepare(`INSERT OR IGNORE INTO meta (key, value) VALUES ('next_id', 1)`).run();
 
-    const maxRow = db.prepare(`
-      SELECT MAX(CAST(SUBSTR(id, 5) AS INTEGER)) AS max_seq
-      FROM memories
-      WHERE id LIKE 'mem-%'
-        AND id NOT LIKE 'mem-%-%'
-        AND SUBSTR(id, 5) GLOB '[0-9]*'
-    `).get();
+        const maxRow = db.prepare(`
+          SELECT MAX(CAST(SUBSTR(id, 5) AS INTEGER)) AS max_seq
+          FROM memories
+          WHERE id LIKE 'mem-%'
+            AND id NOT LIKE 'mem-%-%'
+            AND SUBSTR(id, 5) GLOB '[0-9]*'
+        `).get();
 
-    const maxSeq = Number(maxRow?.max_seq || 0);
-    const desired = maxSeq + 1;
+        const maxSeq = Number(maxRow?.max_seq || 0);
+        const desired = maxSeq + 1;
 
-    const curRow = db.prepare(`SELECT value FROM meta WHERE key = 'next_id'`).get();
-    const cur = Number(curRow?.value || 1);
+        const curRow = db.prepare(`SELECT value FROM meta WHERE key = 'next_id'`).get();
+        const cur = Number(curRow?.value || 1);
 
-    if (cur <= desired) {
-      db.prepare(`UPDATE meta SET value = ? WHERE key = 'next_id'`).run(desired);
+        if (cur <= desired) {
+          db.prepare(`UPDATE meta SET value = ? WHERE key = 'next_id'`).run(desired);
+        }
+      } catch (e) {
+        // If anything goes wrong, keep operating; worst case the allocator falls
+        // back to timestamp ids in degraded mode.
+      }
+
+      break;
+    } catch (e) {
+      if (e && typeof e.message === 'string' && e.message.includes('database is locked')) {
+        // linear backoff, capped
+        sleepMs(Math.min(250, 25 * (attempt + 1)));
+        continue;
+      }
+      throw e;
     }
-  } catch (e) {
-    // If anything goes wrong, keep operating; worst case the allocator falls
-    // back to timestamp ids in degraded mode.
   }
 
   // Create FTS5 virtual table (separate to handle exists check)
-  try {
-    db.exec(`
-      CREATE VIRTUAL TABLE IF NOT EXISTS memories_fts USING fts5(
-        title, summary, content,
-        content=memories,
-        content_rowid=rowid
-      );
-    `);
-  } catch (e) {
-    // FTS5 table may already exist
-    if (!e.message.includes('already exists')) {
-      console.warn('FTS5 setup warning:', e.message);
+  for (let attempt = 0; attempt < 20; attempt++) {
+    try {
+      db.exec(`
+        CREATE VIRTUAL TABLE IF NOT EXISTS memories_fts USING fts5(
+          title, summary, content,
+          content=memories,
+          content_rowid=rowid
+        );
+      `);
+      break;
+    } catch (e) {
+      if (e && typeof e.message === 'string' && e.message.includes('database is locked')) {
+        sleepMs(Math.min(250, 25 * (attempt + 1)));
+        continue;
+      }
+      // FTS5 table may already exist
+      if (!e.message.includes('already exists')) {
+        console.warn('FTS5 setup warning:', e.message);
+      }
+      break;
     }
   }
 
   // Create triggers to keep FTS in sync
-  try {
-    db.exec(`
-      CREATE TRIGGER IF NOT EXISTS memories_ai AFTER INSERT ON memories BEGIN
-        INSERT INTO memories_fts(rowid, title, summary, content)
-        VALUES (NEW.rowid, NEW.title, NEW.summary, NEW.content);
-      END;
+  for (let attempt = 0; attempt < 20; attempt++) {
+    try {
+      db.exec(`
+        CREATE TRIGGER IF NOT EXISTS memories_ai AFTER INSERT ON memories BEGIN
+          INSERT INTO memories_fts(rowid, title, summary, content)
+          VALUES (NEW.rowid, NEW.title, NEW.summary, NEW.content);
+        END;
 
-      CREATE TRIGGER IF NOT EXISTS memories_ad AFTER DELETE ON memories BEGIN
-        INSERT INTO memories_fts(memories_fts, rowid, title, summary, content)
-        VALUES ('delete', OLD.rowid, OLD.title, OLD.summary, OLD.content);
-      END;
+        CREATE TRIGGER IF NOT EXISTS memories_ad AFTER DELETE ON memories BEGIN
+          INSERT INTO memories_fts(memories_fts, rowid, title, summary, content)
+          VALUES ('delete', OLD.rowid, OLD.title, OLD.summary, OLD.content);
+        END;
 
-      CREATE TRIGGER IF NOT EXISTS memories_au AFTER UPDATE ON memories BEGIN
-        INSERT INTO memories_fts(memories_fts, rowid, title, summary, content)
-        VALUES ('delete', OLD.rowid, OLD.title, OLD.summary, OLD.content);
-        INSERT INTO memories_fts(rowid, title, summary, content)
-        VALUES (NEW.rowid, NEW.title, NEW.summary, NEW.content);
-      END;
-    `);
-  } catch (e) {
-    // Triggers may already exist
+        CREATE TRIGGER IF NOT EXISTS memories_au AFTER UPDATE ON memories BEGIN
+          INSERT INTO memories_fts(memories_fts, rowid, title, summary, content)
+          VALUES ('delete', OLD.rowid, OLD.title, OLD.summary, OLD.content);
+          INSERT INTO memories_fts(rowid, title, summary, content)
+          VALUES (NEW.rowid, NEW.title, NEW.summary, NEW.content);
+        END;
+      `);
+      break;
+    } catch (e) {
+      if (e && typeof e.message === 'string' && e.message.includes('database is locked')) {
+        sleepMs(Math.min(250, 25 * (attempt + 1)));
+        continue;
+      }
+      // Triggers may already exist or may fail on older SQLite; ignore.
+      break;
+    }
   }
 
   return db;
