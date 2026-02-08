@@ -184,9 +184,27 @@ This skill may be used to merge PRs, but ONLY after the merge gates below are sa
      - `Result: PASS`
 2. **All checks are green**
    - `gh pr checks <PR-number>` must show all required checks passing.
-3. **Explicit user approval**
-   - DO NOT merge unless the user explicitly says: "merge PR <N>", "LGTM", "approve", or equivalent.
-   - If the user did not explicitly approve, STOP.
+3. **Approval to merge (one of the following)**
+   - Default: explicit user approval in chat ("merge PR <N>", "LGTM", "approve", etc.).
+   - Optional: `workflow.auto_merge=true` for the current AgentTask/workflow context.
+     - This is a standing approval that allows the agent to merge once gates 1-2 pass.
+     - Recommended: allow auto-merge ONLY for PRs targeting `dev` (never `main`).
+   - If neither applies, STOP and wait.
+
+### Enabling Auto-Merge (Recommended)
+
+Auto-merge is controlled by the workflow configuration that drives AgentTasks:
+- AgentTask field: `workflow.auto_merge`
+- Workflow files (hierarchy): `./icc.workflow.json` or `~/.claude/icc.workflow.json` over `icc.workflow.default.json`
+
+Minimal project workflow example (`icc.workflow.json`):
+```json
+{
+  "medium": { "auto_merge": true },
+  "large": { "auto_merge": true },
+  "mega": { "auto_merge": true }
+}
+```
 
 ### Verify The Receipt (Copy/Paste)
 

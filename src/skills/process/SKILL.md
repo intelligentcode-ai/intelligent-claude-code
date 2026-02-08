@@ -207,13 +207,22 @@ IF needs human: PAUSE, wait for decision
 IF clean or user says proceed: Continue
 ```
 
-### Step 3.4: Await Approval (ALWAYS PAUSE)
+### Step 3.4: Merge Approval (Default: Pause, Optional Auto-Merge)
+Default behavior:
 ```
 WAIT for explicit user approval
 DO NOT merge without: "merge", "approve", "LGTM", or similar
-
-This is the ONE step that ALWAYS requires human input.
 ```
+
+Optional auto-merge (Skills-level standing approval):
+- If `workflow.auto_merge=true` in the current AgentTask/workflow context
+- AND the PR targets `dev`
+- AND the reviewer Stage 3 receipt exists for the current head SHA (PASS)
+- AND checks are green
+
+Then the agent MAY proceed to merge without an additional chat approval.
+
+**Never auto-merge to `main`** unless performing an explicitly requested release workflow.
 
 **Exit:** No findings, suggestions addressed, user approved, merged to dev
 
