@@ -81,6 +81,28 @@ Claude Code model selection remains user‑controlled. Set it via:
 - Configuration: `docs/configuration-guide.md`
 - Hooks: `docs/hook-registration-reference.md`
 
+## Auto-Review And Auto-Merge (Optional)
+
+This project supports a Skills-driven merge gate using an `ICC-REVIEW-RECEIPT` PR comment:
+- A dedicated Stage 3 review (temp checkout / subagent context) must post a receipt with `Findings: 0` and `NO FINDINGS`.
+- If enabled, the agent can then merge PRs targeting `dev` without an additional "merge PR N" prompt.
+
+Enable standing approval via workflow config (`icc.workflow.json`), for example user-global:
+```json
+{
+  "medium": { "auto_merge": true },
+  "large":  { "auto_merge": true },
+  "mega":   { "auto_merge": true }
+}
+```
+
+Locations (highest to lowest priority):
+- `./icc.workflow.json`
+- `./.claude/icc.workflow.json`
+- `~/.claude/icc.workflow.json`
+
+Note: releases (`dev` -> `main`) are still a separate, explicitly requested workflow.
+
 ## License
 
 MIT (see LICENSE)
