@@ -200,8 +200,12 @@ async function main() {
       }
 
       case 'init': {
-        const success = memory.init(projectRoot);
-        console.log(JSON.stringify({ success, projectRoot }));
+        const result = memory.init(projectRoot);
+        if (typeof result === 'boolean') {
+          console.log(JSON.stringify({ success: result, projectRoot }));
+        } else {
+          console.log(JSON.stringify({ projectRoot, ...result }, null, 2));
+        }
         break;
       }
 
