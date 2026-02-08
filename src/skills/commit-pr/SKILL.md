@@ -180,7 +180,7 @@ This skill may be used to merge PRs, but ONLY after the merge gates below are sa
    - Reviewer skill Stage 3 MUST have posted an `ICC-REVIEW` / `ICC-REVIEW-RECEIPT` comment.
    - The comment MUST include:
      - `Reviewer-Stage: 3 (temp checkout)` (dedicated reviewer/subagent context)
-     - `Reviewer-Agent: @Reviewer (subagent)` (or equivalent dedicated reviewer role)
+     - `Reviewer-Agent: ... (subagent)` (must indicate subagent execution)
      - `Head-SHA: <sha>` matching the PR's current `headRefOid`
      - `Findings: 0` and `NO FINDINGS`
      - `Result: PASS`
@@ -218,7 +218,7 @@ HEAD_SHA=$(gh pr view "$PR" --json headRefOid --jq .headRefOid)
 RECEIPT=$(gh pr view "$PR" --json comments --jq '.comments | map(select(.body | contains("ICC-REVIEW-RECEIPT"))) | last | .body // ""')
 
 echo "$RECEIPT" | rg -q "Reviewer-Stage: 3 \\(temp checkout\\)" || echo "Missing Stage 3 receipt"
-echo "$RECEIPT" | rg -q "Reviewer-Agent:" || echo "Missing Reviewer-Agent marker"
+echo "$RECEIPT" | rg -q "Reviewer-Agent:.*\\(subagent\\)" || echo "Missing Reviewer-Agent subagent marker"
 echo "$RECEIPT" | rg -q "Head-SHA: $HEAD_SHA" || echo "Receipt is missing/stale for current head SHA"
 echo "$RECEIPT" | rg -q "Findings: 0" || echo "Receipt does not indicate zero findings"
 echo "$RECEIPT" | rg -q "NO FINDINGS" || echo "Receipt does not include NO FINDINGS marker"

@@ -141,7 +141,14 @@ EOF
 )"
 ```
 
-**If findings exist:** do not post a NO FINDINGS receipt. Fix, re-review, then post a fresh NO FINDINGS receipt.
+**If findings exist:** you MUST fix them and restart Stage 3. You MAY optionally post a FAIL receipt for audit/debugging:
+```text
+Findings: <N>
+- <finding 1>
+- <finding 2>
+Result: FAIL
+```
+Never merge with Findings > 0.
 
 ### Project-Specific Linting
 
