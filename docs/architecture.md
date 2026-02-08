@@ -9,7 +9,7 @@ Intelligent Claude Code is a CC-native framework that adds role-based specialist
 Skills are the primary interface for specialized capabilities. They are:
 - Defined in `src/skills/*/SKILL.md`
 - Installed to `~/.claude/skills/` (user-global) and/or `<project>/.claude/skills/` (project-local)
-- Invoked via skill description matching or `@Role` patterns
+- Invoked via skill description matching or role-prefix patterns (e.g. `Reviewer: ...`)
 
 **Categories:**
 - **Role Skills (14):** pm, architect, developer, system-engineer, devops-engineer, database-engineer, security-engineer, ai-engineer, web-designer, qa-engineer, backend-tester, requirements-engineer, user-tester, reviewer

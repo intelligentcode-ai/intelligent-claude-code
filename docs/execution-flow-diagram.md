@@ -14,9 +14,9 @@ MAIN AGENT (coordination)
   |
   v
 ROLE EXECUTION (specialists)
-  - @Developer implements
-  - @Reviewer audits and fixes issues
-  - @DevOps-Engineer handles release mechanics (when requested)
+  - Developer implements
+  - Reviewer audits and fixes issues
+  - DevOps-Engineer handles release mechanics (when requested)
   |
   v
 QUALITY GATES
@@ -46,4 +46,3 @@ RELEASE PHASE (only when requested)
 See:
 - `docs/workflow-guide.md`
 - `docs/configuration-guide.md`
-

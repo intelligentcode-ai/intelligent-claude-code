@@ -36,13 +36,13 @@ Only 4 foundational behaviors remain - always-active structural rules:
 
 ## Primary Interaction Pattern
 
-Use @Role requests or skill names for work:
+Use role prefixes or skill names for work:
 
 ```
-@PM break down the story
-@Architect review the design
-@Developer implement auth
-@Reviewer audit for regressions
+PM: break down the story
+Architect: review the design
+Developer: implement auth
+Reviewer: audit for regressions
 thinking skill for complex analysis
 memory skill to search prior knowledge
 ```

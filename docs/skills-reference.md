@@ -5,15 +5,15 @@ ICC is **skills-first**: the system loads `SKILL.md` instructions on demand base
 - description matching (you ask for a review, it pulls `reviewer`)
 - role mentions (when supported)
 
-## Role Invocation (Still The Recommended Path)
+## Role Invocation (Recommended)
 
-This is the primary interaction style:
+In most chat tools, `@...` is reserved for file mentions. ICC role invocation is just the role name as a prefix:
 
 ```text
-@PM break down the story into work items
-@Architect review the approach
-@Developer implement the change
-@Reviewer run a regression review
+PM: break down the story into work items
+Architect: review the approach
+Developer: implement the change
+Reviewer: run a regression review
 ```
 
 ## Work Tracking (Cross-Platform)

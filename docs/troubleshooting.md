@@ -24,7 +24,7 @@
   - `~/.claude/skills/` (user-global)
   - `.claude/skills/` (project-local, optional)
 - Trigger rules:
-  - mention a role/skill name directly (e.g. `@Reviewer`, “use `reviewer`”)
+  - mention a role/skill name directly (e.g. `Reviewer`, “use `reviewer`”)
   - or describe the intent clearly (“review for regressions”, “create a PR”, “cut a release”)
 
 ## PR Merge Gate Problems
@@ -69,8 +69,4 @@ npm install --production
 
 ## Legacy Documentation
 
-Some older docs describe AgentTask/template systems that are not the default workflow in v10.2:
-- `docs/agenttask-system-guide.md`
-- `docs/agenttask-templates-guide.md`
-- `docs/template-extensions.md`
-
+Removed. The docs set is intentionally curated for the current v10.2 workflow.

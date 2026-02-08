@@ -17,10 +17,5 @@ Tip: For a clean reinstall on macOS/Linux, use `make clean-install` (force unins
 - [Virtual Team Guide](virtual-team-guide.md)
 - [Hook Registration Reference](hook-registration-reference.md)
 
-## Legacy (Read Only)
-- [AgentTask System Guide](agenttask-system-guide.md) (legacy)
-- [AgentTask Templates Guide](agenttask-templates-guide.md) (legacy)
-- [Template Extensions](template-extensions.md) (legacy)
-
 ## Troubleshooting
 - [Troubleshooting](troubleshooting.md)

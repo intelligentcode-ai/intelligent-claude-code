@@ -8,9 +8,9 @@ This guide describes the current ICC usage model: **roles + skills + work queue 
 2. Start with a role request:
 
 ```text
-@PM break down this story
-@Developer implement the next work item
-@Reviewer review for regressions
+PM: break down this story
+Developer: implement the next work item
+Reviewer: review for regressions
 ```
 
 ## Work Queue

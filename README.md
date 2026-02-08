@@ -26,10 +26,10 @@ make clean-install        # force uninstall + reinstall (Linux/macOS)
 This is the primary way to involve roles:
 
 ```text
-@PM break down the story
-@Architect review the design
-@Developer implement auth
-@Reviewer audit for regressions
+PM: break down the story
+Architect: review the design
+Developer: implement auth
+Reviewer: audit for regressions
 ```
 
 ## Workflow At A Glance
@@ -37,14 +37,14 @@ This is the primary way to involve roles:
 Normal change (feature/fix):
 1. Create a branch.
 2. Open a PR into `dev`.
-3. `@Reviewer` runs a clean “Stage 3” review and leaves an `ICC-REVIEW-RECEIPT` comment that says the PR is **PASS**
+3. `Reviewer` runs a clean “Stage 3” review and leaves an `ICC-REVIEW-RECEIPT` comment that says the PR is **PASS**
    for the PR’s current commit.
 4. Merge the PR.
 
 Release:
 1. Open a release PR from `dev` into `main`.
 2. Bump `VERSION` (and `src/VERSION`), update `CHANGELOG.md`.
-3. `@Reviewer` leaves an `ICC-REVIEW-RECEIPT` PASS on the release PR.
+3. `Reviewer` leaves an `ICC-REVIEW-RECEIPT` PASS on the release PR.
 4. Merge the release PR to `main`, tag `vX.Y.Z`, publish the GitHub release.
 5. Sync `main` back into `dev`.
 

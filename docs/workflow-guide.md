@@ -2,19 +2,19 @@
 
 This project is **dev-first** and **skills-gated**:
 - GitHub can require a PR, while ICC enforces “review required” via an `ICC-REVIEW-RECEIPT`.
-- The agent performs merges itself (`gh pr merge`), never GitHub auto-merge (`--auto`).
+- Merges may be done by a human or by the agent. When the agent merges, it uses `gh pr merge` (not GitHub auto-merge `--auto`).
 
 ## Two-Minute Version
 
 Normal change:
 1. Branch → PR into `dev`.
-2. `@Reviewer` leaves an `ICC-REVIEW-RECEIPT` comment that says **PASS** for the PR’s current commit.
+2. `Reviewer` leaves an `ICC-REVIEW-RECEIPT` comment that says **PASS** for the PR’s current commit.
 3. Merge.
 
 Release:
 1. Release PR `dev` → `main`.
 2. Version + changelog updates.
-3. `@Reviewer` leaves `ICC-REVIEW-RECEIPT` PASS for the release PR’s current commit.
+3. `Reviewer` leaves `ICC-REVIEW-RECEIPT` PASS for the release PR’s current commit.
 4. Merge → tag → GitHub release → sync `main` back into `dev`.
 
 ## Branch Workflow (Dev-First)
