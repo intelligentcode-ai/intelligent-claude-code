@@ -28,6 +28,8 @@ The `memory` skill stores persistent knowledge in:
 ```text
 .agent/memory/
   memory.db
+
+memory/
   exports/
   archive/
 ```

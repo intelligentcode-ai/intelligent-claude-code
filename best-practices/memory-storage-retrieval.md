@@ -3,6 +3,24 @@
 ## Overview
 Always search memory before asking users or creating work items to leverage collective knowledge and prevent repetitive questions.
 
+## Storage Model (Recommended)
+
+Two layers that complement each other:
+
+1. **Local runtime memory (private, not for git):**
+   - SQLite DB: `.agent/memory/memory.db`
+   - Purpose: fast search, access stats, embeddings, local RAG
+   - Recommendation: keep `.agent/memory/` gitignored
+
+2. **Shareable memory (human-readable, for git):**
+   - Markdown exports: `memory/exports/<category>/mem-*.md`
+   - Purpose: share decisions/patterns across the team and over time
+   - Easy to diff and review in PRs
+
+Promotion rule of thumb:
+- Store "what happened / what we learned" in `memory/exports/`
+- Store "what we recommend doing" in `best-practices/`
+
 ## Core Principle
 
 **FUNDAMENTAL RULE**: Check memory BEFORE asking users for any information that could be previously learned.
@@ -95,21 +113,20 @@ Before storing any memory:
 - ☐ Describes access patterns, not access credentials
 - ☐ Helps users find their own credentials safely
 
-## AgentTask Integration
+## Work Integration
 
-### Memory-First Generation
+### Memory-First Planning
 1. Work request received
 2. **Search memory immediately** for similar patterns
-3. Embed memory results in AgentTask context
-4. No runtime memory lookups during execution
-5. Agent works with embedded memory patterns
+3. Capture relevant context in the work item / plan
+4. Execute with those known constraints in mind
 
 ### Automatic Storage
-1. AgentTask execution completes successfully
+1. Work completes successfully
 2. **Analyze for reusable patterns** automatically
 3. Apply relevance filters (MEMORY-RELEVANCE)
 4. Store ONLY if relevant and valuable
-5. Update memory/ topic files
+5. Update memory exports
 
 ## Common Pitfalls
 
@@ -149,11 +166,9 @@ After successful execution:
 
 ## Integration Points
 
-### With AgentTask System
-- Memory search before AgentTask creation
-- Embed memory results in AgentTask context
-- Store successful patterns after execution
-- No runtime memory lookups by agents
+### With Work Tracking
+- Search memory before starting work
+- Store reusable patterns after completion
 
 ### With Best Practices
 - Memory patterns inform best practices

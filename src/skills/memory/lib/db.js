@@ -24,26 +24,13 @@ function getDbPath(projectRoot = process.cwd()) {
  * @param {string} projectRoot - Project root directory
  */
 function ensureMemoryDir(projectRoot = process.cwd()) {
+  // Local/private runtime state only (SQLite DB, caches).
+  // Shareable markdown exports are written by export.js under memoryRoot.
   const memoryDir = path.join(projectRoot, '.agent', 'memory');
-  const exportsDir = path.join(memoryDir, 'exports');
-  const archiveDir = path.join(memoryDir, 'archive');
 
-  const categories = ['architecture', 'implementation', 'issues', 'patterns'];
-
-  // Create base directories
-  [memoryDir, exportsDir, archiveDir].forEach(dir => {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-  });
-
-  // Create category subdirectories in exports
-  categories.forEach(cat => {
-    const catDir = path.join(exportsDir, cat);
-    if (!fs.existsSync(catDir)) {
-      fs.mkdirSync(catDir, { recursive: true });
-    }
-  });
+  if (!fs.existsSync(memoryDir)) {
+    fs.mkdirSync(memoryDir, { recursive: true });
+  }
 }
 
 /**
@@ -68,6 +55,9 @@ function initDatabase(projectRoot = process.cwd()) {
 
   db = new Database(dbPath);
   db.pragma('journal_mode = WAL');
+  // Allow concurrent writers to wait briefly instead of failing with
+  // "database is locked" when multiple processes write at once.
+  db.pragma('busy_timeout = 5000');
 
   // Create schema
   db.exec(`
@@ -117,7 +107,40 @@ function initDatabase(projectRoot = process.cwd()) {
     CREATE INDEX IF NOT EXISTS idx_memories_importance ON memories(importance);
     CREATE INDEX IF NOT EXISTS idx_memories_archived ON memories(archived);
     CREATE INDEX IF NOT EXISTS idx_tags_tag ON tags(tag);
+
+    -- Meta key/value store for counters and migrations
+    CREATE TABLE IF NOT EXISTS meta (
+      key TEXT PRIMARY KEY,
+      value INTEGER NOT NULL
+    );
   `);
+
+  // Initialize / repair counter for concurrency-safe id allocation.
+  // If there are already mem-XXX entries, ensure next_id is at least max+1.
+  try {
+    db.prepare(`INSERT OR IGNORE INTO meta (key, value) VALUES ('next_id', 1)`).run();
+
+    const maxRow = db.prepare(`
+      SELECT MAX(CAST(SUBSTR(id, 5) AS INTEGER)) AS max_seq
+      FROM memories
+      WHERE id LIKE 'mem-%'
+        AND id NOT LIKE 'mem-%-%'
+        AND SUBSTR(id, 5) GLOB '[0-9]*'
+    `).get();
+
+    const maxSeq = Number(maxRow?.max_seq || 0);
+    const desired = maxSeq + 1;
+
+    const curRow = db.prepare(`SELECT value FROM meta WHERE key = 'next_id'`).get();
+    const cur = Number(curRow?.value || 1);
+
+    if (cur <= desired) {
+      db.prepare(`UPDATE meta SET value = ? WHERE key = 'next_id'`).run(desired);
+    }
+  } catch (e) {
+    // If anything goes wrong, keep operating; worst case the allocator falls
+    // back to timestamp ids in degraded mode.
+  }
 
   // Create FTS5 virtual table (separate to handle exists check)
   try {
@@ -167,16 +190,37 @@ function initDatabase(projectRoot = process.cwd()) {
  * @returns {string} New memory ID (mem-XXX)
  */
 function generateId() {
-  if (!db) return `mem-${Date.now()}`;
+  // If db isn't available (degraded mode), fall back to a timestamp+random id.
+  // This avoids collisions when multiple processes write concurrently.
+  if (!db) {
+    const rand = Math.random().toString(16).slice(2, 8);
+    return `mem-${Date.now()}-${rand}`;
+  }
 
-  const result = db.prepare(`
-    SELECT id FROM memories ORDER BY id DESC LIMIT 1
-  `).get();
+  // Concurrency-safe sequential id allocation.
+  // Two concurrent writers must never observe the same "next id" value.
+  //
+  // We use a tiny meta table as a counter and allocate ids inside a write
+  // transaction. The first statement is a write, so SQLite serializes writers.
+  const allocate = db.transaction(() => {
+    db.prepare(`
+      INSERT OR IGNORE INTO meta (key, value) VALUES ('next_id', 1)
+    `).run();
 
-  if (!result) return 'mem-001';
+    // Increment first to acquire the write lock, then read and subtract 1.
+    db.prepare(`
+      UPDATE meta SET value = value + 1 WHERE key = 'next_id'
+    `).run();
 
-  const num = parseInt(result.id.replace('mem-', ''), 10) + 1;
-  return `mem-${String(num).padStart(3, '0')}`;
+    const row = db.prepare(`
+      SELECT value FROM meta WHERE key = 'next_id'
+    `).get();
+
+    const seq = (row?.value || 1) - 1;
+    return `mem-${String(seq).padStart(3, '0')}`;
+  });
+
+  return allocate();
 }
 
 /**
@@ -190,7 +234,6 @@ function createMemory(memory) {
     return null;
   }
 
-  const id = memory.id || generateId();
   const now = new Date().toISOString();
 
   const insert = db.prepare(`
@@ -200,17 +243,31 @@ function createMemory(memory) {
             @importance, @created_at, @export_path)
   `);
 
-  insert.run({
-    id,
-    title: memory.title,
-    summary: memory.summary,
-    content: memory.content,
-    category: memory.category || 'patterns',
-    scope: memory.scope || 'project',
-    importance: memory.importance || 'medium',
-    created_at: now,
-    export_path: memory.export_path || null
-  });
+  // Best-effort retry on id collision (can happen with concurrent writers if
+  // a custom id is provided or a caller bypasses the allocator).
+  let id = memory.id || generateId();
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      insert.run({
+        id,
+        title: memory.title,
+        summary: memory.summary,
+        content: memory.content,
+        category: memory.category || 'patterns',
+        scope: memory.scope || 'project',
+        importance: memory.importance || 'medium',
+        created_at: now,
+        export_path: memory.export_path || null
+      });
+      break;
+    } catch (e) {
+      if (e && typeof e.message === 'string' && e.message.includes('UNIQUE constraint failed: memories.id')) {
+        id = generateId();
+        continue;
+      }
+      throw e;
+    }
+  }
 
   // Insert tags
   if (memory.tags && memory.tags.length > 0) {

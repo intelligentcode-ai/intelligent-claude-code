@@ -14,12 +14,14 @@ The memory skill provides a three-tier storage system:
 2. **Markdown Exports** - Human-readable, git-trackable
 3. **Archive** - Low-relevance memories preserved for reference
 
-## Storage Location
+## Storage Locations (Default)
 
 ```
 .agent/memory/
-├── memory.db           # SQLite database
-├── exports/            # Markdown exports (git-trackable)
+├── memory.db           # SQLite database (local runtime state; recommended gitignored)
+
+memory/
+├── exports/            # Markdown exports (shareable; git-trackable)
 │   ├── architecture/
 │   ├── implementation/
 │   ├── issues/
@@ -238,7 +240,7 @@ First use of embeddings downloads the model (~80MB) to `~/.cache/transformers/`.
 ## Fallback Behavior
 
 If CLI/dependencies unavailable, the skill works via manual markdown:
-1. Write memories as markdown files in `.agent/memory/exports/`
+1. Write memories as markdown files in `memory/exports/`
 2. Search using Grep tool or file search
 3. All memory functionality remains available, just without hybrid RAG
 
@@ -286,8 +288,8 @@ When Node.js/dependencies unavailable, manage memories as markdown files directl
 
 **Write:**
 ```bash
-mkdir -p .agent/memory/exports/architecture
-cat > .agent/memory/exports/architecture/mem-001-jwt-auth.md << 'EOF'
+mkdir -p memory/exports/architecture
+cat > memory/exports/architecture/mem-001-jwt-auth.md << 'EOF'
 ---
 id: mem-001
 title: JWT Authentication Pattern
@@ -310,12 +312,12 @@ EOF
 **Search:**
 ```bash
 # Keyword search in exports
-grep -r "authentication" .agent/memory/exports/
+grep -r "authentication" memory/exports/
 ```
 
 **List:**
 ```bash
-find .agent/memory/exports -name "*.md" -type f
+find memory/exports -name "*.md" -type f
 ```
 
 ### Cross-Platform Notes
