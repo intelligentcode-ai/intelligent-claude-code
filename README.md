@@ -9,7 +9,6 @@ ICC (Intelligent Claude Code) is a set of skills and conventions for running a c
 > - ICA: https://github.com/intelligentcode-ai/intelligent-code-agents
 
 ## What You Get
-
 - A small set of focused skills (roles, review, release, git/file hygiene).
 - Work tracking in `.agent/queue/`.
 - A PR review stamp (`ICC-REVIEW-RECEIPT`) that is tied to an exact commit SHA.
