@@ -29,6 +29,13 @@ memory/
 └── archive/            # Archived memory exports
 ```
 
+## Important: Public Memory Is First-Class
+
+`memory/exports/**` is treated as equal importance to the local SQLite DB.
+The SQLite database under `.agent/memory/memory.db` is an index/cache, and the
+memory skill automatically imports/syncs committed exports before read and
+write operations so searches don't miss "public" knowledge.
+
 ## Operations
 
 ### Write Memory

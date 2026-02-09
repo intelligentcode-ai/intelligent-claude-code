@@ -8,20 +8,35 @@ const embeddings = require('./embeddings');
 const search = require('./search');
 const exporter = require('./export');
 
+// Public memory (committed markdown under memory/exports/**) is first-class.
+// The local SQLite DB is an index/cache and must stay in sync with exports so
+// agents don't "forget" shareable knowledge.
+const exportsSignatureByProject = new Map();
+
+function ensurePublicExportsImported(projectRoot = process.cwd()) {
+  const database = db.initDatabase(projectRoot);
+  if (!database) return { success: false, skipped: true, reason: 'db-unavailable' };
+
+  const signature = exporter.getExportsSignature(projectRoot);
+  const prev = exportsSignatureByProject.get(projectRoot);
+  if (prev === signature) {
+    return { success: true, skipped: true, signature };
+  }
+
+  const importStats = exporter.rebuildFromExports(projectRoot);
+  exportsSignatureByProject.set(projectRoot, signature);
+  return { success: true, skipped: false, signature, importStats };
+}
+
 /**
  * Initialize the memory system
  * @param {string} projectRoot - Project root directory
  * @returns {boolean} Success
  */
 function init(projectRoot = process.cwd()) {
-  const database = db.initDatabase(projectRoot);
-  if (!database) return { success: false, error: 'Failed to initialize database' };
-
-  // Rebuild local SQLite index from shareable markdown exports, so a fresh clone
-  // can immediately search/list existing project knowledge.
-  const importStats = exporter.rebuildFromExports(projectRoot);
-
-  return { success: true, importStats };
+  const result = ensurePublicExportsImported(projectRoot);
+  if (!result.success) return { success: false, error: 'Failed to initialize database' };
+  return { success: true, importStats: result.importStats || { imported: 0, errors: 0, files: [] } };
 }
 
 /**
@@ -39,9 +54,41 @@ function init(projectRoot = process.cwd()) {
 async function write(options) {
   const projectRoot = options.projectRoot || process.cwd();
 
-  // Initialize database
-  if (!db.initDatabase(projectRoot)) {
-    return { error: 'Failed to initialize database' };
+  // Ensure public exports are imported before allocating a new id. Otherwise we
+  // may allocate an id that already exists in committed exports.
+  const importResult = ensurePublicExportsImported(projectRoot);
+  if (!importResult.success) {
+    // Degraded mode (no SQLite): still write shareable exports so memory isn't "dead paper".
+    const category = options.category || autoCategorize(options.title, options.content);
+    const id = exporter.allocateNextSequentialIdFromExports(projectRoot);
+    const now = new Date().toISOString();
+    const memory = {
+      id,
+      title: options.title,
+      summary: options.summary,
+      content: options.content || options.summary,
+      tags: options.tags || [],
+      category,
+      importance: options.importance || 'medium',
+      scope: options.scope || 'project',
+      created_at: now,
+      archived: 0
+    };
+
+    const exportPath = exporter.getExportPath(memory, projectRoot, false);
+    const dir = require('path').dirname(exportPath);
+    const fs = require('fs');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(exportPath, exporter.generateMarkdown(memory), 'utf8');
+
+    return {
+      id,
+      title: options.title,
+      category,
+      exportPath,
+      embeddingGenerated: false,
+      degradedMode: true
+    };
   }
 
   // Auto-categorize if not provided
@@ -122,10 +169,10 @@ function autoCategorize(title, content) {
  * @returns {Promise<object>} Search results
  */
 async function find(query, options = {}) {
-  if (!db.initDatabase(options.projectRoot)) {
-    return { results: [], error: 'Database not initialized' };
+  const importResult = ensurePublicExportsImported(options.projectRoot);
+  if (!importResult.success) {
+    return exporter.searchExports(query, options.projectRoot, { limit: options.limit, includeArchived: options.includeArchived });
   }
-
   return search.search(query, options);
 }
 
@@ -136,10 +183,10 @@ async function find(query, options = {}) {
  * @returns {Array} Search results
  */
 function quickFind(query, options = {}) {
-  if (!db.initDatabase(options.projectRoot)) {
-    return [];
+  const importResult = ensurePublicExportsImported(options.projectRoot);
+  if (!importResult.success) {
+    return exporter.searchExports(query, options.projectRoot, { limit: options.limit, includeArchived: options.includeArchived }).results || [];
   }
-
   return search.quickSearch(query, options);
 }
 
@@ -150,10 +197,21 @@ function quickFind(query, options = {}) {
  * @returns {object|null} Memory or null
  */
 function get(id, options = {}) {
-  if (!db.initDatabase(options.projectRoot)) {
+  const importResult = ensurePublicExportsImported(options.projectRoot);
+  if (!importResult.success) {
+    const files = exporter.listExportFiles(options.projectRoot, { includeArchive: true });
+    for (const { filePath, archived } of files) {
+      const mem = exporter.readMemoryFromMarkdownFile(filePath);
+      if (mem?.id === id) {
+        return {
+          ...mem,
+          archived: archived ? 1 : 0,
+          export_path: filePath
+        };
+      }
+    }
     return null;
   }
-
   return db.getMemory(id);
 }
 
@@ -167,7 +225,7 @@ function get(id, options = {}) {
 async function update(id, updates, options = {}) {
   const projectRoot = options.projectRoot || process.cwd();
 
-  if (!db.initDatabase(projectRoot)) {
+  if (!ensurePublicExportsImported(projectRoot).success) {
     return false;
   }
 
@@ -201,7 +259,7 @@ async function update(id, updates, options = {}) {
  * @returns {boolean} Success
  */
 function link(sourceId, targetId, linkType = 'related', options = {}) {
-  if (!db.initDatabase(options.projectRoot)) {
+  if (!ensurePublicExportsImported(options.projectRoot).success) {
     return false;
   }
 
@@ -222,7 +280,7 @@ function link(sourceId, targetId, linkType = 'related', options = {}) {
 function archive(id, options = {}) {
   const projectRoot = options.projectRoot || process.cwd();
 
-  if (!db.initDatabase(projectRoot)) {
+  if (!ensurePublicExportsImported(projectRoot).success) {
     return null;
   }
 
@@ -236,7 +294,7 @@ function archive(id, options = {}) {
  * @returns {boolean} Success
  */
 function remove(id, options = {}) {
-  if (!db.initDatabase(options.projectRoot)) {
+  if (!ensurePublicExportsImported(options.projectRoot).success) {
     return false;
   }
 
@@ -269,10 +327,34 @@ function remove(id, options = {}) {
  * @returns {Array} Memory list
  */
 function list(filters = {}, options = {}) {
-  if (!db.initDatabase(options.projectRoot)) {
-    return [];
+  const importResult = ensurePublicExportsImported(options.projectRoot);
+  if (!importResult.success) {
+    const includeArchived = !!filters.includeArchived;
+    const files = exporter.listExportFiles(options.projectRoot, { includeArchive: includeArchived });
+    const out = [];
+    for (const { filePath, archived } of files) {
+      if (!includeArchived && archived) continue;
+      const mem = exporter.readMemoryFromMarkdownFile(filePath);
+      if (!mem?.id) continue;
+      if (filters.category && String(mem.category || '').toLowerCase() !== String(filters.category).toLowerCase()) continue;
+      if (filters.importance && String(mem.importance || '').toLowerCase() !== String(filters.importance).toLowerCase()) continue;
+      if (filters.tag) {
+        const tags = (mem.tags || []).map(t => String(t).toLowerCase());
+        if (!tags.includes(String(filters.tag).toLowerCase())) continue;
+      }
+      out.push({
+        id: mem.id,
+        title: mem.title,
+        summary: mem.summary,
+        category: mem.category || 'patterns',
+        importance: mem.importance || 'medium',
+        archived: archived ? 1 : 0,
+        tags: mem.tags || [],
+        export_path: filePath
+      });
+    }
+    return out;
   }
-
   return db.listMemories(filters);
 }
 
@@ -282,12 +364,35 @@ function list(filters = {}, options = {}) {
  * @returns {object} Statistics
  */
 function stats(options = {}) {
-  if (!db.initDatabase(options.projectRoot)) {
-    return { error: 'Database not initialized' };
+  const importResult = ensurePublicExportsImported(options.projectRoot);
+  if (!importResult.success) {
+    const files = exporter.listExportFiles(options.projectRoot, { includeArchive: true });
+    let total = 0;
+    let archived = 0;
+    const byCategory = {};
+    for (const { filePath, archived: isArchived } of files) {
+      const mem = exporter.readMemoryFromMarkdownFile(filePath);
+      if (!mem?.id) continue;
+      total++;
+      if (isArchived) archived++;
+      const cat = mem.category || 'patterns';
+      byCategory[cat] = (byCategory[cat] || 0) + 1;
+    }
+    return {
+      total,
+      active: total - archived,
+      archived,
+      byCategory,
+      mostAccessed: [],
+      archiveCandidates: 0,
+      embeddingsAvailable: false,
+      modelName: null,
+      embeddingDimension: null,
+      degradedMode: true
+    };
   }
 
   const dbStats = db.getStats();
-
   return {
     ...dbStats,
     embeddingsAvailable: embeddings.isAvailable(),
@@ -302,10 +407,8 @@ function stats(options = {}) {
  * @returns {Array} Candidate memories
  */
 function getArchiveCandidates(options = {}) {
-  if (!db.initDatabase(options.projectRoot)) {
-    return [];
-  }
-
+  const importResult = ensurePublicExportsImported(options.projectRoot);
+  if (!importResult.success) return [];
   return db.getArchiveCandidates();
 }
 
@@ -317,7 +420,7 @@ function getArchiveCandidates(options = {}) {
 function exportAll(options = {}) {
   const projectRoot = options.projectRoot || process.cwd();
 
-  if (!db.initDatabase(projectRoot)) {
+  if (!ensurePublicExportsImported(projectRoot).success) {
     return { error: 'Database not initialized' };
   }
 
@@ -332,12 +435,9 @@ function exportAll(options = {}) {
 function rebuild(options = {}) {
   const projectRoot = options.projectRoot || process.cwd();
 
-  // Initialize database (creates fresh if needed)
-  if (!db.initDatabase(projectRoot)) {
-    return { error: 'Failed to initialize database' };
-  }
-
-  return exporter.rebuildFromExports(projectRoot);
+  const result = ensurePublicExportsImported(projectRoot);
+  if (!result.success) return { error: 'Failed to initialize database' };
+  return result.importStats || { imported: 0, errors: 0, files: [] };
 }
 
 /**

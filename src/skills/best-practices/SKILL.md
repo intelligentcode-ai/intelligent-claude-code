@@ -35,9 +35,12 @@ Best practices are stored in `best-practices/<category>/`:
    find best-practices/<category>/ -name "*.md"
    ```
 3. **Search memory** for related patterns:
-   ```bash
-   node ~/.claude/skills/memory/cli.js search "<relevant keywords>"
+   ```text
+   memory search: "<relevant keywords>"
    ```
+
+   (CLI fallback: `node ./.claude/skills/memory/cli.js search "<relevant keywords>"` for project installs,
+   or `node ~/.claude/skills/memory/cli.js search "<relevant keywords>"` for user installs.)
 4. **Apply** established patterns to implementation
 5. **Note** deviations with justification
 
