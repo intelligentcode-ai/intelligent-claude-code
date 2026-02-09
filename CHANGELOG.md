@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.8] - 2026-02-09
+
+### Fixed
+- Memory: treat committed `memory/exports/**` as first-class knowledge by auto-importing exports before reads/writes, so searches don't miss "public" memory.
+- Memory: add an export-backed fallback mode so `search/list/get/write` still work even when SQLite/Node native deps aren't installed.
+
+### Changed
+- Docs: prefer `memory search: "<query>"` (with CLI fallback examples) in process/best-practices/reviewer skills, instead of hardcoding a single CLI path.
+- Process: Stage 3 "temp checkout" instructions now clone before `gh pr checkout`.
+- Tests: added a Makefile check that validates public memory exports are searchable after install.
+- Docs(memory): track `mem-009` memory export.
+
 ## [10.2.7] - 2026-02-09
 
 ### Changed
