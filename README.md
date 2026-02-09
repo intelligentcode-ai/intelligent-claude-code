@@ -2,6 +2,12 @@
 
 ICC (Intelligent Claude Code) is a set of skills and conventions for running a clean PR workflow with Claude Code.
 
+> New here?
+> If you want the cross-platform foundation (Codex CLI, Cursor, Gemini CLI, etc.), start with **Intelligent Code Agents (ICA)**.
+> ICC focuses on the Claude Code-specific workflow and conventions on top of that foundation.
+>
+> - ICA: https://github.com/intelligentcode-ai/intelligent-code-agents
+
 ## What You Get
 
 - A small set of focused skills (roles, review, release, git/file hygiene).
