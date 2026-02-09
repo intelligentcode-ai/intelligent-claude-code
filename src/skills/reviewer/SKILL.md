@@ -260,15 +260,17 @@ After fixing:
 
 After fixing recurring issues, auto-save to memory:
 
-```bash
-# When a pattern emerges (same fix multiple times):
-node ~/.claude/skills/memory/cli.js write \
-  --title "Recurring: <issue type>" \
-  --summary "<what to check for and how to fix>" \
-  --tags "recurring,security|quality|patterns" \
-  --category "issues" \
-  --importance "medium"
+```text
+Remember:
+- Title: "Recurring: <issue type>"
+- Summary: "<what to check for and how to fix>"
+- Tags: recurring, security|quality|patterns
+- Category: issues
+- Importance: medium
 ```
+
+(CLI fallback: `node ./.claude/skills/memory/cli.js write --title "..." --summary "..." --tags "..." --category "issues" --importance "medium"`
+for project installs, or `node ~/.claude/skills/memory/cli.js write ...` for user installs.)
 
 This is **SILENT** - no user notification. Builds knowledge for future reviews.
 

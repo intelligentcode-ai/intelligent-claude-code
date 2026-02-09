@@ -7,6 +7,25 @@ const path = require('path');
 const fs = require('fs');
 const db = require('./db');
 
+function safeStatMtimeMs(p) {
+  try {
+    return fs.statSync(p).mtimeMs || 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+function listMarkdownFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  try {
+    return fs.readdirSync(dir)
+      .filter(f => f.endsWith('.md'))
+      .map(f => path.join(dir, f));
+  } catch (_) {
+    return [];
+  }
+}
+
 function getMemoryRoot(projectRoot = process.cwd()) {
   // Prefer ICC config if present; fallback to "memory" in the project root.
   // This keeps exports shareable (markdown in git) while SQLite stays local in .agent/.
@@ -30,6 +49,174 @@ function getMemoryRoot(projectRoot = process.cwd()) {
   }
 
   return path.join(projectRoot, 'memory');
+}
+
+/**
+ * Compute a lightweight signature for public (shareable) memory exports.
+ * Used to decide when the local SQLite index should be refreshed.
+ *
+ * Format: "<fileCount>:<maxMtimeMs>"
+ */
+function getExportsSignature(projectRoot = process.cwd()) {
+  const memoryRoot = getMemoryRoot(projectRoot);
+  const exportsDir = path.join(memoryRoot, 'exports');
+  const archiveDir = path.join(memoryRoot, 'archive');
+
+  const categories = ['architecture', 'implementation', 'issues', 'patterns'];
+  let fileCount = 0;
+  let maxMtime = 0;
+
+  for (const category of categories) {
+    const catDir = path.join(exportsDir, category);
+    const files = listMarkdownFiles(catDir);
+    fileCount += files.length;
+    for (const f of files) {
+      maxMtime = Math.max(maxMtime, safeStatMtimeMs(f));
+    }
+  }
+
+  const archived = listMarkdownFiles(archiveDir);
+  fileCount += archived.length;
+  for (const f of archived) {
+    maxMtime = Math.max(maxMtime, safeStatMtimeMs(f));
+  }
+
+  return `${fileCount}:${Math.floor(maxMtime)}`;
+}
+
+function listExportFiles(projectRoot = process.cwd(), options = {}) {
+  const includeArchive = options.includeArchive !== false;
+  const memoryRoot = getMemoryRoot(projectRoot);
+  const exportsDir = path.join(memoryRoot, 'exports');
+  const archiveDir = path.join(memoryRoot, 'archive');
+
+  const categories = ['architecture', 'implementation', 'issues', 'patterns'];
+  const files = [];
+
+  for (const category of categories) {
+    const catDir = path.join(exportsDir, category);
+    for (const p of listMarkdownFiles(catDir)) {
+      files.push({ filePath: p, archived: false });
+    }
+  }
+
+  if (includeArchive) {
+    for (const p of listMarkdownFiles(archiveDir)) {
+      files.push({ filePath: p, archived: true });
+    }
+  }
+
+  return files;
+}
+
+function readMemoryFromMarkdownFile(filePath) {
+  if (!fs.existsSync(filePath)) return null;
+  const content = fs.readFileSync(filePath, 'utf8');
+
+  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!frontmatterMatch) return null;
+
+  const frontmatter = frontmatterMatch[1];
+  const body = frontmatterMatch[2];
+
+  const memory = { tags: [] };
+  frontmatter.split('\n').forEach(line => {
+    const match = line.match(/^(\w+):\s*(.+)$/);
+    if (!match) return;
+    const [, key, value] = match;
+    if (key === 'tags') {
+      const tagsMatch = value.match(/\[([^\]]*)\]/);
+      if (tagsMatch) {
+        memory.tags = tagsMatch[1].split(',').map(t => t.trim()).filter(Boolean);
+      }
+    } else {
+      memory[key] = value;
+    }
+  });
+
+  const summaryMatch = body.match(/## Summary\n([\s\S]*?)(?=\n## |$)/);
+  if (summaryMatch) memory.summary = summaryMatch[1].trim();
+
+  const detailsMatch = body.match(/## Details\n([\s\S]*?)(?=\n## |$)/);
+  if (detailsMatch) {
+    memory.content = detailsMatch[1].trim();
+  } else {
+    memory.content = memory.summary;
+  }
+
+  return memory;
+}
+
+function allocateNextSequentialIdFromExports(projectRoot = process.cwd()) {
+  const files = listExportFiles(projectRoot, { includeArchive: true });
+  let maxSeq = 0;
+
+  for (const { filePath } of files) {
+    const mem = readMemoryFromMarkdownFile(filePath);
+    if (!mem?.id) continue;
+    const m = String(mem.id).match(/^mem-(\d+)$/);
+    if (!m) continue;
+    const n = Number(m[1]);
+    if (Number.isFinite(n)) maxSeq = Math.max(maxSeq, n);
+  }
+
+  const next = maxSeq + 1;
+  return `mem-${String(next).padStart(3, '0')}`;
+}
+
+function searchExports(query, projectRoot = process.cwd(), options = {}) {
+  const limit = Number(options.limit || 10);
+  const q = String(query || '').trim();
+  if (!q) return { results: [], error: 'Empty query' };
+
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const files = listExportFiles(projectRoot, { includeArchive: !!options.includeArchived });
+
+  const scored = [];
+  for (const { filePath, archived } of files) {
+    const mem = readMemoryFromMarkdownFile(filePath);
+    if (!mem?.id) continue;
+
+    const hay = [
+      mem.id,
+      mem.title,
+      mem.summary,
+      mem.content,
+      (mem.tags || []).join(' '),
+      mem.category
+    ].filter(Boolean).join('\n').toLowerCase();
+
+    let score = 0;
+    for (const t of terms) {
+      if (hay.includes(t)) score++;
+    }
+    if (score === 0) continue;
+
+    scored.push({
+      id: mem.id,
+      title: mem.title,
+      summary: mem.summary,
+      category: mem.category || 'patterns',
+      importance: mem.importance || 'medium',
+      tags: mem.tags || [],
+      archived: archived ? 1 : 0,
+      keyword_score: Math.min(1, score / Math.max(terms.length, 1)),
+      semantic_score: 0,
+      relevance_score: 0.5,
+      final_score: Math.min(1, score / Math.max(terms.length, 1))
+    });
+  }
+
+  scored.sort((a, b) => b.final_score - a.final_score);
+  const results = scored.slice(0, limit);
+
+  return {
+    results,
+    query: { terms },
+    ftsCount: results.length,
+    vectorCount: 0,
+    embeddingsAvailable: false
+  };
 }
 
 /**
@@ -382,6 +569,12 @@ function archiveExport(memoryId, projectRoot = process.cwd()) {
 }
 
 module.exports = {
+  getMemoryRoot,
+  getExportsSignature,
+  listExportFiles,
+  readMemoryFromMarkdownFile,
+  allocateNextSequentialIdFromExports,
+  searchExports,
   generateMarkdown,
   getExportPath,
   exportMemory,

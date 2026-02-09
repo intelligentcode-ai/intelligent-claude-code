@@ -171,6 +171,27 @@ test:
 	@grep -q "@~/.claude/modes/virtual-team.md" test-install/CLAUDE.md || (echo "FAIL: Import not added"; exit 1)
 	@echo "✅ Installation tests passed!"
 	@echo ""
+	@echo "Testing memory public export import..."
+	@mkdir -p test-install/memory/exports/patterns
+	@printf '%s\n' \
+		'---' \
+		'id: mem-001' \
+		'title: Memory public import test' \
+		'tags: [test]' \
+		'category: patterns' \
+		'scope: project' \
+		'importance: low' \
+		'created: 2026-02-09T00:00:00Z' \
+		'---' \
+		'' \
+		'# Memory public import test' \
+		'' \
+		'## Summary' \
+		'PUBLIC_IMPORT_SENTINEL' \
+		> test-install/memory/exports/patterns/mem-001-memory-public-import-test.md
+	@(cd test-install && node .claude/skills/memory/cli.js search "PUBLIC_IMPORT_SENTINEL" --limit 5 | grep -q "mem-001") || (echo "FAIL: memory search did not import public exports"; exit 1)
+	@echo "✅ Memory public import test passed!"
+	@echo ""
 	@echo "Testing idempotency..."
 	@ANSIBLE_COLLECTIONS_PATH=/dev/null ANSIBLE_STDOUT_CALLBACK=minimal $(MAKE) install TARGET_PATH=test-install
 	@echo "✅ Idempotency test passed!"

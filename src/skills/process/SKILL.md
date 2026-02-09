@@ -66,7 +66,10 @@ feature/* ← WHERE WORK HAPPENS
 ### Step 1.0: Memory Check (AUTOMATIC)
 ```
 BEFORE implementing, search memory:
-  node ~/.claude/skills/memory/cli.js search "relevant keywords"
+  memory search: "relevant keywords"
+
+  (CLI fallback, if you prefer commands: `node ./.claude/skills/memory/cli.js search "relevant keywords"`
+   for project installs, or `node ~/.claude/skills/memory/cli.js search "relevant keywords"` for user installs.)
 
 IF similar problem solved before:
   - Review the solution
@@ -126,10 +129,13 @@ IF clean or user says proceed:
 ### Step 1.5: Memory Save (AUTOMATIC)
 ```
 IF key decision was made (architecture, pattern, fix):
-  node ~/.claude/skills/memory/cli.js write \
-    --title "..." --summary "..." \
-    --category "architecture|implementation|issues|patterns" \
-    --importance "high|medium|low"
+  Remember:
+  - Title: ...
+  - Summary: ...
+  - Category: architecture|implementation|issues|patterns
+  - Importance: high|medium|low
+
+  (CLI fallback: `node ./.claude/skills/memory/cli.js write --title "..." --summary "..." --category "..." --importance "..."`.)
 
 This step is SILENT - auto-saves significant decisions.
 ```
@@ -183,6 +189,10 @@ NEVER: gh pr create --base main (unless releasing)
 ```
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
+
+# gh pr checkout requires an existing git clone. Clone first:
+gh repo clone OWNER/REPO repo
+cd repo
 gh pr checkout <PR-number>
 
 Run reviewer skill (post-PR stage)
