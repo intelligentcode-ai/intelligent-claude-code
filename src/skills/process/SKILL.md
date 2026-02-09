@@ -189,6 +189,10 @@ NEVER: gh pr create --base main (unless releasing)
 ```
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
+
+# gh pr checkout requires an existing git clone. Clone first:
+gh repo clone OWNER/REPO repo
+cd repo
 gh pr checkout <PR-number>
 
 Run reviewer skill (post-PR stage)
