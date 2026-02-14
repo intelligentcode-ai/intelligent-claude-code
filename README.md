@@ -1,12 +1,14 @@
-# Intelligent Claude Code
+# Intelligent Claude Code (Archived)
+
+> ARCHIVED STATUS
+> This repository is archived and will receive **NO FUTURE DEVELOPMENT**.
+> It remains available for visibility and historical reference only.
+>
+> PROJECT CONTINUATION
+> This project continues as **Intelligent-Code-Agents (ICA)**.
+> Active repository: https://github.com/intelligentcode-ai/intelligent-code-agents
 
 ICC (Intelligent Claude Code) is a set of skills and conventions for running a clean PR workflow with Claude Code.
-
-> New here?
-> If you want the cross-platform foundation (Codex CLI, Cursor, Gemini CLI, etc.), start with **Intelligent Code Agents (ICA)**.
-> ICC focuses on the Claude Code-specific workflow and conventions on top of that foundation.
->
-> - ICA: https://github.com/intelligentcode-ai/intelligent-code-agents
 
 ## What You Get
 - A small set of focused skills (roles, review, release, git/file hygiene).

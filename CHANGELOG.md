@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.9] - 2026-02-14
+
+### Changed
+- Marked ICC as archived in README with explicit "NO FUTURE DEVELOPMENT" language and a direct continuation link to Intelligent-Code-Agents (ICA).
+- Refreshed workflow/review documentation and guidance to keep PR/release behavior aligned with current process skills.
+- Added `docs/workflow-guide.md` and updated related docs to reflect current release and review gates.
+
+### Fixed
+- Memory: ensure committed `memory/exports/**` data is consistently available to search/read flows in environments without local DB setup.
+- Hooks/installer: stabilize production hook configuration handling in generated settings and installation paths.
+
 ## [10.2.8] - 2026-02-09
 
 ### Fixed
